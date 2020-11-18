@@ -3,6 +3,12 @@ package com.dealight.domain;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.springframework.lang.Nullable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,39 +23,60 @@ public class RsvdVO {
 	
 	// composition
 	private List<RsvdDtlsVO> rsvdDtlsList;
-	
-    // �����ȣ 
-    private Long id;
 
-    // �����ȣ
+	// **************변경 id -> rsvdId 
+	// 예약번호 
+	@NotNull(message = "예약번호는 null일 수 없습니다.")
+    private Long rsvdId;
+
+    // 매장번호
+	@NotNull(message = "매장번호는 null일 수 없습니다.")
     private Long storeId;
 
-    // ȸ�����̵�
+    // 회원아이디
+	@NotBlank
+	@Length(min = 1, max = 20)
     private String userId;
 
-    // �ֵ���ȣ 
+    // 핫딜번호
+	@Nullable
     private Long htdlId;
 
-    // �������ι�ȣ 
-    private int aprvNo;
+    // 결제승인번호
+    @Nullable
+    private Long aprvNo;
 
-    // �����ο�
+    // 예약인원
+    @NotNull
     private int pnum;
 
-    // ����ð�
+    // 예약시간
+    @NotBlank
+    @Length(min = 1, max = 20)
     private String time;
 
-    // ��������ڵ�
-    private String stusCd = "P";
+    // 예약상태코드
+    @NotBlank
+    private String stusCd;
 
-    // �����Ѿ�
+    // 예약총액
+    @NotNull
     private int totAmt;
 
-    // �Ѹ޴�����
+    // 총메뉴수량
+    @NotNull
     private int totQty;
     
-    private Date inDate;
+    @NotNull
+    private Date regDate;
     
-    private String strInDate;
-
+    @NotNull
+    private Date updateDate;
+    
+    @NotNull
+    private int revwStus;
+    
+    //@Nullable
+    //private List<RsvdDtlsVO> dtlsList;
+  
 }

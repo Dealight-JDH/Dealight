@@ -15,6 +15,8 @@ public class StoreImgVO {
 
     private Long imgSeq;
     
+    
+    // ******************file upload 
 	private String fileName;
 	private String uploadPath;
 	private String uuid;

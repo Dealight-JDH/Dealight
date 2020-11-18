@@ -10,6 +10,14 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.validation.constraints.NotBlank;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -17,24 +25,31 @@ import lombok.ToString;
 @Builder
 public class RsvdDtlsVO {
 	
-    // �����ȣ 
-	@NonNull
+
+	// 예약번호
+	@NotNull(message = "예약번호는 null일 수 없습니다.")
     private Long rsvdId;
 
-    // �����Ϸù�ȣ
-	@NonNull
+    // 예약일련번호
+	@NotNull(message = "예약일련번호는 null일 수 없습니다.")
     private Long rsvdSeq;
 
-    // �޴��̸�
-	@NonNull
+    // 메뉴이름
+	@NotBlank
+	@Size(min = 1, max = 10)
     private String menuNm;
 
-    // �޴�����
-	@NonNull
+    // 메뉴수량
+	@NotNull
     private int menuTotQty;
 
-    // �޴�����
-	@NonNull
+    // 메뉴가격
+	@NotNull
     private int menuPrc;
-
+	
+	//등록 날짜
+	private Date regDate;
+	
+	//수정 날짜
+	private Date updateDate;
 }
