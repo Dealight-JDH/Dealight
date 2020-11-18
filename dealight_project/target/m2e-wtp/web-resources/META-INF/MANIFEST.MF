@@ -1,5 +1,10 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: kjuio
 Build-Jdk: 14.0.1
+=======
+Built-By: kha24
+Build-Jdk: 1.8.0_261
+>>>>>>> origin/Hyeonsu
 Created-By: Maven Integration for Eclipse
 
