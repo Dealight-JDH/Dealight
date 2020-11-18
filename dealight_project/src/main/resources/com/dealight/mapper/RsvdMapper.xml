@@ -161,14 +161,6 @@
 	<result column="pm_expi" property="pmExpi"/>
 </resultMap>
 
-	<select id="findById"
-		resultType="com.dealight.domain.RsvdVO">
-		SELECT
-		*
-		FROM tbl_rsvd
-		where rsvd_id = #{rsvdId}
-		ORDER BY in_date asc
-	</select>
 
 	<select id="findByStoreIdAndUserId"
 		resultType="com.dealight.domain.RsvdVO">
