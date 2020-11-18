@@ -32,7 +32,7 @@
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	
-	<!-- <bean id="javaMailSender"	class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	<bean id="javaMailSender"	class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com" />
 		<property name="port" value="587" />
 		<property name="username" value="gustn72096@gmail.com" />
@@ -47,7 +47,7 @@
 		</property>
 	</bean>
 	<bean class="com.dealight.domain.Email" id="email"> </bean>
-	<bean class="com.dealight.service.MailServiceImpl" id="mailService"> </bean> -->
+	<bean class="com.dealight.service.MailServiceImpl" id="mailService"> </bean>
 	
 	<tx:annotation-driven proxy-target-class="true"
 		transaction-manager="transactionManager" />
