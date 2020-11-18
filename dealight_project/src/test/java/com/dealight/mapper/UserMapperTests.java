@@ -21,17 +21,19 @@ public class UserMapperTests {
 	@Setter(onMethod_ = @Autowired)
 	private UserMapper mapper;
 	
-//	@Test
+	@Test
 	public void testInsert() {
 	
 		UserVO user = new UserVO();
 		
-		user.setUserId("lmno");
-		user.setName("김철수");
-		user.setPwd("5555");
-		user.setEmail("cs@ssss");
-		user.setTelno("01077778888");
+		user.setUserId("gitTest2");
+		user.setName("github2");
+		user.setPwd("09876");
+		user.setEmail("git2@test.com");
+		user.setTelno("010123456");
+		user.setBrdt("20201118");
 		user.setSex("M");
+		user.setSnsLginYn("N");
 		
 		mapper.insert(user);
 		
@@ -48,10 +50,10 @@ public class UserMapperTests {
 	
 //	@Test
 	public void testDelete() {
-		log.info("DELETE COUNT: "+mapper.delete("aaa"));
+		log.info("DELETE COUNT: "+mapper.delete("testtest"));
 	}
 	
-	@Test
+//	@Test
 	public void testUpdate() {
 		
 		UserVO user = new UserVO();
@@ -76,7 +78,7 @@ public class UserMapperTests {
 		
 		//실행전 존재하는 아이디인지 확인할 것 
 				user.setUserId("hijk");
-				user.setPhotoSrc("aasdf.jsp");
+				user.setPhotoSrc("gitTest.jsp");
 				
 				int count = mapper.updatePhoto(user);
 				
