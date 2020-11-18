@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dealight.mapper.StoreMapper">
+
+
+
+	<!-- NStoreVO -->
+	<!-- <resultMap id="NStoreVO" type="com.dealight.domain.NStoreVO"> <result 
+		property="storeId" column="store_id" /> <result property="bizTm" column="biz_tm" 
+		/> <result property="menu" column="menu" /> </resultMap> -->
+
+	<resultMap id="StoreVO" type="com.dealight.domain.StoreVO">
+		<result column="store_id" property="storeId" />
+		<result column="store_nm" property="storeNm" />
+		<result column="telno" property="telno" />
+		<result column="clsCd" property="cls_cd" />
+
+		<association property="bstore"
+			javaType="com.dealight.domain.BStoreVO">
+			<result column="buser_id" property="buserId" />
+			<result column="seat_stus_cd" property="seatStusCd" />
+			<result column="open_tm" property="openTm" />
+			<result column="close_tm" property="closeTm" />
+			<result column="break_sttm" property="breakSttm" />
+			<result column="break_entm" property="breakEntm" />
+			<result column="last_ord_tm" property="lastOrdTm" />
+			<result column="n1_seat_no" property="n1SeatNo" />
+			<result column="n2_seat_no" property="n2SeatNo" />
+			<result column="n4_seat_no" property="n4SeatNo" />
+			<result column="store_intro" property="storeIntro" />
+			<result column="avg_meal_tm" property="avgMealTm" />
+			<result column="hldy" property="hldy" />
+			<result column="acm_pnum" property="acmPnum" />
+			<association property="htdl"
+				javaType="com.dealight.domain.HtdlVO">
+				<result column="htdl_id" property="htdlId" />
+				<result column="name" property="name" />
+				<result column="dc_rate" property="dcRate" />
+				<result column="start_tm" property="startTm" />
+				<result column="end_tm" property="endTm" />
+				<result column="lmt_pnum" property="lmtPnum" />
+				<result column="intro" property="intro" />
+				<result column="bef_price" property="befPrice" />
+				<result column="ddct" property="ddct" />
+				<result column="cur_pnum" property="curPnum" />
+				<result column="stus_cd" property="stusCd" />
+			</association>
+
+			<collection property="tags"
+				ofType="com.dealight.domain.StoreTagVO">
+				<result property="storeId" column="store_id" />
+				<result property="tagNm" column="tag_nm" />
+			</collection>
+			<collection property="menus"
+				ofType="com.dealight.domain.MenuVO">
+				<result property="storeId" column="store_id" />
+				<result property="menuSeq" column="menu_seq" />
+				<result property="price" column="price" />
+				<result property="imgUrl" column="menu_img" />
+				<result property="name" column="menu_name" />
+				<result property="recoMenu" column="reco_menu" />
+			</collection>
+			<!-- <collection property="revws" ofType="RevwVO"> <result property="id" 
+				column="id" /> <result property="storeId" column="store_id" /> <result property="rsvdId" 
+				column="rsvd_id" /> <result property="waitId" column="wait_id" /> <result 
+				property="userId" column="user_id" /> <result property="cnts" column="cnts" 
+				/> <result property="regDt" column="reg_dt" /> <result property="rating" 
+				column="rating" /> <result property="replyCnts" column="reply_cnts" /> <result 
+				property="replyRegDt" column="reply_reg_dt" /> </collection> -->
+			<collection property="waits"
+				ofType="com.dealight.domain.WaitVO">
+				<result property="id" column="id" />
+				<result property="storeId" column="store_id" />
+				<result property="waitRegTm" column="wait_reg_tm" />
+				<result property="waitPnum" column="wait_pnum" />
+				<result property="waitStusCd" column="wait_stus_cd" />
+				<result property="waitTot" column="wait_tot" />
+			</collection>
+		</association>
+		<association property="nstore"
+			javaType="com.dealight.domain.NStoreVO">
+			<result column="store_id" property="storeId" />
+			<result column="biz_tm" property="bizTm" />
+			<result column="menu" property="menu" />
+		</association>
+
+		<association property="loc"
+			javaType="com.dealight.domain.StoreLocVO">
+			<result property="storeId" column="store_id" />
+			<result property="addr" column="addr" />
+			<result property="lt" column="lt" />
+			<result property="lo" column="lo" />
+		</association>
+		<association property="eval"
+			javaType="com.dealight.domain.StoreEvalVO">
+			<result property="storeId" column="store_id" />
+			<result property="avgRating" column="avg_rating" />
+			<result property="revwTotNum" column="revw_tot_num" />
+			<result property="likeTotNum" column="like_tot_num" />
+		</association>
+		<collection property="imgs"
+			ofType="com.dealight.domain.StoreImgVO">
+			<result property="storeId" column="store_id" />
+			<result property="imgSeq" column="img_seq" />
+			<result property="imgUrl" column="img_url" />
+		</collection>
+	</resultMap>
+	<select id="getStoreCd" resultType="String">
+		select cls_cd from tbl_store
+		where
+		store_id = #{storeId}
+	</select>
+	<select id="getNstore" resultMap="StoreVO">
+		select s.store_id,s.store_nm,
+		n.biz_tm,n.menu,
+		e.like_tot_num,
+		i.img_seq,i.img_url
+		from tbl_store
+		s,tbl_nstore n, tbl_store_loc l, tbl_store_eval e,
+		tbl_store_img i
+		where s.store_id =n.store_id
+		and s.store_id = l.store_id
+		and s.store_id
+		= e.store_id
+		and s.store_id=i.store_id(+)
+		and s.store_id = #{storeId}
+	</select>
+
+	<select id="getBstore" resultMap="StoreVO">
+		select
+		s.store_id,s.store_nm,s.telno,
+		l.addr,l.lt,l.lo,
+		e.avg_rating,e.revw_tot_num,e.like_tot_num,
+		i.img_seq,i.img_url,
+		b.buser_id,b.seat_stus_cd,b.open_tm,b.close_tm, b.break_sttm,
+		b.break_entm,b.last_ord_tm,b.n1_seat_no,b.n2_seat_no,b.n4_seat_no,b.store_intro,b.avg_meal_tm,b.hldy,b.acm_pnum,
+		h.htdl_id,h.name,h.dc_rate,h.start_tm,h.end_tm,h.lmt_pnum,h.intro,h.bef_price,h.ddct,h.cur_pnum,h.stus_cd,
+		m.menu_seq,m.name menu_name,m.price,m.img_url menu_img,m.reco_menu,
+		t.tag_nm,
+		w.wait_tot
+		from tbl_store s,tbl_store_loc l,tbl_store_eval e,
+		tbl_store_img
+		i,tbl_bstore b,tbl_htdl h,tbl_menu m,tbl_store_tag t,(
+		select
+		store_id,count(id) wait_tot
+		from tbl_wait
+		where wait_stus_cd='W'
+		GROUP by store_id)w
+		where s.store_id = l.store_id
+		and s.store_id
+		=i.store_id(+)
+		and s.store_id = b.store_id
+		and s.store_id =e.store_id
+		and s.store_id =
+		h.store_id(+)
+		and s.store_id = m.store_id(+)
+		and
+		s.store_id = t.store_id(+)
+		and s.store_id = w.store_id(+)
+		and s.store_id
+		=#{storeId}
+	</select>
+
+
+</mapper>

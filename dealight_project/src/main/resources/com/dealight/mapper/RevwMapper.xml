@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dealight.mapper.RevwMapper">
+
+	<select id="getRevwList" resultType="com.dealight.domain.RevwVO">
+		select /*+
+		INDEX_DESC(tbl_revw tbl_revw_pk)*/
+		user_id,
+		cnts,reg_dt,rating,reply_cnts,reply_reg_dt
+		from tbl_revw
+		where store_id
+		= #{storeId}
+	</select>
+
+	<select id="getRevwListWithPaging"
+		resultType="com.dealight.domain.RevwVO">
+		<![CDATA[ select user_id, cnts,reg_dt,rating,reply_cnts,reply_reg_dt
+		from(
+		select /*+ INDEX(tbl_revw idx_revw)*/
+		rownum rn,user_id, cnts,reg_dt,rating,reply_cnts,reply_reg_dt
+		from tbl_revw
+		where store_id = #{storeId}
+		and rownum<=#{cri.pageNum}*#{cri.amount}
+	)
+	where rn> (#{cri.pageNum}-1)*#{cri.amount}
+	]]>
+	</select>
+
+	<select id="getCountByStoreId" resultType="int">
+	<![CDATA[
+	select count(id) from tbl_revw where store_id = #{storeId}
+	]]>
+
+
+	</select>
+
+</mapper>
