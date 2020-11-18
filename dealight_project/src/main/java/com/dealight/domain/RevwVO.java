@@ -6,7 +6,7 @@ import lombok.Data;
 public class RevwVO {
 
 	// 리뷰번호
-	private Long id;
+	private Long revwId;
 	// 매장번호
 	private Long storeId;
 	// 예약번호

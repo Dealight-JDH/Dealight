@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.dealight.controller">
+	<logger name="com.deaLight.review">
 		<level value="info" />
 	</logger>
 	

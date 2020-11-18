@@ -8,8 +8,11 @@ import lombok.NonNull;
 @Data
 public class WaitVO {
 
+	public WaitVO() {
+		// TODO Auto-generated constructor stub
+	}
 	@NonNull
-    private Long id;
+    private Long waitId;
 
     @NonNull
     private Long storeId;
