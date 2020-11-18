@@ -1,12 +1,22 @@
 package com.dealight.domain;
 
+import java.util.Date;
+import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class RevwVO {
 
 	// 리뷰번호
-	private Long id;
+	private Long revwId;
 	// 매장번호
 	private Long storeId;
 	// 예약번호

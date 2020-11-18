@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.dealight.mapper.NStoreMapper">
+
+	<select id="findAll" resultType="com.dealight.domain.NStoreVO">
+		SELECT
+		*
+		FROM tbl_nstore
+	</select>
+
+
+	<select id="findByStoreId"
+		resultType="com.dealight.domain.NStoreVO">
+		SELECT
+		*
+		FROM tbl_nstore
+		where store_id = #{storeId}
+	</select>
+
+	<insert id="insert">
+		INSERT
+		INTO tbl_nstore(store_id,biz_tm,menu)
+		VALUES
+		(#{storeId},#{bizTm},#{menu})
+	</insert>
+
+	<update id="update">
+		UPDATE tbl_nstore
+		SET
+		biz_tm = #{bizTm},
+		menu =
+		#{menu}
+		where store_id = #{storeId}
+	</update>
+
+	<delete id="delete">
+		DELETE
+		FROM tbl_nstore
+		WHERE store_id = #{storeId}
+	</delete>
+
+
+</mapper>

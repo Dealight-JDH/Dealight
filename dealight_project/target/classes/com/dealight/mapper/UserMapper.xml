@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.dealight.mapper.UserMapper">
+
+
+	<select id="findAll" resultType="com.dealight.domain.UserVO">
+		SELECT
+		*
+		FROM tbl_user
+	</select>
+
+	<select id="findById" resultType="com.dealight.domain.UserVO">
+		SELECT
+		*
+		FROM tbl_user
+		where
+		user_id = #{userId}
+	</select>
+	
+	<select id="">
+	
+	</select>
+
+	<insert id="insert">
+		INSERT
+		INTO
+		tbl_user(user_id,name,pwd,email,telno,brdt,sex,photo_src,sns_lgin_yn,cls_cd,pm_stus,pm_cnt,pm_expi)
+		VALUES(#{userId},#{name},#{pwd},#{email},
+		#{telno},#{brdt,
+		jdbcType=VARCHAR},#{sex},#{photoSrc, jdbcType=VARCHAR},
+		#{snsLginYn},#{clsCd},#{pmStus},#{pmCnt},#{pmExpi, jdbcType=DATE})
+
+	</insert>
+
+	<update id="update">
+		UPDATE tbl_user
+		SET
+		name = #{name},
+		pwd = #{pwd},
+		email =
+		#{email},
+		telno = #{telno},
+		brdt =
+		#{brdt},
+		sex = #{sex},
+		photo_src =
+		#{photoSrc},
+		sns_lgin_yn =
+		#{snsLginYn},
+		cls_cd = #{clsCd},
+		pm_stus =
+		#{pmStus},
+		pm_cnt = #{pmCnt},
+		pm_expi = #{pmExpi}
+		where user_id =
+		#{userId}
+	</update>
+
+	<delete id="delete">
+		DELETE
+		FROM tbl_user
+		WHERE user_id = #{userId}
+	</delete>
+
+
+</mapper>

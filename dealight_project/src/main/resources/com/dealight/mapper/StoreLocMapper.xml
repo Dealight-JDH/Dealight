@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.dealight.mapper.StoreLocMapper">
+<update id="update">
+UPDATE tbl_store_loc
+SET
+addr = #{addr},
+lat = #{lat},
+lng = #{lng}
+WHERE store_id = #{storeId}
+</update>
+
+<select id="findByStoreId" resultType="com.dealight.domain.StoreLocVO">
+SELECT *
+FROM tbl_store_loc
+WHERE store_id = #{storeId}
+</select>
+
+<insert id="insert">
+INSERT INTO
+tbl_store_loc(store_id,addr,lat,lng)
+VALUES(#{storeId},#{addr},#{lat},#{lng})
+
+</insert>
+
+</mapper>

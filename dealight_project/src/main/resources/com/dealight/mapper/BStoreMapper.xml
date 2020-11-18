@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.dealight.mapper.BStoreMapper">
+
+	<select id="findAll" resultType="com.dealight.domain.BStoreVO">
+		SELECT
+		*
+		FROM tbl_bstore
+	</select>
+
+
+	<select id="findByStoreId"
+		resultType="com.dealight.domain.BStoreVO">
+		SELECT
+		*
+		FROM tbl_bstore
+		where store_id = #{storeId}
+	</select>
+
+	<insert id="insert">
+		INSERT
+		INTO
+		tbl_bstore(store_id,buser_id,seat_stus_cd,open_tm,close_tm,break_sttm,break_entm,
+		last_ord_tm,n1_seat_no,n2_seat_no,n4_seat_no,store_intro,avg_meal_tm,hldy,acm_pnum)
+		VALUES
+		(#{storeId},#{buserId,
+		jdbcType=VARCHAR},#{seatStusCd},#{openTm},#{closeTm},#{breakSttm},#{breakEntm},
+		#{lastOrdTm},#{n1SeatNo},#{n2SeatNo},#{n4SeatNo},#{storeIntro},
+		#{avgMealTm},#{hldy},#{acmPnum})
+	</insert>
+
+
+	<update id="update">
+		UPDATE tbl_bstore
+		SET
+		buser_id = #{buserId,
+		jdbcType=VARCHAR},
+		seat_stus_cd = #{seatStusCd},
+		open_tm = #{openTm},
+		close_tm = #{closeTm},
+		break_sttm = #{breakSttm},
+		break_entm =
+		#{breakEntm},
+		last_ord_tm = #{lastOrdTm},
+		n1_seat_no = #{n1SeatNo},
+		n2_seat_no = #{n2SeatNo},
+		n4_seat_no = #{n4SeatNo},
+		store_intro =
+		#{storeIntro},
+		avg_meal_tm = #{avgMealTm},
+		hldy = #{hldy},
+		acm_pnum =
+		#{acmPnum}
+		where store_id = #{storeId}
+	</update>
+	
+	<update id="changeSeatStus">
+		UPDATE tbl_bstore
+		SET seat_stus_cd = #{seatStusCd}
+		WHERE store_id = #{storeId}
+	</update>
+
+	<delete id="delete">
+		DELETE
+		FROM tbl_bstore
+		WHERE store_id = #{storeId}
+	</delete>
+
+
+</mapper>

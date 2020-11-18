@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.dealight.mapper.HtdlMapper">
+
+	<select id="findAll" resultType="com.dealight.domain.HtdlVO">
+		SELECT
+		*
+		FROM tbl_htdl
+	</select>
+
+
+	<select id="findById" resultType="com.dealight.domain.HtdlVO">
+		SELECT
+		*
+		FROM tbl_htdl
+		where
+		hotdeal_id = #{htdlId}
+	</select>
+	
+	<select id="findByStoreId" resultType="com.dealight.domain.HtdlVO">
+		SELECT
+		*
+		FROM tbl_htdl
+		where
+		store_id = #{storeId}
+	</select>
+	
+		<select id="findByStoreIdStusCd" resultType="com.dealight.domain.HtdlVO">
+		SELECT
+		*
+		FROM tbl_htdl
+		where
+		store_id = #{storeId} AND
+		stus_cd = #{stusCd}
+	</select>
+
+	<insert id="insert">
+		INSERT
+		INTO
+		tbl_htdl(hotdeal_id,name,store_id,dc_rate,start_tm,end_tm,lmt_pnum,intro,bef_price,ddct,cur_pnum,stus_cd)
+		VALUES
+		(seq_htdl.nextval,#{name},#{storeId},#{dcRate},#{startTm},#{endTm},#{lmtPnum},#{intro,
+		jdbcType=VARCHAR},#{befPrice},#{ddct},#{curPnum},#{stusCd})
+	</insert>
+
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="htdlId" order="BEFORE"
+			resultType="long">
+			select seq_htdl.nextval from dual
+		</selectKey>
+		INSERT
+		INTO
+		tbl_htdl(hotdeal_id,name,store_id,dc_rate,start_tm,end_tm,lmt_pnum,intro,bef_price,ddct,cur_pnum,stus_cd)
+		VALUES
+		(#{htdlId},#{name},#{storeId},#{dcRate},#{startTm},#{endTm},#{lmtPnum},#{intro,
+		jdbcType=VARCHAR},#{befPrice},#{ddct},#{curPnum},#{stusCd})
+	</insert>
+
+	<update id="update">
+		UPDATE tbl_htdl
+		SET
+		name = #{name},
+		store_id =
+		#{storeId},
+		dc_rate = #{dcRate},
+		start_tm = #{startTm},
+		end_tm =
+		#{endTm},
+		lmt_pnum = #{lmtPnum},
+		intro = #{intro, jdbcType=VARCHAR},
+		bef_price = #{befPrice},
+		ddct = #{ddct},
+		cur_pnum = #{curPnum},
+		stus_cd =
+		#{stusCd}
+		where hotdeal_id = #{htdlId}
+	</update>
+
+
+	<delete id="delete">
+		DELETE
+		FROM tbl_htdl
+		WHERE hotdeal_id = #{htdlId}
+	</delete>
+
+
+</mapper>

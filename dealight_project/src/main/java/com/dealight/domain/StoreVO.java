@@ -5,12 +5,14 @@ import java.util.Date;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class StoreVO {
 	    // 매장번호 
 	    private Long storeId;
@@ -23,7 +25,7 @@ public class StoreVO {
 	    
 	    //요거
 	    private BStoreVO bstore;
-//	    private NStoreVO nstore;
+	    private NStoreVO nstore;
 	    
 	    private StoreLocVO loc;
 

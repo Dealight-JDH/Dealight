@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.dealight.mapper.WaitMapper">
+
+
+	<select id="findAll" resultType="com.dealight.domain.WaitVO">
+		SELECT
+		*
+		FROM tbl_wait
+	</select>
+
+	<select id="findById" resultType="com.dealight.domain.WaitVO">
+		SELECT
+		*
+		FROM tbl_wait
+		where id =
+		#{id}
+	</select>
+	
+	<select id="findByUserId" resultType="com.dealight.domain.WaitVO">
+		SELECT
+		*
+		FROM tbl_wait
+		where user_id = #{userId} and wait_stus_cd = #{waitStusCd}
+	</select>
+	
+	<select id="findByStoreId" resultType="com.dealight.domain.WaitVO">
+		SELECT
+		*
+		FROM tbl_wait
+		where store_id = #{storeId}
+	</select>
+	
+	<select id="findByStoreIdAndStusCd" resultType="com.dealight.domain.WaitVO">
+		SELECT
+		*
+		FROM tbl_wait
+		where store_id = #{storeId} and wait_stus_cd = #{waitStusCd}
+	</select>
+	
+	
+	
+	<select id="findByStoreIdAndDate"
+		resultType="com.dealight.domain.WaitVO">
+		SELECT
+		*
+		FROM tbl_wait
+		where store_id = #{storeId} and
+		TO_CHAR(wait_reg_tm,'YYYYMMDD') = #{date}
+	</select>
+
+	<insert id="insert">
+		INSERT
+		INTO
+		tbl_wait(id, store_id, user_id,
+		wait_reg_tm,wait_pnum,cust_telno,cust_nm,wait_stus_cd)
+		VALUES(seq_wait.nextval,#{storeId},#{userId,jdbcType=NUMERIC},#{waitRegTm},#{waitPnum},#{custTelno},#{custNm},#{waitStusCd})
+
+	</insert>
+
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="id" order="BEFORE" resultType="long">
+			select seq_wait.nextval from dual
+		</selectKey>
+		INSERT
+		INTO
+		tbl_wait(id, store_id, user_id,
+		wait_reg_tm,wait_pnum,cust_telno,cust_nm,wait_stus_cd)
+		VALUES(#{id},#{storeId},#{userId,jdbcType=NUMERIC},#{waitRegTm},#{waitPnum},#{custTelno},#{custNm},#{waitStusCd})
+
+	</insert>
+
+
+
+	<update id="update">
+		UPDATE tbl_wait
+		SET
+		store_id = #{storeId},
+		user_id =
+		#{userId,jdbcType=NUMERIC},
+		wait_reg_tm = #{waitRegTm},
+		cust_telno =
+		#{custTelno},
+		cust_nm = #{custNm},
+		wait_stus_cd = #{waitStusCd}
+		where id
+		= #{id}
+	</update>
+	
+	<update id="changeWaitStusCd">
+		UPDATE tbl_wait
+		SET
+		wait_stus_cd = #{waitStusCd}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE
+		FROM tbl_wait
+		WHERE id = #{id}
+	</delete>
+
+
+</mapper>

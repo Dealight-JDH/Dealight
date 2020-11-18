@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.dealight.mapper.RevwMapper">
+
+	<select id="findAll" resultType="com.dealight.domain.RevwVO">
+		SELECT
+		*
+		FROM tbl_revw
+	</select>
+
+
+	<select id="findById" resultType="com.dealight.domain.RevwVO">
+		SELECT
+		*
+		FROM tbl_revw
+		where id =
+		#{revwId}
+	</select>
+
+	<insert id="insert">
+		INSERT
+		INTO tbl_revw(id, store_id, rsvd_id, wait_id,
+		user_id, cnts, reg_dt, rating,reply_cnts,reply_reg_dt)
+		VALUES
+		(seq_review.nextval, #{storeId}, #{rsvdId, jdbcType=NUMERIC},
+		#{waitId, jdbcType=NUMERIC}, #{userId}, #{cnts}, #{regDt}, #{rating},
+		#{replyCnts}, #{replyRegDt})
+	</insert>
+
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="id" order="BEFORE" resultType="long">
+			select seq_review.nextval from dual
+		</selectKey>
+		INSERT
+		INTO tbl_revw(id, store_id, rsvd_id, wait_id, user_id, cnts,
+		reg_dt, rating,reply_cnts,reply_reg_dt)
+		VALUES
+		(#{revwId}, #{storeId},
+		#{rsvdId, jdbcType=NUMERIC}, #{waitId, jdbcType=NUMERIC}, #{userId},
+		#{cnts}, #{regDt}, #{rating}, #{replyCnts}, #{replyRegDt})
+	</insert>
+
+	<update id="update">
+		UPDATE tbl_revw
+		SET
+		store_id = #{storeId},
+		rsvd_id =
+		#{rsvdId},
+		wait_id = #{waitId},
+		user_id = #{userId},
+		cnts = #{cnts},
+		reg_dt = #{regDt},
+		rating = #{rating},
+		reply_cnts = #{replyCnts},
+		reply_reg_dt = #{replyRegDt}
+		where id = #{revwId}
+	</update>
+
+	<delete id="delete">
+		DELETE
+		FROM tbl_revw
+		WHERE id = #{revwId}
+	</delete>
+
+
+</mapper>
