@@ -3,18 +3,9 @@
 PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-<<<<<<< HEAD
 
 	<settings>
 		<setting name="mapUnderscoreToCamelCase" value="true" />
 		<setting name="jdbcTypeForNull" value="VARCHAR"/>
-=======
-	<settings>
-		<!-- oracle camel case 처리 -->
-		<setting name="mapUnderscoreToCamelCase" value="true" />
-		
-		<!-- oracle null 처리 -->
-        <setting name="jdbcTypeForNull" value="NULL" />
->>>>>>> origin/Subin
 	</settings>
 </configuration>
