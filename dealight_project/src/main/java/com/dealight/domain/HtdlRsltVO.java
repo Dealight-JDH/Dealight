@@ -43,8 +43,9 @@ public class HtdlRsltVO {
     private int htdlLmtPnum;
 
     // 예약률
+	// double로 수정해야 함
     @NotNull
-    private int rsvdRate;
+    private Double rsvdRate;
 
     // 경과시간
     @NotBlank

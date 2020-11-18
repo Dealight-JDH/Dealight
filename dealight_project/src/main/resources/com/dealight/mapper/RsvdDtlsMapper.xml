@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.dealight.mapper.RsvdDtlsMapper">
+
+	<select id="findAll"
+		resultType="com.dealight.domain.RsvdDtlsVO">
+		SELECT
+		*
+		FROM tbl_rsvd_dtls
+	</select>
+
+
+	<select id="findBySeq"
+		resultType="com.dealight.domain.RsvdDtlsVO">
+		SELECT
+		*
+		FROM tbl_rsvd_dtls
+		where rsvd_seq = #{rsvdSeq}
+	</select>
+	
+	<select id="findByRsvdId"
+		resultType="com.dealight.domain.RsvdDtlsVO">
+		SELECT
+		*
+		FROM tbl_rsvd_dtls
+		where rsvd_id = #{rsvdId}
+	</select>
+
+	<insert id="insert">
+		INSERT
+		INTO tbl_rsvd_dtls(rsvd_id, rsvd_seq, menu_nm,
+		menu_tot_qty,menu_prc)
+		VALUES(#{rsvdId},seq_rsvd_dtls.nextval,#{menuNm},#{menuTotQty},#{menuPrc})
+	</insert>
+
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="rsvdSeq" order="BEFORE"
+			resultType="long">
+			select seq_rsvd_dtls.nextval from dual
+		</selectKey>
+		INSERT
+		INTO tbl_rsvd_dtls(rsvd_id, rsvd_seq, menu_nm,
+		menu_tot_qty,menu_prc)
+		VALUES(#{rsvdId},#{rsvdSeq},#{menuNm},#{menuTotQty},#{menuPrc})
+	</insert>
+
+
+	<insert id="insertRsvdDtls" parameterType="java.util.List">
+		INSERT ALL
+		<foreach collection="list" item="item">
+		INTO tbl_rsvd_dtls
+		(
+		rsvd_id,
+		rsvd_seq,
+		menu_nm,
+		menu_tot_qty,
+		menu_prc
+		)
+		VALUES
+			(
+			${item.rsvdId},
+			FN_GET_SEQ('seq_rsvd_dtls'),
+			'${item.menuNm}',
+			${item.menuTotQty},
+			${item.menuPrc}
+			)
+		</foreach>
+		SELECT * FROM dual
+	</insert>
+
+	<update id="update">
+		UPDATE tbl_rsvd_dtls
+		SET
+		rsvd_id = #{rsvdId},
+		menu_nm =
+		#{menuNm},
+		menu_tot_qty = #{menuTotQty},
+		menu_prc = #{menuPrc}
+		where
+		rsvd_seq = #{rsvdSeq}
+	</update>
+
+	<delete id="delete">
+		DELETE
+		FROM tbl_rsvd_dtls
+		WHERE rsvd_seq = #{rsvdSeq}
+	</delete>
+
+
+</mapper>

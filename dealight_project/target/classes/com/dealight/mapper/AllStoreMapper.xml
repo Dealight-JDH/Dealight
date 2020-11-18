@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.dealight.mapper.AllStoreMapper">
+
+<resultMap type="com.dealight.domain.RevwVO" id="RevwVO">
+		<result column="revw_id" property="revwId"/>
+		<result column="rsvd_id" property="rsvdId"/>
+		<result column="wait_seq" property="waitSeq"/>
+		<result column="user_id" property="userId"/>
+		<result column="cnts" property="cnts"/>
+		<result column="regDt" property="regDt"/>
+		<result column="rating" property="rating"/>
+		<result column="reply_cnts" property="replyCnts"/>
+		<result column="reply_reg_dt" property="replyRegDt"/>
+</resultMap>
+
+<resultMap type="com.dealight.domain.StoreOptionVO" id="StoreOptionVO">
+	<result column="park" property="park"/>
+	<result column="nokids" property="nokids"/>
+	<result column="pg" property="pg"/>
+	<result column="wifi" property="wifi"/>
+	<result column="pet" property="pet"/>
+	<result column="smoke" property="smoke"/>
+</resultMap>
+
+<resultMap type="com.dealight.domain.StoreLocVO" id="StoreLocVO">
+	<result column="addr" property="addr"/>
+	<result column="lt" property="lat"/>
+	<result column="lo" property="lng"/>
+</resultMap>
+
+<resultMap type="com.dealight.domain.NStoreVO" id="NStoreVO">
+    <result column="store_id" property="storeId"/>
+    <result column="break_entm" property="breakEntm"/>
+    <result column="menu" property="menu"/>
+</resultMap>
+
+<resultMap type="com.dealight.domain.BStoreVO" id="BStoreVO">
+    <result column="store_id" property="storeId"/>
+    <result column="buser_id" property="buserId"/>
+    <result column="seat_stus_cd" property="seatStusCd"/>
+    <result column="open_tm" property="openTm"/>
+    <result column="close_tm" property="closeTm"/>
+    <result column="break_sttm" property="breakSttm"/>
+    <result column="break_entm" property="breakEntm"/>
+    <result column="last_ord_tm" property="lastOrdTm"/>
+    <result column="n1_seat_no" property="n1SeatNo"/>
+    <result column="n2_seat_no" property="n2SeatNo"/>
+    <result column="n4_seat_no" property="n4SeatNo"/>
+    <result column="store_intro" property="storeIntro"/>
+    <result column="avg_meal_tm" property="avgMealTm"/>
+    <result column="hldy" property="hldy"/>
+    <result column="acm_pnum" property="acmPnum"/>
+</resultMap>
+
+<resultMap type="com.dealight.domain.StoreVO" id="StoreVO">
+    <result column="store_id" property="storeId"/>
+    <result column="store_nm" property="storeNm"/>
+    <result column="telno" property="telno"/>
+    <result column="cls_cd" property="clsCd"/>
+</resultMap>
+
+<resultMap type="com.dealight.domain.AllStoreVO" id="AllStoreVO">
+    <result column="store_id" property="storeId"/>
+    <result column="store_nm" property="storeNm"/>
+    <result column="telno" property="telno"/>
+    <result column="cls_cd" property="clsCd"/>
+ 
+    <result column="buser_id" property="buserId"/>
+    <result column="seat_stus_cd" property="seatStusCd"/>
+    <result column="open_tm" property="openTm"/>
+    <result column="close_tm" property="closeTm"/>
+    <result column="break_sttm" property="breakSttm"/>
+    <result column="break_entm" property="breakEntm"/>
+    <result column="last_ord_tm" property="lastOrdTm"/>
+    <result column="n1_seat_no" property="n1SeatNo"/>
+    <result column="n2_seat_no" property="n2SeatNo"/>
+    <result column="n4_seat_no" property="n4SeatNo"/>
+    <result column="store_intro" property="storeIntro"/>
+    <result column="avg_meal_tm" property="avgMealTm"/>
+    <result column="hldy" property="hldy"/>
+    <result column="acm_pnum" property="acmPnum"/>
+
+	 <result column="addr" property="addr"/>
+	<result column="lt" property="lat"/>
+	<result column="lo" property="lng"/>
+	 
+	<result column="park" property="park"/>
+	<result column="nokids" property="nokids"/>
+	<result column="pg" property="pg"/>
+	<result column="wifi" property="wifi"/>
+	<result column="pet" property="pet"/>
+	<result column="smoke" property="smoke"/>
+	
+	<result column="avg_rating" property="avgRating"/>
+	<result column="revw_tot_num" property="revwTotNum"/>
+	<result column="like_tot_num" property="likeTotNum"/>
+	
+	<collection property="menuList" column="store_id" ofType="com.dealight.domain.MenuVO">
+		<result column="menu_seq" property="menuSeq"/>
+		<result column="price" property="price"/>
+		<result column="img_url" property="imgUrl"/>
+		<result column="name" property="name"/>
+		<result column="reco_menu" property="recoMenu"/>
+	</collection>
+
+ 	<collection property="imgs" column="store_id" ofType="com.dealight.domain.StoreImgVO">
+		<result column="img_seq" property="imgSeq"/>
+		<result column="uuid" property="uuid"/>
+		<result column="uploadpath" property="uploadPath"/>
+		<result column="image" property="image"/>
+		<result column="filename" property="fileName"/>
+	</collection>	
+	
+	<collection property="tagList" column="store_id" ofType="com.dealight.domain.StoreTagVO">
+		<result column="tag_nm" property="tagNm"/>
+	</collection>
+	
+	<collection property="revwList" column="store_id" ofType="com.dealight.domain.RevwVO">
+		<result column="revw_id" property="revwId"/>
+		<result column="rsvd_id" property="rsvdId"/>
+		<result column="wait_id" property="waitId"/>
+		<result column="user_id" property="userId"/>
+		<result column="cnts" property="cnts"/>
+		<result column="regDt" property="regDt"/>
+		<result column="rating" property="rating"/>
+		<result column="reply_cnts" property="replyCnts"/>
+		<result column="reply_reg_dt" property="replyRegDt"/>
+	</collection>
+	
+</resultMap>
+
+<select id="findAllStoreByStoreId" resultMap="AllStoreVO">
+select s.store_id, s.store_nm, s.telno, s.cls_cd, m.menu_seq, m.price, m.img_url, m.name, m.reco_menu, b.buser_id, b.seat_stus_cd, b.open_tm, b.close_tm, b.break_sttm, b.break_entm, b.last_ord_tm, b.n1_seat_no
+            , b.n2_seat_no, b.n4_seat_no, b.store_intro, b.avg_meal_tm, b.hldy, b.acm_pnum, l.addr, l.lo, l.lt, t.tag_nm
+            ,  o.nokids, o.park, o.pet, o.pg, o.smoke, o.wifi, i.img_seq, i.uuid, i.uploadpath, i.image, i.filename,e.avg_rating, e.like_tot_num, e.revw_tot_num
+from tbl_store s, tbl_menu m, tbl_bstore b, tbl_store_loc l, tbl_option o, tbl_store_img i, tbl_store_eval e, tbl_store_tag t
+where 	s.store_id = m.store_id and s.store_id = b.store_id and s.store_id = l.store_id and s.store_id = o.store_id and
+		s.store_id = i.store_id and s.store_id = e.store_id and s.store_id = t.store_id
+        and s.store_id = #{storeId}
+</select>
+
+</mapper>

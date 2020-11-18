@@ -41,8 +41,8 @@ public class AllStoreVO {
     private String hldy; 
     private int acmPnum;
 	private String addr;
-	private double lt;
-	private double lo;
+	private Double lat;
+	private Double lng;
     private String park;
     private String nokids;
     private String pg;
