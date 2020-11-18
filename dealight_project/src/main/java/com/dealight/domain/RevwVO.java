@@ -12,6 +12,7 @@ public class RevwVO {
     private int storeId;
     
     // 매장이름 - 테스트용으로 일단 추가함
+    // 오라클에 추가해야한다.!!!!!!
     private String storeNm;
 
     // 예약번호 
@@ -43,5 +44,7 @@ public class RevwVO {
 	
     // composition
     // 리뷰사진첨부파일 - 리뷰 사진 가져오기용
+    // 1:N관계 LIST로 받아야한다
+    // private List<RevwImgVO> imgs;
     private RevwImgVO img;
 }
