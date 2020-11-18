@@ -14,41 +14,41 @@ import lombok.NonNull;
 @Builder
 public class RevwVO {
 
-	    // ¸®ºä¹øÈ£ 
+	    // ï¿½ï¿½ï¿½ï¿½ï¿½È£ 
 		@NonNull
-	    private long id;
+	    private Long id;
 
-	    // ¸ÅÀå¹øÈ£ 
+	    // ï¿½ï¿½ï¿½ï¿½ï¿½È£ 
 		@NonNull
-	    private long storeId;
+	    private Long storeId;
 
-	    // ¿¹¾à¹øÈ£ 
-	    private long rsvdId;
+	    // ï¿½ï¿½ï¿½ï¿½ï¿½È£ 
+	    private Long rsvdId;
 
-	    // ¿þÀÌÆÃ¹øÈ£ 
-	    private long waitSeq;
+	    // ï¿½ï¿½ï¿½ï¿½ï¿½Ã¹ï¿½È£ 
+	    private Long waitSeq;
 
-	    // È¸¿ø¾ÆÀÌµð 
+	    // È¸ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ 
 	    @NonNull
 	    private String userId;
 
-	    // ¸®ºä³»¿ë
+	    // ï¿½ï¿½ï¿½ä³»ï¿½ï¿½
 	    @NonNull
 	    private String cnts;
 
-	    // ¸®ºäÀÛ¼º³¯Â¥
+	    // ï¿½ï¿½ï¿½ï¿½ï¿½Û¼ï¿½ï¿½ï¿½Â¥
 	    @NonNull
 	    private Date regDt;
 
-	    // ÆòÁ¡ 
+	    // ï¿½ï¿½ï¿½ï¿½ 
 	    @NonNull
 	    private double rating;
 
-	    // ´ä±Û³»¿ë
+	    // ï¿½ï¿½Û³ï¿½ï¿½ï¿½
 	    @NonNull
 	    private String replyCnts;
 
-	    // ´ä±Ûµî·Ï³¯Â¥
+	    // ï¿½ï¿½Ûµï¿½Ï³ï¿½Â¥
 	    @NonNull
 	    private Date replyRegDt;
 

@@ -22,7 +22,7 @@ import lombok.NonNull;
 public class AllStoreVO {
 	
 	
-    private long storeId;
+    private Long storeId;
     private String storeNm;
     private String telno;
     private String clsCd;

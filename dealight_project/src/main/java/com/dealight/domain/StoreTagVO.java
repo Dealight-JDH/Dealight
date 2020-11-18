@@ -2,7 +2,7 @@ package com.dealight.domain;
 
 public class StoreTagVO {
 	
-    private long storeId;
+    private Long storeId;
 
     private String tagNm;
 

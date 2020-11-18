@@ -11,25 +11,25 @@ import lombok.NoArgsConstructor;
 @Builder
 public class StoreOptionVO {
 	
-    // ¸ÅÀå¹øÈ£ 
-    private long storeId;
+    // ï¿½ï¿½ï¿½ï¿½ï¿½È£ 
+    private Long storeId;
 
-    // ÁÖÂ÷°¡´É¿©ºÎ 
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¿ï¿½ï¿½ï¿½ 
     private String park;
 
-    // ³ëÅ°Áî 
+    // ï¿½ï¿½Å°ï¿½ï¿½ 
     private String nokids;
 
-    // ³îÀÌÅÍ 
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
     private String pg;
 
-    // ¿ÍÀÌÆÄÀÌ 
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
     private String wifi;
 
-    // ¾Ö¿Ïµ¿¹°µ¿¹Ý°¡´É¿©ºÎ 
+    // ï¿½Ö¿Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý°ï¿½ï¿½É¿ï¿½ï¿½ï¿½ 
     private String pet;
 
-    // Èí¿¬½Ç 
+    // ï¿½ï¿½ï¿½ï¿½ 
     private String smoke;
 
 }

@@ -17,27 +17,27 @@ import lombok.ToString;
 @Builder
 public class HtdlRsltVO {
 	
-    // ÇÖµô¹øÈ£ 
+    // ï¿½Öµï¿½ï¿½ï¿½È£ 
 	@NonNull
-    private long htdlId;
+    private Long htdlId;
 
-    // ¸ÅÀå¹øÈ£ 
+    // ï¿½ï¿½ï¿½ï¿½ï¿½È£ 
 	@NonNull
-    private long storeId;
+    private Long storeId;
 
-    // ÃÖÁ¾¿¹¾àÀÎ¿ø
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¿ï¿½
 	@NonNull
     private int lastPnum;
 
-    // ÇÖµô¸¶°¨ÀÎ¿ø
+    // ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¿ï¿½
 	@NonNull
     private int htdlLmtPnum;
 
-    // ¿¹¾à·ü 
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ 
 	@NonNull
     private double rsvdRate;
 
-    // °æ°ú½Ã°£
+    // ï¿½ï¿½ï¿½ï¿½Ã°ï¿½
 	@NonNull
     private String elapTm;
 

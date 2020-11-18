@@ -15,80 +15,80 @@ import lombok.NonNull;
 @Builder
 public class UserWithRsvdDTO {
 	
-	// È¸¿ø¾ÆÀÌµð 
+	// È¸ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ 
 		private String userId;
 
-		// È¸¿øÀÌ¸§ 
+		// È¸ï¿½ï¿½ï¿½Ì¸ï¿½ 
 		private String name;
 
-		// È¸¿øºñ¹Ð¹øÈ£ 
+		// È¸ï¿½ï¿½ï¿½ï¿½Ð¹ï¿½È£ 
 		private String pwd;
 
-		// È¸¿øÀÌ¸ÞÀÏ 
+		// È¸ï¿½ï¿½ï¿½Ì¸ï¿½ï¿½ï¿½ 
 		private String email;
 
-		// È¸¿øÀüÈ­¹øÈ£ 
+		// È¸ï¿½ï¿½ï¿½ï¿½È­ï¿½ï¿½È£ 
 		private String telno;
 
-		// »ý³â¿ùÀÏ 
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 		private String brdt;
 
-		// ¼ºº° 
+		// ï¿½ï¿½ï¿½ï¿½ 
 		private String sex;
 
-		// È¸¿øÇÁ·ÎÇÊ»çÁø 
+		// È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê»ï¿½ï¿½ï¿½ 
 		private String photoSrc;
 
-		// ¼Ò¼È·Î±×ÀÎ¿©ºÎ 
+		// ï¿½Ò¼È·Î±ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ 
 		private String snsLginYn = "N";
 
-		// È¸¿ø±¸ºÐÄÚµå 
+		// È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½ 
 		private String clsCd = "C";
 
-		// ÆÐ³ÎÆ¼È¸¿ø¿©ºÎ 
+		// ï¿½Ð³ï¿½Æ¼È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 		private String pmStus = "N";
 
-		// ÆÐ³ÎÆ¼È½¼ö 
+		// ï¿½Ð³ï¿½Æ¼È½ï¿½ï¿½ 
 		private int pmCnt = 0;
 
-		// ÆÐ³ÎÆ¼¸¸·áÀÏÀÚ 
+		// ï¿½Ð³ï¿½Æ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 		private Date pmExpi;
 		// composition
 		private List<RsvdDtlsVO> rsvdDtlsList;
 		
-	    // ¿¹¾à¹øÈ£ 
+	    // ï¿½ï¿½ï¿½ï¿½ï¿½È£ 
 		@NonNull
-	    private long id;
+	    private Long id;
 
-	    // ¸ÅÀå¹øÈ£
+	    // ï¿½ï¿½ï¿½ï¿½ï¿½È£
 		@NonNull
-	    private long storeId;
+	    private Long storeId;
 
 
-	    // ÇÖµô¹øÈ£ 
-	    private long htdlId;
+	    // ï¿½Öµï¿½ï¿½ï¿½È£ 
+	    private Long htdlId;
 
-	    // °áÁ¦½ÂÀÎ¹øÈ£ 
+	    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¹ï¿½È£ 
 	    private int aprvNo;
 
-	    // ¿¹¾àÀÎ¿ø
+	    // ï¿½ï¿½ï¿½ï¿½ï¿½Î¿ï¿½
 	    @NonNull
 	    private int pnum;
 
-	    // ¿¹¾à½Ã°£
+	    // ï¿½ï¿½ï¿½ï¿½Ã°ï¿½
 	    @NonNull
 	    private String time;
 
-	    // ¿¹¾à»óÅÂÄÚµå
+	    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½
 	    @NonNull
 	    @Builder.Default
 	    private String stusCd = "P";
 
-	    // ¿¹¾àÃÑ¾×
+	    // ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½
 	    @NonNull
 	    private int totAmt;
 
-	    // ÃÑ¸Þ´º¼ö·®
+	    // ï¿½Ñ¸Þ´ï¿½ï¿½ï¿½ï¿½ï¿½
 	    @NonNull
 	    private int totQty;
 	    

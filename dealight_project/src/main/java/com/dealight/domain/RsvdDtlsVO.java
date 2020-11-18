@@ -17,23 +17,23 @@ import lombok.ToString;
 @Builder
 public class RsvdDtlsVO {
 	
-    // ¿¹¾à¹øÈ£ 
+    // ï¿½ï¿½ï¿½ï¿½ï¿½È£ 
 	@NonNull
-    private long rsvdId;
+    private Long rsvdId;
 
-    // ¿¹¾àÀÏ·Ã¹øÈ£
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ï·Ã¹ï¿½È£
 	@NonNull
-    private long rsvdSeq;
+    private Long rsvdSeq;
 
-    // ¸Þ´ºÀÌ¸§
+    // ï¿½Þ´ï¿½ï¿½Ì¸ï¿½
 	@NonNull
     private String menuNm;
 
-    // ¸Þ´º¼ö·®
+    // ï¿½Þ´ï¿½ï¿½ï¿½ï¿½ï¿½
 	@NonNull
     private int menuTotQty;
 
-    // ¸Þ´º°¡°Ý
+    // ï¿½Þ´ï¿½ï¿½ï¿½ï¿½ï¿½
 	@NonNull
     private int menuPrc;
 

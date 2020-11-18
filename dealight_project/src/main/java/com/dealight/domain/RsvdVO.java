@@ -18,34 +18,34 @@ public class RsvdVO {
 	// composition
 	private List<RsvdDtlsVO> rsvdDtlsList;
 	
-    // ¿¹¾à¹øÈ£ 
-    private long id;
+    // ï¿½ï¿½ï¿½ï¿½ï¿½È£ 
+    private Long id;
 
-    // ¸ÅÀå¹øÈ£
-    private long storeId;
+    // ï¿½ï¿½ï¿½ï¿½ï¿½È£
+    private Long storeId;
 
-    // È¸¿ø¾ÆÀÌµð
+    // È¸ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½
     private String userId;
 
-    // ÇÖµô¹øÈ£ 
-    private long htdlId;
+    // ï¿½Öµï¿½ï¿½ï¿½È£ 
+    private Long htdlId;
 
-    // °áÁ¦½ÂÀÎ¹øÈ£ 
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¹ï¿½È£ 
     private int aprvNo;
 
-    // ¿¹¾àÀÎ¿ø
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Î¿ï¿½
     private int pnum;
 
-    // ¿¹¾à½Ã°£
+    // ï¿½ï¿½ï¿½ï¿½Ã°ï¿½
     private String time;
 
-    // ¿¹¾à»óÅÂÄÚµå
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½
     private String stusCd = "P";
 
-    // ¿¹¾àÃÑ¾×
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½
     private int totAmt;
 
-    // ÃÑ¸Þ´º¼ö·®
+    // ï¿½Ñ¸Þ´ï¿½ï¿½ï¿½ï¿½ï¿½
     private int totQty;
     
     private Date inDate;

@@ -14,35 +14,35 @@ import lombok.NonNull;
 @Builder
 public class WaitingVO {
 	
-	// ¿þÀÌÆÃ¹øÈ£
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Ã¹ï¿½È£
 	@NonNull
-    private long id;
+    private Long id;
 
-    // ¸ÅÀå¹øÈ£
+    // ï¿½ï¿½ï¿½ï¿½ï¿½È£
     @NonNull
-    private long storeId;
+    private Long storeId;
 
-    // È¸¿ø¾ÆÀÌµð 
+    // È¸ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ 
     private String userId;
 
-    // ¿þÀÌÆÃÁ¢¼ö½Ã°£ 
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã°ï¿½ 
     @NonNull
     @Builder.Default
     private Date waitRegTm = new Date();
 
-    // ¿þÀÌÆÃÀÎ¿ø
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¿ï¿½
     @NonNull
     private int waitPnum;
 
-    // °í°´¿¬¶ôÃ³
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã³
     @NonNull
     private String custTelno;
 
-    // °í°´ÀÌ¸§
+    // ï¿½ï¿½ï¿½Ì¸ï¿½
     @NonNull
     private String custNm;
 
-    // ¿þÀÌÆÃ»óÅÂÄÚµå
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Úµï¿½
     @NonNull
     @Builder.Default
     private String waitStusCd = "W";

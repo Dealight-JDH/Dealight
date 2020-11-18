@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class StoreImgVO {
 	
-    private long storeId;
+    private Long storeId;
 
-    private long imgSeq;
+    private Long imgSeq;
     
 	private String fileName;
 	private String uploadPath;

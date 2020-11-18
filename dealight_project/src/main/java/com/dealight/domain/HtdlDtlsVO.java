@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class HtdlDtlsVO {
 	
-    private long htdlId;
+    private Long htdlId;
 
-    private long htdlSeq;
+    private Long htdlSeq;
 
     private String menuName;
 

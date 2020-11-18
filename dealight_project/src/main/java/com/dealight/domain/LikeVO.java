@@ -12,10 +12,10 @@ import lombok.NonNull;
 @Builder
 public class LikeVO {
 	
-    // È¸¿ø¾ÆÀÌµð 
+    // È¸ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ 
     private String userId;
 
-    // ¸ÅÀå¹øÈ£ 
-    private long storeId;
+    // ï¿½ï¿½ï¿½ï¿½ï¿½È£ 
+    private Long storeId;
 
 }

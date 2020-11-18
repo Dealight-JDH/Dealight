@@ -17,13 +17,13 @@ import lombok.ToString;
 public class BUserVO {
 	
 	// ����ڻ��Ϸù�ȣ 
-    private long brSeq;
+    private Long brSeq;
 
     // ȸ�����̵� 
     private String userId;
 
     // �����ȣ 
-    private long storeId;
+    private Long storeId;
 
     // ����ڵ�Ϲ�ȣ 
     private String brno;
