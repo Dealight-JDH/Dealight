@@ -226,12 +226,12 @@ public class RevwMapperTests {
 
 	@Test
 	public void testGetWritableItemByRsvd() {
-		mapper.getWritableItemByRsvd("user1id", 1);
+		mapper.getWritableItemByRsvd("user1id", 1L);
 	}
 
 	@Test
 	public void testGetWritableItemByWait() {
-		mapper.getWritableItemByWait("user1id", 4);
+		mapper.getWritableItemByWait("user1id", 4L);
 	}
 
 	@Test
@@ -250,7 +250,7 @@ public class RevwMapperTests {
 		rsvd.getRegDate();
 		rsvd.getUpdateDate();
 
-		mapper.updateRsvdRevwStus("user1id", 1);
+		mapper.updateRsvdRevwStus("user1id", 1L);
 		log.info(rsvd);
 	}
 
@@ -266,7 +266,7 @@ public class RevwMapperTests {
 		wait.setCustNm("뉘뉘뉘");
 		wait.setWaitStusCd("E");
 
-		mapper.updateWaitRevwStus("user1id", 4);
+		mapper.updateWaitRevwStus("user1id", 4L);
 		log.info(wait);
 	}
 

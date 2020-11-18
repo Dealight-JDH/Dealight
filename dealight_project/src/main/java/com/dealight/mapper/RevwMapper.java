@@ -59,10 +59,10 @@ public interface RevwMapper {
 	public RevwVO readRevw(Long revwId);
 
 	// 리뷰 등록에 불러올 예약 항목 (파라미터 2개 이상일 때 @Param 붙이기)
-	public RsvdVO getWritableItemByRsvd(@Param("userId") String userId, @Param("rsvdId") int rsvdId);
+	public RsvdVO getWritableItemByRsvd(@Param("userId") String userId, @Param("rsvdId") Long rsvdId);
 	
 	// 리뷰 등록에 불러올 웨이팅 항목
-	public WaitVO getWritableItemByWait(@Param("userId") String userId, @Param("waitId") int waitId);
+	public WaitVO getWritableItemByWait(@Param("userId") String userId, @Param("waitId") Long waitId);
 	
 	// 리뷰 등록
 	public void insertRevw(RevwVO revw);
@@ -71,10 +71,10 @@ public interface RevwMapper {
 	public void insertRevwImg(RevwImgVO img);
 	
 	// 예약 항목 리뷰 상태 업데이트
-	public int updateRsvdRevwStus(@Param("userId") String userId, @Param("rsvdId") int rsvdId);
+	public int updateRsvdRevwStus(@Param("userId") String userId, @Param("rsvdId") Long rsvdId);
 	
 	// 웨이팅 항목 리뷰 상태 업데이트
-	public int updateWaitRevwStus(@Param("userId") String userId, @Param("waitId") int waitId);
+	public int updateWaitRevwStus(@Param("userId") String userId, @Param("waitId") Long waitId);
 	
 	// 리뷰 답글 업데이트
 	public int updateRevwReply(RevwVO revw);
