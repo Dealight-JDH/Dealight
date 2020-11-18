@@ -1,5 +1,6 @@
 package com.dealight.domain;
 
+<<<<<<< HEAD
 import lombok.Data;
 
 @Data
@@ -44,5 +45,58 @@ public class RevwVO {
     // 1:N관계 LIST로 받아야한다
     // private List<RevwImgVO> imgs;
     private RevwImgVO img;
+=======
+import java.util.Date;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class RevwVO {
+
+	    // �����ȣ 
+		@NonNull
+	    private Long id;
+
+	    // �����ȣ 
+		@NonNull
+	    private Long storeId;
+
+	    // �����ȣ 
+	    private Long rsvdId;
+
+	    // �����ù�ȣ 
+	    private Long waitSeq;
+
+	    // ȸ�����̵� 
+	    @NonNull
+	    private String userId;
+
+	    // ���䳻��
+	    @NonNull
+	    private String cnts;
+
+	    // �����ۼ���¥
+	    @NonNull
+	    private Date regDt;
+
+	    // ���� 
+	    @NonNull
+	    private double rating;
+
+	    // ��۳���
+	    @NonNull
+	    private String replyCnts;
+
+	    // ��۵�ϳ�¥
+	    @NonNull
+	    private Date replyRegDt;
+>>>>>>> bf8ab310d18e4a1e0cd6669f63450ff680f936b7
 
 }

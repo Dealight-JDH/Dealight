@@ -10,6 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BStoreVO {
+<<<<<<< HEAD
+=======
+
+	   
+>>>>>>> bf8ab310d18e4a1e0cd6669f63450ff680f936b7
 	    private Long storeId;
 	    // 사업자회원아이디 
 	    private String buserId;
