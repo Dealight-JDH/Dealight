@@ -331,7 +331,7 @@
 		select s.store_id, s.store_nm, s.telno, s.cls_cd, b.buser_id,
 			   b.seat_stus_cd, b.open_tm, b.close_tm,b.break_sttm, 
 			   b.break_entm, b.last_ord_tm, b.n1_seat_no, b.n2_seat_no, 
-			   b.n4_seat_no, b.store_intro, b.avg_meal_tm, b.hldy, b.acm_pnum
+			   b.n4_seat_no, b.store_intro, b.avg_meal_tm, hldy, acm_pnum
 		from tbl_store s, tbl_bstore b
 		where s.store_id = b.store_id 
 		  AND b.buser_id = #{userId}
@@ -351,12 +351,6 @@
 		where s.store_id = #{storeId} AND s.store_id = b.store_id
 	</select>
 	
-	<select id="findByUserIdJoinBStore" parameterType="com.dealight.domain.StoreVO" resultMap="StoreVO">
-		select s.store_id, s.store_nm, s.telno, s.cls_cd, b.buser_id, b.seat_stus_cd, b.open_tm, b.close_tm,
-					b.break_sttm, b.break_entm, b.last_ord_tm, b.n1_seat_no, b.n2_seat_no, b.n4_seat_no,
-					b.store_intro, b.avg_meal_tm, hldy, acm_pnum
-		from tbl_store s, tbl_bstore b
-		where s.store_id = b.store_id AND b.buser_id = #{userId}
-	</select>
+	
 
 </mapper>
