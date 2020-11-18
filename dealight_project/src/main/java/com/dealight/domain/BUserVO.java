@@ -2,7 +2,6 @@ package com.dealight.domain;
 
 import java.util.Date;
 
-import com.dealight.domain.UserVO.Builder;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,37 +16,37 @@ import lombok.ToString;
 @NoArgsConstructor
 public class BUserVO {
 	
-	// »ç¾÷ÀÚ»ó¼¼ÀÏ·Ã¹øÈ£ 
+	// ï¿½ï¿½ï¿½ï¿½Ú»ï¿½ï¿½Ï·Ã¹ï¿½È£ 
     private long brSeq;
 
-    // È¸¿ø¾ÆÀÌµð 
+    // È¸ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ 
     private String userId;
 
-    // ¸ÅÀå¹øÈ£ 
+    // ï¿½ï¿½ï¿½ï¿½ï¿½È£ 
     private long storeId;
 
-    // »ç¾÷ÀÚµî·Ï¹øÈ£ 
+    // ï¿½ï¿½ï¿½ï¿½Úµï¿½Ï¹ï¿½È£ 
     private String brno;
 
-    // »ç¾÷ÀÚµî·ÏÁõ»çº»»çÁø 
+    // ï¿½ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½çº»ï¿½ï¿½ï¿½ï¿½ 
     private String brPhotoSrc;
 
-    // »ç¾÷ÀÚµî·Ï½É»ç»óÅÂÄÚµå 
+    // ï¿½ï¿½ï¿½ï¿½Úµï¿½Ï½É»ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½ 
     private String brJdgStusCd;
     
     public static class Builder{
 
-    	//ÇÊ¼ö ÀÔ·Â°ª
+    	//ï¿½Ê¼ï¿½ ï¿½Ô·Â°ï¿½
         private long brSeq;
         private String userId;
         private String brno;
         private String brPhotoSrc;
         private String brJdgStusCd;
         
-        //¼±ÅÃ ÀÔ·Â°ª
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·Â°ï¿½
         private long storeId;
 
-		// ÇÊ¼ö ÀÔ·Â°ª
+		// ï¿½Ê¼ï¿½ ï¿½Ô·Â°ï¿½
 		public Builder(long brSeq, String userId, String brno, String brPhotoSrc){
 			
 			this.brSeq = brSeq;
