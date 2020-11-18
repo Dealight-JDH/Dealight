@@ -60,7 +60,7 @@ public class HtdlVO {
 	@NotNull
 	private Date updateDate;
 	// 핫딜 상세
-	private List<HtdlDtlsVO> dtlsList;
+	private List<HtdlDtlsVO> htdlDtls;
 	// 매장 평가
 	private StoreEvalVO storeEval;
 }

@@ -4,19 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class HtdlDtlsVO {
+public class LikeVO {
 	
-    private long htdlId;
+    // 회원아이디 
+    private String userId;
 
-    private long htdlSeq;
-
-    private String menuName;
-
-    private int menuPrice;
+    // 매장번호 
+    private long storeId;
 
 }

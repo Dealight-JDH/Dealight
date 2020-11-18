@@ -44,5 +44,9 @@ public class UserVO {
 
     // 패널티만료일자 
     private Date pmExpi;
+    
+    // ***************추가 동인
+    // Buser와 조인을 하려고 일단 넣어놨는데 필요없으면 삭제
+    private BUserVO buser;
 	 
 }

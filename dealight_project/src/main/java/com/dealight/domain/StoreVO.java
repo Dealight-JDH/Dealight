@@ -31,5 +31,10 @@ public class StoreVO {
 	    private List<StoreImgVO> imgs; 
 	    
 	    
+	    // 현재 예약인원, 현재 웨잇인원 변수 - 동인
+	    // 테이블 컬럼 추가는 안해도 되는데, 로직상 필요해서 일단 추가해놓음.
+	    private int curRsvdNum;
+	    private int curWaitNum;
+	    
 	   
 }
