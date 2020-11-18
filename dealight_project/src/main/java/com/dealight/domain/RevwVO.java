@@ -26,7 +26,7 @@ public class RevwVO {
     // 리뷰내용 
     private String cnts;
 
-    // 리뷰작성날짜 
+    // 리뷰작성날짜 - regdate, updatedate 컬럼 반영되기 이전 ver.
     private String regDt;
 
     // 평점 
