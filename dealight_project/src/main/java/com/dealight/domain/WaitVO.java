@@ -1,41 +1,41 @@
 package com.dealight.domain;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 public class WaitVO {
 
-	// 웨이팅번호 
-	private Long id;
-	// 매장번호
-	private Long storeId;
+	@NonNull
+    private Long id;
 
+    @NonNull
+    private Long storeId;
 
-    // 회원아이디 
     private String userId;
 
-    // 웨이팅접수시간 
-    private Timestamp waitRegTm;
+    @NonNull
+    private Date waitRegTm;
 
-    // 웨이팅인원 
     private int waitPnum;
 
-    // 고객연락처 
+    @NonNull
     private String custTelno;
 
-    // 고객이름 
+    @NonNull
     private String custNm;
 
-    // 웨이팅상태코드 
-    private String waitStusCd;
+    @NonNull
+    private String waitStusCd = "W";
 
     // 리뷰상태 
     private int revwStus;
 
     // composition
     // 매장
+    // 이거 만든사람 이거 뺄수있는 방법좀 생각해주세요
     private StoreVO store;
     //웨이팅 수
     private int waitTot;

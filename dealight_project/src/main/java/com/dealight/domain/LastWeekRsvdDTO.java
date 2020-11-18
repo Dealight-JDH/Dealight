@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LastWeekRsvdDTO {
 	
-	
+	//??뭐야???
 	private Date inDate;
 
 }

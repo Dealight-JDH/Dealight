@@ -16,37 +16,28 @@ import lombok.ToString;
 @NoArgsConstructor
 public class BUserVO {
 	
-	// ����ڻ��Ϸù�ȣ 
     private Long brSeq;
 
-    // ȸ�����̵� 
     private String userId;
 
-    // �����ȣ 
     private Long storeId;
 
-    // ����ڵ�Ϲ�ȣ 
     private String brno;
 
-    // ����ڵ�����纻���� 
     private String brPhotoSrc;
 
-    // ����ڵ�Ͻɻ�����ڵ� 
     private String brJdgStusCd;
     
     public static class Builder{
 
-    	//�ʼ� �Է°�
         private long brSeq;
         private String userId;
         private String brno;
         private String brPhotoSrc;
         private String brJdgStusCd;
         
-        //���� �Է°�
         private long storeId;
 
-		// �ʼ� �Է°�
 		public Builder(long brSeq, String userId, String brno, String brPhotoSrc){
 			
 			this.brSeq = brSeq;

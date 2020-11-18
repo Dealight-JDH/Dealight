@@ -12,10 +12,8 @@ import lombok.NonNull;
 @Builder
 public class LikeVO {
 	
-    // ȸ�����̵� 
     private String userId;
 
-    // �����ȣ 
     private Long storeId;
 
 }
