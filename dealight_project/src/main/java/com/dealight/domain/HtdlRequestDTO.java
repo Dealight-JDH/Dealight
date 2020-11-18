@@ -22,9 +22,12 @@ public class HtdlRequestDTO {
 
 	@NotEmpty
 	private String name;
+//	
+//	@NotNull
+//	private String[] menu;
 	
 	@NotNull
-	private String[] menu;
+	private List<HtdlMenuDTO> menu;
 	
 	@NotNull
 	private double dcRate;

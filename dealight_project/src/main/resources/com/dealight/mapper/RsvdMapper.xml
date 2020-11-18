@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper 
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		<mapper namespace="com.dealight.mapper.RsvdMapper">
+		
+	<!-- 예약+상세 -->	
+		<resultMap type="com.dealight.domain.RsvdVO" id="rsvdDetail">
+			<id column="rsvd_id" property="rsvdId"/>
+			<result column="store_id" property="storeId"/>
+			<result column="user_id" property="userId"/>
+			<result column="htdl_id" property="htdlId"/>
+			<result column="aprv_no" property="aprvNo"/>
+			<result column="pnum" property="pnum"/>
+			<result column="time" property="time"/>
+			<result column="stus_cd" property="stusCd"/>
+			<result column="tot_amt" property="totAmt"/>
+			<result column="tot_qty" property="totQty"/>
+			<result column="regdate" property="regDate"/>
+			<result column="updatedate" property="updateDate"/>
+			<result column="revw_stus" property="revwStus"/>
+			
+			<collection property="dtlsList" column="rsvd_id" ofType="com.dealight.domain.RsvdDtlsVO">
+				<id column="rsvd_id" property="rsvdId"/>
+				<id column="rsvd_seq" property="rsvdSeq"/>
+				<result column="menu_nm" property="menuNm"/>
+				<result column="menu_tot_qty" property="menuTotQty"/>
+				<result column="menu_prc" property="menuPrc"/>
+				<result column="regdate" property="regDate"/>
+				<result column="updatedate" property="updateDate"/>
+			</collection>
+
+		</resultMap>
+		 
+		
+		<!-- 예약 상세 mapper -->
+		<delete id="deleteDtls">
+			delete from tbl_rsvd_dtls where rsvd_id = #{rsvdId}
+		</delete>
+		
+		<update id = "updateDtls">
+			update tbl_rsvd_dtls
+			set menu_nm = #{menuNm}, menu_tot_qty = #{menuTotQty}, menu_Prc = #{menuPrc}, updatedate =sysdate +9/24
+			where rsvd_id = #{rsvdId} and rsvd_seq = #{rsvdSeq}
+		</update>
+		
+		<select id="findDtlsById" resultType="com.dealight.domain.RsvdDtlsVO">
+			select * from tbl_rsvd_dtls where rsvd_id = #{rsvdId}
+		</select>
+		<insert id = "insertDtlsList" parameterType="java.util.List">
+			insert all			
+			<foreach collection="list" item="item">
+			into tbl_rsvd_dtls values (
+				#{item.rsvdId},
+				FN_GET_SEQ('seq_rsvd_dtls'),
+				#{item.menuNm},
+				#{item.menuTotQty},
+				#{item.menuPrc},
+				sysdate + 9/24,
+				sysdate + 9/24
+			)
+			</foreach>
+			SELECT * FROM dual
+		</insert>
+		
+		<insert id="insertDtls">
+			<selectKey keyProperty="rsvdSeq" order="BEFORE" resultType="long">
+				select seq_rsvd_dtls.nextval from dual
+			</selectKey>
+			insert into tbl_rsvd_dtls values(#{rsvdId}, #{rsvdSeq}, #{menuNm}, #{menuTotQty}, #{menuPrc}, sysdate + 9/24, sysdate +9/24)
+		</insert>
+		
+		<!--예약 mapper -->
+		<select id="getSeqRsvd" resultType="long">
+			select seq_rsvd.currval from dual
+		</select>
+		
+		<delete id="delete">
+			delete from tbl_rsvd where rsvd_id = #{rsvdId}
+		</delete>
+		
+		<update id="update">
+			update tbl_rsvd
+			set htdl_id = #{htdlId}, aprv_no = #{aprvNo}, pnum = #{pnum}, time = #{time}, stus_cd = #{stusCd}, updatedate = sysdate+ 9/24, revw_stus = #{revwStus}
+			where rsvd_id = #{rsvdId}
+		</update>
+		
+		<select id="getList" resultType="com.dealight.domain.RsvdVO">
+			<![CDATA[
+				select * from tbl_rsvd where rsvd_id > 0 	 		
+	 	]]>
+		</select>
+		
+		<select id="findById" resultType="com.dealight.domain.RsvdVO">
+			select * from tbl_rsvd where rsvd_id = #{rsvdId}
+		</select>
+		
+		<insert id="insertSelectKey">
+			<selectKey keyProperty="rsvdId" order ="BEFORE" resultType="long">
+				select seq_rsvd.nextval from dual
+			</selectKey>
+				insert into tbl_rsvd
+			 values(#{rsvdId}, #{storeId}, #{userId}, #{htdlId}, #{aprvNo}, #{pnum}, #{time}, #{stusCd}, #{totAmt}, #{totQty}, sysdate+9/24, sysdate+9/24, 0)
+		
+		</insert>
+		
+		<select id="getDaySeqRsvd" resultType="long">
+			select to_number(to_char(sysdate, 'yyyyMMdd') || lpad(test_seq.nextval,7,0)) seq from dual;
+		</select>
+		
+		<insert id="insert">
+			insert into tbl_rsvd
+			 values(seq_rsvd.nextval , #{storeId}, #{userId}, #{htdlId}, #{aprvNo}, #{pnum}, #{time}, #{stusCd}, #{totAmt}, #{totQty}, sysdate+9/24, sysdate+9/24, 0)
+		</insert>
+
+		</mapper>		

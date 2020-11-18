@@ -65,6 +65,7 @@ public class HtdlVO {
 	// 수정날짜
 	@NotNull
 	private Date updateDate;
+	
 	// 핫딜 상세
 	private List<HtdlDtlsVO> htdlDtls;
 	// 매장 평가
