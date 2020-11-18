@@ -25,7 +25,7 @@ public class HtdlRsltMapperTests {
     private long storeId = 13;
     private int lastPnum = 30;
     private int htdlLmtPnum = 50;
-    private double rsvdRate = 0.5;
+    private int rsvdRate = 30;
     private String elapTm = "30:00";
     
     @Autowired

@@ -30,7 +30,7 @@
 				<result column="updatedate" property="updateDate"/>
 			</association>
 			
-			<collection property="dtlsList" column="htdl_id" ofType="com.dealight.domain.HtdlDtlsVO">
+			<collection property="htdlDtls" column="htdl_id" ofType="com.dealight.domain.HtdlDtlsVO">
 				<id column="htdl_id" property="htdlId"/>
 				<id column="htdl_seq" property="htdlSeq"/> 
 				<result column="menu_name" property="menuName"/>
