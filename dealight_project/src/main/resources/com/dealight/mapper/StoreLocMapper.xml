@@ -9,8 +9,8 @@
 UPDATE tbl_store_loc
 SET
 addr = #{addr},
-lat = #{lat},
-lng = #{lng}
+lt = #{lat},
+lo = #{lng}
 WHERE store_id = #{storeId}
 </update>
 
@@ -22,7 +22,7 @@ WHERE store_id = #{storeId}
 
 <insert id="insert">
 INSERT INTO
-tbl_store_loc(store_id,addr,lat,lng)
+tbl_store_loc(store_id,addr,lt,lo)
 VALUES(#{storeId},#{addr},#{lat},#{lng})
 
 </insert>

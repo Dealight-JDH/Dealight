@@ -27,7 +27,7 @@
  -->
 
 <resultMap type="com.dealight.domain.RsvdVO" id="RsvdVO">
-    <result column="id" property="rsvdId"/>
+    <result column="rsvd_id" property="rsvdId"/>
     <result column="store_id" property="storeId"/>
     <result column="user_id" property="userId"/>
     <result column="htdl_id" property="htdlId"/>
@@ -39,7 +39,7 @@
     <result column="tot_qty" property="totQty"/>
     
 	<collection property="rsvdDtlsList" column="rsvd_id" ofType="com.dealight.domain.RsvdDtlsVO">
-		<result column="id" property="rsvdId"/>
+		<result column="rsvd_id" property="rsvdId"/>
 	    <result column="rsvd_seq" property="rsvdSeq"/>
 	    <result column="menu_nm" property="menuNm"/>
 	    <result column="menu_tot_qty" property="menuTotQty"/>
@@ -49,7 +49,7 @@
 
 <resultMap type="com.dealight.domain.UserWithRsvdDTO" id="UserWithRsvdDTO">
 	
-	<result column="id" property="rsvdId"/>
+	<result column="rsvd_id" property="rsvdId"/>
     <result column="store_id" property="storeId"/>
     <result column="htdl_id" property="htdlId"/>
     <result column="aprv_no" property="aprvNo"/>
@@ -88,7 +88,7 @@
 		SELECT
 		*
 		FROM tbl_rsvd
-		where id = #{rsvdId}
+		where rsvd_id = #{rsvdId}
 		ORDER BY in_date asc
 	</select>
 
@@ -156,19 +156,19 @@
 		select d.menu_nm,count(*)
 		from
 		(
-		select id
+		select rsvd_id
 		from tbl_rsvd
 		where TO_CHAR(in_date,'YYYYMMDD') = #{date} and
 		store_id = #{storeId}
 		) r, tbl_rsvd_dtls d
-		where r.id = d.rsvd_id
+		where r.rsvd_id = d.rsvd_id
 		GROUP BY menu_nm
 		ORDER BY COUNT(*) desc
 	</select>
 
 	<select id="findUserByStoreIdAndDate"
 		resultType="com.dealight.domain.UserWithRsvdDTO" >
-		select r.id, r.store_id, r.htdl_id, r.aprv_no, r.pnum, r.time, r.stus_cd, r.tot_amt, r.tot_qty, r.in_date,
+		select r.rsvd_id, r.store_id, r.htdl_id, r.aprv_no, r.pnum, r.time, r.stus_cd, r.tot_amt, r.tot_qty, r.in_date,
 				u.user_id, u.name, u.pwd, u.email, u.telno, u.brdt, u.sex, u.photo_src, u.sns_lgin_yn, u.cls_cd, u.pm_stus, u.pm_cnt, u.pm_expi
 		from (
 		select *
@@ -182,10 +182,10 @@
 	</select>
 	
 	<select id="findRsvdByRsvdIdWithDtls" resultMap="RsvdVO">
-		SELECT r.id, r.store_id, r.user_id, r.htdl_id, r.aprv_no, r.pnum, r.time, r.stus_cd, r.tot_amt, r.tot_qty,
+		SELECT r.rsvd_id, r.store_id, r.user_id, r.htdl_id, r.aprv_no, r.pnum, r.time, r.stus_cd, r.tot_amt, r.tot_qty,
 				r.in_date, d.rsvd_seq, d.menu_nm, d.menu_tot_qty, d.menu_prc
 		FROM tbl_rsvd r, tbl_rsvd_dtls d
-		WHERE r.id = d.rsvd_id and r.id = #{rsvdId}
+		WHERE r.rsvd_id = d.rsvd_id and r.rsvd_id = #{rsvdId}
 	</select>
 	
 	<select id="findLastWeekRsvdListByStoreId" resultMap="RsvdVO">
@@ -198,7 +198,7 @@
 
 	<insert id="insert">
 		INSERT
-		INTO tbl_rsvd(id, store_id, user_id, htdl_id,
+		INTO tbl_rsvd(rsvd_id, store_id, user_id, htdl_id,
 		aprv_no, pnum, time, stus_cd, tot_amt, tot_qty,in_date)
 		VALUES
 		(seq_rsvd.nextval,#{storeId},#{userId},#{htdlId},#{aprvNo},#{pnum},#{time},#{stusCd},#{totAmt},#{totQty},sysdate)
@@ -209,7 +209,7 @@
 			select seq_rsvd.nextval from dual
 		</selectKey>
 		INSERT
-		INTO tbl_rsvd(id, store_id, user_id, htdl_id, aprv_no, pnum,
+		INTO tbl_rsvd(rsvd_id, store_id, user_id, htdl_id, aprv_no, pnum,
 		time, stus_cd, tot_amt, tot_qty,in_date)
 		VALUES
 		(#{rsvdId},#{storeId},#{userId},#{htdlId},#{aprvNo},#{pnum},#{time},#{stusCd},#{totAmt},#{totQty},sysdate)
@@ -229,13 +229,13 @@
 		stus_cd = #{stusCd},
 		tot_amt = #{totAmt},
 		tot_qty = #{totQty}
-		where id = #{rsvdId}
+		where rsvd_id = #{rsvdId}
 	</update>
 
 	<delete id="delete">
 		DELETE
 		FROM tbl_rsvd
-		WHERE id = #{rsvdId}
+		WHERE rsvd_id = #{rsvdId}
 	</delete>
 
 

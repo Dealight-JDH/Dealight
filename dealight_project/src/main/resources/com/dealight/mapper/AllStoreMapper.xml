@@ -32,7 +32,7 @@
  -->
 
 <resultMap type="com.dealight.domain.RevwVO" id="RevwVO">
-		<result column="id" property="id"/>
+		<result column="revw_id" property="revwId"/>
 		<result column="rsvd_id" property="rsvdId"/>
 		<result column="wait_seq" property="waitSeq"/>
 		<result column="user_id" property="userId"/>
@@ -54,8 +54,8 @@
 
 <resultMap type="com.dealight.domain.StoreLocVO" id="StoreLocVO">
 	<result column="addr" property="addr"/>
-	<result column="lat" property="lat"/>
-	<result column="lng" property="lng"/>
+	<result column="lt" property="lat"/>
+	<result column="lo" property="lng"/>
 </resultMap>
 
 <resultMap type="com.dealight.domain.NStoreVO" id="NStoreVO">
@@ -116,8 +116,8 @@
 	<!-- <collection property="bstore" resultMap="BStoreVO"/> -->
 	 
 	 <result column="addr" property="addr"/>
-	<result column="lat" property="lat"/>
-	<result column="lng" property="lng"/>
+	<result column="lt" property="lat"/>
+	<result column="lo" property="lng"/>
 	 
 	<!-- <collection property="loc" resultMap="StoreLocVO"/> -->
 	<result column="park" property="park"/>
@@ -156,9 +156,9 @@
 	</collection>
 	
 	<collection property="revwList" column="store_id" ofType="com.dealight.domain.RevwVO">
-		<result column="id" property="id"/>
+		<result column="revw_id" property="revwId"/>
 		<result column="rsvd_id" property="rsvdId"/>
-		<result column="wait_seq" property="waitSeq"/>
+		<result column="wait_id" property="waitId"/>
 		<result column="user_id" property="userId"/>
 		<result column="cnts" property="cnts"/>
 		<result column="regDt" property="regDt"/>

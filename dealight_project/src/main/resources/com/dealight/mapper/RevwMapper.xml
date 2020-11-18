@@ -23,7 +23,7 @@
 
 	<insert id="insert">
 		INSERT
-		INTO tbl_revw(id, store_id, rsvd_id, wait_id,
+		INTO tbl_revw(revw_id, store_id, rsvd_id, wait_id,
 		user_id, cnts, reg_dt, rating,reply_cnts,reply_reg_dt)
 		VALUES
 		(seq_review.nextval, #{storeId}, #{rsvdId, jdbcType=NUMERIC},
@@ -36,7 +36,7 @@
 			select seq_review.nextval from dual
 		</selectKey>
 		INSERT
-		INTO tbl_revw(id, store_id, rsvd_id, wait_id, user_id, cnts,
+		INTO tbl_revw(revw_id, store_id, rsvd_id, wait_id, user_id, cnts,
 		reg_dt, rating,reply_cnts,reply_reg_dt)
 		VALUES
 		(#{revwId}, #{storeId},

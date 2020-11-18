@@ -56,7 +56,7 @@
 	<insert id="insert">
 		INSERT
 		INTO
-		tbl_wait(id, store_id, user_id,
+		tbl_wait(wait_id, store_id, user_id,
 		wait_reg_tm,wait_pnum,cust_telno,cust_nm,wait_stus_cd)
 		VALUES(seq_wait.nextval,#{storeId},#{userId,jdbcType=NUMERIC},#{waitRegTm},#{waitPnum},#{custTelno},#{custNm},#{waitStusCd})
 
@@ -68,9 +68,9 @@
 		</selectKey>
 		INSERT
 		INTO
-		tbl_wait(id, store_id, user_id,
+		tbl_wait(wait_id, store_id, user_id,
 		wait_reg_tm,wait_pnum,cust_telno,cust_nm,wait_stus_cd)
-		VALUES(#{id},#{storeId},#{userId,jdbcType=NUMERIC},#{waitRegTm},#{waitPnum},#{custTelno},#{custNm},#{waitStusCd})
+		VALUES(#{waitId},#{storeId},#{userId,jdbcType=NUMERIC},#{waitRegTm},#{waitPnum},#{custTelno},#{custNm},#{waitStusCd})
 
 	</insert>
 
@@ -87,21 +87,21 @@
 		#{custTelno},
 		cust_nm = #{custNm},
 		wait_stus_cd = #{waitStusCd}
-		where id
-		= #{id}
+		where wait_id
+		= #{waitId}
 	</update>
 	
 	<update id="changeWaitStusCd">
 		UPDATE tbl_wait
 		SET
 		wait_stus_cd = #{waitStusCd}
-		WHERE id = #{id}
+		WHERE wait_id = #{waitId}
 	</update>
 
 	<delete id="delete">
 		DELETE
 		FROM tbl_wait
-		WHERE id = #{id}
+		WHERE wait_id = #{waitId}
 	</delete>
 
 
