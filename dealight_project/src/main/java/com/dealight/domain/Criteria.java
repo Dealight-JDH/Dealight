@@ -37,8 +37,21 @@ public class Criteria {
 	}
 	
 	
+//	================daul criteria
+//	public double getRange() {
+//		return distance * 0.01;
+//	}
+//	
+//	private int pageNum;
+//	private int amount;
+//	
+//	public Criteria() {
+//		this(1,4);
+//	}
+//	
+//	public Criteria(int pageNum, int amount) {
+//		this.pageNum = pageNum;
+//		this.amount = amount;
+//	}
 	
-	public double getRange() {
-		return distance * 0.01;
-	}
 }
