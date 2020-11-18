@@ -17,8 +17,8 @@
 		SELECT
 		*
 		FROM tbl_wait
-		where id =
-		#{id}
+		where wait_id =
+		#{waitId}
 	</select>
 	
 	<select id="findByUserId" resultType="com.dealight.domain.WaitVO">
