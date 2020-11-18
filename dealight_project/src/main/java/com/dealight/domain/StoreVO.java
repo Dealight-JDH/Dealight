@@ -1,6 +1,7 @@
 package com.dealight.domain;
 
 
+import java.util.Date;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -30,6 +31,19 @@ public class StoreVO {
 	    
 	    private List<StoreImgVO> imgs; 
 	    
+	    //채수빈: 추가한 컬럼들
+	    // 매장 대표사진
+	    private String repImg;
+	    // 매장 지점이름
+	    private String brch;
+	    // 추가되는 날짜 컬럼들
+	    private Date regdate;
+	    private Date updatedate;
+	    
+	    // 현재 예약인원, 현재 웨잇인원 변수 - 동인
+	    // 테이블 컬럼 추가는 안해도 되는데, 로직상 필요해서 일단 추가해놓음.
+	    private int curRsvdNum;
+	    private int curWaitNum;
 	    
 	   
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BStoreVO {
-	    // 매장번호 
+	
 	    private Long storeId;
 	    // 사업자회원아이디 
 	    private String buserId;
@@ -49,7 +49,9 @@ public class BStoreVO {
 	    private HtdlVO htdl;
 	    private List<StoreTagVO> tag;
 	    private List<MenuVO> menus;
-
+	    //추가 WaitVO 추가됨
+	    private List<WaitVO> waits;
+	    
 	    public static class Builder{
 	    	private final Long storeId;
 	    	private final String buserId;

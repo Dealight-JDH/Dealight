@@ -6,12 +6,18 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import org.springframework.lang.Nullable;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Data
 public class HtdlVO {
 	@NotNull(message = "핫딜번호는 null일 수 없습니다.")
@@ -60,7 +66,7 @@ public class HtdlVO {
 	@NotNull
 	private Date updateDate;
 	// 핫딜 상세
-	private List<HtdlDtlsVO> dtlsList;
+	private List<HtdlDtlsVO> htdlDtls;
 	// 매장 평가
 	private StoreEvalVO storeEval;
 }

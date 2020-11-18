@@ -9,7 +9,7 @@ public class UserVO {
     // 회원아이디 
     private String userId;
 
-    // 회원이름 
+    // 회원이름 dd
     private String name;
 
     // 회원비밀번호 
@@ -44,5 +44,9 @@ public class UserVO {
 
     // 패널티만료일자 
     private Date pmExpi;
+    
+    // ***************추가 동인
+    // Buser와 조인을 하려고 일단 넣어놨는데 필요없으면 삭제
+    private BUserVO buser;
 	 
 }
