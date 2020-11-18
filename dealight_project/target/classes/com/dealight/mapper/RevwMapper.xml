@@ -96,8 +96,6 @@
 </resultMap>
 
 
-
-
 	<select id="findAll" resultType="com.dealight.domain.RevwVO">
 		SELECT
 		*

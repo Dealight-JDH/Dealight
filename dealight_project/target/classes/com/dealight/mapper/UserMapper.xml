@@ -21,10 +21,6 @@
 		user_id = #{userId}
 	</select>
 	
-	<select id="">
-	
-	</select>
-
 	<insert id="insert">
 		INSERT
 		INTO
