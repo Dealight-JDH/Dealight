@@ -23,8 +23,8 @@ import lombok.extern.log4j.Log4j;
 public class WaitMapperTests {
 	
 	//�ʼ� �Է°�
-    private long id = 1;
-    private long storeId = 13;
+    private Long waitId = 1L;
+    private Long storeId = 13L;
     private Date waitRegTm = new Date();
     private int waitPnum = 30;
     private String custTelno = "010-0000-0000";
@@ -41,7 +41,7 @@ public class WaitMapperTests {
     @Test
     public void insertTest1() {
     	WaitVO waiting = new WaitVO().builder()
-    			.waitId(id)
+    			.waitId(waitId)
 				.storeId(storeId)
 				.waitRegTm(waitRegTm)
 				.waitPnum(waitPnum)
@@ -65,7 +65,7 @@ public class WaitMapperTests {
     @Test
     public void insertSelectKeyTest1() {
     	WaitVO waiting = new WaitVO().builder()
-    			.waitId(id)
+    			.waitId(waitId)
 				.storeId(storeId)
 				.waitRegTm(waitRegTm)
 				.waitPnum(waitPnum)
@@ -91,7 +91,7 @@ public class WaitMapperTests {
     @Test
     public void findTest1() {
     	
-    	WaitVO waiting = mapper.findById(id);
+    	WaitVO waiting = mapper.findById(waitId);
     	
     	assertNotNull(waiting);
     	
@@ -174,8 +174,7 @@ public class WaitMapperTests {
     @Test
     public void updateTest1() {
     	WaitVO waiting = new WaitVO().builder()
-    			.waitId(id)
-				.waitId(id)
+    			.waitId(waitId)
 				.storeId(storeId)
 				.waitRegTm(waitRegTm)
 				.waitPnum(waitPnum)
@@ -183,13 +182,13 @@ public class WaitMapperTests {
 				.custNm(custNm)
 				.build();
 
-    	String bf = mapper.findById(id).getCustTelno();
+    	String bf = mapper.findById(waitId).getCustTelno();
     	
     	int result = mapper.update(waiting);
     	
     	assertTrue(result == 1);
     	
-    	waiting = mapper.findById(id);
+    	waiting = mapper.findById(waitId);
     	
     	assertTrue(!waiting.getCustTelno().equals(bf));
     	
@@ -205,7 +204,7 @@ public class WaitMapperTests {
     @Test
     public void deleteTest1() {
     	
-    	int result = mapper.delete(21);
+    	int result = mapper.delete(21L);
     	
     	assertTrue(result==1);
     	
@@ -231,9 +230,9 @@ public class WaitMapperTests {
     	
     	String waitStusCd = "W";
     	
-    	id = 58;
+    	waitId = 58L;
     	
-    	WaitVO wait = mapper.findById(id);
+    	WaitVO wait = mapper.findById(waitId);
     	
     	log.info(wait);
     	
@@ -241,7 +240,7 @@ public class WaitMapperTests {
     	
     	assertTrue(result==1);
     	
-    	wait = mapper.findById(id);
+    	wait = mapper.findById(waitId);
     	
     	log.info(wait);
     	

@@ -113,7 +113,7 @@ public class RevwControllerTests {
 	public void testUpdateRevwReply() throws Exception {
 		String resultPage = mockMvc.perform(MockMvcRequestBuilders.post("/dealight/mypage/review/written-list")
 				.param("userId", "user1id")
-				.param("id", "90")
+				.param("revwId", "90")
 				.param("replyCnts", "내용테스트"))
 				.andReturn().getModelAndView().getViewName();
 		log.info(resultPage);
