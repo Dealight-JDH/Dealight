@@ -7,6 +7,8 @@ import lombok.NonNull;
 
 @Data
 public class WaitVO {
+	
+	//
 
 	@NonNull
     private Long id;
