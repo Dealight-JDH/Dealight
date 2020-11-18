@@ -1,5 +1,11 @@
 package com.dealight.mapper;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,4 +65,84 @@ public class NStoreMapperTests {
 		log.info("UPDATE COUNT: " + mapper.update(nStore));
 		
 	}
+	
+	// nstore ��ü
+	private long storeId = 1;
+	private String breakEntm = "21:00";
+	private String menu = "���";
+	
+	// store ��ü
+    private String storeNm = "��������";
+    private String telno = "010-2737-5157";
+    private String clsCd = "I";
+    
+    
+	// mapper �� ���ԵǾ����� DI �׽�Ʈ
+	@Test
+	public void mapperDItest() {
+		log.info("mapper DI test : " + mapper);
+	}
+    
+    @Test
+    public void findByStoreIdTest() {
+    	
+    	NStoreVO nstore = mapper.findByStoreId(1);
+    	
+    	assertNotNull(nstore);
+    	
+    	log.info(nstore);
+    	
+    }
+    
+    
+    @Test
+    public void insertNStoreTest1() {
+    	
+		NStoreVO nstore = new NStoreVO().builder()
+				.storeId(storeId)
+				.bizTm(breakEntm)
+				.menu(menu)
+				.build();
+		
+		
+		log.info(nstore);
+		
+		mapper.insert(nstore);
+    	
+    }
+    
+    @Test
+    public void updateNStoreTest1() {
+    	
+		NStoreVO nstore = new NStoreVO().builder()
+				.storeId(storeId)
+				.bizTm("13:00")
+				.menu(menu)
+				.build();
+		
+		log.info(nstore);
+		
+		String bf = mapper.findByStoreId(storeId).getBizTm();
+		
+		int result = -100;
+		if(!bf.equals(nstore.getBizTm()))
+			result = mapper.update(nstore);
+		if(bf.equals(nstore.getBizTm())) {
+			nstore.setBizTm("14:00");
+			result = mapper.update(nstore);
+		}
+		
+		assertTrue(result == 1);
+		
+		nstore = mapper.findByStoreId(storeId);
+		
+		
+		log.info(nstore);
+		
+		assertTrue(!bf.equals(nstore.getBizTm()));
+		
+    	
+    }
+    
+
 }

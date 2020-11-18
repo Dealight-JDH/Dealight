@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.dealight.mapper.BUserMapper">
+
+	<select id="findAll" resultType="com.dealight.domain.BUserVO">
+		SELECT
+		*
+		FROM tbl_buser
+	</select>
+
+
+	<select id="findBySeq" resultType="com.dealight.domain.BUserVO">
+		SELECT
+		*
+		FROM tbl_buser
+		where
+		br_seq = #{brSeq}
+	</select>
+
+	<insert id="insert">
+		INSERT
+		INTO
+		tbl_buser(br_seq,user_id,store_id,brno,br_photo_src,br_jdg_stus_cd)
+		VALUES
+		(seq_buser.nextval,#{userId},#{storeId},#{brno},#{brPhotoSrc},#{brJdgStusCd})
+	</insert>
+
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="brSeq" order="BEFORE"
+			resultType="long">
+			select seq_buser.nextval from dual
+		</selectKey>
+
+		INSERT
+		INTO
+		tbl_buser(br_seq,user_id,store_id,brno,br_photo_src,br_jdg_stus_cd)
+		VALUES
+		(#{brSeq},#{userId},#{storeId},#{brno},#{brPhotoSrc},#{brJdgStusCd})
+	</insert>
+
+
+
+	<update id="update">
+		UPDATE tbl_buser
+		SET
+		user_id = #{userId},
+		store_id =
+		#{storeId},
+		brno = #{brno},
+		br_photo_src = #{brPhotoSrc},
+		br_jdg_stus_cd
+		= #{brJdgStusCd}
+		where br_seq = #{brSeq}
+	</update>
+
+	<delete id="delete">
+		DELETE
+		FROM tbl_buser
+		WHERE br_seq = #{brSeq}
+	</delete>
+
+
+</mapper>

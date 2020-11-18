@@ -1,9 +1,10 @@
 package com.dealight.mapper;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -94,129 +95,8 @@ public class HtdlMapperTests {
 		assertTrue(list.size() > 0);
 		
 	}
-	@Test
-	@Transactional
-	public void testInsertRslt() throws ParseException {
-		
-		//핫딜 상태 종료가 되어야 한다
-		//종료(시간 마감, 인원 마감)
-		//핫딜 결과 VO 생성
-		SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd hh:mm");
-		//SimpleDateFormat format1 = new SimpleDateFormat("hh:mm:ss");
-		
-		//00번 핫딜 종료(시간 마감)
-		HtdlVO htdlVO = mapper.findById(6l);
-				
-		Date startTM = format.parse(htdlVO.getStartTm());
-		Date endTM = format.parse(htdlVO.getEndTm());
-		log.info("============" + startTM);
-		log.info("============" + endTM);
-		
-		Calendar startTime = Calendar.getInstance();
-		startTime.setTime(startTM);
-		
-		Calendar endTime = Calendar.getInstance();
-		endTime.setTime(endTM);
-		
-		log.info("============" + startTime);
-		log.info("============" + endTime);
-		
-		Calendar sysdate = Calendar.getInstance();
 		
 		
-		
-		log.info(sysdate.getTime());
-		log.info("sysdate======== " + sysdate);
-		
-		
-		if(sysdate.before(startTime)) {
-			
-			log.info("핫딜 시작 전입니다..!!!!");
-			htdlVO.setStusCd("P");
-			mapper.update(htdlVO);
-		}else if(startTime.before(sysdate) && endTime.after(sysdate)){
-		
-			//핫딜 상태 변경
-			htdlVO.setStusCd("A");
-			mapper.update(htdlVO);
-			log.info("현재 핫딜 진행중입니다..!!!!!");
-			HtdlVO updatedVO = mapper.findById(3l);
-			if(updatedVO.getStusCd().equals("A")) {
-				
-				//인원 마감
-				if(htdlVO.getCurPnum() == htdlVO.getLmtPnum()) {
-					//핫딜 상태 비활성화
-					htdlVO.setStusCd("I");
-					mapper.update(htdlVO);
-					
-					log.info("핫딜이 마감되었습니다 감사합니다..");
-					
-					//핫딜 예약률
-					int rsvdRate = (htdlVO.getCurPnum() * 100) / htdlVO.getLmtPnum();
-					
-					log.info("endTime TimeInMillis : "+endTime.getTimeInMillis());
-					log.info("startTIme TImeInMillis : " + startTime.getTimeInMillis());
-					
-					//경과시간
-					long diffSec = Math.abs(sysdate.getTimeInMillis() - startTime.getTimeInMillis())/1000;
-					String elapTime = (diffSec / 3600) + ":" + (diffSec % 3600 / 60) + ":" + (diffSec % 3600 % 60);
-					
-					log.info("elapTm: " + elapTime);
-					log.info("diffSec : "+diffSec);
-					log.info("rsvdRage: " + rsvdRate);
-					
-					//핫딜 결과vo 생성
-					HtdlRsltVO rsltVO = HtdlRsltVO.builder()
-							.htdlId(htdlVO.getHtdlId())
-							.storeId(1l)
-							.lastPnum(htdlVO.getCurPnum())
-							.htdlLmtPnum(htdlVO.getLmtPnum())
-							.rsvdRate(rsvdRate)
-							.elapTm(elapTime).build();
-					
-					mapper.insertRslt(rsltVO);
-				}
-			}
-			
-		}else if(sysdate.after(endTime)) {
-			//시간 마감
-			//핫딜 상태 비활성화
-			htdlVO.setStusCd("I");
-			mapper.update(htdlVO);
-			
-			log.info("핫딜이 종료되었습니다 감사합니다..");
-			
-			//핫딜 예약률
-			int rsvdRate = (htdlVO.getCurPnum() * 100) / htdlVO.getLmtPnum();
-			
-			log.info("endTime TimeInMillis : "+endTime.getTimeInMillis());
-			log.info("startTIme TImeInMillis : " + startTime.getTimeInMillis());
-			
-			//경과시간
-			long diffSec = (endTime.getTimeInMillis() - startTime.getTimeInMillis())/1000;
-			String elapTime = (diffSec / 3600) + ":" + (diffSec % 3600 / 60) + ":" + (diffSec % 3600 % 60);
-			
-			log.info("elapTm: " + elapTime);
-			log.info("diffSec : "+diffSec);
-			log.info("rsvdRage: " + rsvdRate);
-			
-			//핫딜 결과vo 생성
-			HtdlRsltVO rsltVO = HtdlRsltVO.builder()
-									.htdlId(htdlVO.getHtdlId())
-									.storeId(1l)
-									.lastPnum(htdlVO.getCurPnum())
-									.htdlLmtPnum(htdlVO.getLmtPnum())
-									.rsvdRate(rsvdRate)
-									.elapTm(elapTime).build();
-			
-			mapper.insertRslt(rsltVO);
-			
-			
-		}
-		
-		
-		
-	}
 	
 	//TODO 핫딜 상세 테스트
 	@Test
@@ -374,50 +254,171 @@ public class HtdlMapperTests {
 		assertTrue(beforeSize - 1 == afterSize);
 	}
 	
-	@Test
-	public void testUpdate() {
-
-		//수정할 핫딜 vo 가져오기
-		Long htdlId = 1l;
-		HtdlVO existVO = mapper.findById(htdlId);
-		//수정할 목록
-		String name = "update hotdeal name1";
-		double dcRate = 0.2;
-		String startTm = "20/11/07 13:00";
-		String endTm = "20/11/07 14:00";
-		int lmtPnum = 20;
-		String intro = "사이드 메뉴 하나 서비스로 드려요~";
-		int ddct = (int)(existVO.getBefPrice() * dcRate);
-		
-		//수정할 핫딜 vo생성
-		HtdlVO updateVO = HtdlVO.builder()
-				.htdlId(htdlId)
+	
+	// �ʼ��Է°�
+    private long hotdealId = 1;
+    private String name = "�����Ʈ";
+    private long storeId = 13;
+    private double dcRate = 0.5;
+    private String startTm = "13:00";
+    private String endTm = "14:00";
+    private int lmtPnum = 40;
+    private int befPrice = 15000; 
+    private int ddct = 7500;
+    private int curPnum = 25;
+    
+    // �⺻��
+    private String stusCd = "A";
+    
+    //���� �Է°�
+    private String intro = "�ֵ� ���";
+    
+    
+    // create
+    @Test
+    @Transactional
+    @Rollback(false)
+    public void insertTest1() {
+    	HtdlVO htdl = new HtdlVO().builder()
+				.htdlId(hotdealId)
 				.name(name)
-				.storeId(1l)
+				.storeId(storeId)
 				.dcRate(dcRate)
 				.startTm(startTm)
 				.endTm(endTm)
 				.lmtPnum(lmtPnum)
-				.intro(intro)
-				.befPrice(3000)
-				.ddct(ddct).curPnum(20).stusCd("I").build();
-		
-		//핫딜 수정
-		int count = mapper.update(updateVO);
-		
-		
-		HtdlVO updatedVO = mapper.findById(1l);
-		//검증
-		assertTrue(count == 1);
-		
-		assertTrue(updatedVO.getName().equals(name));
-		assertTrue(updatedVO.getDcRate() ==  dcRate);
-		assertTrue(updatedVO.getStartTm().equals(startTm));
-		assertTrue(updatedVO.getEndTm().equals(endTm));
-		assertTrue(updatedVO.getDdct() == ddct);
-		
-		
-	}
+				.befPrice(befPrice)
+				.ddct(ddct)
+				.curPnum(curPnum)
+				.stusCd(stusCd)
+				.build();
+    	
+    	List<HtdlVO> list = mapper.findAll();
+    	
+    	int bf = list.size();
+    	
+    	log.info("list size........................." + list.size());
+    	
+    	mapper.insert(htdl);
+
+    	assertTrue(mapper.findAll().size() == bf +1);
+    	
+    	
+    }
+    
+    // create
+    @Test
+    @Transactional
+    @Rollback(false)
+    public void insertSelectKeyTest1() {
+    	HtdlVO htdl = new HtdlVO().builder()
+				.name("돈까스")
+				.storeId(storeId)
+				.dcRate(dcRate)
+				.startTm(startTm)
+				.endTm(endTm)
+				.lmtPnum(lmtPnum)
+				.befPrice(befPrice)
+				.ddct(ddct)
+				.curPnum(curPnum)
+				.stusCd(stusCd)
+				.build();
+    	
+    	List<HtdlVO> list = mapper.findAll();
+    	
+    	int bf = list.size();
+    	
+    	
+    	mapper.insertSelectKey(htdl);
+    	
+    	list = mapper.findAll();
+
+    	assertTrue(mapper.findAll().size() == bf +1);
+    	
+    	assertTrue(list.get(list.size()-1).getHtdlId() == htdl.getHtdlId());
+    	
+    	log.info("�ֵ�........................."+htdl);
+    	log.info("bf................................"+bf);
+    	
+    
+    	
+    	
+    }
+    
+    // read
+    // by store id
+    @Test
+    public void findByStoreIdTest1() {
+    	
+
+    	List<HtdlVO> list = mapper.findByStoreId(storeId);
+    	
+    	assertNotNull(list);
+    	
+    }
+    
+    // read
+    // by store id and stus cd
+    @Test
+    public void findByStoreStusCdIdTest1() {
+    	
+
+    	List<HtdlVO> list = mapper.findByStoreIdStusCd(storeId, "A");
+    	
+    	assertNotNull(list);
+    	
+    }
+    
+    
+    // read list
+    @Test
+    public void findAllTest1() {
+    	List<HtdlVO> list = mapper.findAll();
+    	
+    	log.info(list);
+    	
+    	assertNotNull(list);
+
+    	
+    }
+    
+    
+   
+   
+    // delete
+    @Test
+    public void deleteTest1() {
+    	
+    	
+    	List<HtdlVO> list = mapper.findAll();
+    	
+    	HtdlVO htdl = list.get(list.size()-1);
+    	
+    	mapper.insert(htdl);
+    	
+    	htdl = list.get(list.size()-1);
+    	
+    	long id = htdl.getHtdlId();
+    	
+    	htdl = new HtdlVO().builder()
+				.htdlId(id+1)
+				.name(name)
+				.storeId(storeId)
+				.dcRate(dcRate)
+				.startTm(startTm)
+				.endTm(endTm)
+				.lmtPnum(lmtPnum)
+				.befPrice(befPrice)
+				.ddct(ddct)
+				.curPnum(curPnum)
+				.build();
+    	
+    	mapper.insert(htdl);
+    	
+    	int result = mapper.delete(id+1);
+    	
+    	assertTrue(result == 1);
+    }
 	
 	@Test
 	public void testFindById() {
@@ -438,22 +439,4 @@ public class HtdlMapperTests {
 		lists.forEach(htdlVO -> log.info(htdlVO));
 	}
 	
-	@Test
-	public void testInsert() {
-		
-		//핫딜 VO 생성
-		HtdlVO vo = HtdlVO.builder()
-							.name("new hotdeal name3")
-							.storeId(4l)
-							.dcRate(0.2)
-							.startTm("16:00")
-							.endTm("17:00")
-							.lmtPnum(30)
-							.befPrice(3000)
-							.ddct(600).curPnum(0).stusCd("P").build();
-		//insert
-		mapper.insertSelectKey(vo);
-		
-		log.info(vo);
-	}
 }

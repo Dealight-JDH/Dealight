@@ -36,4 +36,11 @@
 				and lat < (${lat} + ${corrValue}) and lat > (${lat} - ${corrValue})) 
 	]]>
 	</select> -->
+
+<select id="findByStoreId" resultType="com.dealight.domain.StoreLocVO">
+SELECT *
+FROM tbl_store_loc
+WHERE store_id = #{storeId}
+</select>
+
 </mapper>

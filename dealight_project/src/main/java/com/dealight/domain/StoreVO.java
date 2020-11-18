@@ -5,12 +5,14 @@ import java.util.Date;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class StoreVO {
 	    // 매장번호 
 	    private Long storeId;
@@ -23,7 +25,6 @@ public class StoreVO {
 	    
 	    //요거
 	    private BStoreVO bstore;
-	    //주석 풀었음
 	    private NStoreVO nstore;
 	    
 	    private StoreLocVO loc;
@@ -38,8 +39,8 @@ public class StoreVO {
 	    // 매장 지점이름
 	    private String brch;
 	    // 추가되는 날짜 컬럼들
-	    private Date regdate;
-	    private Date updatedate;
+	    private Date regDate;
+	    private Date updateDate;
 	    
 	    // 현재 예약인원, 현재 웨잇인원 변수 - 동인
 	    // 테이블 컬럼 추가는 안해도 되는데, 로직상 필요해서 일단 추가해놓음.

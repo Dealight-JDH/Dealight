@@ -25,8 +25,7 @@ public class DataSourceTests {
 	
 	@Test
 	public void testConnection() {
-		
-		try (Connection con = dataSource.getConnection()){
+		try (Connection con = dataSource.getConnection()) {
 			
 			log.info(con);
 			
@@ -34,5 +33,4 @@ public class DataSourceTests {
 			fail(e.getMessage());
 		}
 	}
-
 }

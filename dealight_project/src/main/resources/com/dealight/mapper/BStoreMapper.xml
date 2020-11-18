@@ -67,4 +67,20 @@
   			acm_pnum = #{acmPnum}
   		where store_id = #{storeId}
   	</update>
+
+	<select id="findByStoreId"
+		resultType="com.dealight.domain.BStoreVO">
+		SELECT
+		*
+		FROM tbl_bstore
+		where store_id = #{storeId}
+	</select>
+
+	<update id="changeSeatStus">
+		UPDATE tbl_bstore
+		SET seat_stus_cd = #{seatStusCd}
+		WHERE store_id = #{storeId}
+	</update>
+
+
 </mapper>

@@ -39,8 +39,19 @@ public interface StoreMapper {
 	public StoreVO getNstore(Long storeId);
 	
 	public String getStoreCd(Long storeId);
+	//Create
+	public void insert(StoreVO store);
 	
-
+	// join
+	public StoreVO findByIdJoinNStore(long storeId);
+	// join
+	public StoreVO findByIdJoinBStore(long storeId);
 	
+	// by user id
+	public List<StoreVO> findByUserId(String userId);
+	
+	// by store id
+	// bstore, menu, eval, img, loc, tag, option
+	public StoreVO findAllStoreById(long storeId);
 	
 }

@@ -35,4 +35,10 @@
 	
 	</update>
 
+<select id="findByStoreID" resultType="com.dealight.domain.StoreEvalVO">
+select *
+from tbl_store_eval
+where store_id = #{storeId}
+</select>
+
 </mapper>

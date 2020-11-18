@@ -1,6 +1,10 @@
 package com.dealight.mapper;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -106,4 +110,78 @@ public class StoreMapperTests {
 
 	
 	
+	private long storeId = 13;
+	private String storeNm = "��������";
+	private String telno = "010-2737-5157";
+	private String clsCd = "I";
+	private String userId = "kjuioq";
+
+	// mapper �� ���ԵǾ����� DI �׽�Ʈ
+	@Test
+	public void mapperDItest() {
+		log.info("mapper DI test : " + mapper);
+	}
+	
+	@Test
+	public void storeMapperInsertTests1() {
+		
+		StoreVO store = new StoreVO().builder()
+				.storeId(storeId)
+				.storeNm(storeNm)
+				.telno(telno)
+				.clsCd(clsCd)
+				.build();
+		
+		mapper.insert(store);
+		
+		log.info(store);
+		
+		
+	}
+	
+	
+	@Test
+	public void storeMapperDeleteTests1() {
+		
+		int result = mapper.delete(4L);
+		
+		assertTrue(result == 1);
+		
+	}
+	
+	@Test
+	public void findByIdJoinNStoreTest1() {
+		
+		StoreVO store = mapper.findByIdJoinNStore(storeId);
+		
+		log.info(store);
+		
+		assertNotNull(store.getBstore());
+	}
+	
+	@Test
+	public void findByIdJoinBStoreTest1() {
+		
+		StoreVO store = mapper.findByIdJoinBStore(storeId);
+		
+		log.info(store);
+		
+		
+		assertNotNull(store.getBstore());
+	
+	}
+
+	@Test
+	public void findByUserIdJoinBStoreTest1() {
+		
+		List<StoreVO> list = mapper.findByUserIdJoinBStore(userId);
+		
+		log.info(list);
+		
+		list.stream().forEach(store -> {
+			assertNotNull(store.getBstore());
+			assertNotNull(store.getBstore().getBuserId().equals(userId));
+		});
+	}
+
 }

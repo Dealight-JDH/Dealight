@@ -40,4 +40,12 @@
 	
 	</update>
 
+	<select id="findByStoreId"
+		resultType="com.dealight.domain.NStoreVO">
+		SELECT
+		*
+		FROM tbl_nstore
+		where store_id = #{storeId}
+	</select>
+
 </mapper>

@@ -163,6 +163,50 @@
 		where
 		store_id = #{storeId}
 	</select>
+
+
+<!-- <resultMap type="com.dealight.domain.NStoreVO" id="NStoreVO">
+    <result column="store_id" property="storeId"/>
+    <result column="biz_tm" property="bizTm"/>
+    <result column="menu" property="menu"/>
+</resultMap>
+
+<resultMap type="com.dealight.domain.BStoreVO" id="BStoreVO">
+    <result column="store_id" property="storeId"/>
+    <result column="buser_id" property="buserId"/>
+    <result column="seat_stus_cd" property="seatStusCd"/>
+    <result column="open_tm" property="openTm"/>
+    <result column="close_tm" property="closeTm"/>
+    <result column="break_sttm" property="breakSttm"/>
+    <result column="break_entm" property="breakEntm"/>
+    <result column="last_ord_tm" property="lastOrdTm"/>
+    <result column="n1_seat_no" property="n1SeatNo"/>
+    <result column="n2_seat_no" property="n2SeatNo"/>
+    <result column="n4_seat_no" property="n4SeatNo"/>
+    <result column="store_intro" property="storeIntro"/>
+    <result column="avg_meal_tm" property="avgMealTm"/>
+    <result column="hldy" property="hldy"/>
+    <result column="acm_pnum" property="acmPnum"/>
+</resultMap>
+
+<resultMap type="com.dealight.domain.StoreVO" id="StoreVO">
+    <result column="store_id" property="storeId"/>
+    <result column="store_nm" property="storeNm"/>
+    <result column="telno" property="telno"/>
+    <result column="cls_cd" property="clsCd"/>
+    <collection property="nstore" resultMap="NStoreVO"/>
+    <collection property="bstore" resultMap="BStoreVO"/>
+</resultMap> -->
+
+
+	<select id="findById" resultType="com.dealight.domain.StoreVO">
+		SELECT
+		*
+		FROM tbl_store
+		where
+		store_id = #{storeId}
+	</select>
+		
 	
 	<select id="getNstore" resultMap="StoreVO">
 		select s.store_id,s.store_nm,
@@ -293,6 +337,26 @@
 		  AND b.buser_id = #{userId}
 	</select>
 
-  	
-  	
+	<select id="findByIdJoinNStore" parameterType="com.dealight.domain.StoreVO" resultMap="StoreVO">
+		select s.store_id, s.store_nm, s.telno, s.cls_cd, n.biz_tm, n.menu
+		from tbl_store s, tbl_nstore n
+		where s.store_id = #{storeId} AND s.store_id = n.store_id
+	</select>
+	
+	<select id="findByIdJoinBStore" parameterType="com.dealight.domain.StoreVO" resultMap="StoreVO">
+		select s.store_id, s.store_nm, s.telno, s.cls_cd, b.buser_id, b.seat_stus_cd, b.open_tm, b.close_tm,
+					b.break_sttm, b.break_entm, b.last_ord_tm, b.n1_seat_no, b.n2_seat_no, b.n4_seat_no,
+					b.store_intro, b.avg_meal_tm, hldy, acm_pnum
+		from tbl_store s, tbl_bstore b
+		where s.store_id = #{storeId} AND s.store_id = b.store_id
+	</select>
+	
+	<select id="findByUserIdJoinBStore" parameterType="com.dealight.domain.StoreVO" resultMap="StoreVO">
+		select s.store_id, s.store_nm, s.telno, s.cls_cd, b.buser_id, b.seat_stus_cd, b.open_tm, b.close_tm,
+					b.break_sttm, b.break_entm, b.last_ord_tm, b.n1_seat_no, b.n2_seat_no, b.n4_seat_no,
+					b.store_intro, b.avg_meal_tm, hldy, acm_pnum
+		from tbl_store s, tbl_bstore b
+		where s.store_id = b.store_id AND b.buser_id = #{userId}
+	</select>
+
 </mapper>

@@ -3,11 +3,13 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dealight.mapper.UserMapper">
+
 <select id="getList" resultType="com.dealight.domain.UserVO">
 <![CDATA[
 select * from tbl_user
 ]]>
 </select>
+
 <!-- 이메일이 일치하는 회원에 대한 아이디 찾기 -->
 <select id="getId" resultType="String">
 select user_id
@@ -54,6 +56,7 @@ where user_id = #{userId}
 insert into tbl_user(user_id, name, pwd, email, telno, brdt, sex, sns_lgin_yn)
 values (#{userId}, #{name}, #{pwd}, #{email}, #{telno}, #{brdt}, #{sex}, #{snsLginYn})
 </insert>
+
 <!-- 회원정보 불러오기(마이페이지 회원정보 수정 -->
 <select id="read" resultType="com.dealight.domain.UserVO">
 select user_id, name, pwd, email, telno, brdt, sex, photo_src, sns_lgin_yn
@@ -90,4 +93,18 @@ set photo_src = #{photoSrc}
 where user_id = #{userId}
 </update>
 
+	<select id="findAll" resultType="com.dealight.domain.UserVO">
+		SELECT
+		*
+		FROM tbl_user
+	</select>
+
+	<select id="findById" resultType="com.dealight.domain.UserVO">
+		SELECT
+		*
+		FROM tbl_user
+		where
+		user_id = #{userId}
+	</select>
+	
 </mapper>

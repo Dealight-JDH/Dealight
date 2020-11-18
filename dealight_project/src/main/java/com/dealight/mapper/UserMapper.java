@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.dealight.domain.UserVO;
 
 public interface UserMapper {
@@ -33,4 +32,12 @@ public interface UserMapper {
 	public int changePwd(UserVO user);
 	//아이디찾기
 	public List<String> getId(String email);
+	//Read
+	//@Select("SELECT * FROM tbl_user WHERE user_id = #{userId}")
+	public UserVO findById(String userId);
+	
+	//Read List
+	//@Select("SELECT * FROM tbl_user")
+	public List<UserVO> findAll();
+
 }

@@ -17,4 +17,11 @@ public interface NStoreMapper {
 	//일반 매장을 수정한다.
 	public int update(NStoreVO nStoreVO);
 	
+	public NStoreVO findByStoreId(long storeId);
+	
+	//public List<NStoreVO> findAll();
+	
+	
+	
+
 }

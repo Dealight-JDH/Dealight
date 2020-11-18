@@ -2,6 +2,8 @@ package com.dealight.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.dealight.domain.BStoreVO;
 
 public interface BStoreMapper {
@@ -26,4 +28,15 @@ public interface BStoreMapper {
 	public int delete(Long storeId);
 //	사업자 매장을 수정한다.
 	public int update(BStoreVO bstoreVO);
+	
+	// read
+	public BStoreVO findByStoreId(long storeId);
+	
+	// read list
+	public List<BStoreVO> findAll();
+	
+	
+	// changeSeatStus
+	public int changeSeatStus(@Param("storeId") long storeId, @Param("seatStusCd") String seatStusCd);
+
 }

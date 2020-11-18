@@ -135,6 +135,7 @@
 		<select id = "findById" resultType = "com.dealight.domain.HtdlVO">
 			select * from tbl_htdl where htdl_Id = #{htdlId}
 		</select>
+		
 		<insert id="insertSelectKey">
 			<selectKey keyProperty="htdlId" order="BEFORE" resultType = "long">
 			select seq_htdl.nextval from dual
@@ -150,4 +151,30 @@
 			values(seq_htdl.nextval, #{name}, #{storeId}, #{dcRate}, #{startTm},
 			 #{endTm}, #{lmtPnum}, #{intro}, #{befPrice}, #{ddct}, #{curPnum}, #{stusCd}, sysdate + 9/24, sysdate + 9/24)
 		</insert>
-	 </mapper>
+
+	<select id="findAll" resultType="com.dealight.domain.HtdlVO">
+		SELECT
+		*
+		FROM tbl_htdl
+	</select>
+
+
+	
+	<select id="findByStoreId" resultType="com.dealight.domain.HtdlVO">
+		SELECT
+		*
+		FROM tbl_htdl
+		where
+		store_id = #{storeId}
+	</select>
+	
+		<select id="findByStoreIdStusCd" resultType="com.dealight.domain.HtdlVO">
+		SELECT
+		*
+		FROM tbl_htdl
+		where
+		store_id = #{storeId} AND
+		stus_cd = #{stusCd}
+	</select>
+
+</mapper>

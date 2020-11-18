@@ -15,7 +15,7 @@ public interface StoreLocMapper {
 	public int delete(Long StoreId);
 
 	public int update(StoreLocVO storeLocVO);
+	StoreLocVO findByStoreId(long storeId);
 	
-//	public List<StoreLocVO> getRadiusList(UserLoc userLoc);
 }
-
+	

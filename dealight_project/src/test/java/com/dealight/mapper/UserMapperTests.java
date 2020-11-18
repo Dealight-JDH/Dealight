@@ -1,5 +1,9 @@
 package com.dealight.mapper;
 
+import static org.junit.Assert.assertTrue;
+
+import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,7 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.dealight.domain.UserVO;
-import com.dealight.mapper.UserMapper;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -21,21 +24,32 @@ public class UserMapperTests {
 	@Setter(onMethod_ = @Autowired)
 	private UserMapper mapper;
 	
-	@Test
-	public void testInsert() {
+	// �ʼ� �Է°�
+	String id = "kjuioq";
+	String name = "�赿��";
+	String pwd = "123123";
+	String email = "kjuioq@naver.com";
+	String telno = "010-2737-5157";
+	String sex = "M";
+
+	// ���� �Է°�
+	String brdt = "931211";
+	String photoSrc = "/a.jpg";
+	Date pmExpi = new Date();
 	
-		UserVO user = new UserVO();
+	
+
+	// mapper �� ���ԵǾ����� DI �׽�Ʈ
+	@Test
+	public void mapperDItest() {
+		log.info("mapper DI test : " + mapper);
+	}
+	
+	// mapper read
+	@Test
+	public void mapperFindByIdTest() {
 		
-		user.setUserId("gitTest2");
-		user.setName("github2");
-		user.setPwd("09876");
-		user.setEmail("git2@test.com");
-		user.setTelno("010123456");
-		user.setBrdt("20201118");
-		user.setSex("M");
-		user.setSnsLginYn("N");
-		
-		mapper.insert(user);
+		UserVO user = mapper.findById("kjuioq");
 		
 		log.info(user);
 		
@@ -84,4 +98,45 @@ public class UserMapperTests {
 				
 				log.info("UPDATEPHOTO COUNT: " +count);
 	}
+	// mapper read
+	// get list
+	@Test
+	public void mapperFindAllTest() {
+		
+		List<UserVO> list = mapper.findAll();
+		
+		log.info(list);
+		
+	}
+	
+	// mapper create
+
+	
+	//
+	@Test
+	public void mapperUpdateTest() {
+		
+		UserVO user = mapper.findById("kjuioq");
+		
+		log.info(user);
+		
+		String bfUserClsCd = user.getClsCd();
+		
+		if(bfUserClsCd.equals("C"))
+			user.setClsCd("B");
+		
+		if(bfUserClsCd.equals("B"))
+			user.setClsCd("C");
+		
+		mapper.update(user);
+		//int result = mapper.update(user);
+		//log.info("result...." + result);
+		
+		UserVO afUser = mapper.findById("kjuioq");
+		
+		//assertTrue(result == 1);
+		assertTrue(!bfUserClsCd.equals(afUser.getClsCd()));
+		
+	}
+	
 }

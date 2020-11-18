@@ -10,12 +10,8 @@ import com.dealight.domain.HtdlVO;
 
 public interface HtdlMapper {
 
-	//핫딜 mapper
-	void insert(HtdlVO vo);
-	void insertSelectKey(HtdlVO vo);
 	HtdlVO findById(Long htdlId);
 	List<HtdlVO> getList();
-	int update(HtdlVO vo);
 	int delete(Long htdlId);
 	
 	Long getSeqHtdl();
@@ -36,4 +32,24 @@ public interface HtdlMapper {
 	HtdlVO findHtdlById(Long htdlId);
 	List<HtdlVO> getHtdlList();
 	
+	// create
+	public void insert(HtdlVO htdl);
+	
+	public void insertSelectKey(HtdlVO htdl);
+	
+	// read
+	// by store id
+	public List<HtdlVO> findByStoreId(Long storeId);
+	
+	// read
+	// by store id
+	public List<HtdlVO> findByStoreIdStusCd(@Param("storeId")long storeId,@Param("stusCd") String stusCd);
+	
+	// read list
+	public List<HtdlVO> findAll();
+	
+	// update
+	public int update(HtdlVO htdl);
+	
+
 }
