@@ -67,9 +67,12 @@ public class BoardController {
 	})	
 	public ResponseEntity<List<WaitVO>> getWaitList(@PathVariable("storeId") long storeId) {
 
-		log.info("get wait list...........");
+		
+		List<WaitVO> waitList = waitService.curStoreWaitList(storeId, "W");
+		
+		log.info("get wait list........... : " + waitList);
 
-		return new ResponseEntity<>(waitService.curStoreWaitList(storeId, "W"), HttpStatus.OK);
+		return new ResponseEntity<>(waitList, HttpStatus.OK);
 	}
 
 	// ���� ����Ʈ�� �����´�
@@ -220,7 +223,7 @@ public class BoardController {
 				.todayFavMenuMap(todayFavMenuMap)
 				.build();
 		
-		log.info("..............................................."+dto);
+		log.info("rsvd rslt dto..............................................."+dto);
 		
 				
 		return new ResponseEntity<>(dto, HttpStatus.OK);
@@ -243,7 +246,7 @@ public class BoardController {
 			rsvd.setStrRegDate(simpleDateFormat.format(rsvd.getRegDate()));
 		});
 		
-		log.info("rsvd list............" + rsvdList);
+		log.info("last week rsvd list............" + rsvdList);
 		
 		
 		return new ResponseEntity<>(rsvdList,HttpStatus.OK);
@@ -255,7 +258,9 @@ public class BoardController {
 					MediaType.APPLICATION_JSON_UTF8_VALUE,
 					MediaType.APPLICATION_XML_VALUE
 	})
-	public ResponseEntity<RsvdVO> getRsvdDtls(@PathVariable("rsvdId") long rsvdId) {
+	public ResponseEntity<RsvdVO> getRsvdDtls(@PathVariable("rsvdId") Long rsvdId) {
+		
+		log.info("post rsvd dtls..................");
 		
 						
 		return new ResponseEntity<>(rsvdService.findRsvdByRsvdIdWithDtls(rsvdId), HttpStatus.OK);

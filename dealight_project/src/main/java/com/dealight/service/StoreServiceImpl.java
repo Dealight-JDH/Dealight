@@ -244,6 +244,7 @@ public class StoreServiceImpl implements StoreService {
 				.telno(store.getTelno())
 				.build();
 		BStoreVO bstore = BStoreVO.builder()
+				.seatStusCd(store.getSeatStusCd())
 				.buserId(store.getBuserId())
 				.storeId(store.getStoreId())
 				.openTm(store.getOpenTm())
@@ -280,13 +281,20 @@ public class StoreServiceImpl implements StoreService {
 				.revwTotNum(store.getRevwTotNum())
 				.likeTotNum(store.getLikeTotNum())
 				.build();
+		StoreLocVO loca = StoreLocVO.builder()
+				.storeId(store.getStoreId())
+				.addr(store.getAddr())
+				.lat(store.getLat())
+				.lng(store.getLng())
+				.build();
+				
 		List<RevwVO> revwList = store.getRevwList();
 		List<MenuVO> menuList = store.getMenuList();
 		List<StoreImgVO> imgs = store.getImgs();
 
 		int rslt1 = storeMapper.update(store1);
 		int rslt2 = bStoreMapper.update(bstore);
-		int rslt3 = locMapper.update(loc);
+		int rslt3 = locMapper.update(loca);
 		
 		if(revwList != null) {
 		

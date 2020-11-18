@@ -166,7 +166,6 @@ public class ManageController {
 			model.addAttribute("imgs",imgs);
 			model.addAttribute("revwList",revwList);
 			model.addAttribute("tagList",tagList);
-			model.addAttribute("lti", store.getLat());
 		}
 		
 		
