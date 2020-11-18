@@ -5,7 +5,7 @@
 		<mapper namespace="com.dealight.mapper.HtdlMapper">
 		
 		<!-- 핫딜+상세+매장평가 조인 -->
-		<!-- <resultMap type="com.dealight.domain.HtdlVO" id="HtdlDetail">
+		<resultMap type="com.dealight.domain.HtdlVO" id="HtdlDetail">
 			<id column="htdl_id" property="htdlId"/> 
 			<result column="name" property="name"/>
 			<result column="store_id" property="storeId"/>
@@ -43,23 +43,23 @@
 		
 		<select id="getHtdlList" resultMap="HtdlDetail">
 			SELECT h.*, d.*, e.*
-		   FROM tbl_htdl h, tbl_htdl_dtls d, tbl_store_eval e
+		      FROM tbl_htdl h, tbl_htdl_dtls d, tbl_store_eval e
 			 WHERE h.htdl_id = d.htdl_id and h.store_id = e.store_id 	
 		</select>
 		
 		<select id="findHtdlById" parameterType="long" resultMap="HtdlDetail">
 			SELECT h.*, d.*, e.*
-		   FROM tbl_htdl h, tbl_htdl_dtls d, tbl_store_eval e
+		      FROM tbl_htdl h, tbl_htdl_dtls d, tbl_store_eval e
 			 WHERE h.htdl_id = d.htdl_id and h.store_id = e.store_id and h.htdl_id = #{htdlId}
 		</select>
 		
-		<select id="selectHtdlVoById" parameterType="long" resultMap="HtdlDetail">
+		<!-- <select id="selectHtdlVoById" parameterType="long" resultMap="HtdlDetail">
 			SELECT h.*, d.*
-		   FROM tbl_htdl h, tbl_htdl_dtls d
+		      FROM tbl_htdl h, tbl_htdl_dtls d
 			 WHERE h.htdl_id = d.htdl_id and h.htdl_id = #{htdlId}
 		</select>
-		
-		핫딜 결과 mapper
+		 -->
+		<!-- 핫딜 결과 mapper -->
 		<select id="findRsltById" resultType="com.dealight.domain.HtdlRsltVO">
 			select * from tbl_htdl_rslt where store_id = #{storeId} and htdl_id = #{htdlId}
 		</select>
@@ -73,11 +73,11 @@
 			values( #{htdlId}, #{storeId},#{lastPnum}, #{htdlLmtPnum}, #{rsvdRate}, #{elapTm}, sysdate +9/24, sysdate+9/24)
 		</insert>
 				
-		핫딜 상세 mapper
+		<!-- 핫딜 상세 mapper -->
 		<delete id="deleteDtls">
 			delete from tbl_htdl_dtls where htdl_id = #{htdlId}
 		</delete>
-		고민쓰...
+		<!-- 고민쓰... -->
 		<update id = "updateDtls">
 			update tbl_htdl_dtls
 			set menuName = #{menuName}, menuPrice = #{menuPrice}
@@ -111,7 +111,7 @@
 		</insert>
 		
 		
-		핫딜 mapper
+		<!-- 핫딜 mapper -->
 		<select id="getSeqHtdl" resultType="long">
 			select seq_htdl.currval from dual
 		</select>
@@ -149,7 +149,5 @@
 			insert into tbl_htdl 
 			values(seq_htdl.nextval, #{name}, #{storeId}, #{dcRate}, #{startTm},
 			 #{endTm}, #{lmtPnum}, #{intro}, #{befPrice}, #{ddct}, #{curPnum}, #{stusCd}, sysdate + 9/24, sysdate + 9/24)
-		</insert> -->
-		
-		
+		</insert>
 	 </mapper>

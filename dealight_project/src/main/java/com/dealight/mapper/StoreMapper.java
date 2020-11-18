@@ -32,4 +32,15 @@ public interface StoreMapper {
 		public List<StoreVO> getListAllInfo();
 		
 		public List<StoreVO> findByUserIdJoinBStore(String userId);
+
+	
+	public StoreVO getBstore(Long storeId);
+	
+	public StoreVO getNstore(Long storeId);
+	
+	public String getStoreCd(Long storeId);
+	
+
+	
+	
 }

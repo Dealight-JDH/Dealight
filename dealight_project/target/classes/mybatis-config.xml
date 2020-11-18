@@ -7,5 +7,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<settings>
 		<setting name="mapUnderscoreToCamelCase" value="true" />
 		<setting name="jdbcTypeForNull" value="VARCHAR"/>
+		<setting name="jdbcTypeForNull" value="NUMERIC" />
 	</settings>
 </configuration>

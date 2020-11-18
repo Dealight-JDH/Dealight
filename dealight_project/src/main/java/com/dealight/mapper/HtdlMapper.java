@@ -1,9 +1,15 @@
 package com.dealight.mapper;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
+
 import com.dealight.domain.HtdlDtlsVO;
+import com.dealight.domain.HtdlRsltVO;
 import com.dealight.domain.HtdlVO;
+
 public interface HtdlMapper {
+
 	//핫딜 mapper
 	void insert(HtdlVO vo);
 	void insertSelectKey(HtdlVO vo);
@@ -21,13 +27,13 @@ public interface HtdlMapper {
 	int updateDtls(HtdlDtlsVO vo);
 	int deleteDtls(Long htdlId);
 	
-//	//핫딜 결과 mapper
-//	void insertRslt(HtdlRsltVO vo);
-//	HtdlRsltVO findRsltById(@Param("storeId") Long storeId, @Param("htdlId") Long htdlId);
-//	List<HtdlRsltVO> getRsltList(Long storeId);
+	//핫딜 결과 mapper
+	void insertRslt(HtdlRsltVO vo);
+	HtdlRsltVO findRsltById(@Param("storeId") Long storeId, @Param("htdlId") Long htdlId);
+	List<HtdlRsltVO> getRsltList(Long storeId);
 	
-//	//핫딜+상세+매장평가
-//	HtdlVO findHtdlById(Long htdlId);
-//	List<HtdlVO> getHtdlList();
-//	
+	//핫딜+상세+매장평가
+	HtdlVO findHtdlById(Long htdlId);
+	List<HtdlVO> getHtdlList();
+	
 }

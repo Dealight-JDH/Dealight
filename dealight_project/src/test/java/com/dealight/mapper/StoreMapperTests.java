@@ -1,5 +1,7 @@
 package com.dealight.mapper;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import com.dealight.domain.StoreVO;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
 @Log4j
@@ -84,4 +87,23 @@ public class StoreMapperTests {
 	public void testFindByUserIdJoinBStore() {
 		mapper.findByUserIdJoinBStore("aaaa").forEach(store-> log.info(store));
 	}
+	
+	
+	public void testGetNstore() {
+		StoreVO store = mapper.getNstore(1L);
+		log.info(store);
+	}
+	
+	public void testGetStoreCd() {
+		String storeCode = mapper.getStoreCd(1L);
+		log.info(storeCode);
+	}
+	@Test
+	public void testGetBstore() {
+		StoreVO store = mapper.getBstore(3L);
+		log.info(store);
+	}
+
+	
+	
 }
