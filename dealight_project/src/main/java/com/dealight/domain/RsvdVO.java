@@ -80,7 +80,7 @@ public class RsvdVO {
     //==================================================
     //이거에대한 설명필요해요 수빈씨
 //    // 리뷰 상세
-//    private RsvdDtlsVO dtls;
+    private RsvdDtlsVO dtls;
 //    // 매장
-//    private StoreVO store;
+    private StoreVO store;
 }

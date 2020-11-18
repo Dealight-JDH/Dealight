@@ -6,31 +6,6 @@
 
 <mapper namespace="com.dealight.mapper.AllStoreMapper">
 
-<!-- 
-<resultMap type="com.dealight.domain.MenuVO" id="MenuVO">
-	<result column="menu_seq" property="menuSeq"/>
-	<result column="price" property="price"/>
-	<result column="img_url" property="imgUrl"/>
-	<result column="name" property="name"/>
-	<result column="reco_menu" property="recoMenu"/>
-</resultMap>
-
-<resultMap type="com.dealight.domain.StoreEvalVO" id="StoreEvalVO">
-	<result column="avg_rating" property="avgRating"/>
-	<result column="revw_tot_num" property="revwTotNum"/>
-	<result column="like_tot_num" property="likeTotNum"/>
-</resultMap>
-
-<resultMap type="com.dealight.domain.StoreTagVO" id="StoreTagVO">
-	<result column="tag_nm" property="tagNm"/>
-</resultMap>
-
-<resultMap type="com.dealight.domain.StoreImgVO" id="StoreImgVO">
-	<result column="img_seq" property="imgSeq"/>
-	<result column="img_url" property="imgUrl"/>
-</resultMap>
- -->
-
 <resultMap type="com.dealight.domain.RevwVO" id="RevwVO">
 		<result column="revw_id" property="revwId"/>
 		<result column="rsvd_id" property="rsvdId"/>
@@ -95,9 +70,6 @@
     <result column="telno" property="telno"/>
     <result column="cls_cd" property="clsCd"/>
  
- 	<!-- 
-		<collection property="store" resultMap="StoreVO"/>
-	 -->
     <result column="buser_id" property="buserId"/>
     <result column="seat_stus_cd" property="seatStusCd"/>
     <result column="open_tm" property="openTm"/>
@@ -112,14 +84,11 @@
     <result column="avg_meal_tm" property="avgMealTm"/>
     <result column="hldy" property="hldy"/>
     <result column="acm_pnum" property="acmPnum"/>
-		<!-- <collection property="nstore" resultMap="NStoreVO"/> -->
-	<!-- <collection property="bstore" resultMap="BStoreVO"/> -->
-	 
+
 	 <result column="addr" property="addr"/>
 	<result column="lt" property="lat"/>
 	<result column="lo" property="lng"/>
 	 
-	<!-- <collection property="loc" resultMap="StoreLocVO"/> -->
 	<result column="park" property="park"/>
 	<result column="nokids" property="nokids"/>
 	<result column="pg" property="pg"/>
@@ -127,14 +96,10 @@
 	<result column="pet" property="pet"/>
 	<result column="smoke" property="smoke"/>
 	
-	<!-- <collection property="evalList" resultMap="StoreEvalVO"/> -->
 	<result column="avg_rating" property="avgRating"/>
 	<result column="revw_tot_num" property="revwTotNum"/>
 	<result column="like_tot_num" property="likeTotNum"/>
 	
-	
-	<!-- <collection property="option" resultMap="StoreOptionVO"/>-->
-
 	<collection property="menuList" column="store_id" ofType="com.dealight.domain.MenuVO">
 		<result column="menu_seq" property="menuSeq"/>
 		<result column="price" property="price"/>
@@ -167,34 +132,8 @@
 		<result column="reply_reg_dt" property="replyRegDt"/>
 	</collection>
 	
-	
-	<!-- <collection property="revw" resultMap="ReviewVO"/> -->
-	 <!-- 
-	 -->
-	<!-- 	
-	<collection property="imgList" resultMap="StoreImgVO"/>
-	<collection property="menuList" resultMap="MenuVO"/>
-	<collection property="evalList" resultMap="StoreEvalVO"/>
-	<collection property="tagList" resultMap="StoreTagVO"/>
-	 -->
 </resultMap>
- <!-- 
- 
- 
- 	<collection property="imgList" column="store_id" ofType="com.dealight.domain.StoreImgVO">
-		<result column="img_seq" property="imgSeq"/>
-		<result column="img_url" property="imgUrl"/>
-	</collection>
-	<collection property="evalList" column="store_id" ofType="com.dealight.domain.StoreEvalVO">
-		<result column="avg_rating" property="avgRating"/>
-		<result column="revw_tot_num" property="revwTotNum"/>
-		<result column="like_tot_num" property="likeTotNum"/>
-	</collection>
-	<collection property="tagList" column="store_id" ofType="com.dealight.domain.StoreTagVO">
-		<result column="tag_nm" property="tagNm"/>
-	</collection>
- 
-  -->
+
 <select id="findAllStoreByStoreId" resultMap="AllStoreVO">
 select s.store_id, s.store_nm, s.telno, s.cls_cd, m.menu_seq, m.price, m.img_url, m.name, m.reco_menu, b.buser_id, b.seat_stus_cd, b.open_tm, b.close_tm, b.break_sttm, b.break_entm, b.last_ord_tm, b.n1_seat_no
             , b.n2_seat_no, b.n4_seat_no, b.store_intro, b.avg_meal_tm, b.hldy, b.acm_pnum, l.addr, l.lo, l.lt, t.tag_nm
@@ -204,23 +143,5 @@ where 	s.store_id = m.store_id and s.store_id = b.store_id and s.store_id = l.st
 		s.store_id = i.store_id and s.store_id = e.store_id and s.store_id = t.store_id
         and s.store_id = #{storeId}
 </select>
-
-<!-- 
- 
-<select id="findAllStoreByStoreId" resultMap="AllStoreVO">
-select s.store_id, s.store_nm, s.telno, s.cls_cd, e.avg_rating, e.like_tot_num, e.revw_tot_num, i.img_seq, i.img_url
-            , l.addr, l.lo, l.lt, t.tag_nm, m.img_url, m.menu_seq, m.name, m.price, m.reco_menu, o.nokids, o.park, o.pet
-            , o.pg, o.smoke, o.wifi, r.id, r.rsvd_id, r.wait_seq, r.cnts, r.reg_dt, r.rating, r.reply_cnts, r.reply_reg_dt
-            , b.buser_id, b.seat_stus_cd, b.open_tm, b.close_tm, b.break_sttm, b.break_entm, b.last_ord_tm, b.n1_seat_no
-            , b.n2_seat_no, b.n4_seat_no, b.store_intro, b.avg_meal_tm, b.hldy, b.acm_pnum
-from tbl_store s, tbl_store_eval e, tbl_store_img i, tbl_store_loc l, tbl_store_tag t,tbl_menu m,tbl_revw r, tbl_option o
-        , tbl_bstore b
-where s.store_id = e.store_id and e.store_id = i.store_id and s.store_id = i.store_id and s.store_id = l.store_id
-        and s.store_id = t.store_id and s.store_id = m.store_id and s.store_id = r.store_id and s.store_id = o.store_id
-        and s.store_id = b.store_id
-        and s.store_id = #{storeId}
-</select>
- -->
-<!-- select *  -->
 
 </mapper>

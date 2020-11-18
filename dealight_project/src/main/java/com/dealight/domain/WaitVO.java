@@ -15,8 +15,6 @@ import lombok.NonNull;
 @Builder
 public class WaitVO {
 	
-	//
-
 	@NonNull
     private Long waitId;
 

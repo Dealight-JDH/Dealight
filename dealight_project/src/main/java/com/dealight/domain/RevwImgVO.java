@@ -24,7 +24,7 @@ public class RevwImgVO {
     // 사진주소
     private String imgUrl = "";
     
-    private Date regdate;
-    private Date updatedate;
+    private Date regDate;
+    private Date updateDate;
 
 }

@@ -6,26 +6,6 @@
 
 <mapper namespace="com.dealight.mapper.RsvdMapper">
 
-<!-- 
-<resultMap type="com.dealight.domain.RsvdDetailVO" id="RsvdDtlsVO">
-    <result column="rsvd_id" property="rsvdId"/>
-    <result column="rsvd_seq" property="rsvdSeq"/>
-    <result column="menu_nm" property="menuNm"/>
-    <result column="menu_tot_qty" property="menuTotQty"/>
-    <result column="menu_prc" property="menuPrc"/>
-</resultMap>
- -->
-<!-- 
-<resultMap type="rsvdDtlsList" id="rsvdDtlsList">
-	<result column="rsvd_id" property="rsvdId"/>
-    <result column="rsvd_seq" property="rsvdSeq"/>
-    <result column="menu_nm" property="menuNm"/>
-    <result column="menu_tot_qty" property="menuTotQty"/>
-    <result column="menu_prc" property="menuPrc"/>
-	<collection property="rsvdDtls" ofType="com.dealight.domain.RsvdDtlsVO" javaType="List"></collection>
-</resultMap>
- -->
-
 <resultMap type="com.dealight.domain.RsvdVO" id="RsvdVO">
     <result column="rsvd_id" property="rsvdId"/>
     <result column="store_id" property="storeId"/>
