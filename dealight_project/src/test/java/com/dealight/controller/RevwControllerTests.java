@@ -62,10 +62,10 @@ public class RevwControllerTests {
 				.param("storeNm", "식당테스트")
 				.param("rsvdId", "1234")
 				.param("userId", "user1id")
-				.param("cnts", "내용테스트")
+				.param("cnts", "테스트라고시발")
 				.param("rating", "4.5")
 				.param("revwId", "10")
-				.param("imgUrl", "TEST.jpg")
+				.param("imgUrl", "asfefwa.jpg")
 				).andReturn().getModelAndView().getViewName();
 
 		log.info(resultPage);
@@ -78,10 +78,10 @@ public class RevwControllerTests {
 				.param("storeNm", "식당테스트")
 				.param("waitId", "1234")
 				.param("userId", "user1id")
-				.param("cnts", "내용테스트")
+				.param("cnts", "테스트라고시발")
 				.param("rating", "4.5")
 				.param("revwId", "10")
-				.param("imgUrl", "TEST.jpg")
+				.param("imgUrl", "test.jpg")
 				).andReturn().getModelAndView().getViewName();
 
 		log.info(resultPage);
@@ -114,7 +114,7 @@ public class RevwControllerTests {
 		String resultPage = mockMvc.perform(MockMvcRequestBuilders.post("/dealight/mypage/review/written-list")
 				.param("userId", "user1id")
 				.param("id", "90")
-				.param("replyCnts", "내용테스트"))
+				.param("replyCnts", "시발테스트"))
 				.andReturn().getModelAndView().getViewName();
 		log.info(resultPage);
 	}
