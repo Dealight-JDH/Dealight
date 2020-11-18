@@ -9,7 +9,7 @@ public class UserVO {
     // 회원아이디 
     private String userId;
 
-    // 회원이름 
+    // 회원이름 dd
     private String name;
 
     // 회원비밀번호 
