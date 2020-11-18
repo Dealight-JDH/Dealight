@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BStoreVO {
-	    // 매장번호 
+	    // 매장번호 init 
 	    private Long storeId;
 	    // 사업자회원아이디 
 	    private String buserId;
