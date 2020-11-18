@@ -34,5 +34,22 @@
 	
 	<context:component-scan base-package="com.dealight.service"></context:component-scan>
 	<context:component-scan base-package="com.dealight.mapper"></context:component-scan>
+	
+	<bean id="javaMailSender"	class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="gustn72096@gmail.com" />
+		<property name="password" value="fxtcajvkrdmntvaj" /> 
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+				<prop key="mail.smtp.auth">true</prop>
+			</props>
+		</property>
+	</bean>
+	<bean class="com.dealight.domain.Email" id="email"> </bean>
+	<bean class="com.dealight.service.MailServiceImpl" id="mailService"> </bean>
 	<tx:annotation-driven/>
 </beans>
