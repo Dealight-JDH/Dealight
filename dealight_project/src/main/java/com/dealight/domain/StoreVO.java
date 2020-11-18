@@ -23,7 +23,8 @@ public class StoreVO {
 	    
 	    //요거
 	    private BStoreVO bstore;
-//	    private NStoreVO nstore;
+	    //주석 풀었음
+	    private NStoreVO nstore;
 	    
 	    private StoreLocVO loc;
 
