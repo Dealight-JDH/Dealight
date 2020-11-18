@@ -36,22 +36,20 @@ public class Criteria {
 		
 	}
 	
-	
-//	================daul criteria
-//	public double getRange() {
-//		return distance * 0.01;
-//	}
-//	
-//	private int pageNum;
-//	private int amount;
-//	
+//	다울이랑 이야기해야
 //	public Criteria() {
 //		this(1,4);
 //	}
-//	
-//	public Criteria(int pageNum, int amount) {
-//		this.pageNum = pageNum;
-//		this.amount = amount;
-//	}
+	
+	
+	public double getRange() {
+		return distance * 0.01;
+	}
+	
+	
+	public Criteria(int pageNum, int amount) {
+		this.pageNum = pageNum;
+		this.amount = amount;
+	}
 	
 }

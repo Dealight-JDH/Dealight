@@ -10,12 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BStoreVO {
-<<<<<<< HEAD
-	
-	    // 매장번호 바꿨어
-=======
-	    // 매장번호 init 111
->>>>>>> d47e5f91415d813c5f333b40871cfc5e00acb3f9
 	    private Long storeId;
 	    // 사업자회원아이디 
 	    private String buserId;
