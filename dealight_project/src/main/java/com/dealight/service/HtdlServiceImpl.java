@@ -1,16 +1,20 @@
 package com.dealight.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.HtdlDtlsVO;
+import com.dealight.domain.HtdlRsltVO;
 import com.dealight.domain.HtdlVO;
 import com.dealight.domain.StoreMenuVO;
+import com.dealight.mapper.HtdlDtlsMapper;
 import com.dealight.mapper.HtdlMapper;
+import com.dealight.mapper.HtdlRsltMapper;
 import com.dealight.mapper.StoreMenuMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +27,9 @@ public class HtdlServiceImpl implements HtdlService {
 
 	private final HtdlMapper htdlMapper;
 	private final StoreMenuMapper menuMapper;
+	private HtdlDtlsMapper htdlDtlsMapper;
+	private HtdlRsltMapper htdlRsltMapper;
+	
 	
 	@Transactional
 	@Override
@@ -115,5 +122,56 @@ public class HtdlServiceImpl implements HtdlService {
 //	}
 
 	
+
+	@Override
+	public List<HtdlDtlsVO> readDtls(long htdlId) {
+
+		return htdlDtlsMapper.findByHtdlId(htdlId);
+	}
+
+	@Override
+	public HtdlRsltVO readRslt(long htdlId) {
+
+		return htdlRsltMapper.findById(htdlId);
+	}
+
+	@Override
+	public int calHtdlEndTm(HtdlVO htdl) {
+		
+		Date today = new Date();
+
+		String pattern = "HH:mm";
+    	
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+    	
+    	String date = simpleDateFormat.format(today);
+    	
+    	//log.info("test.....................................date : " + date);
+    	
+    	String[] times1 = htdl.getEndTm().split(":");
+    	int endTm = Integer.valueOf(times1[0])*60 + Integer.valueOf(times1[1]);
+		
+    	//log.info("test.....................................endTm : " + endTm);
+    	
+    	String[] times2 = date.split(":");
+    	int curTm = Integer.valueOf(times2[0])*60 + Integer.valueOf(times2[1]);
+    	
+    	//log.info("test.....................................curTm : " + curTm);
+    	
+    	
+		return endTm - curTm;
+	}
+
+	@Override
+	public List<HtdlVO> readAllStoreHtdlList(long storeId) {
+		
+		return htdlMapper.findByStoreId(storeId);
+	}
+
+	@Override
+	public List<HtdlVO> readActStoreHtdlList(long storeId) {
+		
+		return htdlMapper.findByStoreIdStusCd(storeId, "A");
+	}
 
 }

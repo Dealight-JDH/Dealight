@@ -2,13 +2,14 @@ package com.dealight.service;
 
 
 import java.util.List;
-import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
+import com.dealight.domain.RsvdVO;
 import com.dealight.domain.UserVO;
+import com.dealight.mapper.RsvdMapper;
 import com.dealight.mapper.UserMapper;
+import com.dealight.mapper.WaitMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -19,6 +20,11 @@ import lombok.extern.log4j.Log4j;
 public class UserServiceImpl implements UserService{
 
 	private UserMapper mapper;
+	private UserMapper userMapper;
+	
+	private WaitMapper waitMapper;
+	
+	private RsvdMapper rsvdMapper;
 
 	@Override
 	public void register(UserVO user) {
@@ -92,4 +98,42 @@ public class UserServiceImpl implements UserService{
 		return mapper.getId(email);
 	}
 	
+	
+	
+
+	@Override
+	public UserVO read(String userId) {
+		
+		return userMapper.findById(userId);
+	}
+
+	@Override
+	public boolean isCurPanalty(String userId) {
+		
+		UserVO user = userMapper.findById(userId);
+		
+		return user.getPmStus().equalsIgnoreCase("Y");
+	}
+
+	@Override
+	public boolean isCurWaiting(String userId) {
+		
+		
+		return null == waitMapper.findByUserId(userId, "W");
+	}
+
+	@Override
+	public List<RsvdVO> getRsvdListThisUser(String userId) {
+		
+		
+		return rsvdMapper.findByUserId(userId);
+	}
+
+	@Override
+	public List<RsvdVO> getRsvdListStoreUser(long storeId, String userId) {
+		
+		
+		return rsvdMapper.findByStoreIdAndUserId(storeId, userId);
+	}
+
 }

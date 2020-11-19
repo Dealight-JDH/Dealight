@@ -1,11 +1,10 @@
 package com.dealight.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import com.dealight.domain.RsvdVO;
 import com.dealight.domain.UserVO;
 
 
@@ -32,5 +31,26 @@ public interface UserService {
 	public int changePwd(UserVO user);
 	
 	public List<String> getId(String email);
+	// read
+	// user mapper - select
+	UserVO read(String userId);
 	
+	// read
+	// user mapper - select
+	// ���°� 'y'�� �г�Ƽ ȸ��
+	boolean isCurPanalty(String userId); 
+	
+	// �߰� mapper method �ʿ�
+	// ���� ������ ����������
+	// wait mapper - userId�� �˻�
+	boolean isCurWaiting(String userId);
+	
+	// ȸ���� �������� ��������
+	List<RsvdVO> getRsvdListThisUser(String userId);
+	
+	// mapper method �ʿ�
+	// �ش� ������ ȸ���� �������� �������� 
+	// 'ȸ��'�� '�� ����' ���� �����丮
+	List<RsvdVO> getRsvdListStoreUser(@Param("storeId") long storeId,@Param("userId") String userId);
+
 }

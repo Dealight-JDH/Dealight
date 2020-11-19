@@ -9,24 +9,24 @@ import com.dealight.domain.WaitVO;
 public interface WaitMapper {
 	
 	// create
-	public void insert(WaitVO waiting);
+	public void insert(WaitVO wait);
 	
-	public void insertSelectKey(WaitVO waiting);
+	public void insertSelectKey(WaitVO wait);
 	
 	// read
-	public WaitVO findById(long id);
+	public WaitVO findById(Long id);
 	
 	// read
 	// by store id
-	public List<WaitVO> findByStoreId(long storeId);
+	public List<WaitVO> findByStoreId(Long storeId);
 	
 	// read
 	// by store id and date
-	public List<WaitVO> findByStoreIdAndDate(@Param("storeId") long storeId, @Param("date") String date);
+	public List<WaitVO> findByStoreIdAndDate(@Param("storeId") Long storeId, @Param("date") String date);
 	
 	// read
 	// by store id and stus_cd
-	public List<WaitVO> findByStoreIdAndStusCd(@Param("storeId")long storeId,@Param("waitStusCd") String waitStusCd);
+	public List<WaitVO> findByStoreIdAndStusCd(@Param("storeId")Long storeId,@Param("waitStusCd") String waitStusCd);
 
 	
 	// read by UserID and stus_cd
@@ -41,9 +41,9 @@ public interface WaitMapper {
 	
 	// update
 	// changeWaitStusCd
-	public int changeWaitStusCd(@Param("id") long id, @Param("waitStusCd") String waitStusCd);
+	public int changeWaitStusCd(@Param("waitId") Long waitId, @Param("waitStusCd") String waitStusCd);
 	
 	// delete
-	public int delete(long id);
+	public int delete(Long id);
 
 }
