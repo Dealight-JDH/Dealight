@@ -8,10 +8,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +17,6 @@ import com.dealight.domain.BStoreVO;
 import com.dealight.domain.StoreEvalVO;
 import com.dealight.domain.StoreLocVO;
 import com.dealight.domain.StoreVO;
-import com.dealight.service.StoreService;
-
-import lombok.AllArgsConstructor;
-import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserWithRsvdDTO;
 import com.dealight.domain.WaitVO;
 import com.dealight.service.HtdlService;
@@ -32,6 +24,7 @@ import com.dealight.service.RsvdService;
 import com.dealight.service.StoreService;
 import com.dealight.service.WaitService;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 @Controller
@@ -42,16 +35,12 @@ public class BusinessController {
 
 	private StoreService sService;
 	
-	@Autowired
 	private StoreService storeService;
 	
-	@Autowired
 	private RsvdService rsvdService;
 	
-	@Autowired
 	private WaitService waitService;
 	
-	@Autowired
 	private HtdlService htdlService;
 	
 	
@@ -111,37 +100,8 @@ public class BusinessController {
 		return "/business/list";
 	}
 	
-	// ������ 0
-	@GetMapping("/register")
-	public String storeRegister(Model model,HttpServletRequest request) {
-		
-		log.info("business store register..");
-		
-		HttpSession session = request.getSession();
-		
-		String userId = (String) session.getAttribute("userId");
-		
-		model.addAttribute("userId",userId);
-		
-		return "/business/register";
-	}
 	
-	@PostMapping("/register")
-	public String waitingRegister(Model model,StoreVO store,BStoreVO bstore, RedirectAttributes rttr) {
-		
-		//log.info("business waiting register..");
-		
-		log.info("register bstore................... : "+bstore);
-		
-		store.setBstore(bstore);
-		
-		log.info("register store................... : "+store);
-
-		storeService.registerStoreAndBStore(store);
-		
-		
-		return "redirect:/business/";
-	}
+	
 	
 	// ������ 4 -> ������ �и��ϸ� �� 2��
 	@GetMapping("/manage")
