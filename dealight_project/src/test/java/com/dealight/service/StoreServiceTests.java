@@ -23,7 +23,8 @@ import com.dealight.domain.StoreVO;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
-@RunWith(SpringJUnit4ClassRunner.class)
+
+@RunWith(SpringJUnit4ClassRunner.class )
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
 @Log4j
 public class StoreServiceTests {
@@ -350,4 +351,16 @@ public class StoreServiceTests {
 		log.info(storeService.findMenuByStoreId(storeId));
 		
 	}
+	
+	@Test
+	public void testBstore() {
+		StoreVO store = service.bstore(3L);
+		log.info(store);
+	}
+	
+	public void testExist(){
+		log.info(service);
+		assertNotNull(service);
+	}
+	
 }

@@ -6,7 +6,9 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.RevwImgVO;
+import com.dealight.domain.RevwPageDTO;
 import com.dealight.domain.RevwVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.WaitVO;
@@ -127,4 +129,25 @@ public class RevwServiceImpl implements RevwService {
 		log.info("REVWID: " + revwId);
 		return mapper.deleteRevw(revwId) == 1;
 	}
+	
+//	@Override
+//	public List<RevwVO> revws(Long storeId) {
+//		log.info("revws............"+storeId);
+//		return mapper.getRevwList(storeId);
+//	}
+
+	@Override
+	public List<RevwVO> revws(Long storeId, Criteria cri) {
+		log.info("revws with paging......" + storeId);
+
+		return mapper.getRevwListWithPaging(storeId, cri);
+	}
+
+	@Override
+	public RevwPageDTO getListPage(Criteria cri, Long storeId) {
+		return  new RevwPageDTO(
+				mapper.getCountByStoreId(storeId),
+				mapper.getRevwListWithPaging(storeId, cri));
+	}
+
 }

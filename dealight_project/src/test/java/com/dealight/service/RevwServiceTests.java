@@ -12,6 +12,7 @@ import com.dealight.domain.RevwImgVO;
 import com.dealight.domain.RevwVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.WaitVO;
+import com.dealight.domain.Criteria;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -134,4 +135,17 @@ public class RevwServiceTests {
 		log.info("REMOVE REVW");
 		log.info("REMOVED REVWVO: " + service.removeRevw(71L));
 	}
+	
+	@Test
+	public void testRevws() {
+		
+		service.revws(3L, new Criteria(1,4)).forEach(revw->log.info(revw));;
+	}
+	
+//	public void testRevws() {
+//		List<RevwVO> revws = service.revws(3L);
+//		revws.forEach(revw->log.info(revw));
+//	}
+	
+	
 }

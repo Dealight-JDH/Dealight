@@ -28,6 +28,19 @@ import com.dealight.mapper.StoreOptionMapper;
 import com.dealight.mapper.StoreTagMapper;
 
 import lombok.AllArgsConstructor;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.dealight.domain.Criteria;
+import com.dealight.domain.RevwVO;
+import com.dealight.domain.StoreVO;
+import com.dealight.mapper.StoreMapper;
+
+import lombok.AllArgsConstructor;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 @Log4j
@@ -414,4 +427,24 @@ public class StoreServiceImpl implements StoreService {
 	public void registerMenu(MenuVO menu) {
 		menuMapper.insert(menu);
 	}
+
+
+	@Override
+	public StoreVO bstore(Long storeId) {
+		log.info("bstore......"+storeId);
+		return sMapper.getBstore(storeId);
+	}
+
+	@Override
+	public StoreVO nstore(Long storeId) {
+		log.info("nstore......"+storeId);
+		return sMapper.getNstore(storeId);
+	}
+
+	@Override
+	public String storeCd(Long storeId) {
+		log.info("store code......"+storeId);
+		return sMapper.getStoreCd(storeId);
+	}
+
 }
