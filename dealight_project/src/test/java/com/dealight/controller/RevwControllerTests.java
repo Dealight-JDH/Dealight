@@ -11,13 +11,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.dealight.domain.RevwImgVO;
-import com.dealight.domain.StoreVO;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -62,10 +56,10 @@ public class RevwControllerTests {
 				.param("storeNm", "식당테스트")
 				.param("rsvdId", "1234")
 				.param("userId", "user1id")
-				.param("cnts", "내용테스트")
+				.param("cnts", "테스트라고시발")
 				.param("rating", "4.5")
 				.param("revwId", "10")
-				.param("imgUrl", "TEST.jpg")
+				.param("imgUrl", "asfefwa.jpg")
 				).andReturn().getModelAndView().getViewName();
 
 		log.info(resultPage);
@@ -78,10 +72,10 @@ public class RevwControllerTests {
 				.param("storeNm", "식당테스트")
 				.param("waitId", "1234")
 				.param("userId", "user1id")
-				.param("cnts", "내용테스트")
+				.param("cnts", "테스트라고시발")
 				.param("rating", "4.5")
 				.param("revwId", "10")
-				.param("imgUrl", "TEST.jpg")
+				.param("imgUrl", "test.jpg")
 				).andReturn().getModelAndView().getViewName();
 
 		log.info(resultPage);
@@ -113,7 +107,7 @@ public class RevwControllerTests {
 	public void testUpdateRevwReply() throws Exception {
 		String resultPage = mockMvc.perform(MockMvcRequestBuilders.post("/dealight/mypage/review/written-list")
 				.param("userId", "user1id")
-				.param("id", "90")
+				.param("revwId", "90")
 				.param("replyCnts", "내용테스트"))
 				.andReturn().getModelAndView().getViewName();
 		log.info(resultPage);

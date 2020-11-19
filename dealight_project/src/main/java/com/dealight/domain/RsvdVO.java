@@ -83,4 +83,6 @@ public class RsvdVO {
     private RsvdDtlsVO dtls;
 //    // 매장
     private StoreVO store;
+    
+    private String strRegDate;
 }

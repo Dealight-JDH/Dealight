@@ -172,7 +172,7 @@
 				회원 프로필 사진 : ${user.photoSrc}</br>
 				패널티 회원 여부 : ${user.pmStus}</br>
   				<div class="tooltiptext">
-  					예약 번호 : ${user.id}</br>
+  					예약 번호 : ${user.rsvdId}</br>
 					매장 번호 : ${user.storeId }</br>
 					핫딜 번호 : ${user.htdlId }</br>
 					예약 인원 : ${user.pnum}</br>
@@ -447,7 +447,7 @@ window.onclick = function(event) {
             }
                        
             return waitList.filter(wait => {return wait.waitStusCd === 'W'})
-                    .sort((w1,w2) => { return w1.id - w2.id})[0];
+                    .sort((w1,w2) => { return w1.waitId - w2.waitId})[0];
         };
         
         function getTodayRsvdMap(param,callback,error){
@@ -613,17 +613,16 @@ window.onclick = function(event) {
                     return;
                 }
                 
-                console.log(waitList);
+                console.log('wait list................' + waitList);
                 
                 waitList.forEach(wait => {
                 	strWaitList += "<div class='wait'>";
-                    strWaitList += "<ul>" + "<a href='/business/waiting/"+wait.id+"'><h3>웨이팅 번호 : "+wait.id+"</h3></a>";
+                    strWaitList += "<ul>" + "<a href='/business/waiting/"+wait.waitId+"'><h3>웨이팅 번호 : "+wait.waitId+"</h3></a>";
                         strWaitList += "<li>웨이팅 회원 아이디 : "+ wait.userId + "</li>";
-                        strWaitList += "<li>웨이팅 매장 번호"+ wait.storeId + "</li>";
-                        strWaitList += "<li>웨이팅 인원"+ wait.waitPnum + "</li>";
-                        strWaitList += "<li>웨이팅 등록 시간 : "+ wait.waitRegTm + "</li>";
+                        strWaitList += "<li>웨이팅 매장 번호 : "+ wait.storeId + "</li>";
+                        strWaitList += "<li>웨이팅 인원 : "+ wait.waitPnum + "</li>";
+                        strWaitList += "<li>웨이팅 등록 시간 : "+ wait.waitRegTm.toString() + "</li>";
                         strWaitList += "<li>웨이팅 상태 : "+ wait.waitStusCd + "</li>";
-                        strWaitList += "<li>웨이팅 등록 시간 : "+ wait.inDate + "</li>";
                         strWaitList += "<li>웨이팅 회원 이름 : "+ wait.custNm + "</li>";
                         strWaitList += "<li>웨이팅 회원 번호 : "+ wait.custTelno + "</li>";
                     strWaitList += "</ul>"
@@ -644,8 +643,8 @@ window.onclick = function(event) {
               
               strNextWait += "<li> 대기자 이름 : "+nextWait.custNm+"</li>";
               strNextWait += "<li> 대기자 연락처 : "+nextWait.custTelno+"</li>";
-              strNextWait += "<li> 웨이팅 번호 :"+nextWait.id+"</li>";
-              strNextWait += "<li> 웨이팅 등록 날짜 :"+nextWait.inDate+"</li>";
+              strNextWait += "<li> 웨이팅 번호 :"+nextWait.waitId+"</li>";
+              strNextWait += "<li> 웨이팅 등록 시간 :"+nextWait.time+"</li>";
               strNextWait += "<li> 매장 번호 : "+nextWait.storeId+"</li>";
               strNextWait += "<li> 회원 아이디 : "+nextWait.userId+"</li>";
               strNextWait += "<li> 웨이팅 인원 : "+nextWait.waitPnum+"</li>";
@@ -664,7 +663,7 @@ window.onclick = function(event) {
                 }
                 rsvdList.forEach(rsvd => {
                 	strRsvdList += "<div class='rsvd'>" ;
-                    strRsvdList += "<ul class='btnRsvd'>" + "<h3>예약 번호 : "+rsvd.id+"</h3>"; 
+                    strRsvdList += "<ul class='btnRsvd'>" + "<h3>예약 번호 : "+rsvd.rsvdId+"</h3>"; 
                         strRsvdList += "<li hidden class='btnStoreId'>"+rsvd.storeId+"</li>";
                         strRsvdList += "<li hidden class='btnUserId'>"+rsvd.userId+"</li>";
                         strRsvdList += "<li>매장번호 : "+ rsvd.storeId + "</li>";
@@ -676,7 +675,7 @@ window.onclick = function(event) {
                         strRsvdList += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
                         strRsvdList += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
                         strRsvdList += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-                        strRsvdList += "<li>예약 등록 날짜"+ rsvd.inDate + "</li>";
+                        strRsvdList += "<li>예약 등록 날짜 : "+ rsvd.regDate + "</li>";
                     strRsvdList += "</ul>" 
                     strRsvdList += "</div>" ;
                 });
@@ -704,7 +703,7 @@ window.onclick = function(event) {
         		let strNextRsvd = "";
         		if(!rsvd)
         			return;
-                strNextRsvd += "<li>예약 번호 : "+rsvd.id+"</li>"; 
+                strNextRsvd += "<li>예약 번호 : "+rsvd.rsvdId+"</li>"; 
                 strNextRsvd += "<li>매장번호 : "+ rsvd.storeId + "</li>";
                 strNextRsvd += "<li>회원 아이디 : "+ rsvd.userId + "</li>";
                 strNextRsvd += "<li>핫딜 번호 :"+ rsvd.htdlId + "</li>";
@@ -714,7 +713,7 @@ window.onclick = function(event) {
                 strNextRsvd += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
                 strNextRsvd += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
                 strNextRsvd += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-                strNextRsvd += "<li>예약 등록 날짜"+ rsvd.inDate + "</li>";
+                strNextRsvd += "<li>예약 등록 날짜"+ rsvd.regDate + "</li>";
                 
                 nextRsvdUL.html(strNextRsvd);
         	});
@@ -728,9 +727,9 @@ window.onclick = function(event) {
         		if(!dto)
         			return;
         		
-        		strRsvdRslt += "<li>오늘 총 예약 수" + dto.totalTodayRsvd  +"</li>";
-        		strRsvdRslt += "<li>오늘 총 예약 인원" + dto.totalTodayRsvdPnum  +"</li>";
-        		strRsvdRslt += "<li>오늘의 인기 메뉴</li>";
+        		strRsvdRslt += "<li>오늘 총 예약 수 : " + dto.totalTodayRsvd  +"</li>";
+        		strRsvdRslt += "<li>오늘 총 예약 인원 : " + dto.totalTodayRsvdPnum  +"</li>";
+        		strRsvdRslt += "<li>[오늘의 인기 메뉴]</li>";
         		Object.entries(dto.todayFavMenuMap).forEach(([key,value]) => {
 	        		strRsvdRslt += "<li>" + key +' : '+ value  +"</li>";
         		})
@@ -761,12 +760,13 @@ window.onclick = function(event) {
         		let strLastWeekRsvd = "";
         		if(!list)
         			return;
-
+				
+        		console.log('리스트............' + list);
         		
         		list.forEach(rsvd => {
         			
-        			pnumArr[dateArr.indexOf(rsvd.strInDate)] += rsvd.pnum;
-        			amountArr[dateArr.indexOf(rsvd.strInDate)] += rsvd.totAmt;
+        			pnumArr[dateArr.indexOf(rsvd.strRegDate)] += rsvd.pnum;
+        			amountArr[dateArr.indexOf(rsvd.strRegDate)] += rsvd.totAmt;
         			
         			//pnumArr[dateArr.indexOf(rsvd.strInDate)].push(rsvd)
         			
@@ -833,7 +833,7 @@ window.onclick = function(event) {
         		strUserRsvdList += "<h1>예약 히스토리</h1>";
         		userRsvdList.forEach(rsvd => {
         			strUserRsvdList += "========================================";
-        			strUserRsvdList += "<li>예약 번호 : "+rsvd.id+"</li>"; 
+        			strUserRsvdList += "<li>예약 번호 : "+rsvd.rsvdId+"</li>"; 
                     strUserRsvdList += "<li>매장번호 : "+ rsvd.storeId + "</li>";
                     strUserRsvdList += "<li>회원 아이디 : "+ rsvd.userId + "</li>";
                     strUserRsvdList += "<li>핫딜 번호 :"+ rsvd.htdlId + "</li>";
@@ -848,7 +848,7 @@ window.onclick = function(event) {
         		
         		userRsvdListUL.html(strUserRsvdList);
         		
-        		showRsvdDtls(userRsvdList[0].id);
+        		showRsvdDtls(userRsvdList[0].rsvdId);
         		
         	})
         };
@@ -859,13 +859,18 @@ window.onclick = function(event) {
         */
         function showRsvdDtls(rsvdId){
         	
+        	console.log("test1.............." + rsvdId);
         	
         	boardService.getRsvdDtls({rsvdId:rsvdId}, function(rsvd){
+        		
+        		console.log("test2.............." + rsvd);
+        		
 				let strRsvdDtls = "";
 				if(!rsvd)
 					return;
+				
 				strRsvdDtls += "<h1>해당 유저 예약 상세</h1>"
-        		strRsvdDtls += "<li>예약 번호 :" + rsvd.id +"</li>";
+        		strRsvdDtls += "<li>예약 번호 :" + rsvd.rsvdId +"</li>";
         		strRsvdDtls += "<li>매장 번호 :" + rsvd.storeId +"</li>";
         		strRsvdDtls += "<li>회원 아이디 : " + rsvd.userId +"</li>";
         		strRsvdDtls += "<li>핫딜 번호 : " + rsvd.htdlId +"</li>";
@@ -875,15 +880,15 @@ window.onclick = function(event) {
         		strRsvdDtls += "<li>예약 상태 : " + rsvd.stusCd +"</li>";
         		strRsvdDtls += "<li>예약 총 가격 : " + rsvd.totAmt +"</li>";
         		strRsvdDtls += "<li>예약 총 수량 : " + rsvd.totQty +"</li>";
-        		strRsvdDtls += "<li>예약 등록 날짜 : " + rsvd.inDate +"</li>";
+        		strRsvdDtls += "<li>예약 등록 날짜 : " + rsvd.regTm +"</li>";
         		let cnt = 1;
         		rsvd.rsvdDtlsList.forEach(dtls => {
         			strRsvdDtls += "==============================";
-        			strRsvdDtls += "<li>상세 순서[" + cnt +"]</li>";
-        			strRsvdDtls += "<li>예약 상세 번호" + dtls.seq +"</li>";
-        			strRsvdDtls += "<li>예약 메뉴 이름" + dtls.menuNm +"</li>";
-        			strRsvdDtls += "<li>메뉴 가격" + dtls.menuPrc +"</li>";
-        			strRsvdDtls += "<li>메뉴 총 개수" + dtls.menuTotQty +"</li>";
+        			strRsvdDtls += "<li>상세 순서 [" + cnt +"]</li>";
+        			strRsvdDtls += "<li>예약 상세 번호 : " + dtls.seq +"</li>";
+        			strRsvdDtls += "<li>예약 메뉴 이름 : " + dtls.menuNm +"</li>";
+        			strRsvdDtls += "<li>메뉴 가격 : " + dtls.menuPrc +"</li>";
+        			strRsvdDtls += "<li>메뉴 총 개수 : " + dtls.menuTotQty +"</li>";
         			cnt += 1;
         		})
         		
@@ -901,7 +906,7 @@ window.onclick = function(event) {
         	strWaitRegForm += "고객 이름<input name='custNm'></br>";
         	strWaitRegForm += "고객 전화번호<input name='custTelno'></br>";
         	strWaitRegForm += "웨이팅 인원<input name='waitPnum'></br>";
-        	strWaitRegForm += "<input name='curTime' value='"+today+"' hidden>";
+        	strWaitRegForm += "<input name='waitRegTm' value='"+today+"' hidden>";
         	strWaitRegForm += "<input name='storeId' value='"+storeId+"' hidden>";
         	strWaitRegForm += "<button id='submit_waitRegForm' type='submit'>제출하기</button>";
         	strWaitRegForm += "</form>";

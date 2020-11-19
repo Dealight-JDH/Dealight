@@ -63,7 +63,7 @@
 	</insert>
 
 	<insert id="insertSelectKey">
-		<selectKey keyProperty="id" order="BEFORE" resultType="long">
+		<selectKey keyProperty="waitId" order="BEFORE" resultType="long">
 			select seq_wait.nextval from dual
 		</selectKey>
 		INSERT

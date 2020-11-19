@@ -29,8 +29,8 @@
 
 <resultMap type="com.dealight.domain.StoreLocVO" id="StoreLocVO">
 	<result column="addr" property="addr"/>
-	<result column="lt" property="lat"/>
-	<result column="lo" property="lng"/>
+	<result column="lat" property="lat"/>
+	<result column="lng" property="lng"/>
 </resultMap>
 
 <resultMap type="com.dealight.domain.NStoreVO" id="NStoreVO">
@@ -86,8 +86,8 @@
     <result column="acm_pnum" property="acmPnum"/>
 
 	 <result column="addr" property="addr"/>
-	<result column="lt" property="lat"/>
-	<result column="lo" property="lng"/>
+	<result column="lat" property="lat"/>
+	<result column="lng" property="lng"/>
 	 
 	<result column="park" property="park"/>
 	<result column="nokids" property="nokids"/>
@@ -136,7 +136,7 @@
 
 <select id="findAllStoreByStoreId" resultMap="AllStoreVO">
 select s.store_id, s.store_nm, s.telno, s.cls_cd, m.menu_seq, m.price, m.img_url, m.name, m.reco_menu, b.buser_id, b.seat_stus_cd, b.open_tm, b.close_tm, b.break_sttm, b.break_entm, b.last_ord_tm, b.n1_seat_no
-            , b.n2_seat_no, b.n4_seat_no, b.store_intro, b.avg_meal_tm, b.hldy, b.acm_pnum, l.addr, l.lo, l.lt, t.tag_nm
+            , b.n2_seat_no, b.n4_seat_no, b.store_intro, b.avg_meal_tm, b.hldy, b.acm_pnum, l.addr, l.lng, l.lat, t.tag_nm
             ,  o.nokids, o.park, o.pet, o.pg, o.smoke, o.wifi, i.img_seq, i.uuid, i.uploadpath, i.image, i.filename,e.avg_rating, e.like_tot_num, e.revw_tot_num
 from tbl_store s, tbl_menu m, tbl_bstore b, tbl_store_loc l, tbl_option o, tbl_store_img i, tbl_store_eval e, tbl_store_tag t
 where 	s.store_id = m.store_id and s.store_id = b.store_id and s.store_id = l.store_id and s.store_id = o.store_id and

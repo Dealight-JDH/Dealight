@@ -25,16 +25,16 @@
 <c:forEach items="${curList}" var="htdl">
 	--------------------------------------------------------
 	<div>
-	<h2>핫딜 이름 : <c:out value="${htdl.name}" /></h2>
-	<h2>핫딜 할인률 : <c:out value="${htdl.dcRate}" /></h2>
-	<h2>핫딜 시작 시간 : <c:out value="${htdl.startTm}" /></h2>
-	<h2>핫딜 마감 시간 : <c:out value="${htdl.endTm}" /></h2>
-	<h2>핫딜 제한 인원 : <c:out value="${htdl.lmtPnum}" /></h2>
-	<h2>핫딜 소개 : <c:out value="${htdl.intro}" /></h2>
-	<h2>핫딜 이전 가격 : <c:out value="${htdl.befPrice}" /></h2>
-	<h2>핫딜 차감 비용 : <c:out value="${htdl.ddct}" /></h2>
-	<h2>핫딜 현재 인원 : <c:out value="${htdl.curPnum}" /></h2>
-	<h2>핫딜 현재 상태 : <c:out value="${htdl.stusCd}" /></h2>
+	<h5>핫딜 이름 : <c:out value="${htdl.name}" /></h5>
+	<h5>핫딜 할인률 : <c:out value="${htdl.dcRate}" /></h5>
+	<h5>핫딜 시작 시간 : <c:out value="${htdl.startTm}" /></h5>
+	<h5>핫딜 마감 시간 : <c:out value="${htdl.endTm}" /></h5>
+	<h5>핫딜 제한 인원 : <c:out value="${htdl.lmtPnum}" /></h5>
+	<h5>핫딜 소개 : <c:out value="${htdl.intro}" /></h5>
+	<h5>핫딜 이전 가격 : <c:out value="${htdl.befPrice}" /></h5>
+	<h5>핫딜 차감 비용 : <c:out value="${htdl.ddct}" /></h5>
+	<h5>핫딜 현재 인원 : <c:out value="${htdl.curPnum}" /></h5>
+	<h5>핫딜 현재 상태 : <c:out value="${htdl.stusCd}" /></h5>
 	</div>
 	--------------------------------------------------------
 </c:forEach>
@@ -51,16 +51,16 @@
 <c:forEach items="${htdlList}" var="htdl">
 	--------------------------------------------------------
 	<div>
-	<h2>핫딜 이름 : <c:out value="${htdl.name}" /></h2>
-	<h2>핫딜 할인률 : <c:out value="${htdl.dcRate}" /></h2>
-	<h2>핫딜 시작 시간 : <c:out value="${htdl.startTm}" /></h2>
-	<h2>핫딜 마감 시간 : <c:out value="${htdl.endTm}" /></h2>
-	<h2>핫딜 제한 인원 : <c:out value="${htdl.lmtPnum}" /></h2>
-	<h2>핫딜 소개 : <c:out value="${htdl.intro}" /></h2>
-	<h2>핫딜 이전 가격 : <c:out value="${htdl.befPrice}" /></h2>
-	<h2>핫딜 차감 비용 : <c:out value="${htdl.ddct}" /></h2>
-	<h2>핫딜 현재 인원 : <c:out value="${htdl.curPnum}" /></h2>
-	<h2>핫딜 현재 상태 : <c:out value="${htdl.stusCd}" /></h2>
+	<h5>핫딜 이름 : <c:out value="${htdl.name}" /></h5>
+	<h5>핫딜 할인률 : <c:out value="${htdl.dcRate}" /></h5>
+	<h5>핫딜 시작 시간 : <c:out value="${htdl.startTm}" /></h5>
+	<h5>핫딜 마감 시간 : <c:out value="${htdl.endTm}" /></h5>
+	<h5>핫딜 제한 인원 : <c:out value="${htdl.lmtPnum}" /></h5>
+	<h5>핫딜 소개 : <c:out value="${htdl.intro}" /></h5>
+	<h5>핫딜 이전 가격 : <c:out value="${htdl.befPrice}" /></h5>
+	<h5>핫딜 차감 비용 : <c:out value="${htdl.ddct}" /></h5>
+	<h5>핫딜 현재 인원 : <c:out value="${htdl.curPnum}" /></h5>
+	<h5>핫딜 현재 상태 : <c:out value="${htdl.stusCd}" /></h5>
 	</div>
 	--------------------------------------------------------
 </c:forEach>

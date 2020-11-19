@@ -67,11 +67,12 @@ ${msg}
 	<button id="btn_modifyForm" type="submit">제출하기</button>
 	
 	<input name="addr" value="${store.addr }" hidden>
-	<input name="lt" value="${lti}" hidden>
-	<input name="lo" value="${store.lo}" hidden>
+	<input name="lat" value="${store.lat}" hidden>
+	<input name="lng" value="${store.lng}" hidden>
 	<input name="avgRating" value="${store.avgRating }" hidden>
 	<input name="revwTotNum" value="${store.revwTotNum }" hidden>
 	<input name="likeTotNum" value="${store.likeTotNum }" hidden>
+	<input name="seatStusCd" value="${store.seatStusCd }" hidden>
 	
 	<c:if test="${not empty menuList}">
 <c:forEach items="${menuList}" var="menu">
@@ -105,8 +106,8 @@ ${msg}
 </form>
 
 매장 주소 : ${store.addr } </br>
-매장 위도 : ${lti}</br>
-매장 경도 : ${store.lo}</br>
+매장 위도 : ${store.lat}</br>
+매장 경도 : ${store.lng}</br>
 
 평균 평점 : ${store.avgRating }</br>
 리뷰 수 : ${store.revwTotNum }</br>
