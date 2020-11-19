@@ -9,6 +9,9 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
                 
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="ojdbc8.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/kjuio/Desktop/java/Oracle/sqldeveloper-19.2.1.247.2212-x64/sqldeveloper/jdbc/lib/ojdbc8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
                 
         <property name="context-root" value="app"/>
                 
