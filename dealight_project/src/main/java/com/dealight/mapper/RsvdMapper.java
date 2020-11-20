@@ -9,6 +9,12 @@ import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.UserWithRsvdDTO;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 public interface RsvdMapper {
 
 	//예약 mapper

@@ -71,6 +71,13 @@ public class BusinessController {
 		
 	}
 	
+	/*
+	 * 밑으로
+	 *****[김동인] 
+	 * 
+	 * 
+	 */
+	
 	@GetMapping("/")
 	public String list(Model model,HttpServletRequest request) {
 		

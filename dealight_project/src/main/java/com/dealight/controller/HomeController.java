@@ -22,6 +22,13 @@ import com.dealight.service.UserService;
 
 import lombok.extern.log4j.Log4j;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
+
 /**
  * Handles requests for the application home page.
  */

@@ -235,6 +235,7 @@ public class BoardController {
 		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 	
+	// 예약 시간의 데이터 형식을 맞춘다.
 	@GetMapping(value="board/reservation/rslt/{storeId}/list", produces = {
 					MediaType.APPLICATION_JSON_UTF8_VALUE,
 					MediaType.APPLICATION_XML_VALUE})
@@ -245,8 +246,6 @@ public class BoardController {
 		String pattern = "yyyy/MM/dd";
 		
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-		
-		
 		
 		rsvdList.stream().forEach((rsvd) -> {
 			rsvd.setStrRegDate(simpleDateFormat.format(rsvd.getRegDate()));
@@ -259,6 +258,7 @@ public class BoardController {
 		
 	}
 	
+	// rsvdId로 예약 객체와 예약 상세 객체를 가져온다.
 	@GetMapping(value = "/board/reservation/dtls/{rsvdId}", 
 			produces = {
 					MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -268,12 +268,10 @@ public class BoardController {
 		
 		log.info("get rsvd dtls..................");
 		
-		// log.info(rsvdService.findRsvdByRsvdIdWithDtls(rsvdId));
-		
-						
 		return new ResponseEntity<>(rsvdService.findRsvdByRsvdIdWithDtls(rsvdId), HttpStatus.OK);
 	}
 	
+	// 해당 유저의 매장 내역 리스트를 보여준다. 
 	@GetMapping(value = "/board/reservation/list/{storeId}/{userId}", 
 			produces = {
 					MediaType.APPLICATION_JSON_UTF8_VALUE,

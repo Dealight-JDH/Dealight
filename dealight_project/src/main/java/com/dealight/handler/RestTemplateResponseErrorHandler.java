@@ -8,6 +8,12 @@ import org.springframework.web.client.ResponseErrorHandler;
 
 import lombok.extern.log4j.Log4j;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 @Log4j
 public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
     @Override

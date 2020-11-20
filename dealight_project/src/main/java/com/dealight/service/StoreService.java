@@ -13,6 +13,12 @@ import com.dealight.domain.Criteria;
 import com.dealight.domain.RevwVO;
 import com.dealight.domain.StoreVO;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 public interface StoreService {
 
 	

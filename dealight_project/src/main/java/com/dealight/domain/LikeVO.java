@@ -1,5 +1,11 @@
 package com.dealight.domain;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

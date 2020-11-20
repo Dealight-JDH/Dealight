@@ -9,13 +9,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class LastWeekRsvdDTO {
 	
-	//??뭐야???
 	private Date inDate;
 
 }

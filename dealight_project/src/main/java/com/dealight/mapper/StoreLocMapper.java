@@ -4,6 +4,12 @@ import java.util.List;
 
 import com.dealight.domain.StoreLocVO;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 public interface StoreLocMapper {
 
 	public void insert(StoreLocVO storeLocVO);

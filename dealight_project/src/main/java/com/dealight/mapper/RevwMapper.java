@@ -10,6 +10,12 @@ import com.dealight.domain.RevwVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.WaitVO;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 public interface RevwMapper {
 	
 	public List<RevwVO> getRevwListWithPaging(@Param("storeId") Long storeId,@Param("cri") Criteria cri);

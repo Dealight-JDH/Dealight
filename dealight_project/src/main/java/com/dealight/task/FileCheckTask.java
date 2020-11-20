@@ -26,6 +26,12 @@ import com.dealight.service.RsvdService;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 @Log4j
 @Component
 public class FileCheckTask {

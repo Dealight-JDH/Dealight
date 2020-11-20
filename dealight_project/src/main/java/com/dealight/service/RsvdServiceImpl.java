@@ -28,6 +28,12 @@ import com.dealight.mapper.StoreMenuMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 @Service
 @Log4j
 @RequiredArgsConstructor

@@ -9,6 +9,12 @@ import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreMenuVO;
 import com.dealight.domain.UserWithRsvdDTO;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 public interface RsvdService {
 	//실시간 예약, 특정 시간 예약
 		//예약 시간, 인원수에 따라 현재 매장 예약 가능한 지 체크

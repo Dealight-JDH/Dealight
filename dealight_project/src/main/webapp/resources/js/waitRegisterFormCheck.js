@@ -1,3 +1,5 @@
+/* 동인  */
+
 window.onload = function () {
 wait_custNm = document.querySelector("#js_wait_custNm"),
 wait_phoneNum = document.querySelector("#js_wait_custTelno"),

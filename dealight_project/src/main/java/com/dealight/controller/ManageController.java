@@ -39,6 +39,12 @@ import com.dealight.service.WaitService;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 @Controller
 @Log4j
 @RequestMapping("/business/manage/*")

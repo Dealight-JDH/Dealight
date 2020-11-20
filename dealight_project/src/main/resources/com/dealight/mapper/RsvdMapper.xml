@@ -2,6 +2,9 @@
 <!DOCTYPE mapper 
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+		<!-- 동인 -->
+		
 		<mapper namespace="com.dealight.mapper.RsvdMapper">
 		
 	<!-- 예약+상세 -->	

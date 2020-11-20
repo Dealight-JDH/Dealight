@@ -4,6 +4,12 @@ import java.util.List;
 
 import com.dealight.domain.HtdlRsltVO;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 public interface HtdlRsltMapper {
 	
 	// create
