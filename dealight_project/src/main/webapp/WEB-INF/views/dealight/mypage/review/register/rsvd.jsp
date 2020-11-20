@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<!-- 수빈 -->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
@@ -13,7 +13,7 @@
 	<h1>예약 내역 -> 리뷰 등록 페이지</h1>
 
 	<form id="registerRevw" action="/dealight/mypage/review/register/rsvd" method="post"
-		onsubmit="return checkSubmit(this);">
+		onsubmit="return checkSubmit(this);"> 
 
 		매장번호: ${rsvd.store.storeId } <br />
 		예약번호: ${rsvd.rsvdId } <br />
@@ -36,7 +36,7 @@
 			placeholder="(임시)이미지 url을 문자열로 입력해주세요."></textarea> <br /> <br /> -->
 		<input type="file" name="uploadRevwImg" multiple> <br /> <br />
 		
-		<button type="submit" class="submitbtn">등록</button>
+		<button type="submit" class="submitbtn" onclick="goNext()">등록</button>
 		<button type="button" class="closebtn">취소</button>
 		
 		<!-- hidden으로 보낼 정보 -->
@@ -48,13 +48,10 @@
 	
 	<script>
 	
-/* 	$(document).ready(function() {
-		var result = '<c:out value="${result}" />';
-	}); */
-	
 		// 리뷰 내용 유효성 검사
+		var cnts = document.getElementById("cnts");
+		
 		function checkSubmit(i) {
-			var cnts = document.getElementById("cnts");
 			
 			if(cnts.value.length < 10) {
 				/* cnts.value = cnts.value.substr(0, 10); */
@@ -67,7 +64,8 @@
 				alert("100자 이내의 내용만 입력 가능합니다.");
 				return false;
 			}
-		}
+			
+		};
 		
 	</script>
 </body>
