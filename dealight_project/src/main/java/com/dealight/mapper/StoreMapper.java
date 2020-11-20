@@ -4,6 +4,12 @@ import java.util.List;
 
 import com.dealight.domain.StoreVO;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 public interface StoreMapper {
 	
 	//일단 매장을 등록하는 로직을 짜자..

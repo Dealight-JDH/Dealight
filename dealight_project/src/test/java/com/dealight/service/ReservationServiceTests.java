@@ -195,15 +195,16 @@ public class ReservationServiceTests {
 	@Test
 	public void getRsvdByTimeMapTest1() {
 		
-		String date = "20201107";
+		String date = "20201120";
+		storeId = 101L;
 		
 		List<RsvdVO> list = reservationService.getListByDate(storeId, date);
 		
-		log.info(list);
+		log.info("list.............................................."+list);
 		
 		HashMap<String, List<Long>> map = reservationService.getRsvdByTimeMap(list);
 		
-		log.info(map);
+		log.info("map..............................................."+map);
 		
 	};
 
@@ -292,7 +293,6 @@ public class ReservationServiceTests {
 	}
 	
 	
-	// ���� �ð��� ����
 	@Test
 	public void test() {
 		
@@ -385,6 +385,8 @@ public class ReservationServiceTests {
 	
 	@Test
 	public void findRsvdByRsvdIdWithDtlsTest1(){
+		
+		rsvdId = 363L;
 		
 		RsvdVO rsvd = reservationService.findRsvdByRsvdIdWithDtls(rsvdId);
 		

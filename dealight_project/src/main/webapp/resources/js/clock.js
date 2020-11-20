@@ -1,3 +1,5 @@
+/* 동인  */
+
 const clockContainer = document.querySelector(".js-clock"),
       clockTime = clockContainer.querySelector(".time"),
       clockDate = clockContainer.querySelector(".date");

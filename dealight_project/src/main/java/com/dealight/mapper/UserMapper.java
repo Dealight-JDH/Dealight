@@ -8,6 +8,12 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.dealight.domain.UserVO;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 public interface UserMapper {
 
 	//로그인 된 유저 정보 불러오기

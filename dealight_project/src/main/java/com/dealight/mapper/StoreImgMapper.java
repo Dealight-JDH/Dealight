@@ -4,6 +4,12 @@ import java.util.List;
 
 import com.dealight.domain.StoreImgVO;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 public interface StoreImgMapper {
 	
 	public void insert(StoreImgVO storeImg);

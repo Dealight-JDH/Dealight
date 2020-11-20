@@ -43,6 +43,12 @@ import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 @Log4j
 @Service
 @AllArgsConstructor
