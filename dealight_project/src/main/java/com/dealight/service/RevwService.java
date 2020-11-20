@@ -13,6 +13,8 @@ import com.dealight.domain.WaitVO;
 
 public interface RevwService {
 
+	// === 수빈 ===
+	
 	// 내가 작성한 리뷰
 	public List<RevwVO> getWrittenList(String userId);
 	
@@ -63,7 +65,9 @@ public interface RevwService {
 
 	// 리뷰 수정 (maybe)
 
-
+	// === === ===
+	
+	
 	// public List<RevwVO> revws(Long storeId);
 	public List<RevwVO> revws(Long storeId, Criteria cri);
 	

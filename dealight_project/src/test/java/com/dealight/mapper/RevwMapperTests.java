@@ -223,6 +223,11 @@ public class RevwMapperTests {
 		mapper.insertRevw(revw);
 		log.info(revw);
 	}
+	
+//	@Test
+//	public void countRevwForStoreEval(Long storeId) {
+//		mapper.countRevwForStoreEval(10001L);
+//	}
 
 	@Test
 	public void testGetWritableItemByRsvd() {

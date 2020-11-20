@@ -15,7 +15,7 @@
 		onsubmit="return checkSubmit(this);">
 		
 		매장번호: ${wait.store.storeId } <br />
-		웨이팅번호: ${wait.id } <br />
+		웨이팅번호: ${wait.waitId } <br />
 		매장사진: ${wait.store.repImg } <br />
 		매장명: ${wait.store.storeNm } <br />
 		웨이팅접수시간: <fmt:formatDate pattern="yyyy-MM-dd" value="${wait.waitRegTm }" /> <br /> <br />
@@ -39,7 +39,7 @@
 		<!-- hidden으로 보낼 정보 -->
 		<input type="hidden" name="storeNm" value="${wait.store.storeNm }" />
 		<input type="hidden" name="storeId" value="${wait.store.storeId }" />
-		<input type="hidden" name="waitId" value="${wait.id }" />
+		<input type="hidden" name="waitId" value="${wait.waitId }" />
 		<input type="hidden" name="userId" value="${wait.userId }" />
 	</form>
 

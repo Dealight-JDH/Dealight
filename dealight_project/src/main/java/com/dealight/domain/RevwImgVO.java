@@ -14,7 +14,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 @Builder
 public class RevwImgVO {
-
+	
     // 리뷰번호 
     private int revwId;
 

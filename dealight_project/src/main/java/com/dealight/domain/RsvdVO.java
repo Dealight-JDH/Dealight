@@ -75,14 +75,17 @@ public class RsvdVO {
     @NotNull
     private int revwStus;
     
+    private String strRegDate;
+    
     //@Nullable
     //private List<RsvdDtlsVO> dtlsList;
     //==================================================
-    //이거에대한 설명필요해요 수빈씨
-//    // 리뷰 상세
+    
+    // === 수빈 ===
+    // 예약 항목에서 리뷰 쓰기에 필요한 항목만 가져오는 VO를 별도로 만들 예정
+    // 예약 상세
     private RsvdDtlsVO dtls;
-//    // 매장
+    // 매장
     private StoreVO store;
     
-    private String strRegDate;
 }
