@@ -58,7 +58,6 @@ public class FileCheckTask {
 		
 	}
 	
-	//���� �ڵ� ������
 	//@Scheduled(cron="0 * * * * *")
 	public void registerRsvd() throws Exception{
 		log.warn("Auto Rsvd Register Task run .....................");
@@ -98,10 +97,10 @@ public class FileCheckTask {
         int totAmt = 30;
         int totQty = 30;
     	
-    	//�ʼ� �Է°�
+    	//예약 상세 정보
         long rsvdId = 9;
         long rsvdtSeq = 22;
-        String menuNm = "������";
+        String menuNm = "떡볶이";
         int menuTotQty = 5;
         int menuPrc = 3000;
         
@@ -140,7 +139,7 @@ public class FileCheckTask {
     	
     	RsvdDtlsVO rsvdDtls2 = new RsvdDtlsVO().builder()
 				.rsvdId(rsvdId)
-				.menuNm("����")
+				.menuNm("순대")
 				.menuTotQty(menuTotQty)
 				.menuPrc(menuPrc)
 				.build();
@@ -148,7 +147,7 @@ public class FileCheckTask {
     	
     	RsvdDtlsVO rsvdDtls3 = new RsvdDtlsVO().builder()
 				.rsvdId(rsvdId)
-				.menuNm("Ƣ��")
+				.menuNm("튀김")
 				.menuTotQty(menuTotQty)
 				.menuPrc(menuPrc)
 				.build();

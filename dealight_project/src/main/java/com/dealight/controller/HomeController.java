@@ -60,10 +60,8 @@ public class HomeController {
 	@RequestMapping(value = "/socket", method = RequestMethod.GET)
 	public ModelAndView socket(Locale locale, ModelAndView mv) {
 		
-		// view 화면의 이름을 구성한다.
 		mv.setViewName("test");
 		
-		// 사용자 정보 출력(세션)
 		UserVO user = userService.read("kjuioq");
 		//UserVO user = (UserVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		System.out.println("user name : " + user.getName());

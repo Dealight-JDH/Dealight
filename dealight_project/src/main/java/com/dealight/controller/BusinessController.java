@@ -71,7 +71,6 @@ public class BusinessController {
 		
 	}
 	
-	// ������ 1
 	@GetMapping("/")
 	public String list(Model model,HttpServletRequest request) {
 		
@@ -80,10 +79,8 @@ public class BusinessController {
 		
 		HttpSession session = request.getSession();
 		
-		// �α��� ���� �ƴٰ� ����
 		session.setAttribute("userId", "lim");
 		
-		// ������ ���̵� �޴´�.
 		String userId = (String) session.getAttribute("userId");
 		
 		model.addAttribute("userId", userId);
@@ -103,7 +100,6 @@ public class BusinessController {
 	
 	
 	
-	// ������ 4 -> ������ �и��ϸ� �� 2��
 	@GetMapping("/manage")
 	public String manage(Model model, long storeId,HttpServletRequest request) {
 		
@@ -111,85 +107,17 @@ public class BusinessController {
 		
 		HttpSession session = request.getSession();
 		
-		// ���ǿ� �ִ� userId�� �ҷ��´�.
 		String userId = (String) session.getAttribute("userId");
-		
-		// store ������ �����´�.(Bstore ����)
-		//StoreVO store = storeService.findByStoreIdWithBStore(storeId);
-		
-		// ��Ʈ ���� �ð� ������ �����´�.
-		//String lastOrder = store.getBstore().getLastOrdTm();
-		
-		// ���� ������ ����(�ð�����)
-		//Date today = new Date();
-		
-		// ���忡 ���� �������� ���� ��������� ���� ����Ʈ�� �����´�. 
-		// ����
-		//List<RsvdVO> rsvdList = rsvdService.readTodayCurRsvdList(storeId);
 
-		// ���� ������ ������ ������ ����Ʈ�� �����´�.
-		// ����
-		//List<WaitingVO> waitList = waitService.curStoreWaitList(storeId, "W");
-		
-		// �ٷ� ���� �������� �����´�.
-		//WaitingVO nextWait = waitService.readNextWait(waitList);
-		
-		// ���� ���� ����� ����� �����´�.
-		//HashMap<String,List<Long>> todayRsvdMap = rsvdService.getRsvdByTimeMap(rsvdList);
-		
-		// ���� ������ id�� �����´�.
-		//Long nextId = rsvdService.readNextRsvdId(todayRsvdMap);
-		
-		// �ٷ� ���� �����ڸ� �����´�.
-		//RsvdVO nextRsvd = rsvdService.findRsvdByRsvdId(nextId, rsvdList);
-		
-		// ���� ���� �հ踦 �����´�.
-		//int totalTodayRsvd = rsvdService.totalTodayRsvd(rsvdList);
-		
-		// ���� ���� �հ� �ο��� �����´�.
-		//int totalTodayRsvdPnum = rsvdService.totalTodayRsvdPnum(rsvdList);
-		
-		// ���� ���õ� �޴��� map�� �����´�.
-		// ����
-		//HashMap<String,Integer> todayFavMenuMap = rsvdService.todayFavMenu(storeId);
-		
-		//String pattern = "yyyyMMdd";
-    	
-		//SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-    	
-    	//String date = simpleDateFormat.format(today);
-		
-		// ���� ������ �� ����Ʈ�� �����´�.
-    	// ����
 		List<UserWithRsvdDTO> todayRsvdUserList = rsvdService.userListTodayRsvd(storeId);
-		
-		// ���� �������¸� �����´�.
-		//String curSeatStus = store.getBstore().getSeatStusCd();
 		
 		
 		model.addAttribute("storeId", storeId);
-		//model.addAttribute("store", store);
-		//model.addAttribute("today", today);
-		//model.addAttribute("todayRsvdMap",todayRsvdMap);
-		//model.addAttribute("nextRsvd",nextRsvd);
-		//model.addAttribute("rsvdList", rsvdList);
-		//model.addAttribute("waitList", waitList);
-		//model.addAttribute("storeId",storeId);
-		//model.addAttribute("nextWait",nextWait);
-		//model.addAttribute("lastOrder",lastOrder);
-		//model.addAttribute("curSeatStus",curSeatStus);
-		
-		//��Ȳ��
-		//model.addAttribute("totalTodayRsvd",totalTodayRsvd);
-		//model.addAttribute("totalTodayRsvdPnum",totalTodayRsvdPnum);
-		//model.addAttribute("todayFavMenuMap", todayFavMenuMap);
 		model.addAttribute("todayRsvdUserList", todayRsvdUserList);
 		
 		return "/business/manage/manage";
 	}
-	
-	// ������ ��
-		// ������ 1
+
 		@GetMapping("/waiting/{waitId}")
 		public String waiting(Model model, @PathVariable("waitId") long waitId) {
 			
@@ -199,14 +127,10 @@ public class BusinessController {
 			
 			log.info(wait);
 			
-			// �ش� ���忡 ���� ���°� W�� ����Ʈ�� �����´�.
 			List<WaitVO> curStoreWaitiList = waitService.curStoreWaitList(wait.getStoreId(), "W");
 			
-			// �ش� ������ ��ȣ�� ���� ��� ������ �����ش�.
 			int order = waitService.calWatingOrder(curStoreWaitiList, wait.getWaitId());
 			
-			// �ش� ������ ��ȣ�� ���� ���� ��� �ð��� �����ش�.
-			// ���ð��� �ϴ� ���Ƿ� 15�� �����ߴ�.
 			int waitTime = waitService.calWaitingTime(curStoreWaitiList, wait.getWaitId(), 15);
 			
 			model.addAttribute("wait",wait);

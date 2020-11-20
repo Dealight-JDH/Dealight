@@ -29,7 +29,12 @@ import com.dealight.service.WaitService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-
+/*
+ * 
+ *****[김동인] 
+ * 
+ * 
+ */
 @RestController
 @Log4j
 @RequestMapping("/business/manage/*")
@@ -46,9 +51,7 @@ public class BoardController {
 
 	private UserService userService;
 
-
-
-	// store ������ �����´�
+	// storeId로 store with bstore 객체를 가져온다.
 	@GetMapping(value = "/board/store/{storeId}", produces = {
 			MediaType.APPLICATION_JSON_UTF8_VALUE,
 			MediaType.APPLICATION_XML_VALUE
@@ -60,7 +63,7 @@ public class BoardController {
 		return new ResponseEntity<>(storeService.findByStoreIdWithBStore(storeId), HttpStatus.OK);
 	}
 
-	// ������ ��Ȳ(������ ����Ʈ)�� �����´�.
+	// storeId로 해당 매장의 웨이팅 리스트를 가져온다.
 	@GetMapping(value = "/board/waiting/{storeId}", produces = {
 			MediaType.APPLICATION_JSON_UTF8_VALUE,
 			MediaType.APPLICATION_XML_VALUE
@@ -75,7 +78,7 @@ public class BoardController {
 		return new ResponseEntity<>(waitList, HttpStatus.OK);
 	}
 
-	// ���� ����Ʈ�� �����´�
+	// storeId로 해당 매장의 오늘 '예약중인' 예약 리스트를 가져온다.
 	@GetMapping(value = "/board/reservation/{storeId}", produces = {
 			MediaType.APPLICATION_JSON_UTF8_VALUE,
 			MediaType.APPLICATION_XML_VALUE
@@ -84,11 +87,10 @@ public class BoardController {
 
 		log.info("get rsvd list...........");
 
-		// store ������ �����´�.(Bstore ����)		
 		return new ResponseEntity<>(rsvdService.readTodayCurRsvdList(storeId), HttpStatus.OK);
 	}
 
-	// ���� ���� ��Ȳ map�� �����´�.
+	// storeId로 해당 매장의 '오늘' 예약 맵을 가져온다.
 	@GetMapping(value = "/board/reservation/map/{storeId}", 
 			produces = {
 					MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -96,18 +98,20 @@ public class BoardController {
 	})
 	public ResponseEntity<HashMap<String, List<Long>>> getTodayRsvdMap(@PathVariable("storeId") long storeId) {
 
-		log.info("get today rsvd map...........");
+		
 
 		List<RsvdVO> list = rsvdService.readTodayCurRsvdList(storeId);
-
+		
+		log.info("get today cur rsvd list.............................." + list);
+		
 		HashMap<String, List<Long>> map = rsvdService.getRsvdByTimeMap(list);
 
-		log.info(map);
+		log.info("get today rsvd map...................................." + map);
 
 		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 
-	// ���� �����ڸ� �����´�.
+	// storeId로 바로 다음 예약 리스트를 가져온다.
 	@GetMapping(value = "/board/reservation/next/{storeId}", 
 			produces = {
 					MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -125,7 +129,7 @@ public class BoardController {
 	}
 
 
-	// ������ ���¸� ��ҷ� �����Ѵ�.
+	// waitId로 웨이팅 상태를 '취소'로 변경한다.
 	@PutMapping(value = "/board/waiting/cancel/{waitId}", 
 			consumes = "application/json",
 			produces = {
@@ -140,7 +144,7 @@ public class BoardController {
 						: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	// ������ ���¸� �г�Ƽ�� �����Ѵ�.
+	// waitId로 웨이팅 상태를 '패널티'로 변경한다.
 	@PutMapping(value = "/board/waiting/noshow/{waitId}", 
 			consumes = "application/json",
 			produces = {
@@ -155,7 +159,7 @@ public class BoardController {
 						: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	// ������ ���¸� �������� �����Ѵ�.
+	// waitId로 웨이팅 상태를 '입장'으로 변경한다.
 	@PutMapping(value = "/board/waiting/enter/{waitId}", 
 			consumes = "application/json",
 			produces = {
@@ -170,7 +174,7 @@ public class BoardController {
 						: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	// ���ο� �������� ����Ѵ�. 
+	// waitId로 오프라인 웨이팅을 등록한다.
 	@PostMapping(value="/board/waiting/new",
 			consumes = "application/json",
 			produces = { MediaType.TEXT_PLAIN_VALUE})
@@ -190,13 +194,13 @@ public class BoardController {
 
 	}
 
-	//
+	// storeId와 seatStusColor로 해당 매장의 seat stus를 변경한다.
 	@PutMapping(value = "/board/seat/{storeId}/{seatStusColor}", 
 	consumes = "application/json",
 	produces = {
 			MediaType.TEXT_PLAIN_VALUE
 	})
-	public ResponseEntity<String> changeSeatStus(@PathVariable("storeId") long storeId,@PathVariable("seatStusColor")String seatStusColor) {
+	public ResponseEntity<String> changeSeatStus(@PathVariable("storeId") Long storeId,@PathVariable("seatStusColor")String seatStusColor) {
 		
 		return storeService.changeSeatStus(storeId, seatStusColor)
 				? new ResponseEntity<>("success", HttpStatus.OK)
@@ -204,12 +208,14 @@ public class BoardController {
 
 	}
 	
+	// storeId로 해당 매장의 예약 결과 DTO를 반환한다.
+	// 예약 결과 DTO는 금일 예약 인원, 금일 예약 수, 금일 인기 메뉴를 반환한다.
 	@GetMapping(value = "/board/reservation/rslt/{storeId}", 
 			produces = {
 					MediaType.APPLICATION_JSON_UTF8_VALUE,
 					MediaType.APPLICATION_XML_VALUE
 	})
-	public ResponseEntity<RsvdRsltDTO> getRsvdRslt(@PathVariable("storeId") long storeId) {
+	public ResponseEntity<RsvdRsltDTO> getRsvdRslt(@PathVariable("storeId") Long storeId) {
 		
 		List<RsvdVO> rsvdList = rsvdService.readTodayCurRsvdList(storeId);
 		
@@ -260,7 +266,9 @@ public class BoardController {
 	})
 	public ResponseEntity<RsvdVO> getRsvdDtls(@PathVariable("rsvdId") Long rsvdId) {
 		
-		log.info("post rsvd dtls..................");
+		log.info("get rsvd dtls..................");
+		
+		// log.info(rsvdService.findRsvdByRsvdIdWithDtls(rsvdId));
 		
 						
 		return new ResponseEntity<>(rsvdService.findRsvdByRsvdIdWithDtls(rsvdId), HttpStatus.OK);
@@ -283,7 +291,7 @@ public class BoardController {
 		//return new ResponseEntity<>(userService.getRsvdListStoreUser(storeId, userId), HttpStatus.OK);
 	}	
 
-	// ��ϵ� �ֵ� ������ �����´�.
+	// 수정 전
 	//	@GetMapping(value = "/board/hotdeal/{storeId}", produces = {
 	//			MediaType.APPLICATION_JSON_UTF8_VALUE,
 	//			MediaType.APPLICATION_XML_VALUE

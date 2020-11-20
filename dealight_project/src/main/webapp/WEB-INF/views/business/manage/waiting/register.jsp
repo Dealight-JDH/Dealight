@@ -16,13 +16,13 @@
 <form action="/business/manage/waiting/register?storeId=${storeId}" method="post">
 
 	<label id="custNm">고객 이름</label>
-	<input name="custNm"></br>
+	<input name="custNm" required></br>
 	
 	<label id="custTelno">고객 연락처</label>
-	<input name="custTelno"></br>
+	<input name="custTelno" required></br>
 	
 	<label id="waitPnum">웨이팅 인원</label>
-	<input name="waitPnum"></br>
+	<input name="waitPnum" required></br>
 
 	<label id="curTime">현재시간</label>
 	<input name="curTime" value="${curTime}" hidden>

@@ -19,13 +19,13 @@
 	<input name="storeId" value="${storeId}" hidden>
 	
 	<label for="name">메뉴 이름 : </label>
-	<input name="name"> </br>
+	<input name="name" required> </br>
 	
 	<label for="price">메뉴 가격 : </label>
-	<input name="price"> </br>
+	<input name="price" required> </br>
 	
 	<label for="recoMenu">메뉴 추천 여부 : </label>
-	<input name="recoMenu" type="checkbox"> </br>
+	<input name="recoMenu" type="checkbox"></br>
 	
 	<div class=""><h2>파일 첨부하기</h2></div>
 	<div class="file_body">

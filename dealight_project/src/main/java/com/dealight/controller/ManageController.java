@@ -61,7 +61,6 @@ public class ManageController {
 	
 	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05";
 	
-	// ������ 1
 	@GetMapping("/dealhistory")
 	public String dealHistory(Model model,long storeId,HttpServletRequest request) {
 		
@@ -80,11 +79,9 @@ public class ManageController {
 		return "/business/manage/dealhistory";
 	}
 	
-	// ������ 2
 	@GetMapping("/reservation")
 	public String reservation(Model model, long rsvdId) {
 		
-		// ���� �󼼸� ������ ���� ������ �����´�.
 		RsvdVO rsvd = rsvdService.findRsvdByRsvdIdWithDtls(rsvdId);
 		
 		log.info("rsvd.............................................................."+rsvd);
@@ -97,7 +94,6 @@ public class ManageController {
 		return "/business/manage/reservation";
 	}
 	
-	// ������ 0
 	@GetMapping("/waiting/register")
 	public String waitingRegister(Model model, long storeId) {
 		
@@ -120,7 +116,6 @@ public class ManageController {
 		return "/business/manage/waiting/register";
 	}
 	
-	// ������ 1
 	@PostMapping("/waiting/register")
 	public String waitingRegister(Model model, WaitVO wait,HttpServletRequest request,long storeId) {
 		
@@ -138,13 +133,11 @@ public class ManageController {
 		//return "redirect:/business/manage/board/?storeId="+storeId;
 	}
 	
-	// ������ 1
 	@GetMapping("/modify")
 	public String storeModify(Model model,Long storeId, HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
 		
-		// ���ǿ� �ִ� userId�� �ҷ��´�.
 		String userId = (String) session.getAttribute("userId");
 		
 		log.info("business store modify get.." + storeId);
@@ -175,7 +168,6 @@ public class ManageController {
 		return "/business/manage/modify/modify";
 	}
 	
-	// ������ 2
 	@PostMapping("/modify")
 	public String storeModify(Model model,AllStoreVO store,RedirectAttributes rttr) {
 		
@@ -255,17 +247,19 @@ public class ManageController {
 		
 		log.info("menu......" + menu);
 		
+		if(menu.getRecoMenu() == null)
+			menu.setRecoMenu("N");
+
 		if(menu.getRecoMenu().equalsIgnoreCase("on"))
 			menu.setRecoMenu("Y");
-		else
-			menu.setRecoMenu("N");
+		
 		
 		storeService.registerMenu(menu);
 		
 		return "redirect:/business/manage/menu?storeId="+menu.getStoreId();
 	}
-	
-	// ������ 1
+
+	// 웨이팅 입장
 	@GetMapping("/enter")
 	public String enter(Model model,long storeId,long waitId) {
 		
@@ -276,7 +270,7 @@ public class ManageController {
 		return "redirect:/business/manage?storeId="+storeId;
 	}
 	
-	// ������ 1
+	// 웨이팅 노쇼
 	@GetMapping("/noshow")
 	public String noshow(Model model,long storeId,long waitId) {
 		

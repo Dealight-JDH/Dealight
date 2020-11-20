@@ -468,7 +468,10 @@ window.onclick = function(event) {
         };
         
         function getNextRsvd(param,callback,error){
+        	
+        	
         	let storeId = param.storeId;
+        	
         	
         	$.getJSON("/business/manage/board/reservation/next/"+ storeId +".json",
                     function(data){
@@ -689,6 +692,9 @@ window.onclick = function(event) {
             
             boardService.getTodayRsvdMap({storeId:storeId}, function(map){
             	let strRsvdMap = "";
+            	
+            	console.log('get today rsvd map .....');
+            	
             	if(!map)
             		return;
             	Object.entries(map).forEach(([key,value]) => {
@@ -700,6 +706,10 @@ window.onclick = function(event) {
             });
             
             boardService.getNextRsvd({storeId:storeId},function(rsvd){
+            	
+            	console.log('getnextrsvd.............');
+            	console.log(rsvd);
+            	
         		let strNextRsvd = "";
         		if(!rsvd)
         			return;
@@ -903,9 +913,9 @@ window.onclick = function(event) {
         	strWaitRegForm = "";
         	strWaitRegForm += "<h1>오프라인 웨이팅 등록</h1>";
         	strWaitRegForm += "<form id='waitRegForm' action='/business/manage/waiting/register' method='post'>";
-        	strWaitRegForm += "고객 이름<input name='custNm'></br>";
-        	strWaitRegForm += "고객 전화번호<input name='custTelno'></br>";
-        	strWaitRegForm += "웨이팅 인원<input name='waitPnum'></br>";
+        	strWaitRegForm += "고객 이름<input name='custNm' id='js_wait_custNm'> <span id='name_msg'></span></br>";
+        	strWaitRegForm += "고객 전화번호<input name='custTelno' id='js_wait_custTelno'> <span id='phoneNum_msg'></span></br>";
+        	strWaitRegForm += "웨이팅 인원<input name='waitPnum' id='js_wait_pnum'> <span id='pnum_msg'></span></br>";
         	strWaitRegForm += "<input name='waitRegTm' value='"+today+"' hidden>";
         	strWaitRegForm += "<input name='storeId' value='"+storeId+"' hidden>";
         	strWaitRegForm += "<button id='submit_waitRegForm' type='submit'>제출하기</button>";
@@ -915,8 +925,136 @@ window.onclick = function(event) {
         	
         	waitRegFormUL.html(strWaitRegForm);
         	
-        }
-        
+        	/* wait register valid check*/
+        	const wait_custNm = document.querySelector("#js_wait_custNm"),
+	        	wait_phoneNum = document.querySelector("#js_wait_custTelno"),
+	        	wait_pnum = document.querySelector("#js_wait_pnum"),
+	        	btn_submit = document.querySelector("#submit_waitRegForm"),
+	        	name_msg = document.querySelector("#name_msg"),
+	        	phoneNum_msg = document.querySelector("#phoneNum_msg"),
+	        	pnum_msg = document.querySelector("#pnum_msg"),
+	        	waitRegForm = document.querySelector('#waitRegForm');
+        	
+        	const inputList = [wait_custNm,wait_phoneNum,wait_pnum];
+
+
+        	nameLenCheck = function () {
+        		if(1 <= wait_custNm.value.length && wait_custNm.value.length <= 5)
+        			return true;
+        		return false;
+        	}
+
+        	phoneNumLenCheck = function () {
+        		if(1 <= wait_phoneNum.value.length && wait_phoneNum.value.length <= 13)
+        			return true;
+        		return false;
+        	}
+
+        	pnumSizeCheck = function () {
+        		if(isNaN(wait_pnum.value))
+        			return false;
+        		if(1 <= parseInt(wait_pnum.value) && parseInt(wait_pnum.value) <= 10)
+        			return true;
+        		return false;
+        	}
+
+        	wait_custNm.addEventListener("focusout", () => {
+        		if(1 <= wait_custNm.value.length){
+        		    if(nameLenCheck()){
+        		        name_msg.innerText = "🙆‍♂️ 이름 형식이 적당하네요.";
+        		    }
+        		    else {
+        		    	name_msg.innerText = "🙅‍♂️ 이름 길이를 다시 확인해 주세요. (5자 이내)";
+        		    }
+        		}
+        	})
+
+        	wait_phoneNum.addEventListener("focusout", () => {
+        		if(1 <= wait_phoneNum.value.length){
+        		    if(phoneNumLenCheck()){
+        		        phoneNum_msg.innerText = "🙆‍♂️ 전화번호 형식이 적당하네요!";
+        		    }
+        		    else {
+        		    	phoneNum_msg.innerText = "🙅‍♂️ 전화번호 길이를 다시 확인해 주세요. (13자 이내)";
+        		    }
+        		}
+        	})
+
+        	wait_pnum.addEventListener("focusout", () => {
+        		if(1 <= wait_pnum.value.length){
+        		    if(pnumSizeCheck()){
+        		        pnum_msg.innerText = "🙆‍♂️ 인원이 적당합니다.";
+        		    }
+        		    else {
+        		    	pnum_msg.innerText = "🙅‍♂️ 인원이 너무 많거나 형식이 적당하지 않아요! (10명 이내)";
+        		    }
+        		}
+        	})
+
+        	// null이면  true
+        	nullCheck = function(inputList) {
+        	    for(let i = 0; i < inputList.length; i++)
+        	        if(inputList[i].value == "")
+        	            return true;
+        	    
+        	    return false;
+        	}
+        	
+        	let modalInputCustNm = modal.find("input[name='custNm']"),
+			modalInputCutsTelNo = modal.find("input[name='custTelno']"),
+			modalInputWaitPnum = modal.find("input[name='waitPnum']"),
+			modalInputCurTime = modal.find("input[name='curTime']"),
+			modalInputStoreId = modal.find("input[name='storeId']");
+    	
+        	btn_submit.addEventListener("click", (e) => {
+    		
+	    		e.preventDefault();
+	    		
+	    		let wait = {
+	    				custNm : modalInputCustNm.val(),
+	    				custTelno : modalInputCutsTelNo.val(),
+	    				curTime : modalInputCurTime.val(),
+	    				waitPnum : modalInputWaitPnum.val(),
+	    				storeId : modalInputStoreId.val()
+	    		};
+	    		
+	    		
+	    	    if(nullCheck(inputList)){
+	    	        alert("필드가 비었어요")
+	    	        return;
+	    	    }
+	    	    
+	    	    if(!nameLenCheck()){
+	    	    	alert("🙅이름을 형식에 맞게 입력해주세요");
+	    	        return;
+	    	    }
+	    	    
+	    	    if(!phoneNumLenCheck()){
+	    	        alert("🙅전화번호를 형식에 맞게 입력해주세요");
+	    	        return;
+	    	    }
+	    	    
+	    	    if(!pnumSizeCheck()){
+	    	        alert("🙅예약인원을 형식에 맞게 입력해주세요");
+	    	        return;
+	    	    }
+	    	    
+	
+	    		boardService.regWait(wait, result => {
+	    			
+	    			alert(result);
+	        		console.log("결과.........."+modalInputStoreId.val());
+	        		showBoard(${storeId});
+	        		modal.find("ul").html("");
+	    			modal.find("input").val("");
+	    			modal.css("display","none");
+	    			
+	    			
+	    		});
+    		
+    		
+    		});
+        };
         
         /* 이벤트 처리*/
         
@@ -991,37 +1129,6 @@ window.onclick = function(event) {
         	
         	modal.css("display","block");
         	showWaitRegisterForm(${storeId});
-        	
-			let modalInputCustNm = modal.find("input[name='custNm']"),
-				modalInputCutsTelNo = modal.find("input[name='custTelno']"),
-				modalInputCurTime = modal.find("input[name='curTime']"),
-				modalInputStoreId = modal.find("input[name='storeId']");
-        	
-        	$("#submit_waitRegForm").on("click", e => {
-        		
-        		e.preventDefault();
-        		
-        		let wait = {
-        				custNm : modalInputCustNm.val(),
-        				custTelno : modalInputCutsTelNo.val(),
-        				curTime : modalInputCurTime.val(),
-        				storeId : modalInputStoreId.val()
-        		};
-
-        		boardService.regWait(wait, result => {
-        			
-        			alert(result);
-	        		console.log("결과.........."+modalInputStoreId.val());
-	        		showBoard(${storeId});
-	        		modal.find("ul").html("");
-        			modal.find("input").val("");
-        			modal.css("display","none");
-        			
-        			
-        		});
-        		
-        		
-        	});
         	
         		//$("#waitRegForm").submit();        		
         	

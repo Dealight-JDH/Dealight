@@ -114,11 +114,6 @@ public class RsvdServiceImpl implements RsvdService{
 	}
 
 
-	
-	
-
-
-	
 	private RsvdDtlsMapper rsvdDtlsMapper;
 	
 		
@@ -156,7 +151,8 @@ public class RsvdServiceImpl implements RsvdService{
     	
     	String today = currentDate.format(dateTimeForMatter);
 		
-		return rsvdMapper.findByStoreIdToday(storeId, today);
+		return rsvdMapper.findByStoreIdAndDate(storeId, today).stream().filter(rsvd -> rsvd.getStusCd().equals("C"))
+				.collect(Collectors.toList());
 	}
 	
 	@Override
@@ -224,11 +220,23 @@ public class RsvdServiceImpl implements RsvdService{
 		listByDate.stream().forEach((rsvd) -> {
 			
 			// C���� �ȴ�.
-			if(!rsvd.getStusCd().equalsIgnoreCase("C"))
+			
+			log.info("for each ......................");
+			
+			if(!rsvd.getStusCd().equalsIgnoreCase("C")) {
+				log.info("sture cd ......" + rsvd.getStusCd());
 				return;
+			}
+			
+			log.info("stus check ......................");
 			
 			String time = getTime(rsvd.getRegDate());
+			
+			log.info("get time ......................");
+			
 			String fomatedTime = toRsvdByTimeFormat(time);
+			
+			log.info("to rsvd by time formate ......................");
 			
 			if(map.get(fomatedTime) == null)
 				map.put(fomatedTime, new ArrayList<Long>());
