@@ -282,7 +282,7 @@ function showPaging(pageDTO){
 		str += "<a href='"+(pageDTO.startPage -1)+"'>Previous </a>"
 	}
 	
-	for(var i = pageDTO.startPage;i<pageDTO.endPage;i++){
+	for(var i = pageDTO.startPage;i<pageDTO.endPage+1;i++){
 		//console.log(i)
 		//console.log(pageDTO.cri.pageNum)
 		str += (pageDTO.cri.pageNum == i ?"<":"");
