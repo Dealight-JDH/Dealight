@@ -1,0 +1,33 @@
+### Java template
+*.class
+ 
+# Package Files #
+*.jar
+*.war
+*.ear
+ 
+### macOS template
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+# Compliled files
+/target/
+**/target
+/example/
+
+# Eclipse
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+.classpath
+.settings/
+.loadpath
+/src/main/resources/rebel.xml
