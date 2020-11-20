@@ -1,0 +1,141 @@
+.nav {
+	height: 70px;
+	width: 100%;
+	border-style: solid;
+}
+
+.container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.left {
+	width: 45%;
+}
+
+.left p {
+	margin: 20px;
+}
+
+.left h4 {
+	border-radius: 5px;
+	border-style: solid;
+	padding: 5px 50px 5px 50px;
+	border-color: grey;
+	display: inline-block;
+}
+
+.column {
+	display: block;
+	border-bottom-style: solid;
+	border-bottom-color: rgba(138, 134, 134, 0.199);
+	
+}
+.reg{
+	float:right;
+}
+
+.footer {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.footer ul {
+	list-style-type: none;
+}
+.footer a{
+	 text-decoration: none;
+      border-radius: 2px;
+      border-color: black;
+}
+
+
+.footer li {
+	display: inline;
+	margin: 5px;
+}
+
+.revwColumn {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	margin: 10px;
+}
+
+.revwCon {
+	width: 45%;
+	display: inline-block;
+	border-style: solid;
+	border-color: rgba(138, 134, 134, 0.199);
+}
+
+.right {
+	width: 20%;
+	min-width: 300px;
+	margin:30px;
+}
+
+.img {
+	width: 95%;
+	margin: auto;
+}
+
+.imgCon {
+	width: 32%;
+	height: 150px;
+	
+}
+
+.sticky {
+	position: -webkit-sticky;
+	position: sticky;
+	top: 100px;
+	border-radius: 10px;
+	border-style: outset;
+	margin: auto;
+	width: 85%;
+	text-align: center;
+	padding: 10px;
+}
+
+.sticky ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+
+.right p {
+	border-top-style: solid;
+	border-top-color: rgba(138, 134, 134, 0.199);
+}
+
+
+#myDIV {
+  width: 100%;
+  margin-top: 20px;
+  display: none;
+}
+
+
+.payment{
+    display: block;
+    padding: 10px;
+     size:10px;
+}
+.payment2{
+    margin: 0 auto;
+    border-style: solid;
+    padding: 10px;
+    size:10px;
+
+}
+.pay{
+    width: 80%;
+    border-style: solid;
+    padding: 10px;
+    margin: 35px;
+}

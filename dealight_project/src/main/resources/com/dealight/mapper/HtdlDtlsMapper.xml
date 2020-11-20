@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.dealight.mapper.HtdlDtlsMapper">
+
+	<select id="findAll"
+		resultType="com.dealight.domain.HtdlDtlsVO">
+		SELECT
+		*
+		FROM tbl_htdl_dtls
+	</select>
+
+
+	<select id="findBySeq"
+		resultType="com.dealight.domain.HtdlDtlsVO">
+		SELECT
+		*
+		FROM tbl_htdl_dtls
+		where htdl_seq = #{htdlSeq}
+	</select>
+	
+	<select id="findByHtdlId"
+		resultType="com.dealight.domain.HtdlDtlsVO">
+		SELECT
+		*
+		FROM tbl_htdl_dtls
+		WHERE htdl_id = #{htdlId}
+		
+	</select>
+
+	<insert id="insert">
+		INSERT
+		INTO
+		tbl_htdl_dtls(htdl_id,htdl_seq,menu_name,menu_price)
+		VALUES
+		(#{htdlId},seq_htdl_dtls.nextval,#{menuName},#{menuPrice})
+	</insert>
+
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="htdlSeq" order="BEFORE"
+			resultType="long">
+			select seq_htdl_dtls.nextval from dual
+		</selectKey>
+		INSERT
+		INTO tbl_htdl_dtls(htdl_id,htdl_seq,menu_name,menu_price)
+		VALUES
+		(#{htdlId},#{htdlSeq},#{menuName},#{menuPrice})
+	</insert>
+	
+	<insert id="insertHtdlDtls" parameterType="java.util.List">
+		INSERT ALL
+		<foreach collection="list" item="item">
+		INTO tbl_htdl_dtls
+		(
+		htdl_id,
+		htdl_seq,
+		menu_name,
+		menu_price
+		)
+		VALUES
+		(
+			${item.htdlId},
+			FN_GET_SEQ('seq_htdl_dtls'),
+			'${item.menuName}',
+			${item.menuPrice}
+		)
+		</foreach>
+		SELECT * FROM dual
+	</insert>
+
+	<update id="update">
+		UPDATE tbl_htdl_dtls
+		SET
+		htdl_id = #{htdlId},
+		menu_name
+		= #{menuName},
+		menu_price = #{menuPrice}
+		where htdl_seq = #{htdlSeq}
+	</update>
+
+	<delete id="delete">
+		DELETE
+		FROM tbl_htdl_dtls
+		WHERE htdl_id = #{htdlId}
+	</delete>
+
+
+</mapper>
