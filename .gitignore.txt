@@ -1,0 +1,18 @@
+### Java template
+*.class
+ 
+# Package Files #
+*.jar
+*.war
+*.ear
+ 
+### macOS template
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+# Compliled files
+/target/
+**/target
+/example/
+
