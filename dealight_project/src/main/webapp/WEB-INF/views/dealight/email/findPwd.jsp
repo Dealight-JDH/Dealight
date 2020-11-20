@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+   <%@include file="../../includes/loginmodalHeader.jsp" %>
+    <%@include file="../../includes/mainMenu.jsp" %>
+    <%@include file="../../includes/loginModal.jsp" %>
+
 <!DOCTYPE html>
+
 <html>
 <head>
 <meta charset="UTF-8">

@@ -10,6 +10,7 @@
     <style>
         .modal-content{
             border: 1px solid;
+            margin-top: 150px;
             position: fixed;
             left: 40%;
             padding: 20px;

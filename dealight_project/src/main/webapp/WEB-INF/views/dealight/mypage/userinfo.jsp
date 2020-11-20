@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ include file="../../includes/mainMenu.jsp" %> 
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--     <%@include file="../includes/menubar.jsp" %> --%>
 <!DOCTYPE html>

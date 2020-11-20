@@ -52,7 +52,7 @@ body {
    overflow: hidden;
    flex: 1;
    /* 비율을 1:1:1로 주기 */
-   height: 100%;
+   
    display: inline-block;
    z-index:0;
 }
@@ -320,7 +320,7 @@ body {
 <body>
    <div class="top-container" >
       <div class="topDiv" id="topDiv">
-         <div class="top">
+         <div class="top" style="height: 50px">
             <div class="dropdown">
                <button class="dropbtn">
                   <i class="fas fa-bars" color="black"></i>
@@ -373,7 +373,7 @@ body {
          
    </div>
    </div>
-   
+   </div>
    <script>
  //1. 버튼을 누르면 모달창이 띄어지고, 배경 회색으로 변경
    function openModal(){
