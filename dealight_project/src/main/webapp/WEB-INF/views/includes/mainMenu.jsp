@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="com.dealight.domain.UserVO"%>
+
+<!-- 현수현수현수 -->
+
 <html>
 <head>
 <meta charset="UTF-8">
@@ -46,6 +49,7 @@ body {
 }
 * /
 .top {
+<<<<<<< HEAD
 	border: 1px solid black;
 	overflow: hidden;
 	flex: 1;
@@ -53,6 +57,15 @@ body {
 	height: 100%;
 	display: inline-block;
 	z-index: 0;
+=======
+   border: 1px solid black;
+   overflow: hidden;
+   flex: 1;
+   /* 비율을 1:1:1로 주기 */
+   
+   display: inline-block;
+   z-index:0;
+>>>>>>> fc6b15490682e152af35e7916e5011f35903c2a0
 }
 
 .dropbtn {
@@ -267,11 +280,17 @@ body {
 	border: 1px solid black;
 	width: 100%;
 	height: 180px;
+
+.mydropbtn {
+  color: white;
+  z-index: 1;
+  cursor: pointer;
 }
 </style>
 </head>
 
 <body>
+<<<<<<< HEAD
 	<div class="top-container">
 		<div class="topDiv" id="topDiv">
 			<div class="top">
@@ -409,3 +428,81 @@ body {
 			location.href = "/dealight/mypage/reservation";
 		}
 	</script>
+=======
+   <div class="top-container" >
+      <div class="topDiv" id="topDiv">
+         <div class="top" style="height: 50px">
+            <div class="dropdown">
+               <button class="dropbtn">
+                  <i class="fas fa-bars" color="black"></i>
+                  <div class="dropdown-content">
+                     <a href="#">핫딜 찾기</a> <a href="#">매장 찾기</a>
+                  </div>
+               </button>
+            </div>
+            <!--end dropdown-->
+         
+            <div class="logo">
+               <div class="logo-content">
+                  <a href="/dealight/dealight" style="text-decoration: none"> <i
+                     class="fas fa-circle" color="red" style="font-size: 20px"></i> <i
+                     class="fas fa-circle" color="yellow" style="font-size: 20px"></i>
+                     <i class="fas fa-circle" color="green" style="font-size: 20px"></i>
+                  </a>
+               </div>
+               <div class="logo-content">
+                  <a href="/dealight/dealight" class="dealight" color="black"
+                     style="text-decoration: none">Dealight</a>
+               </div>
+            </div>
+            <!--end logo-->
+            <!--이 icon들은 굳이 div로 안 나눠도 될듯?-->
+            <div class="rightIcon">
+               <a href="#"><i class="fas fa-question-circle" color="black"></i></a>
+		    
+            </div>
+            <div class="rightIcon">
+               <a href="#"><i class="fas fa-bell" color="black"></i></a>
+            </div>
+            
+            <div class="rightIcon">
+               <div class="mydropdown">
+    <%-- <button class="mydropbtn" id="openModal" type="button" <%=loginState%>"> 사람이모지~~</button> --%>
+    <a class="mydropbtn" id="openModal"  <%=loginState%>"><i class="fas fa-user"  color="black"></i></a>
+    
+    <div class="mydropdown-content">
+       <a href="/dealight/mypage/reservation">예약내역(미구현)</a>
+      <a href="#waiting/list">웨이팅(미구현)</a>
+      <a href="#review">나의리뷰(미구현)</a>
+      <a href="#like">좋아요(미구현)</a> 
+      <a href="/dealight/mypage/modify">회원정보수정</a>
+      <a href="/dealight/logout" style="display:<%=display %>">로그아웃</a>
+    </div>
+  </div>
+    
+         </div>
+         
+   </div>
+   </div>
+   </div>
+   <script>
+ //1. 버튼을 누르면 모달창이 띄어지고, 배경 회색으로 변경
+   function openModal(){
+       document.getElementById('content').style.display='block';
+       document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+
+}
+
+//2. X버튼을 누르면 모달창이 사라지고 원상복귀
+   function closebtn(){
+   document.getElementById('content').style.display='none';
+   document.body.style.backgroundColor = "white";
+}
+
+//3. login상태에서 사람모양 클릭시 mypage(예약내역)로 이동
+function goMypage(){
+	 location.href="/dealight/mypage/reservation";
+
+}
+   </script>
+>>>>>>> fc6b15490682e152af35e7916e5011f35903c2a0

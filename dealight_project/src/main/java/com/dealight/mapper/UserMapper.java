@@ -13,7 +13,7 @@ import com.dealight.domain.UserVO;
  *****[김동인] 
  * 
  */
-
+//현수현수현수
 public interface UserMapper {
 
 	//로그인 된 유저 정보 불러오기
