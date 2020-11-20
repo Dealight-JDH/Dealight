@@ -2,7 +2,10 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@include file="../../includes/mainMenu.jsp"%>
+<%@include file="../../includes/loginmodalHeader.jsp" %>
 <!DOCTYPE html>
+<!-- 다울 -->
 <html>
 <head>
 <meta charset="UTF-8">
@@ -11,19 +14,17 @@
 </head>
 <body>
 	<div class="container">
-		<div class="nav">
-			<h1>메뉴바~~~~~~~~~~~~~~~</h1>
-		</div>
+	
 		<div class="left">
 			<div class="column">
-				<h1>${store.storeNm }</h1>
+				<h1>${store.storeNm }</h1>	<button type="button">하트</button><br>
 				<c:forEach items="${store.bstore.waits }" var="waits">
 					<h4>
-						<c:out value="${waits.waitTot}" />
-						명이 웨이팅중입니다!
-					</h4>
+						<c:out value="${waits.waitTot}" />명이 웨이팅 중 입니다!
+					</h4> 
 					<br>
-				</c:forEach>
+				</c:forEach><br>
+			
 				<div class="img">
 
 				<!--체크-->
@@ -89,7 +90,7 @@
 			<div class="right">
 			<div class="sticky">
 				<h1>예약</h1>
-				<form id="reserveForm" action="/controller/dealight/reservation" method="post">
+				<form id="reserveForm" action="/dealight/reservation" method="post">
 					<input type='hidden' name='storeId' value='<c:out value="${store.storeId }"/>' />
 					
 					<!-- <input type="hidden" id="selMenu" name="selMenu"> -->
@@ -114,12 +115,12 @@
 								<option value="${menus.menuSeq}">${menus.name }</option>
 							</c:forEach>
 						</select>
-						<input type="button" id="btnAddGoods" value="추가"></input>
+						<input type="button" id="btnAddMenus" value="추가"></input>
 
 					</div>
 					<div id="container"></div>
 
-					총금액&emsp; <input id="goodsTotAmt" name="totAmt" value=0>
+					<span id="goodsTotAmtSumMsg"></span> <span id="menusTotAmt" name="totAmt" value="0"></span>
 					<button type="submit">예약하기</button>
 
 				</form>
@@ -242,26 +243,26 @@
 	<!--옵션선택 -->
 
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-	<script type="text/javascript">
-		function Goods() {
+<script type="text/javascript">
+		function Menus() {
 
-			//json 배열[{goodsId:goodsId, goodsNm:goodsNm, amt:amt},{...},{...}]
-			this.arrAllGoods = new Array();//상품 목록
-			this.arrSelGoods = new Array();//선택한 상품 목록
+			//json 배열[{menusId:menusId, menusNm:menusNm, amt:amt},{...},{...}]
+			this.arrAllMenus = new Array();//상품 목록
+			this.arrSelMenus = new Array();//선택한 상품 목록
 
 			var p = this;
 
 			//상품 추가 시
-			this.select = function(trgtGoodsId) {
+			this.select = function(trgtMenusId) {
 
 				var selectedIndex = -1;
 
-				//전체 목록 배열에서 검색하여 goodsId가 없다면 선택 목록에 push후 container안에 그려준다.
+				//전체 목록 배열에서 검색하여 menusId가 없다면 선택 목록에 push후 container안에 그려준다.
 
 				//선택 목록에서 검색
-				for (var i = 0; i < p.arrSelGoods.length; i++) {
+				for (var i = 0; i < p.arrSelMenus.length; i++) {
 
-					if (p.arrSelGoods[i].goodsId == trgtGoodsId) {
+					if (p.arrSelMenus[i].menusId == trgtMenusId) {
 						selectedIndex = i;
 						break;
 					}
@@ -269,12 +270,12 @@
 
 				if (selectedIndex < 0) {//선택목록에 없을 경우 추가. 잇을경우 얼럿.
 					//전체목록에서 선택 추가해줌.
-					for (var j = 0; j < p.arrAllGoods.length; j++) {
+					for (var j = 0; j < p.arrAllMenus.length; j++) {
 
-						if (p.arrAllGoods[j].goodsId == trgtGoodsId) {
-							p.arrSelGoods.push(p.arrAllGoods[j]);
-							p.arrSelGoods[p.arrSelGoods.length - 1].cnt = 0;//무조건 개수 초기화
-							p.appendChoiceDiv(p.arrAllGoods[j]);
+						if (p.arrAllMenus[j].menusId == trgtMenusId) {
+							p.arrSelMenus.push(p.arrAllMenus[j]);
+							p.arrSelMenus[p.arrSelMenus.length - 1].cnt = 1;//무조건 개수 초기화
+							p.appendChoiceDiv(p.arrAllMenus[j]);
 							break;
 						}
 					}
@@ -285,16 +286,16 @@
 			}
 
 			//상품 제거 시
-			this.deselect = function(trgtGoodsId) {
+			this.deselect = function(trgtMenusId) {
 
 				var selectedIndex = -1;
 
 				//배열에서 검색.
-				for (var i = 0; i < p.arrSelGoods.length; i++) {
+				for (var i = 0; i < p.arrSelMenus.length; i++) {
 
-					if (p.arrSelGoods[i].goodsId == trgtGoodsId) {
-						p.removeChoiceDiv(p.arrSelGoods[i]);
-						p.arrSelGoods.splice(i, 1);
+					if (p.arrSelMenus[i].menusId == trgtMenusId) {
+						p.removeChoiceDiv(p.arrSelMenus[i]);
+						p.arrSelMenus.splice(i, 1);
 						break;
 					}
 				}
@@ -305,31 +306,35 @@
 
 				var innerHtml = "";
 
-				innerHtml += '<div id="div_'+prmtObj.goodsId+'">';
-				innerHtml += '	<span>' + prmtObj.goodsNm + '</span>';
-				innerHtml += '	<input type="text" id="input_sumAmt_'+prmtObj.goodsId+'" name="" value="0"/>'
-				innerHtml += '	<button type="button" id="" class="add" name="" onclick="goods.minus(\''
-						+ prmtObj.goodsId + '\');">-</button>';
-				innerHtml += '	<input type="text" id="input_cnt_'+prmtObj.goodsId+'" name="" value="0"/>'
-				innerHtml += '	<button type="button" id="" class="remove" name="" onclick="goods.plus(\''
-						+ prmtObj.goodsId + '\');">+</button>';
-				innerHtml += '	<button type="button" id="" class="remove" name="" onclick="goods.deselect(\''
-						+ prmtObj.goodsId + '\');">제거</button>';
+				innerHtml += '<div id="div_'+prmtObj.menusId+'">';
+				innerHtml += '	<span>' + prmtObj.menusNm + '</span>';
+				innerHtml += '	<input  type="text" id="input_sumAmt_'+prmtObj.menusId+'" name="" value="0" readonly ="readonly"/>'
+				innerHtml += '	<br><button type="button" id="" class="add" name="" onclick="menus.minus(\''
+				+ prmtObj.menusId + '\');">-</button>';
+				innerHtml += '	<input style=width:30px; type="text" id="input_cnt_'+prmtObj.menusId+'" name="" value="0" readonly ="readonly"/>'
+				innerHtml += '	<button  type="button" id="" class="remove" name="" onclick="menus.plus(\''
+				+ prmtObj.menusId + '\');">+</button>';
+				innerHtml += '	<button type="button" id="" class="remove" name="" onclick="menus.deselect(\''
+				+ prmtObj.menusId + '\');">X</button>';
 				innerHtml += '</div>';
 				$('#container').append(innerHtml);
 
-			}
-
+				}
 			this.removeChoiceDiv = function(prmtObj) {
-				$("#div_" + prmtObj.goodsId).remove();
+				$("#div_" + prmtObj.menusId).remove();
 			}
 
-			this.plus = function(trgtGoodsId) {
+			this.plus = function(trgtMenusId) {
 
-				for (var i = 0; i < p.arrSelGoods.length; i++) {
+				for (var i = 0; i < p.arrSelMenus.length; i++) {
 
-					if (p.arrSelGoods[i].goodsId == trgtGoodsId) {
-						p.arrSelGoods[i].cnt++;
+					if (p.arrSelMenus[i].menusId == trgtMenusId) {
+						if(p.arrSelMenus[i].cnt >= 10){
+							alert("최대수량입니다.");
+							break;
+						}
+						
+						p.arrSelMenus[i].cnt++;
 						break;
 					}
 				}
@@ -337,14 +342,16 @@
 				p.afterProc();
 			}
 
-			this.minus = function(trgtGoodsId) {
+			this.minus = function(trgtMenusId) {
 
-				for (var i = 0; i < p.arrSelGoods.length; i++) {
+				for (var i = 0; i < p.arrSelMenus.length; i++) {
 
-					if (p.arrSelGoods[i].goodsId == trgtGoodsId) {
-						if (p.arrSelGoods[i].cnt == 0)
+					if (p.arrSelMenus[i].menusId == trgtMenusId) {
+						if (p.arrSelMenus[i].cnt == 1){
+							alert("최소수량입니다.");
 							break;
-						p.arrSelGoods[i].cnt--;
+						}
+						p.arrSelMenus[i].cnt--;
 						break;
 					}
 				}
@@ -355,39 +362,46 @@
 			//계산 후처리.
 			this.afterProc = function() {
 
-				for (var i = 0; i < p.arrSelGoods.length; i++) {
-					$('#input_cnt_' + p.arrSelGoods[i].goodsId).val(
-							p.arrSelGoods[i].cnt);
-					$('#input_sumAmt_' + p.arrSelGoods[i].goodsId).val(
-							p.arrSelGoods[i].cnt * p.arrSelGoods[i].goodsUnprc);
+				for (var i = 0; i < p.arrSelMenus.length; i++) {
+					$('#input_cnt_' + p.arrSelMenus[i].menusId).val(
+							p.arrSelMenus[i].cnt);
+					$('#input_sumAmt_' + p.arrSelMenus[i].menusId).val(
+							p.arrSelMenus[i].cnt * p.arrSelMenus[i].menusUnprc);
 				}
 
-				var goodsTotAmt = 0;
-				for (var i = 0; i < p.arrSelGoods.length; i++) {
-					goodsTotAmt += p.arrSelGoods[i].cnt
-							* p.arrSelGoods[i].goodsUnprc;
+				var menusTotAmt = 0;
+				for (var i = 0; i < p.arrSelMenus.length; i++) {
+					menusTotAmt += p.arrSelMenus[i].cnt
+							* p.arrSelMenus[i].menusUnprc;
 				}
-				$('#goodsTotAmt').val(goodsTotAmt);
-
+				if(menusTotAmt == 0){
+					$('#goodsTotAmtSumMsg').text("");
+					$('#menusTotAmt').text("");
+					
+				}else{
+					$('#goodsTotAmtSumMsg').text("총금액");
+					$('#menusTotAmt').text(menusTotAmt);
+				
+				}
 			}
 
 		}
 
-		var goods = new Goods();
+		var menus = new Menus();
 
 		//jstl로 전체 상품 목록 미리 세팅<select id="menu" onchange="mySelect()" >
 
 		<c:forEach items="${store.bstore.menus }" var="menus">
-		goods.arrAllGoods.push({
-			goodsId : "${menus.menuSeq}",
-			goodsUnprc : "${menus.price}",
-			goodsNm : "${menus.name }",
+		menus.arrAllMenus.push({
+			menusId : "${menus.menuSeq}",
+			menusUnprc : "${menus.price}",
+			menusNm : "${menus.name }",
 			cnt : 0
 		});
 		</c:forEach>
 
-		$('#btnAddGoods').on('click', function() {
-			goods.select($('#menu option:selected').val());
+		$('#btnAddMenus').on('click', function() {
+			menus.select($('#menu option:selected').val());
 		});
 		const reserveForm =$("#reserveForm");
 		const reserve =$("#reserve");
@@ -398,16 +412,11 @@
 			//2.이벤트 막고 하고 싶은거
 			//2.1 페이지 이동시 다음페이지에 데이터를 넘길 수 있도록 input hidden에 선택된 메뉴 수량 넣음
 			//시간
-			if (goods.arrSelGoods.length === 0) {
+			if (menus.arrSelMenus.length === 0) {
 				alert("메뉴가 선택되지않았습니다");
 				return;
 			}
-			for (let i = 0; i < goods.arrSelGoods.length; i++) {
-				if(goods.arrSelGoods[i].cnt === 0){
-					alert("메뉴 수량을 선택해주세요");
-				return; 
-				}
-			}
+			
 			if($("#num option:selected").val() === ""){
 				alert("인원수를 선택해 주세요");
 				return;
@@ -423,17 +432,17 @@
 			reserveForm.append(reserveTime);
 			//3. 2에서 하고 싶은 거 실행 후  submit()
 			
-			for (let i = 0; i < goods.arrSelGoods.length; i++) {
-				if(goods.arrSelGoods[i].cnt === 0){
+			for (let i = 0; i < menus.arrSelMenus.length; i++) {
+				if(menus.arrSelMenus[i].cnt === 0){
 					alert("메뉴 수량을 선택해주세요");
 				return; 
 				}
 				//메뉴이름
-				const menuNm = '<input type="hidden" name=menu['+i+'].name value="'+goods.arrSelGoods[i].goodsNm+'">'; 
+				const menuNm = '<input type="hidden" name=menu['+i+'].name value="'+menus.arrSelMenus[i].menusNm+'">'; 
 				reserveForm.append(menuNm);
-				const menuPrice = '<input type="hidden" name=menu['+i+'].price value="'+goods.arrSelGoods[i].goodsUnprc+'">'; 
+				const menuPrice = '<input type="hidden" name=menu['+i+'].price value="'+menus.arrSelMenus[i].menusUnprc+'">'; 
 				reserveForm.append(menuPrice);
-				const menuQuan = '<input type="hidden" name=menu['+i+'].quan value="'+goods.arrSelGoods[i].cnt+'">'; 
+				const menuQuan = '<input type="hidden" name=menu['+i+'].quan value="'+menus.arrSelMenus[i].cnt+'">'; 
 				reserveForm.append(menuQuan);
 				
 				
@@ -442,6 +451,5 @@
 		});
 	</script>
 
-	<!-- 수량버튼 -->
 </body>
 </html>

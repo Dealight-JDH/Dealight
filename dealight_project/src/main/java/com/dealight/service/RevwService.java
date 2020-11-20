@@ -10,7 +10,7 @@ import com.dealight.domain.RevwPageDTO;
 import com.dealight.domain.RevwVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.WaitVO;
-
+//다울
 public interface RevwService {
 
 	// === 수빈 ===

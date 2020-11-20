@@ -10,6 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @AllArgsConstructor
+//다울
 public class Criteria {
 
 	private int pageNum;

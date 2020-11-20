@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+<<<<<<< HEAD
 
 /*
  * 
@@ -15,6 +16,9 @@ import lombok.NonNull;
  * 
  */
 
+=======
+//다울
+>>>>>>> 79af8c3586777c0e774c0dad7d5e2e7baef0ba38
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

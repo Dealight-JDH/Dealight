@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 /* 동인  */
 
+=======
+ <!-- 다울 -->
+>>>>>>> 79af8c3586777c0e774c0dad7d5e2e7baef0ba38
 .nav {
 	height: 70px;
 	width: 100%;
@@ -19,6 +23,9 @@
 
 .left p {
 	margin: 20px;
+}
+.inlineH {
+	display: inline-block;
 }
 
 .left h4 {

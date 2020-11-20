@@ -17,7 +17,7 @@ import com.dealight.mapper.RevwMapper;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
-
+//다울
 @Log4j
 @Service
 @AllArgsConstructor
