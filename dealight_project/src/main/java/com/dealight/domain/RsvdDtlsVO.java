@@ -1,5 +1,5 @@
 package com.dealight.domain;
-
+// 수빈
 import java.util.Date;
 
 import javax.validation.constraints.NotBlank;

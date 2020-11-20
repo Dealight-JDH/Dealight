@@ -1,5 +1,5 @@
 package com.dealight.domain;
-
+// 수빈
 import java.util.Date;
 import java.util.List;
 
@@ -79,15 +79,13 @@ public class RsvdVO {
     private Date updateDate;
     
     @NotNull
-    private int revwStus;
+    private int revwStus = 0;
     
     private String strRegDate;
     
     //@Nullable
     //private List<RsvdDtlsVO> dtlsList;
     //==================================================
-    
-    // === 수빈 ===
     // 예약 항목에서 리뷰 쓰기에 필요한 항목만 가져오는 VO를 별도로 만들 예정
     // 예약 상세
     private RsvdDtlsVO dtls;

@@ -1,7 +1,9 @@
 package com.dealight.domain;
-
+// 수빈
 import java.util.Date;
 import java.util.List;
+
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,13 +17,16 @@ import lombok.NonNull;
 @Builder
 public class RevwImgVO {
 	
-    // 리뷰번호 
+	// 리뷰번호 
+	@NotNull
     private int revwId;
 
-    // 사진일련번호 
+	// 사진일련번호 
+	@NotNull
     private int imgSeq;
-
-    // 사진주소
+	
+	// 사진주소
+	@NotNull
     private String imgUrl = "";
     
     private Date regDate;

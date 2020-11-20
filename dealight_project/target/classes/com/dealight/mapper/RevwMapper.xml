@@ -3,8 +3,8 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <!-- 다울 -->
+ <!-- 수빈 -->
 <mapper namespace="com.dealight.mapper.RevwMapper">
-
 
 	<select id="getRevwListWithPaging"
 		resultType="com.dealight.domain.RevwVO">
@@ -26,10 +26,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	]]>
 
 	</select>
-
-
-
-<!-- === 수빈 === -->
 
 <!-- RevwVO -->
 <resultMap type="com.dealight.domain.RevwVO" id="RevwVO">
