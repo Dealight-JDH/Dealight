@@ -8,6 +8,7 @@ import com.dealight.domain.RsvdVO;
 import com.dealight.domain.UserVO;
 
 
+//현수현수현수
 public interface UserService {
 
 	public void register(UserVO user);

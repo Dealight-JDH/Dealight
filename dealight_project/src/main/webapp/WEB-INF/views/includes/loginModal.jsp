@@ -12,6 +12,7 @@
                 }
             }
             %>
+<!-- 현수현수현수 -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,7 +53,7 @@
  </form> 
 <div>
 	<%--  <input type="hidden" id="msg" value='<c:out value="${msg}"/>'>  --%>
-    <a href="#google"><img id = "googlelogo" src="/resources/img/googlelogo.JPG"></a>
+   <!--  <a href="#google"><img id = "googlelogo" src="/resources/img/googlelogo.JPG"></a> -->
 
 </div>
 

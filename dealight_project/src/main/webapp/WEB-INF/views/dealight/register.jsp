@@ -2,6 +2,9 @@
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@include file="../includes/registerHeader.jsp" %>
   <%@include file="../includes/mainMenu.jsp" %>
+  
+  <!-- 현수현수현수 -->
+  
 <body>
     
 
@@ -11,7 +14,7 @@
     <p> 아이디 : <input type="text" name="userId" id = "userId" >  <button type="button" class="overlapCheck">중복확인</button> </p>
 	<p class = 'msg' id="idmsg">영문 대문자 또는 소문자 또는 숫자로 시작하는 아이디, 길이는 5~15자</p>
     <p> 비밀번호 : <input type="password" name="pwd" id="pwd" >  </p>
-    <p class = 'msg' id="pwdmsg">비밀번호는 숫자,영문 대소문자,특수문자 1개씩은 포함해서 8자리~16자리 이내</p>
+    <p class = 'msg' id="pwdmsg">비밀번호는 영문 대소문자,특수문자 1개씩은 포함해서 8자리~16자리 이내</p>
     <p> 비밀번호 확인 : <input type="password" name="repwd" id="repwd" onblur="myFunction()">  </p>
     <p class = 'msg' id="repwdmsg">비밀번호 확인을 위하여 다시 한 번 입력해주세요</p>
     <p> 이름 : <input type="text" name="name" id="name" >  2~8자리</p>
@@ -19,7 +22,7 @@
     <p> 생년월일 : <input type="text" name="brdt" id="brdt" placeholder="19900101" >  </p>
     <p>핸드폰번호 : <input type="text" name="telno" id="telno" placeholder = "01012345678" >
     <p class ='msg' id="telnomsg">-빼고 숫자만 입력해주세요</p>
-    <p> 이메일 : <input type="email" name="email" id = "email"value='${email }'>  </p>
+    <p> 이메일 : <input type="email" name="email" id = "email"value='${email }' readonly="readonly">  </p>
     <p> SNS연동 : <input type="radio" name="snsLginYn" value="Y">yes<input type="radio" name="snsLginYn" value="N">no  </p> 
     <div class="btn">
     <button class="regbtn" type="submit" disabled="disabled" id="reg">회원가입</button> 
@@ -50,13 +53,13 @@
     
     
   //정규식
-	let jId = /^[A-za-z0-9]{5,15}$/; //영문 대문자 또는 소문자 또는 숫자로 시작하는 아이디, 길이는 5~15자, 끝날때 제한 없음
-	let jPwd = /^(?=.*?[a-zA-Z])(?=.*?[#?!@$%^&*-]).{8,16}$/; // 숫자/대문자/소문자/특수문자 1개씩은 포함해서 8자리~16자리
-	let jName = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,8}$/; // 닉네임은 문자 제한없이 2~8자리
-	let jEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; // 이메일
-	let jBirth = /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/; // 19901010 
-	let jTelno = /^\d{3}\d{3,4}\d{4}$/; //전화번호 정규식 '-'빼고 숫자만 01063517402
-	let blank = /(\s*)/g;
+	const jId = /^[A-za-z0-9]{5,15}$/; //영문 대문자 또는 소문자 또는 숫자로 시작하는 아이디, 길이는 5~15자, 끝날때 제한 없음
+	const jPwd = /^(?=.*?[a-zA-Z])(?=.*?[#?!@$%^&*-]).{8,16}$/; // 대문자/소문자/특수문자 1개씩은 포함해서 8자리~16자리
+	const jName = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,8}$/; // 닉네임은 문자 제한없이 2~8자리
+	const jEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; // 이메일
+	const jBirth = /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/; // 19901010 
+	const jTelno = /^\d{3}\d{3,4}\d{4}$/; //전화번호 정규식 '-'빼고 숫자만 01063517402
+	const blank = /\s/g;
     
     //아이디 중복체크 확인
     $(function(){
@@ -65,8 +68,8 @@
 			
 			let btn = document.getElementById("reg");
 			let userId = $("#userId").val();
-			//정규식으로 형식검사
-			if(!jId.test(userId)){
+			//정규식으로 형식검사 +공백체크
+			if(!jId.test(userId) || blank.test(userId)){
 				document.getElementById("idmsg").innerHTML = "아이디 형식에 맞지 않습니다";
 				document.getElementById("idmsg").style.color = 'red'; 
 				btn.disabled = "disabled";
@@ -138,7 +141,7 @@
     		return false;
     	}
     	
-    	if(!jPwd.test($("#pwd").val())){
+    	if(!jPwd.test($("#pwd").val()) || blank.test($("#pwd").val())){
     		alert('비밀번호 형식에 맞지 않습니다');
     		$("#pwd").val("");
     		$("#pwd").focus();
@@ -166,7 +169,7 @@
     		return false;
     	}
     	
-    	if(!jName.test($("#name").val())){
+    	if(!jName.test($("#name").val()) || blank.test($("#name").val())){
     		alert('이름 형식에 맞지 않습니다');
     		$("#name").val("");
     		$("#name").focus();

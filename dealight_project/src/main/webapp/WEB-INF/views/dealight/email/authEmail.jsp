@@ -4,6 +4,8 @@
     <%@include file="../../includes/mainMenu.jsp" %>
     <%@include file="../../includes/loginModal.jsp" %>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    
+    <!-- 현수현수현수 -->
 <!DOCTYPE html>
 <html>
 <head>

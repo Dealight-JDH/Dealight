@@ -14,6 +14,7 @@ import com.dealight.mapper.WaitMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
+//현수현수현수
 @Log4j
 @Service
 @AllArgsConstructor

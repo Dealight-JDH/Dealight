@@ -6,7 +6,7 @@
     <%@include file="../includes/mainMenu.jsp" %>
     <%@include file="../includes/loginModal.jsp" %>
     
-    
+    <!-- 현수현수현수 -->
     
 <body>
 <h1>main page</h1>

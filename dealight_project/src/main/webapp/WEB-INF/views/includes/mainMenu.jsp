@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@page import="com.dealight.domain.UserVO"%>
+
+<!-- 현수현수현수 -->
+
 <html>
 <head>
 <meta charset="UTF-8">
@@ -282,6 +285,7 @@ body {
 .mydropbtn {
   color: white;
   z-index: 1;
+  cursor: pointer;
 }
 
 .mydropdown {

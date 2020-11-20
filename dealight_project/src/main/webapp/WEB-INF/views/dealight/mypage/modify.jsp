@@ -4,7 +4,7 @@
     <%@include file="../../includes/mainMenu.jsp" %>
    
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<!-- 현수현수현수 -->
 
      <script>
     //로그인이 안된 상태면 메인페이지로 넘어가게
@@ -46,15 +46,18 @@ padding: 20px;
 <p>프로필사진 : <input type = "text" name="photoSrc" id="photoSrc"value="<c:out value = "${user.photoSrc }"/>" >
 <p> SNS연동 : <input type="radio" name="snsLginYn" value="Y">yes<input type="radio" name="snsLginYn" value="N">no  </p>
 
-<div><button type="submit" onclick="success()">회원수정</button>
+<div><button type="submit" onclick="sussecc()">회원수정</button>
 <button type="submit" id="remove" >회원탈퇴</button></div>
 <a href = "/dealight/dealight">홈으로</a>
 </form>
 </div>
-
+<!-- 수정이 성공했는지 실패했는지 메세지를 받아옴 -->
+<%-- <input type="hidden"  id = msg2 value='<c:out value="${msg2}"/>'> --%>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
+
+
 //1. 성별 정보 불러오기, 수정 불가함
 let sexCheck =  document.getElementsByName('sex');
 let sex = '${user.sex}';
@@ -83,11 +86,13 @@ else if(sns == 'N'){
 //입력필드 유효성 검사
 
 //정규식
-	let jPwd = /^(?=.*?[a-zA-Z])(?=.*?[#?!@$%^&*-]).{8,16}$/; // 숫자/대문자/소문자/특수문자 1개씩은 포함해서 8자리~16자리
-	let jName = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,8}$/; // 닉네임은 문자 제한없이 2~8자리
-	let jEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; // 이메일
-	let jTelno = /^\d{3}\d{3,4}\d{4}$/; //전화번호 정규식 '-'빼고 숫자만 01063517402
 
+	const jPwd = /^(?=.*?[a-zA-Z])(?=.*?[#?!@$%^&*-]).{8,16}$/; // 대문자/소문자/특수문자 1개씩은 포함해서 8자리~16자리
+	const jName = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,8}$/; // 닉네임은 문자 제한없이 2~8자리
+	const jEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; // 이메일
+	const jTelno = /^\d{3}\d{3,4}\d{4}$/; //전화번호 정규식 '-'빼고 숫자만 01063517402
+	const blank = /\s/g;
+	
 	//1. 비밀번호와 비밀번호 확인이 일치하는지 확인
     function myFunction(){
     	if($("#repwd").val() == ""){
@@ -111,7 +116,7 @@ else if(sns == 'N'){
     function validate() {	
     	
     //0. 비밀번호 유효성검사
-    	if(!jPwd.test($("#pwd").val())){
+    	if(!jPwd.test($("#pwd").val()) || blank.test($("#pwd").val())){
     		alert('비밀번호 형식에 맞지 않습니다');
     		$("#pwd").val("");
     		$("#pwd").focus();
@@ -125,7 +130,7 @@ else if(sns == 'N'){
 		return false;
 	}
 	
-	if(!jName.test($("#name").val())){
+	if(!jName.test($("#name").val()) || blank.test($("#name").val())){
 		alert('이름 형식에 맞지 않습니다');
 		$("#name").val("");
 		$("#name").focus();
@@ -161,7 +166,17 @@ else if(sns == 'N'){
 	} 
     }
     
-//4. 회원탈퇴 
+  //4.회원정보수정 완료여부 메세지
+   /*  let msg2 = document.getElementById("msg2");
+    if(msg2 === 'sussecc'){
+    alert("회원 정보 수정이 완료되었습니다.");
+    }
+    if(msg2 === 'fail'){
+    	alert("회원 정보 수정이 실패하였습니다.");
+    }
+    location.href = '/dealight/mypage/reservation'; */
+    
+//5. 회원탈퇴 
 $(function(){
 	$("#remove").on("click", function(){
 		
@@ -186,10 +201,10 @@ $(function(){
 	})
 	})
 	
-	function success(){
-	alert("회원 정보 수정이 완료되었습니다.");
-	location.href = '/dealight/mypage/reservation';
-}
+function sussecc(){
+    	alert("회원 정보 수정이 완료되었습니다.");
+    	location.href = '/dealight/mypage/reservation'; 
+    }
 </script>
 </body>
 </html>

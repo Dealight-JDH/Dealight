@@ -3,7 +3,6 @@ package com.dealight.controller;
 
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.Email;
@@ -32,6 +30,7 @@ import com.dealight.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
+//현수현수현수
 @Controller
 @Log4j
 @RequestMapping("/dealight/*")
@@ -223,6 +222,11 @@ public class UserController {
 	@PostMapping("/mypage/modify")
 	public void modify(UserVO user, Model model) {
 		log.info("modify: "+user);
+//		if(service.modify(user) && service.modifyPhoto(user)) {
+//			model.addAttribute("msg2", "sussecc");
+//		}else {
+//			model.addAttribute("msg2", "fail");
+//		}
 		//(이름[닉네임], 비밀번호, 이메일, 전화번호, sns연동 만 변경
 		service.modify(user);
 		//프로필 사진 수정
@@ -289,7 +293,6 @@ public class UserController {
 			msg = "입력하신 아이디는 없는 회원입니다.";
 		}
 		rttr.addFlashAttribute("msg", msg);
-//		rttr.addFlashAttribute("sc", sc);
 		return "redirect:/dealight/dealight";
 	}
 	
