@@ -9,11 +9,16 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
                 
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+<<<<<<< HEAD
                 
         <property name="context-root" value="app"/>
                 
         <property name="java-output-path" value="/dealight_project/target/classes"/>
             
+=======
+        <property name="java-output-path" value="/dealight_project/target/classes"/>
+        <property name="context-root" value="/"/>
+>>>>>>> cfef919f8cf3fd73d291d982da6dfc6bd97040a5
     </wb-module>
     
 </project-modules>

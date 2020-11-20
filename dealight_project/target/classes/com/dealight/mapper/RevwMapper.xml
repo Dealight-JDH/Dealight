@@ -26,6 +26,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	</select>
 
+
+
+<!-- === 수빈 === -->
+
 <!-- RevwVO -->
 <resultMap type="com.dealight.domain.RevwVO" id="RevwVO">
 	<result property="revwId" column="revw_id" />
@@ -263,6 +267,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	insert into tbl_revw_img(revw_id, img_seq, img_url)
 	values (tbl_revw_SEQ.currval, tbl_revw_img_SEQ.nextval, #{imgUrl})
 </insert>
+<!-- 리뷰 등록 후 리뷰 수 카운팅하여 매장평가에 반영 -->
+<!-- <update id="countRevwForStoreEval">
+	update tbl_store_eval
+	set revw_tot_num = 
+	(select count(revw_id) from tbl_revw where store_id = #{storeId}
+	GROUP by store_id)
+	where store_id = #{storeId}
+</update> -->
 
 <!-- 예약의 리뷰 상태 1(작성됨)로 업데이트 -->
 <update id="updateRsvdRevwStus">

@@ -37,6 +37,9 @@ public interface RevwMapper {
 	
 	// **********동인
 
+	
+	// === 수빈 ===
+	
 	// 내가 작성한 리뷰 내역
 	public List<RevwVO> getWrittenList(String userId);
 	
@@ -69,6 +72,9 @@ public interface RevwMapper {
 	
 	// 리뷰 사진 등록
 	public void insertRevwImg(RevwImgVO img);
+	
+	// 리뷰 등록 후 리뷰 수 카운팅하여 매장평가에 반영
+//	public int countRevwForStoreEval(Long storeId);
 	
 	// 예약 항목 리뷰 상태 업데이트
 	public int updateRsvdRevwStus(@Param("userId") String userId, @Param("rsvdId") Long rsvdId);
