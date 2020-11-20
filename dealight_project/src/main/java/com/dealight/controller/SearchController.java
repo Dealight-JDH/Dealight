@@ -12,6 +12,7 @@ import com.dealight.service.SearchService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
+//현중
 @Controller
 @Log4j
 @RequestMapping("/search/*")

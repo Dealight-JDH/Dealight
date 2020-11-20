@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.dealight.domain.Criteria;
 import com.dealight.domain.MainStoreJoinVO;
-
+//현중
 public interface MainStoreJoinMapper {
 	
 	public List<MainStoreJoinVO> getList();

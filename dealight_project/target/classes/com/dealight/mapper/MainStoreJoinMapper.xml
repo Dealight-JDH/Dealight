@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-  
+  <!-- 현중 -->
 <mapper namespace="com.dealight.mapper.MainStoreJoinMapper">
 
 <select id="getList" resultType="com.dealight.domain.MainStoreJoinVO">

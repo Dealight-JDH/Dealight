@@ -26,7 +26,7 @@ import com.dealight.service.WaitService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-
+//현중 동인이형이랑 회의필요
 @Controller
 @Log4j
 @RequestMapping("/business/*")
