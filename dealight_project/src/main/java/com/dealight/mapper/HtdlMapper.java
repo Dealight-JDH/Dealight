@@ -8,6 +8,8 @@ import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlRsltVO;
 import com.dealight.domain.HtdlVO;
 
+//jongwoo
+
 public interface HtdlMapper {
 
 	HtdlVO findById(Long htdlId);

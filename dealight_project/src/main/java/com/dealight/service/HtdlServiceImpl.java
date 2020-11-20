@@ -20,6 +20,8 @@ import com.dealight.mapper.StoreMenuMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
+//jongwoo
+
 @Service
 @RequiredArgsConstructor
 @Log4j

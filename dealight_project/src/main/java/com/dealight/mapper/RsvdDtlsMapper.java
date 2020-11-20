@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.dealight.domain.RsvdDtlsVO;
 
+//jongwoo
+
 public interface RsvdDtlsMapper {
 	
 	// create

@@ -14,6 +14,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//jongwoo
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -79,9 +81,9 @@ public class RsvdVO {
     //private List<RsvdDtlsVO> dtlsList;
     //==================================================
     //이거에대한 설명필요해요 수빈씨
-//    // 리뷰 상세
+    // 리뷰 상세
     private RsvdDtlsVO dtls;
-//    // 매장
+    // 매장
     private StoreVO store;
     
     private String strRegDate;

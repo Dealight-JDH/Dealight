@@ -19,6 +19,8 @@ import com.dealight.domain.KakaoPayReadyVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
+//jongwoo
+
 @Service
 @RequiredArgsConstructor
 @Log4j

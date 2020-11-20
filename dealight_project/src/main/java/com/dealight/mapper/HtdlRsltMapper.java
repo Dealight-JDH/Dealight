@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.dealight.domain.HtdlRsltVO;
 
+//jongwoo
+
 public interface HtdlRsltMapper {
 	
 	// create

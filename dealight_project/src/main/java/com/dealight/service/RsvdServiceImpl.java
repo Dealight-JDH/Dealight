@@ -28,6 +28,8 @@ import com.dealight.mapper.StoreMenuMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
+//jongwoo
+
 @Service
 @Log4j
 @RequiredArgsConstructor
@@ -112,10 +114,6 @@ public class RsvdServiceImpl implements RsvdService{
 		// TODO Auto-generated method stub
 		
 	}
-
-
-	
-	
 
 
 	

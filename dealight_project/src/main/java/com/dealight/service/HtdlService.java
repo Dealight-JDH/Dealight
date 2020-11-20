@@ -7,6 +7,8 @@ import com.dealight.domain.HtdlRsltVO;
 import com.dealight.domain.HtdlVO;
 import com.dealight.domain.StoreMenuVO;
 
+//jongwoo
+
 public interface HtdlService {
 	
 	//식당 메뉴 조회

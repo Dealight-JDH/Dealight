@@ -5,6 +5,8 @@ import java.util.List;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.RsvdDtlsVO;
 
+//jongwoo
+
 public interface HtdlDtlsMapper {
 	
 	// create
