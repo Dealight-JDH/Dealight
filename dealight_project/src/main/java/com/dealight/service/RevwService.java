@@ -35,7 +35,7 @@ public interface RevwService {
 	public List<WaitVO> getWritableListByWait(String userId);
 	
 	// 작성 가능한 리뷰들을 하나에 담기
-	
+	 
 
 	// 리뷰 등록
 	public void registerRevw(RevwVO revw);
