@@ -10,6 +10,7 @@ import com.dealight.domain.RsvdDtlsVO;
  *****[김동인] 
  * 
  */
+//jongwoo
 
 public interface HtdlDtlsMapper {
 	

@@ -13,6 +13,7 @@ import com.dealight.domain.HtdlVO;
  *****[김동인] 
  * 
  */
+//jongwoo
 
 public interface HtdlMapper {
 

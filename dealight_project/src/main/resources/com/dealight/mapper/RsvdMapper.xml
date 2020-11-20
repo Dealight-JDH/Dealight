@@ -6,6 +6,8 @@
 		<!-- 동인 -->
 		
 		<mapper namespace="com.dealight.mapper.RsvdMapper">
+	
+<!-- jongwoo -->
 		
 	<!-- 예약+상세 -->	
 		<resultMap type="com.dealight.domain.RsvdVO" id="rsvdDetail">

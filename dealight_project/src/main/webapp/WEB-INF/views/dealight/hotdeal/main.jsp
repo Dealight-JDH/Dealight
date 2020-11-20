@@ -323,13 +323,13 @@ h4{
 				str += "핫딜 종료 시간: "+ "<span class= 'js-end'>"+list[i].endTm+"</span>"+"<br>"
 				
 				str += "메뉴: ";
-				console.log("======="+ list[i].dtlsList);
+				console.log("======="+ list[i].htdlDtls);
 				console.log(list[i].dtlsList);
 			
 			//핫딜 메뉴 리스트 생성
-			for(var j=0, dtlsLen = list[i].dtlsList.length || 0; j<dtlsLen; j++){
-				str += list[i].dtlsList[j].menuName+" ";
-				console.log(list[i].dtlsList[j].menuName);
+			for(var j=0, dtlsLen = list[i].htdlDtls.length || 0; j<dtlsLen; j++){
+				str += list[i].htdlDtls[j].menuName+" ";
+				console.log(list[i].htdlDtls[j].menuName);
 			}
 				str +="<br>";
 				console.log("========="+list[i].befPrice);
@@ -375,7 +375,7 @@ h4{
 	
 	//모달 띄우기
 	 function showModal(htdl){
-		var size = htdl.dtlsList.length;		
+		var size = htdl.htdlDtls.length;		
 		var str = [];
 		
 		console.log("===============showModal" + htdl.lmtPnum+"," + size);
@@ -394,7 +394,7 @@ h4{
 		revwTotNum.text(htdl.storeEval.revwTotNum);
 		
 		for(var i=0; i<size; i++){
-			str.push(htdl.dtlsList[i].menuName);
+			str.push(htdl.htdlDtls[i].menuName);
 		}
 		menuName.text(str.join(","));		
 		

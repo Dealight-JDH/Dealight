@@ -1,5 +1,4 @@
 package com.dealight.domain;
-// 수빈
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +18,8 @@ import lombok.NoArgsConstructor;
  *****[김동인] 
  * 
  */
+//jongwoo
+// 수빈
 
 @Data
 @AllArgsConstructor
@@ -88,6 +89,8 @@ public class RsvdVO {
     //==================================================
     // 예약 항목에서 리뷰 쓰기에 필요한 항목만 가져오는 VO를 별도로 만들 예정
     // 예약 상세
+    //이거에대한 설명필요해요 수빈씨
+    // 리뷰 상세
     private RsvdDtlsVO dtls;
     // 매장
     private StoreVO store;

@@ -19,6 +19,8 @@ import com.dealight.service.HtdlService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
+//jongwoo
+
 @RestController
 @Log4j
 @RequiredArgsConstructor
@@ -38,6 +40,8 @@ public class HtdlRestController {
 		List<HtdlVO> filterList = service.getList().stream()
 				.filter(htdl -> htdl.getStusCd().equals(stusCd))
 				.collect(Collectors.toList());
+		
+		log.info("==========================hotdeal: " + filterList);
 		
 		return new ResponseEntity(filterList, HttpStatus.OK);
 	}

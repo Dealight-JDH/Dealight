@@ -21,6 +21,8 @@ import com.dealight.mapper.HtdlMapper;
 
 import lombok.extern.log4j.Log4j;
 
+//jongwoo
+
 @Service
 @Log4j
 public class HtdlTimeCheckService {
@@ -31,6 +33,7 @@ public class HtdlTimeCheckService {
 
 	ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(3);
 
+//<<<<<<< HEAD
 	@PreDestroy
 	public void preDestroy() {
 
@@ -53,141 +56,146 @@ public class HtdlTimeCheckService {
 		log.info("스케줄러 종료");
 	}
 	
-//	@PostConstruct
-//	public void postConstruct() throws ParseException {
-//		
-//		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
-//		log.info(Thread.currentThread().getName());
-//		log.info("------postConstruct");
-//		
-//		//스케쥴러 실행
-//		exec.scheduleAtFixedRate(new Runnable() {
-//			
-//			@Override
-//			@Scheduled(fixedDelay = 3000)
-//			public void run() {
-//				// TODO Auto-generated method stub
-//				try {
-//					log.info("------check======");
-//					//서비스 시작
-//					service();
-//					log.info("------check"+ Thread.currentThread().getName()+"---------");
-//				}catch(Exception e){
-//					e.printStackTrace();
-//					exec.shutdown();
-//				}
-//			}
-//			
-//		}, 0, 3, TimeUnit.SECONDS); 
-//	}
-//	
-//	@Transactional
-//	public void service() {
-//		
-//		SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd hh:mm");
-//			
-//		//전체 핫딜 리스트
-//		List<HtdlVO> lists = htdlMapper.getList();
-//		
-//		//핫딜 시작시간	
-//		List<Date> startTmList = lists.stream()
-//										.map(vo -> {
-//											try {
-//												return format.parse(vo.getStartTm());
-//											} catch (ParseException e) {
-//												// TODO Auto-generated catch block
-//												throw new RuntimeException(e);
-//											}
-//										})
-//										.collect(Collectors.toList());
-//	
-//		//startTmList.forEach(System.out::println);
-//		log.info("-----------");
-//		//핫딜 마감시간
-//		List<Date> endTmList = lists.stream()
-//										.map(vo -> {
-//											try {
-//												return format.parse(vo.getEndTm());
-//											} catch (ParseException e) {
-//												// TODO Auto-generated catch block
-//												throw new RuntimeException(e);
-//											}
-//										})
-//										.collect(Collectors.toList());
-//	//endTmList.forEach(System.out::println);
-//	
-//	
-//		
-//		//핫딜 상태 종료가 되어야 한다
-//		//종료(시간 마감, 인원 마감)
-//		//핫딜 결과 VO 생성
-//		//현재 시간
-//		long sysdateMillis =System.currentTimeMillis();
-//		Date sysdate = new Date(sysdateMillis);
-//		log.info("sysdate : " + sysdate);
-//		
-//		
-//		for(int i=0; i< startTmList.size(); i++) {
-//			
-//			// 핫딜 시작 전..
-//			if(isBeforeTime(startTmList.get(i), sysdate)) {
-//				
-//				log.info("======핫딜 시작 전======");
-//				log.info(lists.get(i).getHtdlId()+"번 핫딜 시작 전입니다.. " +lists.get(i).getStartTm());
-//				
-//				if(isStusCdCheck(lists.get(i).getStusCd(), "P")) {						
-//					lists.get(i).setStusCd("P");
-//					htdlMapper.update(lists.get(i));
-//					log.info("변화================="+lists.get(i).getHtdlId()+"번 핫딜 핫딜 예정");
-//				}
-//				
-//				
-//			}else if(isBetweenTime(startTmList.get(i), endTmList.get(i), sysdate)) {
-//				//핫딜 진행 중..
-//				log.info("======핫딜 진행중=======");
-//				log.info(lists.get(i).getHtdlId()+ "번 핫딜 진행중..."+lists.get(i).getStartTm()+" < "+ sysdate + " < " + lists.get(i).getEndTm()+"==========");
-//				
-//				if(isStusCdCheck(lists.get(i).getStusCd(), "A")) {
-//					
-//					lists.get(i).setStusCd("A");
-//					htdlMapper.update(lists.get(i));				
-//					log.info("변화================="+lists.get(i).getHtdlId()+"번 핫딜 진행 시작!!");
-//						
-//				}
-//				
-//				
-//				//진행중인 상태에서 현재인원이 마감되었을 경우..
-//				if(isFinished(lists.get(i).getCurPnum(), lists.get(i).getLmtPnum())) {
-//					if(isStusCdCheck(lists.get(i).getStusCd(), "I")) {
-//						lists.get(i).setStusCd("I");
-//						htdlMapper.update(lists.get(i));
-//						log.info("변화==========" +lists.get(i).getHtdlId()+"번 핫딜 안원 마감");
-//						registerHtdlRsltVO(lists.get(i), htdlMapper, startTmList.get(i), sysdate);
-//					}
-//					
-//				}
-//			
-//			}else if(isAfterTime(endTmList.get(i), sysdate)) {
-//				//핫딜 종료..
-//				if(isStusCdCheck(lists.get(i).getStusCd(), "I")) {
-//					lists.get(i).setStusCd("I");
-//					htdlMapper.update(lists.get(i));
-//					log.info("변화================="+lists.get(i).getHtdlId()+"번 핫딜 시간 종료");
-//					registerHtdlRsltVO(lists.get(i), htdlMapper, startTmList.get(i), endTmList.get(i));
-//				}
-//					
-//				log.info("======핫딜 종료=======");
-//				log.info(lists.get(i).getStartTm()+", " + lists.get(i).getEndTm()+ " < " + sysdate );
-//				
-//			}
-//			
-//			
-//		}
-//		List<Date> filterDate = startTmList.stream().filter(time -> time.before(sysdate)).collect(Collectors.toList());
-//		log.info("=================");
-//		//filterDate.forEach(System.out::println);
-//	
-//}
+//=======
+
+//>>>>>>> 807e70a1d17d3a14a17c9177a4e64f082bcbaa4b
+	@PostConstruct
+	public void postConstruct() throws ParseException {
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+		log.info(Thread.currentThread().getName());
+		log.info("------postConstruct");
+		
+		//스케쥴러 실행
+		exec.scheduleAtFixedRate(new Runnable() {
+			
+			@Override
+			@Scheduled(fixedDelay = 3000)
+			public void run() {
+				// TODO Auto-generated method stub
+				try {
+					log.info("------check======");
+					//서비스 시작
+					service();
+					log.info("------check"+ Thread.currentThread().getName()+"---------");
+				}catch(Exception e){
+					e.printStackTrace();
+					exec.shutdown();
+				}
+			}
+			
+		}, 0, 3, TimeUnit.SECONDS); 
+	}
+
+	
+	@Transactional
+	public void service() {
+		
+		SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd hh:mm");
+			
+		//전체 핫딜 리스트
+		List<HtdlVO> lists = htdlMapper.getList();
+		
+		//핫딜 시작시간	
+		List<Date> startTmList = lists.stream()
+										.map(vo -> {
+											try {
+												return format.parse(vo.getStartTm());
+											} catch (ParseException e) {
+												// TODO Auto-generated catch block
+												throw new RuntimeException(e);
+											}
+										})
+										.collect(Collectors.toList());
+	
+		//startTmList.forEach(System.out::println);
+		log.info("-----------");
+		//핫딜 마감시간
+		List<Date> endTmList = lists.stream()
+										.map(vo -> {
+											try {
+												return format.parse(vo.getEndTm());
+											} catch (ParseException e) {
+												// TODO Auto-generated catch block
+												throw new RuntimeException(e);
+											}
+										})
+										.collect(Collectors.toList());
+	//endTmList.forEach(System.out::println);
+	
+	
+		
+		//핫딜 상태 종료가 되어야 한다
+		//종료(시간 마감, 인원 마감)
+		//핫딜 결과 VO 생성
+		//현재 시간
+		long sysdateMillis =System.currentTimeMillis();
+		Date sysdate = new Date(sysdateMillis);
+		log.info("sysdate : " + sysdate);
+		
+		
+		for(int i=0; i< startTmList.size(); i++) {
+			
+			// 핫딜 시작 전..
+			if(isBeforeTime(startTmList.get(i), sysdate)) {
+				
+				log.info("======핫딜 시작 전======");
+				log.info(lists.get(i).getHtdlId()+"번 핫딜 시작 전입니다.. " +lists.get(i).getStartTm());
+				
+				if(isStusCdCheck(lists.get(i).getStusCd(), "P")) {						
+					lists.get(i).setStusCd("P");
+					htdlMapper.update(lists.get(i));
+					log.info("변화================="+lists.get(i).getHtdlId()+"번 핫딜 핫딜 예정");
+				}
+				
+				
+			}else if(isBetweenTime(startTmList.get(i), endTmList.get(i), sysdate)) {
+				//핫딜 진행 중..
+				log.info("======핫딜 진행중=======");
+				log.info(lists.get(i).getHtdlId()+ "번 핫딜 진행중..."+lists.get(i).getStartTm()+" < "+ sysdate + " < " + lists.get(i).getEndTm()+"==========");
+				
+				if(isStusCdCheck(lists.get(i).getStusCd(), "A")) {
+					
+					lists.get(i).setStusCd("A");
+					htdlMapper.update(lists.get(i));				
+					log.info("변화================="+lists.get(i).getHtdlId()+"번 핫딜 진행 시작!!");
+						
+				}
+				
+				
+				//진행중인 상태에서 현재인원이 마감되었을 경우..
+				if(isFinished(lists.get(i).getCurPnum(), lists.get(i).getLmtPnum())) {
+					if(isStusCdCheck(lists.get(i).getStusCd(), "I")) {
+						lists.get(i).setStusCd("I");
+						htdlMapper.update(lists.get(i));
+						log.info("변화==========" +lists.get(i).getHtdlId()+"번 핫딜 안원 마감");
+						registerHtdlRsltVO(lists.get(i), htdlMapper, startTmList.get(i), sysdate);
+					}
+					
+				}
+			
+			}else if(isAfterTime(endTmList.get(i), sysdate)) {
+				//핫딜 종료..
+				if(isStusCdCheck(lists.get(i).getStusCd(), "I")) {
+					lists.get(i).setStusCd("I");
+					htdlMapper.update(lists.get(i));
+					log.info("변화================="+lists.get(i).getHtdlId()+"번 핫딜 시간 종료");
+					registerHtdlRsltVO(lists.get(i), htdlMapper, startTmList.get(i), endTmList.get(i));
+				}
+					
+				log.info("======핫딜 종료=======");
+				log.info(lists.get(i).getStartTm()+", " + lists.get(i).getEndTm()+ " < " + sysdate );
+				
+			}
+			
+			
+		}
+		List<Date> filterDate = startTmList.stream().filter(time -> time.before(sysdate)).collect(Collectors.toList());
+		log.info("=================");
+		//filterDate.forEach(System.out::println);
+	
+}
+//>>>>>>> 807e70a1d17d3a14a17c9177a4e64f082bcbaa4b
 	
 	//핫딜 상태 변화
 	public boolean isStusCdCheck(String currStusCd, String eventStusCd) {

@@ -14,6 +14,7 @@ import com.dealight.domain.UserWithRsvdDTO;
  *****[김동인] 
  * 
  */
+//jongwoo
 
 public interface RsvdMapper {
 

@@ -14,6 +14,7 @@ import com.dealight.domain.UserWithRsvdDTO;
  *****[김동인] 
  * 
  */
+//jongwoo
 
 public interface RsvdService {
 	//실시간 예약, 특정 시간 예약

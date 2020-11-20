@@ -1,5 +1,4 @@
 package com.dealight.domain;
-// 수빈
 import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
@@ -11,11 +10,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+// 수빈
 /*
  * 
  *****[김동인] 
  * 
  */
+//jongwoo
 
 @Data
 @AllArgsConstructor

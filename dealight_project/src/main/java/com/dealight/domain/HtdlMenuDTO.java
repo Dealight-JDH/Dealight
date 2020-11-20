@@ -4,6 +4,8 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
+//jongwoo
+
 @Data
 public class HtdlMenuDTO {
 	
