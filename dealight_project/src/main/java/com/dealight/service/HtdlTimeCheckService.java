@@ -21,6 +21,8 @@ import com.dealight.mapper.HtdlMapper;
 
 import lombok.extern.log4j.Log4j;
 
+//jongwoo
+
 @Service
 @Log4j
 public class HtdlTimeCheckService {
@@ -31,6 +33,7 @@ public class HtdlTimeCheckService {
 
 	ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(3);
 
+//<<<<<<< HEAD
 	@PreDestroy
 	public void preDestroy() {
 
@@ -53,6 +56,9 @@ public class HtdlTimeCheckService {
 		log.info("스케줄러 종료");
 	}
 	
+//=======
+
+//>>>>>>> 807e70a1d17d3a14a17c9177a4e64f082bcbaa4b
 	@PostConstruct
 	public void postConstruct() throws ParseException {
 		
@@ -80,6 +86,7 @@ public class HtdlTimeCheckService {
 			
 		}, 0, 3, TimeUnit.SECONDS); 
 	}
+
 	
 	@Transactional
 	public void service() {
@@ -188,6 +195,7 @@ public class HtdlTimeCheckService {
 		//filterDate.forEach(System.out::println);
 	
 }
+//>>>>>>> 807e70a1d17d3a14a17c9177a4e64f082bcbaa4b
 	
 	//핫딜 상태 변화
 	public boolean isStusCdCheck(String currStusCd, String eventStusCd) {

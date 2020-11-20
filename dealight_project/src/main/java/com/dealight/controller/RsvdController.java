@@ -23,6 +23,8 @@ import com.dealight.service.RsvdService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
+//jongwoo
+
 @Controller
 @Log4j
 @RequestMapping("/dealight/reservation/*")
@@ -38,6 +40,7 @@ public class RsvdController {
 		log.info("rsvdForm menu...");
 		log.info("======" + rsvdService.getMenuList(storeId));
 		
+		model.addAttribute("storeId", storeId);
 		model.addAttribute("menus", rsvdService.getMenuList(storeId));
 		
 	}
@@ -60,6 +63,7 @@ public class RsvdController {
     @PostMapping("/kakaoPay")
     public String kakaoPay(@Valid RsvdRequestDTO requestDto, BindingResult bindingResult){
     	
+    	log.info("====================kakao rsvdFomr: " + requestDto);
 //    	if(bindingResult.hasErrors()) {
 //			//유효성 검사
 //			List<ObjectError> errorList = bindingResult.getAllErrors();

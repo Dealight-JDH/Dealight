@@ -5,13 +5,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.dealight.domain.Criteria;
-import com.dealight.domain.PageDTO;
+import com.dealight.domain.SearchDTO;
 import com.dealight.service.SearchService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
+//현중
 @Controller
 @Log4j
 @RequestMapping("/search/*")
@@ -22,11 +22,11 @@ public class SearchController {
 	
 	
 	@GetMapping("/")
-	public String list(Criteria cri, Model model) {
+	public String list(SearchDTO search, Model model) {
 		
-		log.info("Criteria:" + cri +";");
+		log.info("SearchDTO:" + search +";");
 		
-		model.addAttribute("pageMaker", cri);
+		model.addAttribute("search", search);
 		
 		return "/search/list";
 	}

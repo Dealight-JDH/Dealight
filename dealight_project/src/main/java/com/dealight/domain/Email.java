@@ -2,6 +2,7 @@ package com.dealight.domain;
 
 import lombok.Data;
 
+//현수현수현수
 @Data
 public class Email {
 

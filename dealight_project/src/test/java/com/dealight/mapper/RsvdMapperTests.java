@@ -213,7 +213,6 @@ public class RsvdMapperTests {
 	}
 	
 	
-	// �ʼ��Է°�
     private Long id = 6L;
     private Long storeId = 13L;
     private String userId = "kjuioq";
@@ -223,7 +222,6 @@ public class RsvdMapperTests {
     private int totAmt = 30;
     private int totQty = 30;
     
-    // �����Է°�
     private long htdlId = 10;
     private int aprvNo = 1111;
     
@@ -328,28 +326,26 @@ public class RsvdMapperTests {
     
     // read list
     // find by store and date
-//    @Test
-//    public void findRsvdListByStoreAndDateTest1() {
-//    	
-//    	String date = "20201107";
-//    	
-//    	List<RsvdVO> list = mapper.findByStoreIdToday(storeId, date);
-//
-//    	log.info(list);
-//    	
-//    	assertNotNull(list);
-//    	
-//		String pattern = "yyyyMMdd";
-//		
-//		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-//    	
-//    	list.forEach((rsvd) -> {
-//    		assertTrue(rsvd.getStoreId() == storeId);
-//    		assertTrue(simpleDateFormat.format(rsvd.getRegDate()).equals(date));
-//    	});
+    @Test
+    public void findRsvdListByStoreAndDateTest1() {
+    	
+    	String date = "20201107";
+    	storeId = 13L;
+    	
+    	List<RsvdVO> list = mapper.findByStoreIdAndDate(storeId, date);
+
+    	log.info("list................................................"+list);
+    	
+    	assertNotNull(list);
+    	
+    	
+    	list.forEach((rsvd) -> {
+    		assertTrue(rsvd.getStoreId() == storeId);
+    		assertTrue(rsvd.getRegDate().equals(date));
+    	});
     	 
     	
-//    }
+    }
     
     // read list
     // find by store and user

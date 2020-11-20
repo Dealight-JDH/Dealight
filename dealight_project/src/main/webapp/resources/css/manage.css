@@ -1,3 +1,5 @@
+ /* ë™ì¸  */
+ 
         *{
             margin: auto;
         }
@@ -178,7 +180,7 @@
             min-width: 100px;
         }
 
-        /* ÀÌµ¿ */
+        /* ï¿½Ìµï¿½ */
         /* hover */
 
         .tooltip {
@@ -307,7 +309,7 @@
         cursor: pointer;
         }
 
-        /* ÀÓ½Ã */
+        /* ï¿½Ó½ï¿½ */
         .main_box > h2 {
             position: absolute;
             left: 100px;

@@ -5,6 +5,12 @@ import java.util.List;
 import com.dealight.domain.BStoreVO;
 import com.dealight.domain.BUserVO;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 public interface BUserMapper {
 	
 	// create

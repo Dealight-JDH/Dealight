@@ -1,6 +1,5 @@
 package com.dealight.domain;
-
-
+// 수빈
 import java.util.Date;
 import java.util.List;
 
@@ -8,7 +7,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+//다울
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,7 +37,7 @@ public class StoreVO {
 	    
 	    private List<StoreImgVO> imgs; 
 	    
-	    //채수빈: 추가한 컬럼들
+	    // 수빈: 추가한 컬럼들
 	    // 매장 대표사진
 	    private String repImg;
 	    // 매장 지점이름

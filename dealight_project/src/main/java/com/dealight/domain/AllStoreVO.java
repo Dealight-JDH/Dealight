@@ -2,9 +2,10 @@ package com.dealight.domain;
 
 /*
  * 
- * 동인 추가 VO
+ *****[김동인] 
  * 
  */
+
 
 import java.util.Date;
 import java.util.List;

@@ -6,6 +6,12 @@ import org.apache.ibatis.annotations.Param;
 
 import com.dealight.domain.StoreTagVO;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 public interface StoreTagMapper {
 	
 	int update(StoreTagVO tag);

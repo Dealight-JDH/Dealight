@@ -22,6 +22,13 @@ import com.dealight.service.UserService;
 
 import lombok.extern.log4j.Log4j;
 
+/*
+ * 
+ *****[ÍπÄÎèôÏù∏] 
+ * 
+ */
+
+
 /**
  * Handles requests for the application home page.
  */
@@ -60,10 +67,8 @@ public class HomeController {
 	@RequestMapping(value = "/socket", method = RequestMethod.GET)
 	public ModelAndView socket(Locale locale, ModelAndView mv) {
 		
-		// view »≠∏È¿« ¿Ã∏ß¿ª ±∏º∫«—¥Ÿ.
 		mv.setViewName("test");
 		
-		// ªÁøÎ¿⁄ ¡§∫∏ √‚∑¬(ººº«)
 		UserVO user = userService.read("kjuioq");
 		//UserVO user = (UserVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		System.out.println("user name : " + user.getName());

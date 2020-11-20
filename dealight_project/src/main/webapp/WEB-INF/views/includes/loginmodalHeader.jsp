@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+    
+    <!-- 현수현수현수 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +11,7 @@
     <style>
         .modal-content{
             border: 1px solid;
+            margin-top: 150px;
             position: fixed;
             left: 40%;
             padding: 20px;

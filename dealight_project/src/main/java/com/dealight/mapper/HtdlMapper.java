@@ -8,6 +8,13 @@ import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlRsltVO;
 import com.dealight.domain.HtdlVO;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+//jongwoo
+
 public interface HtdlMapper {
 
 	HtdlVO findById(Long htdlId);

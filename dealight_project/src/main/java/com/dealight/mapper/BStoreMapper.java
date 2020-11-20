@@ -6,6 +6,12 @@ import org.apache.ibatis.annotations.Param;
 
 import com.dealight.domain.BStoreVO;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 public interface BStoreMapper {
 
 //	public List<StoreVO> getList();

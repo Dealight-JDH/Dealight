@@ -24,7 +24,7 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	
+	<!-- 동인 추가 -->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">	
 	</beans:bean>
 

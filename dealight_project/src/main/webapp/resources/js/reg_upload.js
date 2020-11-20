@@ -1,3 +1,5 @@
+/* 동인  */
+
 /* 페이지가 로드 되면 실행된다. */
 $(document).ready(function(e){
     

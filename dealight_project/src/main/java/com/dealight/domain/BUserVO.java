@@ -12,6 +12,12 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

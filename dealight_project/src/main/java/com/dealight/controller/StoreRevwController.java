@@ -14,7 +14,7 @@ import com.dealight.service.RevwService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-
+//다울
 @RequestMapping("/revws/*")
 @RestController
 @AllArgsConstructor

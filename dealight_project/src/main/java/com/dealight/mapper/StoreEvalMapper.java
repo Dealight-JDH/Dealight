@@ -2,6 +2,12 @@ package com.dealight.mapper;
 
 import com.dealight.domain.StoreEvalVO;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 public interface StoreEvalMapper {
 
 	public void insert(StoreEvalVO eval);

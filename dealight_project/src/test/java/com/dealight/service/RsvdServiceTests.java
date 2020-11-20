@@ -37,7 +37,6 @@ public class RsvdServiceTests {
 	
 	
 	@Test
-	@Transactional
 	public void testRegister() {
 		
 		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");

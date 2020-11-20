@@ -1,3 +1,5 @@
+/* 동인  */
+
 $(document).ready(function(){
     
     let regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");

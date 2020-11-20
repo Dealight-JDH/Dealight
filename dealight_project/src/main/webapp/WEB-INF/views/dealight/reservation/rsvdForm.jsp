@@ -11,45 +11,45 @@
 <body>
 
 	<div class="right">
-		<div class="sticky">
-			<h1>예약</h1>
-			<form id="selection" action="/dealight/reservation/kakaoPay" method="get"
-				onsubmit="myStop()">
-				<!-- <input type="hidden" id="selMenu" name="selMenu"> -->
-				<div class="row">
-					<select id="time">
-						<option value="">시간</option>
-						<option value="13:30">13:30</option>
-						<option value="14:00">14:00</option>
-						<option value="14:30">14:30</option>
-					</select> <select id="num" required="required">
-						<option value="">인원수</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-					</select>
-				</div>
-				
-				<div class="row">
-					<select id="menu" onchange="mySelect()" required="required">
-						<option value="">메뉴</option>
-						<c:forEach items="${menus }" var="menu">
-							<option value="${menu.price}""><c:out value='${menu.name}'/></option>
-						</c:forEach>
-					</select>
+			<div class="sticky">
+				<h1>예약</h1>
+				<form id="reserveForm" action="/controller/dealight/reservation" method="post">
+					<input type='hidden' name='storeId' value='<c:out value="${store.storeId }"/>' />
 					
-				</div>
-				<div id="demo"></div>
-				<div id="menuSum"></div>
-				<button type="submit">예약하기</button>
+					<!-- <input type="hidden" id="selMenu" name="selMenu"> -->
+					<div class="row">
+						<select id="time" required="required">
+							<option value="">시간</option>
+							<option value="13:30">13:30</option>
+							<option value="14:00">14:00</option>
+							<option value="14:30">14:30</option>
+						</select> <select id="num" required="required">
+							<option value="">인원수</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+						</select>
+					</div>
+					<div class="row">
+						<select id="menu">
+							<option value="">메뉴</option>
+							<c:forEach items="${store.bstore.menus }" var="menus">
+								<option value="${menus.menuSeq}">${menus.name }</option>
+							</c:forEach>
+						</select>
+						<input type="button" id="btnAddGoods" value="추가"></input>
 
-			</form>
+					</div>
+					<div id="container"></div>
+
+					총금액&emsp; <input id="goodsTotAmt" name="totAmt" value=0>
+					<button type="submit">예약하기</button>
+
+				</form>
+			</div>
 		</div>
 	</div>
-
-	</div>
-
 </body>
 </html>
 
@@ -57,6 +57,7 @@
 	//메뉴를 선택한다 
 	//demo에 선택한 메뉴와 가격 수량버튼이 나온다
 	//수량이 변경됨에 따라 가격부분이 가격 *수량 값이변경되도록한다.
+	const storeId = '<c:out value="${storeId}"/>';
 	let optionsIndex = [];
 	const target = document.getElementById("menu");
 	const form = document.getElementById("selection");
@@ -206,7 +207,7 @@
 		let totAmt = 0;
 		//메뉴 이름 가격 수량 넘기기
 		for (let i = 0; i < optionsIndex.length; i++) {
-			const key = optionsIndex[i].text;
+			let key = optionsIndex[i].text;
 			const input = document.createElement("input");
 			input.type = "hidden"
 			input.name = "menu[" + i + "].name";
@@ -242,6 +243,14 @@
 		
 		form.appendChild(input4);
 		form.appendChild(input5);
+		
+		const input6 = document.createElement("input");
+		input5.type = "hidden"
+		input5.name = "storeId";
+		input5.value = storeId;
+		
+		form.appendChild(input6);
+		
 		//3. 2에서 하고 싶은 거 실행 후  submit()
 		form.submit();
 	}

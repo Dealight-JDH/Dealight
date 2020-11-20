@@ -9,10 +9,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+/*
+ * 
+ *****[김동인] 현중
+ *
+ * 
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+//다울
 public class BStoreVO {
 	
 	    private Long storeId;

@@ -1,5 +1,5 @@
 package com.dealight.service;
-
+// 수빈
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -17,13 +17,14 @@ import com.dealight.mapper.RevwMapper;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
-
+//다울
 @Log4j
 @Service
 @AllArgsConstructor
 public class RevwServiceImpl implements RevwService {
 
-	// spring 4.3 이상에서 자동 처리
+	// === 수빈 ===
+	
 	@Setter(onMethod_ = @Autowired)
 	private RevwMapper mapper;
 
@@ -129,6 +130,8 @@ public class RevwServiceImpl implements RevwService {
 		log.info("REVWID: " + revwId);
 		return mapper.deleteRevw(revwId) == 1;
 	}
+	
+	// === === ===
 	
 //	@Override
 //	public List<RevwVO> revws(Long storeId) {

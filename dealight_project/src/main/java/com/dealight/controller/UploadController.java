@@ -33,16 +33,18 @@ import com.dealight.domain.StoreImgVO;
 import lombok.extern.log4j.Log4j;
 import net.coobird.thumbnailator.Thumbnailator;
 
+/*
+ * 
+ *****[ê¹€ë™ì¸] 
+ * 
+ */
+
 @Controller
 @Log4j
 public class UploadController {
 	
-	// ÆÄÀÏÀ» ÀúÀåÇÒ °æ·Î¸¦ ÁöÁ¤ÇÑ´Ù.
 	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05\\";
 	
-	
-	// ¸ÅÀÏ ´Ù¸¥ °æ·Î¿¡ Æú´õ¸¦ »ı¼ºÇÏ°í, ÆÄÀÏÀ» ÀúÀåÇÑ´Ù.
-	// ¿À´ÃÀÇ ³¯Â¥¸¦ Æú´õ·Î ¸¸µé file path ¸¸µç´Ù. root_folder / yyyy / mm / dd / 
 	private String getFolder() {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -54,14 +56,11 @@ public class UploadController {
 		return str.replace("-",File.separator);
 	}
 	
-	// ÇØ´ç ÆÄÀÏÀÌ ÀÌ¹ÌÁö ÆÄÀÏÀÎÁö ¾Æ´ÑÁö¸¦ ±¸ºĞÇÑ´Ù.
 	private boolean checkImageType(File file) {
 		try {
 			
-			// probe content typeÀº ÇØ´ç ÆÄÀÏÀÇ Å¸ÀÔÀ» ¹İÈ¯ÇÑ´Ù.
 			String contentType = Files.probeContentType(file.toPath());
 			
-			//  omage·Î ½ÃÀÛÇÏ´ÂÁö¸¦ È®ÀÎÇÏ°í ¸ÂÀ¸¸é true¸¦ ¹İÈ¯ÇÑ´Ù.
 			return contentType.startsWith("image");
 			
 			
@@ -71,32 +70,23 @@ public class UploadController {
 		return false;
 	}
 	
-	// ¸ÅÀå»çÁø, ¸Ş´º¸¦ ±¸ºĞÇØ¼­ ¹Ş¾Æ¾ßÇÒ µí.
 	@PostMapping("/uploadFormAction")
 	public void uploadFormPost(MultipartFile[] uploadFile, Model model) {
 		
 		String uploadFolder = ROOT_FOLDER;
-		
-		// uploadFileÀ»  multipartFile·Î ÂÉ°³¼­ Ã³¸®ÇÑ´Ù.
 		for(MultipartFile multipartFile : uploadFile) {
 			
 			log.info("--------------------------------");
-			
-			// ¾÷·ÎµåµÈ ÆÄÀÏÀÇ ¿øº»¸í
 			log.info("Upload File Name : " + multipartFile
 					.getOriginalFilename());
 			
-			// ¾÷·ÎµåµÈ ÆÄÀÏÀÇ Å©±â
 			log.info("Upload File Size : " + multipartFile.getSize());
 			
-			// path´Â °æ·Î + ÆÄÀÏ¸íÀ¸·Î °áÁ¤µÈ´Ù (ex: c:\\user\\a.jpg)
-			// °æ·Î
 			File saveFile = new File(uploadFolder, multipartFile
 					.getOriginalFilename());
 			
 			try {
 				
-				// ÇØ´ç ÆÄÀÏÀ» ÀúÀåÇÑ´Ù.
 				multipartFile.transferTo(saveFile);
 			} catch (Exception e ) {
 				log.error(e.getMessage());
@@ -113,30 +103,20 @@ public class UploadController {
 		
 	}
 	
-	// È­¸é¿¡¼­ input fileÀ¸·Î image¸¦ uploadÇÏ¸é ÀúÀå¼Ò¿¡ ÀúÀåÀÌ µÈ´Ù.
-	// ÇÏÁö¸¸ DB¿¡ ¹Ù·Î ÀúÀåÀÌ µÇÁö´Â ¾Ê´Â´Ù.
-	// ÀúÀåµÈ ÀÌ¹ÌÁö °´Ã¼ÀÇ ¸®½ºÆ®¸¦ ¹İÈ¯ÇÑ´Ù.
 	@PostMapping(value = "/uploadAjaxAction", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ResponseEntity<List<StoreImgVO>> uploadAjaxPost(MultipartFile[] uploadFile) {
-		
-		// ÀÌ¹ÌÁö ¸ñ·ÏÀ» ¹İÈ¯ ¹Ş´Â´Ù.
 		List<StoreImgVO> list = new ArrayList<>();
 		
 		log.info("upload store img post................");
 		
 		String uploadFolder = ROOT_FOLDER;
 		
-		// ÇØ´ç ³¯Â¥ÀÇ Æú´õ °æ·Î¸¦ °¡Á®¿Â´Ù.
 		String uploadFolderPath = getFolder();
-		// make folder -----------------
-		// File(°æ·Î,°æ·Î)´Â °æ·Î¿Í °æ·Î¸¦ ÇÕÃÄÁÖ´Â ¿ªÇÒÀ» ÇÑ´Ù.
 		File uploadPath = new File(uploadFolder, uploadFolderPath);
 		
 		log.info("upload path : " + uploadPath);
 		
-		// ÇØ´ç °æ·Î°¡ ¾øÀ¸¸é, ¸¸µç´Ù.
-		// make yyyy/MM/dd folder
 		if(uploadPath.exists() == false) {
 			log.info("maker dir....");
 			uploadPath.mkdirs();
@@ -145,7 +125,6 @@ public class UploadController {
 		
 		for(MultipartFile multipartFile : uploadFile) {
 			
-			// DB¿¡ ³Ö¾îÁÖ±â À§ÇØ °´Ã¼¸¦ »ı¼ºÇØÁØ´Ù.
 			StoreImgVO storeImg = new StoreImgVO();
 			
 			log.info("------------------------------------");
@@ -155,54 +134,39 @@ public class UploadController {
 			
 			log.info("Upload File Size : " + multipartFile.getSize());
 			
-			// ¿øº» ÀÌ¸§À» °¡Á®¿Â´Ù.
 			String uploadFileName = multipartFile.getOriginalFilename();
 			
-			// IE has file path
 			uploadFileName = uploadFileName.substring(uploadFileName
 					.lastIndexOf("\\") + 1);
 			
 			log.info("only file name : " + uploadFileName);
 			
-			// ÆÄÀÏÀÇ °íÀ¯ ÀÌ¸§À» ÀúÀåÇØÁØ´Ù.
 			storeImg.setFileName(uploadFileName);
 			
-			// °íÀ¯ÇÑ ÆÄÀÏÀÌ¸§À» ¸¸µé¾îÁÖ±â À§ÇØ¼­ uuid¸¦ ¸¸µé¾îÁØ´Ù.
 			UUID uuid = UUID.randomUUID();
 			
-			// ÆÄÀÏÀÌ¸§¿¡ uuid + _¸¦ ÇÕÃÄÁØ´Ù.
 			uploadFileName = uuid.toString() + "_" + uploadFileName;
 			
 			
 			try {
 				//File saveFile = new File(uploadFolder, uploadFileName);
 				
-				// ÀúÀåµÉ °æ·Î¿Í ÀÌ¸§(UUID°¡ ÇÕÃÄÁø)À» file·Î ÀúÀåÇÑ´Ù.
 				File saveFile = new File(uploadPath, uploadFileName);
 				multipartFile.transferTo(saveFile);
 				
-				// uuid´Â µû·Î ÀúÀåÇÑ´Ù.
 				storeImg.setUuid(uuid.toString());
 				
-				// °æ·Îµµ µû·Î ÀúÀåÇØÁØ´Ù.
 				storeImg.setUploadPath(uploadFolderPath);
 				
 				// check image type file
 				if(checkImageType(saveFile)) {
 					
-					// ÀÌ¹ÌÁö°¡ ¸Â´ÂÁö¸¦ ÀúÀåÇØÁØ´Ù.
 					storeImg.setImage(true);
 					
-					// »ç¿ëÀÚ¿¡°Ô º¸¿©ÁÙ ½æ³×ÀÏÀ» Á¦ÀÛÇÑ´Ù. 
-					// °æ·Î´Â ¶È°°ÀÌ, ÆÄÀÏ¸í ¾Õ¿¡´Â "s_"¸¦ ºÙ¿©ÁØ´Ù.
-					// ¾Æ¿ôÇ²½ºÆ®¸²(¹öÆÛ?)¿¡ ÇØ´ç µ¥ÀÌÅÍ¸¦ ´ã¾ÆµĞ´Ù.
 					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" + uploadFileName));
 					
-					// ½æ³×ÀÏ Á¦Á¶»ç°¡ ½æ³×ÀÏÀ» ¸¸µé¾îÁØ´Ù.
-					// multipartfileÀ» inputstreamÀ¸·Î »¡¾Æµå¸®°í ÁöÁ¤µÈ width, heightÀÇ ÇÈ¼¿°ªÀ¸·Î ¸¸µé¾î¼­ thumbnail¿¡ ±×´ë·Î ÀúÀåÇØÁØ´Ù.
 					Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail,100,100);
 					
-					// ¾Æ¿ôÇ² ½ºÆ®¸²À» ´İ¾ÆÁØ´Ù.
 					thumbnail.close();
 				}
 				
@@ -216,9 +180,6 @@ public class UploadController {
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
-	
-	// ÀúÀåµÈ ÆÄÀÏÀ» È­¸é¿¡ º¸¿©ÁØ´Ù.
-	// byte[]·Î ¹İÈ¯ÇÑ´Ù.
 	@GetMapping("/display")
 	@ResponseBody
 	public ResponseEntity<byte[]> getFile(String fileName) {
@@ -229,19 +190,14 @@ public class UploadController {
 		
 		log.info("file: " + file);
 		
-		// È­¸é¿¡´Â byte·Î ½÷ÁØ´Ù.
 		ResponseEntity<byte[]> result = null;
 		
 		try {
 			
-			// ¹İÈ¯ÇÒ httpÀÇ Çì´õ¸¦ ÀÛ¼ºÇÑ´Ù.
 			HttpHeaders header = new HttpHeaders();
-			// header ÀÌ¸§ : Çì´õ value
 			// Content-Type : img..  
 			header.add("Content-Type", Files.probeContentType(file.toPath()));
 			
-			// fileÀ» º¹»çÇØ¼­ byte array·Î º¯È¯ÇÏ°í ¹İÈ¯ÇØÁØ´Ù.
-			// header¿Í ¼­¹ö Åë½Å »óÅÂ¸¦ ¹İÈ¯ÇÑ´Ù.
 			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file),header, HttpStatus.OK);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -249,29 +205,22 @@ public class UploadController {
 		return result;
 	}
 	
-	// ´Ù¿î·Îµå¸¦ ÇÒ ¼ö ÀÖ´Â ±â´ÉÀ» Á¦°øÇÑ´Ù.
-	// OCTETÀº 8°³ÀÇ ºñÆ®°¡ ÇÑµ¥ ¸ğÀÎ °ÍÀ» ¸»ÇÑ´Ù. 1byte°¡ ²À 8ºñÆ®¸¦ ÀÇ¹ÌÇÏÁö´Â ¾ÊÀ¸¹Ç·Î ÀÌ·¯ÇÑ ¿ë¾î¸¦ »ç¿ëÇÑ´Ù.
-	// ÇØ´ç »óÈ²¿¡¼­´Â byte streamÀ» Àü´ŞÇÏ´Â typeÀÓÀ» ¸í½ÃÇØÁØ´Ù°í »ı°¢ÇÏ¸é µÈ´Ù.
-	
 	@GetMapping(value ="/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	@ResponseBody
 	public ResponseEntity<Resource> downloadFile(@RequestHeader("User-Agent") String userAgent, String fileName) {
 		
 		log.info("downlad file: " + fileName);
 		
-		// ÇØ´ç °æ·Î¿Í ÆÄÀÏÀÌ¸§(uuidÆ÷ÇÔ)À» °¡Áø ´ë»ó ÆÄÀÏ °æ·Î¸¦ °¡Á®¿Â´Ù.
 		Resource resource = new FileSystemResource(ROOT_FOLDER + fileName);
 		
 		log.info("resource : " + resource);
 
-		// ÇØ´çÇÏ´Â ÆÄÀÏÀÌ ¾øÀ¸¸é ¿¡·¯ ÆäÀÌÁö¸¦ ¹İÈ¯ÇÑ´Ù.
 		/*
 		if(resource.exists() == false) {
 			log.info("false..............");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		*/
-		// ¸®¼Ò½º ÆÄÀÏ¸í(uuid Æ÷ÇÔ)À» ÀúÀåÇÑ´Ù.
 		String resourceName = resource.getFilename();
 		
 		//remove UUID
@@ -281,7 +230,6 @@ public class UploadController {
 		
 		log.info("resource : " + resourceName);
 		
-		// Çì´õ¸¦ ¸¸µé¾îÁØ´Ù.
 		HttpHeaders headers = new HttpHeaders();
 		
 		log.info("headers : " + headers);
@@ -290,7 +238,6 @@ public class UploadController {
 			
 			String downloadName = null;
 			
-			// À¯Àú ºê¶ó¿ìÀú Á¤º¸¿¡ µû¶ó downloadNameÀ» º¯°æÇÑ´Ù.
 			if(userAgent.contains("Trident")) {
 				
 				log.info("IE browser");
@@ -314,8 +261,6 @@ public class UploadController {
 				downloadName = new String(resourceOriginalName.getBytes("UTF-8"), "ISO-8859-1");
 			}
 
-			// ´Ù¿î·Îµå½Ã ÀúÀåµÇ´Â ÀÌ¸§À» ÁöÁ¤
-			// ´Ù¿î·Îµå½Ã ÀúÀåµÇ´Â ÀÌ¸§ÀÌ ±úÄ¡´Â °ÍÀ» ¸·±â À§ÇÔ
 			headers.add("Content-Disposition", "attachment; filename="+ downloadName);
 			
 		} catch (UnsupportedEncodingException e) {
@@ -325,7 +270,6 @@ public class UploadController {
 	}
 	
 	
-	// ÆÄÀÏÀ» »èÁ¦ÇÑ´Ù.
 	@PostMapping("/deleteFile")
 	@ResponseBody
 	public ResponseEntity<String> deleteFile(String fileName, String type) {
@@ -338,8 +282,6 @@ public class UploadController {
 			file = new File(ROOT_FOLDER + URLDecoder.decode(fileName, "UTF-8"));
 			
 			file.delete();
-			
-			// ÀÌ¹ÌÁö ÆÄÀÏÀÎ °æ¿ì ¿øº»ÆÄÀÏµµ °°ÀÌ »èÁ¦ÇØÁØ´Ù.
 			if(type.equals("image")) {
 				String largeFileName = file.getAbsolutePath().replace("s_", "");
 				
@@ -355,4 +297,5 @@ public class UploadController {
 		}
 		return new ResponseEntity<String>("deleted",HttpStatus.OK);
 	}
+
 }

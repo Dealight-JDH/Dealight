@@ -1,5 +1,5 @@
 package com.dealight.mapper;
-
+// 수빈
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -10,10 +10,16 @@ import com.dealight.domain.RevwVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.WaitVO;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 public interface RevwMapper {
-	
+	//다울 해당스토어의 리뷰 가져오기
 	public List<RevwVO> getRevwListWithPaging(@Param("storeId") Long storeId,@Param("cri") Criteria cri);
-	
+	//다울 해당매장의 총리뷰수 
 	public int getCountByStoreId(Long storeId);
 	// create
 	
@@ -37,6 +43,9 @@ public interface RevwMapper {
 	
 	// **********동인
 
+	
+	// === 수빈 ===
+	
 	// 내가 작성한 리뷰 내역
 	public List<RevwVO> getWrittenList(String userId);
 	
@@ -69,6 +78,9 @@ public interface RevwMapper {
 	
 	// 리뷰 사진 등록
 	public void insertRevwImg(RevwImgVO img);
+	
+	// 리뷰 등록 후 리뷰 수 카운팅하여 매장평가에 반영
+//	public int countRevwForStoreEval(Long storeId);
 	
 	// 예약 항목 리뷰 상태 업데이트
 	public int updateRsvdRevwStus(@Param("userId") String userId, @Param("rsvdId") Long rsvdId);

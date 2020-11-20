@@ -4,6 +4,12 @@ import java.util.List;
 
 import com.dealight.domain.NStoreVO;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 public interface NStoreMapper {
 	
 	//일반 매장을 등록한다.

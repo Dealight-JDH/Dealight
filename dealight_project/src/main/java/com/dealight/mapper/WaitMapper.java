@@ -6,6 +6,12 @@ import org.apache.ibatis.annotations.Param;
 
 import com.dealight.domain.WaitVO;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 public interface WaitMapper {
 	
 	// create

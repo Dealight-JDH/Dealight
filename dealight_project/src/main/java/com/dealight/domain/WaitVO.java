@@ -1,7 +1,9 @@
 package com.dealight.domain;
-
+// 수빈
 import java.util.Date;
 import java.util.List;
+
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +11,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+//다울
 public class WaitVO {
 	
 	@NonNull
@@ -38,13 +47,15 @@ public class WaitVO {
     private String waitStusCd = "W";
 
     // 리뷰상태 
-    private int revwStus;
+    @NotNull
+    private int revwStus = 0;
 
-    // composition
-    // 매장
-    // 이거 만든사람 이거 뺄수있는 방법좀 생각해주세요
-    private StoreVO store;
     //웨이팅 수
     private int waitTot;
+    
+    // composition
+    // 매장
+    // 이 방식이 아닌 조인하는 컬럼들만 묶은 VO를 따로 생성할 예정
+    private StoreVO store;
 	
 }

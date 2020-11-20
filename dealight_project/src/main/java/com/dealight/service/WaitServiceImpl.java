@@ -12,6 +12,12 @@ import com.dealight.mapper.WaitMapper;
 
 import lombok.extern.log4j.Log4j;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+
 @Service
 @Log4j
 public class WaitServiceImpl implements WaitService {

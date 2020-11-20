@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+    <!-- 현수현수현수 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,10 +15,11 @@
         }
         .register-content{
             border: 1px solid;
-            height: 620px;
-            width: 450px;
+            height: 700px;
+            width: 600px;
             margin: auto;
             padding:25px;
+        	margin-top: 70px;
         }
         .btn{
             text-align: center;

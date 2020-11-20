@@ -12,6 +12,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+//jongwoo
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

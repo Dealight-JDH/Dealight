@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
+<!-- 현중 -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,15 +45,17 @@ datalist option {
             flex-basis: 0;
 }
 </style>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 <div class="row">
   <div class="column" style="background-color:#bbb;">
   	<form action="#" id="searchForm">
-  		시간
-  		위치
-  		해시태그 검색, 매장 검색
+  		<label>인원</label><input type="text" value="${search.PNum }">
+  		<label>시간</label><input type="text" value="${search.time }">
+  		<label>지역</label><input type="text" value="${search.region }">
+  		<label>검색어</label><input type="text" value="${search.hashTag }">
+  		<label>검색어</label><input type="text" value="${search.storeNm }">
   	</form>
 	<form id="searchFilter" action="#" >
 		<label>정렬순서
@@ -106,10 +108,10 @@ datalist option {
  
 <!-- 파라미터 목록~ -->
 <form action="/search/" method="get" id="actionForm">
-	<input type="text" name="pageNum" value="${pageMaker.pageNum }">
-	<input type="text" name="amount" value="${pageMaker.amount }">
-	<input type="text" name="lat" value="${pageMaker.lat }">
-	<input type="text" name="lng" value="${pageMaker.lng }">
+	<input type="text" name="pageNum" value="1">
+	<input type="text" name="amount" value="20">
+	<input type="text" name="lat" value="37.570414">
+	<input type="text" name="lng" value="126.985320">
 	<input type="text" name="distance" value="1">
 	<input type="text" name="sortType" value="D">
 	<input type="text" name="sortPriority" value="">
@@ -117,7 +119,7 @@ datalist option {
 	
 	
 </form>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0e7b9cd1679ce3dedf526e66a6c1a860"></script>
 <!-- 리스트 불러오기 -->
 <script type="text/javascript">
@@ -282,7 +284,7 @@ function showPaging(pageDTO){
 		str += "<a href='"+(pageDTO.startPage -1)+"'>Previous </a>"
 	}
 	
-	for(var i = pageDTO.startPage;i<pageDTO.endPage;i++){
+	for(var i = pageDTO.startPage;i<pageDTO.endPage+1;i++){
 		//console.log(i)
 		//console.log(pageDTO.cri.pageNum)
 		str += (pageDTO.cri.pageNum == i ?"<":"");
@@ -317,7 +319,7 @@ function actionFormUpdate(pageDTO){
 //search filter를 업데이트 하는 함수
 function searchFilterUpdate(pageDTO){
 	
-	$("#sortType").val(pageDTO.cri.sortType);
+	$("#sortType").val(pageDTO.cri.sortType);f
 	$("#sortPriority").val(pageDTO.cri.sortPriority);
 	$("#range").val(getRange(pageDTO.cri.distance));
 	$("#openStore").prop("checked", pageDTO.cri.openStore);

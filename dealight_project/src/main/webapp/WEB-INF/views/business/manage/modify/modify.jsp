@@ -1,3 +1,5 @@
+<!-- 동인 추가 -->
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -23,13 +25,13 @@ ${msg}
 	<input name="storeNm" value="${store.storeNm}" readonly></br>
 	
 	<label id="telno">전화번호</label>
-	<input name="telno" value="${store.telno}"></br>
+	<input name="telno" value="${store.telno}" required></br>
 	
 	<label id="openTm">시작시간</label>
-	<input name="openTm" value="${store.openTm}"></br>
+	<input name="openTm" value="${store.openTm}" required></br>
 	
 	<label id="closeTm">마감시간</label>
-	<input name="closeTm" value="${store.closeTm}"></br>
+	<input name="closeTm" value="${store.closeTm}" required></br>
 	
 	<label id="buserId">사업자 회원 아이디</label>
 	<input name="buserId" value="${store.buserId}" readonly></br>
@@ -44,7 +46,7 @@ ${msg}
 	<input name="lastOrdTm" value="${store.lastOrdTm}"></br>
 	
 	<label id="n1SeatNo">1인 테이블 개수</label>
-	<input name="n1SeatNo" value="${store.n1SeatNo}"></br>
+	<input name="n1SeatNo" value="${store.n1SeatNo}" ></br>
 	
 	<label id="n2SeatNo">2인 테이블 개수</label>
 	<input name="n2SeatNo" value="${store.n2SeatNo}"></br>
@@ -53,7 +55,7 @@ ${msg}
 	<input name="n4SeatNo" value="${store.n4SeatNo}"></br>
 	
 	<label id="storeIntro">매장소개</label>
-	<input name="storeIntro" value="${store.storeIntro}"></br>
+	<input name="storeIntro" value="${store.storeIntro}" required></br>
 	
 	<label id="avgMealTm">매장평균식사시간</label>
 	<input name="avgMealTm" value="${store.avgMealTm}" readonly></br>

@@ -1,19 +1,16 @@
 package com.dealight.controller;
-
+// 수빈
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.RevwImgVO;
-import com.dealight.domain.StoreVO;
 import com.dealight.domain.RevwVO;
 import com.dealight.service.RevwService;
 
@@ -66,6 +63,7 @@ public class RevwController {
 	public void getWritableItemByRsvd(@Param("userId") String userId, @Param("rsvdId") Long rsvdId, Model model) {
 		log.info("USERID: " + userId + "@@");
 		log.info("RSVDID: " + rsvdId + "@@");
+		log.info("UPLOAD REVW IMG");
 
 		model.addAttribute("rsvd", service.getWritableItemByRsvd(userId, rsvdId));
 		System.out.println(model);
@@ -73,20 +71,12 @@ public class RevwController {
 
 	@PostMapping("/register/rsvd")
 	public String registerRevwByRsvd(String userId, Long rsvdId, String imgUrl,
-			RevwVO revw, RevwImgVO img, RedirectAttributes rttr) {
+			RevwVO revw, RevwImgVO img, RedirectAttributes rttr, MultipartFile[] uploadRevwImg, Model model) {
 
 		service.getWritableItemByRsvd(userId, rsvdId);
 
-		if(!img.getImgUrl().equals("")) {
-			service.registerRevw(revw);
-			service.registerRevwImg(img);
-
-			log.info("REGISTER RSVD REVW");
-			log.info("USERID: " + userId + "@@");
-			log.info("RSVDID: " + rsvdId + "@@");
-			log.info("REVW: " + revw + "@@");
-
-		} else {
+		// 이미지 첨부는 선택적으로 가능하게 변경해야 함
+		/* if(!img.getImgUrl().equals("")) { */
 			service.registerRevw(revw);
 
 			log.info("REGISTER RSVD REVW");
@@ -94,13 +84,21 @@ public class RevwController {
 			log.info("RSVDID: " + rsvdId + "@@");
 			log.info("REVW: " + revw + "@@");
 			log.info("IMG: " + img + "@@");
-		}
-
+		
 		System.out.println(service.updateRsvdRevwStus(userId, rsvdId));
 		rttr.addFlashAttribute("result", revw.getRevwId());
 		return "redirect:/dealight/mypage/review/writable-list?userId=" + userId;
 	}
-
+	
+	@PostMapping("/uploadRevwImgAction")
+	public void uploadRevwImgPost(MultipartFile[] uploadRevwImg, Model model) {
+		for(MultipartFile multipartRevwImg : uploadRevwImg) {
+			log.info("-----------------------------");
+			log.info("UPLOAD REVW IMG NAME: " + multipartRevwImg.getOriginalFilename());
+			log.info("UPLOAD REVW IMG SIZE: " + multipartRevwImg.getSize());
+		}
+	}
+	
 	@GetMapping("/register/wait")
 	public void getWritableItemByWait(@Param("userId") String userId, @Param("waitId") Long waitId, Model model) {
 		log.info("USERID: " + userId + "@@");

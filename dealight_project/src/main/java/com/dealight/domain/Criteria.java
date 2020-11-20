@@ -5,11 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
+//현중
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
+//다울
 public class Criteria {
 
 	private int pageNum;

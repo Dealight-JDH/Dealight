@@ -4,6 +4,13 @@ import java.util.List;
 
 import com.dealight.domain.HtdlRsltVO;
 
+/*
+ * 
+ *****[김동인] 
+ * 
+ */
+//jongwoo
+
 public interface HtdlRsltMapper {
 	
 	// create
