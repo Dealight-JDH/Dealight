@@ -1,3 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,8 +32,8 @@
             width: 100%;
             height: 2%;
             display: flex;
-            /* 자식에 영향 주기 위한 설정 */
-            /* 자식인 inline-block들을 가운데정렬
+            /* ììì ìí¥ ì£¼ê¸° ìí ì¤ì  */
+            /* ììì¸ inline-blockë¤ì ê°ì´ë°ì ë ¬
             justify-content: center; */
         }
 
@@ -37,7 +41,7 @@
             border: 1px solid black;
             overflow: hidden;
             flex: 1;
-            /* 비율을 1:1:1로 주기 */
+            /* ë¹ì¨ì 1:1:1ë¡ ì£¼ê¸° */
             height: 100%;
             display: inline-block;
         }
@@ -231,8 +235,8 @@
 <body>
 
     <div class="dropdown-content">
-        <a href="#" class="dropdown-menu">핫딜 찾기</a>
-        <a href="#" class="dropdown-menu">매장 찾기</a>
+        <a href="#" class="dropdown-menu">í«ë ì°¾ê¸°</a>
+        <a href="#" class="dropdown-menu">ë§¤ì¥ ì°¾ê¸°</a>
     </div>
 
     <div class="main">
@@ -268,30 +272,24 @@
             <div class="imgContainer">
                 <img src="../img/main.jpg">
 
-                <div class="searchBarDiv">
+                <form action="/search/" class="searchBarDiv" method="get">
                     <div class="topRow">
-                        <div class="topRowBar">
-                            지역
-                        </div>
-                        <div class="topRowBar">
-                            인원
-                        </div>
-                        <div class="topRowBar">
-                            시간
-                        </div>
+                        <input type="text" class="topRowBar" name="pNum" placeholder="인원">
+                        <input type="text" class="topRowBar" name="region" placeholder="지역">
+                        <input type="text" class="topRowBar" name="time" placeholder="시간">
                     </div>
                     <div class="bottomRow">
-                        <div class="bottomRowBar">
-                            음식 종류, 매장명 검색
-                        </div>
-                        <button class="searchbtn">검색</button>
+                        <input type="text" class="bottomRowBar" placeholder="가게명 검색, 해시태그를 입력하세요">
+                        <button class="searchbtn">매장보기</button>
                     </div>
-                </div>
+                </form>
+                <!-- imgContainer -->
             </div>
+            <!-- middleDiv -->
         </div>
 
         <div class="dealTitleDiv">
-            <div class="dealTitle">실시간 핫딜</div>
+            <div class="dealTitle">6</div>
         </div>
 
         <div class="dealDiv">
