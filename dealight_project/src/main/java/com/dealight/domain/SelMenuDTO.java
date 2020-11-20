@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
-
+//다울
 @Data
 @Builder
 public class SelMenuDTO {

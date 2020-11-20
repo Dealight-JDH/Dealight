@@ -11,9 +11,9 @@ import com.dealight.domain.RsvdVO;
 import com.dealight.domain.WaitVO;
 
 public interface RevwMapper {
-	
+	//다울 해당스토어의 리뷰 가져오기
 	public List<RevwVO> getRevwListWithPaging(@Param("storeId") Long storeId,@Param("cri") Criteria cri);
-	
+	//다울 해당매장의 총리뷰수 
 	public int getCountByStoreId(Long storeId);
 	// create
 	

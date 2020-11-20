@@ -13,6 +13,7 @@ import lombok.NonNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+//다울
 public class BStoreVO {
 	
 	    private Long storeId;
