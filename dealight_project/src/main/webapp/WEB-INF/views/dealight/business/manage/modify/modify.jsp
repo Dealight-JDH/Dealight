@@ -17,7 +17,7 @@
 
 ${msg}
 
-<form id="modifyForm" action="/business/manage/modify" method="post">
+<form id="modifyForm" action="/dealight/business/manage/modify" method="post">
 
 	<input name="storeId" value="${store.storeId}" hidden>
 
@@ -177,7 +177,7 @@ uuid : ${img.uuid }</br>
 	</div>
 	
 	
-<h2><a href="/business/manage/menu?storeId=${store.storeId}" }>메뉴수정</a></h2>
+<h2><a href="/dealight/business/manage/menu?storeId=${store.storeId}" }>메뉴수정</a></h2>
 <script>
 $(document).ready(function(){
     
@@ -270,7 +270,7 @@ function showUploadResult(uploadResultArr) {
         
         let storeId = ${store.storeId};
         
-        $.getJSON("/business/manage/getStoreImgs", {storeId:storeId}, function(imgs){
+        $.getJSON("/dealight/business/manage/getStoreImgs", {storeId:storeId}, function(imgs){
             
             console.log("즉시 함수..");
             

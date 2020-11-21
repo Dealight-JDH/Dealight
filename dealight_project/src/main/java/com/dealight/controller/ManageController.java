@@ -47,7 +47,7 @@ import lombok.extern.log4j.Log4j;
 
 @Controller
 @Log4j
-@RequestMapping("/business/manage/*")
+@RequestMapping("/dealight/business/manage/*")
 public class ManageController {
 	
 	@Setter(onMethod_ = @Autowired)
@@ -82,7 +82,7 @@ public class ManageController {
 		
 		model.addAttribute("curList", curList);
 		
-		return "/business/manage/dealhistory";
+		return "/dealight/business/manage/dealhistory";
 	}
 	
 	@GetMapping("/reservation")
@@ -97,7 +97,7 @@ public class ManageController {
 		model.addAttribute("rsvd",rsvd);
 		model.addAttribute("rsvdList",rsvdList);
 		
-		return "/business/manage/reservation";
+		return "/dealight/business/manage/reservation";
 	}
 	
 	@GetMapping("/waiting/register")
@@ -119,7 +119,7 @@ public class ManageController {
 		model.addAttribute("curTime", curTime);
 		model.addAttribute("storeId", storeId);
 		
-		return "/business/manage/waiting/register";
+		return "/dealight/business/manage/waiting/register";
 	}
 	
 	@PostMapping("/waiting/register")
@@ -135,7 +135,7 @@ public class ManageController {
 		
 		long id = wait.getWaitId();
 		
-		return "redirect:/business/manage/?storeId="+storeId;
+		return "redirect:/dealight/business/manage/?storeId="+storeId;
 		//return "redirect:/business/manage/board/?storeId="+storeId;
 	}
 	
@@ -171,7 +171,7 @@ public class ManageController {
 		model.addAttribute("store", store);
 		model.addAttribute("userId",userId);
 		
-		return "/business/manage/modify/modify";
+		return "/dealight/business/manage/modify/modify";
 	}
 	
 	@PostMapping("/modify")
@@ -190,7 +190,7 @@ public class ManageController {
 			return "redirect:/business/manage/modify?storeId="+store.getStoreId();
 		}
 		 
-		return "redirect:/business/manage/modify?storeId="+store.getStoreId();
+		return "redirect:/dealight/business/manage/modify?storeId="+store.getStoreId();
 	}
 	
 	@GetMapping(value = "/getStoreImgs", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -243,7 +243,7 @@ public class ManageController {
 		model.addAttribute("menus",menus);
 		model.addAttribute("storeId",storeId);
 		
-		return "/business/manage/modify/menu";
+		return "/dealight/business/manage/modify/menu";
 	}
 	
 	@PostMapping("/menu/register")
@@ -262,7 +262,7 @@ public class ManageController {
 		
 		storeService.registerMenu(menu);
 		
-		return "redirect:/business/manage/menu?storeId="+menu.getStoreId();
+		return "redirect:/dealight/business/manage/menu?storeId="+menu.getStoreId();
 	}
 
 	// 웨이팅 입장
@@ -273,7 +273,7 @@ public class ManageController {
 		
 		waitService.enterWaiting(waitId);
 		
-		return "redirect:/business/manage?storeId="+storeId;
+		return "redirect:/dealight/business/manage?storeId="+storeId;
 	}
 	
 	// 웨이팅 노쇼
@@ -284,7 +284,7 @@ public class ManageController {
 		
 		waitService.panaltyWaiting(waitId);	
 		
-		return "redirect:/business/manage?storeId="+storeId;
+		return "redirect:/dealight/business/manage?storeId="+storeId;
 	}
 	
 	// 착석 상태 변경
@@ -293,7 +293,7 @@ public class ManageController {
 		
 		storeService.changeSeatStus(storeId, seatStusColor);
 		
-		return "redirect:/business/manage?storeId="+storeId;
+		return "redirect:/dealight/business/manage?storeId="+storeId;
 	}
 
 	// REST TEST에 사용

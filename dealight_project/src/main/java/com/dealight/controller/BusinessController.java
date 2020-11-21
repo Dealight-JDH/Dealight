@@ -32,7 +32,7 @@ import lombok.extern.log4j.Log4j;
 //현중 동인이형이랑 회의필요
 @Controller
 @Log4j
-@RequestMapping("/business/*")
+@RequestMapping("/dealight/business/*")
 @AllArgsConstructor
 public class BusinessController {
 
@@ -68,7 +68,7 @@ public class BusinessController {
 		//그러면 수정페이지를 가지고있어야겠네
 		//
 		rttr.addFlashAttribute("result", store.getStoreId());
-		return "redirect:/business/";
+		return "redirect:/dealight/business/";
 	}
 	
 	@GetMapping("/register")
@@ -106,7 +106,7 @@ public class BusinessController {
 		
 		model.addAttribute("storeList", list);
 		
-		return "/business/list";
+		return "/dealight/business/list";
 	}
 	
 	
@@ -127,7 +127,7 @@ public class BusinessController {
 		model.addAttribute("storeId", storeId);
 		model.addAttribute("todayRsvdUserList", todayRsvdUserList);
 		
-		return "/business/manage/manage";
+		return "/dealight/business/manage/manage";
 	}
 
 		@GetMapping("/waiting/{waitId}")
@@ -149,6 +149,6 @@ public class BusinessController {
 			model.addAttribute("order",order);
 			model.addAttribute("waitTime", waitTime);
 			
-			return "/business/manage/waiting/waiting";
+			return "/dealight/business/manage/waiting/waiting";
 		}
 }

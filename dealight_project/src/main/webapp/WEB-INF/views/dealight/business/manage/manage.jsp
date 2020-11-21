@@ -32,7 +32,7 @@
                 <div class="light"> <!-- light -->
                     <h4>현재 착석 상태💺</h4>
                     <ul class="storeSeatStus"></ul>
-                    <form id="seatStusForm" action="/business/manage/board/seat"
+                    <form id="seatStusForm" action="/dealight/business/manage/board/seat"
                             method="put">
                             <input name="seatStusColor" id="color_value" value="" hidden>
                             <input name="storeId" value="${storeId}" hidden>
@@ -104,8 +104,8 @@
                 <di class="wait_register_wrapper">
                     <button class="btn_wait_register">오프라인 웨이팅 등록</button>
                 </div><!-- end wait board -->
-                <p id="dealhistory"><a href="/business/manage/dealhistory?storeId=${storeId}">핫딜 히스토리</a></p>
-                <p id="modify"><a href="/business/manage/modify?storeId=${storeId}">매장 정보 수정</a></p>
+                <p id="dealhistory"><a href="/dealight/business/manage/dealhistory?storeId=${storeId}">핫딜 히스토리</a></p>
+                <p id="modify"><a href="/dealight/business/manage/modify?storeId=${storeId}">매장 정보 수정</a></p>
                 <div id="map_wrapper">
                 	<h4>시간대별 예약</h4>
 	            	<ul class="rsvdMap"></ul>
@@ -255,7 +255,7 @@ window.onclick = function(event) {
         	
             $.ajax({
                 type:'put',
-                url:'/business/manage/board/seat/'+storeId+'/'+seatStusCd,
+                url:'/dealight/business/manage/board/seat/'+storeId+'/'+seatStusCd,
                 data : {},
                 contentType : "application/json",
                 success : function(result, status, xhr) {
@@ -275,7 +275,7 @@ window.onclick = function(event) {
         function putNoshowWaiting(waitId,callback,error) {
             $.ajax({
                 type:'put',
-                url:'/business/manage/board/waiting/noshow/' + waitId,
+                url:'/dealight/business/manage/board/waiting/noshow/' + waitId,
                 data : {waitId:waitId},
                 contentType : "application/json",
                 success : function(result, status, xhr) {
@@ -296,7 +296,7 @@ window.onclick = function(event) {
     
             $.ajax({
                 type:'put',
-                url:'/business/manage/board/waiting/enter/' + waitId,
+                url:'/dealight/business/manage/board/waiting/enter/' + waitId,
                 data : {waitId:waitId},
                 contentType : "application/json",
                 success : function(result, status, xhr) {
@@ -317,7 +317,7 @@ window.onclick = function(event) {
     
             $.ajax({
                 type:'put',
-                url:'/business/manage/board/waiting/cancel/' + waitId,
+                url:'/dealight/business/manage/board/waiting/cancel/' + waitId,
                 data : {waitId:waitId},
                 contentType : "application/json",
                 success : function(result, status, xhr) {
@@ -340,7 +340,7 @@ window.onclick = function(event) {
         	
         	let rsvdId = param.rsvdId;
         	
-        	$.getJSON("/business/manage/board/reservation/dtls/" + rsvdId + ".json",
+        	$.getJSON("/dealight/business/manage/board/reservation/dtls/" + rsvdId + ".json",
         		function(data) {
         			if(callback) {
         				callback(data);
@@ -361,7 +361,7 @@ window.onclick = function(event) {
         	console.log(storeId);
         	console.log(userId);
         	
-        	$.getJSON("/business/manage/board/reservation/list/" + storeId +"/" + userId + ".json",
+        	$.getJSON("/dealight/business/manage/board/reservation/list/" + storeId +"/" + userId + ".json",
         		function(data) {
         			if(callback) {
         				callback(data);
@@ -379,7 +379,7 @@ window.onclick = function(event) {
             
             let storeId = param.storeId;
             
-            $.getJSON("/business/manage/board/reservation/rslt/"+storeId+".json",
+            $.getJSON("/dealight/business/manage/board/reservation/rslt/"+storeId+".json",
                 function(data){
                         if(callback){
                             callback(data);
@@ -395,7 +395,7 @@ window.onclick = function(event) {
             
             let storeId = param.storeId;
             
-            let rsvdList = $.getJSON("/business/manage/board/reservation/"+storeId+".json",
+            let rsvdList = $.getJSON("/dealight/business/manage/board/reservation/"+storeId+".json",
                 function(data){
                         if(callback){
                             callback(data);
@@ -414,7 +414,7 @@ window.onclick = function(event) {
             
             let storeId = param.storeId;
             
-            let waitList = $.getJSON("/business/manage/board/waiting/"+storeId+".json",
+            let waitList = $.getJSON("/dealight/business/manage/board/waiting/"+storeId+".json",
                 function(data){
                         if(callback){
                             callback(data);
@@ -433,7 +433,7 @@ window.onclick = function(event) {
             
             let storeId = param.storeId;
     
-            $.getJSON("/business/manage/board/store/"+storeId+".json",
+            $.getJSON("/dealight/business/manage/board/store/"+storeId+".json",
                     function(data){
                         if(callback){
                             callback(data);
@@ -458,7 +458,7 @@ window.onclick = function(event) {
       
         	let storeId = param.storeId;
         	
-        	$.getJSON("/business/manage/board/reservation/map/"+ storeId +".json",
+        	$.getJSON("/dealight/business/manage/board/reservation/map/"+ storeId +".json",
                     function(data){
                         if(callback){
                             callback(data);
@@ -477,7 +477,7 @@ window.onclick = function(event) {
         	let storeId = param.storeId;
         	
         	
-        	$.getJSON("/business/manage/board/reservation/next/"+ storeId +".json",
+        	$.getJSON("/dealight/business/manage/board/reservation/next/"+ storeId +".json",
                     function(data){
                         if(callback){
                             callback(data);
@@ -493,7 +493,7 @@ window.onclick = function(event) {
     
             $.ajax({
                 type : 'post',
-                url : '/business/manage/board/waiting/new',
+                url : '/dealight/business/manage/board/waiting/new',
                 data : JSON.stringify(wait),
                 contentType : "application/json; charset=utf-8",
                 success : function(result, status, xhr) {
@@ -513,7 +513,7 @@ window.onclick = function(event) {
         	
 			let storeId = param.storeId;
         	
-        	$.getJSON("/business/manage/board/reservation/rslt/"+ storeId +"/list.json",
+        	$.getJSON("/dealight/business/manage/board/reservation/rslt/"+ storeId +"/list.json",
                     function(data){
         					console.log(data);
                         if(callback){
@@ -624,7 +624,7 @@ window.onclick = function(event) {
                 
                 waitList.forEach(wait => {
                 	strWaitList += "<div class='wait'>";
-                    strWaitList += "<ul>" + "<a href='/business/waiting/"+wait.waitId+"'><h3>웨이팅 번호 : "+wait.waitId+"</h3></a>";
+                    strWaitList += "<ul>" + "<a href='/dealight/business/waiting/"+wait.waitId+"'><h3>웨이팅 번호 : "+wait.waitId+"</h3></a>";
                         strWaitList += "<li>웨이팅 회원 아이디 : "+ wait.userId + "</li>";
                         strWaitList += "<li>웨이팅 매장 번호 : "+ wait.storeId + "</li>";
                         strWaitList += "<li>웨이팅 인원 : "+ wait.waitPnum + "</li>";
@@ -916,7 +916,7 @@ window.onclick = function(event) {
         	let today = new Date();
         	strWaitRegForm = "";
         	strWaitRegForm += "<h1>오프라인 웨이팅 등록</h1>";
-        	strWaitRegForm += "<form id='waitRegForm' action='/business/manage/waiting/register' method='post'>";
+        	strWaitRegForm += "<form id='waitRegForm' action='/dealight/business/manage/waiting/register' method='post'>";
         	strWaitRegForm += "고객 이름<input name='custNm' id='js_wait_custNm'> <span id='name_msg'></span></br>";
         	strWaitRegForm += "고객 전화번호<input name='custTelno' id='js_wait_custTelno'> <span id='phoneNum_msg'></span></br>";
         	strWaitRegForm += "웨이팅 인원<input name='waitPnum' id='js_wait_pnum'> <span id='pnum_msg'></span></br>";
@@ -1203,7 +1203,7 @@ window.onclick = function(event) {
             
         	let storeId = ${storeId};
             
-            $.getJSON("/business/manage/getStoreImgs", {storeId:storeId}, function(imgs){
+            $.getJSON("/dealight/business/manage/getStoreImgs", {storeId:storeId}, function(imgs){
                 
                 console.log("즉시 함수..");
                 

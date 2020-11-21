@@ -150,7 +150,7 @@ public String sendMessage(String access_token, String title, String description,
 		
 		content.put("title", title);
 		content.put("description",description);
-		content.put("image_url", "http://mud-kage.kakao.co.kr/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg");
+		content.put("image_url", "http://dh.aks.ac.kr/Edu/wiki/images/9/91/%ED%8C%A8%ED%8A%B8%EC%99%80.jpg");
 		content.put("image_width", "640");
 		content.put("image_height","640");
 		

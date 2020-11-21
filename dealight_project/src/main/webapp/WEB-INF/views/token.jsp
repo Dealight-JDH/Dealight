@@ -23,7 +23,7 @@
 <input name='description' type='textarea' value=""> </br></br>
 
 <label for="web_url">전송 URL</label></br>
-<input name='web_url' type='text' value="http://localhost:8080/business/waiting/">
+<input name='web_url' type='text' value="http://localhost:8080/dealight/business/waiting/">
 
 <button type='submit'>제출</button>
 

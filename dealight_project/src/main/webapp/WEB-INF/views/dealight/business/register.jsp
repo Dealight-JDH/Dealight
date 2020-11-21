@@ -13,7 +13,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form action="/business/register" method="post" name="form">
+<form action="/dealight/business/register" method="post" name="form">
 테스트코드용----------------------<br>
 <label>유저아이디</label> <input name="buserId" value="aaaa"><br>
 <label>매장코드</label> <input name="clsCd" value="B"><br>

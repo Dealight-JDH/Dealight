@@ -37,7 +37,7 @@ import lombok.extern.log4j.Log4j;
  */
 @RestController
 @Log4j
-@RequestMapping("/business/manage/*")
+@RequestMapping("/dealight/business/manage/*")
 @AllArgsConstructor
 public class BoardController {
 

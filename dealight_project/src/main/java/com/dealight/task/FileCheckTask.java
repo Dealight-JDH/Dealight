@@ -77,7 +77,7 @@ public class FileCheckTask {
 	}
 	
 	// 자동 웨이팅 생성기
-	@Scheduled(cron ="0 30 * * * *")
+	//@Scheduled(cron ="0 30 * * * *")
 	public void registerOnWait() throws Exception{
 		log.warn("Auto Online Wait Register Task run..................");
 		
@@ -135,8 +135,7 @@ public class FileCheckTask {
 	}
 	
 	// 자동 예약 생성기
-	//
-	@Scheduled(cron="0 * * * * *")
+	//@Scheduled(cron="0 * * * * *")
 	public void registerRsvd() throws Exception{
 		log.warn("Auto Rsvd Register Task run .....................");
 		
