@@ -64,48 +64,48 @@ public class RsvdController {
     public String kakaoPay(@Valid RsvdRequestDTO requestDto, BindingResult bindingResult){
     	
     	log.info("====================kakao rsvdFomr: " + requestDto);
-//    	if(bindingResult.hasErrors()) {
-//			//유효성 검사
-//			List<ObjectError> errorList = bindingResult.getAllErrors();
-//	        for (ObjectError error : errorList)
-//	            log.info("=====error: " + error.getDefaultMessage());
-//	        
-//		}
-//    	
-//    	//결제 요청 시 예약 등록
-//    	RsvdVO vo = requestDto.toEntity();
-//    	vo.setUserId("whddn528");
-//    	vo.setStusCd("P");
-//    	vo.setRevwStus(0);
-//    	
-//		//예약 상세vo list
-//		List<RsvdDtlsVO> dtlsList = new ArrayList<>();
-//    	
-////		String[] menu = requestDto.getMenu();
-////		int[] qty = requestDto.getQty();
-//		
-//		List<RsvdMenuDTO> lists = requestDto.getMenu();
-//		log.info("=============lists : "+ lists);
-//		//요청 리스트 생성
-//		for(int i=0; i< lists.size(); i++) {
-//			//log.info("======================menu: "+ Arrays.toString(menu));
-////			MenuDTO menuDto = rsvdService.findPriceByName(vo.getStoreId(), menu[i].trim());
-//			
-//			//log.info("======================menuDto: "+ menuDto);
-//			
-//			
-//			if(lists.get(i).getName() != null && lists.get(i).getPrice() != null) {
-//				
-//				//메뉴 수량 파라미터...
-//				RsvdDtlsVO dtlsVO = RsvdDtlsVO.builder()
-//						.menuNm(lists.get(i).getName())
-//						.menuPrc(lists.get(i).getPrice())
-//						.menuTotQty(requestDto.getTotQty()).build();
-//				dtlsList.add(dtlsVO);
-//			}
-//		}
-//    	
-//    	rsvdService.register(vo, dtlsList);
+    	if(bindingResult.hasErrors()) {
+			//유효성 검사
+			List<ObjectError> errorList = bindingResult.getAllErrors();
+	        for (ObjectError error : errorList)
+	            log.info("=====error: " + error.getDefaultMessage());
+	        
+		}
+    	
+    	//결제 요청 시 예약 등록
+    	RsvdVO vo = requestDto.toEntity();
+    	vo.setUserId("whddn528");
+    	vo.setStusCd("P");
+    	vo.setRevwStus(0);
+    	
+		//예약 상세vo list
+		List<RsvdDtlsVO> dtlsList = new ArrayList<>();
+    	
+//		String[] menu = requestDto.getMenu();
+//		int[] qty = requestDto.getQty();
+		
+		List<RsvdMenuDTO> lists = requestDto.getMenu();
+		log.info("=============lists : "+ lists);
+		//요청 리스트 생성
+		for(int i=0; i< lists.size(); i++) {
+			//log.info("======================menu: "+ Arrays.toString(menu));
+//			MenuDTO menuDto = rsvdService.findPriceByName(vo.getStoreId(), menu[i].trim());
+			
+			//log.info("======================menuDto: "+ menuDto);
+			
+			
+			if(lists.get(i).getName() != null && lists.get(i).getPrice() != null) {
+				
+				//메뉴 수량 파라미터...
+				RsvdDtlsVO dtlsVO = RsvdDtlsVO.builder()
+						.menuNm(lists.get(i).getName())
+						.menuPrc(lists.get(i).getPrice())
+						.menuTotQty(requestDto.getTotQty()).build();
+				dtlsList.add(dtlsVO);
+			}
+		}
+    	
+    	rsvdService.register(vo, dtlsList);
     	
         log.info("kakao pay.....");
         return "redirect:" + kakaoService.kakaoPayReady();

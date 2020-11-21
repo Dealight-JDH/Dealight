@@ -67,7 +67,17 @@ h4{
 	display: inline-block;
 }
 
-
+.text-center {
+      text-align: center;
+}
+.css-btn{
+     background-color: #EB0000;
+     color: white;
+     width: 350px;
+     height: 40px;
+     border-radius: 6px;
+     border-style: hidden;
+}
 </style>
 </head>
 <body>
@@ -126,9 +136,11 @@ h4{
 	
 	  <!-- Modal content -->
 	  <div class="modal-content">
+	  <span class="close">&times;</span>
 	    <div class="modal-header">
 	    	선착순: <h4 class="modal-lmtPnum" id="lmtPnum"></h4><label>명</label><br>
 	    	<h4 class="modal-name" id="htdlName"></h4><br>
+	    	 <input type="hidden" id="mhtdlId "name = "htdlId">
 	    </div>
 	    
 	    <div class="modal-body">
@@ -160,6 +172,13 @@ h4{
 	    		<li>구매 후 1시간 이후 환불 요청: 90% 환불</li>
 	    	</ul>
 	    	
+	   		<br>
+	    <div class="text-center">	
+    		<!-- <form action="/store"> -->
+        		<button type="submit" class="css-btn js-dealBtn"><span>🔥</span>딜 하기</button>	    		
+    		<!-- </form> -->
+      	</div>
+	    	
 	    </div>
 	  </div>
 	</div>
@@ -175,6 +194,7 @@ h4{
 	
 	//모달
 	var modal = $(".modal"),
+		htdlId = $("#mhtdlId"),
 		lmtPnum = $("#lmtPnum"),
 		htdlName = $("#htdlName"),
 		startTm = $("#startTm"),
@@ -240,11 +260,25 @@ h4{
 				$("form").submit();
 			}
 		});
+		
+		//모달 닫기
+		$(".close").on("click", function(){
+			modal.hide();
+		});
+		
+		//딜 하기 클릭 시 매장 상세로 이동한다
+		$(".js-dealBtn").on("click", function(e){
+			console.log("========");
+			e.preventDefault();
+			
+			console.log("==========btn click: " + htdlId);
+			
+			
+			
+		});
 				
 	});
-	
-	
-	
+
 	//타이머 중지
 	function stop(id){
 		clearInterval(id);
@@ -324,7 +358,7 @@ h4{
 				
 				str += "메뉴: ";
 				console.log("======="+ list[i].htdlDtls);
-				console.log(list[i].dtlsList);
+				console.log(list[i].htdlDtls);
 			
 			//핫딜 메뉴 리스트 생성
 			for(var j=0, dtlsLen = list[i].htdlDtls.length || 0; j<dtlsLen; j++){
@@ -386,6 +420,7 @@ h4{
 		
 		var elapTime = getElapTime(htdl.endTm);
 		console.log(elapTime+"===============elapTime");
+		htdlId.val(htdl.htdlId);
 		mElapTime.text(elapTime);
 		dcRate.text(htdl.dcRate*100+"%");
 		befPrice.text("₩"+htdl.befPrice);
@@ -403,7 +438,7 @@ h4{
 		modal.show();
 	}
 	
-	//핫딜 클릭(상세) 이벤트 등록
+	 //핫딜 클릭(상세) 이벤트 등록
 	function eventHtdlListener(){
 		
 		//생성된 핫딜에 클릭시 이벤트 생성

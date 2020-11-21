@@ -231,7 +231,7 @@
 		console.log("---"+totAmt);
 		
 		
-		const input4 = document.createElement("input");
+		/* const input4 = document.createElement("input");
 		input4.type = "hidden"
 		input4.name = "totAmt";
 		input4.value = totAmt;
@@ -242,7 +242,13 @@
 		input5.value = totQty;
 		
 		form.appendChild(input4);
-		form.appendChild(input5);
+		form.appendChild(input5); */
+		
+		const totAmt = "<input type='hidden' name='totAmt' value='totAmt'>"; 
+		reserveForm.append(totAmt);
+		
+		const totQty = "<input type='hidden' name='totQty' value='totQty'>"; 
+		reserveForm.append(totQty);
 		
 		const input6 = document.createElement("input");
 		input5.type = "hidden"
