@@ -35,10 +35,11 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Applications/SQLDeveloper.app/Contents/Resources/sqldeveloper/jdbc/lib/ojdbc8.jar">
+	<classpathentry kind="lib" path="C:/sql/jdbc/lib/ojdbc8.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
