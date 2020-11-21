@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-       <%@include file="../../includes/loginmodalHeader.jsp" %>
-    <%@include file="../../includes/mainMenu.jsp" %>
-    <%@include file="../../includes/loginModal.jsp" %>
+       <%@include file="../includes/loginmodalHeader.jsp" %>
+    <%@include file="../includes/mainMenu.jsp" %>
+    <%@include file="../includes/loginModal.jsp" %>
     
     <!-- 현수현수현수 -->
 <!DOCTYPE html>
@@ -35,7 +35,7 @@ $(function(){
 		let send = {'email' : email}
 		$.ajax({
 			type:"post",
-			url: "/dealight/email/sendId",
+			url: "/dealight/prove/sendId",
 			data: send,
 			success : function(data){
 					//data가 true면 이메일 발송 성공

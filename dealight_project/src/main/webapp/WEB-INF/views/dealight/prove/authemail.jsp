@@ -17,7 +17,7 @@
 <h2>5초만 기다려주세요....</h2>
 <h4>본인 확인을 위하여 이메일을 입력하여 주세요</h4>
 <div class="sendEmail">
-	<form action="/dealight/email/email" method="post" onsubmit="return validEmail()"> 
+	<form action="/dealight/prove/authemail" method="post" onsubmit="return validEmail()"> 
 	<p>이메일<input type="email" name="email" id="email" placeholder="이메일을 입력하여 주세요"></p>
 	<p><button type="submit" id="sendEmailbtn">이메일발송</button></p>
 	<input type="hidden" id='num' value='<c:out value="${num}"/>'>

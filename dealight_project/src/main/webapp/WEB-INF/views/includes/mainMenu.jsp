@@ -53,7 +53,7 @@ body {
 	overflow: hidden;
 	flex: 1;
 	/* 비율을 1:1:1로 주기 */
-	height: 100%;
+	height: 35px;
 	display: inline-block;
 	z-index: 0;
 }
@@ -285,7 +285,7 @@ body {
 
    <div class="top-container" >
       <div class="topDiv" id="topDiv">
-         <div class="top">
+         <div class="top" style="height:35px">
             <div class="dropdown">
                <button class="dropbtn">
                   <i class="fas fa-bars" color="black"></i>

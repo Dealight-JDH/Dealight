@@ -44,11 +44,11 @@ public class UserController {
 	
 	
 	//회원가입전 이메일 인증받는 페이지
-	@GetMapping("/email/email")
+	@GetMapping("/prove/authemail")
 	public void email() {}
 	
 	//회원가입 인증번호 이메일전송
-	@RequestMapping(value = "/email/email",  method= RequestMethod.POST)
+	@RequestMapping(value = "/prove/authemail",  method= RequestMethod.POST)
 	public String email(String email, RedirectAttributes rttr) throws IOException {
 		
         
@@ -71,15 +71,15 @@ public class UserController {
        rttr.addFlashAttribute("authNum", authNum);
        rttr.addFlashAttribute("email", email);
         System.out.println("인증번호 : "+authNum);
-		return "redirect:/dealight/email/authEmail";
+		return "redirect:/dealight/prove/authnum";
 	} 
 	
 	//인증번호 입력 페이지
-	@GetMapping("/email/authEmail")
+	@GetMapping("/prove/authnum")
 	public void authEmail() {}
 
 	//이메일인증
-	@PostMapping("/email/auth")
+	@PostMapping("/prove/auth")
 	public String auth(String num, String authNum,  String email, RedirectAttributes rttr, HttpServletResponse response) throws IOException {
         
 		//인증번호가 일치할 경우 인증번호가 맞다는 창을 출력하고 회원가입창으로 이동함
@@ -94,18 +94,18 @@ public class UserController {
             
         }else {
             
-            return "redirect:/dealight/email/email";
+            return "redirect:/dealight/prove/authemail";
         }    
     
     }
 
 	
 	//아이디 찾기 페이지
-	@GetMapping("/email/findId")
-	public void findId() {}
+	@GetMapping("/findid")
+	public void findid() {}
 	
 	//아이디 찾기, 이메일과 일치하는 아이디들을 메일로 전송
-	@RequestMapping( value = "/email/sendId", method= RequestMethod.POST)
+	@RequestMapping( value = "/prove/sendId", method= RequestMethod.POST)
 	@ResponseBody
 	public boolean sendId(String email,   RedirectAttributes rttr) throws Exception {
 		
@@ -128,11 +128,11 @@ public class UserController {
 	
 	
 	//비밀번호 찾기 페이지
-	@GetMapping("/email/findPwd")
-	public void findPwd() {}
+	@GetMapping("/findpwd")
+	public void findpwd() {}
 	
 	//비밀번호 찾기 ->임시비밀번호 생성
-	@RequestMapping( value = "/email/sendpwd", method= RequestMethod.POST)
+	@RequestMapping( value = "/prove/sendpwd", method= RequestMethod.POST)
 	@ResponseBody
 	public boolean sendpwd(UserVO user,   RedirectAttributes rttr) throws Exception {
         //현재비밀번호를 가져온다

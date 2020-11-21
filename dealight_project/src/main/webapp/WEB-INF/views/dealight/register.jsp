@@ -42,12 +42,12 @@
 
     if(num.value == "" || authNum.value == ""){
     	alert("잘 못 된 접근입니다.");
-    	location.href = '/dealight/email/email';
+    	location.href = '/dealight/prove/authemail';
     }
 
     if(num.value != authNum.value){
     	alert("인증번호가 일치하지 않습니다.");
-    	location.href = '/dealight/email/email';
+    	location.href = '/dealight/prove/authemail';
     }
     
     

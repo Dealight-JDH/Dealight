@@ -21,7 +21,7 @@ alert('이메일을 발송하였습니다. 인증 번호를 확인 후 입력해
 <body>
 <h4>인증번호를 입력해 주세요</h4>
 <div id = "sendAuth" >
-		<form action="/dealight/email/auth" method="post">
+		<form action="/dealight/prove/auth" method="post">
 		<p>인증번호<input type="text" id="num" name="num" placeholder="인증번호를 입력하여 주세요"></p>
 		<input type='hidden' name = "authNum" value="<c:out value = '${authNum }' />">
 		<input type="hidden" name = "email" value="<c:out value = '${email }' />">

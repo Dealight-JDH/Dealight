@@ -41,14 +41,14 @@
          </div>
           <p class="saveId"> id저장<input type="checkbox" name="saveId"  <%=cookieVal!=""?"checked" : ""%> ></p>
          <div class="form-group">
-        <p class="find">   <a href="/dealight/email/findId">아이디 찾기</a>
-           <a href="/dealight/email/findPwd">비밀번호 찾기</a> </p>
+        <p class="find">   <a href="/dealight/findid">아이디 찾기</a>
+           <a href="/dealight/findpwd">비밀번호 찾기</a> </p>
          </div>
  
        </div>
     <div class="modal-footer">
      <button id='loginbtn' type="submit" class="btn btn-warning">Login</button>
-    <button id='registerbtn' type="button" class="btn btn-danger" onclick="location.href='/dealight/email/email'">Register</button>
+    <button id='registerbtn' type="button" class="btn btn-danger" onclick="location.href='/dealight/prove/authemail'">Register</button>
 </div>
  </form> 
 <div>
