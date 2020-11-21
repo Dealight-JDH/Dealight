@@ -85,7 +85,7 @@ datalist option {
             </datalist>
 		</div>
 		<!-- 데이터중복 없에는 방향을 생각해보자....... -->
-		<input id="button" type="submit" value="search">
+		<input id="searchButton" type="submit" value="search">
 	</form>
 	<div class="list"style="width:750px;height:700px;overflow: scroll;">
 	</div>
@@ -124,27 +124,21 @@ datalist option {
 <!-- 리스트 불러오기 -->
 <script type="text/javascript">
 	//페이지가 시작된다.
-var actionForm = $("#actionForm");
-$(document).ready(function(){
-	//메인에서 넘어오는 정보들 날짜, 인원, 검색어, 정렬순서(거리순), 위치(위도,경도 넘어오지않는다면 디폴트값 적용)
-	//검색정보를 받아온다. ( 인원, 시간, 지역, 해시태그)
-	//getSearchInfo();
-	//폼태그에 검색정보들을 업데이트한다.
-	//actionFormUpdate(); 
-	//검색정보를 ajax 통신으로 보낸다.
-	//getList();
-	//ajax 파라미터 (cri - pageNum, amount, lat, lng, distance, sortType)
+let searchButton = document.getElementById("#searchButton");
+const actionForm = document.forms["actionForm"];
 	
+$(document).ready(function(){
+	//메인에서 넘어오는 정보들 날짜, 인원, 검색어, 해시태그
+	//검색정보를 받아온다. ( 인원, 시간, 지역, 해시태그)
 	//매장메인을 보여준다.
 	showMain();
 	
-	//지도화면에서 정하는것들 - 정렬조건, 필터(예약가능, 줄서기가능, 옵션, 핫딜중)
+	//지도화면에서 정하는것들 - 정렬조건(기본 거리순), 필터(예약가능, 줄서기가능, 옵션, 핫딜중)
 	//지도화면에서는 버튼을 눌러야 적용
 	
-	
-	var searchFilter = $("#searchFilter")
+	//searchButton.onclick()
 	//search button 이벤트 등록
-	$("#button").on("click", function(e){
+	$("#searchButton").on("click", function(e){
 		e.preventDefault();
 		console.log("click");
 		
@@ -154,19 +148,37 @@ $(document).ready(function(){
 		//actinoForm에 검색사항을 변경한다.
 		//오픈매장 보기 변경
 		console.log(openStore)
-		actionForm.find("input[name='openStore']").val(openStore)
+		actionForm.elements["openStore"].value = openStore
 		//우선순위 변경
-		actionForm.find("input[name='sortPriority']").val($("#sortPriority option:selected").val());
+		actionForm.elements["sortPriority"].value = $("#sortPriority option:selected").val();
 		//검색반경 변경
-		actionForm.find("input[name='distance']").val(range[$("#range").val() - 1 ].value);
+		actionForm.elements["distance"].value = range[$("#range").val() - 1 ].value;
 		//page를 1로 변경
-		actionForm.find("input[name='pageNum']").val("1");
+		actionForm.elements["pageNum"].value = 1;
 		//sortType을 설정한 값으로 변경
-		actionForm.find("input[name='sortType']").val($("#sortType option:selected").val());
+		actionForm.elements["sortType"].value = $("#sortType option:selected").val();
 		//main페이지 다시출력
 		showMain();
 	});
 })
+//searchButton에 click이벤트를 등록한다.
+function addEventHandlerToSearchButton(){
+	searchButton.onclick = function(e){
+		console.log("searchBtn Click");
+		//button의 submit을 막는다.
+		e.preventDefault();
+		//searchFilter의 내용을 actionForm에 적용시킨다.
+		//정렬조건 적용
+		//우선순위 적용
+		//검색반경 적용
+		//오픈매장보기 적용
+		//paging의 pageNum을 1로 변경
+		//showMain(); 호출
+		
+	}
+}
+
+	
 function getRange(distance){
 	switch(distance){
 	case 0.3:
@@ -209,14 +221,7 @@ function getList(callback,error){
 		type : 'get',
 		url : '/list/',
 		contentType : "application/json; charset=utf-8",
-		data : {'pageNum':actionForm.find("input[name='pageNum']").val(),
-				'amount':actionForm.find("input[name='amount']").val(),
-				'distance':actionForm.find("input[name='distance']").val(),
-				'lat':actionForm.find("input[name='lat']").val(),
-				'lng':actionForm.find("input[name='lng']").val(),
-				'sortType':actionForm.find("input[name='sortType']").val(),
-				'sortPriority':actionForm.find("input[name='sortPriority']").val(),
-				'openStore':actionForm.find("input[name='openStore']").val()},
+		data : createObj(actionForm),
 		success : function(result, status, xhr){
 			if(callback){
 				callback(result);
@@ -230,6 +235,15 @@ function getList(callback,error){
 		}
 	});
 	
+}
+
+function createObj(target){
+	let obj = Object();
+	for(let i = 0 ; i < target.length ; i++){
+		obj[target[i].name] = target[i].value;
+	}
+	
+	return obj;
 }
 
 //매장목록을 출력하는 함수
@@ -319,7 +333,7 @@ function actionFormUpdate(pageDTO){
 //search filter를 업데이트 하는 함수
 function searchFilterUpdate(pageDTO){
 	
-	$("#sortType").val(pageDTO.cri.sortType);f
+	$("#sortType").val(pageDTO.cri.sortType);
 	$("#sortPriority").val(pageDTO.cri.sortPriority);
 	$("#range").val(getRange(pageDTO.cri.distance));
 	$("#openStore").prop("checked", pageDTO.cri.openStore);
