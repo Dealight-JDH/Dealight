@@ -287,6 +287,7 @@ public class ManageController {
 		return "redirect:/business/manage?storeId="+storeId;
 	}
 	
+	// 착석 상태 변경
 	@PostMapping("/seat")
 	public String seatStus(Model model,long storeId, String seatStusColor) {
 		
@@ -295,13 +296,14 @@ public class ManageController {
 		return "redirect:/business/manage?storeId="+storeId;
 	}
 
-	@GetMapping("/board")
-	public String getBoard(Model model, long storeId) {
-		
-		
-		model.addAttribute("storeId", storeId);
-		
-		return "/board";
-	}
+	// REST TEST에 사용
+//	@GetMapping("/board")
+//	public String getBoard(Model model, long storeId) {
+//		
+//		
+//		model.addAttribute("storeId", storeId);
+//		
+//		return "/board";
+//	}
 
 }

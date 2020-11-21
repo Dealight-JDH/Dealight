@@ -159,6 +159,7 @@ public class RsvdServiceImpl implements RsvdService{
     	String today = currentDate.format(dateTimeForMatter);
 		
 		return rsvdMapper.findByStoreIdAndDate(storeId, today).stream().filter(rsvd -> rsvd.getStusCd().equals("C"))
+				.sorted((r1,r2) -> (int) (r1.getRegDate().getTime() - r2.getRegDate().getTime()))
 				.collect(Collectors.toList());
 	}
 	
@@ -190,7 +191,6 @@ public class RsvdServiceImpl implements RsvdService{
 		return minutes;
 	}
 	
-	// time = "yyyyMMdd"
 	@Override
 	public String toRsvdByTimeFormat(String time) {
 		
@@ -226,8 +226,6 @@ public class RsvdServiceImpl implements RsvdService{
 		
 		listByDate.stream().forEach((rsvd) -> {
 			
-			// C���� �ȴ�.
-			
 			log.info("for each ......................");
 			
 			if(!rsvd.getStusCd().equalsIgnoreCase("C")) {
@@ -259,33 +257,17 @@ public class RsvdServiceImpl implements RsvdService{
 	@Override
 	public boolean isReserveThisTimeStore(long storeId, Date date,int acm) {
 		
-		//log.info("test..................date" + date);
-		
 		String time = getTime(date);
-		
-		//log.info("test..................time" + time);
 		
 		String pattern = "yyyyMMdd";
 		
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		
-		//log.info("test.....................date"+simpleDateFormat.format(date));
-		
 		List<RsvdVO> list = getListByDate(storeId, simpleDateFormat.format(date));
-		
-		//log.info("test..................list" + list);
 		
 		HashMap<String,List<Long>> map = getRsvdByTimeMap(list);
 		
-		//log.info("test..................map" + map);
-		
 		time = toRsvdByTimeFormat(time);
-		
-		//log.info("test..................time" + time);
-		
-		//log.info("test..................map.get(time) : " + map.get(time));
-		
-		//return false;
 		
 		return map.get(time) == null ? true : map.get(time).size() < acm ? true : false;
 	}
@@ -293,33 +275,7 @@ public class RsvdServiceImpl implements RsvdService{
 	@Override
 	public long readNextRsvdId(HashMap<String, List<Long>> getTodayRsvdByTimeMap) {
 		
-		//log.info("Test.................." + getTodayRsvdByTimeMap);
-		
 		SortedSet<String> keys = new TreeSet<>(getTodayRsvdByTimeMap.keySet());
-		
-		//log.info("Test.................." + getTodayRsvdByTimeMap);
-		
-		/*
-		
-		log.info("test..............................."+keys);
-		
-		Iterator<String> it = keys.iterator();
-		
-		while(it.hasNext()) {
-			
-			String key = it.next();
-			
-			map.get(key).stream().forEach(rsvdId -> {
-				
-				log.info("test...............key : " + key);
-				log.info("test...............rsvdId : "+rsvdId);
-				
-			});;
-			
-		}
-		*/
-		
-		//log.info("Test........................keys : " + keys);
 		
 		Iterator it = keys.iterator();
 		
@@ -328,11 +284,6 @@ public class RsvdServiceImpl implements RsvdService{
 		if(it.hasNext())
 			first = (String) it.next();
 		
-		//log.info("Test......................first" + first);
-		
-		//log.info("test................keys it next : "+getTodayRsvdByTimeMap.get(first));
-		
-		// ���� ���� ����� ������ -1����
 		if(first.equals(""))
 			return -1;
 		if(getTodayRsvdByTimeMap == null)

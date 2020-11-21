@@ -186,6 +186,8 @@
 			</div>
 		</c:forEach>
 	</c:if>
+	
+	<div>
         </div> <!-- end info box -->
         	<!-- The Modal -->
 	<div id="myModal" class="modal">
@@ -631,7 +633,7 @@ window.onclick = function(event) {
                         strWaitList += "<li>웨이팅 회원 이름 : "+ wait.custNm + "</li>";
                         strWaitList += "<li>웨이팅 회원 번호 : "+ wait.custTelno + "</li>";
                     strWaitList += "</ul>"
-                    strWaitList += "<button class='btn_wait_call'>호출</button>";
+                    strWaitList += "<button class='btn_wait_call'><a href='/oauth'>호출</a></button>";
                     strWaitList += "</div>";
                 });
     

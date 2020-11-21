@@ -1,13 +1,16 @@
 package com.dealight.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -23,7 +26,8 @@ import lombok.extern.log4j.Log4j;
 
 /*
  * 
- *****[김동인] 
+ *****[김동인]
+ *
  * 
  */
 
@@ -31,62 +35,15 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class CallServiceImpl implements CallService {
 	
-	/*
-	 * īī�� �޽��� API�� REST API ����� ������ ������ ����ȴ�. 
-	 * 
-	 * 0. īī�� �����ڿ� ������ �� �� REST API KEY, redirect URI�� �����Ѵ�.
-	 * 1. �ΰ� �ڵ带 �޾ƾ� �Ѵ�. GET ������� REST API key�� redirect URI�� ���� code�� �޾ƿ���.
-	 * 1-1. **��ũ�� ���� ��������.
-	 * 1-2. localhost:8080/oauth�� ���� a��ũ�� ����.
-	 * 1-3. �׷��� �޾ƿ� url�� code�� ��������
-	 * 1-4. **�ΰ��ڵ�� ������ ������ ������ ��ȿ�ϴ�. ������ �����ϸ� �ٽ� �߱޹޾ƾ� �Ѵ�.
-	 * 2. �ΰ� �ڵ带 ���� �׼��� ��ū�� �߱޹޾ƾ� �Ѵ�.
-	 * 2-1. code�� get ��� (/token?code={})���� �ѱ���
-	 * 2-2. POST Ÿ���� ��� ���� ��Ʈ���� Ȱ���ϴ°��� ���Ҽ� �ִ�.
-	 * 2-3. https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={RESTŰ}&redirect_uri={�����̷�Ʈ URI}&code={�ڵ�}
-	 * 2-4. JSONŸ������ access_token�� ��ȯ���� �� �ִ�.
-	 * 3. ������ ��ū�� Ȱ���ؼ� �޽����� �ִ´�.
-	 * 3-1. ��ū�� get ������� uri
-	 * 3-2. https://kapi.kakao.com/v2/api/talk/memo/default/send?template_object={�޽��� JSON}
-	 * 3-3. ����� Authorization : Bearer + access_token
-	 * 3-4. 200 ok�� ������ �޽��� ���޵� ��
-	 * 
-	 * 
-	 * ������
-	 * 
-	 * > oauth�� �ڵ����� �޾Ƽ� ������ �� �ִ� ����� ã�ƺ���. -> �ϴ� URI�� Ȯ���ϰ� �ڵ带 ���� �Է��ؼ� ��ū �޴� ���
-	 * > �׼��� ��ū�� �޾� �����ϴ� ��� -> POST�� json�� ������ JSON���� ��ū�� �޴´�. 
-	 * > �޽����� �߼��ϴ� ����� ã�ƺ���. -> ��ū�� �Բ� �޽��� ������ ������ �����. JSON���� ������ ����� ã�ƺ���.
-	 * > �޽����� �ۼ��ؼ� �߼��غ��� -> TEST
-	 * -- ������ �޽��� ������ �Ϸ�
-	 * > ������ �������� -> ������ ����
-	 * > ģ�� ��� �������� api -> ģ�� ��� ����
-	 * > ģ������ �޽��� ������ -> �޽��������� ����
-	 * > �Ϸ�!
-	 * 
-	 * ***����� HTTP method ������ ���� https�� �����ߴ��� Ȯ������. http�� �����ؾ��Ѵ�.
-	 * 
-	 * 
-	 * 
-	 */
-	
-	
 	@Override
 	public String getAuth() {
 		
-		
-		
-		// 1. RestTemplat ����
 		RestTemplate restTemplate = new RestTemplate();	
 		
 		String url = "https://kauth.kakao.com/oauth/authorize?client_id=dba6ebc24e85989c7afde75bd48c5746&redirect_uri=https://localhost:8080/oauth&response_type=code";
 		
 		UriComponents uri = UriComponentsBuilder.fromHttpUrl(url).build();
 		
-		// ��ũ�� ���� �޾ƿ��� ��
-		// ���� �ڵ� O67g7f5UQRDFIrAfiMwe3mxQTgX1_905Safvjt2_WSbjfqL4v3hflGR9xLGMQSkAS4_W5wo9dVoAAAF11gJ1Kw
-		
-		// �� ������ �ڵ�� API�� ȣ���Ͽ� MAPŸ������ ���޹޴´�.
 		String strResult = restTemplate.getForObject(url, String.class);
 
        return strResult;
@@ -108,35 +65,16 @@ public class CallServiceImpl implements CallService {
 		 
 		 try {
 		
-		// 1. RestTemplat ����
 		RestTemplate restTemplate = new RestTemplate();	
 		
-		// 1-1. error �ڵ鷯�� ������ش�.
 		RestTemplateResponseErrorHandler errorHandler = new RestTemplateResponseErrorHandler();
 		
 		restTemplate.setErrorHandler(errorHandler);
 		
-		
-		// 2. ����� ������ش�.
 		HttpHeaders header = new HttpHeaders();
 		
-		// 2-1. content-type�� ������ش�.
 		header.setContentType(MediaType.APPLICATION_JSON);
 		
-		// 3. request body parameter�� �����Ѵ�.
-		
-		// 3-1. json�� ���¸� ���� map�� ������ش�.
-		// *****************��ū�� ���� ���� ���� ��Ʈ������ �־��.
-//		Map<String, Object> map = new HashMap<>();
-//
-//		map.put("grant_type", "authorization_code");
-//		map.put("client_id", "dba6ebc24e85989c7afde75bd48c5746");
-//		map.put("redirect_uri", "http://localhost:8080");
-//		map.put("code", "O67g7f5UQRDFIrAfiMwe3mxQTgX1_905Safvjt2_WSbjfqL4v3hflGR9xLGMQSkAS4_W5wo9dVoAAAF11gJ1Kw");
-		
-		// 4. map�� header�� �߰����ش�.
-//       HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map,header);
-	
 		String url = "https://kauth.kakao.com/oauth/token";
 		
 		UriComponents uri = UriComponentsBuilder.fromUriString(url)
@@ -148,63 +86,60 @@ public class CallServiceImpl implements CallService {
 				
 		log.info(uri.toString());
 		
-		// �� ������ �ڵ�� API�� ȣ���Ͽ� MAPŸ������ ���޹޴´�.
 		ResponseEntity<Map> resultMap = restTemplate.postForEntity(uri.toString(), header, Map.class);
-		
-		
 		
 		log.info(resultMap);
 		
+		result.put("statusCode", resultMap.getStatusCodeValue()); //http status code?? ???
+       result.put("header", resultMap.getHeaders()); //??? ???? ???
+       result.put("body", resultMap.getBody()); //???? ?????? ???? ???
 		
-		result.put("statusCode", resultMap.getStatusCodeValue()); //http status code�� Ȯ��
-       result.put("header", resultMap.getHeaders()); //��� ���� Ȯ��
-       result.put("body", resultMap.getBody()); //���� ������ ���� Ȯ��
-		
-       //�����͸� ����� ���� �޾Ҵ��� Ȯ�� string���·� �Ľ�����
        ObjectMapper mapper = new ObjectMapper();
        jsonInString = mapper.writeValueAsString(resultMap.getBody());
        
 		} catch (Exception e) {
            result.put("statusCode", "999");
-           result.put("body"  , "excpetion����");
+           result.put("body"  , "excpetion????");
            System.out.println(e.toString());
        }
 
        return result;
 	}
 	
-public String sendMessage(String access_token) {
+public String sendMessage(String access_token, String title, String description, String web_url) {
 		
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
 		 String jsonInString = "";
 		 try {
 		
-		// 1. RestTemplat ����
+		// 1. RestTemplat 생성
 		RestTemplate restTemplate = new RestTemplate();	
 		
 		RestTemplateResponseErrorHandler errorHandler = new RestTemplateResponseErrorHandler();
 		
 		restTemplate.setErrorHandler(errorHandler);
 		
-		// 2. ����� ������ش�.
+		// 2. 헤더 생성
 		HttpHeaders header = new HttpHeaders();
 		
-		// 2-1. content-type�� ������ش�.
-		header.setContentType(MediaType.APPLICATION_JSON);
+		// 2-1. content-type 설정
+		//header.setContentType(MediaType.APPLICATION_JSON);
+		header.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
+		//header.set("Content-Type","application/x-www-form-urlencoded; charset=utf-8");
 		
-		// 2-2. accept ����� ������ش�.
-	//	header.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		// 2-2. accept 설정
+		header.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		
-		// 2-3. Authorization �� �������ش�.
+		// 2-3. Authorization 설정
 		String authHeader = "Bearer " + access_token;
 		
 		header.set("Authorization", authHeader);
 		
-		// 3. request body parameter�� �����Ѵ�.
+		// 3. request body parameter?? ???????.
 		
-		// 3-1. json�� ���¸� ���� map�� ������ش�.
-		//String requestJson = "template_object={\"object_type\":\"feed\",\"content\":{\"title\":\"����Ʈ ����\",\"description\": \"�Ƹ޸�ī��, ��, ����\",\"image_url\":\"http://mud-kage.kakao.co.kr/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg\",\"image_width\":640,\"image_height\": 640,\"link\":{\"web_url\": \"http://www.daum.net\",\"mobile_web_url\": \"http://m.daum.net\",\"android_execution_params\": \"contentId=100\",\"ios_execution_params\": \"contentId=100\"}},\"social\": {\"like_count\": 100,\"comment_count\": 200,\"shared_count\": 300,\"view_count\": 400,\"subscriber_count\": 500},\"buttons\": [{\"title\": \"������ �̵�\",\"link\": {\"web_url\": \"http://www.daum.net\",\"mobile_web_url\": \"http://m.daum.net\"}},{\"title\": \"������ �̵�\",\"link\": {\"android_execution_params\": \"contentId=100\",\"ios_execution_params\": \"contentId=100\"}}]}";
+		// 3-1. json?? ???¸? ???? map?? ????????.
+		//String requestJson = "template_object={\"object_type\":\"feed\",\"content\":{\"title\":\"????? ????\",\"description\": \"???????, ??, ????\",\"image_url\":\"http://mud-kage.kakao.co.kr/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg\",\"image_width\":640,\"image_height\": 640,\"link\":{\"web_url\": \"http://www.daum.net\",\"mobile_web_url\": \"http://m.daum.net\",\"android_execution_params\": \"contentId=100\",\"ios_execution_params\": \"contentId=100\"}},\"social\": {\"like_count\": 100,\"comment_count\": 200,\"shared_count\": 300,\"view_count\": 400,\"subscriber_count\": 500},\"buttons\": [{\"title\": \"?????? ???\",\"link\": {\"web_url\": \"http://www.daum.net\",\"mobile_web_url\": \"http://m.daum.net\"}},{\"title\": \"?????? ???\",\"link\": {\"android_execution_params\": \"contentId=100\",\"ios_execution_params\": \"contentId=100\"}}]}";
 		
 		
 		Map<String, Object> map = new HashMap<>();
@@ -213,16 +148,16 @@ public String sendMessage(String access_token) {
 		
 		Map<String, Object> content = new HashMap<>();
 		
-		content.put("title", "����Ʈ ����");
-		content.put("description","�Ƹ޸�ī��, ��, ����");
+		content.put("title", title);
+		content.put("description",description);
 		content.put("image_url", "http://mud-kage.kakao.co.kr/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg");
 		content.put("image_width", "640");
 		content.put("image_height","640");
 		
 		Map<String, Object> link = new HashMap<>();
 		
-		link.put("web_url", "http://www.daum.net");
-		link.put("mobile_web_url", "http://m.daum.net");
+		link.put("web_url", web_url);
+		link.put("mobile_web_url", web_url);
 		link.put("android_execution_params", "contentId=100");
 		link.put("ios_execution_params", "contentId=100");
 		
@@ -244,12 +179,12 @@ public String sendMessage(String access_token) {
 		
 		Map<String, Object> button1 = new HashMap<>();
 		
-		button1.put("title", "������ �̵�");
+		button1.put("title", "웹으로 보기");
 		
 		Map<String, Object> link2 = new HashMap<>();
 		
-		link2.put("web_url", "http://www.daum.net");
-		link2.put("mobile_web_url", "http://m.daum.net");
+		link2.put("web_url", web_url);
+		link2.put("mobile_web_url", web_url);
 		
 		button1.put("link", link2);
 		
@@ -257,7 +192,7 @@ public String sendMessage(String access_token) {
 		
 		Map<String, Object> button2 = new HashMap<>();
 		
-		button2.put("title", "������ �̵�");
+		button2.put("title", "앱으로 보기");
 		
 		Map<String, Object> link3 = new HashMap<>();
 		
@@ -274,37 +209,132 @@ public String sendMessage(String access_token) {
 		
 		String requestJson =  gson.toJson(map);
 		
-		// 4. map�� header�� �߰����ش�.
+		// 4. map?? header?? ????????.
         HttpEntity<String> entity = new HttpEntity<>(requestJson,header);
 	
 		String url = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
 		
 		
 		UriComponents uri = UriComponentsBuilder.fromUriString(url)
-				//.queryParam("template_object", requestJson)
 				.queryParam("template_object", requestJson)
 				.build();
 		
-		// �� ������ �ڵ�� API�� ȣ���Ͽ� MAPŸ������ ���޹޴´�.
-		ResponseEntity<Map> resultMap = restTemplate.postForEntity(uri.toUri(), header, Map.class);
+		RequestEntity<String> rq = new RequestEntity<>(header, HttpMethod.POST, uri.toUri());
 		
-		result.put("statusCode", resultMap.getStatusCodeValue()); //http status code�� Ȯ��
-        result.put("header", resultMap.getHeaders()); //��� ���� Ȯ��
-        result.put("body", resultMap.getBody()); //���� ������ ���� Ȯ��
+		ResponseEntity<Map> resultMap = restTemplate.exchange(rq,  Map.class);
 		
-        //�����͸� ����� ���� �޾Ҵ��� Ȯ�� string���·� �Ľ�����
+		//ResponseEntity<Map> resultMap = restTemplate.postForEntity(uri.toUri(), header, Map.class);
+		
+		result.put("statusCode", resultMap.getStatusCodeValue()); //http status code?? ???
+        result.put("header", resultMap.getHeaders()); //??? ???? ???
+        result.put("body", resultMap.getBody()); //???? ?????? ???? ???
+		
         ObjectMapper mapper = new ObjectMapper();
         jsonInString = mapper.writeValueAsString(resultMap.getBody());
         
 		} catch (Exception e) {
             result.put("statusCode", "999");
-            result.put("body"  , "excpetion����");
+            result.put("body"  , "excpetion????");
             System.out.println(e.toString());
         }
  
         return jsonInString;
 	}
 
+	@Override
+	public HashMap<String, Object> getProfile(String access_token) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		 String jsonInString = "";
+		 try {
+		
+		RestTemplate restTemplate = new RestTemplate();	
+		
+		RestTemplateResponseErrorHandler errorHandler = new RestTemplateResponseErrorHandler();
+		
+		restTemplate.setErrorHandler(errorHandler);
+		
+		HttpHeaders header = new HttpHeaders();
+		
+		header.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
+		
+		String authHeader = "Bearer " + access_token;
+		
+		header.set("Authorization", authHeader);
+		
+		String url = "https://kapi.kakao.com/v2/user/me";
+		
+		
+		UriComponents uri = UriComponentsBuilder.fromUriString(url)
+				.build();
+		
+		HttpEntity entity = new HttpEntity(header);
+		
+		ResponseEntity<Map> resultMap= restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+		
+		result.put("statusCode", resultMap.getStatusCodeValue()); //http status code?? ???
+        result.put("header", resultMap.getHeaders()); //??? ???? ???
+        result.put("body", resultMap.getBody()); //???? ?????? ???? ???
+		
+        ObjectMapper mapper = new ObjectMapper();
+        jsonInString = mapper.writeValueAsString(resultMap.getBody());
+        
+		} catch (Exception e) {
+            result.put("statusCode", "999");
+            result.put("body"  , "excpetion????");
+            System.out.println(e.toString());
+        }
+ 
+        return result;
+	}
+	
+	@Override
+	public HashMap<String, Object> getUsersList() {
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		 String jsonInString = "";
+		 try {
+		
+		RestTemplate restTemplate = new RestTemplate();	
+		
+		RestTemplateResponseErrorHandler errorHandler = new RestTemplateResponseErrorHandler();
+		
+		restTemplate.setErrorHandler(errorHandler);
+		
+		HttpHeaders header = new HttpHeaders();
+		
+		header.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
+		
+		String authHeader = "KakaoAK " + "047b1c1dfc9d0565ff6e8c3866f30429";
+		
+		header.set("Authorization", authHeader);
+		
+		String url = "https://kapi.kakao.com/v1/user/ids";
+		
+		UriComponents uri = UriComponentsBuilder.fromUriString(url)
+				.build();
+		
+		HttpEntity entity = new HttpEntity(header);
+		
+		ResponseEntity<Map> resultMap= restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+		
+		result.put("statusCode", resultMap.getStatusCodeValue()); 
+       result.put("header", resultMap.getHeaders());
+       result.put("body", resultMap.getBody()); 
+		
+       ObjectMapper mapper = new ObjectMapper();
+       jsonInString = mapper.writeValueAsString(resultMap.getBody());
+       
+		} catch (Exception e) {
+           result.put("statusCode", "999");
+           result.put("body"  , "excpetion????");
+           System.out.println(e.toString());
+       }
+
+       return result;
+	}
+	
 	@Override
 	public int callAllList(List<WaitVO> curStoreWaitList) {
 		// TODO Auto-generated method stub
@@ -316,11 +346,295 @@ public String sendMessage(String access_token) {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public HashMap<String, Object> getTalkProfile(String access_token) {
+
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		 String jsonInString = "";
+		 try {
+		
+		RestTemplate restTemplate = new RestTemplate();	
+		
+		RestTemplateResponseErrorHandler errorHandler = new RestTemplateResponseErrorHandler();
+		
+		restTemplate.setErrorHandler(errorHandler);
+		
+		HttpHeaders header = new HttpHeaders();
+		
+		header.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
+		
+		String authHeader = "Bearer " + access_token;
+		
+		header.set("Authorization", authHeader);
+		
+		String url = "https://kapi.kakao.com/v1/api/talk/profile";
+		
+		UriComponents uri = UriComponentsBuilder.fromUriString(url)
+				.build();
+		
+		HttpEntity entity = new HttpEntity(header);
+		
+		ResponseEntity<Map> resultMap= restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+		
+		result.put("statusCode", resultMap.getStatusCodeValue()); 
+      result.put("header", resultMap.getHeaders());
+      result.put("body", resultMap.getBody()); 
+		
+      ObjectMapper mapper = new ObjectMapper();
+      jsonInString = mapper.writeValueAsString(resultMap.getBody());
+      
+		} catch (Exception e) {
+          result.put("statusCode", "999");
+          result.put("body"  , "excpetion????");
+          System.out.println(e.toString());
+      }
+
+      return result;
+	}
 	
 	@Override
-	public String getProfile() {
-		// TODO Auto-generated method stub
-		return null;
+	public HashMap<String, Object> getAllow() {
+		log.info("get token.................");
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		 String jsonInString = "";
+		 String restKey = "dba6ebc24e85989c7afde75bd48c5746";
+		 String redirectURI = "http://localhost:8080/token";
+		 
+		 try {
+		
+		RestTemplate restTemplate = new RestTemplate();	
+		
+		RestTemplateResponseErrorHandler errorHandler = new RestTemplateResponseErrorHandler();
+		
+		restTemplate.setErrorHandler(errorHandler);
+		
+		HttpHeaders header = new HttpHeaders();
+		
+		header.setContentType(MediaType.APPLICATION_JSON);
+		
+		String url = "https://kauth.kakao.com/oauth/token/authorize";
+		
+		UriComponents uri = UriComponentsBuilder.fromUriString(url)
+				.queryParam("response_type", "code")
+				.queryParam("client_id", restKey)
+				.queryParam("redirect_uri", redirectURI)
+				.queryParam("scope", "friends")
+				.build();
+				
+		log.info(uri.toString());
+		
+		HttpEntity entity = new HttpEntity(header);
+		
+		ResponseEntity<Map> resultMap= restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+		
+		log.info(resultMap);
+		
+		result.put("statusCode", resultMap.getStatusCodeValue()); //http status code?? ???
+       result.put("header", resultMap.getHeaders()); //??? ???? ???
+       result.put("body", resultMap.getBody()); //???? ?????? ???? ???
+		
+       ObjectMapper mapper = new ObjectMapper();
+       jsonInString = mapper.writeValueAsString(resultMap.getBody());
+       
+		} catch (Exception e) {
+           result.put("statusCode", "999");
+           result.put("body"  , "excpetion????");
+           System.out.println(e.toString());
+       }
+
+       return result;
 	}
+
+	
+	// 진짜 친구 가져오려면 권한 요청 필요
+	// 그 전에는 애플리케이션 팀 멤버만 가능
+	@Override
+	public HashMap<String, Object> getTalkFriendsList(String access_token) {
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		 String jsonInString = "";
+		 try {
+		
+		RestTemplate restTemplate = new RestTemplate();	
+		
+		RestTemplateResponseErrorHandler errorHandler = new RestTemplateResponseErrorHandler();
+		
+		restTemplate.setErrorHandler(errorHandler);
+		
+		HttpHeaders header = new HttpHeaders();
+		
+		header.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
+		
+		String authHeader = "Bearer " + access_token;
+		
+		header.set("Authorization", authHeader);
+		
+		String url = "https://kapi.kakao.com/v1/api/talk/friends";
+		
+		UriComponents uri = UriComponentsBuilder.fromUriString(url)
+				.build();
+		
+		HttpEntity entity = new HttpEntity(header);
+		
+		ResponseEntity<Map> resultMap= restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+		
+		result.put("statusCode", resultMap.getStatusCodeValue()); 
+     result.put("header", resultMap.getHeaders());
+     result.put("body", resultMap.getBody()); 
+		
+     ObjectMapper mapper = new ObjectMapper();
+     jsonInString = mapper.writeValueAsString(resultMap.getBody());
+     
+		} catch (Exception e) {
+         result.put("statusCode", "999");
+         result.put("body"  , "excpetion????");
+         System.out.println(e.toString());
+     }
+
+     return result;
+	}
+
+	@Override
+	public String sendFrMessage(String access_token, String title, String description, String web_url, String uuid) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		 String jsonInString = "";
+		 try {
+		
+		// 1. RestTemplat 생성
+		RestTemplate restTemplate = new RestTemplate();	
+		
+		RestTemplateResponseErrorHandler errorHandler = new RestTemplateResponseErrorHandler();
+		
+		restTemplate.setErrorHandler(errorHandler);
+		
+		// 2. 헤더 생성
+		HttpHeaders header = new HttpHeaders();
+		
+		// 2-1. content-type 설정
+		//header.setContentType(MediaType.APPLICATION_JSON);
+		header.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
+		//header.set("Content-Type","application/x-www-form-urlencoded; charset=utf-8");
+		
+		// 2-2. accept 설정
+		header.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		
+		// 2-3. Authorization 설정
+		String authHeader = "Bearer " + access_token;
+		
+		header.set("Authorization", authHeader);
+		
+		// 3. request body parameter?? ???????.
+		
+		// 3-1. json?? ???¸? ???? map?? ????????.
+		//String requestJson = "template_object={\"object_type\":\"feed\",\"content\":{\"title\":\"????? ????\",\"description\": \"???????, ??, ????\",\"image_url\":\"http://mud-kage.kakao.co.kr/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg\",\"image_width\":640,\"image_height\": 640,\"link\":{\"web_url\": \"http://www.daum.net\",\"mobile_web_url\": \"http://m.daum.net\",\"android_execution_params\": \"contentId=100\",\"ios_execution_params\": \"contentId=100\"}},\"social\": {\"like_count\": 100,\"comment_count\": 200,\"shared_count\": 300,\"view_count\": 400,\"subscriber_count\": 500},\"buttons\": [{\"title\": \"?????? ???\",\"link\": {\"web_url\": \"http://www.daum.net\",\"mobile_web_url\": \"http://m.daum.net\"}},{\"title\": \"?????? ???\",\"link\": {\"android_execution_params\": \"contentId=100\",\"ios_execution_params\": \"contentId=100\"}}]}";
+		
+		
+		Map<String, Object> map = new HashMap<>();
+
+		map.put("object_type", "feed");
+		
+		Map<String, Object> content = new HashMap<>();
+		
+		content.put("title", title);
+		content.put("description",description);
+		content.put("image_url", "http://mud-kage.kakao.co.kr/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg");
+		content.put("image_width", "640");
+		content.put("image_height","640");
+		
+		Map<String, Object> link = new HashMap<>();
+		
+		link.put("web_url", web_url);
+		link.put("mobile_web_url", web_url);
+		link.put("android_execution_params", "contentId=100");
+		link.put("ios_execution_params", "contentId=100");
+		
+		content.put("link", link);
+		
+		map.put("content", content);
+		
+		Map<String, Object> social = new HashMap<>();
+		
+		social.put("like_count", "100");
+		social.put("comment_count", "200");
+		social.put("shared_count", "300");
+		social.put("view_count", "400");
+		social.put("subscriber_count", "500");
+		
+		map.put("social", social);
+		
+		List<Map> buttons = new ArrayList();
+		
+		Map<String, Object> button1 = new HashMap<>();
+		
+		button1.put("title", "웹으로 보기");
+		
+		Map<String, Object> link2 = new HashMap<>();
+		
+		link2.put("web_url", web_url);
+		link2.put("mobile_web_url", web_url);
+		
+		button1.put("link", link2);
+		
+		buttons.add(button1);
+		
+		Map<String, Object> button2 = new HashMap<>();
+		
+		button2.put("title", "앱으로 보기");
+		
+		Map<String, Object> link3 = new HashMap<>();
+		
+		link3.put("android_execution_params", "contentId=100");
+		link3.put("ios_execution_params", "contentId=100");
+		
+		button2.put("link", link3);
+		
+		buttons.add(button2);
+		
+		map.put("buttons", buttons);
+		
+		Gson gson = new Gson();
+		
+		String requestJson =  gson.toJson(map);
+		
+		// 4. map?? header?? ????????.
+       HttpEntity<String> entity = new HttpEntity<>(requestJson,header);
+	
+		String url = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
+		
+		
+		UriComponents uri = UriComponentsBuilder.fromUriString(url)
+				.queryParam("template_object", requestJson)
+				.queryParam("receiver_uuids", uuid)
+				.build();
+		
+		RequestEntity<String> rq = new RequestEntity<>(header, HttpMethod.POST, uri.toUri());
+		
+		ResponseEntity<Map> resultMap = restTemplate.exchange(rq,  Map.class);
+		
+		//ResponseEntity<Map> resultMap = restTemplate.postForEntity(uri.toUri(), header, Map.class);
+		
+		result.put("statusCode", resultMap.getStatusCodeValue()); //http status code?? ???
+       result.put("header", resultMap.getHeaders()); //??? ???? ???
+       result.put("body", resultMap.getBody()); //???? ?????? ???? ???
+		
+       ObjectMapper mapper = new ObjectMapper();
+       jsonInString = mapper.writeValueAsString(resultMap.getBody());
+       
+		} catch (Exception e) {
+           result.put("statusCode", "999");
+           result.put("body"  , "excpetion????");
+           System.out.println(e.toString());
+       }
+
+       return jsonInString;
+	}
+
+	
 	
 }

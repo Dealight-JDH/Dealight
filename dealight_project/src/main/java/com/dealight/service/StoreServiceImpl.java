@@ -59,27 +59,16 @@ public class StoreServiceImpl implements StoreService {
 	private StoreLocMapper lMapper;
 	private StoreEvalMapper eMapper;
 	private StoreMapper storeMapper;
-	
 	private BStoreMapper bStoreMapper;
-	
 	private NStoreMapper nStoreMapper;
-	
 	private AllStoreMapper allStoreMapper;
-	
 	private StoreImgMapper storeImgMapper;
-	
 	private StoreImgMapper imgMapper;
-	
 	private RevwMapper revwMapper;
-	
 	private MenuMapper menuMapper;
-	
 	private StoreLocMapper locMapper;
-	
 	private StoreEvalMapper evalMapper;
-	
 	private StoreOptionMapper optMapper;
-	
 	private StoreTagMapper tagMapper;
 	
 	private StoreVO setId(StoreVO store) {

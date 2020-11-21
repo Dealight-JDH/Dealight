@@ -288,6 +288,24 @@ public class BoardController {
 		return new ResponseEntity<>(rsvdList, HttpStatus.OK);
 		//return new ResponseEntity<>(userService.getRsvdListStoreUser(storeId, userId), HttpStatus.OK);
 	}	
+	
+	// 메시지를 보낸다.
+//	@PostMapping(value = "/board/message/send/ 
+//			produces = {
+//					MediaType.APPLICATION_JSON_UTF8_VALUE,
+//					MediaType.APPLICATION_XML_VALUE
+//	})
+//	public ResponseEntity<List<RsvdVO>> getMessage(@PathVariable("storeId") long storeId, @PathVariable("userId") String userId) {
+//		
+//		log.info("get user rsvd list....................");		
+//		
+//		List<RsvdVO> rsvdList = userService.getRsvdListStoreUser(storeId, userId);
+//		
+//		rsvdList = rsvdList.stream().sorted((r1,r2) -> (int) (r2.getRegDate().getTime() - r1.getRegDate().getTime())).collect(Collectors.toList());
+//		
+//		return new ResponseEntity<>(rsvdList, HttpStatus.OK);
+//		//return new ResponseEntity<>(userService.getRsvdListStoreUser(storeId, userId), HttpStatus.OK);
+//	}
 
 	// 수정 전
 	//	@GetMapping(value = "/board/hotdeal/{storeId}", produces = {

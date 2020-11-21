@@ -4,14 +4,15 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -64,22 +65,7 @@ public class HomeController {
 		return "home";
 	}
 	
-	@RequestMapping(value = "/socket", method = RequestMethod.GET)
-	public ModelAndView socket(Locale locale, ModelAndView mv) {
-		
-		mv.setViewName("test");
-		
-		UserVO user = userService.read("kjuioq");
-		//UserVO user = (UserVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		System.out.println("user name : " + user.getName());
-		System.out.println("normal chat page");
-		
-		mv.addObject("userId", user.getName());
-		
-		return mv;
-	}
-
-	
+	// 카카오 api 인가 코드를 받는다.
 	@RequestMapping(value="/oauth", method = RequestMethod.GET)
 	public String getOauth(Model model, String code) {
 		
@@ -95,6 +81,7 @@ public class HomeController {
 		return "oauth";
 	}
 	
+	// 카카오 api token을 받는다.
 	@RequestMapping(value="/token", method = RequestMethod.GET)
 	public String getToken(Model model, String code) {
 		
@@ -106,27 +93,82 @@ public class HomeController {
 		LinkedHashMap<String, String> lm = (LinkedHashMap) result.get("body");
 		String access_token = lm.get("access_token");
 		
-		log.info(result);
+		log.info("access............: "+result);
 		
+		HashMap<String, Object> profile = callService.getProfile(access_token);
+		
+		log.info("Users info............:"+profile);
+		
+		HashMap<String, Object> frList = callService.getUsersList();
+		
+		log.info("Users list............:"+frList);
+		
+		HashMap<String, Object> talkProfile = callService.getTalkProfile(access_token);
+		
+		log.info("talkProfile................"+talkProfile);
+		
+		String restKey = "dba6ebc24e85989c7afde75bd48c5746";
+		String redirectURI = "http://localhost:8080/token";
+		
+		HashMap<String, Object> allow= callService.getAllow();
+		
+		log.info(allow);
+		
+		HashMap<String, Object> talkFriendsList = callService.getTalkFriendsList(access_token);
 
+		log.info("talkFriendsList................"+talkFriendsList);
+		
+		//log.info("talkFriendsList class..........."+talkFriendsList.get("elements").getClass());
+		
+		//List<HashMap<String, Object>> elements = (List<HashMap<String, Object>>) talkFriendsList.get("elements");
+		
+		//String requestUuid = (String) elements.get(0).get("uuid");
+		
+		
 		model.addAttribute("result", result);
 		model.addAttribute("access_token",access_token);
+		model.addAttribute("profile",profile);
+		model.addAttribute("frList",frList);
+		model.addAttribute("talkProfile",talkProfile);
+		model.addAttribute("restKey",restKey);
+		model.addAttribute("redirectURI",redirectURI);
+		model.addAttribute("allow",allow);
+		model.addAttribute("talkFriendsList",talkFriendsList);
+		//model.addAttribute("first",elements.get(0));
+		//model.addAttribute("requestUuid",requestUuid);
 
 		return "token";
 	}
 	
+	// 카카오 api 메시지 보내기의 결과를 확인한다.
 	@RequestMapping(value="/message", method = RequestMethod.GET)
-	public String test(Model model, String access_token) {
+	public String frmessage(Model model, String access_token, String title, String description, String web_url, String code,Long storeId) {
 		
 		log.info("rest template test..........................");
 		
-		String result = callService.sendMessage(access_token);
+		log.info("accesss token : "+access_token+"\ntitle : "+title+"\ndescription : "+description+"\nweb_url : "+web_url);
 		
-		log.info(result);
+		String result = callService.sendMessage(access_token,title,description,web_url);
+		
 		
 		model.addAttribute("result", result);
 
 		
 		return "message";
 	}
+	
+	@RequestMapping(value="/message/{uuid}", method = RequestMethod.GET)
+	public String test(Model model, String access_token, String title, String description, String web_url, @PathVariable("uuid") String uuid) {
+		
+		log.info("rest template test..........................");
+		
+		log.info("accesss token : "+access_token+"\ntitle : "+title+"\ndescription : "+description+"\nweb_url : "+web_url+"\nuuid : "+uuid);
+		
+		String result = callService.sendFrMessage(access_token,title,description,web_url,uuid);
+		
+		model.addAttribute("result", result);
+
+		return "message";
+	}
+	
 }

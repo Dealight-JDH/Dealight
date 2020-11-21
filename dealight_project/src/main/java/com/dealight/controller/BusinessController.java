@@ -1,5 +1,7 @@
 package com.dealight.controller;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +21,7 @@ import com.dealight.domain.StoreLocVO;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserWithRsvdDTO;
 import com.dealight.domain.WaitVO;
+import com.dealight.service.CallService;
 import com.dealight.service.HtdlService;
 import com.dealight.service.RsvdService;
 import com.dealight.service.StoreService;
@@ -42,6 +45,8 @@ public class BusinessController {
 	private WaitService waitService;
 	
 	private HtdlService htdlService;
+	
+	private CallService callService;
 	
 	
 	//메뉴 사진첨부파일 매장평가 사업자테이블에 태그 메뉴 옵션이 들어가야한다.
@@ -78,7 +83,7 @@ public class BusinessController {
 	 * 
 	 */
 	
-	@GetMapping("/")
+	@GetMapping("")
 	public String list(Model model,HttpServletRequest request) {
 		
 		log.info("business store list..");
@@ -108,7 +113,7 @@ public class BusinessController {
 	
 	
 	@GetMapping("/manage")
-	public String manage(Model model, long storeId,HttpServletRequest request) {
+	public String manage(Model model, long storeId,HttpServletRequest request, String code) {
 		
 		log.info("business manage..");
 		

@@ -13,7 +13,6 @@
 <body>
 <h2>Rest Template Result</h2>
 result : ${result}
-
-
+<a href='/business/'>리스트로 돌아가기</a>
 </body>
 </html>

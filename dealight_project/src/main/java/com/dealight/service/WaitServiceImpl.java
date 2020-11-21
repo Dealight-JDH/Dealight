@@ -146,7 +146,6 @@ public class WaitServiceImpl implements WaitService {
 		if(curStoreWaitiList.stream().filter(w -> w.getWaitStusCd().equals("W")).collect(Collectors.toList()).size() ==0)
 			return null;
 		
-		// ���� store ������ ����Ʈ���� ���� ������ �����̰� ���� ���� ��������(������ �Ϸù�ȣ�� ����) ������ ��������
 		return curStoreWaitiList.stream().filter(w -> w.getWaitStusCd().equals("W")).sorted(
 				(w1, w2) -> (int) (w1.getWaitId() - w2.getWaitId())).collect(Collectors.toList()).get(0);
 	}
