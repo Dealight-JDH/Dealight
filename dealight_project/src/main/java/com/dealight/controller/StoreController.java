@@ -47,5 +47,11 @@ public class StoreController {
 		model.addAttribute("time", time);
 	
 	}
+	
+	@PostMapping("/waiting")
+	public void waiting(Model model, String pnum, Long storeId) {
+		model.addAttribute("store", service.bstore(storeId));
+		model.addAttribute("pnum", pnum); 
+	}
 
 }

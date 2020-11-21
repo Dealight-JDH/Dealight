@@ -2,15 +2,14 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@include file="../../includes/mainMenu.jsp"%>
-<%@include file="../../includes/loginmodalHeader.jsp" %>
 <!DOCTYPE html>
 <!-- 다울 -->
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="/resources/store.css">
+<link rel="stylesheet" href="/resources/css/store.css">
+<link rel="stylesheet" href="/resources/css/tab.css">
 </head>
 <body>
 	<div class="container">
@@ -86,42 +85,80 @@
 		</div>
 			<div class="right">
 			<div class="sticky">
-				<h1>예약</h1>
-				<form id="reserveForm" action="/dealight/reservation" method="post">
-					<input type='hidden' name='storeId' value='<c:out value="${store.storeId }"/>' />
-					
-					<!-- <input type="hidden" id="selMenu" name="selMenu"> -->
-					<div class="row">
-						<select id="time" required="required">
-							<option value="">시간</option>
-							<option value="13:30">13:30</option>
-							<option value="14:00">14:00</option>
-							<option value="14:30">14:30</option>
-						</select> <select id="num" required="required">
-							<option value="">인원수</option>
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-						</select>
-					</div>
-					<div class="row">
-						<select id="menu">
-							<option value="">메뉴</option>
-							<c:forEach items="${store.bstore.menus }" var="menus">
-								<option value="${menus.menuSeq}">${menus.name }</option>
-							</c:forEach>
-						</select>
-						<input type="button" id="btnAddMenus" value="추가"></input>
+			<section class="loginWrapper">
+					<ul class="tabs">
+						<li class="active">예약</li>
+						<li>줄서기</li>
+					</ul>
 
-					</div>
-					<div id="container"></div>
+					<ul class="tab__content">
 
-					<span id="goodsTotAmtSumMsg"></span> <span id="menusTotAmt" name="totAmt" value="0"></span>
-					<button type="submit">예약하기</button>
+						<li class="active">
+							<div class="content__wrapper">
+								<form id="reserveForm" action="/dealight/reservation"
+									method="post">
+									<input type='hidden' name='storeId'
+										value='<c:out value="${store.storeId }"/>' />
 
-				</form>
-			</div>
+									<!-- <input type="hidden" id="selMenu" name="selMenu"> -->
+									<div class="row">
+										<select id="time" required="required">
+											<option value="">시간</option>
+											<option value="13:30">13:30</option>
+											<option value="14:00">14:00</option>
+											<option value="14:30">14:30</option>
+										</select> <select id="num" required="required">
+											<option value="">인원수</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+										</select>
+									</div>
+									<div class="row">
+										<select id="menu">
+											<option value="">메뉴</option>
+											<c:forEach items="${store.bstore.menus }" var="menus">
+												<option value="${menus.menuSeq}">${menus.name }</option>
+											</c:forEach>
+										</select> <input type="button" id="btnAddMenus" value="추가"></input>
+
+									</div>
+									<div id="container"></div>
+									<span id="menusTotAmtSumMsg"></span> 
+									<span id="menusTotAmt" name="totAmt" value="0"></span>
+									<button type="submit">예약하기</button>
+
+								</form>
+							</div>
+						</li>
+
+						<li>
+							<div class="content__wrapper">
+								<form id="waitingForm" action="/dealight/waiting"
+									method="post">
+									<input type='hidden' name='storeId'
+										value='<c:out value="${store.storeId }"/>' />
+
+									<!-- <input type="hidden" id="selMenu" name="selMenu"> -->
+									<div class="row">
+										 <select id="waitingNum" required="required">
+											<option value="">인원수</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+										</select>
+									</div>
+									
+									<button type="submit">줄서기</button>
+								</form>
+							</div>
+						</li>
+
+					</ul>
+				</section>
+				</div>
 		</div>
 	</div>
 	<script
@@ -372,11 +409,11 @@
 							* p.arrSelMenus[i].menusUnprc;
 				}
 				if(menusTotAmt == 0){
-					$('#goodsTotAmtSumMsg').text("");
+					$('#menusTotAmtSumMsg').text("");
 					$('#menusTotAmt').text("");
 					
 				}else{
-					$('#goodsTotAmtSumMsg').text("총금액");
+					$('#menusTotAmtSumMsg').text("총금액");
 					$('#menusTotAmt').text(menusTotAmt);
 				
 				}
@@ -446,6 +483,86 @@
 			}
 			reserveForm.submit();
 		});
+	</script>
+	<script>
+	const waitingForm = $("#waitingForm");
+	$(document).ready(function() {
+ 			$("#waitingForm button").on("click",function(e) {
+			//1.기존 이벤트(페이지 이동)를 막는다
+			e.preventDefault();
+			//2.이벤트 막고 하고 싶은거
+			//2.1 페이지 이동시 다음페이지에 데이터를 넘길 수 있도록 input hidden에 선택된 메뉴 수량 넣음
+			//시간
+
+			const watingPersonNum = '<input type="hidden" name=pnum value="'
+					+ $("#waitingNum option:selected").val() + '">';
+			waitingForm.append(watingPersonNum);
+			waitingForm.submit();
+		});
+		
+		});
+	</script>
+	<script>
+		$(document).ready(
+				function() {
+
+					// Variables
+					var clickedTab = $(".tabs > .active");
+					var tabWrapper = $(".tab__content");
+					var activeTab = tabWrapper.find(".active");
+					var activeTabHeight = activeTab.outerHeight();
+
+					// Show tab on page load
+					activeTab.show();
+
+					// Set height of wrapper on page load
+					tabWrapper.height(activeTabHeight);
+
+					$(".tabs > li").on(
+							"click",
+							function() {
+
+								// Remove class from active tab
+								$(".tabs > li").removeClass("active");
+
+								// Add class active to clicked tab
+								$(this).addClass("active");
+
+								// Update clickedTab variable
+								clickedTab = $(".tabs .active");
+
+								// fade out active tab
+								activeTab.fadeOut(250, function() {
+
+									// Remove active class all tabs
+									$(".tab__content > li").removeClass(
+											"active");
+
+									// Get index of clicked tab
+									var clickedTabIndex = clickedTab.index();
+
+									// Add class active to corresponding tab
+									$(".tab__content > li").eq(clickedTabIndex)
+											.addClass("active");
+
+									// update new active tab
+									activeTab = $(".tab__content > .active");
+
+									// Update variable
+									activeTabHeight = activeTab.outerHeight();
+
+									// Animate height of wrapper to new tab height
+									tabWrapper.stop().delay(50).animate({
+										height : activeTabHeight
+									}, 500, function() {
+
+										// Fade in active tab
+										activeTab.delay(50).fadeIn(250);
+
+									});
+								});
+							});
+				});
 	</script>
 
 </body>

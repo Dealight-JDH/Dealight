@@ -24,9 +24,6 @@
 .left p {
 	margin: 20px;
 }
-.inlineH {
-	display: inline-block;
-}
 
 .left h4 {
 	border-radius: 5px;
@@ -102,12 +99,11 @@
 	position: -webkit-sticky;
 	position: sticky;
 	top: 100px;
-	border-radius: 10px;
-	border-style: outset;
 	margin: auto;
 	width: 85%;
 	text-align: center;
 	padding: 10px;
+	
 }
 
 .sticky ul {
@@ -148,3 +144,4 @@
     padding: 10px;
     margin: 35px;
 }
+
