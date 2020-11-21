@@ -198,15 +198,14 @@ function getRange(distance){
 function showMain(){
 		//ajax통신을 한다.
 		getList(function(pageDTO){
-			var storeList = pageDTO.storeList;
 			//페이지 목록을 출력한다.
-			showList(storeList);
+			showList(pageDTO.storeList);
 			//페이징 처리를 한다.
 			showPaging(pageDTO);
 			//지도에 마커표시를한다.
-			showMap(storeList);
+			showMap(pageDTO.storeList);
 			//actionForm을 업데이트한다.
-			actionFormUpdate(pageDTO);
+			actionFormUpdate(pageDTO.cri);
 			//searchFilter를 업데이트한다.
 			searchFilterUpdate(pageDTO);
 			//-------------------------스크롤을 맨위로 올려주는 함수필요!!!!!!!!!!!!!!!
@@ -236,11 +235,11 @@ function getList(callback,error){
 	});
 	
 }
-
-function createObj(target){
+//form data를 obj로 바꿔준다.
+function createObj(form){
 	let obj = Object();
-	for(let i = 0 ; i < target.length ; i++){
-		obj[target[i].name] = target[i].value;
+	for(let i = 0 ; i < form.length ; i++){
+		obj[form[i].name] = form[i].value;
 	}
 	
 	return obj;
@@ -260,6 +259,10 @@ function showList(storeList){
 		str += "<div class='"+storeList[i].storeId+"'>--------------";
 		str += "<h5>매장번호 : " + storeList[i].storeId + "</h5>";
 		str += "<div>매장거리 : " + storeList[i].dist + "</div>";
+		str += "<div>위치 : " + storeList[i].addr + "</div>";
+		str += "<div>위치 : " + storeList[i].lng + "</div>";
+		str += "<div>위치 : " + storeList[i].lat + "</div>";
+		str += "-----------------------------------------------------";
 		str += "<div>매장사진 : " + storeList[i].repImg + "</div>";
 		str += "<div>좋아요 : " + storeList[i].likeTotNum + "</div>";
 		str += "<div>매장평점 : " + storeList[i].avgRating +"(" +storeList[i].revwTotNum + ")</div>";
@@ -269,9 +272,6 @@ function showList(storeList){
 		str += "<div>대기중인 인원 : </div>";
 		str += "<div>오늘 예약중인 인원 : </div>";
 		str += "<div>식사가능 여부 : " + storeList[i].seatStusCd + "</div>";
-		str += "<div>위치 : " + storeList[i].addr + "</div>";
-		str += "<div>위치 : " + storeList[i].lng + "</div>";
-		str += "<div>위치 : " + storeList[i].lat + "</div>";
 		if(storeList[i].htdlStusCd == "A"){
 			str += "<button style='background-color:red;'>핫딜 여부</button>"; 
 		}
@@ -317,17 +317,21 @@ function showPaging(pageDTO){
 }
 
 //actionForm을 업데이트를 하는 함수.
-function actionFormUpdate(pageDTO){
-	
-	actionForm.find("input[name='pageNum']").val(pageDTO.cri.pageNum); 
-	actionForm.find("input[name='amount']").val(pageDTO.cri.amount); 
-	actionForm.find("input[name='distance']").val(pageDTO.cri.distance); 
-	actionForm.find("input[name='lat']").val(pageDTO.cri.lat); 
-	actionForm.find("input[name='lng']").val(pageDTO.cri.lng); 
-	actionForm.find("input[name='sortType']").val(pageDTO.cri.sortType);
-	actionForm.find("input[name='sortPriority']").val(pageDTO.cri.sortPriority);
-	actionForm.find("input[name='openStore']").val(pageDTO.cri.openStore);
-	
+function actionFormUpdate(cri){
+	for(let index in cri){
+		console.log(actionForm.elements[index]);
+		//actionForm.elements[index].value = cri[index];
+	console.log(cri[index])
+		
+	}
+	/* actionForm.elements["pageNum"].value		=	(pageDTO.cri.pageNum); 
+	actionForm.elements["amount"].value			=	(pageDTO.cri.amount); 
+	actionForm.elements["distance"].value		=	(pageDTO.cri.distance); 
+	actionForm.elements["lat"].value			=	(pageDTO.cri.lat); 
+	actionForm.elements["lng"].value			=	(pageDTO.cri.lng); 
+	actionForm.elements["sortType"].value		=	(pageDTO.cri.sortType);
+	actionForm.elements["sortPriority"].value	=	(pageDTO.cri.sortPriority);
+	actionForm.elements["openStore"].value		=	(pageDTO.cri.openStore); */
 }
 
 //search filter를 업데이트 하는 함수
@@ -355,12 +359,11 @@ function addPageEventHandler(e){
 
 //-------------------------------------------------------------------------------------
 //map관련 함수
-
-		var userLat = actionForm.find("input[name='lat']").val()
-		var userLng = actionForm.find("input[name='lng']").val()
-		var container = document.getElementById('map');
-		var options = {
-			center: new kakao.maps.LatLng(userLat, userLng),
+		let lat = actionForm.elements["lat"]
+		let lng = actionForm.elements["lng"]
+		let container = document.getElementById('map');
+		let options = {
+			center: new kakao.maps.LatLng(lat.value, lng.value),
 			level: 5
 		};
 		//지도생성
@@ -369,8 +372,8 @@ function addPageEventHandler(e){
 		function searchMap(){
 			var latlng = map.getCenter(); 
 		   
-			actionForm.find("input[name='lat']").val(latlng.getLat());
-			actionForm.find("input[name='lng']").val(latlng.getLng());
+			lat.value = latlng.getLat();
+			lng.value = latlng.getLng();
 			
 		    showMain();
 		}
@@ -420,7 +423,7 @@ function addPageEventHandler(e){
 		
 		
 		function addMarkerEvent(marker,infoStore,i){
-			console.log(i);
+			//console.log(i);
 	            var store = document.getElementsByClassName("list")[0];
 			
 			kakao.maps.event.addListener(marker, 'mouseover', function() {
@@ -463,7 +466,7 @@ function addPageEventHandler(e){
 		
 		// 마커를 생성합니다
 		var user = new kakao.maps.Marker({
-		    position: new kakao.maps.LatLng(userLat, userLng)
+		    position: new kakao.maps.LatLng(lat.value, lng.value)
 		});
 
 		// 마커가 지도 위에 표시되도록 설정합니다
