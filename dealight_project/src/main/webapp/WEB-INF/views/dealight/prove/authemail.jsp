@@ -24,7 +24,6 @@
 	<input type="hidden" id='authNum' value='<c:out value="${authNum}"/>'>
 	</form>
 	</div>
-	<a href = "/dealight/dealight">홈으로</a>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 //인증번호와 내가입력한 번호가 일치하지 않는다면 경고창

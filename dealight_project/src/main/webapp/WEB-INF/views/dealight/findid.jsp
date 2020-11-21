@@ -18,7 +18,6 @@
 <p>이메일<input type="email" name="email" id="email" placeholder="이메일을 입력하세요"></p>
 <p><button type="submit" id="sendEmail">이메일발송</button></p>
 </div>
-<a href = "/dealight/dealight">홈으로</a>
 </body>
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

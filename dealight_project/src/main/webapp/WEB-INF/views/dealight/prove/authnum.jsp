@@ -27,7 +27,6 @@ alert('이메일을 발송하였습니다. 인증 번호를 확인 후 입력해
 		<input type="hidden" name = "email" value="<c:out value = '${email }' />">
 		<p><button type="submit" >인증번호 확인</button></p>
 		</form>
-		<a href = "/dealight/dealight">홈으로</a>
 		
 	</div>
 </body>

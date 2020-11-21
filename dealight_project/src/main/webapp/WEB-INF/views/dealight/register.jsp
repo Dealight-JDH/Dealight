@@ -27,7 +27,6 @@
     <div class="btn">
     <button class="regbtn" type="submit" disabled="disabled" id="reg">회원가입</button> 
     <button class="regbtn" type="button" onclick="location.href='/dealight/dealight' ">취소</button>
-    <a href = "/dealight/dealight">홈으로</a>
     <!-- 인증번호 받고 넘어온건지 확인하기 위해 -->
     <input type="hidden" id="num"  value='<c:out value="${num}"/>'>
     <input type="hidden" id="authNum"  value='<c:out value="${authNum}"/>'>

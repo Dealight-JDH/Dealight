@@ -48,7 +48,6 @@ padding: 20px;
 
 <div><button type="submit" onclick="sussecc()">회원수정</button>
 <button type="submit" id="remove" >회원탈퇴</button></div>
-<a href = "/dealight/dealight">홈으로</a>
 </form>
 </div>
 <!-- 수정이 성공했는지 실패했는지 메세지를 받아옴 -->
