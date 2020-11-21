@@ -62,9 +62,6 @@
 				<c:if test="${store.bstore.hldy!= null}">
 					<p>휴무일 : ${store.bstore.hldy}</p>
 				</c:if>
-
-
-
 			</div>
 			<div class="column">
 				<h1>메뉴</h1>
