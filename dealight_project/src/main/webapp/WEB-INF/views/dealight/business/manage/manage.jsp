@@ -651,7 +651,6 @@ window.onclick = function(event) {
               strNextWait += "<li> 대기자 이름 : "+nextWait.custNm+"</li>";
               strNextWait += "<li> 대기자 연락처 : "+nextWait.custTelno+"</li>";
               strNextWait += "<li> 웨이팅 번호 :"+nextWait.waitId+"</li>";
-              strNextWait += "<li> 웨이팅 등록 시간 :"+nextWait.time+"</li>";
               strNextWait += "<li> 매장 번호 : "+nextWait.storeId+"</li>";
               strNextWait += "<li> 회원 아이디 : "+nextWait.userId+"</li>";
               strNextWait += "<li> 웨이팅 인원 : "+nextWait.waitPnum+"</li>";

@@ -179,14 +179,14 @@ public class ManageController {
 		
 		log.info("business store modify post..");
 		
-		rttr.addFlashAttribute("msg","���� �Ϸ�");
+		rttr.addFlashAttribute("msg","수정 완료");
 		
 		log.info("store................" + store);
 		
 		
 		if(!storeService.modifyStore(store)) {
 			rttr.addFlashAttribute("storeId",store.getStoreId());
-			rttr.addFlashAttribute("msg", "���� ����");
+			rttr.addFlashAttribute("msg", "수정 실패");
 			return "redirect:/business/manage/modify?storeId="+store.getStoreId();
 		}
 		 

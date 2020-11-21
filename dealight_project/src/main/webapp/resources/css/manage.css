@@ -121,7 +121,8 @@
             height: 100px;
             min-height: 90px;
             flex-grow: 1;
-			overflow : scroll;
+            overflow : scroll;
+            cursor: pointer;
         }
         .wait_wrapper{
             border: solid black 1px;
@@ -180,7 +181,7 @@
             min-width: 100px;
         }
 
-        /* �̵� */
+
         /* hover */
 
         .tooltip {

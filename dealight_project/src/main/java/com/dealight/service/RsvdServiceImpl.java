@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -158,8 +159,11 @@ public class RsvdServiceImpl implements RsvdService{
     	
     	String today = currentDate.format(dateTimeForMatter);
 		
+    	
+    	// sorted는 뒤에가 기준이다.
 		return rsvdMapper.findByStoreIdAndDate(storeId, today).stream().filter(rsvd -> rsvd.getStusCd().equals("C"))
-				.sorted((r1,r2) -> (int) (r1.getRegDate().getTime() - r2.getRegDate().getTime()))
+				.sorted((r1,r2) -> (int) (r1.getRsvdId() - r2.getRsvdId()))
+				.sorted((r1,r2) -> (int) calTimeMinutes(r1.getTime()) - calTimeMinutes(r2.getTime()))
 				.collect(Collectors.toList());
 	}
 	
@@ -235,13 +239,15 @@ public class RsvdServiceImpl implements RsvdService{
 			
 			log.info("stus check ......................");
 			
-			String time = getTime(rsvd.getRegDate());
+			log.info("reg date............" + rsvd.getRegDate());
 			
-			log.info("get time ......................");
+			String time = rsvd.getTime();
+			
+			log.info("get time ......................" + time);
 			
 			String fomatedTime = toRsvdByTimeFormat(time);
 			
-			log.info("to rsvd by time formate ......................");
+			log.info("to rsvd by time formate ......................" + fomatedTime);
 			
 			if(map.get(fomatedTime) == null)
 				map.put(fomatedTime, new ArrayList<Long>());

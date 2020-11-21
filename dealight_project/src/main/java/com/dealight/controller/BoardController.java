@@ -86,8 +86,10 @@ public class BoardController {
 	public ResponseEntity<List<RsvdVO>> getRsvdList(@PathVariable("storeId") long storeId) {
 
 		log.info("get rsvd list...........");
+		
+		List<RsvdVO> rsvdList = rsvdService.readTodayCurRsvdList(storeId);
 
-		return new ResponseEntity<>(rsvdService.readTodayCurRsvdList(storeId), HttpStatus.OK);
+		return new ResponseEntity<>(rsvdList, HttpStatus.OK);
 	}
 
 	// storeId로 해당 매장의 '오늘' 예약 맵을 가져온다.
