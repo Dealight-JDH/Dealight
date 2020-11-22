@@ -431,14 +431,12 @@
 			const reserveTime = '<input type="hidden" name=time value="'+$("#time option:selected").val()+'">'; 
 			reserveForm.append(reserveTime);
 			//3. 2에서 하고 싶은 거 실행 후  submit()
-			
-			let totAmt = 0;
-			let totQty = 0;
+
 			for (let i = 0; i < menus.arrSelMenus.length; i++) {
 				if(menus.arrSelMenus[i].cnt === 0){
 					alert("메뉴 수량을 선택해주세요");
 				return; 
-				}
+			}
 				//메뉴이름
 				const menuNm = '<input type="hidden" name=menu['+i+'].name value="'+menus.arrSelMenus[i].menusNm+'">'; 
 				reserveForm.append(menuNm);
@@ -447,14 +445,7 @@
 				const menuQuan = '<input type="hidden" name=menu['+i+'].quan value="'+menus.arrSelMenus[i].cnt+'">'; 
 				reserveForm.append(menuQuan);
 				
-				totAmt += menuPrice;
-				totQty += menuQuan;
 			}
-				const totAmt = "<input type='hidden' name='totAmt' value='totAmt'>"; 
-				reserveForm.append(totAmt);
-				
-				const totQty = "<input type='hidden' name='totQty' value='totQty'>"; 
-				reserveForm.append(totQty);
 				
 			reserveForm.submit();
 		});

@@ -144,13 +144,13 @@
 			</selectKey>
 		
 			insert into tbl_htdl 
-			values(#{htdlId}, #{name}, #{storeId}, #{dcRate}, #{startTm},
+			values(#{htdlId}, #{name}, #{storeId}, #{htdlImg}, #{dcRate}, #{startTm},
 			 #{endTm}, #{lmtPnum}, #{intro}, #{befPrice}, #{ddct}, #{curPnum}, #{stusCd}, sysdate + 9/24 , sysdate + 9/24)
 		</insert>
 		
 		<insert id="insert">
 			insert into tbl_htdl 
-			values(seq_htdl.nextval, #{name}, #{storeId}, #{dcRate}, #{startTm},
+			values(seq_htdl.nextval, #{name}, #{storeId}, #{htdlImg}, #{dcRate}, #{startTm},
 			 #{endTm}, #{lmtPnum}, #{intro}, #{befPrice}, #{ddct}, #{curPnum}, #{stusCd}, sysdate + 9/24, sysdate + 9/24)
 		</insert>
 

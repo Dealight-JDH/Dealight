@@ -77,6 +77,7 @@ h4{
      height: 40px;
      border-radius: 6px;
      border-style: hidden;
+     font-size: 16px;
 }
 </style>
 </head>
@@ -140,9 +141,9 @@ h4{
 	    <div class="modal-header">
 	    	선착순: <h4 class="modal-lmtPnum" id="lmtPnum"></h4><label>명</label><br>
 	    	<h4 class="modal-name" id="htdlName"></h4><br>
-	    	 <input type="hidden" id="mhtdlId "name = "htdlId">
+	    	<input type="hidden" id="mhtdlId" name = "htdlId">
 	    </div>
-	    
+
 	    <div class="modal-body">
 	    	<span class= 'modal-startTm' id="startTm"></span> &nbsp; - &nbsp; <span class= 'modal-endTm' id="endTm"></span><br>
 	    	<span class= 'css-elapTime modal-elapTime' id="elapTime"></span><br>
@@ -153,7 +154,6 @@ h4{
 	    	<h4 class="modal-revwTotNum" id="revwTotNum"></h4><br>
 	    	<h4 class="modal-menuName" id="menuName"></h4><br>
 	    	<h4 class="modal-intro" id="intro"></h4><br>
-	    	
 	    </div>
 	    
 	    <div class="modal-footer">
@@ -174,9 +174,7 @@ h4{
 	    	
 	   		<br>
 	    <div class="text-center">	
-    		<!-- <form action="/store"> -->
-        		<button type="submit" class="css-btn js-dealBtn"><span>🔥</span>딜 하기</button>	    		
-    		<!-- </form> -->
+        		<button type="submit" class="css-btn js-dealBtn">딜 하기</button>	    		
       	</div>
 	    	
 	    </div>
@@ -194,7 +192,7 @@ h4{
 	
 	//모달
 	var modal = $(".modal"),
-		htdlId = $("#mhtdlId"),
+		/* htdlId = $("#mhtdlId"), */
 		lmtPnum = $("#lmtPnum"),
 		htdlName = $("#htdlName"),
 		startTm = $("#startTm"),
@@ -268,13 +266,27 @@ h4{
 		
 		//딜 하기 클릭 시 매장 상세로 이동한다
 		$(".js-dealBtn").on("click", function(e){
-			console.log("========");
+			let body = $("body");
 			e.preventDefault();
 			
-			console.log("==========btn click: " + htdlId);
-			
-			
-			
+			//해당 핫딜번호,메뉴,가격 
+			let htdlId = $("#mhtdlId").val();
+			let htdlMenu = $("#menuName").text();
+			let afterPrice = $("#afterPrice").text().substr(1);
+			//폼 만들기
+			let form = $("<form></form>");
+			form.attr("action", "/dealight/store");
+			form.attr("method", "get");
+			let htdlIdInput1 = $("<input type='hidden' value="+ htdlId + "name='htdlId'>");
+			let htdlIdInput2 = $("<input type='hidden' value="+ htdlMenu + "name='menu'>");
+			let htdlIdInput3 = $("<input type='hidden' value="+ afterPrice + "name='price'>");
+		    form.append(htdlIdInput1);
+		    form.append(htdlIdInput2);
+		    form.append(htdlIdInput3);
+		    form.appendTo(body);
+		    //제출
+		    form.submit();
+		    
 		});
 				
 	});
@@ -411,16 +423,21 @@ h4{
 	 function showModal(htdl){
 		var size = htdl.htdlDtls.length;		
 		var str = [];
-		
+		//핫딜 번호
+		let htdlNum = htdl.htdlId;
+		console.log("=========htdlNum: "+htdlNum);
 		console.log("===============showModal" + htdl.lmtPnum+"," + size);
+		//제한 인원, 핫딜 이름, 시작시간, 마감시간
 		lmtPnum.text(htdl.lmtPnum);
 		htdlName.text(htdl.name);
 		startTm.text(htdl.startTm);
 		endTm.text(htdl.endTm);
 		
+		//경과시간,할인율,할인전후가격,평균평점,리뷰수
 		var elapTime = getElapTime(htdl.endTm);
 		console.log(elapTime+"===============elapTime");
-		htdlId.val(htdl.htdlId);
+		/* htdlId.val(htdlNum); */
+		$("#mhtdlId").val(htdlNum);
 		mElapTime.text(elapTime);
 		dcRate.text(htdl.dcRate*100+"%");
 		befPrice.text("₩"+htdl.befPrice);
@@ -434,6 +451,14 @@ h4{
 		menuName.text(str.join(","));		
 		
 		intro.text(htdl.intro); 
+		const dealBtn = $(".js-dealBtn");
+		if(htdl.stusCd !== 'A'){
+			dealBtn.text("🔥오픈 예정입니다.");
+			dealBtn.prop("disabled", true);
+		}else{
+			dealBtn.text("🔥딜 하기");
+			dealBtn.prop("disabled", false);
+		}
 		
 		modal.show();
 	}

@@ -6,10 +6,76 @@
     <%@include file="../includes/mainMenu.jsp" %>
     <%@include file="../includes/loginModal.jsp" %>
     
-    <!-- 현수현수현수 -->
+    <!-- 현수현수현수 --> <!-- 수빈수빈수빈 -->
     
 <body>
-<h1>main page</h1>
+
+ <div class="middleDiv">
+            <div class="imgContainer">
+                <img src="../img/main.jpg">
+
+                <form action="/search/" class="searchBarDiv" method="get">
+                    <div class="topRow">
+                        <input type="text" class="topRowBar" name="pNum" placeholder="인원">
+                        <input type="text" class="topRowBar" name="region" placeholder="지역">
+                        <input type="text" class="topRowBar" name="time" placeholder="시간">
+                    </div>
+                    <div class="bottomRow">
+                        <input type="text" class="bottomRowBar" placeholder="가게명 검색, 해시태그를 입력하세요">
+                        <button class="searchbtn">매장보기</button>
+                    </div>
+                </form>
+                <!-- imgContainer -->
+            </div>
+            <!-- middleDiv -->
+        </div>
+
+        <div class="dealTitleDiv">
+            <div class="dealTitle">실시간핫딜</div>
+        </div>
+
+        <div class="dealDiv">
+            <div class="dealContainer">
+                <div class="dealImg">
+                </div>
+                <div class="dealText">
+                </div>
+            </div>
+            <div class="dealContainer">
+                <div class="dealImg"></div>
+                <div class="dealText"></div>
+            </div>
+            <div class="dealContainer">
+                <div class="dealImg"></div>
+                <div class="dealText"></div>
+            </div>
+            <div class="dealContainer">
+                <div class="dealImg"></div>
+                <div class="dealText"></div>
+            </div>
+            <div class="dealContainer">
+                <div class="dealImg"></div>
+                <div class="dealText"></div>
+            </div>
+            <div class="dealContainer">
+                <div class="dealImg"></div>
+                <div class="dealText"></div>
+            </div>
+            <div class="dealContainer">
+                <div class="dealImg"></div>
+                <div class="dealText"></div>
+            </div>
+            <div class="dealContainer">
+                <div class="dealImg"></div>
+                <div class="dealText"></div>
+            </div>
+            <div class="dealContainer">
+                <div class="dealImg"></div>
+                <div class="dealText"></div>
+            </div>
+        </div>
+
+        <div class="footer"></div>
 
 </body>
 </html>
