@@ -64,7 +64,6 @@
 		width : 600px;
 	}
 	</style>
-
 </head>
 <body>
 <%@include file="../../includes/mainMenu.jsp" %>
