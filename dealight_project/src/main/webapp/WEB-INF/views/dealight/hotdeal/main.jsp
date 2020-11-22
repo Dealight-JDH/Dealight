@@ -205,6 +205,8 @@ h4{
 		menuName = $("#menuName"),
 		intro = $("#intro");
 	
+	let storeId = 0;
+	
 	$(document).ready(function() {
 	
 		console.log("==="+size);
@@ -276,12 +278,12 @@ h4{
 			let form = $("<form></form>");
 			form.attr("action", "/dealight/store");
 			form.attr("method", "get");
-			let htdlIdInput1 = $("<input type='hidden' value="+ htdlId + "name='htdlId'>");
-			let htdlIdInput2 = $("<input type='hidden' value="+ htdlMenu + "name='menu'>");
-			let htdlIdInput3 = $("<input type='hidden' value="+ afterPrice + "name='price'>");
-		    form.append(htdlIdInput1);
-		    form.append(htdlIdInput2);
-		    form.append(htdlIdInput3);
+			let storeIdInput = $("<input type='hidden' value='4' name='storeId'>");
+			let htdlIdInput = $("<input type='hidden' value="+ htdlId + "name='htdlId'>");
+			let clsCdInput = $("<input type='hidden' value='B' name='clsCd'>");
+		    form.append(storeIdInput);
+		    /* form.append(clsCdInput); */
+		    /* form.append(htdlIdInput); */
 		    form.appendTo(body);
 		    //제출
 		    form.submit();
@@ -424,6 +426,8 @@ h4{
 		var str = [];
 		//핫딜 번호
 		let htdlNum = htdl.htdlId;
+		storeId = htdl.storeId;
+		console.log("============storeId: "+storeId);
 		console.log("=========htdlNum: "+htdlNum);
 		console.log("===============showModal" + htdl.lmtPnum+"," + size);
 		//제한 인원, 핫딜 이름, 시작시간, 마감시간

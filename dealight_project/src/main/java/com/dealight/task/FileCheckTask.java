@@ -171,7 +171,7 @@ public class FileCheckTask {
 		log.warn("=========================================rsvd �Ϸ�");
 	}
 
-	@Scheduled(cron="0 10 * * * *")
+//	@Scheduled(cron="0 10 * * * *")
 	public void checkFiles() throws Exception{
 		
 		log.warn("Image File Check Task run .....................");
