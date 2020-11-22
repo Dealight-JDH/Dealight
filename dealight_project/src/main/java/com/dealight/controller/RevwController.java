@@ -1,4 +1,6 @@
 package com.dealight.controller;
+import javax.servlet.http.HttpSession;
+
 // 수빈
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.RevwImgVO;
 import com.dealight.domain.RevwVO;
+import com.dealight.domain.UserVO;
 import com.dealight.service.RevwService;
 
 import lombok.AllArgsConstructor;
@@ -25,47 +28,56 @@ public class RevwController {
 
 	private RevwService service;
 
+	@GetMapping("/writable-list")
+	public void getWritableList(HttpSession session, Model model) {
+		//로그인 성공 후 세션에 저장된 user 정보를 꺼내와서 user정보를 불러옴
+	    UserVO user = (UserVO)session.getAttribute("user");
+	    if(user == null) {
+	       model.addAttribute("msg", "로그인이 필요한 페이지 입니다.");
+	    }
+		
+		log.info("WRITABLE LIST");
+		log.info("USERID: " + user.getUserId() + "@@");
+
+		model.addAttribute("userId", user.getUserId());
+		model.addAttribute("rsvdList", service.getWritableListByRsvd(user.getUserId()));
+		model.addAttribute("waitList", service.getWritableListByWait(user.getUserId()));
+	}
+
 	@GetMapping("/written-list")
-	public void getWrittenList(@Param("userId") String userId, RevwVO revw, Model model) {
-		log.info("USERID: " + userId + "@@");
-		model.addAttribute("userId", userId);
+	public void getWrittenList(HttpSession session, RevwVO revw, Model model) {
+		//로그인 성공 후 세션에 저장된 user 정보를 꺼내와서 user정보를 불러옴
+	    UserVO user = (UserVO)session.getAttribute("user");
+	    if(user == null) {
+	       model.addAttribute("msg", "로그인이 필요한 페이지 입니다.");
+	    }
+		
+//		log.info("USERID: " + user.getUserId() + "@@");
+		model.addAttribute("userId", user.getUserId());
 
 		log.info("COUNT REVW...");
-		model.addAttribute("countRevw", service.countRevw(userId));
+		model.addAttribute("countRevw", service.countRevw(user.getUserId()));
 
 		log.info("COUNT STORE...");
-		model.addAttribute("countStore", service.countStore(userId));
+		model.addAttribute("countStore", service.countStore(user.getUserId()));
 
 		log.info("WRITTEN LIST... ");
-		model.addAttribute("written", service.getWrittenList(userId));
-	}
-
-	@GetMapping("/writable-list")
-	public void getWritableList(String userId, Model model) {
-		log.info("WRITABLE LIST");
-		log.info("USERID: " + userId + "@@");
-
-		model.addAttribute("userId", userId);
-		model.addAttribute("rsvdList", service.getWritableListByRsvd(userId));
-		model.addAttribute("waitList", service.getWritableListByWait(userId));
-	}
-
-	@PostMapping("/writable-list")
-	public String getWritableList(@RequestParam("userId") String userId, RevwVO revw, RevwImgVO img) {
-
-		log.info("REGISTER REVW: " + revw + "@@");
-		log.info("REGISTER REVW IMG: " + img + "@@");
-
-		return "redirect:/dealight/mypage/review/register?userId=" + userId;
+		model.addAttribute("written", service.getWrittenList(user.getUserId()));
 	}
 
 	@GetMapping("/register/rsvd")
-	public void getWritableItemByRsvd(@Param("userId") String userId, @Param("rsvdId") Long rsvdId, Model model) {
-		log.info("USERID: " + userId + "@@");
+	public void getWritableItemByRsvd(HttpSession session, @Param("rsvdId") Long rsvdId, Model model) {
+//		로그인 성공 후 세션에 저장된 user 정보를 꺼내와서 user정보를 불러옴
+	    UserVO user = (UserVO)session.getAttribute("user");
+	    if(user == null) {
+	       model.addAttribute("msg", "로그인이 필요한 페이지 입니다.");
+	    }
+	    
+//		log.info("USERID: " + user.getUserId() + "@@");
 		log.info("RSVDID: " + rsvdId + "@@");
 		log.info("UPLOAD REVW IMG");
 
-		model.addAttribute("rsvd", service.getWritableItemByRsvd(userId, rsvdId));
+		model.addAttribute("rsvd", service.getWritableItemByRsvd(user.getUserId(), rsvdId));
 		System.out.println(model);
 	}
 
@@ -87,7 +99,7 @@ public class RevwController {
 		
 		System.out.println(service.updateRsvdRevwStus(userId, rsvdId));
 		rttr.addFlashAttribute("result", revw.getRevwId());
-		return "redirect:/dealight/mypage/review/writable-list?userId=" + userId;
+		return "redirect:/dealight/mypage/review/writable-list";
 	}
 	
 	@PostMapping("/uploadRevwImgAction")
@@ -100,7 +112,13 @@ public class RevwController {
 	}
 	
 	@GetMapping("/register/wait")
-	public void getWritableItemByWait(@Param("userId") String userId, @Param("waitId") Long waitId, Model model) {
+	public void getWritableItemByWait(HttpSession session, @Param("userId") String userId, @Param("waitId") Long waitId, Model model) {
+		//로그인 성공 후 세션에 저장된 user 정보를 꺼내와서 user정보를 불러옴
+	    UserVO user = (UserVO)session.getAttribute("user");
+	    if(user == null) {
+	       model.addAttribute("msg", "로그인이 필요한 페이지 입니다.");
+	    }
+	    
 		log.info("USERID: " + userId + "@@");
 		log.info("WAITID: " + waitId + "@@");
 

@@ -12,7 +12,7 @@
 
  <div class="middleDiv">
             <div class="imgContainer">
-                <img src="../img/main.jpg">
+                <img src="../../../../../resources/img/main.jpg">
 
                 <form action="/search/" class="searchBarDiv" method="get">
                     <div class="topRow">
