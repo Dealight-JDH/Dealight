@@ -179,7 +179,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 작성한 리뷰 리스트 가져오기 (현재 사진 첨부는 필수인 상태) -->
 <select id="getWrittenList" resultMap="RevwVO">
-	select r.store_nm, r.rating, r.reg_dt, r.cnts, i.img_url
+	select r.revw_id, r.store_nm, r.rating, r.reg_dt, r.cnts, i.img_url
 	from tbl_revw r, tbl_revw_img i
 	where r.revw_id = i.revw_id
 	and r.user_id = #{userId}

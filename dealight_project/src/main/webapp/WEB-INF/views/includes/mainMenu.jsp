@@ -49,11 +49,10 @@ body {
 }
 * /
 .top {
-	border: 1px solid black;
 	overflow: hidden;
 	flex: 1;
 	/* 비율을 1:1:1로 주기 */
-	height: 100%;
+	height: 35px;
 	display: inline-block;
 	z-index: 0;
 }
@@ -65,6 +64,7 @@ body {
 	outline: none;
 	font-size: 30px;
 	cursor: pointer;
+	display: inline-block;
 }
 
 .dropdown {
@@ -83,8 +83,9 @@ body {
 
 .dropdown-content a {
 	display: block;
-	padding: 10px 12px;
+	padding: 3px;
 	color: black;
+	font-size: 15px;
 	text-decoration: none;
 }
 
@@ -153,7 +154,6 @@ body {
 }
 
 .middleDiv {
-	border: 1px solid black;
 	width: 100%;
 	height: 600px;
 	position: relative;
@@ -269,77 +269,73 @@ body {
 .footer {
 	border: 1px solid black;
 	width: 100%;
-	height: 180px;
-
-.mydropbtn {
-  color: white;
-  z-index: 1;
-  cursor: pointer;
+	height: 180px; . mydropbtn { color : white;
+	z-index: 1;
+	cursor: pointer;
 }
-
-
 </style>
 </head>
 
 <body>
 
-   <div class="top-container" >
-      <div class="topDiv" id="topDiv">
-         <div class="top">
-            <div class="dropdown">
-               <button class="dropbtn">
-                  <i class="fas fa-bars" color="black"></i>
-                  <div class="dropdown-content">
-                     <a href="#">핫딜 찾기</a> <a href="#">매장 찾기</a>
-                  </div>
-               </button>
-            </div>
-            <!--end dropdown-->
-         
-            <div class="logo">
-               <div class="logo-content">
-                  <a href="/dealight/dealight" style="text-decoration: none"> <i
-                     class="fas fa-circle" color="red" style="font-size: 20px"></i> <i
-                     class="fas fa-circle" color="yellow" style="font-size: 20px"></i>
-                     <i class="fas fa-circle" color="green" style="font-size: 20px"></i>
-                  </a>
-               </div>
-               <div class="logo-content">
-                  <a href="/dealight/dealight" class="dealight" color="black"
-                     style="text-decoration: none">Dealight</a>
-               </div>
-            </div>
-            <!--end logo-->
-            <!--이 icon들은 굳이 div로 안 나눠도 될듯?-->
-            <div class="rightIcon">
-               <a href="#"><i class="fas fa-question-circle" color="black"></i></a>
-		    
-            </div>
-            <div class="rightIcon">
-               <a href="#"><i class="fas fa-bell" color="black"></i></a>
-            </div>
-            
-            <div class="rightIcon">
-               <div class="mydropdown">
-    <%-- <button class="mydropbtn" id="openModal" type="button" <%=loginState%>"> 사람이모지~~</button> --%>
-    <a class="mydropbtn" id="openModal"  <%=loginState%>"><i class="fas fa-user"  color="black"></i></a>
-    
-    <div class="mydropdown-content">
-       <a href="/dealight/mypage/reservation">예약내역(미구현)</a>
-      <a href="#waiting/list">웨이팅(미구현)</a>
-      <a href="#review">나의리뷰(미구현)</a>
-      <a href="#like">좋아요(미구현)</a> 
-      <a href="/dealight/mypage/modify">회원정보수정</a>
-      <a href="/dealight/logout" style="display:<%=display %>">로그아웃</a>
-    </div>
-  </div>
-    
-         </div>
-         
-   </div>
-   </div>
-   </div>
-   <script>
+	<!-- <div class="top-container"> -->
+		<div class="topDiv" id="topDiv">
+			<div class="top" style="height: 35px"> <!-- 임시로 높이 지정해둠 -->
+				<div class="dropdown">
+					<button class="dropbtn">
+						<i class="fas fa-bars" color="black"></i>
+						<div class="dropdown-content">
+							<a href="#">핫딜 찾기</a> <a href="#">매장 찾기</a>
+						</div>
+					</button>
+				</div>
+				<!--end dropdown-->
+
+				<div class="logo">
+					<div class="logo-content">
+						<a href="/dealight/dealight" style="text-decoration: none"> <i
+							class="fas fa-circle" color="red" style="font-size: 20px"></i> <i
+							class="fas fa-circle" color="yellow" style="font-size: 20px"></i>
+							<i class="fas fa-circle" color="green" style="font-size: 20px"></i>
+						</a>
+					</div>
+					<div class="logo-content">
+						<a href="/dealight/dealight" class="dealight" color="black"
+							style="text-decoration: none">Dealight</a>
+					</div>
+				</div>
+				<!--end logo-->
+				<!--이 icon들은 굳이 div로 안 나눠도 될듯?-->
+				<div class="rightIcon">
+					<a href="#"><i class="fas fa-question-circle" color="black"></i></a>
+
+				</div>
+				<div class="rightIcon">
+					<a href="#"><i class="fas fa-bell" color="black"></i></a>
+				</div>
+
+				<div class="rightIcon">
+					<div class="mydropdown">
+						<%-- <button class="mydropbtn" id="openModal" type="button" <%=loginState%>"> 사람이모지~~</button> --%>
+						<a class="mydropbtn" id="openModal"<%=loginState%>"><i
+							class="fas fa-user" color="black"></i></a>
+
+						<div class="mydropdown-content">
+							<a href="/dealight/mypage/reservation">예약내역(미구현)</a> <a
+								href="#waiting/list">웨이팅(미구현)</a>
+								<a href="/dealight/mypage/review/writable-list">나의리뷰</a>
+							<a href="#like">좋아요(미구현)</a> <a href="/dealight/mypage/modify">회원정보수정</a>
+							<a href="/dealight/logout" style="display:<%=display %>">로그아웃</a>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	<!-- </div> -->
+	<script>
+
  //1. 버튼을 누르면 모달창이 띄어지고, 배경 회색으로 변경
    function openModal(){
        document.getElementById('content').style.display='block';

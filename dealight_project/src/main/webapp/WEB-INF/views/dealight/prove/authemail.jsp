@@ -17,14 +17,13 @@
 <h2>5초만 기다려주세요....</h2>
 <h4>본인 확인을 위하여 이메일을 입력하여 주세요</h4>
 <div class="sendEmail">
-	<form action="/dealight/email/email" method="post" onsubmit="return validEmail()"> 
+	<form action="/dealight/prove/authemail" method="post" onsubmit="return validEmail()"> 
 	<p>이메일<input type="email" name="email" id="email" placeholder="이메일을 입력하여 주세요"></p>
 	<p><button type="submit" id="sendEmailbtn">이메일발송</button></p>
 	<input type="hidden" id='num' value='<c:out value="${num}"/>'>
 	<input type="hidden" id='authNum' value='<c:out value="${authNum}"/>'>
 	</form>
 	</div>
-	<a href = "/dealight/dealight">홈으로</a>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 //인증번호와 내가입력한 번호가 일치하지 않는다면 경고창
