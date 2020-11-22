@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="/resources/css/manage.css?ver=1" type ="text/css" />
 </head>
 <body>
+<%@include file="../../../includes/mainMenu.jsp" %>
     <div class="main_box"><!-- main box -->
         <h2>Business Manage Main Page</h2>
         <div class="board"> <!-- board -->
@@ -726,7 +727,7 @@ window.onclick = function(event) {
                 strNextRsvd += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
                 strNextRsvd += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
                 strNextRsvd += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-                strNextRsvd += "<li>예약 등록 날짜"+ rsvd.regDate + "</li>";
+                strNextRsvd += "<li>예약 등록 날짜 : "+ rsvd.regDate + "</li>";
                 
                 nextRsvdUL.html(strNextRsvd);
         	});
@@ -794,7 +795,7 @@ window.onclick = function(event) {
         			strLastWeekRsvd += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
         			strLastWeekRsvd += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
         			strLastWeekRsvd += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-        			strLastWeekRsvd += "<li>예약 등록 날짜"+ rsvd.strInDate + "</li>";
+        			strLastWeekRsvd += "<li>예약 등록 날짜"+ rsvd.strRegDate + "</li>";
         			strLastWeekRsvd += "===========================================";
         		});
         		
@@ -856,7 +857,7 @@ window.onclick = function(event) {
                     strUserRsvdList += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
                     strUserRsvdList += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
                     strUserRsvdList += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-                    strUserRsvdList += "<li>예약 등록 날짜"+ rsvd.inDate + "</li>";
+                    strUserRsvdList += "<li>예약 등록 날짜 : "+ rsvd.regDate + "</li>";
         		});
         		
         		userRsvdListUL.html(strUserRsvdList);
@@ -893,12 +894,12 @@ window.onclick = function(event) {
         		strRsvdDtls += "<li>예약 상태 : " + rsvd.stusCd +"</li>";
         		strRsvdDtls += "<li>예약 총 가격 : " + rsvd.totAmt +"</li>";
         		strRsvdDtls += "<li>예약 총 수량 : " + rsvd.totQty +"</li>";
-        		strRsvdDtls += "<li>예약 등록 날짜 : " + rsvd.regTm +"</li>";
+        		strRsvdDtls += "<li>예약 등록 날짜 : " + rsvd.regDate +"</li>";
         		let cnt = 1;
         		rsvd.rsvdDtlsList.forEach(dtls => {
         			strRsvdDtls += "==============================";
         			strRsvdDtls += "<li>상세 순서 [" + cnt +"]</li>";
-        			strRsvdDtls += "<li>예약 상세 번호 : " + dtls.seq +"</li>";
+        			strRsvdDtls += "<li>예약 상세 번호 : " + dtls.rsvdSeq +"</li>";
         			strRsvdDtls += "<li>예약 메뉴 이름 : " + dtls.menuNm +"</li>";
         			strRsvdDtls += "<li>메뉴 가격 : " + dtls.menuPrc +"</li>";
         			strRsvdDtls += "<li>메뉴 총 개수 : " + dtls.menuTotQty +"</li>";

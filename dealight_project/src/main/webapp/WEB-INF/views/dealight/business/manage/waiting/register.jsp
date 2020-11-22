@@ -12,7 +12,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-
+<%@include file="../../../../includes/mainMenu.jsp" %>
 <h1>Business Waiting Register Page</h1>
 
 <form action="/dealight/business/manage/waiting/register?storeId=${storeId}" method="post">

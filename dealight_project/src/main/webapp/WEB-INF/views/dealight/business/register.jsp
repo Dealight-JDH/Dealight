@@ -67,6 +67,7 @@
 
 </head>
 <body>
+<%@include file="../../includes/mainMenu.jsp" %>
 <form action="/dealight/business/register" method="post" id='regForm' name="form">
 테스트코드용----------------------<br>
 <label>유저아이디</label> <input name="buserId" value="aaaa"><br>
