@@ -84,7 +84,7 @@ public class BusinessController {
 	 */
 	
 	// 해당 유저의 매장 리스트를 보여준다.
-	@GetMapping("")
+	@GetMapping("/")
 	public String list(Model model,HttpServletRequest request) {
 		
 		log.info("business store list..");
@@ -93,7 +93,7 @@ public class BusinessController {
 		HttpSession session = request.getSession();
 		
 		// 임시로 'lim'이라는 아이디의 매장을 보여준다.
-		session.setAttribute("userId", "lim");
+		session.setAttribute("userId", "aaaa");
 		
 		String userId = (String) session.getAttribute("userId");
 		

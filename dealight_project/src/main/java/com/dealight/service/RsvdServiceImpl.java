@@ -172,7 +172,7 @@ public class RsvdServiceImpl implements RsvdService{
 	@Override
 	public String getTime(Date date) {
 		
-		String pattern = "HH:mm";
+		String pattern = "HH/mm";
 		
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		
@@ -184,7 +184,7 @@ public class RsvdServiceImpl implements RsvdService{
 	@Override
 	public int calTimeMinutes(String time) {
 		
-		String[] toMinutes = time.split(":");
+		String[] toMinutes = time.split("/");
 		
 		int minutes = Integer.valueOf(toMinutes[0]) * 60+ Integer.valueOf(toMinutes[1]);
 		
@@ -194,7 +194,7 @@ public class RsvdServiceImpl implements RsvdService{
 	@Override
 	public String toRsvdByTimeFormat(String time) {
 		
-		String[] times = time.split(":");
+		String[] times = time.split("/");
 		
 		String strHour = times[0];
 		int minute = Integer.valueOf(times[1]);
