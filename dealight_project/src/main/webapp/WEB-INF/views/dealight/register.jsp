@@ -15,7 +15,7 @@
 	<p class = 'msg' id="idmsg">영문 대문자 또는 소문자 또는 숫자로 시작하는 아이디, 길이는 5~15자</p>
     <p> 비밀번호 : <input type="password" name="pwd" id="pwd" >  </p>
     <p class = 'msg' id="pwdmsg">비밀번호는 영문 대소문자,특수문자 1개씩은 포함해서 8자리~16자리 이내</p>
-    <p> 비밀번호 확인 : <input type="password" name="repwd" id="repwd" onblur="myFunction()">  </p>
+    <p> 비밀번호 확인 : <input type="password" name="repwd" id="repwd" onblur="checkPwd()">  </p>
     <p class = 'msg' id="repwdmsg">비밀번호 확인을 위하여 다시 한 번 입력해주세요</p>
     <p> 이름 : <input type="text" name="name" id="name" >  2~8자리</p>
     <p> 성별 : 여자<input type="radio" class="sex" name="sex" value="W" >남자<input type="radio" class="sex" name="sex" value="M">  </p>
@@ -111,7 +111,7 @@
 	})
     
    	//비밀번호와 비밀번호 확인이 일치하는지 확인
-    function myFunction(){
+    function checkPwd(){
     	if($("#repwd").val() == ""){
     		 document.getElementById("repwdmsg").innerHTML = "비밀번호 확인을 입력해주세요";
     	     document.getElementById("repwdmsg").style.color = 'red'; 

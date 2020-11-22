@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -217,17 +218,42 @@ public class UserController {
 		log.info("/get");
 		model.addAttribute("user", service.get(userId));
 	}
+
+	/* 진행예정
+	//비밀번호 변경
+	@GetMapping("/mypage/changepwd")
+	public void changepwd(HttpSession session, Model model) {
+		
+		//로그인된 정보를 가져온다
+				UserVO user = (UserVO)session.getAttribute("user");
+				
+				//로그인이 되어 있지 않다면 접근불가
+				if(user == null) {
+					model.addAttribute("msg", "로그인이 필요한 페이지 입니다.");
+				}
+	}
+	
+	
+	@RequestMapping( value = "/mypage/changepwd", method= RequestMethod.POST)
+	public boolean changepwd(String pwd, String changepwd, HttpSession session ) {
+		UserVO user = (UserVO)session.getAttribute("user");
+	    	  //로그인된 회원의 비밀번호와 입력한 현재 비밀번호가 일치한다면 비밀번호 변경
+	    	  if(user.getPwd().equals(pwd)) {
+	    		  user.setPwd(changepwd);
+	    		  System.out.println("user:"+user);
+	    		  return service.changePwd(user);
+	    	  }
+	    	  return false;
+	      }
+		
+	*/
+	
 	
 	// 회원정보 수정
 	@PostMapping("/mypage/modify")
 	public void modify(UserVO user, Model model) {
 		log.info("modify: "+user);
-//		if(service.modify(user) && service.modifyPhoto(user)) {
-//			model.addAttribute("msg2", "sussecc");
-//		}else {
-//			model.addAttribute("msg2", "fail");
-//		}
-		//(이름[닉네임], 비밀번호, 이메일, 전화번호, sns연동 만 변경
+		//(이름[닉네임], 이메일, 전화번호, sns연동 만 변경
 		service.modify(user);
 		//프로필 사진 수정
 		service.modifyPhoto(user);
