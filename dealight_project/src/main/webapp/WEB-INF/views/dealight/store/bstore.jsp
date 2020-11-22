@@ -521,11 +521,14 @@
 			//2.이벤트 막고 하고 싶은거
 			//2.1 페이지 이동시 다음페이지에 데이터를 넘길 수 있도록 input hidden에 선택된 메뉴 수량 넣음
 			//시간
-
+			if($("#waitingNum option:selected").length ===0 ){
+				alert("인원수를 선택해주세요");
+				return;
+			}
 			const watingPersonNum = '<input type="hidden" name=pnum value="'
 					+ $("#waitingNum option:selected").val() + '">';
 			waitingForm.append(watingPersonNum);
-			waitingForm.submit();
+			//waitingForm.submit();
 		});
 		
 		});

@@ -16,13 +16,13 @@
 		<div class="nav"></div>
 		<div class="left">
 			<div class="column">
-			<a href='/dealight/store?storeId=<c:out value="${store.storeId}"/>'> < </a> 
+			<a href='/dealight/store?clsCd=B&storeId=<c:out value="${store.storeId}"/>'> < </a>
 			<!--  <input type="button" value="<" onClick="history.go(-1)">-->	
 				<h1>매장정보</h1>
 				${store.storeNm }
-				<c:if test="${store.imgs[0].imgUrl != null}">
+				<c:if test="${store.imgs[0].fileName != null}">
 						<img class="imgCon"
-							src='/resources/image/<c:out value="${store.imgs[0].fileName}" />'>
+							src='/resources/images/store/<c:out value="${store.imgs[0].fileName}" />'>
 				</c:if>
 
 
