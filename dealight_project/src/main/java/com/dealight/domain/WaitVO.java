@@ -57,5 +57,6 @@ public class WaitVO {
     // 매장
     // 이 방식이 아닌 조인하는 컬럼들만 묶은 VO를 따로 생성할 예정
     private StoreVO store;
+    private BStoreVO bstore;
 	
 }

@@ -123,7 +123,7 @@ public class ReservationServiceTests {
 		
 		list.forEach((rsvd) -> {
 			
-			assertTrue(simpleDateFormat.format(rsvd.getRegDate()).equals(simpleDateFormat.format(date)));
+			assertTrue(simpleDateFormat.format(rsvd.getRegdate()).equals(simpleDateFormat.format(date)));
 			
 		});
 		
@@ -147,7 +147,7 @@ public class ReservationServiceTests {
 		list.forEach((rsvd) -> {
 			
 			assertTrue(rsvd.getStoreId() == storeId);
-			assertTrue(simpleDateFormat.format(rsvd.getRegDate()).equals(date));
+			assertTrue(simpleDateFormat.format(rsvd.getRegdate()).equals(date));
 			
 		});
 		
@@ -162,7 +162,7 @@ public class ReservationServiceTests {
 		List<RsvdVO> list = reservationService.readTodayCurRsvdList(storeId);
 		
 		list.forEach((rsvd) -> {
-			log.info(reservationService.getTime(rsvd.getRegDate()));
+			log.info(reservationService.getTime(rsvd.getRegdate()));
 		});
 		
 	}
@@ -173,7 +173,7 @@ public class ReservationServiceTests {
 		List<RsvdVO> list = reservationService.readTodayCurRsvdList(storeId);
 		
 		list.forEach((rsvd) -> {
-			String time = reservationService.getTime(rsvd.getRegDate());
+			String time = reservationService.getTime(rsvd.getRegdate());
 			log.info(time + ":::::::::::::" + reservationService.calTimeMinutes(time));
 		});
 		
