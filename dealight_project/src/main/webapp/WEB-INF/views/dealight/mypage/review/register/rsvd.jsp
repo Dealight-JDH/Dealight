@@ -34,11 +34,11 @@
 			placeholder="리뷰를 작성해주세요 (최소 10자, 최대 100자 이내)"></textarea> <br /> <br />
 		
 		<label>사진 첨부</label> <br />
-		<!-- <textarea class="imgUrl" rows="3" name="imgUrl" required
-			placeholder="(임시)이미지 url을 문자열로 입력해주세요."></textarea> <br /> <br /> -->
-		<input type="file" name="uploadRevwImg" multiple> <br /> <br />
+		<textarea class="imgUrl" rows="3" name="imgUrl" required
+			placeholder="(임시)이미지 url을 문자열로 입력해주세요."></textarea> <br /> <br />
+		<!-- <input type="file" name="uploadRevwImg" multiple> <br /> <br /> -->
 		
-		<button type="submit" class="submitbtn" onclick="goNext()">등록</button>
+		<button type="submit" class="submitbtn">등록</button>
 		<button type="button" class="closebtn">취소</button>
 		
 		<!-- hidden으로 보낼 정보 -->
@@ -46,6 +46,7 @@
 		<input type="hidden" name="storeId" value="${rsvd.store.storeId }" />
 		<input type="hidden" name="rsvdId" value="${rsvd.rsvdId }" />
 		<input type="hidden" name="userId" value="${rsvd.userId }" />
+		
 	</form>
 	
 	<script>

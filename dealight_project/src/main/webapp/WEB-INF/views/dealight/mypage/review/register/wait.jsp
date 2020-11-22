@@ -34,6 +34,7 @@
 		<button type="button" class="submitbtn">사진 첨부</button> <br />
 		<textarea class="imgUrl" rows="3" name="imgUrl" required
 			placeholder="(임시)이미지 url을 문자열로 입력해주세요."></textarea> <br /> <br />
+			<!-- <input type="file" name="uploadRevwImg" multiple> <br /> <br /> -->
 
 		<button type="submit" class="submitbtn">등록</button>
 		<button type="button" class="closebtn">취소</button>

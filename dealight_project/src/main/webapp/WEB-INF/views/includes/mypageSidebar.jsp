@@ -151,6 +151,9 @@
 			<button class="accordion">
 				<a href="#">회원정보수정</a>
 			</button>
+			<button class="accordion">
+				<a href="#">비밀번호변경</a>
+			</button>
 		</div>
 	</div>
 
