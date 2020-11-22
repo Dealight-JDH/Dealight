@@ -34,14 +34,12 @@ public class RevwController {
 	    UserVO user = (UserVO)session.getAttribute("user");
 	    if(user == null) {
 	       model.addAttribute("msg", "로그인이 필요한 페이지 입니다.");
+	    } else {
+	    	log.info("WRITABLE LIST");
+	    	model.addAttribute("userId", user.getUserId());
+	    	model.addAttribute("rsvdList", service.getWritableListByRsvd(user.getUserId()));
+	    	model.addAttribute("waitList", service.getWritableListByWait(user.getUserId()));
 	    }
-		
-		log.info("WRITABLE LIST");
-		log.info("USERID: " + user.getUserId() + "@@");
-
-		model.addAttribute("userId", user.getUserId());
-		model.addAttribute("rsvdList", service.getWritableListByRsvd(user.getUserId()));
-		model.addAttribute("waitList", service.getWritableListByWait(user.getUserId()));
 	}
 
 	@GetMapping("/written-list")
@@ -52,8 +50,7 @@ public class RevwController {
 	       model.addAttribute("msg", "로그인이 필요한 페이지 입니다.");
 	    }
 		
-//		log.info("USERID: " + user.getUserId() + "@@");
-		model.addAttribute("userId", user.getUserId());
+//		model.addAttribute("userId", user.getUserId());
 
 		log.info("COUNT REVW...");
 		model.addAttribute("countRevw", service.countRevw(user.getUserId()));
@@ -73,7 +70,6 @@ public class RevwController {
 	       model.addAttribute("msg", "로그인이 필요한 페이지 입니다.");
 	    }
 	    
-//		log.info("USERID: " + user.getUserId() + "@@");
 		log.info("RSVDID: " + rsvdId + "@@");
 		log.info("UPLOAD REVW IMG");
 
@@ -112,17 +108,15 @@ public class RevwController {
 	}
 	
 	@GetMapping("/register/wait")
-	public void getWritableItemByWait(HttpSession session, @Param("userId") String userId, @Param("waitId") Long waitId, Model model) {
+	public void getWritableItemByWait(HttpSession session, Long waitId, Model model) {
 		//로그인 성공 후 세션에 저장된 user 정보를 꺼내와서 user정보를 불러옴
 	    UserVO user = (UserVO)session.getAttribute("user");
 	    if(user == null) {
 	       model.addAttribute("msg", "로그인이 필요한 페이지 입니다.");
+	    } else {
+	    	log.info("WAITID: " + waitId + "@@");
+	    	model.addAttribute("wait", service.getWritableItemByWait(user.getUserId(), waitId));
 	    }
-	    
-		log.info("USERID: " + userId + "@@");
-		log.info("WAITID: " + waitId + "@@");
-
-		model.addAttribute("wait", service.getWritableItemByWait(userId, waitId));
 	}
 
 	@PostMapping("/register/wait")
@@ -150,6 +144,6 @@ public class RevwController {
 
 		System.out.println(service.updateWaitRevwStus(userId, waitId));
 		rttr.addFlashAttribute("result", revw.getWaitId());
-		return "redirect:/dealight/mypage/review/writable-list?userId=" + userId;
+		return "redirect:/dealight/mypage/review/writable-list";
 	}
 }
