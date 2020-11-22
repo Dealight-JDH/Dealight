@@ -17,10 +17,8 @@
 	
 		<div class="left">
 			<div class="column">
+			
 				<c:choose>
-					<c:when test="${store.bstore.seatStusCd eq 'B'}">
-						<span> 파랑</span>
-					</c:when>
 					<c:when test="${store.bstore.seatStusCd eq 'O'}">
 						<span> 주황</span>
 					</c:when>
@@ -94,7 +92,7 @@
 			<div class="column">
 				<h1>리뷰</h1>
 				<div class='revwColumn'></div>
-				<div class="footer"></div>
+				<div class="revwFooter"></div>
 			</div>
 			<div class="column">
 				<h1>주변가게</h1>
@@ -163,8 +161,7 @@
 							<div class="content__wrapper">
 								<form id="waitingForm" action="/dealight/waiting"
 									method="post">
-									<input type='hidden' name='storeId'
-										value='<c:out value="${store.storeId }"/>' />
+									<input type='hidden' name='storeId' value='<c:out value="${store.storeId }"/>' />
 
 									<!-- <input type="hidden" id="selMenu" name="selMenu"> -->
 									<div class="row">
@@ -203,7 +200,7 @@
 							showList(1);
 
 							let pageNum = 1;
-							let revwPageFooter = $(".footer");
+							let revwPageFooter = $(".revwFooter");
 
 							function showRevwPage(revwCnt) {
 								let endNum = Math.ceil(pageNum / 5.0) * 5;
@@ -468,9 +465,12 @@
 		const reserveForm =$("#reserveForm");
 		const reserve =$("#reserve");
 		const pnum =$("#pnum");
+		var submitted = false;
 		$("#reserveForm button").on("click", function(e) {
+			  if(submitted == true) { return; }
 			//1.기존 이벤트(페이지 이동)를 막는다
 			e.preventDefault();
+			
 			//2.이벤트 막고 하고 싶은거
 			//2.1 페이지 이동시 다음페이지에 데이터를 넘길 수 있도록 input hidden에 선택된 메뉴 수량 넣음
 			//시간
@@ -504,31 +504,36 @@
 				reserveForm.append(menuNm);
 				const menuPrice = '<input type="hidden" name=menu['+i+'].price value="'+menus.arrSelMenus[i].menusUnprc+'">'; 
 				reserveForm.append(menuPrice);
-				const menuQuan = '<input type="hidden" name=menu['+i+'].quan value="'+menus.arrSelMenus[i].cnt+'">'; 
-				reserveForm.append(menuQuan);
+				const menuQty = '<input type="hidden" name=menu['+i+'].qty value="'+menus.arrSelMenus[i].cnt+'">'; 
+				reserveForm.append(menuQty);
 				
 				
 			}
+			submitted =true;
 			reserveForm.submit();
+		
 		});
-	</script>
-	<script>
+		
+	
 	const waitingForm = $("#waitingForm");
 	$(document).ready(function() {
+		
  			$("#waitingForm button").on("click",function(e) {
+ 				 if(submitted == true) { return; }
 			//1.기존 이벤트(페이지 이동)를 막는다
 			e.preventDefault();
 			//2.이벤트 막고 하고 싶은거
 			//2.1 페이지 이동시 다음페이지에 데이터를 넘길 수 있도록 input hidden에 선택된 메뉴 수량 넣음
 			//시간
-			if($("#waitingNum option:selected").length ===0 ){
+			if($("#waitingNum option:selected").val() === ""){
 				alert("인원수를 선택해주세요");
 				return;
 			}
 			const watingPersonNum = '<input type="hidden" name=pnum value="'
 					+ $("#waitingNum option:selected").val() + '">';
 			waitingForm.append(watingPersonNum);
-			//waitingForm.submit();
+			submitted=true;
+			waitingForm.submit();
 		});
 		
 		});

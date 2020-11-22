@@ -68,7 +68,7 @@ body {
 }
 
 .dropdown {
-	position: relative;
+	position: absolute;
 	display: inline-block;
 }
 
@@ -285,7 +285,7 @@ body {
 
    <div class="top-container" >
       <div class="topDiv" id="topDiv">
-         <div class="top">
+         <div style ="height:35px"class="top">
             <div class="dropdown">
                <button class="dropbtn">
                   <i class="fas fa-bars" color="black"></i>

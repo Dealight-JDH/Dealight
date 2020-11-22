@@ -1,9 +1,9 @@
-<<<<<<< HEAD
+
 /* 동인  */
 
 =======
 /* 다울 */
->>>>>>> 79af8c3586777c0e774c0dad7d5e2e7baef0ba38
+
 .nav {
 	height: 70px;
 	width: 100%;
@@ -43,22 +43,22 @@
 	float:right;
 }
 
-.footer {
+.revwFooter {
 	display: flex;
 	justify-content: flex-end;
 }
 
-.footer ul {
+.revwFooter ul {
 	list-style-type: none;
 }
-.footer a{
+.revwFooter a{
 	 text-decoration: none;
       border-radius: 2px;
       border-color: black;
 }
 
 
-.footer li {
+.revwFooter li {
 	display: inline;
 	margin: 5px;
 }
@@ -112,6 +112,8 @@
 	list-style: none;
 }
 
+
+
 /*/reservation*/
 #myDIV {
   width: 100%;
@@ -155,5 +157,16 @@
 	border:none;
 	background-color: white;
 }
+
+/*주변가게*/
+.conNearBy{
+	
+}
+
+.imgNearBy{
+	
+}
+
+
 
 

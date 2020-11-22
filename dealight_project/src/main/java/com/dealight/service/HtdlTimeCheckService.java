@@ -32,13 +32,7 @@ public class HtdlTimeCheckService {
 	private HtdlMapper htdlMapper;
 
 	ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(3);
-<<<<<<< HEAD
-//핫딜 타임체크 너무 많아ㅜㅜ
-//<<<<<<< HEAD
-=======
 
-
->>>>>>> 42ea44c5b008f20399d89841b5f98c63f35a0017
 //	@PreDestroy
 //	public void preDestroy() {
 //
@@ -61,42 +55,6 @@ public class HtdlTimeCheckService {
 //		log.info("스케줄러 종료");
 //	}
 //	
-<<<<<<< HEAD
-////=======
-//
-////>>>>>>> 807e70a1d17d3a14a17c9177a4e64f082bcbaa4b
-=======
-//
-//
-//
->>>>>>> 42ea44c5b008f20399d89841b5f98c63f35a0017
-//	@PostConstruct
-//	public void postConstruct() throws ParseException {
-//		
-//		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
-//		log.info(Thread.currentThread().getName());
-//		log.info("------postConstruct");
-//		
-//		//스케쥴러 실행
-//		exec.scheduleAtFixedRate(new Runnable() {
-//			
-//			@Override
-//			@Scheduled(fixedDelay = 3000)
-//			public void run() {
-//				// TODO Auto-generated method stub
-//				try {
-//					log.info("------check======");
-//					//서비스 시작
-//					service();
-//					log.info("------check"+ Thread.currentThread().getName()+"---------");
-//				}catch(Exception e){
-//					e.printStackTrace();
-//					exec.shutdown();
-//				}
-//			}
-//			
-//		}, 0, 3, TimeUnit.SECONDS); 
-//	}
 
 	
 	@Transactional
