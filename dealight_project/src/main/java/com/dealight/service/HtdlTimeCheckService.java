@@ -33,7 +33,7 @@ public class HtdlTimeCheckService {
 
 	ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(3);
 
-//<<<<<<< HEAD
+
 	@PreDestroy
 	public void preDestroy() {
 
@@ -56,9 +56,9 @@ public class HtdlTimeCheckService {
 		log.info("스케줄러 종료");
 	}
 	
-//=======
 
-//>>>>>>> 807e70a1d17d3a14a17c9177a4e64f082bcbaa4b
+
+
 	@PostConstruct
 	public void postConstruct() throws ParseException {
 		

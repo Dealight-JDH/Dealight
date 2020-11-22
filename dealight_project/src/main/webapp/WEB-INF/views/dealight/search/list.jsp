@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<%@include file="../../includes/mainMenu.jsp" %> 
 <style>
 .row {
   display: -webkit-flex;
@@ -59,23 +60,23 @@ datalist option {
   	</form>
 	<form id="searchFilter" action="#" >
 		<label>정렬순서
-		<select id="sortType">
+		<select name="sortType">
 			<option value="D">거리순</option>
 			<option value="H">좋아요순</option>
 			<option value="R">평점순</option>
 			<option value="T">리뷰순</option>
 		</select></label>
 		<label>우선순위
-		<select id="sortPriority">
+		<select name="sortPriority">
 			<option value="">--</option>
 			<option value="H">핫딜매장우선보기</option>
 			<option value="S">식사가능매장우선보기</option>
 			<option value="W">웨이팅있는매장보기</option>
 			<option value="R">예약가능매장보기(아직 미구현)</option>
 		</select></label><br>
-		<label><input id="openStore" type="checkbox" name="openStore" checked="checked"> 영업중인매장만보기</label>
+		<label><input name="openStore" type="checkbox" name="openStore" checked="checked"> 영업중인매장만보기</label>
 		<div class="level">
-		<input type="range" min="1" max="5" list="num" id="range" />
+		<input type="range" min="0" max="4" list="num" name="distance" />
             <datalist id="num">
                 <option value="0.3" label="0.3km"/>
                 <option value="0.5" label="0.5km"/>
@@ -142,21 +143,19 @@ $(document).ready(function(){
 		e.preventDefault();
 		console.log("click");
 		
-		var range = document.getElementById("num").options;
-		var openStore = $("input:checkbox[id='openStore']").is(":checked");
-		
+		let searchFilter = document.forms["searchFilter"];
 		//actinoForm에 검색사항을 변경한다.
 		//오픈매장 보기 변경
-		console.log(openStore)
-		actionForm.elements["openStore"].value = openStore
+		actionForm.elements["openStore"].value = searchFilter["openStore"].checked;
 		//우선순위 변경
-		actionForm.elements["sortPriority"].value = $("#sortPriority option:selected").val();
+		actionForm.elements["sortPriority"].value = searchFilter["sortPriority"].value;
 		//검색반경 변경
-		actionForm.elements["distance"].value = range[$("#range").val() - 1 ].value;
+		let distance = searchFilter["distance"];
+		actionForm.elements["distance"].value = distance.list.options[distance.value].value;
 		//page를 1로 변경
 		actionForm.elements["pageNum"].value = 1;
 		//sortType을 설정한 값으로 변경
-		actionForm.elements["sortType"].value = $("#sortType option:selected").val();
+		actionForm.elements["sortType"].value = searchFilter["sortType"].value
 		//main페이지 다시출력
 		showMain();
 	});
@@ -177,23 +176,8 @@ function addEventHandlerToSearchButton(){
 		
 	}
 }
+	
 
-	
-function getRange(distance){
-	switch(distance){
-	case 0.3:
-		return 1;
-	case 0.5:
-		return 2;
-	case 1:
-		return 3;
-	case 3:
-		return 4;
-	case 5:
-		return 5;
-	}
-	
-}
 //mainPage를 불러오는 함수
 function showMain(){
 		//ajax통신을 한다.
@@ -207,7 +191,7 @@ function showMain(){
 			//actionForm을 업데이트한다.
 			actionFormUpdate(pageDTO.cri);
 			//searchFilter를 업데이트한다.
-			searchFilterUpdate(pageDTO);
+			searchFilterUpdate(pageDTO.cri);
 			//-------------------------스크롤을 맨위로 올려주는 함수필요!!!!!!!!!!!!!!!
 			var scroll = document.getElementsByClassName("list");
 			scroll[0].scrollTop = 0;
@@ -247,15 +231,15 @@ function createObj(form){
 
 //매장목록을 출력하는 함수
 function showList(storeList){
-	var str = "";
-	var list = $(".list");
+	let str = "";
+	let list = $(".list");
 	if(storeList==null || storeList.length==0){
 		//alert를 띄워준다.
 		list.html("검색결과가 없습니다.");
 		return;
 	}
 		console.log(storeList)
-	for( var i=0, len=storeList.length||0; i<len; i++){
+	for( let i=0, len=storeList.length||0; i<len; i++){
 		str += "<div class='"+storeList[i].storeId+"'>--------------";
 		str += "<h5>매장번호 : " + storeList[i].storeId + "</h5>";
 		str += "<div>매장거리 : " + storeList[i].dist + "</div>";
@@ -291,8 +275,8 @@ function showList(storeList){
 //페이징 처리를 하는 함수.
 function showPaging(pageDTO){
 	
-	var str = "";
-	var paging = $(".pagination");
+	let str = "";
+	const paging = $(".pagination");
 	
 	if(pageDTO.prev){
 		str += "<a href='"+(pageDTO.startPage -1)+"'>Previous </a>"
@@ -318,29 +302,38 @@ function showPaging(pageDTO){
 
 //actionForm을 업데이트를 하는 함수.
 function actionFormUpdate(cri){
-	for(let index in cri){
-		console.log(actionForm.elements[index]);
-		//actionForm.elements[index].value = cri[index];
-	console.log(cri[index])
-		
+	//console.log(cri[actionForm.elements[0].name]);
+	for(let i = 0 ; i < actionForm.length; i++){
+		actionForm.elements[i].value = cri[actionForm.elements[i].name];
 	}
-	/* actionForm.elements["pageNum"].value		=	(pageDTO.cri.pageNum); 
-	actionForm.elements["amount"].value			=	(pageDTO.cri.amount); 
-	actionForm.elements["distance"].value		=	(pageDTO.cri.distance); 
-	actionForm.elements["lat"].value			=	(pageDTO.cri.lat); 
-	actionForm.elements["lng"].value			=	(pageDTO.cri.lng); 
-	actionForm.elements["sortType"].value		=	(pageDTO.cri.sortType);
-	actionForm.elements["sortPriority"].value	=	(pageDTO.cri.sortPriority);
-	actionForm.elements["openStore"].value		=	(pageDTO.cri.openStore); */
 }
-
+let searchFilter = document.forms["searchFilter"];
 //search filter를 업데이트 하는 함수
-function searchFilterUpdate(pageDTO){
+function searchFilterUpdate(cri){
 	
-	$("#sortType").val(pageDTO.cri.sortType);
-	$("#sortPriority").val(pageDTO.cri.sortPriority);
-	$("#range").val(getRange(pageDTO.cri.distance));
-	$("#openStore").prop("checked", pageDTO.cri.openStore);
+	for(let i = 0 ; i < searchFilter.length; i++){
+		
+		let name = searchFilter[i].name;
+		//distance를 update
+		if(name == "distance"){
+			const range = searchFilter["distance"].list.options;
+			for(let j = 0; j<range.length; j++){
+				if(cri.distance == range[j].value){
+					searchFilter[name].value = j;
+					break;
+				}
+			}//end of for
+		} else if(name == "openStore"){
+			//openStore update
+			searchFilter[name].checked = cri[name];
+			
+		} else {
+			
+			searchFilter.elements[i].value = cri[searchFilter.elements[i].name];
+
+		}
+	}//for
+	
 }
 
 //페이지 번호클릭시 발생이벤트
@@ -367,7 +360,7 @@ function addPageEventHandler(e){
 			level: 5
 		};
 		//지도생성
-		var map = new kakao.maps.Map(container, options);
+		let map = new kakao.maps.Map(container, options);
 		
 		function searchMap(){
 			var latlng = map.getCenter(); 

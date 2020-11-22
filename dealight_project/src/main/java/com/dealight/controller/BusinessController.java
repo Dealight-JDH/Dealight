@@ -86,7 +86,7 @@ public class BusinessController {
 		
 		HttpSession session = request.getSession();
 		
-		session.setAttribute("userId", "lim");
+		session.setAttribute("userId", "aaaa");
 		
 		String userId = (String) session.getAttribute("userId");
 		
