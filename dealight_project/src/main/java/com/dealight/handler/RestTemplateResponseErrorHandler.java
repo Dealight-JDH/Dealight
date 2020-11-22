@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j;
 /*
  * 
  *****[김동인] 
+ * REST Template 사용시 필요
  * 
  */
 

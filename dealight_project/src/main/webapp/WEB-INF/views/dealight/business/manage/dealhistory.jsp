@@ -12,7 +12,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-
+<%@include file="../../../includes/mainMenu.jsp" %>
 <h1>Business Hotdeal History Page</h1>
 
 <h2>현재 진행중 핫딜</h2>
@@ -38,7 +38,7 @@
 	<h5>핫딜 현재 인원 : <c:out value="${htdl.curPnum}" /></h5>
 	<h5>핫딜 현재 상태 : <c:out value="${htdl.stusCd}" /></h5>
 	</div>
-	--------------------------------------------------------
+	-------------------------------------------------------- <br>
 </c:forEach>
 </c:if>
 

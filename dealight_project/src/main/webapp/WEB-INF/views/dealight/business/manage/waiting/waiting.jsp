@@ -12,7 +12,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-
 <h1>Business Waiting Page</h1>
 ===========================================
 <h5>웨이팅 번호 : ${wait.waitId}</h5>

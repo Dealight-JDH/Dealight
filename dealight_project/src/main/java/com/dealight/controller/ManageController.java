@@ -47,7 +47,7 @@ import lombok.extern.log4j.Log4j;
 
 @Controller
 @Log4j
-@RequestMapping("/business/manage/*")
+@RequestMapping("/dealight/business/manage/*")
 public class ManageController {
 	
 	@Setter(onMethod_ = @Autowired)
@@ -65,8 +65,10 @@ public class ManageController {
 	@Setter(onMethod_ = @Autowired)
 	private UserService userService;
 	
+	// 파일 저장 경로를 지정한다.
 	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05";
 	
+	// 핫딜 히스토리
 	@GetMapping("/dealhistory")
 	public String dealHistory(Model model,long storeId,HttpServletRequest request) {
 		
@@ -76,69 +78,77 @@ public class ManageController {
 		
 		model.addAttribute("htdlList",htdlList);
 		
+		// 현재 상태가 Active인 핫딜을 가져온다.
 		List<HtdlVO> curList = htdlList.stream().filter(htdl -> 
 			htdl.getStusCd().equals("A")
 		).collect(Collectors.toList());
 		
 		model.addAttribute("curList", curList);
 		
-		return "/business/manage/dealhistory";
+		return "/dealight/business/manage/dealhistory";
 	}
 	
-	@GetMapping("/reservation")
-	public String reservation(Model model, long rsvdId) {
-		
-		RsvdVO rsvd = rsvdService.findRsvdByRsvdIdWithDtls(rsvdId);
-		
-		log.info("rsvd.............................................................."+rsvd);
-		
-		List<RsvdVO> rsvdList = userService.getRsvdListStoreUser(rsvd.getStoreId(), rsvd.getUserId());
-		
-		model.addAttribute("rsvd",rsvd);
-		model.addAttribute("rsvdList",rsvdList);
-		
-		return "/business/manage/reservation";
-	}
+	// 예약 상세 화면
+	// REST FUL로 대체
+//	@GetMapping("/reservation")
+//	public String reservation(Model model, long rsvdId) {
+//		
+//		RsvdVO rsvd = rsvdService.findRsvdByRsvdIdWithDtls(rsvdId);
+//		
+//		log.info("rsvd.............................................................."+rsvd);
+//		
+//		List<RsvdVO> rsvdList = userService.getRsvdListStoreUser(rsvd.getStoreId(), rsvd.getUserId());
+//		
+//		model.addAttribute("rsvd",rsvd);
+//		model.addAttribute("rsvdList",rsvdList);
+//		
+//		return "/dealight/business/manage/reservation";
+//	}
 	
-	@GetMapping("/waiting/register")
-	public String waitingRegister(Model model, long storeId) {
-		
-		log.info("business waiting register..");
-		
-		Date curTime = new Date();
-		
-		List<WaitVO> waitList = waitService.curStoreWaitList(storeId, "W");
-		
-		int curWaitNum = waitList.size();
-		int curWaitTime = curWaitNum * 15;
-		
-		model.addAttribute("curWaitNum",curWaitNum);
-		model.addAttribute("curWaitTime",curWaitTime);
-		
-		
-		model.addAttribute("curTime", curTime);
-		model.addAttribute("storeId", storeId);
-		
-		return "/business/manage/waiting/register";
-	}
+	// 웨이팅 등록
+	// REST FUL로 대체
+//	@GetMapping("/waiting/register")
+//	public String waitingRegister(Model model, long storeId) {
+//		
+//		log.info("business waiting register..");
+//		
+//		Date curTime = new Date();
+//		
+//		List<WaitVO> waitList = waitService.curStoreWaitList(storeId, "W");
+//		
+//		int curWaitNum = waitList.size();
+//		int curWaitTime = curWaitNum * 15;
+//		
+//		model.addAttribute("curWaitNum",curWaitNum);
+//		model.addAttribute("curWaitTime",curWaitTime);
+//		
+//		
+//		model.addAttribute("curTime", curTime);
+//		model.addAttribute("storeId", storeId);
+//		
+//		return "/dealight/business/manage/waiting/register";
+//	}
 	
-	@PostMapping("/waiting/register")
-	public String waitingRegister(Model model, WaitVO wait,HttpServletRequest request,long storeId) {
-		
-		log.info("business waiting register..");
-		
-		log.info(wait);
-		
-		wait.setStoreId(storeId);
-		
-		waitService.registerOffWaiting(wait);
-		
-		long id = wait.getWaitId();
-		
-		return "redirect:/business/manage/?storeId="+storeId;
-		//return "redirect:/business/manage/board/?storeId="+storeId;
-	}
+	// REST FUL로 대체
+	// /waiting/new 로 대체
+//	@PostMapping("/waiting/register")
+//	public String waitingRegister(Model model, WaitVO wait,HttpServletRequest request,long storeId) {
+//		
+//		//log.info("business waiting register..");
+//		
+//		//log.info(wait);
+//		
+//		wait.setStoreId(storeId);
+//		
+//		waitService.registerOffWaiting(wait);
+//		
+//		long id = wait.getWaitId();
+//		
+//		return "redirect:/dealight/business/manage/?storeId="+storeId;
+//		//return "redirect:/business/manage/board/?storeId="+storeId;
+//	}
 	
+	// 매장 수정 페이지
 	@GetMapping("/modify")
 	public String storeModify(Model model,Long storeId, HttpServletRequest request) {
 		
@@ -171,7 +181,7 @@ public class ManageController {
 		model.addAttribute("store", store);
 		model.addAttribute("userId",userId);
 		
-		return "/business/manage/modify/modify";
+		return "/dealight/business/manage/modify/modify";
 	}
 	
 	@PostMapping("/modify")
@@ -179,23 +189,23 @@ public class ManageController {
 		
 		log.info("business store modify post..");
 		
-		rttr.addFlashAttribute("msg","���� �Ϸ�");
+		rttr.addFlashAttribute("msg","수정 완료");
 		
 		log.info("store................" + store);
 		
-		
 		if(!storeService.modifyStore(store)) {
 			rttr.addFlashAttribute("storeId",store.getStoreId());
-			rttr.addFlashAttribute("msg", "���� ����");
+			rttr.addFlashAttribute("msg", "수정 실패");
 			return "redirect:/business/manage/modify?storeId="+store.getStoreId();
 		}
 		 
-		return "redirect:/business/manage/modify?storeId="+store.getStoreId();
+		return "redirect:/dealight/business/manage/modify?storeId="+store.getStoreId();
 	}
 	
+	// 매장의 이미지를 가져온다.
 	@GetMapping(value = "/getStoreImgs", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public ResponseEntity<List<StoreImgVO>> getStoreImage(long storeId) {
+	public ResponseEntity<List<StoreImgVO>> getStoreImage(Long storeId) {
 		
 		log.info("getAttachList" + storeId);
 		
@@ -232,9 +242,9 @@ public class ManageController {
 	
 
 
-	
+	// 메뉴 수정 페이지
 	@GetMapping("/menu")
-	public String menuModify(Model model, long storeId) {
+	public String menuModify(Model model, Long storeId) {
 		
 		log.info("business menu modify..");
 		
@@ -243,9 +253,10 @@ public class ManageController {
 		model.addAttribute("menus",menus);
 		model.addAttribute("storeId",storeId);
 		
-		return "/business/manage/modify/menu";
+		return "/dealight/business/manage/modify/menu";
 	}
 	
+	// 메뉴 등록
 	@PostMapping("/menu/register")
 	public String menuModify(Model model, MenuVO menu) {
 		
@@ -262,7 +273,7 @@ public class ManageController {
 		
 		storeService.registerMenu(menu);
 		
-		return "redirect:/business/manage/menu?storeId="+menu.getStoreId();
+		return "redirect:/dealight/business/manage/menu?storeId="+menu.getStoreId();
 	}
 
 	// 웨이팅 입장
@@ -273,7 +284,7 @@ public class ManageController {
 		
 		waitService.enterWaiting(waitId);
 		
-		return "redirect:/business/manage?storeId="+storeId;
+		return "redirect:/dealight/business/manage?storeId="+storeId;
 	}
 	
 	// 웨이팅 노쇼
@@ -284,24 +295,26 @@ public class ManageController {
 		
 		waitService.panaltyWaiting(waitId);	
 		
-		return "redirect:/business/manage?storeId="+storeId;
+		return "redirect:/dealight/business/manage?storeId="+storeId;
 	}
 	
+	// 착석 상태 변경
 	@PostMapping("/seat")
 	public String seatStus(Model model,long storeId, String seatStusColor) {
 		
 		storeService.changeSeatStus(storeId, seatStusColor);
 		
-		return "redirect:/business/manage?storeId="+storeId;
+		return "redirect:/dealight/business/manage?storeId="+storeId;
 	}
 
-	@GetMapping("/board")
-	public String getBoard(Model model, long storeId) {
-		
-		
-		model.addAttribute("storeId", storeId);
-		
-		return "/board";
-	}
+	// REST TEST에 사용
+//	@GetMapping("/board")
+//	public String getBoard(Model model, long storeId) {
+//		
+//		
+//		model.addAttribute("storeId", storeId);
+//		
+//		return "/board";
+//	}
 
 }

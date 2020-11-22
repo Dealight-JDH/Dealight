@@ -12,16 +12,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-
+<%@include file="../../includes/mainMenu.jsp" %>
 <h1>Business List Page</h1>
 
 <h2>${userId}</h2>
 
-<h2><a href="/business/register">등록하기</a></h2>
+<h2><a href="/dealight/business/register">등록하기</a></h2>
 
 <c:forEach items="${storeList}" var="store">
 ============================================
-	<a href='/business/manage/?storeId=${store.storeId}'><div>
+	<a href='/dealight/business/manage/?storeId=${store.storeId}'><div>
 	<h2>매장 이름 : <c:out value="${store.storeNm}" /></h2>
 	<h2>매장 전화번호 : <c:out value="${store.telno}" /></h2>
 	<h2>매장 소유자 아이디 : <c:out value="${store.bstore.buserId}" /></h2>
