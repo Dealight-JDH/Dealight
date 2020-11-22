@@ -25,7 +25,8 @@ public class StoreMapperTests {
 	@Setter(onMethod_ = @Autowired)
 	private StoreMapper mapper;
 
-	@Test
+	
+	
 	public void testGetList() {
 		mapper.getList().forEach(store -> log.info(store));
 	}
@@ -43,14 +44,12 @@ public class StoreMapperTests {
 		log.info(store);
 	}
 	
-	@Test
 	public void tsetsRead() {
 		log.info(mapper.read(1L));
 		log.info(mapper.read(14L));
 		log.info(mapper.read(0L));
 	}
 
-	@Test
 	public void testUpdate() {
 		
 		StoreVO store = new StoreVO();
@@ -64,12 +63,10 @@ public class StoreMapperTests {
 		
 		
 	}
-	@Test	
 	public void testDelete() {
 		log.info(mapper.delete(3L));
 	}
 	
-	@Test
 	public void testJoinLoc() {
 		mapper.joinLoc().forEach(store-> {
 			log.info(store);
@@ -77,7 +74,6 @@ public class StoreMapperTests {
 		});
 	}
 	
-	@Test
 	public void testGetListAllInfo() {
 		mapper.getListAllInfo().forEach(store->{
 			log.info(store);
@@ -87,12 +83,11 @@ public class StoreMapperTests {
 	}
 	
 	//사업자아이디로 검색
-	@Test
 	public void testFindByUserIdJoinBStore() {
 		mapper.findByUserIdJoinBStore("aaaa").forEach(store-> log.info(store));
 	}
 	
-	
+	@Test
 	public void testGetNstore() {
 		StoreVO store = mapper.getNstore(1L);
 		log.info(store);
@@ -102,7 +97,6 @@ public class StoreMapperTests {
 		String storeCode = mapper.getStoreCd(1L);
 		log.info(storeCode);
 	}
-	@Test
 	public void testGetBstore() {
 		StoreVO store = mapper.getBstore(3L);
 		log.info(store);
@@ -117,12 +111,10 @@ public class StoreMapperTests {
 	private String userId = "kjuioq";
 
 	// mapper �� ���ԵǾ����� DI �׽�Ʈ
-	@Test
 	public void mapperDItest() {
 		log.info("mapper DI test : " + mapper);
 	}
 	
-	@Test
 	public void storeMapperInsertTests1() {
 		
 		StoreVO store = new StoreVO().builder()
@@ -140,7 +132,6 @@ public class StoreMapperTests {
 	}
 	
 	
-	@Test
 	public void storeMapperDeleteTests1() {
 		
 		int result = mapper.delete(4L);
@@ -149,7 +140,6 @@ public class StoreMapperTests {
 		
 	}
 	
-	@Test
 	public void findByIdJoinNStoreTest1() {
 		
 		StoreVO store = mapper.findByIdJoinNStore(storeId);
@@ -159,7 +149,6 @@ public class StoreMapperTests {
 		assertNotNull(store.getBstore());
 	}
 	
-	@Test
 	public void findByIdJoinBStoreTest1() {
 		
 		StoreVO store = mapper.findByIdJoinBStore(storeId);
@@ -171,7 +160,6 @@ public class StoreMapperTests {
 	
 	}
 
-	@Test
 	public void findByUserIdJoinBStoreTest1() {
 		
 		List<StoreVO> list = mapper.findByUserIdJoinBStore(userId);

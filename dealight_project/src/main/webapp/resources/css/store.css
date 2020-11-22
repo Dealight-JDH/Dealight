@@ -2,7 +2,7 @@
 /* 동인  */
 
 =======
- <!-- 다울 -->
+/* 다울 */
 >>>>>>> 79af8c3586777c0e774c0dad7d5e2e7baef0ba38
 .nav {
 	height: 70px;
@@ -23,9 +23,6 @@
 
 .left p {
 	margin: 20px;
-}
-.inlineH {
-	display: inline-block;
 }
 
 .left h4 {
@@ -102,12 +99,11 @@
 	position: -webkit-sticky;
 	position: sticky;
 	top: 100px;
-	border-radius: 10px;
-	border-style: outset;
 	margin: auto;
 	width: 85%;
 	text-align: center;
 	padding: 10px;
+	
 }
 
 .sticky ul {
@@ -116,13 +112,7 @@
 	list-style: none;
 }
 
-
-.right p {
-	border-top-style: solid;
-	border-top-color: rgba(138, 134, 134, 0.199);
-}
-
-
+/*/reservation*/
 #myDIV {
   width: 100%;
   margin-top: 20px;
@@ -148,3 +138,22 @@
     padding: 10px;
     margin: 35px;
 }
+
+/*핫딜*/
+.htdlCon{
+	border-style : solid;
+
+}
+
+.htdlBtnCon {
+  	border-style : solid;
+  
+}
+
+.htdlBtnCon button{
+	outline :0;
+	border:none;
+	background-color: white;
+}
+
+
