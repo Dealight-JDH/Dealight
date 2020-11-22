@@ -46,7 +46,6 @@ public class RsvdServiceImpl implements RsvdService{
 	
 	@Override
 	public List<StoreMenuVO> getMenuList(Long storeId) {
-		// TODO Auto-generated method stub
 		
 		return menuMapper.findById(storeId);
 	}
@@ -54,7 +53,7 @@ public class RsvdServiceImpl implements RsvdService{
 	
 	@Override
 	public Long getRsvdId() {
-		// TODO Auto-generated method stub
+		
 		return rsvdMapper.getSeqRsvd();
 	}
 	
@@ -70,7 +69,6 @@ public class RsvdServiceImpl implements RsvdService{
 	@Transactional
 	@Override
 	public void register(RsvdVO vo, List<RsvdDtlsVO> dtlsList) {
-		// TODO Auto-generated method stub
 		
 		log.info("reservation register...");
 		
@@ -117,7 +115,6 @@ public class RsvdServiceImpl implements RsvdService{
 
 	@Override
 	public void complete(Long rsvdId) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -158,7 +155,6 @@ public class RsvdServiceImpl implements RsvdService{
     	DateTimeFormatter dateTimeForMatter = DateTimeFormatter.ofPattern("yyyyMMdd");
     	
     	String today = currentDate.format(dateTimeForMatter);
-		
     	
     	// sorted는 뒤에가 기준이다.
 		return rsvdMapper.findByStoreIdAndDate(storeId, today).stream().filter(rsvd -> rsvd.getStusCd().equals("C"))
@@ -367,8 +363,6 @@ public class RsvdServiceImpl implements RsvdService{
     	
     	HashMap<String,Integer> hash = new HashMap<String, Integer>();
     	
-
-    	
     	rsvdMapper.findMenuCntByStoreIdAndDate(storeId, date).stream().forEach((m) -> {
     		log.info("test............"+m.get("MENU_NM"));
     		log.info("test............"+m.get("COUNT(*)"));
@@ -391,7 +385,6 @@ public class RsvdServiceImpl implements RsvdService{
     	
     	log.info("today..................." + date);
 		
-
 		return rsvdMapper.findUserByStoreIdAndDate(storeId, date);
 	}
 
@@ -420,7 +413,6 @@ public class RsvdServiceImpl implements RsvdService{
 
 	@Override
 	public List<RsvdVO> findLastWeekRsvd(long storeId) {
-		
 		
 		return rsvdMapper.findLastWeekRsvdListByStoreId(storeId);
 	}

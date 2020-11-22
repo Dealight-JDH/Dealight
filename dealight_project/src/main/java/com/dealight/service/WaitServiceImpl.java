@@ -47,34 +47,29 @@ public class WaitServiceImpl implements WaitService {
 		
 		String userId = waiting.getUserId();
 		
-		// user�� �������� �������� �ʴٸ�?
 		if(!isPossibleWaitingUser(userId))
 			return -1;
 		
 		waitMapper.insertSelectKey(waiting);
 		
-		// ��ϵ� ������ ��ȣ�� ��ȯ�Ѵ�.
 		return waiting.getWaitId();
 	}
 
 	@Override
 	public boolean isPossibleWaitingUser(String userId) {
 		
-		// �ش� ���ڰ� �������� �ص� �Ǵ���(�г�Ƽ, ������ �ߺ�) �Ǻ��Ѵ�.
 		return !isCurWaitingUser(userId) && !isCurPanaltyUser(userId);
 	}
 
 	@Override
 	public boolean isCurWaitingUser(String userId) {
 		
-		// �ش� ������ ������ �������� Ȯ���Ѵ�.
 		return waitMapper.findByUserId(userId, "W").size() > 0;
 	}
 
 	@Override
 	public boolean isCurPanaltyUser(String userId) {
 
-		// �ش� ������ �г�Ƽ ������ �Ǻ��Ѵ�.
 		return userMapper.findById(userId).getPmStus().equals("P");
 	}
 
@@ -83,7 +78,6 @@ public class WaitServiceImpl implements WaitService {
 
 		waitMapper.insertSelectKey(waiting);
 		
-		// ��ϵ� �������� id�� ��ȯ�Ѵ�.
 		return waiting.getWaitId();
 
 	}
@@ -91,21 +85,18 @@ public class WaitServiceImpl implements WaitService {
 	@Override
 	public boolean cancelWaiting(Long waitid) {
 		
-		// ������ ���¸� C(����)�� �ٲ���´�.
 		return waitMapper.changeWaitStusCd(waitid, "C") == 1;
 	}
 
 	@Override
 	public boolean enterWaiting(Long waitid) {
 
-		// ������ ���¸� E(����)�� �ٲ���´�.
 		return waitMapper.changeWaitStusCd(waitid, "E") == 1;
 	}
 
 	@Override
 	public boolean panaltyWaiting(Long waitid) {
 
-		// ������ ���¸� P(�г�Ƽ)�� �ٲ���´�.	
 		return waitMapper.changeWaitStusCd(waitid, "P") == 1;
 	}
 
@@ -124,14 +115,12 @@ public class WaitServiceImpl implements WaitService {
 	@Override
 	public int calWatingOrder(List<WaitVO> curStoreWaitiList, Long waitid) {
 				
-		// ���� ������ ����Ʈ �߿��� �ش� ������ ��ȣ���� ������ ��ȣ�� ���� �������� ���� + 1
 		return curStoreWaitiList.stream().filter(c -> c.getWaitId() < waitid).collect(Collectors.toList()).size()+1;
 	}
 
 	@Override
 	public int calWaitingTime(List<WaitVO> curStoreWaitiList, Long waitId, int avgTime) {
 		
-		// �ش� ������ * avgTime
 		return calWatingOrder(curStoreWaitiList, waitId) * avgTime;
 	}
 

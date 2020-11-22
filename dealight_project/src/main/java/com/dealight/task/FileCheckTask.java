@@ -77,7 +77,7 @@ public class FileCheckTask {
 	}
 	
 	// 자동 웨이팅 생성기
-	//@Scheduled(cron ="0 30 * * * *")
+	//@Scheduled(cron ="0 * * * * *")
 	public void registerOnWait() throws Exception{
 		log.warn("Auto Online Wait Register Task run..................");
 		
@@ -164,6 +164,37 @@ public class FileCheckTask {
     	
     	int storeIdx = (int) (Math.random() * storeList.size());
     	
+    	List<String> timeList = new ArrayList<>();
+    	
+    	timeList.add("09:00");
+    	timeList.add("09:30");
+    	timeList.add("10:00");
+    	timeList.add("10:30");
+    	timeList.add("11:00");
+    	timeList.add("11:30");
+    	timeList.add("12:00");
+    	timeList.add("12:30");
+    	timeList.add("13:00");
+    	timeList.add("13:30");
+    	timeList.add("14:-0");
+    	timeList.add("14:30");
+    	timeList.add("15:00");
+    	timeList.add("15:30");
+    	timeList.add("16:00");
+    	timeList.add("16:30");
+    	timeList.add("17:00");
+    	timeList.add("17:30");
+    	timeList.add("18:00");
+    	timeList.add("18:30");
+    	timeList.add("19:00");
+    	timeList.add("19:30");
+    	timeList.add("20:00");
+    	timeList.add("20:30");
+    	timeList.add("21:00");
+    	timeList.add("21:30");
+    	timeList.add("22:00");
+    	
+    	int timeIdx = (int) (Math.random() * timeList.size());
     	
         long id = 6;
         long storeId = 101;
@@ -186,6 +217,7 @@ public class FileCheckTask {
         
         userId = userIdList.get(userIdx);
         storeId = storeList.get(storeIdx);
+        time = timeList.get(timeIdx);
         
     	RsvdVO rsvd = new RsvdVO().builder()
     			.rsvdId(id)

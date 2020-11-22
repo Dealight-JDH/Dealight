@@ -157,6 +157,7 @@ public class HomeController {
 		return "message";
 	}
 	
+	// 친구(uuid)에 메시지를 보낸다.
 	@RequestMapping(value="/message/{uuid}", method = RequestMethod.GET)
 	public String test(Model model, String access_token, String title, String description, String web_url, @PathVariable("uuid") String uuid) {
 		

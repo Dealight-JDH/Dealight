@@ -169,12 +169,14 @@ public class HtdlServiceImpl implements HtdlService {
 		return endTm - curTm;
 	}
 
+	// 해당 매장의 모든 핫딜 리스트 가져오기
 	@Override
 	public List<HtdlVO> readAllStoreHtdlList(long storeId) {
 		
 		return htdlMapper.findByStoreId(storeId);
 	}
 
+	// 현재 Active 상태인 핫딜 가져오기
 	@Override
 	public List<HtdlVO> readActStoreHtdlList(long storeId) {
 		

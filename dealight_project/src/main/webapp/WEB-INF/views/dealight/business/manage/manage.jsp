@@ -668,7 +668,7 @@ window.onclick = function(event) {
                     return;
                 }
                 rsvdList.forEach(rsvd => {
-                	strRsvdList += "<div class='rsvd'>" ;
+                	strRsvdList += "<div class='rsvd rsvd_i'>" ;
                     strRsvdList += "<ul class='btnRsvd'>" + "<h3>예약 번호 : "+rsvd.rsvdId+"</h3>"; 
                         strRsvdList += "<li hidden class='btnStoreId'>"+rsvd.storeId+"</li>";
                         strRsvdList += "<li hidden class='btnUserId'>"+rsvd.userId+"</li>";

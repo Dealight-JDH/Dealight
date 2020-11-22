@@ -35,6 +35,7 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class CallServiceImpl implements CallService {
 	
+	// 사용자 인가를 가져온다.
 	@Override
 	public String getAuth() {
 		
@@ -50,6 +51,7 @@ public class CallServiceImpl implements CallService {
 
 	}
 
+	// 토큰을 가져온다.
 	@Override
 	public HashMap<String, Object> getToken(String code) {
 		
@@ -106,6 +108,7 @@ public class CallServiceImpl implements CallService {
        return result;
 	}
 	
+	// '나에게' 메시지를 보낸다.
 public String sendMessage(String access_token, String title, String description, String web_url) {
 		
 		HashMap<String, Object> result = new HashMap<String, Object>();
@@ -136,12 +139,7 @@ public String sendMessage(String access_token, String title, String description,
 		
 		header.set("Authorization", authHeader);
 		
-		// 3. request body parameter?? ???????.
-		
-		// 3-1. json?? ???¸? ???? map?? ????????.
-		//String requestJson = "template_object={\"object_type\":\"feed\",\"content\":{\"title\":\"????? ????\",\"description\": \"???????, ??, ????\",\"image_url\":\"http://mud-kage.kakao.co.kr/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg\",\"image_width\":640,\"image_height\": 640,\"link\":{\"web_url\": \"http://www.daum.net\",\"mobile_web_url\": \"http://m.daum.net\",\"android_execution_params\": \"contentId=100\",\"ios_execution_params\": \"contentId=100\"}},\"social\": {\"like_count\": 100,\"comment_count\": 200,\"shared_count\": 300,\"view_count\": 400,\"subscriber_count\": 500},\"buttons\": [{\"title\": \"?????? ???\",\"link\": {\"web_url\": \"http://www.daum.net\",\"mobile_web_url\": \"http://m.daum.net\"}},{\"title\": \"?????? ???\",\"link\": {\"android_execution_params\": \"contentId=100\",\"ios_execution_params\": \"contentId=100\"}}]}";
-		
-		
+		// 3.메시지를 담을 객체 생성(HashMap으로 작성)
 		Map<String, Object> map = new HashMap<>();
 
 		map.put("object_type", "feed");
@@ -205,11 +203,12 @@ public String sendMessage(String access_token, String title, String description,
 		
 		map.put("buttons", buttons);
 		
+		// 3-1. 작성한 객체를 Json String타입으로 변환
 		Gson gson = new Gson();
 		
 		String requestJson =  gson.toJson(map);
 		
-		// 4. map?? header?? ????????.
+		// 4. Request Entity를 생성
         HttpEntity<String> entity = new HttpEntity<>(requestJson,header);
 	
 		String url = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
@@ -225,9 +224,9 @@ public String sendMessage(String access_token, String title, String description,
 		
 		//ResponseEntity<Map> resultMap = restTemplate.postForEntity(uri.toUri(), header, Map.class);
 		
-		result.put("statusCode", resultMap.getStatusCodeValue()); //http status code?? ???
-        result.put("header", resultMap.getHeaders()); //??? ???? ???
-        result.put("body", resultMap.getBody()); //???? ?????? ???? ???
+		result.put("statusCode", resultMap.getStatusCodeValue());
+        result.put("header", resultMap.getHeaders());
+        result.put("body", resultMap.getBody());
 		
         ObjectMapper mapper = new ObjectMapper();
         jsonInString = mapper.writeValueAsString(resultMap.getBody());
@@ -241,6 +240,7 @@ public String sendMessage(String access_token, String title, String description,
         return jsonInString;
 	}
 
+	// 사용자 정보를 가져온다.
 	@Override
 	public HashMap<String, Object> getProfile(String access_token) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
@@ -272,9 +272,9 @@ public String sendMessage(String access_token, String title, String description,
 		
 		ResponseEntity<Map> resultMap= restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
 		
-		result.put("statusCode", resultMap.getStatusCodeValue()); //http status code?? ???
-        result.put("header", resultMap.getHeaders()); //??? ???? ???
-        result.put("body", resultMap.getBody()); //???? ?????? ???? ???
+		result.put("statusCode", resultMap.getStatusCodeValue());
+        result.put("header", resultMap.getHeaders());
+        result.put("body", resultMap.getBody());
 		
         ObjectMapper mapper = new ObjectMapper();
         jsonInString = mapper.writeValueAsString(resultMap.getBody());
@@ -288,6 +288,7 @@ public String sendMessage(String access_token, String title, String description,
         return result;
 	}
 	
+	// 사용자 리스트를 가져온다.
 	@Override
 	public HashMap<String, Object> getUsersList() {
 		
@@ -347,6 +348,7 @@ public String sendMessage(String access_token, String title, String description,
 		return false;
 	}
 
+	// 카카오톡 프로필 가져오기
 	@Override
 	public HashMap<String, Object> getTalkProfile(String access_token) {
 
@@ -394,9 +396,10 @@ public String sendMessage(String access_token, String title, String description,
       return result;
 	}
 	
+	// 동의 가져오기
 	@Override
 	public HashMap<String, Object> getAllow() {
-		log.info("get token.................");
+		log.info("get allow.................");
 		
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
@@ -433,9 +436,9 @@ public String sendMessage(String access_token, String title, String description,
 		
 		log.info(resultMap);
 		
-		result.put("statusCode", resultMap.getStatusCodeValue()); //http status code?? ???
-       result.put("header", resultMap.getHeaders()); //??? ???? ???
-       result.put("body", resultMap.getBody()); //???? ?????? ???? ???
+		result.put("statusCode", resultMap.getStatusCodeValue());
+       result.put("header", resultMap.getHeaders()); 
+       result.put("body", resultMap.getBody());
 		
        ObjectMapper mapper = new ObjectMapper();
        jsonInString = mapper.writeValueAsString(resultMap.getBody());
@@ -499,6 +502,7 @@ public String sendMessage(String access_token, String title, String description,
      return result;
 	}
 
+	// 친구한테 메시지 보내기
 	@Override
 	public String sendFrMessage(String access_token, String title, String description, String web_url, String uuid) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
@@ -506,34 +510,21 @@ public String sendMessage(String access_token, String title, String description,
 		 String jsonInString = "";
 		 try {
 		
-		// 1. RestTemplat 생성
 		RestTemplate restTemplate = new RestTemplate();	
 		
 		RestTemplateResponseErrorHandler errorHandler = new RestTemplateResponseErrorHandler();
 		
 		restTemplate.setErrorHandler(errorHandler);
 		
-		// 2. 헤더 생성
 		HttpHeaders header = new HttpHeaders();
 		
-		// 2-1. content-type 설정
-		//header.setContentType(MediaType.APPLICATION_JSON);
 		header.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
-		//header.set("Content-Type","application/x-www-form-urlencoded; charset=utf-8");
 		
-		// 2-2. accept 설정
 		header.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 		
-		// 2-3. Authorization 설정
 		String authHeader = "Bearer " + access_token;
 		
 		header.set("Authorization", authHeader);
-		
-		// 3. request body parameter?? ???????.
-		
-		// 3-1. json?? ???¸? ???? map?? ????????.
-		//String requestJson = "template_object={\"object_type\":\"feed\",\"content\":{\"title\":\"????? ????\",\"description\": \"???????, ??, ????\",\"image_url\":\"http://mud-kage.kakao.co.kr/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg\",\"image_width\":640,\"image_height\": 640,\"link\":{\"web_url\": \"http://www.daum.net\",\"mobile_web_url\": \"http://m.daum.net\",\"android_execution_params\": \"contentId=100\",\"ios_execution_params\": \"contentId=100\"}},\"social\": {\"like_count\": 100,\"comment_count\": 200,\"shared_count\": 300,\"view_count\": 400,\"subscriber_count\": 500},\"buttons\": [{\"title\": \"?????? ???\",\"link\": {\"web_url\": \"http://www.daum.net\",\"mobile_web_url\": \"http://m.daum.net\"}},{\"title\": \"?????? ???\",\"link\": {\"android_execution_params\": \"contentId=100\",\"ios_execution_params\": \"contentId=100\"}}]}";
-		
 		
 		Map<String, Object> map = new HashMap<>();
 
@@ -602,7 +593,6 @@ public String sendMessage(String access_token, String title, String description,
 		
 		String requestJson =  gson.toJson(map);
 		
-		// 4. map?? header?? ????????.
        HttpEntity<String> entity = new HttpEntity<>(requestJson,header);
 	
 		String url = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
@@ -617,11 +607,9 @@ public String sendMessage(String access_token, String title, String description,
 		
 		ResponseEntity<Map> resultMap = restTemplate.exchange(rq,  Map.class);
 		
-		//ResponseEntity<Map> resultMap = restTemplate.postForEntity(uri.toUri(), header, Map.class);
-		
-		result.put("statusCode", resultMap.getStatusCodeValue()); //http status code?? ???
-       result.put("header", resultMap.getHeaders()); //??? ???? ???
-       result.put("body", resultMap.getBody()); //???? ?????? ???? ???
+		result.put("statusCode", resultMap.getStatusCodeValue()); 
+       result.put("header", resultMap.getHeaders()); 
+       result.put("body", resultMap.getBody()); 
 		
        ObjectMapper mapper = new ObjectMapper();
        jsonInString = mapper.writeValueAsString(resultMap.getBody());

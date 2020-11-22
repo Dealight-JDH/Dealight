@@ -83,6 +83,7 @@ public class BusinessController {
 	 * 
 	 */
 	
+	// 해당 유저의 매장 리스트를 보여준다.
 	@GetMapping("")
 	public String list(Model model,HttpServletRequest request) {
 		
@@ -91,6 +92,7 @@ public class BusinessController {
 		
 		HttpSession session = request.getSession();
 		
+		// 임시로 'lim'이라는 아이디의 매장을 보여준다.
 		session.setAttribute("userId", "lim");
 		
 		String userId = (String) session.getAttribute("userId");
@@ -98,6 +100,9 @@ public class BusinessController {
 		model.addAttribute("userId", userId);
 		
 		List<StoreVO> list = storeService.getStoreListByUserId(userId);
+		
+		// 현재 웨이팅, 현재 예약 상태를 가져온다.
+		// ***쿼리가 너무 많이 생긴다.
 		list.stream().forEach((store)->{
 			long id = store.getStoreId();
 			store.setCurWaitNum(waitService.curStoreWaitList(id, "W").size());
@@ -110,8 +115,8 @@ public class BusinessController {
 	}
 	
 	
-	
-	
+	// 해당 매장의 관리 화면을 보여준다.
+	// 대부분의 로직이 REST FUL 방식으로 변경(Board Controller로 대체되었다.)
 	@GetMapping("/manage")
 	public String manage(Model model, long storeId,HttpServletRequest request, String code) {
 		
@@ -121,8 +126,8 @@ public class BusinessController {
 		
 		String userId = (String) session.getAttribute("userId");
 
+		// 오늘 예약한 사용자의 사용자 정보와 예약 정보를 가져온다.
 		List<UserWithRsvdDTO> todayRsvdUserList = rsvdService.userListTodayRsvd(storeId);
-		
 		
 		model.addAttribute("storeId", storeId);
 		model.addAttribute("todayRsvdUserList", todayRsvdUserList);
@@ -130,6 +135,7 @@ public class BusinessController {
 		return "/dealight/business/manage/manage";
 	}
 
+		// 웨이팅의 상세 정보(번호표)를 볼 수 있다.
 		@GetMapping("/waiting/{waitId}")
 		public String waiting(Model model, @PathVariable("waitId") long waitId) {
 			
@@ -139,10 +145,13 @@ public class BusinessController {
 			
 			log.info(wait);
 			
+			// 현재 예약 상태인 웨이팅 리스트를 가져온다.
 			List<WaitVO> curStoreWaitiList = waitService.curStoreWaitList(wait.getStoreId(), "W");
 			
+			// 현재 웨이팅의 순서를 찾아온다.
 			int order = waitService.calWatingOrder(curStoreWaitiList, wait.getWaitId());
 			
+			// 현재 웨이팅 순서와 시간('임의의 시간인 15분')을 계산한다.
 			int waitTime = waitService.calWaitingTime(curStoreWaitiList, wait.getWaitId(), 15);
 			
 			model.addAttribute("wait",wait);
