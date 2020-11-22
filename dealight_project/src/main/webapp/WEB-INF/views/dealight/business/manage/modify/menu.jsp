@@ -12,11 +12,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-
+<%@include file="../../../../includes/mainMenu.jsp" %>
 <h1>Business Menu Page</h1>
 
 <h2>메뉴 등록</h2> 
-<form action="/business/manage/menu/register" method="post">
+<form action="/dealight/business/manage/menu/register" method="post">
 	============================================================</br>
 	<input name="storeId" value="${storeId}" hidden>
 	

@@ -12,10 +12,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-
+<%@include file="../../../../includes/mainMenu.jsp" %>
 <h1>Business Waiting Register Page</h1>
 
-<form action="/business/manage/waiting/register?storeId=${storeId}" method="post">
+<form action="/dealight/business/manage/waiting/register?storeId=${storeId}" method="post">
 
 	<label id="custNm">고객 이름</label>
 	<input name="custNm" required></br>

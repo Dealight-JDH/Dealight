@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="/resources/css/manage.css?ver=1" type ="text/css" />
 </head>
 <body>
+<%@include file="../../../includes/mainMenu.jsp" %>
     <div class="main_box"><!-- main box -->
         <h2>Business Manage Main Page</h2>
         <div class="board"> <!-- board -->
@@ -32,7 +33,7 @@
                 <div class="light"> <!-- light -->
                     <h4>현재 착석 상태💺</h4>
                     <ul class="storeSeatStus"></ul>
-                    <form id="seatStusForm" action="/business/manage/board/seat"
+                    <form id="seatStusForm" action="/dealight/business/manage/board/seat"
                             method="put">
                             <input name="seatStusColor" id="color_value" value="" hidden>
                             <input name="storeId" value="${storeId}" hidden>
@@ -104,8 +105,8 @@
                 <di class="wait_register_wrapper">
                     <button class="btn_wait_register">오프라인 웨이팅 등록</button>
                 </div><!-- end wait board -->
-                <p id="dealhistory"><a href="/business/manage/dealhistory?storeId=${storeId}">핫딜 히스토리</a></p>
-                <p id="modify"><a href="/business/manage/modify?storeId=${storeId}">매장 정보 수정</a></p>
+                <p id="dealhistory"><a href="/dealight/business/manage/dealhistory?storeId=${storeId}">핫딜 히스토리</a></p>
+                <p id="modify"><a href="/dealight/business/manage/modify?storeId=${storeId}">매장 정보 수정</a></p>
                 <div id="map_wrapper">
                 	<h4>시간대별 예약</h4>
 	            	<ul class="rsvdMap"></ul>
@@ -186,6 +187,8 @@
 			</div>
 		</c:forEach>
 	</c:if>
+	
+	<div>
         </div> <!-- end info box -->
         	<!-- The Modal -->
 	<div id="myModal" class="modal">
@@ -253,7 +256,7 @@ window.onclick = function(event) {
         	
             $.ajax({
                 type:'put',
-                url:'/business/manage/board/seat/'+storeId+'/'+seatStusCd,
+                url:'/dealight/business/manage/board/seat/'+storeId+'/'+seatStusCd,
                 data : {},
                 contentType : "application/json",
                 success : function(result, status, xhr) {
@@ -273,7 +276,7 @@ window.onclick = function(event) {
         function putNoshowWaiting(waitId,callback,error) {
             $.ajax({
                 type:'put',
-                url:'/business/manage/board/waiting/noshow/' + waitId,
+                url:'/dealight/business/manage/board/waiting/noshow/' + waitId,
                 data : {waitId:waitId},
                 contentType : "application/json",
                 success : function(result, status, xhr) {
@@ -294,7 +297,7 @@ window.onclick = function(event) {
     
             $.ajax({
                 type:'put',
-                url:'/business/manage/board/waiting/enter/' + waitId,
+                url:'/dealight/business/manage/board/waiting/enter/' + waitId,
                 data : {waitId:waitId},
                 contentType : "application/json",
                 success : function(result, status, xhr) {
@@ -315,7 +318,7 @@ window.onclick = function(event) {
     
             $.ajax({
                 type:'put',
-                url:'/business/manage/board/waiting/cancel/' + waitId,
+                url:'/dealight/business/manage/board/waiting/cancel/' + waitId,
                 data : {waitId:waitId},
                 contentType : "application/json",
                 success : function(result, status, xhr) {
@@ -338,7 +341,7 @@ window.onclick = function(event) {
         	
         	let rsvdId = param.rsvdId;
         	
-        	$.getJSON("/business/manage/board/reservation/dtls/" + rsvdId + ".json",
+        	$.getJSON("/dealight/business/manage/board/reservation/dtls/" + rsvdId + ".json",
         		function(data) {
         			if(callback) {
         				callback(data);
@@ -359,7 +362,7 @@ window.onclick = function(event) {
         	console.log(storeId);
         	console.log(userId);
         	
-        	$.getJSON("/business/manage/board/reservation/list/" + storeId +"/" + userId + ".json",
+        	$.getJSON("/dealight/business/manage/board/reservation/list/" + storeId +"/" + userId + ".json",
         		function(data) {
         			if(callback) {
         				callback(data);
@@ -377,7 +380,7 @@ window.onclick = function(event) {
             
             let storeId = param.storeId;
             
-            $.getJSON("/business/manage/board/reservation/rslt/"+storeId+".json",
+            $.getJSON("/dealight/business/manage/board/reservation/rslt/"+storeId+".json",
                 function(data){
                         if(callback){
                             callback(data);
@@ -393,7 +396,7 @@ window.onclick = function(event) {
             
             let storeId = param.storeId;
             
-            let rsvdList = $.getJSON("/business/manage/board/reservation/"+storeId+".json",
+            let rsvdList = $.getJSON("/dealight/business/manage/board/reservation/"+storeId+".json",
                 function(data){
                         if(callback){
                             callback(data);
@@ -412,7 +415,7 @@ window.onclick = function(event) {
             
             let storeId = param.storeId;
             
-            let waitList = $.getJSON("/business/manage/board/waiting/"+storeId+".json",
+            let waitList = $.getJSON("/dealight/business/manage/board/waiting/"+storeId+".json",
                 function(data){
                         if(callback){
                             callback(data);
@@ -431,7 +434,7 @@ window.onclick = function(event) {
             
             let storeId = param.storeId;
     
-            $.getJSON("/business/manage/board/store/"+storeId+".json",
+            $.getJSON("/dealight/business/manage/board/store/"+storeId+".json",
                     function(data){
                         if(callback){
                             callback(data);
@@ -456,7 +459,7 @@ window.onclick = function(event) {
       
         	let storeId = param.storeId;
         	
-        	$.getJSON("/business/manage/board/reservation/map/"+ storeId +".json",
+        	$.getJSON("/dealight/business/manage/board/reservation/map/"+ storeId +".json",
                     function(data){
                         if(callback){
                             callback(data);
@@ -475,7 +478,7 @@ window.onclick = function(event) {
         	let storeId = param.storeId;
         	
         	
-        	$.getJSON("/business/manage/board/reservation/next/"+ storeId +".json",
+        	$.getJSON("/dealight/business/manage/board/reservation/next/"+ storeId +".json",
                     function(data){
                         if(callback){
                             callback(data);
@@ -491,7 +494,7 @@ window.onclick = function(event) {
     
             $.ajax({
                 type : 'post',
-                url : '/business/manage/board/waiting/new',
+                url : '/dealight/business/manage/board/waiting/new',
                 data : JSON.stringify(wait),
                 contentType : "application/json; charset=utf-8",
                 success : function(result, status, xhr) {
@@ -511,7 +514,7 @@ window.onclick = function(event) {
         	
 			let storeId = param.storeId;
         	
-        	$.getJSON("/business/manage/board/reservation/rslt/"+ storeId +"/list.json",
+        	$.getJSON("/dealight/business/manage/board/reservation/rslt/"+ storeId +"/list.json",
                     function(data){
         					console.log(data);
                         if(callback){
@@ -622,7 +625,7 @@ window.onclick = function(event) {
                 
                 waitList.forEach(wait => {
                 	strWaitList += "<div class='wait'>";
-                    strWaitList += "<ul>" + "<a href='/business/waiting/"+wait.waitId+"'><h3>웨이팅 번호 : "+wait.waitId+"</h3></a>";
+                    strWaitList += "<ul>" + "<a href='/dealight/business/waiting/"+wait.waitId+"'><h3>웨이팅 번호 : "+wait.waitId+"</h3></a>";
                         strWaitList += "<li>웨이팅 회원 아이디 : "+ wait.userId + "</li>";
                         strWaitList += "<li>웨이팅 매장 번호 : "+ wait.storeId + "</li>";
                         strWaitList += "<li>웨이팅 인원 : "+ wait.waitPnum + "</li>";
@@ -631,7 +634,7 @@ window.onclick = function(event) {
                         strWaitList += "<li>웨이팅 회원 이름 : "+ wait.custNm + "</li>";
                         strWaitList += "<li>웨이팅 회원 번호 : "+ wait.custTelno + "</li>";
                     strWaitList += "</ul>"
-                    strWaitList += "<button class='btn_wait_call'>호출</button>";
+                    strWaitList += "<button class='btn_wait_call'><a href='/oauth'>호출</a></button>";
                     strWaitList += "</div>";
                 });
     
@@ -649,7 +652,6 @@ window.onclick = function(event) {
               strNextWait += "<li> 대기자 이름 : "+nextWait.custNm+"</li>";
               strNextWait += "<li> 대기자 연락처 : "+nextWait.custTelno+"</li>";
               strNextWait += "<li> 웨이팅 번호 :"+nextWait.waitId+"</li>";
-              strNextWait += "<li> 웨이팅 등록 시간 :"+nextWait.time+"</li>";
               strNextWait += "<li> 매장 번호 : "+nextWait.storeId+"</li>";
               strNextWait += "<li> 회원 아이디 : "+nextWait.userId+"</li>";
               strNextWait += "<li> 웨이팅 인원 : "+nextWait.waitPnum+"</li>";
@@ -667,7 +669,7 @@ window.onclick = function(event) {
                     return;
                 }
                 rsvdList.forEach(rsvd => {
-                	strRsvdList += "<div class='rsvd'>" ;
+                	strRsvdList += "<div class='rsvd rsvd_i'>" ;
                     strRsvdList += "<ul class='btnRsvd'>" + "<h3>예약 번호 : "+rsvd.rsvdId+"</h3>"; 
                         strRsvdList += "<li hidden class='btnStoreId'>"+rsvd.storeId+"</li>";
                         strRsvdList += "<li hidden class='btnUserId'>"+rsvd.userId+"</li>";
@@ -725,7 +727,7 @@ window.onclick = function(event) {
                 strNextRsvd += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
                 strNextRsvd += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
                 strNextRsvd += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-                strNextRsvd += "<li>예약 등록 날짜"+ rsvd.regDate + "</li>";
+                strNextRsvd += "<li>예약 등록 날짜 : "+ rsvd.regDate + "</li>";
                 
                 nextRsvdUL.html(strNextRsvd);
         	});
@@ -793,7 +795,7 @@ window.onclick = function(event) {
         			strLastWeekRsvd += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
         			strLastWeekRsvd += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
         			strLastWeekRsvd += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-        			strLastWeekRsvd += "<li>예약 등록 날짜"+ rsvd.strInDate + "</li>";
+        			strLastWeekRsvd += "<li>예약 등록 날짜"+ rsvd.strRegDate + "</li>";
         			strLastWeekRsvd += "===========================================";
         		});
         		
@@ -855,7 +857,7 @@ window.onclick = function(event) {
                     strUserRsvdList += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
                     strUserRsvdList += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
                     strUserRsvdList += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-                    strUserRsvdList += "<li>예약 등록 날짜"+ rsvd.inDate + "</li>";
+                    strUserRsvdList += "<li>예약 등록 날짜 : "+ rsvd.regDate + "</li>";
         		});
         		
         		userRsvdListUL.html(strUserRsvdList);
@@ -892,12 +894,12 @@ window.onclick = function(event) {
         		strRsvdDtls += "<li>예약 상태 : " + rsvd.stusCd +"</li>";
         		strRsvdDtls += "<li>예약 총 가격 : " + rsvd.totAmt +"</li>";
         		strRsvdDtls += "<li>예약 총 수량 : " + rsvd.totQty +"</li>";
-        		strRsvdDtls += "<li>예약 등록 날짜 : " + rsvd.regTm +"</li>";
+        		strRsvdDtls += "<li>예약 등록 날짜 : " + rsvd.regDate +"</li>";
         		let cnt = 1;
         		rsvd.rsvdDtlsList.forEach(dtls => {
         			strRsvdDtls += "==============================";
         			strRsvdDtls += "<li>상세 순서 [" + cnt +"]</li>";
-        			strRsvdDtls += "<li>예약 상세 번호 : " + dtls.seq +"</li>";
+        			strRsvdDtls += "<li>예약 상세 번호 : " + dtls.rsvdSeq +"</li>";
         			strRsvdDtls += "<li>예약 메뉴 이름 : " + dtls.menuNm +"</li>";
         			strRsvdDtls += "<li>메뉴 가격 : " + dtls.menuPrc +"</li>";
         			strRsvdDtls += "<li>메뉴 총 개수 : " + dtls.menuTotQty +"</li>";
@@ -914,7 +916,7 @@ window.onclick = function(event) {
         	let today = new Date();
         	strWaitRegForm = "";
         	strWaitRegForm += "<h1>오프라인 웨이팅 등록</h1>";
-        	strWaitRegForm += "<form id='waitRegForm' action='/business/manage/waiting/register' method='post'>";
+        	strWaitRegForm += "<form id='waitRegForm' action='/dealight/business/manage/waiting/register' method='post'>";
         	strWaitRegForm += "고객 이름<input name='custNm' id='js_wait_custNm'> <span id='name_msg'></span></br>";
         	strWaitRegForm += "고객 전화번호<input name='custTelno' id='js_wait_custTelno'> <span id='phoneNum_msg'></span></br>";
         	strWaitRegForm += "웨이팅 인원<input name='waitPnum' id='js_wait_pnum'> <span id='pnum_msg'></span></br>";
@@ -1201,7 +1203,7 @@ window.onclick = function(event) {
             
         	let storeId = ${storeId};
             
-            $.getJSON("/business/manage/getStoreImgs", {storeId:storeId}, function(imgs){
+            $.getJSON("/dealight/business/manage/getStoreImgs", {storeId:storeId}, function(imgs){
                 
                 console.log("즉시 함수..");
                 

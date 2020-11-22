@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,10 +19,14 @@ import org.springframework.stereotype.Component;
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreImgVO;
+import com.dealight.domain.UserVO;
+import com.dealight.domain.WaitVO;
 import com.dealight.mapper.RsvdDtlsMapper;
 import com.dealight.mapper.RsvdMapper;
 import com.dealight.mapper.StoreImgMapper;
 import com.dealight.service.RsvdService;
+import com.dealight.service.UserService;
+import com.dealight.service.WaitService;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -48,6 +53,13 @@ public class FileCheckTask {
 	@Setter(onMethod_ = @Autowired)
 	private RsvdDtlsMapper rsvdDtlsMapper;
 	
+	@Setter(onMethod_ = @Autowired)
+	private WaitService waitService;
+	
+	@Setter(onMethod_ = @Autowired)
+	private UserService userService;
+	
+	
 	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05\\";
 	
 	private String getFolderYesterDay() {
@@ -64,7 +76,66 @@ public class FileCheckTask {
 		
 	}
 	
-	//@Scheduled(cron="0 * * * * *")
+	// 자동 웨이팅 생성기
+	//@Scheduled(cron ="0 * * * * *")
+	public void registerOnWait() throws Exception{
+		log.warn("Auto Online Wait Register Task run..................");
+		
+    	List<String> userIdList = new ArrayList<>();
+    	
+    	userIdList.add("kjuioq");
+    	userIdList.add("lim");
+    	userIdList.add("soo");
+    	userIdList.add("bin");
+    	userIdList.add("kim");
+    	userIdList.add("abc");
+    	
+    	List<Long> storeList = new ArrayList<>();
+    	
+    	storeList.add(101L);
+    	storeList.add(187L);
+    	storeList.add(188L);
+    	storeList.add(189L);
+    	storeList.add(201L);
+    	
+    	List<Integer> waitPnumList = new ArrayList<>();
+    	
+    	IntStream stream = IntStream.range(1,10);
+    	
+    	stream.forEach((i) -> {
+    		waitPnumList.add(i);
+    	});
+    	
+    	
+    	int userIdx = (int) (Math.random() * userIdList.size());
+    	int storeIdx = (int) (Math.random() * storeList.size());
+    	int pnumIdx = (int) (Math.random() * waitPnumList.size());
+    	
+        String userId = userIdList.get(userIdx);
+        Long storeId = storeList.get(storeIdx);
+        int waitPnum = waitPnumList.get(pnumIdx);
+        
+        UserVO user = userService.get(userId);
+    	
+    	WaitVO wait = new WaitVO().builder()
+    			.storeId(storeId)
+    			.userId(userId)
+    			.waitRegTm(new Date())
+    			.waitPnum(waitPnum)
+    			.custTelno(user.getTelno())
+    			.custNm(user.getName())
+    			.waitStusCd("W")
+    			.build();
+    	
+    	waitService.registerOnWaiting(wait);
+    	
+    	log.warn(wait);
+    	log.warn("=========================================wait 웨이팅 완료");
+		
+	}
+	
+	// 자동 예약 생성기
+	@Scheduled(cron="0 * * * * *")
 	public void registerRsvd() throws Exception{
 		log.warn("Auto Rsvd Register Task run .....................");
 		
@@ -93,6 +164,37 @@ public class FileCheckTask {
     	
     	int storeIdx = (int) (Math.random() * storeList.size());
     	
+    	List<String> timeList = new ArrayList<>();
+    	
+    	timeList.add("09:00");
+    	timeList.add("09:30");
+    	timeList.add("10:00");
+    	timeList.add("10:30");
+    	timeList.add("11:00");
+    	timeList.add("11:30");
+    	timeList.add("12:00");
+    	timeList.add("12:30");
+    	timeList.add("13:00");
+    	timeList.add("13:30");
+    	timeList.add("14:-0");
+    	timeList.add("14:30");
+    	timeList.add("15:00");
+    	timeList.add("15:30");
+    	timeList.add("16:00");
+    	timeList.add("16:30");
+    	timeList.add("17:00");
+    	timeList.add("17:30");
+    	timeList.add("18:00");
+    	timeList.add("18:30");
+    	timeList.add("19:00");
+    	timeList.add("19:30");
+    	timeList.add("20:00");
+    	timeList.add("20:30");
+    	timeList.add("21:00");
+    	timeList.add("21:30");
+    	timeList.add("22:00");
+    	
+    	int timeIdx = (int) (Math.random() * timeList.size());
     	
         long id = 6;
         long storeId = 101;
@@ -115,6 +217,7 @@ public class FileCheckTask {
         
         userId = userIdList.get(userIdx);
         storeId = storeList.get(storeIdx);
+        time = timeList.get(timeIdx);
         
     	RsvdVO rsvd = new RsvdVO().builder()
     			.rsvdId(id)
@@ -168,7 +271,7 @@ public class FileCheckTask {
     	
     	
     	log.warn(result);
-		log.warn("=========================================rsvd �Ϸ�");
+		log.warn("=========================================rsvd 예약 완료");
 	}
 
 	@Scheduled(cron="0 10 * * * *")

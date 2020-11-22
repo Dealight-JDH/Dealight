@@ -12,7 +12,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-
+<%@include file="../../../includes/mainMenu.jsp" %>
 <h1>Business Reservation Page</h1>
 
 <h2>예약</h2>
