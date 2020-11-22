@@ -28,7 +28,7 @@
 	<h2>매장 영업 시작 시간 : <c:out value="${store.bstore.openTm}" /></h2>
 	<h2>매장 영업 종료 시간 : <c:out value="${store.bstore.closeTm}" /></h2>
 	<h2>매장 오늘 예약 수 : <c:out value="${store.curRsvdNum}" /></h2>
-	<h2>매장 현재 웨이팅 수 : <c:out value="${store.curRsvdNum}" /></h2>
+	<h2>매장 현재 웨이팅 수 : <c:out value="${store.curWaitNum}" /></h2>
 	</div></a>
 ============================================</br>
 </c:forEach>

@@ -79,12 +79,12 @@ public interface RsvdService {
 	RsvdVO findRsvdByRsvdIdWithDtls(long rsvdId);
 
 	// 현재 스토어에 예약이 가능한지
-	boolean isReserveThisTimeStore(long storeId, Date date, int acm);
+	boolean isReserveThisTimeStore(long storeId, String rsvdTime, int acm);
 	
 	// date의 시간을 String time (HH:mm)으로 변환
 	// 00:00 -> 0
 	// 12:30 -> 12*60 + 30-> 720 + 30 == 750
-	String getTime(Date date);
+	String getTime(String time);
 	
 	// String 시간을 seconds로 변환, 계산에 용이
 	// 00:00 -> 0

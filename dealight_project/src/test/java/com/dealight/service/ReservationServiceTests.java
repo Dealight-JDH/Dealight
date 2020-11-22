@@ -159,10 +159,14 @@ public class ReservationServiceTests {
 	@Test
 	public void getTimeTest1() {
 		
+		storeId = 10;
+		
 		List<RsvdVO> list = reservationService.readTodayCurRsvdList(storeId);
 		
+		log.info(list);
+		
 		list.forEach((rsvd) -> {
-			log.info(reservationService.getTime(rsvd.getRegDate()));
+			log.info(reservationService.getTime(rsvd.getTime()));
 		});
 		
 	}
@@ -173,7 +177,7 @@ public class ReservationServiceTests {
 		List<RsvdVO> list = reservationService.readTodayCurRsvdList(storeId);
 		
 		list.forEach((rsvd) -> {
-			String time = reservationService.getTime(rsvd.getRegDate());
+			String time = reservationService.getTime(rsvd.getTime());
 			log.info(time + ":::::::::::::" + reservationService.calTimeMinutes(time));
 		});
 		
@@ -226,13 +230,13 @@ public class ReservationServiceTests {
 		
 		List<RsvdVO> list = reservationService.getListByDate(storeId, "20201107");
 		
-		
+		String time = "2020/12/23 16:30:00";
 		
 		log.info(list);
 		
 		log.info(reservationService.getRsvdByTimeMap(list));
 		
-		assertTrue(reservationService.isReserveThisTimeStore(storeId, date, acm));
+		assertTrue(reservationService.isReserveThisTimeStore(storeId, time, acm));
 		
 		
 	}
