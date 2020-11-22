@@ -32,60 +32,60 @@ public class HtdlTimeCheckService {
 	private HtdlMapper htdlMapper;
 
 	ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(3);
-
+//핫딜 타임체크 너무 많아ㅜㅜ
 //<<<<<<< HEAD
-	@PreDestroy
-	public void preDestroy() {
-
-		log.info("============predestroy");
-		try {
-			exec.shutdown();
-			if(!exec.awaitTermination(1, TimeUnit.SECONDS)) {
-				log.info("아직 처리중인 작업 존재");
-				log.info("작업 강제 종료");
-				exec.shutdownNow();
-				
-			}
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			exec.shutdownNow();
-			
-		}
-
-		log.info("스케줄러 종료");
-	}
-	
-//=======
-
-//>>>>>>> 807e70a1d17d3a14a17c9177a4e64f082bcbaa4b
-	@PostConstruct
-	public void postConstruct() throws ParseException {
-		
-		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
-		log.info(Thread.currentThread().getName());
-		log.info("------postConstruct");
-		
-		//스케쥴러 실행
-		exec.scheduleAtFixedRate(new Runnable() {
-			
-			@Override
-			@Scheduled(fixedDelay = 3000)
-			public void run() {
-				// TODO Auto-generated method stub
-				try {
-					log.info("------check======");
-					//서비스 시작
-					service();
-					log.info("------check"+ Thread.currentThread().getName()+"---------");
-				}catch(Exception e){
-					e.printStackTrace();
-					exec.shutdown();
-				}
-			}
-			
-		}, 0, 3, TimeUnit.SECONDS); 
-	}
+//	@PreDestroy
+//	public void preDestroy() {
+//
+//		log.info("============predestroy");
+//		try {
+//			exec.shutdown();
+//			if(!exec.awaitTermination(1, TimeUnit.SECONDS)) {
+//				log.info("아직 처리중인 작업 존재");
+//				log.info("작업 강제 종료");
+//				exec.shutdownNow();
+//				
+//			}
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			exec.shutdownNow();
+//			
+//		}
+//
+//		log.info("스케줄러 종료");
+//	}
+//	
+////=======
+//
+////>>>>>>> 807e70a1d17d3a14a17c9177a4e64f082bcbaa4b
+//	@PostConstruct
+//	public void postConstruct() throws ParseException {
+//		
+//		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+//		log.info(Thread.currentThread().getName());
+//		log.info("------postConstruct");
+//		
+//		//스케쥴러 실행
+//		exec.scheduleAtFixedRate(new Runnable() {
+//			
+//			@Override
+//			@Scheduled(fixedDelay = 3000)
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				try {
+//					log.info("------check======");
+//					//서비스 시작
+//					service();
+//					log.info("------check"+ Thread.currentThread().getName()+"---------");
+//				}catch(Exception e){
+//					e.printStackTrace();
+//					exec.shutdown();
+//				}
+//			}
+//			
+//		}, 0, 3, TimeUnit.SECONDS); 
+//	}
 
 	
 	@Transactional
