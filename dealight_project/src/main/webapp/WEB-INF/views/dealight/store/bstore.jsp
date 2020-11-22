@@ -16,7 +16,23 @@
 	
 		<div class="left">
 			<div class="column">
-				<h1>${store.storeNm }</h1>	<button type="button">하트</button><br>
+				<c:choose>
+					<c:when test="${store.bstore.seatStusCd eq 'B'}">
+						<span> 파랑</span>
+					</c:when>
+					<c:when test="${store.bstore.seatStusCd eq 'O'}">
+						<span> 주황</span>
+					</c:when>
+					<c:when test="${store.bstore.seatStusCd eq 'G'}">
+						<span> 초록</span>
+					</c:when>
+					<c:when test="${store.bstore.seatStusCd eq 'R'}">
+						<span> 빨강</span>
+					</c:when>
+					<c:when test="${store.bstore.seatStusCd eq 'Y'}">
+						<span> 노랑</span>
+					</c:when>
+				</c:choose><h1 style="display:inline-block">${store.storeNm }</h1>	<button type="button">하트</button><br>
 				<c:forEach items="${store.bstore.waits }" var="waits">
 					<h4>
 						<c:out value="${waits.waitTot}" />명이 웨이팅 중 입니다!
@@ -27,10 +43,10 @@
 				<div class="img">
 
 				<!--체크-->
-						<c:if test="${store.imgs[0].imgUrl != null}">
+						<c:if test="${store.imgs[0].fileName != null}">
 					<c:forEach items="${store.imgs }" var="imgs">
 							<img class="imgCon"
-								src='/resources/image/<c:out value="${imgs.imgUrl}" />'>
+								src='/resources/images/store/<c:out value="${imgs.fileName}" />'>
 					</c:forEach>
 						</c:if>
 				</div>
@@ -85,6 +101,15 @@
 		</div>
 			<div class="right">
 			<div class="sticky">
+			<c:if test="${store.bstore.htdl.htdlId!= null}">
+				
+				<div class="htdlBtnCon">
+				<button id='htdlBtn'>지금 진행중인 핫딜!</button>
+				</div>	
+				<div class="htdlCon">
+					<P id='htdl'>핫딜상세</p>
+				</div>
+				</c:if>
 			<section class="loginWrapper">
 					<ul class="tabs">
 						<li class="active">예약</li>
@@ -170,6 +195,8 @@
 		$(document)
 				.ready(
 						function() {
+							
+							
 							let storeIdValue = '<c:out value="${store.storeId}"/>';
 							let revwUL = $(".revwColumn");
 							showList(1);
@@ -564,6 +591,13 @@
 							});
 				});
 	</script>
-
+	<!-- 핫딜  -->
+	<script>
+		$(document).ready(function() {
+			$("#htdlBtn").click(function() {
+				$("#htdl").slideToggle();
+			});
+		});
+	</script>
 </body>
 </html>

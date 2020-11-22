@@ -22,11 +22,11 @@ public class StoreController {
 	private StoreService service;
 
 	@GetMapping("/store")
-	public String store(Long storeId,Criteria cri,Model model) {
+	public String store(Long storeId,Criteria cri,Model model,String clsCd) {
 		// store타입을 체크 한다 n일경우 n 스토어를 보여줌 b일 경우 b를 보여줌
-		String storeCode = service.storeCd(storeId);
+		
 
-		if (storeCode.equals("B")) {
+		if (clsCd.equalsIgnoreCase("B")) {
 			log.info("bstore: " + storeId);
 			model.addAttribute("store", service.bstore(storeId));
 			//model.addAttribute("revws", service.revws(storeId,cri));

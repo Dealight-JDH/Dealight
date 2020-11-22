@@ -21,7 +21,7 @@
 				${store.storeNm }
 				<c:if test="${store.imgs[0].imgUrl != null}">
 						<img class="imgCon"
-							src='/resources/image/<c:out value="${store.imgs[0].imgUrl}" />'>
+							src='/resources/image/<c:out value="${store.imgs[0].fileName}" />'>
 				</c:if>
 
 
