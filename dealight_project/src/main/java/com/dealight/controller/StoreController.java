@@ -25,7 +25,7 @@ public class StoreController {
 	public String store(Long storeId,Criteria cri,Model model,String clsCd) {
 		// store타입을 체크 한다 n일경우 n 스토어를 보여줌 b일 경우 b를 보여줌
 		
-
+		//다울 nstore check
 		if (clsCd.equalsIgnoreCase("B")) {
 			log.info("bstore: " + storeId);
 			model.addAttribute("store", service.bstore(storeId));
