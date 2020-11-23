@@ -32,6 +32,8 @@ public class AllStoreMapperTests {
 	@Test
 	public void findAllStoreByStoreIdTests() {
 		
+		storeId = 16;
+		
 		AllStoreVO allStore = mapper.findAllStoreByStoreId(storeId);
 		
 		log.info("result............................................."+allStore);

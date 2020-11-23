@@ -20,6 +20,11 @@ ${msg}
 <form id="modifyForm" action="/dealight/business/manage/modify" method="post">
 
 	<input name="storeId" value="${store.storeId}" hidden>
+	<input name="clsCd" value="${store.clsCd}" hidden>
+	<input name="brch" value="${store.brch}" hidden }>
+	<input name="repImg" value="${store.repImg}" hidden }>
+	<input name="repMenu" value="${store.repMenu}" hidden }>
+	
 
 	<label id="storeNm">매장명</label>
 	<input name="storeNm" value="${store.storeNm}" readonly></br>

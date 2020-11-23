@@ -9,7 +9,7 @@
 
 <insert id="insert">
 insert into tbl_store_img (store_id, img_seq, uuid, uploadpath,image,filename)
-values(#{storeId}, seq_store_img.nextval ,#{uuid},#{uploadPath},#{image},#{fileName})
+values(#{storeId}, seq_img.nextval ,#{uuid},#{uploadPath},#{image},#{fileName})
 </insert>
 
 <delete id="delete">
@@ -45,7 +45,7 @@ where store_id = #{storeId}
 		VALUES
 			(
 			#{storeImg.storeId},
-			FN_GET_SEQ('seq_store_img'),
+			FN_GET_SEQ('seq_img'),
 			#{storeImg.uuid},
 			#{storeImg.uploadPath},
 			#{storeImg.image},

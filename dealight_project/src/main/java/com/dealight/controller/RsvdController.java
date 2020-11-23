@@ -110,11 +110,11 @@ public class RsvdController {
 
     	
         log.info("kakao pay.....");
-        return "redirect:" + kakaoService.kakaoPayReady(rsvdId, lists, requestDto.getTotAmt());
+        return "redirect:" + kakaoService.kakaoPayReady(rsvdId, lists, requestDto.getTotAmt(), requestDto.getTotQty());
     }
 
     @GetMapping("/kakaoPaySuccess")
-    public void kakaoPaySuccess(String pg_token, Model model){
+    public void kakaoPaySuccess(Long rsvdId, String pg_token, Model model){
         log.info("paySuccess......");
         log.info("kakaoPay pg_token: "+ pg_token);
         
