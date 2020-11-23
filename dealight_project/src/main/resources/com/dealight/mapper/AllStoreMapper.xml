@@ -140,8 +140,8 @@ select s.store_id, s.store_nm, s.telno, s.cls_cd, m.menu_seq, m.price, m.img_url
             , b.n2_seat_no, b.n4_seat_no, b.store_intro, b.avg_meal_tm, b.hldy, b.acm_pnum, l.addr, l.lng, l.lat, t.tag_nm
             ,  o.nokids, o.park, o.pet, o.pg, o.smoke, o.wifi, i.img_seq, i.uuid, i.uploadpath, i.image, i.filename,e.avg_rating, e.like_tot_num, e.revw_tot_num
 from tbl_store s, tbl_menu m, tbl_bstore b, tbl_store_loc l, tbl_option o, tbl_store_img i, tbl_store_eval e, tbl_store_tag t
-where 	s.store_id = m.store_id and s.store_id = b.store_id and s.store_id = l.store_id and s.store_id = o.store_id and
-		s.store_id = i.store_id and s.store_id = e.store_id and s.store_id = t.store_id
+where 	s.store_id = m.store_id(+) and s.store_id = b.store_id(+) and s.store_id = l.store_id(+) and s.store_id = o.store_id(+) and
+		s.store_id = i.store_id(+) and s.store_id = e.store_id(+) and s.store_id = t.store_id(+)
         and s.store_id = #{storeId}
 </select>
 

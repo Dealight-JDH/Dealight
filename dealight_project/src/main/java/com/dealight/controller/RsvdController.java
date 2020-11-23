@@ -63,7 +63,7 @@ public class RsvdController {
     @PostMapping("/kakaoPay")
     public String kakaoPay(@Valid RsvdRequestDTO requestDto, BindingResult bindingResult){
     	
-    	log.info("====================kakao rsvdFomr: " + requestDto);
+    	log.info("====================kakao rsvdForm: " + requestDto);
     	if(bindingResult.hasErrors()) {
 			//유효성 검사
 			List<ObjectError> errorList = bindingResult.getAllErrors();
@@ -106,9 +106,11 @@ public class RsvdController {
 		}
     	
     	rsvdService.register(vo, dtlsList);
+    	Long rsvdId = rsvdService.getRsvdId();
+
     	
         log.info("kakao pay.....");
-        return "redirect:" + kakaoService.kakaoPayReady();
+        return "redirect:" + kakaoService.kakaoPayReady(rsvdId, lists, requestDto.getTotAmt());
     }
 
     @GetMapping("/kakaoPaySuccess")

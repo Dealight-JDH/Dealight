@@ -278,11 +278,11 @@ h4{
 			let form = $("<form></form>");
 			form.attr("action", "/dealight/store");
 			form.attr("method", "get");
-			let storeIdInput = $("<input type='hidden' value='4' name='storeId'>");
-			let htdlIdInput = $("<input type='hidden' value="+ htdlId + "name='htdlId'>");
+			let storeIdInput = $("<input type='hidden' value='"+ storeId +"' name='storeId'>");
+			let htdlIdInput = $("<input type='hidden' value=''"+ htdlId +"' name='htdlId'>");
 			let clsCdInput = $("<input type='hidden' value='B' name='clsCd'>");
 		    form.append(storeIdInput);
-		    /* form.append(clsCdInput); */
+		    form.append(clsCdInput);
 		    /* form.append(htdlIdInput); */
 		    form.appendTo(body);
 		    //제출

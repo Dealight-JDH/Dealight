@@ -115,7 +115,7 @@
 				property="replyRegDt" column="reply_reg_dt" /> </collection> -->
 				
 			<collection property="waits" ofType="com.dealight.domain.WaitVO">
-				<result property="id" column="id" />
+				<result property="waitId" column="wait_id" />
 				<result property="storeId" column="store_id" />
 				<result property="userId" column="user_id" />
 				<result property="waitRegTm" column="wait_reg_tm" />
@@ -155,7 +155,7 @@
 			ofType="com.dealight.domain.StoreImgVO">
 			<result property="storeId" column="store_id" />
 			<result property="imgSeq" column="img_seq" />
-			<result property="imgUrl" column="img_url" />
+			<result property="fileName" column="fileName" />
 		</collection>
 	</resultMap>
 	
@@ -213,7 +213,7 @@
 		select s.store_id,s.store_nm,
 		n.biz_tm,n.menu,
 		e.like_tot_num,
-		i.img_seq,i.img_url
+		i.img_seq,i.fileName
 		from tbl_store
 		s,tbl_nstore n, tbl_store_loc l, tbl_store_eval e,
 		tbl_store_img i
@@ -230,7 +230,7 @@
 		s.store_id,s.store_nm,s.telno,
 		l.addr,l.lat,l.lng,
 		e.avg_rating,e.revw_tot_num,e.like_tot_num,
-		i.img_seq,i.img_url,
+		i.img_seq,i.fileName,
 		b.buser_id,b.seat_stus_cd,b.open_tm,b.close_tm, b.break_sttm,
 		b.break_entm,b.last_ord_tm,b.n1_seat_no,b.n2_seat_no,b.n4_seat_no,b.store_intro,b.avg_meal_tm,b.hldy,b.acm_pnum,
 		h.htdl_id,h.name,h.dc_rate,h.start_tm,h.end_tm,h.lmt_pnum,h.intro,h.bef_price,h.ddct,h.cur_pnum,h.stus_cd,
@@ -241,7 +241,7 @@
 		tbl_store_img
 		i,tbl_bstore b,tbl_htdl h,tbl_menu m,tbl_store_tag t,(
 		select
-		store_id,count(id) wait_tot
+		store_id,count(wait_id) wait_tot
 		from tbl_wait
 		where wait_stus_cd='W'
 		GROUP by store_id)w

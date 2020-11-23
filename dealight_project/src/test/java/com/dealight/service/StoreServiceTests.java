@@ -231,52 +231,44 @@ public class StoreServiceTests {
 	}
 	
 	
-	@Test
-	public void modifyBStoreTest1() {
-		
-		StoreVO store = storeService.findByStoreIdWithBStore(storeId);
-		store.setClsCd("B");
-		
-		log.info(store);
-		
-		store.getBstore().setHldy("����");
-		store.setRepImg("d");
-		store.setBrch("d");
-		
-		assertTrue(storeService.modifyStore(store));
-		
-		store = storeService.findByStoreIdWithBStore(storeId);
-		
-		log.info(store);
-		
-	}
+	/*
+	 * @Test public void modifyBStoreTest1() {
+	 * 
+	 * StoreVO store = storeService.findByStoreIdWithBStore(storeId);
+	 * store.setClsCd("B");
+	 * 
+	 * log.info(store);
+	 * 
+	 * store.getBstore().setHldy("����"); store.setRepImg("d"); store.setBrch("d");
+	 * 
+	 * assertTrue(storeService.modifyStore(store));
+	 * 
+	 * store = storeService.findByStoreIdWithBStore(storeId);
+	 * 
+	 * log.info(store);
+	 * 
+	 * }
+	 */
 	
-	@Test
-	@Transactional
-	@Rollback(false)
-	public void registerStoreAndBStoreTest2() throws Exception {
-		
-		BStoreVO bstore = new BStoreVO().builder()
-				.closeTm("22:00")
-				.storeIntro("�ȳ��ϼ���!")
-				.openTm("09:00")
-				.buserId("aaa")
-				.repImg("d")
-				.brch("d")
-				.build();
-		
-		StoreVO store = new StoreVO().builder()
-				.storeId(13L)
-				.storeNm("ds")
-				.telno("000")
-				.bstore(bstore)
-				.brch("d")
-				.build();
-		
-		storeService.registerStoreAndBStore(store);
-
-		
-	}
+	/*
+	 * @Test
+	 * 
+	 * @Transactional
+	 * 
+	 * @Rollback(false) public void registerStoreAndBStoreTest2() throws Exception {
+	 * 
+	 * BStoreVO bstore = new BStoreVO().builder() .closeTm("22:00")
+	 * .storeIntro("�ȳ��ϼ���!") .openTm("09:00") .buserId("aaa") .repImg("d")
+	 * .brch("d") .build();
+	 * 
+	 * StoreVO store = new StoreVO().builder() .storeId(13L) .storeNm("ds")
+	 * .telno("000") .bstore(bstore) .brch("d") .build();
+	 * 
+	 * storeService.registerStoreAndBStore(store);
+	 * 
+	 * 
+	 * }
+	 */
 	
 	@Test
 	public void findAllStoreByStoreIdTest1() {

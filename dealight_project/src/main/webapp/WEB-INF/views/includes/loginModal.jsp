@@ -23,7 +23,7 @@
     <!-- 모달창~~ -->
      <div class="modal-content" id = "content">
        
-        <span onclick="closebtn()" class="modal-close"">x</span>
+        <span onclick="closebtn()" class="modal-close">x</span>
         <div class="modal-header">
         <div id="profile"> 000 Dealight </div>
        

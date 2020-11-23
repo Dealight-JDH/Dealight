@@ -29,6 +29,8 @@
 	</beans:bean>
 
 	<context:component-scan base-package="com.dealight.controller" />
+	<!-- 다울 추가 -->
+	<context:component-scan base-package="com.dealight.exception"/>
 	
 	
 	

@@ -23,6 +23,6 @@ public class RsvdMenuDTO {
 	
 	private Integer price;
 	
-	private Integer quan;
+	private Integer qty;
 
 }
