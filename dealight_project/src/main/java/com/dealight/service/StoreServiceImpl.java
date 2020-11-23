@@ -442,4 +442,9 @@ public class StoreServiceImpl implements StoreService {
 		return sMapper.getStoreCd(storeId);
 	}
 
+	@Override
+	public StoreLocVO getStoreLoc(Long storeId) {
+		return locMapper.read(storeId);
+	}
+
 }

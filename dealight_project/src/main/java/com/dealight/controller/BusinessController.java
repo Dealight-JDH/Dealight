@@ -154,9 +154,13 @@ public class BusinessController {
 			// 현재 웨이팅 순서와 시간('임의의 시간인 15분')을 계산한다.
 			int waitTime = waitService.calWaitingTime(curStoreWaitiList, wait.getWaitId(), 15);
 			
+			// 해당 매장의 위치정보를 가져온다.
+			StoreLocVO loc = storeService.getStoreLoc(wait.getStoreId());
+			
 			model.addAttribute("wait",wait);
 			model.addAttribute("order",order);
 			model.addAttribute("waitTime", waitTime);
+			model.addAttribute("loc",loc);
 			
 			return "/dealight/business/manage/waiting/waiting";
 		}
