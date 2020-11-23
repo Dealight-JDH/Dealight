@@ -49,11 +49,11 @@ body {
 }
 * /
 .top {
-	border: 1px solid black;
+	
 	overflow: hidden;
 	flex: 1;
 	/* 비율을 1:1:1로 주기 */
-	height: 100%;
+	height: 35px;
 	display: inline-block;
 	z-index: 0;
 }

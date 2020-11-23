@@ -47,7 +47,7 @@
 				<div id="myDIV">
 
 					<button class="payment2">신용카드</button>
-					<form id="kakaoPayForm" action="/dealight/reservation/kakaoPay">
+					<form id="kakaoPayForm" action="/dealight/reservation/kakaoPay" method="post">
 						<input type="hidden" name="storeId"
 							value="${store.storeId }">
 						<c:if test="${store.bstore.htdl.htdlId ne null }">

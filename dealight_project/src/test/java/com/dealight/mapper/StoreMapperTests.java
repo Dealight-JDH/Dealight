@@ -89,7 +89,7 @@ public class StoreMapperTests {
 	
 	@Test
 	public void testGetNstore() {
-		StoreVO store = mapper.getNstore(1L);
+		StoreVO store = mapper.getNstore(21L);
 		log.info(store);
 	}
 	
