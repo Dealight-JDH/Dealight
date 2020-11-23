@@ -51,8 +51,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<result property="revwId" column="revw_id" />
 	<result property="imgSeq" column="img_seq" />
 	<result property="imgUrl" column="img_url" />
-	<result property="regDate" column="reg_date" />
-	<result property="updateDate" column="update_date" />
+	<result property="regdate" column="regdate" />
+	<result property="updatedate" column="updatedate" />
 </resultMap>
 
 <!-- StoreVO -->
@@ -61,12 +61,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<result property="storeNm" column="store_nm" />
 	<result property="telno" column="telno" />
 	<result property="clsCd" column="cls_cd" />
+	<result property="regdate" column="regdate" />
+	<result property="updatedate" column="updatedate" />
+</resultMap>
+
+<!-- BStoreVO -->
+<resultMap type="com.dealight.domain.BStoreVO" id="BStoreVO">
+	<result property="storeId" column="store_id" />
 	<result property="repImg" column="rep_img" />
-	<result property="repMenu" column="rep_menu" />
-	<result property="brch" column="brch" />
-	<result property="revwStus" column="revw_stus" />
-	<result property="regDate" column="reg_date" />
-	<result property="updateDate" column="update_date" />
 </resultMap>
 
 <!-- RsvdVO -->
@@ -83,11 +85,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<result property="totQty" column="tot_qty" />
 	<result property="revwStus" column="revw_stus" />
 			
-	<result property="regDate" column="reg_date" />
-	<result property="updateDate" column="update_date" />
+	<result property="regdate" column="regdate" />
+	<result property="updatedate" column="updatedate" />
 
 	<collection property="dtls" resultMap="RsvdDtlsVO" />
 	<collection property="store" resultMap="StoreVO" />
+	<collection property="bstore" resultMap="BStoreVO" />
 </resultMap>
 
 <!-- RsvdDtlsVO -->
@@ -97,8 +100,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<result property="menuNm" column="menu_nm" />
 	<result property="menuTotQty" column="menu_tot_qty" />
 	<result property="menuPrc" column="menu_prc" />
-	<result property="regDate" column="reg_date" />
-	<result property="updateDate" column="update_date" />
+	<result property="regdate" column="regdate" />
+	<result property="updatedate" column="updatedate" />
 </resultMap>
 
 <!-- WaitVO -->
@@ -114,6 +117,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<result property="revwStus" column="revw_stus" />
 	
 	<collection property="store" resultMap="StoreVO" />
+	<collection property="bstore" resultMap="BStoreVO" />
 </resultMap>
 
 
@@ -137,14 +141,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		INTO tbl_revw(revw_id, store_id, rsvd_id, wait_id,
 		user_id, cnts, reg_dt, rating,reply_cnts,reply_reg_dt)
 		VALUES
-		(seq_review.nextval, #{storeId}, #{rsvdId, jdbcType=NUMERIC},
+		(seq_revw.nextval, #{storeId}, #{rsvdId, jdbcType=NUMERIC},
 		#{waitId, jdbcType=NUMERIC}, #{userId}, #{cnts}, #{regDt}, #{rating},
 		#{replyCnts}, #{replyRegDt})
 	</insert>
 
 	<insert id="insertSelectKey">
 		<selectKey keyProperty="revwId" order="BEFORE" resultType="long">
-			select seq_review.nextval from dual
+			select seq_revw.nextval from dual
 		</selectKey>
 		INSERT
 		INTO tbl_revw(revw_id, store_id, rsvd_id, wait_id, user_id, cnts,
@@ -179,7 +183,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 작성한 리뷰 리스트 가져오기 (현재 사진 첨부는 필수인 상태) -->
 <select id="getWrittenList" resultMap="RevwVO">
-	select r.store_nm, r.rating, r.reg_dt, r.cnts, i.img_url
+	select r.revw_id, r.store_nm, r.rating, r.reg_dt, r.cnts, i.img_url
 	from tbl_revw r, tbl_revw_img i
 	where r.revw_id = i.revw_id
 	and r.user_id = #{userId}
@@ -200,48 +204,52 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!-- 리뷰 작성 안 한 예약내역 -->
 <select id="getWritableListByRsvd" resultMap="RsvdVO">
-	select r.user_id, r.rsvd_id, r.pnum, r.reg_date, r.tot_amt, d.menu_nm, d.menu_tot_qty, s.store_nm, s.rep_img
+	select r.user_id, r.rsvd_id, r.pnum, r.regdate, r.tot_amt, d.menu_nm, d.menu_tot_qty, s.store_nm, b.rep_img
 	from (select * from tbl_rsvd
 		where stus_cd = 'L'
 		and revw_stus = 0
 		and user_id = #{userId}) r,
-		tbl_rsvd_dtls d, tbl_store s
-	where r.rsvd_id = d.rsvd_id
-	and r.store_id = s.store_id
+		tbl_rsvd_dtls d, tbl_store s, tbl_bstore b
+	where r.rsvd_id = d.rsvd_id(+)
+    and s.store_id = b.store_id(+)
+	and r.store_id = s.store_id(+)
 </select>
 
 <!-- 리뷰 작성 안 한 예약 1건 -->
 <select id="getWritableItemByRsvd" resultMap="RsvdVO">
-	select s.store_id, r.rsvd_id, r.user_id, r.reg_date, d.menu_nm, s.store_nm, s.rep_img
+	select s.store_id, r.rsvd_id, r.user_id, r.regdate, d.menu_nm, s.store_nm, b.rep_img
 	from (select * from tbl_rsvd
 		where stus_cd = 'L'
 		and revw_stus = 0
 		and user_id = #{userId}
 		and rsvd_id = #{rsvdId}) r,
-		tbl_rsvd_dtls d, tbl_store s
-	where r.rsvd_id = d.rsvd_id
-	and r.store_id = s.store_id
+		tbl_rsvd_dtls d, tbl_store s, tbl_bstore b
+	where r.rsvd_id = d.rsvd_id(+)
+	and s.store_id = b.store_id(+)
+	and r.store_id = s.store_id(+)
 </select>
 
 <!-- 리뷰 작성 안 한 온라인 웨이팅 내역 -->
 <select id="getWritableListByWait" resultMap="WaitVO">
-	select w.user_id, w.wait_id, w.wait_pnum, w.wait_reg_tm, s.store_nm, s.rep_img
-	from tbl_wait w, tbl_store s
+	select w.user_id, w.wait_id, w.wait_pnum, w.wait_reg_tm, s.store_nm, b.rep_img
+	from tbl_wait w, tbl_store s, tbl_bstore b
 	where w.wait_stus_cd = 'E'
 	and w.revw_stus = 0
 	and w.user_id = #{userId}
-	and w.store_id = s.store_id
+	and s.store_id = b.store_id(+)
+	and w.store_id = s.store_id(+)
 </select>
 
 <!-- 리뷰 작성 안 한 온라인 웨이팅 1건 -->
 <select id="getWritableItemByWait" resultMap="WaitVO">
-	select s.store_id, w.wait_id, w.user_id, w.wait_reg_tm, s.store_nm, s.rep_img
-	from tbl_wait w, tbl_store s
+	select s.store_id, w.wait_id, w.user_id, w.wait_reg_tm, s.store_nm, b.rep_img
+	from tbl_wait w, tbl_store s, tbl_bstore b
 	where w.wait_stus_cd = 'E'
 	and w.revw_stus = 0
 	and w.user_id = #{userId}
 	and w.wait_id = #{waitId}
-	and w.store_id = s.store_id
+	and s.store_id = b.store_id(+)
+	and w.store_id = s.store_id(+)
 </select>
 
 <!-- 리뷰 1건 읽기 -->
@@ -253,7 +261,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- 리뷰 등록 -->
 <insert id="insertRevw">
 	<selectKey keyProperty="revwId" order="BEFORE" resultType="Long">
-		select tbl_revw_SEQ.nextval from dual
+		select seq_revw.nextval from dual
 	</selectKey>
 	
 	insert into tbl_revw (revw_id, store_id, store_nm, rsvd_id, wait_id, user_id, cnts, reg_dt, rating)
@@ -262,7 +270,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!-- 리뷰 사진 등록 -->
 <insert id="insertRevwImg">
 	insert into tbl_revw_img(revw_id, img_seq, img_url)
-	values (tbl_revw_SEQ.currval, tbl_revw_img_SEQ.nextval, #{imgUrl})
+	values (seq_revw.currval, seq_revw_img.nextval, #{imgUrl})
 </insert>
 <!-- 리뷰 등록 후 리뷰 수 카운팅하여 매장평가에 반영 -->
 <!-- <update id="countRevwForStoreEval">

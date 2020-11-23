@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- 동인 -->
+  
+<mapper namespace="com.dealight.mapper.StoreLocMapper">
+	
+	<insert id="insert">
+		insert into tbl_store_loc(store_id, addr, lat, lng)
+		values( #{storeId}, #{addr},#{lat}, #{lng})
+	</insert>
+	<select id="getList" resultType="com.dealight.domain.StoreLocVO">
+		select * from tbl_store_loc where store_id > 0 
+	</select>
+	<select id="read" resultType="com.dealight.domain.StoreLocVO">
+		select * from tbl_store_loc where store_id = #{storeId}
+	</select>
+	<update id="update">
+		update tbl_store_loc
+		set store_id = #{storeId},
+			addr = #{addr},
+			lat = #{lat},
+			lng = #{lng}
+		where store_id = #{storeId}
+	</update>
+	<delete id="delete">
+		delete from tbl_store_lngc where store_id = #{storeId}
+	</delete>
+	
+	<!-- <select id="getRadiusList" resultType="com.dealight.domain.StoreLocVO">
+	<![CDATA[
+		select * from tbl_store_loc
+		where store_id > 0
+				and (lng < (${lng} + ${corrValue}) and lng > (${lng} - ${corrValue})
+				and lat < (${lat} + ${corrValue}) and lat > (${lat} - ${corrValue})) 
+	]]>
+	</select> -->
+
+<select id="findByStoreId" resultType="com.dealight.domain.StoreLocVO">
+SELECT *
+FROM tbl_store_loc
+WHERE store_id = #{storeId}
+</select>
+
+</mapper>

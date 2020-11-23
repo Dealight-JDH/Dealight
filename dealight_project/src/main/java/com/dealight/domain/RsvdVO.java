@@ -74,10 +74,10 @@ public class RsvdVO {
     private int totQty;
     
     @NotNull
-    private Date regDate;
+    private Date regdate;
     
     @NotNull
-    private Date updateDate;
+    private Date updatedate;
     
     @NotNull
     private int revwStus = 0;
@@ -94,5 +94,6 @@ public class RsvdVO {
     private RsvdDtlsVO dtls;
     // 매장
     private StoreVO store;
+    private BStoreVO bstore;
     
 }

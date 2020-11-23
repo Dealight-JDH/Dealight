@@ -4,11 +4,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -159,7 +157,7 @@ public class RsvdServiceImpl implements RsvdService{
     	// sorted는 뒤에가 기준이다.
 		return rsvdMapper.findByStoreIdAndDate(storeId, today).stream().filter(rsvd -> rsvd.getStusCd().equals("C"))
 				.sorted((r1,r2) -> (int) (r1.getRsvdId() - r2.getRsvdId()))
-				.sorted((r1,r2) -> (int) calTimeMinutes(r1.getTime()) - calTimeMinutes(r2.getTime()))
+				.sorted((r1,r2) -> (int) calTimeMinutes(getTime(r1.getTime())) - calTimeMinutes(getTime(r2.getTime())))
 				.collect(Collectors.toList());
 	}
 	
@@ -170,13 +168,19 @@ public class RsvdServiceImpl implements RsvdService{
 	}
 	
 	@Override
-	public String getTime(Date date) {
+	public String getTime(String time) {
 		
-		String pattern = "HH/mm";
+//		String pattern = "HH/mm";
+//		
+//		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+//		
+//		String time = simpleDateFormat.format(date);
 		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		String[] times = time.split(":");
 		
-		String time = simpleDateFormat.format(date);
+		String strHour = times[0].substring(times[0].length()-2);
+		String minute = times[1].substring(0, 2);
+		time = strHour +":"+ minute;
 		
 		return time;
 	}
@@ -184,7 +188,7 @@ public class RsvdServiceImpl implements RsvdService{
 	@Override
 	public int calTimeMinutes(String time) {
 		
-		String[] toMinutes = time.split("/");
+		String[] toMinutes = time.split(":");
 		
 		int minutes = Integer.valueOf(toMinutes[0]) * 60+ Integer.valueOf(toMinutes[1]);
 		
@@ -194,7 +198,7 @@ public class RsvdServiceImpl implements RsvdService{
 	@Override
 	public String toRsvdByTimeFormat(String time) {
 		
-		String[] times = time.split("/");
+		String[] times = time.split(":");
 		
 		String strHour = times[0];
 		int minute = Integer.valueOf(times[1]);
@@ -235,8 +239,6 @@ public class RsvdServiceImpl implements RsvdService{
 			
 			log.info("stus check ......................");
 			
-			log.info("reg date............" + rsvd.getRegDate());
-			
 			String time = rsvd.getTime();
 			
 			log.info("get time ......................" + time);
@@ -257,15 +259,15 @@ public class RsvdServiceImpl implements RsvdService{
 	
 
 	@Override
-	public boolean isReserveThisTimeStore(long storeId, Date date,int acm) {
+	public boolean isReserveThisTimeStore(long storeId, String rsvdTime,int acm) {
 		
-		String time = getTime(date);
+		String time = getTime(rsvdTime);
 		
 		String pattern = "yyyyMMdd";
 		
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		
-		List<RsvdVO> list = getListByDate(storeId, simpleDateFormat.format(date));
+		List<RsvdVO> list = getListByDate(storeId, time);
 		
 		HashMap<String,List<Long>> map = getRsvdByTimeMap(list);
 		

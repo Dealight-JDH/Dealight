@@ -29,7 +29,7 @@ public interface UserService {
 	
 	public String getPwd(UserVO user);
 	
-	public int changePwd(UserVO user);
+	public boolean changePwd(UserVO user);
 	
 	public List<String> getId(String email);
 	// read

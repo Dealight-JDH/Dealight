@@ -2,8 +2,9 @@ package com.dealight.service;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -15,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.dealight.domain.KakaoPayApprovalVO;
 import com.dealight.domain.KakaoPayReadyVO;
+import com.dealight.domain.RsvdMenuDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -35,8 +37,19 @@ public class KakaoService {
 	
 	
 	//결제 준비
-	public String kakaoPayReady() {
+	public String kakaoPayReady(Long rsvdId, List<RsvdMenuDTO> lists, Integer totAmt) {
 		RestTemplate restTemplate = new RestTemplate();
+		
+//		StringBuilder menu = new StringBuilder();
+//		StringBuilder quan = new StringBuilder();
+//		
+//		lists.forEach(dto -> {
+//			menu.append(dto.getName());
+//			quan.append(dto.getQuan().toString());
+//		});
+		String menu = lists.stream().map(dto -> dto.getName()).collect(Collectors.joining(", "));
+		String qty = lists.stream().map(dto -> dto.getQty().toString()).collect(Collectors.joining(", "));
+		
 		
 		//요청 헤더
 		HttpHeaders headers = new HttpHeaders();
@@ -48,11 +61,11 @@ public class KakaoService {
         //요청 바디
         MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
         params.add("cid","TC0ONETIME");
-        params.add("partner_order_id","1001");
+        params.add("partner_order_id", "1001");
         params.add("partner_user_id","whddn528");
-        params.add("item_name","고추 바사삭, 허니멜로 피자");
-        params.add("quantity","1");
-        params.add("total_amount","31000");
+        params.add("item_name","agaga");
+        params.add("quantity", "3");
+        params.add("total_amount", "13000");
         params.add("tax_free_amount","0");
         params.add("approval_url","http://localhost:8181/dealight/reservation/kakaoPaySuccess");
         params.add("cancel_url","http://localhost:8181/dealight/reservation/kakaoPayCancel");

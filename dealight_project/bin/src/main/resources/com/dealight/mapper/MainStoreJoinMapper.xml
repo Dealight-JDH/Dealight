@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- 현중 -->
+<mapper namespace="com.dealight.mapper.MainStoreJoinMapper">
+
+<select id="getList" resultType="com.dealight.domain.MainStoreJoinVO">
+	
+	<![CDATA[
+	
+		select b.store_id, s.store_nm, s.telno, s.cls_cd, l.addr, l.lat, l.lng,
+  			   b.brch, b.rep_menu, b.rep_img, b.seat_stus_cd, b.htdl_stus_cd,
+  			   b.open_tm, b.close_tm, b.break_sttm, b.break_entm, 
+  			   e.avg_rating, e.revw_tot_num, e.like_tot_num
+		from tbl_store s , tbl_bstore b, tbl_store_loc l, tbl_store_eval e
+  		where s.store_id > 0
+  		  and s.store_id = b.store_id 
+  		  and b.store_id = l.store_id 
+  		  and e.store_id = l.store_id 
+		
+	]]>
+</select>
+	
+<select id="read" resultType="com.dealight.domain.MainStoreJoinVO">
+	select s.store_id, s.store_nm, s.telno, s.cls_cd, l.addr, l.lat, l.lng,
+  			   b.brch, b.rep_menu, b.rep_img, b.seat_stus_cd, b.htdl_stus_cd,
+  			   b.open_tm, b.close_tm, b.break_sttm, b.break_entm, 
+  			   e.avg_rating, e.revw_tot_num, e.like_tot_num
+		from tbl_store s , tbl_bstore b, tbl_store_loc l, tbl_store_eval e
+  		where s.store_id = #{storeId} 
+  		  and s.store_id = b.store_id 
+  		  and s.store_id = l.store_id 
+  		  and e.store_id = s.store_id  
+</select>
+
+<!-- <select id="findByStoreIds" resultType="com.dealight.domain.MainStoreJoinVO">
+	select s.store_id, s.store_nm, s.telno, s.cls_cd, l.addr, l.lat, l.lng,
+  			   b.brch, b.rep_menu, b.rep_img, b.seat_stus_cd,
+  			   b.open_tm, b.close_tm, b.break_sttm, b.break_entm, 
+  			   e.avg_rating, e.revw_tot_num, e.like_tot_num
+		from tbl_store s , tbl_bstore b, tbl_store_loc l, tbl_store_eval e
+  		where 
+  			<trim prefix="(" suffix=") and" suffixOverrides="or">
+				<foreach collection="list" item="storeId">
+				<trim suffix=" or ">
+					s.store_id = #{storeId}
+				</trim>
+				</foreach>
+			</trim>
+  		  s.store_id = b.store_id 
+  		  and s.store_id = l.store_id 
+  		  and e.store_id = s.store_id 
+</select> -->
+
+<select id="getListWithPaging" resultType="com.dealight.domain.MainStoreJoinVO">
+	<![CDATA[
+	select *
+	from (
+			select rownum rn, dist, store_id, store_nm, telno, cls_cd ,
+				   addr, lat, lng,
+        		   brch, rep_menu, rep_img, seat_stus_cd, htdl_stus_cd,
+        		   open_tm, close_tm, break_sttm, break_entm,
+        		   avg_rating, revw_tot_num, like_tot_num 
+      		from (
+            		select  s.store_id, s.store_nm, s.telno, s.cls_cd ,
+            				l.addr, l.lat, l.lng,
+                    		b.brch, b.rep_menu, b.rep_img, b.seat_stus_cd,b.htdl_stus_cd,
+                    		b.open_tm, b.close_tm, b.break_sttm, b.break_entm,
+                    		e.avg_rating, e.revw_tot_num, e.like_tot_num,
+                   			calc_distance(#{lat}, #{lng}, l.lat, l.lng) as dist
+            		from tbl_store s , tbl_bstore b , tbl_store_loc l, tbl_store_eval e
+            		where   (l.lat between #{lat} - #{range} and #{lat} + #{range})
+                    	and (l.lng between #{lng} - #{range} and #{lng} + #{range})
+		                and s.store_id = b.store_id 
+		                and s.store_id = l.store_id 
+		                and s.store_id = e.store_id 
+	]]>
+					<if test="openStore">
+						and b.seat_stus_cd != 'B'
+					</if>
+		           	order by 
+							 <choose>
+							 	<when test="sortPriority == 'H'.toString()">
+							 		decode(b.htdl_stus_cd, 'A', 1, 'P',2),
+							 	</when>
+							 	<when test="sortPriority == 'S'.toString()">
+							 		decode(b.seat_stus_cd, 'G', 1, 'O', 2, 'R',3 , 'B',4),
+							 	</when>
+							 	<when test="sortPriority == 'W'.toString()">
+							 		decode(b.seat_stus_cd, 'R', 1, 'O', 2, 'G',3 , 'B',4),
+							 	</when>
+							 	<!-- 예약가능 우선보기 -->
+							 </choose>
+		           			 <choose>
+								<when test="sortType == 'H'.toString()">
+									e.like_tot_num desc , 
+								</when>		           			 
+								<when test="sortType == 'R'.toString()">
+									e.avg_rating desc , 
+								</when>		           			 
+								<when test="sortType == 'T'.toString()">
+									e.revw_tot_num desc , 
+								</when>		           			 
+		           			 </choose>
+		           			 dist
+           		 )
+	<![CDATA[
+            where rownum <= #{pageNum} * #{amount}
+		  )
+	where rn > (#{pageNum} - 1) * #{amount}
+	]]>
+</select>
+<!--                   and dist < #{distance} -->
+
+<select id="getTotalCount" resultType="int">
+	<![CDATA[
+	select count(*) from tbl_store s , tbl_bstore b , tbl_store_loc l, tbl_store_eval e
+	where   (l.lat between #{lat} - #{range} and #{lat} + #{range})
+        and (l.lng between #{lng} - #{range} and #{lng} + #{range})
+        
+        and s.store_id = b.store_id 
+        and s.store_id = l.store_id 
+        and s.store_id = e.store_id 
+	]]>
+	<if test="openStore">
+		and b.seat_stus_cd != 'B'
+	</if>
+</select>
+
+</mapper>

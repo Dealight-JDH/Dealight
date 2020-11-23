@@ -91,8 +91,8 @@ public class UserServiceImpl implements UserService{
     }
 	
 	@Override
-	public int changePwd(UserVO user) {
-		return mapper.changePwd(user);
+	public boolean changePwd(UserVO user) {
+		return mapper.changePwd(user) == 1;
 	}
 	@Override
 	public List<String> getId(String email) {

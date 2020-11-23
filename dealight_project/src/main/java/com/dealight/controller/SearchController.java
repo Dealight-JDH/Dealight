@@ -24,6 +24,8 @@ public class SearchController {
 	@GetMapping("/")
 	public String list(SearchDTO search, Model model) {
 		
+		//searchDTO 유효성검사를 해줘야한다.
+		
 		log.info("SearchDTO:" + search +";");
 		
 		model.addAttribute("search", search);

@@ -12,9 +12,9 @@
 
  <div class="middleDiv">
             <div class="imgContainer">
-                <img src="../img/main.jpg">
+                <img src="../../../../../resources/img/main.jpg">
 
-                <form action="/search/" class="searchBarDiv" method="get">
+                <form action="search/" class="searchBarDiv" method="get">
                     <div class="topRow">
                         <input type="text" class="topRowBar" name="pNum" placeholder="인원">
                         <input type="text" class="topRowBar" name="region" placeholder="지역">
