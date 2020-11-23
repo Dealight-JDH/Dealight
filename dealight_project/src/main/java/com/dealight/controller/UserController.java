@@ -173,6 +173,10 @@ public class UserController {
 		model.addAttribute("list", service.getList());
 	}
 	
+	//회원 가입 전 개인정보 이용 동의 페이지
+	@GetMapping("/policies")
+	public void policies() {}
+	
 	//회원 등록은 post방식이지만 화면에서 입력 받아야 하므로 get 방식으로 입력페이지를 볼 수 있게 한다.
 			@GetMapping("/register")
 			public void register() {
