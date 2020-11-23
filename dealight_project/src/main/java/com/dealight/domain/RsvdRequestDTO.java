@@ -28,7 +28,7 @@ public class RsvdRequestDTO {
 	@Nullable
 	private Long htdlId; //핫딜번호
 	
-
+	@NotNull
 	List<RsvdMenuDTO> menu; //예약 메뉴 리스트
 	
 	@NotNull

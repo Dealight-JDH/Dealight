@@ -37,6 +37,8 @@ public class HtdlVO {
 	@NotNull(message = "매장번호는 null일 수 없습니다.")
 	private Long storeId;
 	// 할인율
+	@Nullable
+	private String htdlImg;
 	@NotNull
 	private double dcRate;
 	// 핫딜시작시간

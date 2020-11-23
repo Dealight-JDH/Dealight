@@ -7,7 +7,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<script>
 // 로그인이 안된 상태면 메인페이지로 넘어가게
 let msg = '${msg}';
 	if(msg != ""){

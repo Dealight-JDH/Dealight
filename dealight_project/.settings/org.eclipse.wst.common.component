@@ -18,5 +18,4 @@
         <property name="java-output-path" value="/dealight_project/target/classes"/>
             
     </wb-module>
-    
 </project-modules>

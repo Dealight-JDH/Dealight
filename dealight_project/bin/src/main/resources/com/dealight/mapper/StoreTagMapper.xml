@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 동인 -->
+
+<mapper namespace="com.dealight.mapper.StoreTagMapper">
+<update id="update">
+UPDATE tbl_store_tag
+SET
+tag_nm = #{tagNm}
+WHERE store_id = #{storeId} and tag_nm = #{tagNm}
+</update>
+
+<select id="findByStoreId" resultType="com.dealight.domain.StoreTagVO">
+SELECT *
+FROM tbl_store_tag
+WHERE store_id = #{storeId}
+</select>
+
+<insert id="insert">
+INSERT INTO
+tbl_store_tag(store_id,tag_nm)
+VALUES(#{storeId}, #{tagNm})
+</insert>
+
+
+<delete id="delete">
+DELETE
+FROM tbl_store_tag
+WHERE store_id = #{storeId} and tag_nm = #{tagNm}
+</delete>
+
+
+</mapper>

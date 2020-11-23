@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 동인 -->
+
+<mapper namespace="com.dealight.mapper.StoreOptionMapper">
+<update id="update">
+UPDATE tbl_option
+SET
+park = #{park},
+nokids = #{nokids},
+pg = #{pg},
+wifi = #{wifi},
+pet = #{pet},
+smoke = #{smoke}
+WHERE store_id = #{storeId}
+</update>
+
+<select id="findByStoreId" resultType="com.dealight.domain.StoreOptionVO">
+select *
+from tbl_option
+where store_id = 101
+</select>
+
+<insert id="insert">
+INSERT INTO
+tbl_option(store_id,park,nokids,pg,wifi,pet,smoke)
+values(#{storeId},#{park},#{nokids},#{pg},#{wifi},#{pet},#{smoke})
+</insert>
+
+</mapper>

@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="getCountByStoreId" resultType="int">
 	<![CDATA[
-	select count(id) from tbl_revw where store_id = #{storeId}
+	select count(revw_id) from tbl_revw where store_id = #{storeId}
 	]]>
 
 	</select>

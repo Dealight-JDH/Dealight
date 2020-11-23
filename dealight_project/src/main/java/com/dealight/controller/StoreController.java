@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.dealight.domain.Criteria;
-import com.dealight.domain.SelMenuDTOList;
+import com.dealight.domain.RsvdMenuDTOList;
 import com.dealight.service.StoreService;
 
 import lombok.AllArgsConstructor;
@@ -40,11 +40,12 @@ public class StoreController {
 	}
 
 	@PostMapping("/reservation")
-	public void reservation(Model model, SelMenuDTOList selMenuList, String pnum, String time, Long storeId) {
+	public void reservation(Model model, RsvdMenuDTOList rsvdMenuList, String pnum, String time, Long storeId) {
 		model.addAttribute("store", service.bstore(storeId));
-		model.addAttribute("selMenuList", selMenuList); 
+		model.addAttribute("rsvdMenuList", rsvdMenuList); 
 		model.addAttribute("pnum", pnum); 
 		model.addAttribute("time", time);
+		log.info(rsvdMenuList);
 	
 	}
 	

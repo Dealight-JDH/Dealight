@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!-- 다울 -->
+ <!-- 수빈 -->
+<mapper namespace="com.dealight.mapper.RevwMapper">
+
+	<select id="getRevwListWithPaging"
+		resultType="com.dealight.domain.RevwVO">
+		<![CDATA[ select user_id, cnts,reg_dt,rating,reply_cnts,reply_reg_dt
+		from(
+		select /*+ INDEX(tbl_revw idx_revw)*/
+		rownum rn,user_id, cnts,reg_dt,rating,reply_cnts,reply_reg_dt
+		from tbl_revw
+		where store_id = #{storeId}
+		and rownum<=#{cri.pageNum}*#{cri.amount}
+	)
+	where rn> (#{cri.pageNum}-1)*#{cri.amount}
+	]]>
+	</select>
+
+	<select id="getCountByStoreId" resultType="int">
+	<![CDATA[
+	select count(revw_id) from tbl_revw where store_id = #{storeId}
+	]]>
+
+	</select>
+
+<!-- RevwVO -->
+<resultMap type="com.dealight.domain.RevwVO" id="RevwVO">
+	<result property="revwId" column="revw_id" />
+	<result property="storeId" column="store_id" />
+	<result property="storeNm" column="store_nm" />
+	<result property="rsvdId" column="rsvd_id" />
+	<result property="waitId" column="wait_id" />
+	<result property="userId" column="user_id" />
+	<result property="cnts" column="cnts"  />
+	<result property="rating" column="rating" />
+	
+	<result property="regDt" column="reg_dt" />
+	
+	<result property="replyCnts" column="reply_cnts" jdbcType="VARCHAR" />
+	<result property="replyRegDt" column="reply_reg_dt" jdbcType="VARCHAR" />
+	
+	<collection property="img" resultMap="RevwImgVO" />
+</resultMap>
+
+<!-- RevwImgVO -->
+<resultMap type="com.dealight.domain.RevwImgVO" id="RevwImgVO">
+	<result property="revwId" column="revw_id" />
+	<result property="imgSeq" column="img_seq" />
+	<result property="imgUrl" column="img_url" />
+	<result property="regDate" column="reg_date" />
+	<result property="updateDate" column="update_date" />
+</resultMap>
+
+<!-- StoreVO -->
+<resultMap type="com.dealight.domain.StoreVO" id="StoreVO">
+	<result property="storeId" column="store_id" />
+	<result property="storeNm" column="store_nm" />
+	<result property="telno" column="telno" />
+	<result property="clsCd" column="cls_cd" />
+	<result property="repImg" column="rep_img" />
+	<result property="repMenu" column="rep_menu" />
+	<result property="brch" column="brch" />
+	<result property="revwStus" column="revw_stus" />
+	<result property="regDate" column="reg_date" />
+	<result property="updateDate" column="update_date" />
+</resultMap>
+
+<!-- RsvdVO -->
+<resultMap type="com.dealight.domain.RsvdVO" id="RsvdVO">
+	<result property="rsvdId" column="rsvd_id" />
+	<result property="storeId" column="store_id" />
+	<result property="userId" column="user_id" />
+	<result property="htdlId" column="htdl_id" />
+	<result property="aprvNo" column="aprv_no" />
+	<result property="pnum" column="pnum" />
+	<result property="time" column="time" />
+	<result property="stusCd" column="stus_cd" />
+	<result property="totAmt" column="tot_amt" />
+	<result property="totQty" column="tot_qty" />
+	<result property="revwStus" column="revw_stus" />
+			
+	<result property="regDate" column="reg_date" />
+	<result property="updateDate" column="update_date" />
+
+	<collection property="dtls" resultMap="RsvdDtlsVO" />
+	<collection property="store" resultMap="StoreVO" />
+</resultMap>
+
+<!-- RsvdDtlsVO -->
+<resultMap type="com.dealight.domain.RsvdDtlsVO" id="RsvdDtlsVO">
+	<result property="rsvdId" column="rsvd_id" />
+	<result property="rsvdSeq" column="rsvd_seq" />
+	<result property="menuNm" column="menu_nm" />
+	<result property="menuTotQty" column="menu_tot_qty" />
+	<result property="menuPrc" column="menu_prc" />
+	<result property="regDate" column="reg_date" />
+	<result property="updateDate" column="update_date" />
+</resultMap>
+
+<!-- WaitVO -->
+<resultMap type="com.dealight.domain.WaitVO" id="WaitVO">
+	<result property="waitId" column="wait_id" />
+	<result property="storeId" column="store_id" />
+	<result property="userId" column="user_id" jdbcType="VARCHAR" />
+	<result property="waitRegTm" column="wait_reg_tm" />
+	<result property="waitPnum" column="wait_pnum" />
+	<result property="custTelno" column="cust_telno" />
+	<result property="custNm" column="cust_nm" />
+	<result property="waitStusCd" column="wait_stus_cd" />
+	<result property="revwStus" column="revw_stus" />
+	
+	<collection property="store" resultMap="StoreVO" />
+</resultMap>
+
+
+	<select id="findAll" resultType="com.dealight.domain.RevwVO">
+		SELECT
+		*
+		FROM tbl_revw
+	</select>
+
+
+	<select id="findById" resultType="com.dealight.domain.RevwVO">
+		SELECT
+		*
+		FROM tbl_revw
+		where revw_id =
+		#{revwId}
+	</select>
+
+	<insert id="insert">
+		INSERT
+		INTO tbl_revw(revw_id, store_id, rsvd_id, wait_id,
+		user_id, cnts, reg_dt, rating,reply_cnts,reply_reg_dt)
+		VALUES
+		(seq_review.nextval, #{storeId}, #{rsvdId, jdbcType=NUMERIC},
+		#{waitId, jdbcType=NUMERIC}, #{userId}, #{cnts}, #{regDt}, #{rating},
+		#{replyCnts}, #{replyRegDt})
+	</insert>
+
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="revwId" order="BEFORE" resultType="long">
+			select seq_review.nextval from dual
+		</selectKey>
+		INSERT
+		INTO tbl_revw(revw_id, store_id, rsvd_id, wait_id, user_id, cnts,
+		reg_dt, rating,reply_cnts,reply_reg_dt)
+		VALUES
+		(#{revwId}, #{storeId},
+		#{rsvdId, jdbcType=NUMERIC}, #{waitId, jdbcType=NUMERIC}, #{userId},
+		#{cnts}, #{regDt}, #{rating}, #{replyCnts}, #{replyRegDt})
+	</insert>
+
+	<update id="update">
+		UPDATE tbl_revw
+		SET
+		store_id = #{storeId},
+		rsvd_id =
+		#{rsvdId},
+		wait_id = #{waitId},
+		user_id = #{userId},
+		cnts = #{cnts},
+		reg_dt = #{regDt},
+		rating = #{rating},
+		reply_cnts = #{replyCnts},
+		reply_reg_dt = #{replyRegDt}
+		where revw_id = #{revwId}
+	</update>
+
+	<delete id="delete">
+		DELETE
+		FROM tbl_revw
+		WHERE revw_id = #{revwId}
+	</delete>
+
+<!-- 작성한 리뷰 리스트 가져오기 (현재 사진 첨부는 필수인 상태) -->
+<select id="getWrittenList" resultMap="RevwVO">
+	select r.revw_id, r.store_nm, r.rating, r.reg_dt, r.cnts, i.img_url
+	from tbl_revw r, tbl_revw_img i
+	where r.revw_id = i.revw_id
+	and r.user_id = #{userId}
+</select>
+
+<!-- 작성한 리뷰 - 작성한 리뷰 수 -->
+<select id="countRevw" resultType="int">
+	select count(r.revw_id) from tbl_revw r, tbl_revw_img i
+	where r.revw_id = i.revw_id
+	and r.user_id = #{userId}
+</select>
+
+<!-- 작성한 리뷰 - 이용한 매장 수 -->
+<select id="countStore" resultType="int">
+	select count(distinct store_id) from tbl_revw
+	where user_id = #{userId}
+</select>
+
+<!-- 리뷰 작성 안 한 예약내역 -->
+<select id="getWritableListByRsvd" resultMap="RsvdVO">
+	select r.user_id, r.rsvd_id, r.pnum, r.reg_date, r.tot_amt, d.menu_nm, d.menu_tot_qty, s.store_nm, s.rep_img
+	from (select * from tbl_rsvd
+		where stus_cd = 'L'
+		and revw_stus = 0
+		and user_id = #{userId}) r,
+		tbl_rsvd_dtls d, tbl_store s
+	where r.rsvd_id = d.rsvd_id
+	and r.store_id = s.store_id
+</select>
+
+<!-- 리뷰 작성 안 한 예약 1건 -->
+<select id="getWritableItemByRsvd" resultMap="RsvdVO">
+	select s.store_id, r.rsvd_id, r.user_id, r.reg_date, d.menu_nm, s.store_nm, s.rep_img
+	from (select * from tbl_rsvd
+		where stus_cd = 'L'
+		and revw_stus = 0
+		and user_id = #{userId}
+		and rsvd_id = #{rsvdId}) r,
+		tbl_rsvd_dtls d, tbl_store s
+	where r.rsvd_id = d.rsvd_id
+	and r.store_id = s.store_id
+</select>
+
+<!-- 리뷰 작성 안 한 온라인 웨이팅 내역 -->
+<select id="getWritableListByWait" resultMap="WaitVO">
+	select w.user_id, w.wait_id, w.wait_pnum, w.wait_reg_tm, s.store_nm, s.rep_img
+	from tbl_wait w, tbl_store s
+	where w.wait_stus_cd = 'E'
+	and w.revw_stus = 0
+	and w.user_id = #{userId}
+	and w.store_id = s.store_id
+</select>
+
+<!-- 리뷰 작성 안 한 온라인 웨이팅 1건 -->
+<select id="getWritableItemByWait" resultMap="WaitVO">
+	select s.store_id, w.wait_id, w.user_id, w.wait_reg_tm, s.store_nm, s.rep_img
+	from tbl_wait w, tbl_store s
+	where w.wait_stus_cd = 'E'
+	and w.revw_stus = 0
+	and w.user_id = #{userId}
+	and w.wait_id = #{waitId}
+	and w.store_id = s.store_id
+</select>
+
+<!-- 리뷰 1건 읽기 -->
+<select id="readRevw" resultType="com.dealight.domain.RevwVO">	
+	select * from tbl_revw
+	where revw_id = #{revwId}
+</select>
+
+<!-- 리뷰 등록 -->
+<insert id="insertRevw">
+	<selectKey keyProperty="revwId" order="BEFORE" resultType="Long">
+		select tbl_revw_SEQ.nextval from dual
+	</selectKey>
+	
+	insert into tbl_revw (revw_id, store_id, store_nm, rsvd_id, wait_id, user_id, cnts, reg_dt, rating)
+	values (#{revwId}, #{storeId}, #{storeNm}, #{rsvdId}, #{waitId}, #{userId}, #{cnts}, sysdate, #{rating})
+</insert>
+<!-- 리뷰 사진 등록 -->
+<insert id="insertRevwImg">
+	insert into tbl_revw_img(revw_id, img_seq, img_url)
+	values (tbl_revw_SEQ.currval, tbl_revw_img_SEQ.nextval, #{imgUrl})
+</insert>
+<!-- 리뷰 등록 후 리뷰 수 카운팅하여 매장평가에 반영 -->
+<!-- <update id="countRevwForStoreEval">
+	update tbl_store_eval
+	set revw_tot_num = 
+	(select count(revw_id) from tbl_revw where store_id = #{storeId}
+	GROUP by store_id)
+	where store_id = #{storeId}
+</update> -->
+
+<!-- 예약의 리뷰 상태 1(작성됨)로 업데이트 -->
+<update id="updateRsvdRevwStus">
+	update tbl_rsvd
+	set revw_stus = 1
+	where user_id = #{userId}
+	and rsvd_id = #{rsvdId}
+</update>
+
+<!-- 온라인 웨이팅의 리뷰 상태 1(작성됨)로 업데이트 -->
+<update id="updateWaitRevwStus">
+	update tbl_wait
+	set revw_stus = 1
+	where user_id = #{userId}	
+	and wait_id = #{waitId}
+</update>
+
+<!-- 매장측의 리뷰 답변 업데이트 -->
+<update id="updateRevwReply">
+	update tbl_revw
+	set reply_cnts = #{replyCnts},
+	reply_reg_dt = sysdate
+	where user_id = #{userId}
+	and revw_id = #{revwId}
+</update>
+ 
+<!-- 리뷰 삭제 -->
+<delete id="deleteRevw">
+	delete from tbl_revw
+	where revw_id = #{revwId}
+</delete>
+
+</mapper>

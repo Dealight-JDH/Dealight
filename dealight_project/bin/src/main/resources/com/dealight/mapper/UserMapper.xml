@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 동인 -->
+<!-- 현수 -->
+<mapper namespace="com.dealight.mapper.UserMapper">
+
+<select id="getList" resultType="com.dealight.domain.UserVO">
+<![CDATA[
+select * from tbl_user
+]]>
+</select>
+
+<!-- 이메일이 일치하는 회원에 대한 아이디 찾기 -->
+<select id="getId" resultType="String">
+select user_id
+from tbl_user
+where email = #{email}
+</select>
+
+<!-- 아이디 이메일이 일치하는 회원에 대한 비밀번호 찾기-->
+<select id="getPwd" resultType="String">
+select pwd
+from tbl_user
+where user_id=#{userId}
+and email = #{email}
+</select>
+
+<!-- 발급받은 임시 비밀번호로 db변경 -->
+<update id="changePwd">
+update tbl_user
+set pwd = #{pwd}
+where user_id = #{userId}
+</update>
+
+
+
+<!-- 비밀번호 변경 관련 mapper 
+    
+    <update id = "pass_change" parameterType="hashMap">
+    update tbl_user set pwd = #{pwd} where email = #{email}
+ 
+    </update>
+    -->
+    
+    
+    
+<!-- 아이디 중복체크 중복 값 있으면 숫자 뱉어냄 -->
+<select id="checkId" parameterType="String" resultType="Integer">
+select count(*) from tbl_user
+where user_id = #{userId}
+
+</select>
+
+<!-- 회원가입 -->
+<insert id="insert">
+insert into tbl_user(user_id, name, pwd, email, telno, brdt, sex, sns_lgin_yn)
+values (#{userId}, #{name}, #{pwd}, #{email}, #{telno}, #{brdt}, #{sex}, #{snsLginYn})
+</insert>
+
+<!-- 회원정보 불러오기(마이페이지 회원정보 수정 -->
+<select id="read" resultType="com.dealight.domain.UserVO">
+select user_id, name, pwd, email, telno, brdt, sex, photo_src, sns_lgin_yn
+ from tbl_user where user_id = #{userId}
+</select>
+
+<!-- 로그인 정보 가져오기 -->
+<select id="login" resultType="com.dealight.domain.UserVO">
+select user_id, pwd
+from tbl_user
+where user_id = #{userId}
+</select>
+
+<!-- 회원탈퇴 아이디로 체크 -->
+<delete id="delete">
+delete from tbl_user where user_id = #{userId}
+</delete>
+
+<!-- 회원정보 수정(이름[닉네임], 이메일, 전화번호, sns연동 만 변경가능  -->
+<update id="update">
+update tbl_user
+set name=#{name},
+email = #{email},
+telno = #{telno},
+sns_lgin_yn = #{snsLginYn}
+where user_id = #{userId}
+</update>
+
+<!-- 프로필 사진 변경만 -->
+<update id="updatePhoto">
+update tbl_user
+set photo_src = #{photoSrc}
+where user_id = #{userId}
+</update>
+
+	<select id="findAll" resultType="com.dealight.domain.UserVO">
+		SELECT
+		*
+		FROM tbl_user
+	</select>
+
+	<select id="findById" resultType="com.dealight.domain.UserVO">
+		SELECT
+		*
+		FROM tbl_user
+		where
+		user_id = #{userId}
+	</select>
+	
+</mapper>
