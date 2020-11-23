@@ -20,7 +20,7 @@
 			 <a href='/dealight/store?storeId=<c:out value="${store.storeId}"/>'> < </a> 
 				<h1>매장정보</h1>
 				${store.storeNm }
-				<c:if test="${store.imgs[0].imgUrl != null}">
+				<c:if test="${store.imgs[0].fileName != null}">
 						<img class="imgCon"
 							src='/resources/image/<c:out value="${store.imgs[0].fileName}" />'>
 				</c:if>
