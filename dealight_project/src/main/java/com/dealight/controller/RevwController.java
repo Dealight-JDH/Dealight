@@ -121,17 +121,16 @@ public class RevwController {
 	public String registerRevwByWait(String userId, Long waitId, String imgUrl,
 			RevwVO revw, RevwImgVO img, RedirectAttributes rttr) {
 
-		if(!img.getImgUrl().equals("")) {
+//		if(!img.getImgUrl().equals("")) {
 			service.registerRevw(revw);
 			service.registerRevwImg(img);
 
-			log.info("REGISTER WAIT REVW");
-			log.info("USERID: " + userId + "@@");
-			log.info("WAITID: " + waitId + "@@");
-			log.info("REVW: " + revw + "@@");
-
-		} else {
-			service.registerRevw(revw);
+//			log.info("REGISTER WAIT REVW");
+//			log.info("USERID: " + userId + "@@");
+//			log.info("WAITID: " + waitId + "@@");
+//			log.info("REVW: " + revw + "@@");
+//		} else {
+//			service.registerRevw(revw);
 
 			log.info("REGISTER WAIT REVW");
 			log.info("USERID: " + userId + "@@");
