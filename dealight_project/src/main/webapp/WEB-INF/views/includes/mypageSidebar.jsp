@@ -135,11 +135,11 @@
 			</button>
 	
 			<button class="accordion">
-				<a href="writable-list?userId=${userId }">나의리뷰</a>
+				<a href="writable-list">나의리뷰</a>
 		</button>
 		<div class="panel">
-			<a href="writable-list?userId=${userId }">작성 가능한 리뷰</a>
-			<a href="written-list?userId=${userId }">내가 작성한 리뷰</a>
+			<a href="writable-list">작성 가능한 리뷰</a>
+			<a href="written-list">내가 작성한 리뷰</a>
 			</div>
 	
 			<button class="accordion">

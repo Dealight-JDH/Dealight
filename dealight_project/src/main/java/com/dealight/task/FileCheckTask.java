@@ -92,11 +92,11 @@ public class FileCheckTask {
     	
     	List<Long> storeList = new ArrayList<>();
     	
-    	storeList.add(101L);
-    	storeList.add(187L);
-    	storeList.add(188L);
-    	storeList.add(189L);
-    	storeList.add(201L);
+    	storeList.add(1L);
+    	storeList.add(10L);
+    	storeList.add(13L);
+    	storeList.add(16L);
+    	storeList.add(18L);
     	
     	List<Integer> waitPnumList = new ArrayList<>();
     	
@@ -118,6 +118,7 @@ public class FileCheckTask {
         UserVO user = userService.get(userId);
     	
     	WaitVO wait = new WaitVO().builder()
+    			.waitId(0L)
     			.storeId(storeId)
     			.userId(userId)
     			.waitRegTm(new Date())
@@ -134,7 +135,7 @@ public class FileCheckTask {
 		
 	}
 	
-	// 자동 예약 생성기
+	// 자동 예약 생성기//
 	//@Scheduled(cron="0 * * * * *")
 	public void registerRsvd() throws Exception{
 		log.warn("Auto Rsvd Register Task run .....................");
@@ -156,48 +157,46 @@ public class FileCheckTask {
     	
     	List<Long> storeList = new ArrayList<>();
     	
-    	storeList.add(101L);
-    	storeList.add(187L);
-    	storeList.add(188L);
-    	storeList.add(189L);
-    	storeList.add(201L);
+    	storeList.add(1L);
+    	storeList.add(10L);
+    	storeList.add(13L);
+    	storeList.add(16L);
+    	storeList.add(18L);
     	
     	int storeIdx = (int) (Math.random() * storeList.size());
     	
     	List<String> timeList = new ArrayList<>();
     	
-    	timeList.add("09:00");
-    	timeList.add("09:30");
-    	timeList.add("10:00");
-    	timeList.add("10:30");
-    	timeList.add("11:00");
-    	timeList.add("11:30");
-    	timeList.add("12:00");
-    	timeList.add("12:30");
-    	timeList.add("13:00");
-    	timeList.add("13:30");
-    	timeList.add("14:-0");
-    	timeList.add("14:30");
-    	timeList.add("15:00");
-    	timeList.add("15:30");
-    	timeList.add("16:00");
-    	timeList.add("16:30");
-    	timeList.add("17:00");
-    	timeList.add("17:30");
-    	timeList.add("18:00");
-    	timeList.add("18:30");
-    	timeList.add("19:00");
-    	timeList.add("19:30");
-    	timeList.add("20:00");
-    	timeList.add("20:30");
-    	timeList.add("21:00");
-    	timeList.add("21:30");
-    	timeList.add("22:00");
+    	Calendar cal = Calendar.getInstance();
+    	cal.set(2020, 10, 23);
     	
-    	int timeIdx = (int) (Math.random() * timeList.size());
+    	List<Integer> hourList = new ArrayList<>();
+    	
+    	hourList.add(9);
+    	hourList.add(10);
+    	hourList.add(11);
+    	hourList.add(12);
+    	hourList.add(13);
+    	hourList.add(14);
+    	hourList.add(15);
+    	hourList.add(16);
+    	hourList.add(17);
+    	hourList.add(18);
+    	hourList.add(19);
+    	hourList.add(20);
+    	hourList.add(21);
+    	
+    	int hourIdx = (int) (Math.random() * hourList.size());
+    	
+    	List<Integer> minuteList = new ArrayList<>();
+    	
+    	minuteList.add(0);
+    	minuteList.add(30);
+    	
+    	int minuteIdx = (int) (Math.random() * minuteList.size());
     	
         long id = 6;
-        long storeId = 101;
+        long storeId = 1;
         String userId = "soo";
         int pnum = 30;
         String time = "09:30";
@@ -217,7 +216,11 @@ public class FileCheckTask {
         
         userId = userIdList.get(userIdx);
         storeId = storeList.get(storeIdx);
-        time = timeList.get(timeIdx);
+    	cal.set(2020, 11, 23);
+    	cal.set(cal.HOUR_OF_DAY,hourList.get(hourIdx));
+    	cal.set(cal.MINUTE, minuteList.get(minuteIdx));
+    	
+    	SimpleDateFormat formatter = new SimpleDateFormat ( "yyyy/MM/dd HH:mm:ss");
         
     	RsvdVO rsvd = new RsvdVO().builder()
     			.rsvdId(id)
@@ -225,7 +228,7 @@ public class FileCheckTask {
 				.storeId(storeId)
 				.userId(userId)
 				.pnum(pnum)
-				.time("09:30")
+				.time(formatter.format(new Date(cal.getTimeInMillis())))
 				.totAmt(totAmt)
 				.totQty(totQty)
 				.stusCd("C")
@@ -274,7 +277,7 @@ public class FileCheckTask {
 		log.warn("=========================================rsvd 예약 완료");
 	}
 
-//	@Scheduled(cron="0 10 * * * *")
+	//@Scheduled(cron="0 10 * * * *")
 	public void checkFiles() throws Exception{
 		
 		log.warn("Image File Check Task run .....................");

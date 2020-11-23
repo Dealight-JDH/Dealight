@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -50,8 +49,6 @@ public class RevwController {
 	       model.addAttribute("msg", "로그인이 필요한 페이지 입니다.");
 	    }
 		
-//		model.addAttribute("userId", user.getUserId());
-
 		log.info("COUNT REVW...");
 		model.addAttribute("countRevw", service.countRevw(user.getUserId()));
 

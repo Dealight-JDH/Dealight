@@ -250,7 +250,7 @@ public class BoardController {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		
 		rsvdList.stream().forEach((rsvd) -> {
-			rsvd.setStrRegDate(simpleDateFormat.format(rsvd.getRegDate()));
+			rsvd.setStrRegDate(simpleDateFormat.format(rsvd.getRegdate()));
 		});
 		
 		log.info("last week rsvd list............" + rsvdList);
@@ -285,7 +285,7 @@ public class BoardController {
 		
 		List<RsvdVO> rsvdList = userService.getRsvdListStoreUser(storeId, userId);
 		
-		rsvdList = rsvdList.stream().sorted((r1,r2) -> (int) (r2.getRegDate().getTime() - r1.getRegDate().getTime())).collect(Collectors.toList());
+		rsvdList = rsvdList.stream().sorted((r1,r2) -> (int) (r2.getRegdate().getTime() - r1.getRegdate().getTime())).collect(Collectors.toList());
 		
 		return new ResponseEntity<>(rsvdList, HttpStatus.OK);
 		//return new ResponseEntity<>(userService.getRsvdListStoreUser(storeId, userId), HttpStatus.OK);

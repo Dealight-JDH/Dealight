@@ -12,11 +12,11 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class CommonExceptionAdvice {
 	   
-		@ExceptionHandler(Exception.class)
-		public String exception(Exception ex) {
-			log.error("Exception....."+ex.getMessage());
-			return "error_page";
-		}
+//		@ExceptionHandler(Exception.class)
+//		public String exception(Exception ex) {
+//			log.error("Exception....."+ex.getMessage());
+//			return "error_page";
+//		}
 	
 		@ExceptionHandler(NoHandlerFoundException.class)
 		@ResponseStatus(HttpStatus.NOT_FOUND)

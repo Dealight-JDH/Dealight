@@ -92,7 +92,7 @@ public class BusinessController {
 		
 		HttpSession session = request.getSession();
 		
-		// 임시로 'lim'이라는 아이디의 매장을 보여준다.
+		// 임시로 'aaaa'이라는 아이디의 매장을 보여준다.
 		session.setAttribute("userId", "aaaa");
 		
 		String userId = (String) session.getAttribute("userId");
