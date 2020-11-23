@@ -129,13 +129,13 @@
 				<result property="waitTot" column="wait_tot" />
 			</collection>
 		</association>
-		
+		<!-- 다울  nstore-->
 		<association property="nstore" javaType="com.dealight.domain.NStoreVO">
 			<result column="store_id" property="storeId" />
 			<result column="biz_tm" property="bizTm" />
 			<result column="menu" property="menu" />
 		</association>
-
+		<!-- 다울  nstore end-->
 		<association property="loc" javaType="com.dealight.domain.StoreLocVO">
 			<result property="storeId" column="store_id" />
 			<result property="addr" column="addr" />
@@ -208,7 +208,7 @@
 		store_id = #{storeId}
 	</select>
 		
-	
+	<!--다울 nstore Mapper-->
 	<select id="getNstore" resultMap="StoreVO">
 		select s.store_id,s.store_nm,
 		n.biz_tm,n.menu,
@@ -224,7 +224,7 @@
 		and s.store_id=i.store_id(+)
 		and s.store_id = #{storeId}
 	</select>
-
+<!--다울 nstore Mapper end-->
 	<select id="getBstore" resultMap="StoreVO">
 		select
 		s.store_id,s.store_nm,s.telno,
