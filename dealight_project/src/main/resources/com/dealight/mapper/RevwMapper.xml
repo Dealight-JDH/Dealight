@@ -61,10 +61,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<result property="storeNm" column="store_nm" />
 	<result property="telno" column="telno" />
 	<result property="clsCd" column="cls_cd" />
-	<result property="repImg" column="rep_img" />
-	<result property="repMenu" column="rep_menu" />
-	<result property="brch" column="brch" />
-	<result property="revwStus" column="revw_stus" />
 	<result property="regdate" column="regdate" />
 	<result property="updatedate" column="updatedate" />
 </resultMap>

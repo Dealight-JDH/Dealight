@@ -137,7 +137,7 @@ public class RevwController {
 			log.info("WAITID: " + waitId + "@@");
 			log.info("REVW: " + revw + "@@");
 			log.info("IMG: " + img + "@@");
-		}
+//		}
 
 		System.out.println(service.updateWaitRevwStus(userId, waitId));
 		rttr.addFlashAttribute("result", revw.getWaitId());
