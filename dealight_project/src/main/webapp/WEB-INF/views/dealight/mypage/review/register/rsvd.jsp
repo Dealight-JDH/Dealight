@@ -28,9 +28,9 @@ let msg = '${msg}';
 
 		매장번호: ${rsvd.store.storeId } <br />
 		예약번호: ${rsvd.rsvdId } <br />
-		매장사진: ${rsvd.store.repImg } <br />
+		매장사진: ${rsvd.bstore.repImg } <br />
 		매장명: ${rsvd.store.storeNm } <br />
-		예약날짜: <fmt:formatDate pattern="yyyy-MM-dd" value="${rsvd.regDate }" /> <br />
+		예약날짜: <fmt:formatDate pattern="yyyy-MM-dd" value="${rsvd.regdate }" /> <br />
 		예약메뉴: ${rsvd.dtls.menuNm } <br /> <br />
 		
 		<label>상품에 만족하십니까?</label> <br />

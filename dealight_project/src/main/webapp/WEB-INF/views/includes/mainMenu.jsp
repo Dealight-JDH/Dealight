@@ -285,7 +285,7 @@ body {
 					<button class="dropbtn">
 						<i class="fas fa-bars" color="black"></i>
 						<div class="dropdown-content">
-							<a href="#">핫딜 찾기</a> <a href="#">매장 찾기</a>
+							<a href="/dealight/hotdeal/main">핫딜 찾기</a> <a href="#">매장 찾기</a>
 						</div>
 					</button>
 				</div>

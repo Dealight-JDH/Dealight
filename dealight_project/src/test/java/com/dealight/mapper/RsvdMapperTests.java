@@ -341,7 +341,7 @@ public class RsvdMapperTests {
     	
     	list.forEach((rsvd) -> {
     		assertTrue(rsvd.getStoreId() == storeId);
-    		assertTrue(rsvd.getRegDate().equals(date));
+    		assertTrue(rsvd.getRegdate().equals(date));
     	});
     	 
     	

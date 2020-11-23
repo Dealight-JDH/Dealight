@@ -532,8 +532,12 @@
 			const watingPersonNum = '<input type="hidden" name=pnum value="'
 					+ $("#waitingNum option:selected").val() + '">';
 			waitingForm.append(watingPersonNum);
+
 			submitted=true;
 			waitingForm.submit();
+
+			//waitingForm.submit();
+
 		});
 		
 		});

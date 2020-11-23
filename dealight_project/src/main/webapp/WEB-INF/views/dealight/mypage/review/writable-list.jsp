@@ -8,18 +8,20 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <script>
-	// 로그인이 안된 상태면 메인페이지로 넘어가게
-    let msg = '${msg}';
-      if(msg != ""){
-         alert(msg);
-         location.href = '/dealight/dealight';
-      }
+// 로그인이 안된 상태면 메인페이지로 넘어가게
+let msg = '${msg}';
+	if(msg != ""){
+        alert(msg);
+        location.href = '/dealight/dealight';
+     }
 </script>
 
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 
 <!-- Add icon library -->
@@ -57,10 +59,10 @@
 			<c:forEach items="${rsvdList }" var="rsvd">
 				<br />
 				회원아이디: <c:out value="${rsvd.userId }" /> <br />
-				매장대표사진: <c:out value="${rsvd.store.repImg }" /> <br />
+				매장대표사진: <c:out value="${rsvd.bstore.repImg }" /> <br />
 				예약번호: <c:out value="${rsvd.rsvdId }" /> <br />
 				매장명: <c:out value="${rsvd.store.storeNm }" /> <br />
-				예약날짜: <fmt:formatDate pattern="yyyy-MM-dd" value="${rsvd.regDate }" /> <br />
+				예약날짜: <fmt:formatDate pattern="yyyy-MM-dd" value="${rsvd.regdate }" /> <br />
 				예약인원: <c:out value="${rsvd.pnum }" /><br />
 				예약메뉴: <c:out value="${rsvd.dtls.menuNm }" /> <br />
 				예약메뉴수: <c:out value="${rsvd.dtls.menuTotQty }" /> <br />
@@ -82,7 +84,7 @@
 			<c:forEach items="${waitList }" var="wait"> <br />
 				
 				회원아이디: <c:out value="${wait.userId }" /> <br />
-				매장대표사진: <c:out value="${wait.store.repImg }" /> <br />
+				매장대표사진: <c:out value="${wait.bstore.repImg }" /> <br />
 				웨이팅번호: <c:out value="${wait.waitId }" /> <br />
 				매장명: <c:out value="${wait.store.storeNm }" /> <br />
 				웨이팅시간: <fmt:formatDate pattern="yyyy-MM-dd" value="${wait.waitRegTm }" /> <br />	

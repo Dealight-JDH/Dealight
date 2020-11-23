@@ -2,6 +2,10 @@ package com.dealight.domain;
 
 import static org.junit.Assert.assertTrue;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.junit.Test;
 
 public class RsvdVOTests {
@@ -76,6 +80,19 @@ public class RsvdVOTests {
 		assertTrue(rsvd.getStusCd().equals("P"));
 		
 		
+	}
+	
+	@Test
+	public void test() {
+		
+    	Calendar cal = Calendar.getInstance();
+    	cal.set(2020, 10, 23);
+    	cal.set(cal.HOUR_OF_DAY,9);
+    	cal.set(cal.MINUTE, 30);
+
+    	SimpleDateFormat formatter = new SimpleDateFormat ( "yyyy.MM.dd HH:mm:ss");
+		
+		System.out.println(formatter.format(new Date(cal.getTimeInMillis())));
 	}
 
 }
