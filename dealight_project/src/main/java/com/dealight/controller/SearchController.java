@@ -14,7 +14,7 @@ import lombok.extern.log4j.Log4j;
 //현중
 @Controller
 @Log4j
-@RequestMapping("/search/*")
+@RequestMapping("/dealight/search/*")
 @AllArgsConstructor
 public class SearchController {
 
@@ -28,6 +28,6 @@ public class SearchController {
 		
 		model.addAttribute("search", search);
 		
-		return "/search/list";
+		return "dealight/search/list";
 	}
 }
