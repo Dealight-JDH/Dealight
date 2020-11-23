@@ -334,9 +334,13 @@ public class StoreServiceImpl implements StoreService {
 				.storeId(store.getStoreId())
 				.storeNm(store.getStoreNm())
 				.telno(store.getTelno())
+				.clsCd(store.getClsCd())
 				.build();
 		BStoreVO bstore = BStoreVO.builder()
 				.seatStusCd(store.getSeatStusCd())
+				.brch(store.getBrch())
+				.repImg(store.getRepImg())
+				.repMenu(store.getRepMenu())
 				.buserId(store.getBuserId())
 				.storeId(store.getStoreId())
 				.openTm(store.getOpenTm())
