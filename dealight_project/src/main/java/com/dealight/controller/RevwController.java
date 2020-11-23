@@ -83,6 +83,7 @@ public class RevwController {
 		// 이미지 첨부는 선택적으로 가능하게 변경해야 함
 		/* if(!img.getImgUrl().equals("")) { */
 			service.registerRevw(revw);
+			service.registerRevwImg(img);
 
 			log.info("REGISTER RSVD REVW");
 			log.info("USERID: " + userId + "@@");
@@ -95,14 +96,14 @@ public class RevwController {
 		return "redirect:/dealight/mypage/review/writable-list";
 	}
 	
-	@PostMapping("/uploadRevwImgAction")
-	public void uploadRevwImgPost(MultipartFile[] uploadRevwImg, Model model) {
-		for(MultipartFile multipartRevwImg : uploadRevwImg) {
-			log.info("-----------------------------");
-			log.info("UPLOAD REVW IMG NAME: " + multipartRevwImg.getOriginalFilename());
-			log.info("UPLOAD REVW IMG SIZE: " + multipartRevwImg.getSize());
-		}
-	}
+//	@PostMapping("/uploadRevwImgAction")
+//	public void uploadRevwImgPost(MultipartFile[] uploadRevwImg, Model model) {
+//		for(MultipartFile multipartRevwImg : uploadRevwImg) {
+//			log.info("-----------------------------");
+//			log.info("UPLOAD REVW IMG NAME: " + multipartRevwImg.getOriginalFilename());
+//			log.info("UPLOAD REVW IMG SIZE: " + multipartRevwImg.getSize());
+//		}
+//	}
 	
 	@GetMapping("/register/wait")
 	public void getWritableItemByWait(HttpSession session, Long waitId, Model model) {
