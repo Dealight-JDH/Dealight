@@ -24,7 +24,6 @@ import lombok.NonNull;
 //다울
 public class WaitVO {
 	
-	@NonNull
     private Long waitId;
 
     @NonNull

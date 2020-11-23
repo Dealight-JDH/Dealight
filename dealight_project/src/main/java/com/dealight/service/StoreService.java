@@ -37,16 +37,13 @@ public interface StoreService {
 	
 	String getCurSeatStus(long storeId);
 	
-	// ���� ���� ���� ����
 	// bstore mapper update
 	boolean changeSeatStus(long storeId,String seatStusCd);
 	
-	// ����ð�?
 	Date getCurTime();
 	
 	StoreVO getStore(long storeId);
 	
-	// BStores
 	StoreVO findByStoreIdWithBStore(long storeId);
 	
 	BStoreVO getBStore(long storeId);
@@ -60,22 +57,13 @@ public interface StoreService {
 	
 	void registerMenu(MenuVO menu);
 	
-	
-	// ���� ����ϱ�
 	void registerStoreAndBStore(StoreVO store);
 	
-	
-	// ���� �����ϱ�
-	// bstore ����
 	boolean modifyStore(StoreVO store);
 	
 	boolean modifyStore(AllStoreVO store);
 	
-	// ���� ��� ���� ��������
 	AllStoreVO findAllStoreInfoByStoreId(long storeId);
-	
-
-	// ===============���� ���� ����
 	
 	List<StoreImgVO> getStoreImageList(long storeId);
 	

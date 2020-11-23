@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -45,7 +46,6 @@ public class RsvdServiceImpl implements RsvdService{
 	
 	@Override
 	public List<StoreMenuVO> getMenuList(Long storeId) {
-		// TODO Auto-generated method stub
 		
 		return menuMapper.findById(storeId);
 	}
@@ -53,7 +53,7 @@ public class RsvdServiceImpl implements RsvdService{
 	
 	@Override
 	public Long getRsvdId() {
-		// TODO Auto-generated method stub
+		
 		return rsvdMapper.getSeqRsvd();
 	}
 	
@@ -69,7 +69,6 @@ public class RsvdServiceImpl implements RsvdService{
 	@Transactional
 	@Override
 	public void register(RsvdVO vo, List<RsvdDtlsVO> dtlsList) {
-		// TODO Auto-generated method stub
 		
 		log.info("reservation register...");
 		
@@ -116,7 +115,6 @@ public class RsvdServiceImpl implements RsvdService{
 
 	@Override
 	public void complete(Long rsvdId) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -157,8 +155,11 @@ public class RsvdServiceImpl implements RsvdService{
     	DateTimeFormatter dateTimeForMatter = DateTimeFormatter.ofPattern("yyyyMMdd");
     	
     	String today = currentDate.format(dateTimeForMatter);
-		
+    	
+    	// sorted는 뒤에가 기준이다.
 		return rsvdMapper.findByStoreIdAndDate(storeId, today).stream().filter(rsvd -> rsvd.getStusCd().equals("C"))
+				.sorted((r1,r2) -> (int) (r1.getRsvdId() - r2.getRsvdId()))
+				.sorted((r1,r2) -> (int) calTimeMinutes(r1.getTime()) - calTimeMinutes(r2.getTime()))
 				.collect(Collectors.toList());
 	}
 	
@@ -171,7 +172,7 @@ public class RsvdServiceImpl implements RsvdService{
 	@Override
 	public String getTime(Date date) {
 		
-		String pattern = "HH:mm";
+		String pattern = "HH/mm";
 		
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		
@@ -183,18 +184,17 @@ public class RsvdServiceImpl implements RsvdService{
 	@Override
 	public int calTimeMinutes(String time) {
 		
-		String[] toMinutes = time.split(":");
+		String[] toMinutes = time.split("/");
 		
 		int minutes = Integer.valueOf(toMinutes[0]) * 60+ Integer.valueOf(toMinutes[1]);
 		
 		return minutes;
 	}
 	
-	// time = "yyyyMMdd"
 	@Override
 	public String toRsvdByTimeFormat(String time) {
 		
-		String[] times = time.split(":");
+		String[] times = time.split("/");
 		
 		String strHour = times[0];
 		int minute = Integer.valueOf(times[1]);
@@ -226,8 +226,6 @@ public class RsvdServiceImpl implements RsvdService{
 		
 		listByDate.stream().forEach((rsvd) -> {
 			
-			// C���� �ȴ�.
-			
 			log.info("for each ......................");
 			
 			if(!rsvd.getStusCd().equalsIgnoreCase("C")) {
@@ -238,12 +236,15 @@ public class RsvdServiceImpl implements RsvdService{
 			log.info("stus check ......................");
 			
 			String time = getTime(rsvd.getRegdate());
+			log.info("reg date............" + rsvd.getRegDate());
 			
-			log.info("get time ......................");
+			String time = rsvd.getTime();
+			
+			log.info("get time ......................" + time);
 			
 			String fomatedTime = toRsvdByTimeFormat(time);
 			
-			log.info("to rsvd by time formate ......................");
+			log.info("to rsvd by time formate ......................" + fomatedTime);
 			
 			if(map.get(fomatedTime) == null)
 				map.put(fomatedTime, new ArrayList<Long>());
@@ -259,33 +260,17 @@ public class RsvdServiceImpl implements RsvdService{
 	@Override
 	public boolean isReserveThisTimeStore(long storeId, Date date,int acm) {
 		
-		//log.info("test..................date" + date);
-		
 		String time = getTime(date);
-		
-		//log.info("test..................time" + time);
 		
 		String pattern = "yyyyMMdd";
 		
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		
-		//log.info("test.....................date"+simpleDateFormat.format(date));
-		
 		List<RsvdVO> list = getListByDate(storeId, simpleDateFormat.format(date));
-		
-		//log.info("test..................list" + list);
 		
 		HashMap<String,List<Long>> map = getRsvdByTimeMap(list);
 		
-		//log.info("test..................map" + map);
-		
 		time = toRsvdByTimeFormat(time);
-		
-		//log.info("test..................time" + time);
-		
-		//log.info("test..................map.get(time) : " + map.get(time));
-		
-		//return false;
 		
 		return map.get(time) == null ? true : map.get(time).size() < acm ? true : false;
 	}
@@ -293,33 +278,7 @@ public class RsvdServiceImpl implements RsvdService{
 	@Override
 	public long readNextRsvdId(HashMap<String, List<Long>> getTodayRsvdByTimeMap) {
 		
-		//log.info("Test.................." + getTodayRsvdByTimeMap);
-		
 		SortedSet<String> keys = new TreeSet<>(getTodayRsvdByTimeMap.keySet());
-		
-		//log.info("Test.................." + getTodayRsvdByTimeMap);
-		
-		/*
-		
-		log.info("test..............................."+keys);
-		
-		Iterator<String> it = keys.iterator();
-		
-		while(it.hasNext()) {
-			
-			String key = it.next();
-			
-			map.get(key).stream().forEach(rsvdId -> {
-				
-				log.info("test...............key : " + key);
-				log.info("test...............rsvdId : "+rsvdId);
-				
-			});;
-			
-		}
-		*/
-		
-		//log.info("Test........................keys : " + keys);
 		
 		Iterator it = keys.iterator();
 		
@@ -328,11 +287,6 @@ public class RsvdServiceImpl implements RsvdService{
 		if(it.hasNext())
 			first = (String) it.next();
 		
-		//log.info("Test......................first" + first);
-		
-		//log.info("test................keys it next : "+getTodayRsvdByTimeMap.get(first));
-		
-		// ���� ���� ����� ������ -1����
 		if(first.equals(""))
 			return -1;
 		if(getTodayRsvdByTimeMap == null)
@@ -410,8 +364,6 @@ public class RsvdServiceImpl implements RsvdService{
     	
     	HashMap<String,Integer> hash = new HashMap<String, Integer>();
     	
-
-    	
     	rsvdMapper.findMenuCntByStoreIdAndDate(storeId, date).stream().forEach((m) -> {
     		log.info("test............"+m.get("MENU_NM"));
     		log.info("test............"+m.get("COUNT(*)"));
@@ -434,7 +386,6 @@ public class RsvdServiceImpl implements RsvdService{
     	
     	log.info("today..................." + date);
 		
-
 		return rsvdMapper.findUserByStoreIdAndDate(storeId, date);
 	}
 
@@ -463,7 +414,6 @@ public class RsvdServiceImpl implements RsvdService{
 
 	@Override
 	public List<RsvdVO> findLastWeekRsvd(long storeId) {
-		
 		
 		return rsvdMapper.findLastWeekRsvdListByStoreId(storeId);
 	}

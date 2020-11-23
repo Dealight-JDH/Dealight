@@ -32,12 +32,12 @@ import lombok.extern.log4j.Log4j;
 /*
  * 
  *****[김동인] 
- * 
+ * **
  * 
  */
 @RestController
 @Log4j
-@RequestMapping("/business/manage/*")
+@RequestMapping("/dealight/business/manage/*")
 @AllArgsConstructor
 public class BoardController {
 
@@ -86,8 +86,10 @@ public class BoardController {
 	public ResponseEntity<List<RsvdVO>> getRsvdList(@PathVariable("storeId") long storeId) {
 
 		log.info("get rsvd list...........");
+		
+		List<RsvdVO> rsvdList = rsvdService.readTodayCurRsvdList(storeId);
 
-		return new ResponseEntity<>(rsvdService.readTodayCurRsvdList(storeId), HttpStatus.OK);
+		return new ResponseEntity<>(rsvdList, HttpStatus.OK);
 	}
 
 	// storeId로 해당 매장의 '오늘' 예약 맵을 가져온다.
@@ -288,6 +290,24 @@ public class BoardController {
 		return new ResponseEntity<>(rsvdList, HttpStatus.OK);
 		//return new ResponseEntity<>(userService.getRsvdListStoreUser(storeId, userId), HttpStatus.OK);
 	}	
+	
+	// 메시지를 보낸다.
+//	@PostMapping(value = "/board/message/send/ 
+//			produces = {
+//					MediaType.APPLICATION_JSON_UTF8_VALUE,
+//					MediaType.APPLICATION_XML_VALUE
+//	})
+//	public ResponseEntity<List<RsvdVO>> getMessage(@PathVariable("storeId") long storeId, @PathVariable("userId") String userId) {
+//		
+//		log.info("get user rsvd list....................");		
+//		
+//		List<RsvdVO> rsvdList = userService.getRsvdListStoreUser(storeId, userId);
+//		
+//		rsvdList = rsvdList.stream().sorted((r1,r2) -> (int) (r2.getRegDate().getTime() - r1.getRegDate().getTime())).collect(Collectors.toList());
+//		
+//		return new ResponseEntity<>(rsvdList, HttpStatus.OK);
+//		//return new ResponseEntity<>(userService.getRsvdListStoreUser(storeId, userId), HttpStatus.OK);
+//	}
 
 	// 수정 전
 	//	@GetMapping(value = "/board/hotdeal/{storeId}", produces = {

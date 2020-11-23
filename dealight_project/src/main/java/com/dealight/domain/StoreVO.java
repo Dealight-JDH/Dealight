@@ -39,9 +39,7 @@ public class StoreVO {
 	    
 	    // 수빈: 추가한 컬럼들
 	    // 매장 대표사진
-	    private String repImg;
 	    // 매장 지점이름
-	    private String brch;
 	    // 추가되는 날짜 컬럼들
 	    private Date regdate;
 	    private Date updatedate;

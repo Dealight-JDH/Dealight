@@ -40,15 +40,12 @@ public interface HtdlService {
 	// select
 	HtdlRsltVO readRslt(long htdlId);
 	
-	// ���� ��
 	int calHtdlEndTm(HtdlVO htdl);
 	
 	// mapper method �ʿ�
-	// ���� '�� ����'�� ��ϵ� '�ֵ�' ����Ʈ '����' ����
 	List<HtdlVO> readAllStoreHtdlList(long storeId);
 	
 	// mapper method �ʿ�
-	// ���� '�� ����'�� ��ϵ� '�ֵ�' �� 'Ȱ��ȭ'������ ����Ʈ ����
 	// htdl_stus_cd = 'A'
 	List<HtdlVO> readActStoreHtdlList(long storeId);
 

@@ -59,27 +59,16 @@ public class StoreServiceImpl implements StoreService {
 	private StoreLocMapper lMapper;
 	private StoreEvalMapper eMapper;
 	private StoreMapper storeMapper;
-	
 	private BStoreMapper bStoreMapper;
-	
 	private NStoreMapper nStoreMapper;
-	
 	private AllStoreMapper allStoreMapper;
-	
 	private StoreImgMapper storeImgMapper;
-	
 	private StoreImgMapper imgMapper;
-	
 	private RevwMapper revwMapper;
-	
 	private MenuMapper menuMapper;
-	
 	private StoreLocMapper locMapper;
-	
 	private StoreEvalMapper evalMapper;
-	
 	private StoreOptionMapper optMapper;
-	
 	private StoreTagMapper tagMapper;
 	
 	private StoreVO setId(StoreVO store) {
@@ -195,7 +184,7 @@ public class StoreServiceImpl implements StoreService {
 		StoreVO store = storeMapper.read(storeId);
 
 		if(!store.getClsCd().equals("B"))
-			return "����ڷ� ��ϵ� ������ �ƴմϴ�.";
+			return "현재 착석 상태가 B가 아닙니다.";
 		
 		BStoreVO bstore = bStoreMapper.findByStoreId(store.getStoreId());
 		
@@ -223,7 +212,6 @@ public class StoreServiceImpl implements StoreService {
 		return storeMapper.findByIdJoinBStore(storeId);
 	}
 
-	// mapper 2��
 	@Transactional
 	@Override
 	public void registerStoreAndBStore(StoreVO store) {
@@ -289,9 +277,6 @@ public class StoreServiceImpl implements StoreService {
 	}
 
 	
-	// store update�� �� ���� 
-	// ���԰����� nstore, bstore�� ��� ������Ʈ ����� �Ѵ�.
-	// mapper 2��
 	@Override
 	public boolean modifyStore(StoreVO store) {
 		
