@@ -1,8 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!-- 수빈 -->
+<%@ include file="../../../../includes/mainMenu.jsp" %>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+<script>
+//로그인이 안된 상태면 메인페이지로 넘어가게
+let msg = '${msg}';
+  if(msg != ""){
+     alert(msg);
+     location.href = '/dealight/dealight';
+  }
+</script>
 
 <html>
 <head>
@@ -16,7 +27,7 @@
 		
 		매장번호: ${wait.store.storeId } <br />
 		웨이팅번호: ${wait.waitId } <br />
-		매장사진: ${wait.store.repImg } <br />
+		매장사진: ${wait.bstore.repImg } <br />
 		매장명: ${wait.store.storeNm } <br />
 		웨이팅접수시간: <fmt:formatDate pattern="yyyy-MM-dd" value="${wait.waitRegTm }" /> <br /> <br />
 		
@@ -32,6 +43,7 @@
 		<button type="button" class="submitbtn">사진 첨부</button> <br />
 		<textarea class="imgUrl" rows="3" name="imgUrl" required
 			placeholder="(임시)이미지 url을 문자열로 입력해주세요."></textarea> <br /> <br />
+			<!-- <input type="file" name="uploadRevwImg" multiple> <br /> <br /> -->
 
 		<button type="submit" class="submitbtn">등록</button>
 		<button type="button" class="closebtn">취소</button>
@@ -44,6 +56,7 @@
 	</form>
 
 	<script>
+	
 		function checkSubmit(i) {
 			var cnts = document.getElementById("cnts");
 			

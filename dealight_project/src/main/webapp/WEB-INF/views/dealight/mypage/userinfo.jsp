@@ -17,6 +17,5 @@
 <p>아이디  :<c:out value = "${user.userId }"/></p>
 <p>이름     :<c:out value = "${user.name }"/></p>
 <p>이메일  :<c:out value = "${user.email }"/></p>
-<a href = "/dealight/dealight">홈으로</a>
 </body>
 </html>

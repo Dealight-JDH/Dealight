@@ -123,7 +123,7 @@ public class ReservationServiceTests {
 		
 		list.forEach((rsvd) -> {
 			
-			assertTrue(simpleDateFormat.format(rsvd.getRegDate()).equals(simpleDateFormat.format(date)));
+			assertTrue(simpleDateFormat.format(rsvd.getRegdate()).equals(simpleDateFormat.format(date)));
 			
 		});
 		
@@ -147,7 +147,7 @@ public class ReservationServiceTests {
 		list.forEach((rsvd) -> {
 			
 			assertTrue(rsvd.getStoreId() == storeId);
-			assertTrue(simpleDateFormat.format(rsvd.getRegDate()).equals(date));
+			assertTrue(simpleDateFormat.format(rsvd.getRegdate()).equals(date));
 			
 		});
 		

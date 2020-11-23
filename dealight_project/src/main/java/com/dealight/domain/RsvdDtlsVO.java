@@ -47,8 +47,8 @@ public class RsvdDtlsVO {
     private int menuPrc;
 	
 	//등록 날짜
-	private Date regDate;
+	private Date regdate;
 	
 	//수정 날짜
-	private Date updateDate;
+	private Date updatedate;
 }

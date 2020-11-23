@@ -135,6 +135,7 @@ public class FileCheckTask {
 		
 	}
 	
+
 	// 자동 예약 생성기//
 	//@Scheduled(cron="0 * * * * *")
 	public void registerRsvd() throws Exception{
