@@ -100,8 +100,6 @@ public class BoardController {
 	})
 	public ResponseEntity<HashMap<String, List<Long>>> getTodayRsvdMap(@PathVariable("storeId") long storeId) {
 
-		
-
 		List<RsvdVO> list = rsvdService.readTodayCurRsvdList(storeId);
 		
 		log.info("get today cur rsvd list.............................." + list);

@@ -243,7 +243,7 @@ public class RsvdServiceImpl implements RsvdService{
 
 			//log.info("reg date............" + rsvd.getRegDate());
 			
-			String time = rsvd.getTime();
+			String time = getTime(rsvd.getTime());
 			
 			log.info("get time ......................" + time);
 			

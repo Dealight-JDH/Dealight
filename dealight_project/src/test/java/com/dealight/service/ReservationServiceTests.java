@@ -199,8 +199,8 @@ public class ReservationServiceTests {
 	@Test
 	public void getRsvdByTimeMapTest1() {
 		
-		String date = "20201120";
-		storeId = 101L;
+		String date = "20201123";
+		storeId = 16L;
 		
 		List<RsvdVO> list = reservationService.getListByDate(storeId, date);
 		

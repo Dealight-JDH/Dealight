@@ -113,32 +113,35 @@
 	            </div>
             </div> <!-- end board -->
         </div>
-            <div class="rsvd_time_bar"> <!-- rsvd time bar -->
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-            </div> <!-- end rsvd time bar -->
+            <div class="rsvd_time_bar"><!-- rsvd time bar -->
+            	<div class="rsvd_time tooltip" id="slide-1"><h6>09:00</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-2"><h6>09:30</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-3"><h6>10:00</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-4"><h6>10:30</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-5"><h6>11:00</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-6"><h6>11:30</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-7"><h6>12:00</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-8"><h6>12:30</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-9"><h6>13:00</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-10"><h6>13:30</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-11"><h6>14:00</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-12"><h6>14:30</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-13"><h6>15:00</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-14"><h6>15:30</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-15"><h6>16:00</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-16"><h6>16:30</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-17"><h6>17:00</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-18"><h6>17:30</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-19"><h6>18:00</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-20"><h6>18:30</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-21"><h6>19:00</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-22"><h6>19:30</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-23"><h6>20:00</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-24"><h6>20:30</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-25"><h6>21:00</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-26"><h6>21:30</h6><div class="time_table"></div></div>
+		        <div class="rsvd_time tooltip" id="slide-27"><h6>22:00</h6><div class="time_table"></div></div>
+      		</div> <!-- end rsvd time bar -->
         </div> <!-- end main box -->
         <div class="info_box"> <!--  info box -->
         
@@ -703,6 +706,14 @@ window.onclick = function(event) {
             		return;
             	Object.entries(map).forEach(([key,value]) => {
             		strRsvdMap += "<li class='tooltip'>"+key + " : 예약번호[" + value+"] <span class='tooltiptext'>"+value+"번호 안녕?</span></li></br>";
+            		for(let i = 1; i < 28; i ++){
+            			console.log(key+' : '+i+ ' : '+document.querySelector('#slide-'+i+' h6').textContent);
+            			console.log(key === document.querySelector('#slide-'+i+' h6').textContent);
+            			if(key === document.querySelector('#slide-'+i+' h6').textContent){
+            				document.querySelector('#slide-'+i+' .time_table').innerHTML = "<span class='tooltiptext'>"+value+" 번호 예약</span>";
+            				document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(251, 255, 41, 0.898)';
+            			}
+            		}
             	})
             	
             	rsvdMapUL.html(strRsvdMap);

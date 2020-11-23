@@ -171,19 +171,19 @@
 
             flex-direction: row;
 
-            overflow: scroll;
+            overflow-x: auto;
         }
         .rsvd_time {
-            width: 150px;
-            height: 60px;
-            margin-bottom: 15px;
-
-            border: black solid 1px;
-            display: flex;
-            min-width: 100px;
+            width: 100px;
+    		flex-shrink: 0;
+    		height: 100%;
         }
-
-
+        .time_table{
+        	border : black solid 1px;
+       		width: 100px;
+        	height: 50px;
+        	background-color: rgb(125, 255, 164);
+        }
         /* hover */
 
         .tooltip {
@@ -360,6 +360,7 @@
         	height : 80px;
         	overflow:scroll;
         	left : 30px;
+        	display : hidden;
         }
         .rsvdMap {
         	display:inline;
