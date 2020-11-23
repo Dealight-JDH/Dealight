@@ -139,7 +139,7 @@ body {
 
 .mydropdown-content a {
 	color: black;
-	font-size: 5px;
+	font-size: 15px;
 	padding: 3px 5px;
 	text-decoration: none;
 	display: block;

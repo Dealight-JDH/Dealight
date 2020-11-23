@@ -4,11 +4,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -240,9 +238,6 @@ public class RsvdServiceImpl implements RsvdService{
 			}
 			
 			log.info("stus check ......................");
-			
-			String time = getTime(rsvd.getRegdate());
-			log.info("reg date............" + rsvd.getRegDate());
 			
 			String time = rsvd.getTime();
 			

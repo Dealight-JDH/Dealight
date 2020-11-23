@@ -32,10 +32,9 @@ public class HtdlTimeCheckService {
 	private HtdlMapper htdlMapper;
 
 	ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(3);
-
+	
 //	@PreDestroy
 //	public void preDestroy() {
-//
 //		log.info("============predestroy");
 //		try {
 //			exec.shutdown();
@@ -51,10 +50,36 @@ public class HtdlTimeCheckService {
 //			exec.shutdownNow();
 //			
 //		}
-//
 //		log.info("스케줄러 종료");
 //	}
 //	
+//	@PostConstruct
+//	public void postConstruct() throws ParseException {
+//		
+//		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+//		log.info(Thread.currentThread().getName());
+//		log.info("------postConstruct");
+//		
+//		//스케쥴러 실행
+//		exec.scheduleAtFixedRate(new Runnable() {
+//			
+//			@Override
+//			@Scheduled(fixedDelay = 3000)
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				try {
+//					log.info("------check======");
+//					//서비스 시작
+//					service();
+//					log.info("------check"+ Thread.currentThread().getName()+"---------");
+//				}catch(Exception e){
+//					e.printStackTrace();
+//					exec.shutdown();
+//				}
+//			}
+//			
+//		}, 0, 3, TimeUnit.SECONDS); 
+//	}
 
 	
 	@Transactional

@@ -61,11 +61,11 @@ public class KakaoService {
         //요청 바디
         MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
         params.add("cid","TC0ONETIME");
-        params.add("partner_order_id", rsvdId.toString());
+        params.add("partner_order_id", "1001");
         params.add("partner_user_id","whddn528");
         params.add("item_name","agaga");
         params.add("quantity", "3");
-        params.add("total_amount", totAmt.toString());
+        params.add("total_amount", "13000");
         params.add("tax_free_amount","0");
         params.add("approval_url","http://localhost:8181/dealight/reservation/kakaoPaySuccess");
         params.add("cancel_url","http://localhost:8181/dealight/reservation/kakaoPayCancel");
