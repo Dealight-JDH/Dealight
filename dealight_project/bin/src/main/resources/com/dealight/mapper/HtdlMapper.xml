@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		<mapper namespace="com.dealight.mapper.HtdlMapper">
+		
+		<!-- 동인 -->
+<!-- jongwoo -->
+		<!-- 핫딜+상세+매장평가 조인 -->
+		<resultMap type="com.dealight.domain.HtdlVO" id="HtdlDetail">
+			<id column="htdl_id" property="htdlId"/> 
+			<result column="name" property="name"/>
+			<result column="store_id" property="storeId"/>
+			<result column="dc_rate" property="dcRate"/>
+			<result column="start_tm" property="startTm"/>
+			<result column="end_tm" property="endTm"/>
+			<result column="lmt_pnum" property="lmtPnum"/>
+			<result column="intro" property="intro"/>
+			<result column="bef_price" property="befPrice"/>
+			<result column="ddct" property="ddct"/>
+			<result column="cur_pnum" property="curPnum"/>
+			<result column="stus_cd" property="stusCd"/>
+			<result column="regdate" property="regDate"/>
+			<result column="updatedate" property="updateDate"/>
+			
+			<association property="storeEval" column="store_id" javaType="com.dealight.domain.StoreEvalVO">
+				<id column="store_id" property="storeId"/>
+				<result column="avg_rating" property="avgRating"/> 
+				<result column="revw_tot_num" property="revwTotNum"/>
+				<result column="like_tot_num" property="likeTotNum"/>
+				<result column="regdate" property="regDate"/>
+				<result column="updatedate" property="updateDate"/>
+			</association>
+			
+			<collection property="htdlDtls" column="htdl_id" ofType="com.dealight.domain.HtdlDtlsVO">
+				<id column="htdl_id" property="htdlId"/>
+				<id column="htdl_seq" property="htdlSeq"/> 
+				<result column="menu_name" property="menuName"/>
+				<result column="menu_prcie" property="menuPrice"/>
+				<result column="regdate" property="regDate"/>
+				<result column="updatedate" property="updateDate"/>
+			</collection>
+			
+		</resultMap>
+		
+		<select id="getHtdlList" resultMap="HtdlDetail">
+			SELECT h.*, d.*, e.*
+		      FROM tbl_htdl h, tbl_htdl_dtls d, tbl_store_eval e
+			 WHERE h.htdl_id = d.htdl_id and h.store_id = e.store_id 	
+		</select>
+		
+		<select id="findHtdlById" parameterType="long" resultMap="HtdlDetail">
+			SELECT h.*, d.*, e.*
+		      FROM tbl_htdl h, tbl_htdl_dtls d, tbl_store_eval e
+			 WHERE h.htdl_id = d.htdl_id and h.store_id = e.store_id and h.htdl_id = #{htdlId}
+		</select>
+		
+		<!-- <select id="selectHtdlVoById" parameterType="long" resultMap="HtdlDetail">
+			SELECT h.*, d.*
+		      FROM tbl_htdl h, tbl_htdl_dtls d
+			 WHERE h.htdl_id = d.htdl_id and h.htdl_id = #{htdlId}
+		</select>
+		 -->
+		<!-- 핫딜 결과 mapper -->
+		<select id="findRsltById" resultType="com.dealight.domain.HtdlRsltVO">
+			select * from tbl_htdl_rslt where store_id = #{storeId} and htdl_id = #{htdlId}
+		</select>
+		
+		<select id="getRsltList" resultType="com.dealight.domain.HtdlRsltVO">
+			select * from tbl_htdl_rslt where store_id = #{storeId}
+		</select>
+		
+		<insert id="insertRslt">
+			insert into tbl_htdl_rslt 
+			values( #{htdlId}, #{storeId},#{lastPnum}, #{htdlLmtPnum}, #{rsvdRate}, #{elapTm}, sysdate +9/24, sysdate+9/24)
+		</insert>
+				
+		<!-- 핫딜 상세 mapper -->
+		<delete id="deleteDtls">
+			delete from tbl_htdl_dtls where htdl_id = #{htdlId}
+		</delete>
+		<!-- 고민쓰... -->
+		<update id = "updateDtls">
+			update tbl_htdl_dtls
+			set menuName = #{menuName}, menuPrice = #{menuPrice}
+			where htdlId = #{htdlId} and htdlSeq = #{htdlSeq}
+		</update>
+		
+		<select id = "findDtlsById" resultType="com.dealight.domain.HtdlDtlsVO">
+			select * from tbl_htdl_dtls where htdl_Id = #{htdlId}
+		</select>
+		
+		<insert id="insertDtls">
+			<selectKey keyProperty="htdlSeq" order = "BEFORE" resultType="long">
+				select seq_htdl_dtls.nextval from dual
+			</selectKey>
+			insert into tbl_htdl_dtls values (#{htdlId}, #{htdlSeq}, #{menuName}, #{menuPrice}, sysdate + 9/24, sysdate + 9/24)
+		</insert>
+		
+		<insert id = "insertDtlsList" parameterType="java.util.List">
+			insert all			
+			<foreach collection="list" item="item">
+			into tbl_htdl_dtls values (
+				#{item.htdlId},
+				FN_GET_SEQ('seq_htdl_dtls'),
+				#{item.menuName},
+				#{item.menuPrice},
+				sysdate + 9/24,
+				sysdate + 9/24
+			)
+			</foreach>
+			SELECT * FROM dual
+		</insert>
+		
+		
+		<!-- 핫딜 mapper -->
+		<select id="getSeqHtdl" resultType="long">
+			select seq_htdl.currval from dual
+		</select>
+		
+		<select id="getList" resultType="com.dealight.domain.HtdlVO">
+		<![CDATA[
+	 		select * from tbl_htdl where htdl_Id > 0
+	 	]]>
+		</select>
+		
+		<delete id="delete">
+			delete from tbl_htdl where htdl_id = #{htdlId}
+		</delete>
+		
+		<update id="update">
+			update tbl_htdl
+			set name = #{name}, dc_rate = #{dcRate}, start_tm = #{startTm}, end_tm = #{endTm}, lmt_pnum = #{lmtPnum}, intro = #{intro}, ddct = #{ddct}, cur_pnum = #{curPnum}, stus_cd = #{stusCd}, updatedate = sysdate + 9/24
+			where htdl_id = #{htdlId} 
+		</update>
+		
+		<select id = "findById" resultType = "com.dealight.domain.HtdlVO">
+			select * from tbl_htdl where htdl_Id = #{htdlId}
+		</select>
+		
+		<insert id="insertSelectKey">
+			<selectKey keyProperty="htdlId" order="BEFORE" resultType = "long">
+			select seq_htdl.nextval from dual
+			</selectKey>
+		
+			insert into tbl_htdl 
+			values(#{htdlId}, #{name}, #{storeId}, #{htdlImg}, #{dcRate}, #{startTm},
+			 #{endTm}, #{lmtPnum}, #{intro}, #{befPrice}, #{ddct}, #{curPnum}, #{stusCd}, sysdate + 9/24 , sysdate + 9/24)
+		</insert>
+		
+		<insert id="insert">
+			insert into tbl_htdl 
+			values(seq_htdl.nextval, #{name}, #{storeId}, #{htdlImg}, #{dcRate}, #{startTm},
+			 #{endTm}, #{lmtPnum}, #{intro}, #{befPrice}, #{ddct}, #{curPnum}, #{stusCd}, sysdate + 9/24, sysdate + 9/24)
+		</insert>
+
+	<select id="findAll" resultType="com.dealight.domain.HtdlVO">
+		SELECT
+		*
+		FROM tbl_htdl
+	</select>
+
+
+	
+	<select id="findByStoreId" resultType="com.dealight.domain.HtdlVO">
+		SELECT
+		*
+		FROM tbl_htdl
+		where
+		store_id = #{storeId}
+	</select>
+	
+		<select id="findByStoreIdStusCd" resultType="com.dealight.domain.HtdlVO">
+		SELECT
+		*
+		FROM tbl_htdl
+		where
+		store_id = #{storeId} AND
+		stus_cd = #{stusCd}
+	</select>
+
+</mapper>
