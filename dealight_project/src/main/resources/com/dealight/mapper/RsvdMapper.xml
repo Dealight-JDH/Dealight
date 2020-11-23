@@ -21,7 +21,7 @@
 			<result column="stus_cd" property="stusCd"/>
 			<result column="tot_amt" property="totAmt"/>
 			<result column="tot_qty" property="totQty"/>
-			<result column="regdate" property="regDate"/>
+			<result column="regdate" property="regdate"/>
 			<result column="updatedate" property="updateDate"/>
 			<result column="revw_stus" property="revwStus"/>
 			
@@ -31,7 +31,7 @@
 				<result column="menu_nm" property="menuNm"/>
 				<result column="menu_tot_qty" property="menuTotQty"/>
 				<result column="menu_prc" property="menuPrc"/>
-				<result column="regdate" property="regDate"/>
+				<result column="regdate" property="regdate"/>
 				<result column="updatedate" property="updateDate"/>
 			</collection>
 
@@ -130,7 +130,7 @@
     <result column="stus_cd" property="stusCd"/>
     <result column="tot_amt" property="totAmt"/>
     <result column="tot_qty" property="totQty"/>
-    <result column="regdate" property="regDate"/>
+    <result column="regdate" property="regdate"/>
     
 	<collection property="rsvdDtlsList" column="rsvd_id" ofType="com.dealight.domain.RsvdDtlsVO">
 		<result column="rsvd_id" property="rsvdId"/>

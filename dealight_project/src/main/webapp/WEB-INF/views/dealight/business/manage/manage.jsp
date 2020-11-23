@@ -682,7 +682,7 @@ window.onclick = function(event) {
                         strRsvdList += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
                         strRsvdList += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
                         strRsvdList += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-                        strRsvdList += "<li>예약 등록 날짜 : "+ rsvd.regDate + "</li>";
+                        strRsvdList += "<li>예약 등록 날짜 : "+ rsvd.regdate + "</li>";
                     strRsvdList += "</ul>" 
                     strRsvdList += "</div>" ;
                 });
@@ -727,7 +727,7 @@ window.onclick = function(event) {
                 strNextRsvd += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
                 strNextRsvd += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
                 strNextRsvd += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-                strNextRsvd += "<li>예약 등록 날짜 : "+ rsvd.regDate + "</li>";
+                strNextRsvd += "<li>예약 등록 날짜 : "+ rsvd.regdate + "</li>";
                 
                 nextRsvdUL.html(strNextRsvd);
         	});
@@ -857,7 +857,7 @@ window.onclick = function(event) {
                     strUserRsvdList += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
                     strUserRsvdList += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
                     strUserRsvdList += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-                    strUserRsvdList += "<li>예약 등록 날짜 : "+ rsvd.regDate + "</li>";
+                    strUserRsvdList += "<li>예약 등록 날짜 : "+ rsvd.regdate + "</li>";
         		});
         		
         		userRsvdListUL.html(strUserRsvdList);
@@ -894,7 +894,7 @@ window.onclick = function(event) {
         		strRsvdDtls += "<li>예약 상태 : " + rsvd.stusCd +"</li>";
         		strRsvdDtls += "<li>예약 총 가격 : " + rsvd.totAmt +"</li>";
         		strRsvdDtls += "<li>예약 총 수량 : " + rsvd.totQty +"</li>";
-        		strRsvdDtls += "<li>예약 등록 날짜 : " + rsvd.regDate +"</li>";
+        		strRsvdDtls += "<li>예약 등록 날짜 : " + rsvd.regdate +"</li>";
         		let cnt = 1;
         		rsvd.rsvdDtlsList.forEach(dtls => {
         			strRsvdDtls += "==============================";

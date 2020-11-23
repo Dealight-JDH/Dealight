@@ -273,7 +273,7 @@ public class StoreServiceTests {
 	@Test
 	public void findAllStoreByStoreIdTest1() {
 		
-		storeId = 101;
+		storeId = 16;
 		
 		AllStoreVO allStore = storeService.findAllStoreInfoByStoreId(storeId);
 		
