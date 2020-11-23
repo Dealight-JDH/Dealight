@@ -83,7 +83,7 @@ public class RevwController {
 		// 이미지 첨부는 선택적으로 가능하게 변경해야 함
 		/* if(!img.getImgUrl().equals("")) { */
 			service.registerRevw(revw);
-			service.registerRevwImg(img);
+			service.registerRevwImg(img); 
 
 			log.info("REGISTER RSVD REVW");
 			log.info("USERID: " + userId + "@@");
