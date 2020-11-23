@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-   <%@include file="../../includes/loginmodalHeader.jsp" %>
-    <%@include file="../../includes/mainMenu.jsp" %>
-    <%@include file="../../includes/loginModal.jsp" %>
+   <%@include file="../includes/loginmodalHeader.jsp" %>
+    <%@include file="../includes/mainMenu.jsp" %>
+    <%@include file="../includes/loginModal.jsp" %>
 <!-- 현수현수현수 -->
 <!DOCTYPE html>
 
@@ -19,7 +19,6 @@
 	<p>	이메일 <input type="email" id="email" name="email" placeholder="이메일을  입력하세요"></p>
 		<button type="submit" id="sendEmail">이메일발송</button>
 	</div>
-	<a href = "/dealight/dealight">홈으로</a>
 </body>
  <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -33,7 +32,7 @@ $(function(){
 		
 		$.ajax({
 			type:"post",
-			url: "/dealight/email/sendpwd",
+			url: "/dealight/prove/sendpwd",
 			//여러개의 데이터를 전송할때
 			data:{"userId":$("#userId").val(), "email": $("#email").val()},
 
@@ -56,34 +55,6 @@ $(function(){
 		}) //ajax end
 	})
 	})
-/*
-//2. 이메일 인증번호 입력 후에 인증 버튼 이벤트처리
- $("#emailAuth").on("click", function(){
 
-		$.ajax({
-			beforeSend.function(){
-				loadingBarStart();
-			},
-			type:"get",
-			url: "/email/emailAuth.do",
-			data:"authCode=" + $('#emailAuth').val() + "&random=" + $("#random").val(),
-			
-			success:function(data){
-				if(data =="complete"){
-					alert("인증이 완료되었습니다.");
-				}else if(data == "false"){
-					alert("인증번호를 잘 못 입력하셨습니다.")
-				}
-			},
-			complete: function(){
-				loadingBarEnd();
-			},
-			error.funtion(data){
-				alert("에러가 발생했습니다.");
-			}
-		});
-});
-)};
- */
 </script> 
 </html>

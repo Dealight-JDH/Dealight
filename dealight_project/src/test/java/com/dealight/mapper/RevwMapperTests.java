@@ -252,8 +252,8 @@ public class RevwMapperTests {
 		rsvd.setStusCd("L");
 		rsvd.setTotAmt(20000);
 		rsvd.setTotQty(2);
-		rsvd.getRegDate();
-		rsvd.getUpdateDate();
+		rsvd.getRegdate();
+		rsvd.getUpdatedate();
 
 		mapper.updateRsvdRevwStus("user1id", 1L);
 		log.info(rsvd);

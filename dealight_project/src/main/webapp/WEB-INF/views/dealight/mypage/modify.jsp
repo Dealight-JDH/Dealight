@@ -36,9 +36,6 @@ padding: 20px;
 <form action ="/dealight/mypage/modify" method="post" onsubmit="return validate()">
 <p>아이디 : <input type = "text" name="userId" id="userId"value="<c:out value = "${user.userId }"/>" readonly="readonly">
 <p>이름 : <input type = "text" name="name" id="name" value="<c:out value = "${user.name }"/>" >
-<p>비밀번호 : <input type = "password" name="pwd" id="pwd" value="<c:out value = "${user.pwd }"/>" >
-<p>비밀번호확인 : <input type = "password" name="repwd" id="repwd" onblur="myFunction()">
-<p class = 'msg' id="repwdmsg">비밀번호 확인을 위하여 다시 한 번 입력해주세요</p>
 <p>이메일 : <input type = "email" name="email" id="email" value="<c:out value = "${user.email }"/>" >
 <p>핸드폰번호 : <input type = "text" name="telno" id="telno"value="<c:out value = "${user.telno }"/>" >
 <p>생년월일 : <input type = "text" name="brdt" id="brdt" value="<c:out value = "${user.brdt }"/>" readonly="readonly">
@@ -46,9 +43,8 @@ padding: 20px;
 <p>프로필사진 : <input type = "text" name="photoSrc" id="photoSrc"value="<c:out value = "${user.photoSrc }"/>" >
 <p> SNS연동 : <input type="radio" name="snsLginYn" value="Y">yes<input type="radio" name="snsLginYn" value="N">no  </p>
 
-<div><button type="submit" onclick="sussecc()">회원수정</button>
+<div><button type="submit" onclick="alert('회원정보수정이 완료되었습니다.')">회원수정</button>
 <button type="submit" id="remove" >회원탈퇴</button></div>
-<a href = "/dealight/dealight">홈으로</a>
 </form>
 </div>
 <!-- 수정이 성공했는지 실패했는지 메세지를 받아옴 -->
@@ -93,35 +89,8 @@ else if(sns == 'N'){
 	const jTelno = /^\d{3}\d{3,4}\d{4}$/; //전화번호 정규식 '-'빼고 숫자만 01063517402
 	const blank = /\s/g;
 	
-	//1. 비밀번호와 비밀번호 확인이 일치하는지 확인
-    function myFunction(){
-    	if($("#repwd").val() == ""){
-    		 document.getElementById("repwdmsg").innerHTML = "비밀번호 확인을 입력해주세요";
-    	     document.getElementById("repwdmsg").style.color = 'red'; 
-    	}else{
-    		
-    		
-    		if($("#pwd").val() == $("#repwd").val()){
-    			document.getElementById("repwdmsg").innerHTML = "비밀번호가 일치합니다.";
-        		document.getElementById("repwdmsg").style.color = 'red'; 
-    		} 
-    	
-    		if($("#pwd").val() != $("#repwd").val()){
-    			document.getElementById("repwdmsg").innerHTML = "비밀번호가 일치하지 않습니다 다시 입력해주세요";
-        		document.getElementById("repwdmsg").style.color = 'red'; 
-    		}
-    	}//else end
-    }//fun end
-    
+	
     function validate() {	
-    	
-    //0. 비밀번호 유효성검사
-    	if(!jPwd.test($("#pwd").val()) || blank.test($("#pwd").val())){
-    		alert('비밀번호 형식에 맞지 않습니다');
-    		$("#pwd").val("");
-    		$("#pwd").focus();
-    		return false;
-    	}
 	
 	//1. 이름 유효성 검사
 	if($("#name").val() == ""){
@@ -166,17 +135,7 @@ else if(sns == 'N'){
 	} 
     }
     
-  //4.회원정보수정 완료여부 메세지
-   /*  let msg2 = document.getElementById("msg2");
-    if(msg2 === 'sussecc'){
-    alert("회원 정보 수정이 완료되었습니다.");
-    }
-    if(msg2 === 'fail'){
-    	alert("회원 정보 수정이 실패하였습니다.");
-    }
-    location.href = '/dealight/mypage/reservation'; */
-    
-//5. 회원탈퇴 
+//4. 회원탈퇴 
 $(function(){
 	$("#remove").on("click", function(){
 		
@@ -201,10 +160,10 @@ $(function(){
 	})
 	})
 	
-function sussecc(){
+/* function sussecc(){
     	alert("회원 정보 수정이 완료되었습니다.");
     	location.href = '/dealight/mypage/reservation'; 
-    }
+    } */
 </script>
 </body>
 </html>
