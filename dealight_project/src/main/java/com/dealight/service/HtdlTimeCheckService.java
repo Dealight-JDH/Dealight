@@ -32,10 +32,9 @@ public class HtdlTimeCheckService {
 	private HtdlMapper htdlMapper;
 
 	ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(3);
-
+	
 //	@PreDestroy
 //	public void preDestroy() {
-//
 //		log.info("============predestroy");
 //		try {
 //			exec.shutdown();
@@ -51,7 +50,6 @@ public class HtdlTimeCheckService {
 //			exec.shutdownNow();
 //			
 //		}
-//
 //		log.info("스케줄러 종료");
 //	}
 //	

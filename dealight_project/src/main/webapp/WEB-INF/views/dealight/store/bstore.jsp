@@ -537,7 +537,6 @@
 			waitingForm.submit();
 
 			//waitingForm.submit();
-
 		});
 		
 		});

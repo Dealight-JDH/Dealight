@@ -1,3 +1,4 @@
+//
 //package com.dealight.task;
 //
 //
@@ -135,12 +136,7 @@
 //		
 //	}
 //	
-//<<<<<<< HEAD
-//	// 자동 예약 생성기
-//=======
-//
 //	// 자동 예약 생성기//
-//>>>>>>> 59a0de7d033f2ce631d5f318effec181dd20fc13
 //	//@Scheduled(cron="0 * * * * *")
 //	public void registerRsvd() throws Exception{
 //		log.warn("Auto Rsvd Register Task run .....................");
@@ -282,11 +278,7 @@
 //		log.warn("=========================================rsvd 예약 완료");
 //	}
 //
-//<<<<<<< HEAD
-////	@Scheduled(cron="0 10 * * * *")
-//=======
 //	//@Scheduled(cron="0 10 * * * *")
-//>>>>>>> 59a0de7d033f2ce631d5f318effec181dd20fc13
 //	public void checkFiles() throws Exception{
 //		
 //		log.warn("Image File Check Task run .....................");
@@ -325,3 +317,4 @@
 //		}
 //	}
 //}
+//>>>>>>> fcdff5354ff6e0c926c5136ef27b19d5ea6b2469

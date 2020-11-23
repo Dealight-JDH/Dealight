@@ -61,6 +61,7 @@ public class KakaoService {
         //요청 바디
         MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
         params.add("cid","TC0ONETIME");
+
         params.add("partner_order_id", String.valueOf(rsvdId));
         params.add("partner_user_id","whddn528");
         params.add("item_name",menu);
