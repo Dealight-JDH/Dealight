@@ -2,6 +2,7 @@ package com.dealight.mapper;
 
 import java.util.List;
 
+import com.dealight.domain.NearbyStoreVO;
 import com.dealight.domain.StoreVO;
 
 /*
@@ -44,7 +45,10 @@ public interface StoreMapper {
 	
 	public StoreVO getNstore(Long storeId);
 	
-	public String getStoreCd(Long storeId);
+	//다울추가
+	public List<NearbyStoreVO> getNearbyStoreList(Long storeId);
+	
+//	public String getStoreCd(Long storeId);
 	//Create
 	public void insert(StoreVO store);
 	

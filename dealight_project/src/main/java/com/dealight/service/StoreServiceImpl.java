@@ -1,5 +1,6 @@
 package com.dealight.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dealight.domain.AllStoreVO;
 import com.dealight.domain.BStoreVO;
 import com.dealight.domain.MenuVO;
+import com.dealight.domain.NearbyStoreVO;
 import com.dealight.domain.RevwVO;
 import com.dealight.domain.StoreEvalVO;
 import com.dealight.domain.StoreImgVO;
@@ -28,19 +30,6 @@ import com.dealight.mapper.StoreOptionMapper;
 import com.dealight.mapper.StoreTagMapper;
 
 import lombok.AllArgsConstructor;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.dealight.domain.Criteria;
-import com.dealight.domain.RevwVO;
-import com.dealight.domain.StoreVO;
-import com.dealight.mapper.StoreMapper;
-
-import lombok.AllArgsConstructor;
-import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 /*
@@ -53,7 +42,7 @@ import lombok.extern.log4j.Log4j;
 @Service
 @AllArgsConstructor
 public class StoreServiceImpl implements StoreService {
-	
+	//BStoreMapper StoreImgMapper StoreEvalMapper왜 두개?
 	private StoreMapper sMapper;
 	private BStoreMapper bMapper;
 	private StoreLocMapper lMapper;
@@ -433,9 +422,22 @@ public class StoreServiceImpl implements StoreService {
 	}
 
 	@Override
-	public String storeCd(Long storeId) {
-		log.info("store code......"+storeId);
-		return sMapper.getStoreCd(storeId);
+	public List<NearbyStoreVO> nearbyStoreList(Long storeId) {
+		log.info("nearby store"+storeId);
+		List<NearbyStoreVO> originStore = sMapper.getNearbyStoreList(storeId);
+		List<NearbyStoreVO> nearbyStore = new ArrayList<>();
+		for(int i=0; i<3;i++) {
+			int idx = (int)(Math.random()* originStore.size());
+			nearbyStore.add(originStore.get(idx));
+			originStore.remove(idx);
+		}
+		
+		return nearbyStore;
 	}
+
+	/*
+	 * @Override public String storeCd(Long storeId) {
+	 * log.info("store code......"+storeId); return sMapper.getStoreCd(storeId); }
+	 */
 
 }
