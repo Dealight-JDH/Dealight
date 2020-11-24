@@ -11,7 +11,7 @@
 
 </head>
 <body>
-
+<!-- 
 <h2>나에게 메시지 보내기</h2>
 <form action="/message" method="get">
 <input name='access_token' value='${access_token }' hidden>
@@ -53,10 +53,12 @@ allow : ${allow}
 
 
 친구 리스트 : ${talkFriendsList }
-
+ -->
+ 
 <h2>친구한테 보내기</h2>
 
-<form action="/message/friends" method="get">
+<form action="/message/friends?storeId+${storeId}" method="get">
+
 <input name='access_token' value='${access_token }' hidden>
 
 <label for="title">제목</label></br>
@@ -66,10 +68,10 @@ allow : ${allow}
 <input name='description' type='textarea' value=""> </br></br>
 
 <label for="web_url">전송 URL</label></br>
-<input name='web_url' type='text' value="http://localhost:8080/dealight/business/waiting/">
+<input name='web_url' type='text' value="http://localhost:8080/dealight/business/waiting/"+${waitId}></br></br>
 
-<label for="uuid">UUIdL</label></br>
-<input name='uuid' type='text'>
+<label for="uuid">UUID</label></br>
+<input name='uuid' type='text' value='${requestUuid}'>
 
 <button type='submit'>제출</button>
 

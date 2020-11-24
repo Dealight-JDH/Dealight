@@ -167,6 +167,7 @@ function search(){
 
 //mainPage를 불러오는 함수
 function showMain(){
+	
 		//ajax통신을 한다.
 		getList(function(pageDTO){
 			//페이지 목록을 출력한다.

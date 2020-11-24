@@ -595,12 +595,12 @@ public String sendMessage(String access_token, String title, String description,
 		
        HttpEntity<String> entity = new HttpEntity<>(requestJson,header);
 	
-		String url = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
+		String url = "https://kapi.kakao.com/v1/api/talk/friends/message/default/send";
 		
 		
 		UriComponents uri = UriComponentsBuilder.fromUriString(url)
+				.queryParam("receiver_uuids", "[\""+uuid+"\"]")
 				.queryParam("template_object", requestJson)
-				.queryParam("receiver_uuids", uuid)
 				.build();
 		
 		RequestEntity<String> rq = new RequestEntity<>(header, HttpMethod.POST, uri.toUri());

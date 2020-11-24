@@ -100,33 +100,6 @@
             </div> <!-- end board -->
         </div>
             <div class="rsvd_time_bar"><!-- rsvd time bar -->
-            	<div class="rsvd_time tooltip" id="slide-1"><h6>09:00</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-2"><h6>09:30</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-3"><h6>10:00</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-4"><h6>10:30</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-5"><h6>11:00</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-6"><h6>11:30</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-7"><h6>12:00</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-8"><h6>12:30</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-9"><h6>13:00</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-10"><h6>13:30</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-11"><h6>14:00</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-12"><h6>14:30</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-13"><h6>15:00</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-14"><h6>15:30</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-15"><h6>16:00</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-16"><h6>16:30</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-17"><h6>17:00</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-18"><h6>17:30</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-19"><h6>18:00</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-20"><h6>18:30</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-21"><h6>19:00</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-22"><h6>19:30</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-23"><h6>20:00</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-24"><h6>20:30</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-25"><h6>21:00</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-26"><h6>21:30</h6><div class="time_table"></div></div>
-		        <div class="rsvd_time tooltip" id="slide-27"><h6>22:00</h6><div class="time_table"></div></div>
       		</div> <!-- end rsvd time bar -->
         </div> <!-- end main box -->
         <div class="info_box"> <!--  info box -->
@@ -183,53 +156,50 @@
 	<div id="myModal" class="modal">
 		<!-- Modal content -->
 		<div class="modal-content">
+			<span class="close">&times;</span>
 			<ul class="rsvdDtls"></ul>
 			<ul class="userRsvdList"></ul>
 			<ul class="waiting_registerForm"></ul>
-			<span class="close">&times;</span>
 		</div>
 	</div>
     
 <script>
-	console.log("modal module.............")
-	// Get the modal
+
+/*시간바 만들기*/
+writeTimeBar = function () {
+    timeArr = ['','09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30','22:00'];
+    strTime = "";
+    for(let i = 1; i <= 27; i++){
+        strTime += "<div class='rsvd_time tooltip' id='slide-"+i+"'><h6>"+timeArr[i]+"</h6><div class='time_table'></div></div>";
+    }
+	document.querySelector(".rsvd_time_bar").innerHTML = strTime;
+}
+writeTimeBar();
+
+	// 모달 선택
 	const modal = $("#myModal"),
-		btn_modal = $("#myBtn"),
 		close = $(".close"),
+		modalContent = $(".modal-content"),
 		btn_show_board = $("#btn_show_board");
 
-
-// When the user clicks on the button, open the modal
-btn_modal.on("click",(e) => {
-	console.log("btn click........");
-})
-
-close.on("click", (e) => {
-	console.log("close click........");
-	modal.css("display","none");
-	modal.find("ul").html("");
-})
-
-window.onclick = e => {
-	if(e.target == modal){
-		modal.css("display","block");
-	}
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-	  modal.css("display","none");
+	close.on("click", (e) => {
+		modal.css("display","none");
 		modal.find("ul").html("");
-  }
-}
+	});
+	
+	/*
+	 모달이 아닌 화면을 클릭하면 모달이 종료가 되어야 하는데 그렇지 않음.
+	*/
+	window.onclick = function(event) {
+		  if (event.target == modal) {
+			  modal.css("display","none");
+			  modal.find("ul").html("");
+		  }
+	}
 
 </script>
 	<script>
 
-    console.log("board module........");
-    
-    
     /*
     REST 방식으로 서버와 통신
     	비동기로 board를 바꿔주는 서비스
@@ -553,29 +523,34 @@ window.onclick = function(event) {
     	서버가 시작 되면 동작하는 코드
     */
     $(document).ready(() => {
+    	/* 변수 설정*/
         const storeId = ${storeId};
         
-        let seatStusForm = $("#seatStusForm"),
-        colorVal = $("#color_value"),
-        storeUL = $(".store"),
-        rsvdListUL = $(".rsvdList"),
-        waitListUL = $(".waitList"),
-        nextWaitUL = $(".nextWait"),
-        nextRsvdUL = $(".nextRsvd"),
-        rsvdMapUL = $(".rsvdMap"),
-        storeSeatUL = $(".storeSeatStus"),
-        rsvdRsltUL = $(".rsvdRslt"),
-        userRsvdListUL = $(".userRsvdList"),
-        rsvdDtlsUL = $(".rsvdDtls"),
-        waitRegFormUL = $(".waiting_registerForm"),
-        lastWeekRsvdUL = $(".last_week_rsvd")
+        /* HTML 태그 변수 설정*/
+        const seatStusForm = $("#seatStusForm"),
+	        colorVal = $("#color_value"),
+	        storeUL = $(".store"),
+	        rsvdListUL = $(".rsvdList"),
+	        waitListUL = $(".waitList"),
+	        nextWaitUL = $(".nextWait"),
+	        nextRsvdUL = $(".nextRsvd"),
+	        rsvdMapUL = $(".rsvdMap"),
+	        storeSeatUL = $(".storeSeatStus"),
+	        rsvdRsltUL = $(".rsvdRslt"),
+	        userRsvdListUL = $(".userRsvdList"),
+	        rsvdDtlsUL = $(".rsvdDtls"),
+	        waitRegFormUL = $(".waiting_registerForm"),
+	        lastWeekRsvdUL = $(".last_week_rsvd")
         ;
+        
+        function init(storeId){
+            showBoard(storeId); // 현재 '매장'의 'board'를 보여주는 코드
+            showTime(); // 현재 시간을 보여주는 코드
+            setInterval(showTime, 1000); // 매초 update
+        }
             
-        showBoard(storeId); // 현재 '매장'의 'board'를 보여주는 코드
-        getTime(); // 현재 시간을 보여주는 코드
-        setInterval(getTime, 1000); // 매초 update
-        //showUserRsvdList(storeId,'kim'); test
-
+        init(storeId);
+        
         /*
         	매장의
         	board를 보여준다.
@@ -585,17 +560,16 @@ window.onclick = function(event) {
         	시간대별 예약 리스트
         	다음 예약, 다음 웨이팅
         */
-        function showBoard(storeId) {
-            
-            boardService.getStore({storeId : storeId}, function (store) {
+        
+        function showStoreInfo (storeId){
+        	
+        	boardService.getStore({storeId : storeId}, function (store) {
                 let str = "";
                 if(store == null){
                     storeUL.html("");
                     return;
                 }
                 
-                str 
-                /*
                 str += "<li>매장번호 : " + store.storeId + "</li>";
                 str += "<li>매장이름 : " + store.storeNm + "</li>";
                 str += "<li>매장 연락처 : " + store.telno + "</li>";
@@ -614,22 +588,22 @@ window.onclick = function(event) {
                 str += "<li>매장 시작시간 : " + store.bstore.openTm + "</li>";
                 str += "<li>매장 착석상태 : " + store.bstore.seatStusCd + "</li>";
                 str += "<li>매장 소개 : " + store.bstore.storeIntro + "</li>";
-                */
-                //storeUL.html(getStoreInfo(store));
-                storeUL.html(store);
+                
+                storeUL.html(str);
+                
                 /*착석 상태*/
                 storeSeatUL.html("<li>"+ store.bstore.seatStusCd +"</li>")
-            });
-    
-            
-            boardService.getWaitList({storeId:storeId}, function (waitList) {
+        	})
+        };
+        
+        function showWaitList(storeId){
+        	
+        	boardService.getWaitList({storeId:storeId}, function (waitList) {
                 let strWaitList = "";
                 if(waitList == null){
                     waitList.html("");
                     return;
                 }
-                
-                console.log('wait list................' + waitList);
                 
                 waitList.forEach(wait => {
                 	strWaitList += "<div class='wait'>";
@@ -642,16 +616,13 @@ window.onclick = function(event) {
                         strWaitList += "<li>웨이팅 회원 이름 : "+ wait.custNm + "</li>";
                         strWaitList += "<li>웨이팅 회원 번호 : "+ wait.custTelno + "</li>";
                     strWaitList += "</ul>"
-                    strWaitList += "<button class='btn_wait_call'><a href='/oauth'>호출</a></button>";
+                    strWaitList += "<button class='btn_wait_call'><a href='/oauth?storeId="+wait.storeId+"&waitId="+wait.waitId+"'>호출</a></button>";
                     strWaitList += "</div>";
                 });
     
               waitListUL.html(strWaitList);   
               
-              
               let nextWait = boardService.getNextWait(waitList);
-              
-              console.log(nextWait);
               
               let strNextWait = "";
               
@@ -669,8 +640,11 @@ window.onclick = function(event) {
               nextWaitUL.html(strNextWait);
     
             }); 
-    
-            boardService.getRsvdList({storeId:storeId}, function (rsvdList) {
+        }
+        
+        function showRsvdList(storeId){
+        	
+        	boardService.getRsvdList({storeId:storeId}, function (rsvdList) {
                 let strRsvdList = "";
                 if(rsvdList == null){
                     rsvdList.html("");
@@ -698,14 +672,14 @@ window.onclick = function(event) {
               rsvdListUL.html(strRsvdList);
    
             }); 
-            
-            
-            strRsvdMap = "";
+        }
+        
+        function showRsvdMap(storeId){
+        	
+			strRsvdMap = "";
             
             boardService.getTodayRsvdMap({storeId:storeId}, function(map){
             	let strRsvdMap = "";
-            	
-            	console.log('get today rsvd map .....');
             	
             	if(!map)
             		return;
@@ -727,9 +701,6 @@ window.onclick = function(event) {
             
             boardService.getNextRsvd({storeId:storeId},function(rsvd){
             	
-            	console.log('getnextrsvd.............');
-            	console.log(rsvd);
-            	
         		let strNextRsvd = "";
         		if(!rsvd)
         			return;
@@ -747,9 +718,22 @@ window.onclick = function(event) {
                 
                 nextRsvdUL.html(strNextRsvd);
         	});
+        	
+        }
+        
+        function showBoard(storeId) {
+
+        	showStoreInfo(storeId);
+            
+        	showWaitList(storeId);
+    
+        	showRsvdList(storeId);
+            
+            showRsvdMap(storeId);
   
         };
         
+        // 예약 현황판을 보여준다.
         function showRsvdBoard(storeId) {
         	
         	boardService.getRsvdRslt({storeId:storeId}, function(dto){
@@ -791,8 +775,6 @@ window.onclick = function(event) {
         		if(!list)
         			return;
 				
-        		console.log('리스트............' + list);
-        		
         		list.forEach(rsvd => {
         			
         			pnumArr[dateArr.indexOf(rsvd.strRegDate)] += rsvd.pnum;
@@ -814,9 +796,6 @@ window.onclick = function(event) {
         			strLastWeekRsvd += "<li>예약 등록 날짜 : "+ rsvd.strRegDate + "</li>";
         			strLastWeekRsvd += "===========================================";
         		});
-        		
-
-        		
         		
         		console.log(dateArr);
         		console.log(pnumArr);
@@ -889,11 +868,7 @@ window.onclick = function(event) {
         */
         function showRsvdDtls(rsvdId){
         	
-        	console.log("test1.............." + rsvdId);
-        	
         	boardService.getRsvdDtls({rsvdId:rsvdId}, function(rsvd){
-        		
-        		console.log("test2.............." + rsvd);
         		
 				let strRsvdDtls = "";
 				if(!rsvd)
@@ -1026,10 +1001,10 @@ window.onclick = function(event) {
         	}
         	
         	let modalInputCustNm = modal.find("input[name='custNm']"),
-			modalInputCutsTelNo = modal.find("input[name='custTelno']"),
-			modalInputWaitPnum = modal.find("input[name='waitPnum']"),
-			modalInputCurTime = modal.find("input[name='curTime']"),
-			modalInputStoreId = modal.find("input[name='storeId']");
+				modalInputCutsTelNo = modal.find("input[name='custTelno']"),
+				modalInputWaitPnum = modal.find("input[name='waitPnum']"),
+				modalInputCurTime = modal.find("input[name='curTime']"),
+				modalInputStoreId = modal.find("input[name='storeId']");
     	
         	btn_submit.addEventListener("click", (e) => {
     		
@@ -1067,16 +1042,13 @@ window.onclick = function(event) {
 	
 	    		boardService.regWait(wait, result => {
 	    			
-	    			alert(result);
-	        		console.log("결과.........."+modalInputStoreId.val());
-	        		showBoard(${storeId});
+	    			//alert(result);
+	        		showWaitList(storeId);
 	        		modal.find("ul").html("");
 	    			modal.find("input").val("");
 	    			modal.css("display","none");
 	    			
-	    			
 	    		});
-    		
     		
     		});
         };
@@ -1114,25 +1086,25 @@ window.onclick = function(event) {
 		
         /*당일 예약 결과 가져오기*/
         $("#btn_rsvd_rslt").on("click", e => {
-        	showRsvdBoard(${storeId});
+        	showRsvdBoard(storeId);
         });
 
         /*새로고침*/
         $("#refresh").on("click", e => {
         	console.log("show board...")
-        	showBoard(${storeId});
+        	showBoard(storeId);
         });
 
         /*예약리스트에 있는 내용 중, 예약 상세 보여주기*/
         /*회원의 예약 리스트 보여주기*/
         $(".rsvdList").on("click", e => {
 
-        	let storeId = $(e.target).parent().find(".btnStoreId").text(),
-        		userId = $(e.target).parent().find(".btnUserId").text();
+        	let rstoreId = $(e.target).parent().find(".btnStoreId").text(),
+        		ruserId = $(e.target).parent().find(".btnUserId").text();
         	
         	modal.css("display","block");
 
-        	showUserRsvdList(storeId, userId);
+        	showUserRsvdList(rstoreId, ruserId);
         	
         });
         	
@@ -1140,9 +1112,9 @@ window.onclick = function(event) {
         $(".btn_wait_register").on("click", e => {
         	
         	modal.css("display","block");
-        	showWaitRegisterForm(${storeId});
+        	showWaitRegisterForm(storeId);
         	
-        		//$("#waitRegForm").submit();        		
+        	//$("#waitRegForm").submit();        		
         	
         });
 
@@ -1153,26 +1125,17 @@ window.onclick = function(event) {
             
             let color = "";
 
-            if(e.target.innerHTML === 'Red')
-                color = 'R';
-            if(e.target.innerHTML === 'Yellow')
-                color = 'Y';
-            if(e.target.innerHTML === 'Green')
-                color = 'G';
-            
-            console.log(color);
-            
             let param = {};
-            param.storeId = ${storeId};
-            param.seatStusCd = color;
+            param.storeId = storeId;
+            param.seatStusCd = e.target.innerHTML[0];
             
-            console.log(param);
+            console.log("seat stus cd...................."+e.target.innerHTML[0]);
             
         	boardService.putChangeStatusCd(param, function(result){
-        		alert(result);
+        		//alert(result);
+            	showStoreInfo(param.storeId);
         	});
         	
-            showBoard(param.storeId);
         });
 
         /*웨이팅 입장 처리*/
@@ -1182,11 +1145,11 @@ window.onclick = function(event) {
         	waitId = parseInt($(".nextWait li:eq(2)").text().split(":")[1]);
 
         	boardService.putEnterWaiting(waitId, function(result){
-        		alert(result);
+        		//alert(result);
+        		showWaitList(storeId);
         	});
         	
-        	showBoard(storeId);
-        })
+        });
 
         /*웨이팅 노쇼 처리*/
         $(".btn_noshow_wait").on("click", e => {
@@ -1195,13 +1158,10 @@ window.onclick = function(event) {
         	waitId = parseInt($(".nextWait li:eq(2)").text().split(":")[1]);
 
         	boardService.putNoshowWaiting(waitId, function(result){
-        		alert(result);
+        		//alert(result);
+	        	showWaitList(storeId);
         	});
-        	
-        	showBoard(storeId);
         });
-        	
-        
    });
 	
     /* get store img (즉시실행함수)*/
@@ -1309,24 +1269,7 @@ window.onclick = function(event) {
         
     });
 
-    /* 자동 새로고침 */
-    /*
-    function startRefresh() {
-        window.location = location.href;
-    }
-    
-    let minutes = 60;
-    
-    $(function() {
-        setTimeout(startRefresh,minutes*5);
-    });
-    */
-
     </script>
  <script src="/resources/js/clock.js"></script>
- <script>
-
- 
- </script>
 </body>
 </html>
