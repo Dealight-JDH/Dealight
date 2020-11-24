@@ -88,66 +88,6 @@ public class ManageController {
 		return "/dealight/business/manage/dealhistory";
 	}
 	
-	// 예약 상세 화면
-	// REST FUL로 대체
-//	@GetMapping("/reservation")
-//	public String reservation(Model model, long rsvdId) {
-//		
-//		RsvdVO rsvd = rsvdService.findRsvdByRsvdIdWithDtls(rsvdId);
-//		
-//		log.info("rsvd.............................................................."+rsvd);
-//		
-//		List<RsvdVO> rsvdList = userService.getRsvdListStoreUser(rsvd.getStoreId(), rsvd.getUserId());
-//		
-//		model.addAttribute("rsvd",rsvd);
-//		model.addAttribute("rsvdList",rsvdList);
-//		
-//		return "/dealight/business/manage/reservation";
-//	}
-	
-	// 웨이팅 등록
-	// REST FUL로 대체
-//	@GetMapping("/waiting/register")
-//	public String waitingRegister(Model model, long storeId) {
-//		
-//		log.info("business waiting register..");
-//		
-//		Date curTime = new Date();
-//		
-//		List<WaitVO> waitList = waitService.curStoreWaitList(storeId, "W");
-//		
-//		int curWaitNum = waitList.size();
-//		int curWaitTime = curWaitNum * 15;
-//		
-//		model.addAttribute("curWaitNum",curWaitNum);
-//		model.addAttribute("curWaitTime",curWaitTime);
-//		
-//		
-//		model.addAttribute("curTime", curTime);
-//		model.addAttribute("storeId", storeId);
-//		
-//		return "/dealight/business/manage/waiting/register";
-//	}
-	
-	// REST FUL로 대체
-	// /waiting/new 로 대체
-//	@PostMapping("/waiting/register")
-//	public String waitingRegister(Model model, WaitVO wait,HttpServletRequest request,long storeId) {
-//		
-//		//log.info("business waiting register..");
-//		
-//		//log.info(wait);
-//		
-//		wait.setStoreId(storeId);
-//		
-//		waitService.registerOffWaiting(wait);
-//		
-//		long id = wait.getWaitId();
-//		
-//		return "redirect:/dealight/business/manage/?storeId="+storeId;
-//		//return "redirect:/business/manage/board/?storeId="+storeId;
-//	}
-	
 	// 매장 수정 페이지
 	@GetMapping("/modify")
 	public String storeModify(Model model,Long storeId, HttpServletRequest request) {
@@ -275,46 +215,36 @@ public class ManageController {
 		
 		return "redirect:/dealight/business/manage/menu?storeId="+menu.getStoreId();
 	}
-
-	// 웨이팅 입장
-	@GetMapping("/enter")
-	public String enter(Model model,long storeId,long waitId) {
-		
-		log.info("business menu modify..");
-		
-		waitService.enterWaiting(waitId);
-		
-		return "redirect:/dealight/business/manage?storeId="+storeId;
-	}
-	
-	// 웨이팅 노쇼
-	@GetMapping("/noshow")
-	public String noshow(Model model,long storeId,long waitId) {
-		
-		log.info("business menu modify..");
-		
-		waitService.panaltyWaiting(waitId);	
-		
-		return "redirect:/dealight/business/manage?storeId="+storeId;
-	}
-	
-	// 착석 상태 변경
-	@PostMapping("/seat")
-	public String seatStus(Model model,long storeId, String seatStusColor) {
-		
-		storeService.changeSeatStus(storeId, seatStusColor);
-		
-		return "redirect:/dealight/business/manage?storeId="+storeId;
-	}
-
-	// REST TEST에 사용
-//	@GetMapping("/board")
-//	public String getBoard(Model model, long storeId) {
+//
+//	// 웨이팅 입장
+//	@GetMapping("/enter")
+//	public String enter(Model model,long storeId,long waitId) {
 //		
+//		log.info("business menu modify..");
 //		
-//		model.addAttribute("storeId", storeId);
+//		waitService.enterWaiting(waitId);
 //		
-//		return "/board";
+//		return "redirect:/dealight/business/manage?storeId="+storeId;
+//	}
+//	
+//	// 웨이팅 노쇼
+//	@GetMapping("/noshow")
+//	public String noshow(Model model,long storeId,long waitId) {
+//		
+//		log.info("business menu modify..");
+//		
+//		waitService.panaltyWaiting(waitId);	
+//		
+//		return "redirect:/dealight/business/manage?storeId="+storeId;
+//	}
+//	
+//	// 착석 상태 변경
+//	@PostMapping("/seat")
+//	public String seatStus(Model model,long storeId, String seatStusColor) {
+//		
+//		storeService.changeSeatStus(storeId, seatStusColor);
+//		
+//		return "redirect:/dealight/business/manage?storeId="+storeId;
 //	}
 
 }

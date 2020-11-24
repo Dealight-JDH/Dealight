@@ -62,21 +62,7 @@
         </div>
 
         <div id="board">
-        <!--  
-            <h1>매장 정보🏪</h1>
-            <ul class="store"></ul>
 
-            <h2>매장 사진</h2>
-            <div class='uploadResult'>
-                <ul>
-                </ul>
-            </div>  --><!-- uploadResult --><!--
-            
-            <div class='bigPictureWrapper'>
-                <div class='bigPicture'>
-                </div>
-            </div>
- 		-->
             <div class="next_wait"> <!-- next wait -->
                 <h4>다음 웨이팅 정보👉</h4>
 	            <ul class="nextWait"></ul>
@@ -233,7 +219,8 @@ window.onclick = e => {
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
   if (event.target == modal) {
-    modal.style.display = "none";
+	  modal.css("display","none");
+		modal.find("ul").html("");
   }
 }
 
@@ -245,13 +232,13 @@ window.onclick = function(event) {
     
     /*
     REST 방식으로 서버와 통신
-    
+    	비동기로 board를 바꿔주는 서비스
     */
     let boardService = (() => {
       
     	
         /*put 함수*/
-        
+        // 매장의 착석 상태 코드를 변경한다.
         function putChangeStatusCd(params,callback,error) {
         	
         	let storeId = params.storeId,
@@ -275,7 +262,7 @@ window.onclick = function(event) {
             });
             
             }
-        
+    	 // 매장의 웨이팅 상태를 '노쇼'로 변경한다.
         function putNoshowWaiting(waitId,callback,error) {
             $.ajax({
                 type:'put',
@@ -296,6 +283,7 @@ window.onclick = function(event) {
             
             }
     
+     	// 매장의 웨이팅 상태를 '입장'으로 변경한다.
         function putEnterWaiting(waitId,callback,error) {
     
             $.ajax({
@@ -316,7 +304,8 @@ window.onclick = function(event) {
             });
             
             }
-    
+    	
+     	// 매장의 웨이팅 상태를 '취소'로 변경한다.
         function putCancelWaiting(waitId,callback,error) {
     
             $.ajax({
@@ -339,7 +328,7 @@ window.onclick = function(event) {
         }
     
         /*get 함수*/
-        
+        // 예약의 '예약상세'를 가져온다.
         function getRsvdDtls(param,callback,error) {
         	
         	let rsvdId = param.rsvdId;
@@ -357,6 +346,7 @@ window.onclick = function(event) {
         	
         }
         
+     	// 사용자의 '해당 매장'의 '예약 리스트'를 가져온다.
 		function getUserRsvdList(param,callback,error) {
         	
         	let storeId = param.storeId,
@@ -378,7 +368,7 @@ window.onclick = function(event) {
         	
         }
         
-        
+        // 매장의 '예약 현황판' 내용을 가져온다.
 		function getRsvdRslt(param,callback,error) {
             
             let storeId = param.storeId;
@@ -395,6 +385,7 @@ window.onclick = function(event) {
             });
         }
         
+        // '해당 매장'의 '예약 리스트'를 가져온다.
         function getRsvdList(param,callback,error) {
             
             let storeId = param.storeId;
@@ -414,6 +405,7 @@ window.onclick = function(event) {
             return rsvdList;
         }
     
+        // '해당 매장'의 '웨이팅 리스트'를 가져온다.
         function getWaitList(param,callback,error) {
             
             let storeId = param.storeId;
@@ -432,7 +424,7 @@ window.onclick = function(event) {
             return waitList;
         }
     
-        /*현재 들어온 매장 */
+        // '매장'의 정보를 가져온다.
         function getStore(param,callback,error) {
             
             let storeId = param.storeId;
@@ -449,15 +441,17 @@ window.onclick = function(event) {
             });
         }
         
+        // '웨이팅 리스트'에서 '다음 웨이팅'을 가져온다.
         function getNextWait(waitList){
             if(!waitList){
                 return;
             }
                        
-            return waitList.filter(wait => {return wait.waitStusCd === 'W'})
-                    .sort((w1,w2) => { return w1.waitId - w2.waitId})[0];
+            return waitList.filter(wait =>  wait.waitStusCd === 'W')
+                    .sort((w1,w2) =>  w1.waitId - w2.waitId)[0];
         };
         
+        // 오늘의 예약을 '시간대 별'로 가져온다.
         function getTodayRsvdMap(param,callback,error){
       
         	let storeId = param.storeId;
@@ -475,6 +469,7 @@ window.onclick = function(event) {
 
         };
         
+        // 해당 매장의 다음 웨이팅을 가져온다.
         function getNextRsvd(param,callback,error){
         	
         	
@@ -493,6 +488,7 @@ window.onclick = function(event) {
             });
         };
     
+        // 웨이팅 정보를 등록한다.
         function regWait(wait, callback,error) {
     
             $.ajax({
@@ -513,6 +509,7 @@ window.onclick = function(event) {
             })
         }
         
+        // '해당 매장'의 지난주 예약 정보를 가져온다.
         function getLastWeekRsvd(param, callback,error) {
         	
 			let storeId = param.storeId;
@@ -574,14 +571,19 @@ window.onclick = function(event) {
         lastWeekRsvdUL = $(".last_week_rsvd")
         ;
             
-        showBoard(storeId); 
-        getTime();
-        setInterval(getTime, 1000);
+        showBoard(storeId); // 현재 '매장'의 'board'를 보여주는 코드
+        getTime(); // 현재 시간을 보여주는 코드
+        setInterval(getTime, 1000); // 매초 update
         //showUserRsvdList(storeId,'kim'); test
 
         /*
+        	매장의
         	board를 보여준다.
-        	
+        	매장 정보
+        	웨이팅 리스트
+        	예약 리스트
+        	시간대별 예약 리스트
+        	다음 예약, 다음 웨이팅
         */
         function showBoard(storeId) {
             
@@ -591,6 +593,9 @@ window.onclick = function(event) {
                     storeUL.html("");
                     return;
                 }
+                
+                str 
+                /*
                 str += "<li>매장번호 : " + store.storeId + "</li>";
                 str += "<li>매장이름 : " + store.storeNm + "</li>";
                 str += "<li>매장 연락처 : " + store.telno + "</li>";
@@ -609,9 +614,9 @@ window.onclick = function(event) {
                 str += "<li>매장 시작시간 : " + store.bstore.openTm + "</li>";
                 str += "<li>매장 착석상태 : " + store.bstore.seatStusCd + "</li>";
                 str += "<li>매장 소개 : " + store.bstore.storeIntro + "</li>";
-                
-                storeUL.html(str);
-                
+                */
+                //storeUL.html(getStoreInfo(store));
+                storeUL.html(store);
                 /*착석 상태*/
                 storeSeatUL.html("<li>"+ store.bstore.seatStusCd +"</li>")
             });
@@ -806,7 +811,7 @@ window.onclick = function(event) {
         			strLastWeekRsvd += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
         			strLastWeekRsvd += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
         			strLastWeekRsvd += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-        			strLastWeekRsvd += "<li>예약 등록 날짜"+ rsvd.strRegDate + "</li>";
+        			strLastWeekRsvd += "<li>예약 등록 날짜 : "+ rsvd.strRegDate + "</li>";
         			strLastWeekRsvd += "===========================================";
         		});
         		
@@ -921,11 +926,16 @@ window.onclick = function(event) {
         		
         	})
         };
+        /*
+        
+        	오프라인 웨이팅 등록 폼을 보여준다.
+        
+        */
         
         function showWaitRegisterForm(storeId){
         	
         	let today = new Date();
-        	strWaitRegForm = "";
+        	let strWaitRegForm = "";
         	strWaitRegForm += "<h1>오프라인 웨이팅 등록</h1>";
         	strWaitRegForm += "<form id='waitRegForm' action='/dealight/business/manage/waiting/register' method='post'>";
         	strWaitRegForm += "고객 이름<input name='custNm' id='js_wait_custNm'> <span id='name_msg'></span></br>";
@@ -952,7 +962,7 @@ window.onclick = function(event) {
         	
         	const inputList = [wait_custNm,wait_phoneNum,wait_pnum];
 
-
+        	// 웨이팅 등록의 valid check를 진행한다.
         	nameLenCheck = function () {
         		if(1 <= wait_custNm.value.length && wait_custNm.value.length <= 5)
         			return true;
@@ -1102,13 +1112,6 @@ window.onclick = function(event) {
 			}
 		});
 		
-        /*
-        btn_show_board.on("click", (e) => {
-			console.log("btn click.........");
-			showBoard(${storeId});
-			$("#board").css("display","block");
-		});
-		*/
         /*당일 예약 결과 가져오기*/
         $("#btn_rsvd_rslt").on("click", e => {
         	showRsvdBoard(${storeId});
@@ -1119,12 +1122,6 @@ window.onclick = function(event) {
         	console.log("show board...")
         	showBoard(${storeId});
         });
-
-        	/*
-        	let storeId = $(this).children(".btnStoreId").textContent;
-        			userId = $(this).children(".btnUserId").textContent;
-        	showUserRsvdList(storeId, userId);
-        	*/
 
         /*예약리스트에 있는 내용 중, 예약 상세 보여주기*/
         /*회원의 예약 리스트 보여주기*/
@@ -1206,7 +1203,8 @@ window.onclick = function(event) {
         	
         
    });
-
+	
+    /* get store img (즉시실행함수)*/
     $(document).ready(function() {
     	
 
@@ -1307,6 +1305,8 @@ window.onclick = function(event) {
             
         });
         
+        
+        
     });
 
     /* 자동 새로고침 */
@@ -1323,33 +1323,10 @@ window.onclick = function(event) {
     */
 
     </script>
-	<!-- 
-<script>
-    console.log("============");
-    console.log("get test");
-
-    boardService.getStore({storeId : 101}, function(store){
-        console.log(store);
-    });
-
-    boardService.getWaitList({storeId:101}, function(waitList){
-        waitList.forEach(wait => {
-            console.log(wait);
-        });
-    })
-
-    boardService.getRsvdList({storeId:101}, function(rsvdList){
-        rsvdList.forEach(rsvd => {
-            console.log(rsvd);
-        })
-    })
-
-    boardService.putCancelWaiting(182,function (result) {
-        alert("수정 완료");
-    })
-
-</script>
- -->
  <script src="/resources/js/clock.js"></script>
+ <script>
+
+ 
+ </script>
 </body>
 </html>

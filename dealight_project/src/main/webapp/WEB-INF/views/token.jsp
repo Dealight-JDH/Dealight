@@ -54,5 +54,26 @@ allow : ${allow}
 
 친구 리스트 : ${talkFriendsList }
 
+<h2>친구한테 보내기</h2>
+
+<form action="/message/friends" method="get">
+<input name='access_token' value='${access_token }' hidden>
+
+<label for="title">제목</label></br>
+<input name='title' type='text' value="[딜라이트 웨이팅 안내 메시지]"> </br>
+
+<label for="description">설명</label> </br>
+<input name='description' type='textarea' value=""> </br></br>
+
+<label for="web_url">전송 URL</label></br>
+<input name='web_url' type='text' value="http://localhost:8080/dealight/business/waiting/">
+
+<label for="uuid">UUIdL</label></br>
+<input name='uuid' type='text'>
+
+<button type='submit'>제출</button>
+
+</form>
+
 </body>
 </html>

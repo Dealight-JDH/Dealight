@@ -70,7 +70,7 @@ public class BoardController {
 	})	
 	public ResponseEntity<List<WaitVO>> getWaitList(@PathVariable("storeId") long storeId) {
 
-		
+		// 현재 웨이팅 상태인 '매장'의 '웨이팅 리스트'를 가져온다.
 		List<WaitVO> waitList = waitService.curStoreWaitList(storeId, "W");
 		
 		log.info("get wait list........... : " + waitList);
@@ -87,12 +87,13 @@ public class BoardController {
 
 		log.info("get rsvd list...........");
 		
+		// '현재 매장'의 오늘 '예약'중인 '예약 리스트'를 가져온다. 
 		List<RsvdVO> rsvdList = rsvdService.readTodayCurRsvdList(storeId);
 
 		return new ResponseEntity<>(rsvdList, HttpStatus.OK);
 	}
 
-	// storeId로 해당 매장의 '오늘' 예약 맵을 가져온다.
+	// storeId로 해당 매장의 '오늘' 예약 맵(시간대별)을 가져온다.
 	@GetMapping(value = "/board/reservation/map/{storeId}", 
 			produces = {
 					MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -241,12 +242,14 @@ public class BoardController {
 					MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<List<RsvdVO>> getLastWeekRsvd(@PathVariable("storeId") long storeId){
 		
+		// 지난 7일의 예약 리스트를 가져온다.
 		List<RsvdVO> rsvdList = rsvdService.findLastWeekRsvd(storeId);
 		
 		String pattern = "yyyy/MM/dd";
 		
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 		
+		// 예약 등록 날짜의 포맷을 설정해준다.
 		rsvdList.stream().forEach((rsvd) -> {
 			rsvd.setStrRegDate(simpleDateFormat.format(rsvd.getRegdate()));
 		});

@@ -158,8 +158,8 @@ public class HomeController {
 	}
 	
 	// 친구(uuid)에 메시지를 보낸다.
-	@RequestMapping(value="/message/{uuid}", method = RequestMethod.GET)
-	public String test(Model model, String access_token, String title, String description, String web_url, @PathVariable("uuid") String uuid) {
+	@RequestMapping(value="/message/friends", method = RequestMethod.GET)
+	public String test(Model model, String access_token, String title, String description, String web_url, String uuid) {
 		
 		log.info("rest template test..........................");
 		
