@@ -114,6 +114,21 @@
 		
 		
 		<!-- 핫딜 mapper -->
+		
+		<select id="getListWithPaging" resultType="com.dealight.domain.HtdlVO">
+		<![CDATA[
+	 		select *
+	 		 from (
+	 		 	select /*+ INDEX_DESC(tbl_htdl tbl_htdl_pk)*/
+	 		 	rownum rn, htdl_id, name, store_id, htdl_img, dc_rate, start_tm, end_tm, lmt_pnum, intro,
+	 		 	bef_price, ddct, cur_pnum, stus_cd, regdate, updatedate
+	 		 	from tbl_htdl
+	 		 	where stus_cd = #{stusCd} and rownum <= #{hCri.pageNum} * #{hCri.amount}
+	 		 )
+	 		 where rn > (#{hCri.pageNum} -1) * #{hCri.amount}
+	 	]]>
+		</select>
+		
 		<select id="getSeqHtdl" resultType="long">
 			select seq_htdl.currval from dual
 		</select>

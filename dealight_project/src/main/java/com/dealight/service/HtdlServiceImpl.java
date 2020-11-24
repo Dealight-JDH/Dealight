@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlRsltVO;
 import com.dealight.domain.HtdlVO;
@@ -36,6 +37,14 @@ public class HtdlServiceImpl implements HtdlService {
 	private final StoreMenuMapper menuMapper;
 	private HtdlDtlsMapper htdlDtlsMapper;
 	private HtdlRsltMapper htdlRsltMapper;
+	
+
+	@Override
+	public List<HtdlVO> getList(String stusCd, HtdlCriteria hCri) {
+		// TODO Auto-generated method stub
+		log.info("get list with criteria : " + hCri);
+		return htdlMapper.getListWithPaging(stusCd, hCri);
+	}
 	
 	
 	@Transactional
@@ -182,5 +191,6 @@ public class HtdlServiceImpl implements HtdlService {
 		
 		return htdlMapper.findByStoreIdStusCd(storeId, "A");
 	}
+
 
 }

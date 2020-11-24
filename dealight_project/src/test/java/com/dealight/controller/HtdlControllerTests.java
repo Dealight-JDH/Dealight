@@ -37,6 +37,13 @@ public class HtdlControllerTests {
 	}
 	
 	@Test
+	public void testListPaging() throws Exception {
+		log.info(mockMvc.perform(MockMvcRequestBuilders.get("/dealight/hotdeal/main")
+				.param("pageNum", "2")
+				.param("amount", "9"))
+				.andReturn().getModelAndView().getModelMap());
+	}
+	@Test
 	public void testRegisterHtdl() throws Exception {
 		String resultPage = mockMvc.perform(MockMvcRequestBuilders.post("/dealight/hotdeal/register")
 					.param("name", "새로운 핫딜딜")

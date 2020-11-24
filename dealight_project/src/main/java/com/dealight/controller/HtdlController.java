@@ -2,7 +2,6 @@ package com.dealight.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -17,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlMenuDTO;
+import com.dealight.domain.HtdlPageDTO;
 import com.dealight.domain.HtdlRequestDTO;
 import com.dealight.domain.HtdlVO;
 import com.dealight.service.HtdlService;
@@ -111,10 +112,10 @@ public class HtdlController {
 		HtdlVO htdlVO = service.read(htdlId);
 		model.addAttribute("vo", htdlVO);
 	}
-	
+
 	//핫딜 메인 페이지
 	@GetMapping("/main")
-	public void getList(Model model) {
+	public void getList(HtdlCriteria hCri,Model model) {
 		
 		log.info("hotdeal getList...");
 		List<HtdlVO> lists = service.getList();
@@ -131,8 +132,35 @@ public class HtdlController {
 //			return;
 //		}
 		
-		model.addAttribute("lists", lists.stream()
-					.filter(htdl -> htdl.getStusCd().equals("A"))
-					.collect(Collectors.toList()));
+//		model.addAttribute("lists", lists.stream()
+//					.filter(htdl -> htdl.getStusCd().equals("A"))
+//					.collect(Collectors.toList()));
+		
+		model.addAttribute("lists", service.getList("A", hCri));
+		model.addAttribute("pageMaker", new HtdlPageDTO(hCri, 123));
 	}
+	
+	//핫딜 메인 페이지
+//	@GetMapping("/main")
+//	public void getList(Model model) {
+//		
+//		log.info("hotdeal getList...");
+//		List<HtdlVO> lists = service.getList();
+//		
+////		List<HtdlVO> filterList = lists.stream()
+////										.filter(htdl -> htdl.getStusCd().equals(stusCd))
+////										.collect(Collectors.toList());
+////		
+////		log.info("======currentActivate"+filterList);
+////		log.info("=======getList"+service.getList());
+////		
+////		if(filterList.size() > 0) {
+////			model.addAttribute("lists", filterList);
+////			return;
+////		}
+//		
+//		model.addAttribute("lists", lists.stream()
+//					.filter(htdl -> htdl.getStusCd().equals("A"))
+//					.collect(Collectors.toList()));
+//	}
 }

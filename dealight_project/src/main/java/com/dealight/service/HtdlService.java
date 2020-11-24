@@ -2,6 +2,7 @@ package com.dealight.service;
 
 import java.util.List;
 
+import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlRsltVO;
 import com.dealight.domain.HtdlVO;
@@ -22,6 +23,10 @@ public interface HtdlService {
 
 	//전체 핫딜(핫딜+상세+매장평가) 조회
 	List<HtdlVO> getList();
+	
+	
+	List<HtdlVO> getList(String stusCd, HtdlCriteria hCri);
+	
 	
 	//해당 핫딜(핫딜+상세+매장평가)
 	HtdlVO read(Long htdlId);
