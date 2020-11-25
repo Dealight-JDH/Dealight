@@ -166,10 +166,8 @@ public class HomeController {
 		
 		String result = callService.sendMessage(access_token,title,description,web_url);
 		
-		
 		model.addAttribute("result", result);
 
-		
 		return "message";
 	}
 	

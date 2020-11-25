@@ -51,5 +51,8 @@ public interface WaitMapper {
 	
 	// delete
 	public int delete(Long id);
+	
+	// update
+	public int waitInit();
 
 }

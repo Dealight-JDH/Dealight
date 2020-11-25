@@ -53,9 +53,13 @@ public class BusinessController {
 	//DTO에 대한이해가 피요하고 많아지는 객체들을 쪼갤수있는 방법을 생각하자.
 	@PostMapping("/register")
 	public String register(StoreVO store, BStoreVO bStore, StoreLocVO loc, StoreEvalVO eval, RedirectAttributes rttr) {
+		
+		log.info("bstore................." + bStore);
+		log.info("loc................." + loc);
+		log.info("store eval................." + eval);
+		
 		store.setBstore(bStore);
 		store.setLoc(loc);
-		//테스트용 지워야함
 		store.setEval(eval);
 		
 		log.info("register: " + store);
@@ -66,7 +70,6 @@ public class BusinessController {
 		//결국 저장된 정보를 볼수있는 페이지는 뭐가잇을까??
 		//수정페이지에서 정보를 볼 수있고 정보도 고칠수 있지 
 		//그러면 수정페이지를 가지고있어야겠네
-		//
 		rttr.addFlashAttribute("result", store.getStoreId());
 		return "redirect:/dealight/business/";
 	}

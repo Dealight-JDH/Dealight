@@ -279,11 +279,24 @@ public class FileCheckTask {
     	log.warn(result);
 		log.warn("=========================================rsvd 예약 완료");
 	}
+	
+	// 새벽 2시가 되면 하루 전(sysdate -1)의 웨이팅을'W' -> 'E'로 변경한다.
+	@Scheduled(cron="0 55 * * * *")
+	public void waitInit() throws Exception {
+		
+		log.warn("Daily Wait Initialization Task run .....................");
+		
+		int upNum = waitService.waitInit();
+		
+		log.warn("=========================================초기화 웨이팅 : " + upNum);
+		
+	}
 
-	//@Scheduled(cron="0 10 * * * *")
+	// 새벽 2시가 되면 하루 전(sysdate-1)의 DB의 파일을 체크한다.
+	//@Scheduled(cron="0 0 2 * * *")
 	public void checkFiles() throws Exception{
 		
-		log.warn("Image File Check Task run .....................");
+		log.warn("Daily Image File Check Task run .....................");
 		Date date = new Date();		
 		log.warn("=========================================date : " + date);
 		

@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.WaitVO;
 import com.dealight.mapper.WaitMapper;
@@ -54,7 +55,7 @@ public class WaitingServiceTests {
 		WaitVO waiting = new WaitVO().builder()
 				.waitId(30L)
 				.storeId(13L)
-				.userId("a")
+				.userId("aaa")
 				.waitPnum(3)
 				.waitRegTm(new Date())
 				.custTelno("010-2737-3333")
@@ -198,6 +199,18 @@ public class WaitingServiceTests {
 		WaitVO wait = waitingService.readNextWait(curStoreWaitiList);
 		
 		log.info(wait);
+	}
+	
+	@Transactional
+	@Test
+	public void waitInitTest1() {
+		
+		int upNum = waitingService.waitInit();
+		
+		log.info("=================="+upNum);
+		
+		assertTrue(1 <= upNum);
+		
 	}
 	
 }

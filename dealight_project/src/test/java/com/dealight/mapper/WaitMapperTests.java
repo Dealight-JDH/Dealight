@@ -1,5 +1,6 @@
 package com.dealight.mapper;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -12,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.WaitVO;
 
@@ -246,6 +248,38 @@ public class WaitMapperTests {
     	
     	assertTrue(wait.getWaitStusCd().equals(waitStusCd));
     	
+    	
+    }
+    
+    @Transactional
+    @Test
+    public void waitInitTest1() {
+    	
+    	List<WaitVO> list = mapper.findAll();
+    	
+    	log.info(list);
+    	
+    	boolean flag = true;
+    	
+    	for(WaitVO wait : list)
+    		if(wait.getWaitStusCd().equals("W"))
+    			flag = false;
+    	
+    	assertFalse(flag);
+    	
+    	mapper.waitInit();
+    	
+    	list = mapper.findAll();
+    	
+    	log.info(list);
+    	
+    	flag = true;
+    	
+    	for(WaitVO wait : list)
+    		if(wait.getWaitStusCd().equals("W"))
+    			flag = false;
+    	
+    	assertTrue(flag);
     	
     }
 

@@ -58,6 +58,7 @@ public class UploadController {
 	}
 	
 	private boolean checkImageType(File file) {
+		
 		try {
 			
 			String contentType = Files.probeContentType(file.toPath());

@@ -105,5 +105,12 @@
 		WHERE wait_id = #{waitId}
 	</delete>
 
+	<update id="waitInit">
+	<![CDATA[
+		UPDATE tbl_wait
+		SET wait_stus_cd = 'E'
+		WHERE wait_reg_tm < sysdate - 1 and wait_stus_cd = 'W'
+	]]>
+	</update>
 
 </mapper>

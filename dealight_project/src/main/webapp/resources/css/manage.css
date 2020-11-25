@@ -115,13 +115,18 @@
             overflow: scroll;
         }
         .rsvd{
+        	margin : 0px;
+        	padding : 0;
             border: solid 1px black;
-            position: relative;
             width: 300px;
             height: 100px;
             min-height: 90px;
             flex-grow: 1;
             overflow : scroll;
+        }
+        .rsvdList {
+        	padding : 0;
+        	margin : 0;
         }
         .rsvd_i{
         	cursor: pointer;
@@ -139,6 +144,9 @@
             flex-direction: column;
             align-content: center;
             overflow: scroll;
+        }
+        .waitList {
+        	padding : 0;
         }
         .wait{
             border: solid 1px black;
@@ -215,8 +223,8 @@
         .switch {
         position: relative;
         display: inline-block;
-        width: 60px;
-        height: 34px;
+        width: 100px;
+        height: 50px;
         }
 
         .switch input { 
@@ -366,4 +374,16 @@
         	display:inline;
         	width:400px;
         
+        }
+        .img_seat_box{
+        	width:30px;
+        	height:30px;
+        }
+        .btn_seat_stus{
+        	font-size:1;
+        }
+        .img_seat{
+        	max-width: 30px;
+        	max-height: 30px;
+        	display: block;
         }

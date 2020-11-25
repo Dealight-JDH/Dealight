@@ -46,10 +46,10 @@
                 <div class="top_box_blank"></div>
                 <div class="toggle"> <!-- toggle -->
                     <label class="switch">
-                        <button>Toggle Button</button>
+                        <button>매장관리</button>
                       </label>
                 </div> <!-- end toggle -->
-
+				
          </div> <!-- end top box -->
 
          <div id="rsvd_rslt_baord" style="display : none">
@@ -93,10 +93,6 @@
                 </div><!-- end wait board -->
                 <p id="dealhistory"><a href="/dealight/business/manage/dealhistory?storeId=${storeId}">핫딜 히스토리</a></p>
                 <p id="modify"><a href="/dealight/business/manage/modify?storeId=${storeId}">매장 정보 수정</a></p>
-                <div id="map_wrapper">
-                	<h4>시간대별 예약</h4>
-	            	<ul class="rsvdMap"></ul>
-	            </div>
             </div> <!-- end board -->
         </div>
             <div class="rsvd_time_bar"><!-- rsvd time bar -->
@@ -322,8 +318,8 @@ writeTimeBar();
         	let storeId = param.storeId,
         		userId = param.userId;
         	
-        	console.log(storeId);
-        	console.log(userId);
+        	//console.log(storeId);
+        	//console.log(userId);
         	
         	$.getJSON("/dealight/business/manage/board/reservation/list/" + storeId +"/" + userId + ".json",
         		function(data) {
@@ -547,6 +543,7 @@ writeTimeBar();
             showBoard(storeId); // 현재 '매장'의 'board'를 보여주는 코드
             showTime(); // 현재 시간을 보여주는 코드
             setInterval(showTime, 1000); // 매초 update
+            console.log("get rsvd list...............");
         }
             
         init(storeId);
@@ -686,8 +683,9 @@ writeTimeBar();
             	Object.entries(map).forEach(([key,value]) => {
             		strRsvdMap += "<li class='tooltip'>"+key + " : 예약번호[" + value+"] <span class='tooltiptext'>"+value+"번호 안녕?</span></li></br>";
             		for(let i = 1; i < 28; i ++){
-            			console.log(key+' : '+i+ ' : '+document.querySelector('#slide-'+i+' h6').textContent);
-            			console.log(key === document.querySelector('#slide-'+i+' h6').textContent);
+            			// debug
+            			//console.log(key+' : '+i+ ' : '+document.querySelector('#slide-'+i+' h6').textContent);
+            			//console.log(key === document.querySelector('#slide-'+i+' h6').textContent);
             			if(key === document.querySelector('#slide-'+i+' h6').textContent){
             				document.querySelector('#slide-'+i+' .time_table').innerHTML = "<span class='tooltiptext'>"+value+" 번호 예약</span>";
             				document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(251, 255, 41, 0.898)';
@@ -797,9 +795,10 @@ writeTimeBar();
         			strLastWeekRsvd += "===========================================";
         		});
         		
-        		console.log(dateArr);
-        		console.log(pnumArr);
-        		console.log(amountArr);
+        		// test
+        		//console.log(dateArr);
+        		//console.log(pnumArr);
+        		//console.log(amountArr);
         		
 	        	lastWeekRsvdUL.html(strLastWeekRsvd);
 	        	let chart = document.getElementById('rsvd_chart');
@@ -1066,20 +1065,26 @@ writeTimeBar();
 			e.preventDefault();
 			
 			if($("#board").css("display") === 'none'){
-				console.log("board none => block");
+				// debug
+				//console.log("board none => block");
+				$(".switch > button").text('매장관리');
 				showBoard(storeId);
 				$("#board").css("display", "block");
 			} else if($("#board").css("display") === 'block'){
-				console.log("board block => none");				
+				// debug
+				//console.log("board block => none");				
 				$("#board").css("display", "none");
 			}
 			
 			if($("#rsvd_rslt_baord").css("display") === 'none'){
-				console.log("rsvd rslt board none => block");
+				// debug
+				//console.log("rsvd rslt board none => block");
+				$(".switch > button").text('현황판');
 				showRsvdBoard(storeId);
 				$("#rsvd_rslt_baord").css("display", "block");
 			} else	if($("#rsvd_rslt_baord").css("display") === 'block'){
-				console.log("rsvd rslt board block => none");
+				// debug
+				//console.log("rsvd rslt board block => none");
 				$("#rsvd_rslt_baord").css("display", "none");
 			}
 		});
@@ -1091,7 +1096,8 @@ writeTimeBar();
 
         /*새로고침*/
         $("#refresh").on("click", e => {
-        	console.log("show board...")
+        	// debug
+        	//console.log("show board...")
         	showBoard(storeId);
         });
 
@@ -1129,7 +1135,8 @@ writeTimeBar();
             param.storeId = storeId;
             param.seatStusCd = e.target.innerHTML[0];
             
-            console.log("seat stus cd...................."+e.target.innerHTML[0]);
+            // debug
+            //console.log("seat stus cd...................."+e.target.innerHTML[0]);
             
         	boardService.putChangeStatusCd(param, function(result){
         		//alert(result);
@@ -1174,15 +1181,16 @@ writeTimeBar();
             
             $.getJSON("/dealight/business/manage/getStoreImgs", {storeId:storeId}, function(imgs){
                 
-                console.log("즉시 함수..");
-                
-                console.log(imgs);
+            	// debug
+                //console.log("즉시 함수..");
+                //console.log(imgs);
                 
                 let str = "";
                 
                 $(imgs).each(function(i, img){
                 	
-                	console.log(img);
+                	// debug
+                	//console.log(img);
                     
                     // image type
                     if(img.image) {
@@ -1214,7 +1222,8 @@ writeTimeBar();
         
         $(".uploadResult").on("click", "li", function(e){
             
-            console.log("view image");
+        	// debug
+            // console.log("view image");
             
             let liObj = $(this);
             
