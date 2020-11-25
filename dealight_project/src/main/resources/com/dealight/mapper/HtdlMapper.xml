@@ -115,17 +115,29 @@
 		
 		<!-- 핫딜 mapper -->
 		
-		<select id="getListWithPaging" resultType="com.dealight.domain.HtdlVO">
+		<select id="getTotalCount" resultType="int">
+			select count(*) from tbl_htdl where htdl_id > 0 and stus_cd = #{stusCd}
+		</select>
+		
+		<!-- 핫딜+상세+매장평가+페이지 -->
+		<select id="getListWithPaging" resultMap="HtdlDetail">
 		<![CDATA[
-	 		select *
+		SELECT h.htdl_id, h.name, h.store_id, h.dc_rate, h.start_tm, h.end_tm, h.lmt_pnum, h.intro ,h.bef_price, h.ddct, h.cur_pnum,stus_cd,
+        d.htdl_seq, d.menu_name, e.avg_rating, e.revw_tot_num, e.like_tot_num
+		      FROM (select *
 	 		 from (
 	 		 	select /*+ INDEX_DESC(tbl_htdl tbl_htdl_pk)*/
 	 		 	rownum rn, htdl_id, name, store_id, htdl_img, dc_rate, start_tm, end_tm, lmt_pnum, intro,
 	 		 	bef_price, ddct, cur_pnum, stus_cd, regdate, updatedate
 	 		 	from tbl_htdl
-	 		 	where stus_cd = #{stusCd} and rownum <= #{hCri.pageNum} * #{hCri.amount}
+	 		 	where htdl_id > 0 and stus_cd = #{stusCd} and rownum <= #{hCri.pageNum} * #{hCri.amount}
 	 		 )
 	 		 where rn > (#{hCri.pageNum} -1) * #{hCri.amount}
+	 		 ) h, tbl_htdl_dtls d, tbl_store_eval e
+			 WHERE h.htdl_id = d.htdl_id and h.store_id = e.store_id
+			 order by h.htdl_id desc
+			 
+	 		
 	 	]]>
 		</select>
 		
@@ -135,7 +147,7 @@
 		
 		<select id="getList" resultType="com.dealight.domain.HtdlVO">
 		<![CDATA[
-	 		select * from tbl_htdl where htdl_Id > 0
+	 		select * from tbl_htdl where htdl_Id > 0 and stus_cd != 'I'
 	 	]]>
 		</select>
 		

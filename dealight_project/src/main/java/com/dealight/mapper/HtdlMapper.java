@@ -22,6 +22,7 @@ public interface HtdlMapper {
 	List<HtdlVO> getList();
 	List<HtdlVO> getListWithPaging(@Param("stusCd") String stusCd, @Param("hCri") HtdlCriteria hCri);
 	int delete(Long htdlId);
+	int getTotalCount(@Param("stusCd") String stusCd, @Param("hCri") HtdlCriteria hCri);
 	
 	Long getSeqHtdl();
 	

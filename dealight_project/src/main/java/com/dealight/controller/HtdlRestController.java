@@ -1,10 +1,8 @@
 package com.dealight.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dealight.domain.HtdlCriteria;
+import com.dealight.domain.HtdlPageDTO;
 import com.dealight.domain.HtdlVO;
 import com.dealight.service.HtdlService;
 
@@ -30,20 +30,25 @@ public class HtdlRestController {
 	private final HtdlService service;
 	
 	
-	@GetMapping(value = "/main/{stusCd}", produces = {
+	@GetMapping(value = "/main/{stusCd}/{page}", produces = {
 			MediaType.APPLICATION_JSON_UTF8_VALUE,
 			MediaType.APPLICATION_XML_VALUE
 	})
-	public HttpEntity<List<HtdlVO>> main(@PathVariable String stusCd) {
+	public HttpEntity<List<HtdlVO>> main(@PathVariable String stusCd, @PathVariable int page) {
 		
 		//상태에 따른 핫딜 리스트 필터
-		List<HtdlVO> filterList = service.getList().stream()
-				.filter(htdl -> htdl.getStusCd().equals(stusCd))
-				.collect(Collectors.toList());
+//		List<HtdlVO> filterList = service.getList().stream()
+//				.filter(htdl -> htdl.getStusCd().equals(stusCd))
+//				.collect(Collectors.toList());
 		
-		log.info("==========================hotdeal: " + filterList);
+//		log.info("==========================hotdeal: " + filterList);
+
+		HtdlCriteria hCri = new HtdlCriteria(page, 9);
+//		int total = service.getTotal(stusCd, hCri);
+//		List<HtdlVO> lists = service.getList(stusCd, hCri);
 		
-		return new ResponseEntity(filterList, HttpStatus.OK);
+		log.info("hCri: " + hCri);
+		return new ResponseEntity(service.getListPage(stusCd, hCri), HttpStatus.OK);
 	}
 	
 

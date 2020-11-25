@@ -52,10 +52,6 @@ public class HtdlController {
 	        return "redirect:/dealight/hotdeal/register?storeId="+storeId;
 		}
 		
-//		log.info("===================="+ Arrays.toString(requestDto.getMenu())+"=================");
-//		log.info("====================="+requestDto.getStartTm()+"============="+requestDto.getEndTm());
-//		log.info("====================="+requestDto+"=============");
-//		
 		//핫딜 상세vo list
 		List<HtdlDtlsVO> dtlsList = new ArrayList<>();
 
@@ -137,7 +133,7 @@ public class HtdlController {
 //					.collect(Collectors.toList()));
 		
 		model.addAttribute("lists", service.getList("A", hCri));
-		model.addAttribute("pageMaker", new HtdlPageDTO(hCri, 123));
+//		model.addAttribute("pageMaker", new HtdlPageDTO(hCri, 123));
 	}
 	
 	//핫딜 메인 페이지

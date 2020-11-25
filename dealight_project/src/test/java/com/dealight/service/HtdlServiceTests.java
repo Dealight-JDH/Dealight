@@ -34,6 +34,14 @@ public class HtdlServiceTests {
 	//TODO 핫딜 서비스 테스트
 	
 	@Test
+	public void testGetTotal() {
+		String stusCd = "A";
+		HtdlCriteria hCri = new HtdlCriteria();
+		int total = service.getTotal(stusCd, hCri);
+		
+		log.info("total: ============" + total);
+	}
+	@Test
 	public void testGetListwithPaging() {
 		service.getList("A", new HtdlCriteria(2, 10)).forEach(vo -> log.info(vo));
 	}
