@@ -38,7 +38,7 @@
 				#{acmPnum},
 				#{storeId}, #{buserId}, #{openTm},
 				#{brch}, #{repMenu}, #{repImg}, 
-				#{closeTm}, #{breakSttm}, #{lastOrdTm})
+				#{closeTm}, #{breakSttm}, #{breakEntm}, #{lastOrdTm})
 	</insert>
   
   	<select id="read" resultType="com.dealight.domain.BStoreVO">

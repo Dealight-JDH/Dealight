@@ -1,6 +1,7 @@
 package com.dealight.controller;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -12,12 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.dealight.domain.UserVO;
 import com.dealight.service.CallService;
 import com.dealight.service.UserService;
 
@@ -67,7 +65,7 @@ public class HomeController {
 	
 	// 카카오 api 인가 코드를 받는다.
 	@RequestMapping(value="/oauth", method = RequestMethod.GET)
-	public String getOauth(Model model, String code) {
+	public String getOauth(Model model, String code, Long storeId, Long waitId) {
 		
 		log.info("rest template get oauth..........................");
 		
@@ -77,13 +75,15 @@ public class HomeController {
 		model.addAttribute("restKey",restKey);
 		model.addAttribute("redirectURI",redirectURI);
 		model.addAttribute("code",code);
+		model.addAttribute("storeId",storeId);
+		model.addAttribute("waitId",waitId);
 		
 		return "oauth";
 	}
 	
 	// 카카오 api token을 받는다.
 	@RequestMapping(value="/token", method = RequestMethod.GET)
-	public String getToken(Model model, String code) {
+	public String getToken(Model model, String code, Long storeId, Long waitId) {
 		
 		log.info("rest template get token..........................");
 		
@@ -118,7 +118,21 @@ public class HomeController {
 
 		log.info("talkFriendsList................"+talkFriendsList);
 		
-		//log.info("talkFriendsList class..........."+talkFriendsList.get("elements").getClass());
+		talkFriendsList = (LinkedHashMap<String, Object>) talkFriendsList.get("body");
+		
+		log.info("talkFriendsList2..........."+talkFriendsList);
+		
+		log.info("talkFriendsList2 class..........."+talkFriendsList.getClass());
+		
+		log.info("talkFriendsList3..........."+talkFriendsList.get("elements").getClass());
+
+		List list = (ArrayList) talkFriendsList.get("elements");
+		
+		log.info("talkFriendsList3..........."+list.get(0).getClass());
+		
+		LinkedHashMap map = (LinkedHashMap) list.get(0);
+		
+		log.info(map.get("uuid"));
 		
 		//List<HashMap<String, Object>> elements = (List<HashMap<String, Object>>) talkFriendsList.get("elements");
 		
@@ -134,8 +148,10 @@ public class HomeController {
 		model.addAttribute("redirectURI",redirectURI);
 		model.addAttribute("allow",allow);
 		model.addAttribute("talkFriendsList",talkFriendsList);
-		//model.addAttribute("first",elements.get(0));
-		//model.addAttribute("requestUuid",requestUuid);
+		model.addAttribute("storeId",storeId);
+		model.addAttribute("waitId",waitId);
+		model.addAttribute("first",map);
+		model.addAttribute("requestUuid",map.get("uuid"));
 
 		return "token";
 	}
@@ -150,24 +166,23 @@ public class HomeController {
 		
 		String result = callService.sendMessage(access_token,title,description,web_url);
 		
-		
 		model.addAttribute("result", result);
 
-		
 		return "message";
 	}
 	
 	// 친구(uuid)에 메시지를 보낸다.
-	@RequestMapping(value="/message/{uuid}", method = RequestMethod.GET)
-	public String test(Model model, String access_token, String title, String description, String web_url, @PathVariable("uuid") String uuid) {
+	@RequestMapping(value="/message/friends", method = RequestMethod.GET)
+	public String test(Model model, String access_token, String title, String description, String web_url, String uuid, Long storeId, Long waitId) {
 		
 		log.info("rest template test..........................");
 		
-		log.info("accesss token : "+access_token+"\ntitle : "+title+"\ndescription : "+description+"\nweb_url : "+web_url+"\nuuid : "+uuid);
+		log.info("accesss token : "+access_token+"\ntitle : "+title+"\ndescription : "+description+"\nweb_url : "+web_url+"\nuuid : "+uuid+"\nwaitId : "+waitId);
 		
 		String result = callService.sendFrMessage(access_token,title,description,web_url,uuid);
 		
 		model.addAttribute("result", result);
+		model.addAttribute("storeId",storeId);
 
 		return "message";
 	}

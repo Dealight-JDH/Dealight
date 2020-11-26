@@ -1,4 +1,4 @@
-package com.dealight.domain;
+	package com.dealight.domain;
 
 /*
  * 

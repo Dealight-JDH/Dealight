@@ -98,6 +98,10 @@ public class StoreServiceImpl implements StoreService {
 		lMapper.insert(store.getLoc());
 		eMapper.insert(store.getEval());
 		bMapper.insert(store.getBstore());
+		for(StoreImgVO img : store.getImgs()) {
+			img.setStoreId(store.getStoreId());
+		}
+		imgMapper.insertAll(store.getImgs());
 		
 		
 	}
@@ -439,9 +443,16 @@ public class StoreServiceImpl implements StoreService {
 		return nearbyStore;
 	}
 
+<<<<<<< HEAD
+	@Override
+	public StoreLocVO getStoreLoc(Long storeId) {
+		return locMapper.read(storeId);
+	}
+=======
 	/*
 	 * @Override public String storeCd(Long storeId) {
 	 * log.info("store code......"+storeId); return sMapper.getStoreCd(storeId); }
 	 */
+>>>>>>> main
 
 }

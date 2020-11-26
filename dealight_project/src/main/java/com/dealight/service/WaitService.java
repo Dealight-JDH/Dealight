@@ -56,6 +56,6 @@ public interface WaitService {
 	
 	WaitVO readNextWait(List<WaitVO> curStoreWaitiList);
 	
-
+	int waitInit();
 
 }

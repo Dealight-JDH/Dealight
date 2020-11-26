@@ -46,10 +46,10 @@
                 <div class="top_box_blank"></div>
                 <div class="toggle"> <!-- toggle -->
                     <label class="switch">
-                        <button>Toggle Button</button>
+                        <button>매장관리</button>
                       </label>
                 </div> <!-- end toggle -->
-
+				
          </div> <!-- end top box -->
 
          <div id="rsvd_rslt_baord" style="display : none">
@@ -62,21 +62,7 @@
         </div>
 
         <div id="board">
-        <!--  
-            <h1>매장 정보🏪</h1>
-            <ul class="store"></ul>
 
-            <h2>매장 사진</h2>
-            <div class='uploadResult'>
-                <ul>
-                </ul>
-            </div>  --><!-- uploadResult --><!--
-            
-            <div class='bigPictureWrapper'>
-                <div class='bigPicture'>
-                </div>
-            </div>
- 		-->
             <div class="next_wait"> <!-- next wait -->
                 <h4>다음 웨이팅 정보👉</h4>
 	            <ul class="nextWait"></ul>
@@ -107,38 +93,10 @@
                 </div><!-- end wait board -->
                 <p id="dealhistory"><a href="/dealight/business/manage/dealhistory?storeId=${storeId}">핫딜 히스토리</a></p>
                 <p id="modify"><a href="/dealight/business/manage/modify?storeId=${storeId}">매장 정보 수정</a></p>
-                <div id="map_wrapper">
-                	<h4>시간대별 예약</h4>
-	            	<ul class="rsvdMap"></ul>
-	            </div>
             </div> <!-- end board -->
         </div>
-            <div class="rsvd_time_bar"> <!-- rsvd time bar -->
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-                <div class="rsvd_time"></div>
-            </div> <!-- end rsvd time bar -->
+            <div class="rsvd_time_bar"><!-- rsvd time bar -->
+      		</div> <!-- end rsvd time bar -->
         </div> <!-- end main box -->
         <div class="info_box"> <!--  info box -->
         
@@ -194,61 +152,59 @@
 	<div id="myModal" class="modal">
 		<!-- Modal content -->
 		<div class="modal-content">
+			<span class="close">&times;</span>
 			<ul class="rsvdDtls"></ul>
 			<ul class="userRsvdList"></ul>
 			<ul class="waiting_registerForm"></ul>
-			<span class="close">&times;</span>
 		</div>
 	</div>
     
 <script>
-	console.log("modal module.............")
-	// Get the modal
+
+/*시간바 만들기*/
+writeTimeBar = function () {
+    timeArr = ['','09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30','22:00'];
+    strTime = "";
+    for(let i = 1; i <= 27; i++){
+        strTime += "<div class='rsvd_time tooltip' id='slide-"+i+"'><h6>"+timeArr[i]+"</h6><div class='time_table'></div></div>";
+    }
+	document.querySelector(".rsvd_time_bar").innerHTML = strTime;
+}
+writeTimeBar();
+
+	// 모달 선택
 	const modal = $("#myModal"),
-		btn_modal = $("#myBtn"),
 		close = $(".close"),
+		modalContent = $(".modal-content"),
 		btn_show_board = $("#btn_show_board");
 
-
-// When the user clicks on the button, open the modal
-btn_modal.on("click",(e) => {
-	console.log("btn click........");
-})
-
-close.on("click", (e) => {
-	console.log("close click........");
-	modal.css("display","none");
-	modal.find("ul").html("");
-})
-
-window.onclick = e => {
-	if(e.target == modal){
-		modal.css("display","block");
+	close.on("click", (e) => {
+		modal.css("display","none");
+		modal.find("ul").html("");
+	});
+	
+	/*
+	 모달이 아닌 화면을 클릭하면 모달이 종료가 되어야 하는데 그렇지 않음.
+	*/
+	window.onclick = function(event) {
+		  if (event.target == modal) {
+			  modal.css("display","none");
+			  modal.find("ul").html("");
+		  }
 	}
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
 
 </script>
 	<script>
 
-    console.log("board module........");
-    
-    
     /*
     REST 방식으로 서버와 통신
-    
+    	비동기로 board를 바꿔주는 서비스
     */
     let boardService = (() => {
       
     	
         /*put 함수*/
-        
+        // 매장의 착석 상태 코드를 변경한다.
         function putChangeStatusCd(params,callback,error) {
         	
         	let storeId = params.storeId,
@@ -272,7 +228,7 @@ window.onclick = function(event) {
             });
             
             }
-        
+    	 // 매장의 웨이팅 상태를 '노쇼'로 변경한다.
         function putNoshowWaiting(waitId,callback,error) {
             $.ajax({
                 type:'put',
@@ -293,6 +249,7 @@ window.onclick = function(event) {
             
             }
     
+     	// 매장의 웨이팅 상태를 '입장'으로 변경한다.
         function putEnterWaiting(waitId,callback,error) {
     
             $.ajax({
@@ -313,7 +270,8 @@ window.onclick = function(event) {
             });
             
             }
-    
+    	
+     	// 매장의 웨이팅 상태를 '취소'로 변경한다.
         function putCancelWaiting(waitId,callback,error) {
     
             $.ajax({
@@ -336,7 +294,7 @@ window.onclick = function(event) {
         }
     
         /*get 함수*/
-        
+        // 예약의 '예약상세'를 가져온다.
         function getRsvdDtls(param,callback,error) {
         	
         	let rsvdId = param.rsvdId;
@@ -354,13 +312,14 @@ window.onclick = function(event) {
         	
         }
         
+     	// 사용자의 '해당 매장'의 '예약 리스트'를 가져온다.
 		function getUserRsvdList(param,callback,error) {
         	
         	let storeId = param.storeId,
         		userId = param.userId;
         	
-        	console.log(storeId);
-        	console.log(userId);
+        	//console.log(storeId);
+        	//console.log(userId);
         	
         	$.getJSON("/dealight/business/manage/board/reservation/list/" + storeId +"/" + userId + ".json",
         		function(data) {
@@ -375,7 +334,7 @@ window.onclick = function(event) {
         	
         }
         
-        
+        // 매장의 '예약 현황판' 내용을 가져온다.
 		function getRsvdRslt(param,callback,error) {
             
             let storeId = param.storeId;
@@ -392,6 +351,7 @@ window.onclick = function(event) {
             });
         }
         
+        // '해당 매장'의 '예약 리스트'를 가져온다.
         function getRsvdList(param,callback,error) {
             
             let storeId = param.storeId;
@@ -411,6 +371,7 @@ window.onclick = function(event) {
             return rsvdList;
         }
     
+        // '해당 매장'의 '웨이팅 리스트'를 가져온다.
         function getWaitList(param,callback,error) {
             
             let storeId = param.storeId;
@@ -429,7 +390,7 @@ window.onclick = function(event) {
             return waitList;
         }
     
-        /*현재 들어온 매장 */
+        // '매장'의 정보를 가져온다.
         function getStore(param,callback,error) {
             
             let storeId = param.storeId;
@@ -446,15 +407,17 @@ window.onclick = function(event) {
             });
         }
         
+        // '웨이팅 리스트'에서 '다음 웨이팅'을 가져온다.
         function getNextWait(waitList){
             if(!waitList){
                 return;
             }
                        
-            return waitList.filter(wait => {return wait.waitStusCd === 'W'})
-                    .sort((w1,w2) => { return w1.waitId - w2.waitId})[0];
+            return waitList.filter(wait =>  wait.waitStusCd === 'W')
+                    .sort((w1,w2) =>  w1.waitId - w2.waitId)[0];
         };
         
+        // 오늘의 예약을 '시간대 별'로 가져온다.
         function getTodayRsvdMap(param,callback,error){
       
         	let storeId = param.storeId;
@@ -472,6 +435,7 @@ window.onclick = function(event) {
 
         };
         
+        // 해당 매장의 다음 웨이팅을 가져온다.
         function getNextRsvd(param,callback,error){
         	
         	
@@ -490,6 +454,7 @@ window.onclick = function(event) {
             });
         };
     
+        // 웨이팅 정보를 등록한다.
         function regWait(wait, callback,error) {
     
             $.ajax({
@@ -510,6 +475,7 @@ window.onclick = function(event) {
             })
         }
         
+        // '해당 매장'의 지난주 예약 정보를 가져온다.
         function getLastWeekRsvd(param, callback,error) {
         	
 			let storeId = param.storeId;
@@ -553,41 +519,54 @@ window.onclick = function(event) {
     	서버가 시작 되면 동작하는 코드
     */
     $(document).ready(() => {
+    	/* 변수 설정*/
         const storeId = ${storeId};
         
-        let seatStusForm = $("#seatStusForm"),
-        colorVal = $("#color_value"),
-        storeUL = $(".store"),
-        rsvdListUL = $(".rsvdList"),
-        waitListUL = $(".waitList"),
-        nextWaitUL = $(".nextWait"),
-        nextRsvdUL = $(".nextRsvd"),
-        rsvdMapUL = $(".rsvdMap"),
-        storeSeatUL = $(".storeSeatStus"),
-        rsvdRsltUL = $(".rsvdRslt"),
-        userRsvdListUL = $(".userRsvdList"),
-        rsvdDtlsUL = $(".rsvdDtls"),
-        waitRegFormUL = $(".waiting_registerForm"),
-        lastWeekRsvdUL = $(".last_week_rsvd")
+        /* HTML 태그 변수 설정*/
+        const seatStusForm = $("#seatStusForm"),
+	        colorVal = $("#color_value"),
+	        storeUL = $(".store"),
+	        rsvdListUL = $(".rsvdList"),
+	        waitListUL = $(".waitList"),
+	        nextWaitUL = $(".nextWait"),
+	        nextRsvdUL = $(".nextRsvd"),
+	        rsvdMapUL = $(".rsvdMap"),
+	        storeSeatUL = $(".storeSeatStus"),
+	        rsvdRsltUL = $(".rsvdRslt"),
+	        userRsvdListUL = $(".userRsvdList"),
+	        rsvdDtlsUL = $(".rsvdDtls"),
+	        waitRegFormUL = $(".waiting_registerForm"),
+	        lastWeekRsvdUL = $(".last_week_rsvd")
         ;
+        
+        function init(storeId){
+            showBoard(storeId); // 현재 '매장'의 'board'를 보여주는 코드
+            showTime(); // 현재 시간을 보여주는 코드
+            setInterval(showTime, 1000); // 매초 update
+            console.log("get rsvd list...............");
+        }
             
-        showBoard(storeId); 
-        getTime();
-        setInterval(getTime, 1000);
-        //showUserRsvdList(storeId,'kim'); test
-
+        init(storeId);
+        
         /*
+        	매장의
         	board를 보여준다.
-        	
+        	매장 정보
+        	웨이팅 리스트
+        	예약 리스트
+        	시간대별 예약 리스트
+        	다음 예약, 다음 웨이팅
         */
-        function showBoard(storeId) {
-            
-            boardService.getStore({storeId : storeId}, function (store) {
+        
+        function showStoreInfo (storeId){
+        	
+        	boardService.getStore({storeId : storeId}, function (store) {
                 let str = "";
                 if(store == null){
                     storeUL.html("");
                     return;
                 }
+                
                 str += "<li>매장번호 : " + store.storeId + "</li>";
                 str += "<li>매장이름 : " + store.storeNm + "</li>";
                 str += "<li>매장 연락처 : " + store.telno + "</li>";
@@ -611,17 +590,17 @@ window.onclick = function(event) {
                 
                 /*착석 상태*/
                 storeSeatUL.html("<li>"+ store.bstore.seatStusCd +"</li>")
-            });
-    
-            
-            boardService.getWaitList({storeId:storeId}, function (waitList) {
+        	})
+        };
+        
+        function showWaitList(storeId){
+        	
+        	boardService.getWaitList({storeId:storeId}, function (waitList) {
                 let strWaitList = "";
                 if(waitList == null){
                     waitList.html("");
                     return;
                 }
-                
-                console.log('wait list................' + waitList);
                 
                 waitList.forEach(wait => {
                 	strWaitList += "<div class='wait'>";
@@ -634,16 +613,13 @@ window.onclick = function(event) {
                         strWaitList += "<li>웨이팅 회원 이름 : "+ wait.custNm + "</li>";
                         strWaitList += "<li>웨이팅 회원 번호 : "+ wait.custTelno + "</li>";
                     strWaitList += "</ul>"
-                    strWaitList += "<button class='btn_wait_call'><a href='/oauth'>호출</a></button>";
+                    strWaitList += "<button class='btn_wait_call'><a href='/oauth?storeId="+wait.storeId+"&waitId="+wait.waitId+"'>호출</a></button>";
                     strWaitList += "</div>";
                 });
     
               waitListUL.html(strWaitList);   
               
-              
               let nextWait = boardService.getNextWait(waitList);
-              
-              console.log(nextWait);
               
               let strNextWait = "";
               
@@ -661,8 +637,11 @@ window.onclick = function(event) {
               nextWaitUL.html(strNextWait);
     
             }); 
-    
-            boardService.getRsvdList({storeId:storeId}, function (rsvdList) {
+        }
+        
+        function showRsvdList(storeId){
+        	
+        	boardService.getRsvdList({storeId:storeId}, function (rsvdList) {
                 let strRsvdList = "";
                 if(rsvdList == null){
                     rsvdList.html("");
@@ -690,19 +669,28 @@ window.onclick = function(event) {
               rsvdListUL.html(strRsvdList);
    
             }); 
-            
-            
-            strRsvdMap = "";
+        }
+        
+        function showRsvdMap(storeId){
+        	
+			strRsvdMap = "";
             
             boardService.getTodayRsvdMap({storeId:storeId}, function(map){
             	let strRsvdMap = "";
-            	
-            	console.log('get today rsvd map .....');
             	
             	if(!map)
             		return;
             	Object.entries(map).forEach(([key,value]) => {
             		strRsvdMap += "<li class='tooltip'>"+key + " : 예약번호[" + value+"] <span class='tooltiptext'>"+value+"번호 안녕?</span></li></br>";
+            		for(let i = 1; i < 28; i ++){
+            			// debug
+            			//console.log(key+' : '+i+ ' : '+document.querySelector('#slide-'+i+' h6').textContent);
+            			//console.log(key === document.querySelector('#slide-'+i+' h6').textContent);
+            			if(key === document.querySelector('#slide-'+i+' h6').textContent){
+            				document.querySelector('#slide-'+i+' .time_table').innerHTML = "<span class='tooltiptext'>"+value+" 번호 예약</span>";
+            				document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(251, 255, 41, 0.898)';
+            			}
+            		}
             	})
             	
             	rsvdMapUL.html(strRsvdMap);
@@ -710,9 +698,6 @@ window.onclick = function(event) {
             });
             
             boardService.getNextRsvd({storeId:storeId},function(rsvd){
-            	
-            	console.log('getnextrsvd.............');
-            	console.log(rsvd);
             	
         		let strNextRsvd = "";
         		if(!rsvd)
@@ -731,9 +716,22 @@ window.onclick = function(event) {
                 
                 nextRsvdUL.html(strNextRsvd);
         	});
+        	
+        }
+        
+        function showBoard(storeId) {
+
+        	showStoreInfo(storeId);
+            
+        	showWaitList(storeId);
+    
+        	showRsvdList(storeId);
+            
+            showRsvdMap(storeId);
   
         };
         
+        // 예약 현황판을 보여준다.
         function showRsvdBoard(storeId) {
         	
         	boardService.getRsvdRslt({storeId:storeId}, function(dto){
@@ -775,8 +773,6 @@ window.onclick = function(event) {
         		if(!list)
         			return;
 				
-        		console.log('리스트............' + list);
-        		
         		list.forEach(rsvd => {
         			
         			pnumArr[dateArr.indexOf(rsvd.strRegDate)] += rsvd.pnum;
@@ -795,16 +791,14 @@ window.onclick = function(event) {
         			strLastWeekRsvd += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
         			strLastWeekRsvd += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
         			strLastWeekRsvd += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-        			strLastWeekRsvd += "<li>예약 등록 날짜"+ rsvd.strRegDate + "</li>";
+        			strLastWeekRsvd += "<li>예약 등록 날짜 : "+ rsvd.strRegDate + "</li>";
         			strLastWeekRsvd += "===========================================";
         		});
         		
-
-        		
-        		
-        		console.log(dateArr);
-        		console.log(pnumArr);
-        		console.log(amountArr);
+        		// test
+        		//console.log(dateArr);
+        		//console.log(pnumArr);
+        		//console.log(amountArr);
         		
 	        	lastWeekRsvdUL.html(strLastWeekRsvd);
 	        	let chart = document.getElementById('rsvd_chart');
@@ -873,11 +867,7 @@ window.onclick = function(event) {
         */
         function showRsvdDtls(rsvdId){
         	
-        	console.log("test1.............." + rsvdId);
-        	
         	boardService.getRsvdDtls({rsvdId:rsvdId}, function(rsvd){
-        		
-        		console.log("test2.............." + rsvd);
         		
 				let strRsvdDtls = "";
 				if(!rsvd)
@@ -910,11 +900,16 @@ window.onclick = function(event) {
         		
         	})
         };
+        /*
+        
+        	오프라인 웨이팅 등록 폼을 보여준다.
+        
+        */
         
         function showWaitRegisterForm(storeId){
         	
         	let today = new Date();
-        	strWaitRegForm = "";
+        	let strWaitRegForm = "";
         	strWaitRegForm += "<h1>오프라인 웨이팅 등록</h1>";
         	strWaitRegForm += "<form id='waitRegForm' action='/dealight/business/manage/waiting/register' method='post'>";
         	strWaitRegForm += "고객 이름<input name='custNm' id='js_wait_custNm'> <span id='name_msg'></span></br>";
@@ -941,7 +936,7 @@ window.onclick = function(event) {
         	
         	const inputList = [wait_custNm,wait_phoneNum,wait_pnum];
 
-
+        	// 웨이팅 등록의 valid check를 진행한다.
         	nameLenCheck = function () {
         		if(1 <= wait_custNm.value.length && wait_custNm.value.length <= 5)
         			return true;
@@ -1005,10 +1000,10 @@ window.onclick = function(event) {
         	}
         	
         	let modalInputCustNm = modal.find("input[name='custNm']"),
-			modalInputCutsTelNo = modal.find("input[name='custTelno']"),
-			modalInputWaitPnum = modal.find("input[name='waitPnum']"),
-			modalInputCurTime = modal.find("input[name='curTime']"),
-			modalInputStoreId = modal.find("input[name='storeId']");
+				modalInputCutsTelNo = modal.find("input[name='custTelno']"),
+				modalInputWaitPnum = modal.find("input[name='waitPnum']"),
+				modalInputCurTime = modal.find("input[name='curTime']"),
+				modalInputStoreId = modal.find("input[name='storeId']");
     	
         	btn_submit.addEventListener("click", (e) => {
     		
@@ -1046,16 +1041,13 @@ window.onclick = function(event) {
 	
 	    		boardService.regWait(wait, result => {
 	    			
-	    			alert(result);
-	        		console.log("결과.........."+modalInputStoreId.val());
-	        		showBoard(${storeId});
+	    			//alert(result);
+	        		showWaitList(storeId);
 	        		modal.find("ul").html("");
 	    			modal.find("input").val("");
 	    			modal.css("display","none");
 	    			
-	    			
 	    		});
-    		
     		
     		});
         };
@@ -1073,58 +1065,52 @@ window.onclick = function(event) {
 			e.preventDefault();
 			
 			if($("#board").css("display") === 'none'){
-				console.log("board none => block");
+				// debug
+				//console.log("board none => block");
+				$(".switch > button").text('매장관리');
 				showBoard(storeId);
 				$("#board").css("display", "block");
 			} else if($("#board").css("display") === 'block'){
-				console.log("board block => none");				
+				// debug
+				//console.log("board block => none");				
 				$("#board").css("display", "none");
 			}
 			
 			if($("#rsvd_rslt_baord").css("display") === 'none'){
-				console.log("rsvd rslt board none => block");
+				// debug
+				//console.log("rsvd rslt board none => block");
+				$(".switch > button").text('현황판');
 				showRsvdBoard(storeId);
 				$("#rsvd_rslt_baord").css("display", "block");
 			} else	if($("#rsvd_rslt_baord").css("display") === 'block'){
-				console.log("rsvd rslt board block => none");
+				// debug
+				//console.log("rsvd rslt board block => none");
 				$("#rsvd_rslt_baord").css("display", "none");
 			}
 		});
 		
-        /*
-        btn_show_board.on("click", (e) => {
-			console.log("btn click.........");
-			showBoard(${storeId});
-			$("#board").css("display","block");
-		});
-		*/
         /*당일 예약 결과 가져오기*/
         $("#btn_rsvd_rslt").on("click", e => {
-        	showRsvdBoard(${storeId});
+        	showRsvdBoard(storeId);
         });
 
         /*새로고침*/
         $("#refresh").on("click", e => {
-        	console.log("show board...")
-        	showBoard(${storeId});
+        	// debug
+        	//console.log("show board...")
+        	showBoard(storeId);
         });
-
-        	/*
-        	let storeId = $(this).children(".btnStoreId").textContent;
-        			userId = $(this).children(".btnUserId").textContent;
-        	showUserRsvdList(storeId, userId);
-        	*/
 
         /*예약리스트에 있는 내용 중, 예약 상세 보여주기*/
         /*회원의 예약 리스트 보여주기*/
         $(".rsvdList").on("click", e => {
 
-        	let storeId = $(e.target).parent().find(".btnStoreId").text(),
-        		userId = $(e.target).parent().find(".btnUserId").text();
+        	let rstoreId = $(e.target).parent().find(".btnStoreId").text(),
+        		ruserId = $(e.target).parent().find(".btnUserId").text();
         	
         	modal.css("display","block");
 
-        	showUserRsvdList(storeId, userId);
+        	showUserRsvdList(rstoreId, ruserId);
         	
         });
         	
@@ -1132,9 +1118,9 @@ window.onclick = function(event) {
         $(".btn_wait_register").on("click", e => {
         	
         	modal.css("display","block");
-        	showWaitRegisterForm(${storeId});
+        	showWaitRegisterForm(storeId);
         	
-        		//$("#waitRegForm").submit();        		
+        	//$("#waitRegForm").submit();        		
         	
         });
 
@@ -1145,26 +1131,18 @@ window.onclick = function(event) {
             
             let color = "";
 
-            if(e.target.innerHTML === 'Red')
-                color = 'R';
-            if(e.target.innerHTML === 'Yellow')
-                color = 'Y';
-            if(e.target.innerHTML === 'Green')
-                color = 'G';
-            
-            console.log(color);
-            
             let param = {};
-            param.storeId = ${storeId};
-            param.seatStusCd = color;
+            param.storeId = storeId;
+            param.seatStusCd = e.target.innerHTML[0];
             
-            console.log(param);
+            // debug
+            //console.log("seat stus cd...................."+e.target.innerHTML[0]);
             
         	boardService.putChangeStatusCd(param, function(result){
-        		alert(result);
+        		//alert(result);
+            	showStoreInfo(param.storeId);
         	});
         	
-            showBoard(param.storeId);
         });
 
         /*웨이팅 입장 처리*/
@@ -1174,11 +1152,11 @@ window.onclick = function(event) {
         	waitId = parseInt($(".nextWait li:eq(2)").text().split(":")[1]);
 
         	boardService.putEnterWaiting(waitId, function(result){
-        		alert(result);
+        		//alert(result);
+        		showWaitList(storeId);
         	});
         	
-        	showBoard(storeId);
-        })
+        });
 
         /*웨이팅 노쇼 처리*/
         $(".btn_noshow_wait").on("click", e => {
@@ -1187,15 +1165,13 @@ window.onclick = function(event) {
         	waitId = parseInt($(".nextWait li:eq(2)").text().split(":")[1]);
 
         	boardService.putNoshowWaiting(waitId, function(result){
-        		alert(result);
+        		//alert(result);
+	        	showWaitList(storeId);
         	});
-        	
-        	showBoard(storeId);
         });
-        	
-        
    });
-
+	
+    /* get store img (즉시실행함수)*/
     $(document).ready(function() {
     	
 
@@ -1205,15 +1181,16 @@ window.onclick = function(event) {
             
             $.getJSON("/dealight/business/manage/getStoreImgs", {storeId:storeId}, function(imgs){
                 
-                console.log("즉시 함수..");
-                
-                console.log(imgs);
+            	// debug
+                //console.log("즉시 함수..");
+                //console.log(imgs);
                 
                 let str = "";
                 
                 $(imgs).each(function(i, img){
                 	
-                	console.log(img);
+                	// debug
+                	//console.log(img);
                     
                     // image type
                     if(img.image) {
@@ -1245,7 +1222,8 @@ window.onclick = function(event) {
         
         $(".uploadResult").on("click", "li", function(e){
             
-            console.log("view image");
+        	// debug
+            // console.log("view image");
             
             let liObj = $(this);
             
@@ -1296,49 +1274,11 @@ window.onclick = function(event) {
             
         });
         
+        
+        
     });
-
-    /* 자동 새로고침 */
-    /*
-    function startRefresh() {
-        window.location = location.href;
-    }
-    
-    let minutes = 60;
-    
-    $(function() {
-        setTimeout(startRefresh,minutes*5);
-    });
-    */
 
     </script>
-	<!-- 
-<script>
-    console.log("============");
-    console.log("get test");
-
-    boardService.getStore({storeId : 101}, function(store){
-        console.log(store);
-    });
-
-    boardService.getWaitList({storeId:101}, function(waitList){
-        waitList.forEach(wait => {
-            console.log(wait);
-        });
-    })
-
-    boardService.getRsvdList({storeId:101}, function(rsvdList){
-        rsvdList.forEach(rsvd => {
-            console.log(rsvd);
-        })
-    })
-
-    boardService.putCancelWaiting(182,function (result) {
-        alert("수정 완료");
-    })
-
-</script>
- -->
  <script src="/resources/js/clock.js"></script>
 </body>
 </html>

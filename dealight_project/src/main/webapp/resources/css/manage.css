@@ -115,13 +115,18 @@
             overflow: scroll;
         }
         .rsvd{
+        	margin : 0px;
+        	padding : 0;
             border: solid 1px black;
-            position: relative;
             width: 300px;
             height: 100px;
             min-height: 90px;
             flex-grow: 1;
             overflow : scroll;
+        }
+        .rsvdList {
+        	padding : 0;
+        	margin : 0;
         }
         .rsvd_i{
         	cursor: pointer;
@@ -139,6 +144,9 @@
             flex-direction: column;
             align-content: center;
             overflow: scroll;
+        }
+        .waitList {
+        	padding : 0;
         }
         .wait{
             border: solid 1px black;
@@ -171,19 +179,19 @@
 
             flex-direction: row;
 
-            overflow: scroll;
+            overflow-x: auto;
         }
         .rsvd_time {
-            width: 150px;
-            height: 60px;
-            margin-bottom: 15px;
-
-            border: black solid 1px;
-            display: flex;
-            min-width: 100px;
+            width: 100px;
+    		flex-shrink: 0;
+    		height: 100%;
         }
-
-
+        .time_table{
+        	border : black solid 1px;
+       		width: 100px;
+        	height: 50px;
+        	background-color: rgb(125, 255, 164);
+        }
         /* hover */
 
         .tooltip {
@@ -215,8 +223,8 @@
         .switch {
         position: relative;
         display: inline-block;
-        width: 60px;
-        height: 34px;
+        width: 100px;
+        height: 50px;
         }
 
         .switch input { 
@@ -360,9 +368,22 @@
         	height : 80px;
         	overflow:scroll;
         	left : 30px;
+        	display : hidden;
         }
         .rsvdMap {
         	display:inline;
         	width:400px;
         
+        }
+        .img_seat_box{
+        	width:30px;
+        	height:30px;
+        }
+        .btn_seat_stus{
+        	font-size:1;
+        }
+        .img_seat{
+        	max-width: 30px;
+        	max-height: 30px;
+        	display: block;
         }

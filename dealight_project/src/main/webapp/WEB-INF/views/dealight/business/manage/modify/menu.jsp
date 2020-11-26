@@ -16,7 +16,7 @@
 <h1>Business Menu Page</h1>
 
 <h2>메뉴 등록</h2> 
-<form action="/dealight/business/manage/menu/register" method="post">
+<form action="/dealight/business/manage/menu/register" method="post" id="regForm">
 	============================================================</br>
 	<input name="storeId" value="${storeId}" hidden>
 	
@@ -29,10 +29,10 @@
 	<label for="recoMenu">메뉴 추천 여부 : </label>
 	<input name="recoMenu" type="checkbox"></br>
 	
-	<div class=""><h2>파일 첨부하기</h2></div>
+	<div class=""><h2>사진 첨부하기(1개만 가능)</h2></div>
 	<div class="file_body">
 		<div class="form_img">
-			<input type="file" name='uploadFile' multiple>
+			<input type="file" name='uploadFile'>
 		</div> 
 		<div class='uploadResult'>
 			<ul>
@@ -49,8 +49,6 @@
 <c:if test="${empty menus }">
 <h2>현재 등록하신 메뉴가 없습니다!🤣</h2>
 </c:if>
-
-
 <c:if test="${not empty menus }">
 	<c:forEach items="${menus }" var="menu">
 		<div class="menu">

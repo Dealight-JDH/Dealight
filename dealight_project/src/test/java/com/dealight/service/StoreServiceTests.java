@@ -363,4 +363,15 @@ public class StoreServiceTests {
 		assertNotNull(service);
 	}
 	
+	@Test
+	public void getStoreLocTest1() {
+		
+		storeId = 16;
+		
+		StoreLocVO loc = storeService.getStoreLoc(storeId);
+		
+		log.info(loc);
+		
+	}
+	
 }

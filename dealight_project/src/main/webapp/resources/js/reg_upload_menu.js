@@ -7,39 +7,35 @@ $(document).ready(function(e){
 	let formObj = $("#regForm");
     
     /* submit 타입의 버튼을 제어한다.*/
-/*
 	$("button[type='submit']").on("click", function(e){
-*/        
+    
 		/* 기존 기능은 제한한다.*/
-/*		e.preventDefault();
+		e.preventDefault();
 		console.log("submit clicked");
 		
 		console.log("form"+formObj);
 		
 		let str = "";
-*/        
+        
         /* 업로드 결과 화면에 업로드 결과를 작성해준다.*/
-/*		$(".uploadResult ul li").each(function(i, obj) {
+	$(".uploadResult ul li").each(function(i, obj) {
 			
 			let jobj = $(obj);
 			
 			console.dir(jobj);
 			
-			str += "<input type='hidden' name='imgs["+i+"].fileName' value='" + jobj.data("filename")+"'>";
-			str += "<input type='hidden' name='imgs["+i+"].uuid' value='" + jobj.data("uuid")+"'>";
-			str += "<input type='hidden' name='imgs["+i+"].uploadPath' value='" + jobj.data("path")+"'>";
-			str += "<input type='hidden' name='imgs["+i+"].image' value='" + jobj.data("type")+"'>";
+			str += "<input type='hidden' name='imgUrl' value='" + jobj.data("path")+jobj.data("uuid")+jobj.data("filename")+"'>";
 			
 		});
         
 		console.log(str);
-*/		
+		
         /*위에서 작성한 글을 form에 추가하고 제출한다. */
-/*		formObj.attr("method", "post");
+		formObj.attr("method", "post");
 		formObj.append(str).submit();
 		
 	});
-*/    
+   
     /* 정규식으로 파일 형식을 제한한다. */
     let regex = new RegExp("(.*>)\.(exe|sh|zip|alz)$");
     
