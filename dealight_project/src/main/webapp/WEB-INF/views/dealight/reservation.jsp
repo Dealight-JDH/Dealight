@@ -6,6 +6,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script>
+// 로그인이 안된 상태면 메인페이지로 넘어가게
+let msg = '${msg}';
+	if(msg != ""){
+        alert(msg);
+        location.href = '/dealight/store?clsCd=B&storeId='+${storeId};
+     }
+	
+	
+</script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="/resources/css/store.css">
@@ -13,7 +23,6 @@
 <body>
 
 	<div class="container">
-		<div class="nav"></div>
 		<div class="left">
 			<div class="column">
 				<a
@@ -23,28 +32,24 @@
 				<h1>매장정보</h1>
 				${store.storeNm }
 				<c:if test="${store.imgs[0].fileName != null}">
-<<<<<<< HEAD
-
 					<img class="imgCon"
 						src='/resources/images/store/<c:out value="${store.imgs[0].fileName}" />'>
-
-=======
-						<img class="imgCon"
-							src='/resources/images/store/<c:out value="${store.imgs[0].fileName}" />'>
->>>>>>> fcdff5354ff6e0c926c5136ef27b19d5ea6b2469
 				</c:if>
 
 
 			</div>
 			<div class="column">
 				<h1>예약정보</h1>
+				
+				회원정보 
 				시간 : ${time } <br> 인원수 : ${pnum }
 				<p>요금세부정보</p>
-				<c:forEach items="${rsvdMenuList.menu }" var="menu" varStatus="status">
+				<c:forEach items="${rsvdMenuList.menu }" var="menu"
+					varStatus="status">
 				
 					${menu.name} (${menu.price}) X ${menu.qty} =   ${menu.price*menu.qty}<br>
-				<c:set var="totAmt"  value="${totAmt + menu.price*menu.qty}" />
-				<c:set var="totQty"  value="${totQty + menu.qty}" />
+					<c:set var="totAmt" value="${totAmt + menu.price*menu.qty}" />
+					<c:set var="totQty" value="${totQty + menu.qty}" />
 				</c:forEach>
 				총합계 :
 				<c:out value="${totAmt}" />
@@ -54,24 +59,29 @@
 				<div id="myDIV">
 
 					<button class="payment2">신용카드</button>
-					<form id="kakaoPayForm" action="/dealight/reservation/kakaoPay" method="post">
-						<input type="hidden" name="storeId"
-							value="${store.storeId }">
+					<form id="kakaoPayForm" action="/dealight/reservation/kakaoPay"
+						method="post">
+						<input type="hidden" name="storeId" value="${store.storeId }">
 						<c:if test="${store.bstore.htdl.htdlId ne null }">
-							<input type="hidden" name="htdlId" value="${store.bstore.htdl.htdlId}">
+							<input type="hidden" name="htdlId"
+								value="${store.bstore.htdl.htdlId}">
 						</c:if>
 
 						<%-- ${status.index} 따옴표안에 넣지말고 그냥 써줘야함 --%>
-						<c:forEach items="${rsvdMenuList.menu}" var="menu" varStatus="status">
-							<input type="hidden" name="menu[${status.index}].name" value="${menu.name}">
-							<input type="hidden" name="menu[${status.index}].price" value="${menu.price}">
-							<input type="hidden" name="menu[${status.index}].qty" value="${menu.qty}">
-							
+						<c:forEach items="${rsvdMenuList.menu}" var="menu"
+							varStatus="status">
+							<input type="hidden" name="menu[${status.index}].name"
+								value="${menu.name}">
+							<input type="hidden" name="menu[${status.index}].price"
+								value="${menu.price}">
+							<input type="hidden" name="menu[${status.index}].qty"
+								value="${menu.qty}">
+
 						</c:forEach>
-						<input type="hidden" name="pnum" value="${pnum}">
-						<input type="hidden" name="time" value="${time}">
-						<input type="hidden" name="totAmt" value="${totAmt}">
-						<input type="hidden" name="totQty" value="${totQty}">
+						<input type="hidden" name="pnum" value="${pnum}"> <input
+							type="hidden" name="time" value="${time}"> <input
+							type="hidden" name="totAmt" value="${totAmt}"> <input
+							type="hidden" name="totQty" value="${totQty}">
 						<button class="payment2">카카오 페이</button>
 					</form>
 				</div>
@@ -94,8 +104,7 @@
 			}
 		}
 	</script>
-
-
+	
 </body>
 </html>
 

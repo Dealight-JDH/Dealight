@@ -1,5 +1,16 @@
+/*다울*/
 
-
+.tabWrapper {
+	display: block;
+	position: relative;
+	width: 100%;
+	text-align: center;	
+	margin: auto;
+	right: 0;
+	left: 0;
+	z-index: -1;
+	transition: box-shadow 1s;
+}
 .tabs {
 display: table;
 table-layout: fixed;
@@ -52,7 +63,6 @@ transform: translateY(0);
 }
 
 .tab__content {
-background-color: white;
 position: relative;
 width: 100%;
 border-radius: 5px 5px 0px 0px;
@@ -64,13 +74,11 @@ width: 100%;
 position: absolute;
 border-radius: 5px;
 border-style:solid;
-border-color: rgb(133, 129, 129);
 color: black;
 top: 0;
 left: 0;
-background-color: #444;
 display: none;
-list-style: none;
+list-style: none
 }
 .tab__content > li .content__wrapper {
 text-align: center;
@@ -80,9 +88,9 @@ background-color: white;
 }
 
 
-form [type="submit"]:hover {background: rgb(223, 31, 31);}
+.tabWrapperBtn:hover {background: rgb(223, 31, 31);}
 
-form [type="submit"] {
+.tabWrapperBtn {
     background: rgb(224, 70, 70);
     color: #FFF;
     margin : 20px;

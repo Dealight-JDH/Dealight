@@ -2,6 +2,7 @@ package com.dealight.controller;
 
 
 
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
@@ -11,10 +12,13 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -173,6 +177,10 @@ public class UserController {
 		model.addAttribute("list", service.getList());
 	}
 	
+	//회원 가입 전 개인정보 이용 동의 페이지
+	@GetMapping("/policies")
+	public void policies() {}
+	
 	//회원 등록은 post방식이지만 화면에서 입력 받아야 하므로 get 방식으로 입력페이지를 볼 수 있게 한다.
 			@GetMapping("/register")
 			public void register() {
@@ -181,8 +189,17 @@ public class UserController {
 	
 	// 회원가입 
 	@PostMapping("/register")
-	public String register(UserVO user, HttpServletRequest request, HttpServletResponse response, RedirectAttributes rttr){
+	public String register(@Valid UserVO user, BindingResult result, HttpServletRequest request, HttpServletResponse response, RedirectAttributes rttr ){
 		log.info("register: " + user);
+		
+		if( result.hasErrors()) {
+			List<ObjectError> list = result.getAllErrors();
+			for(ObjectError error : list){
+				System.out.println(error.getDefaultMessage());
+			}
+		//register.jsp로 리턴해도 이메일 인증 다시 받아야함...생각해보자
+			return "dealight/prove/authemail";
+		}
 		
 		service.register(user);
 		//세션이나 쿠키사용하자!

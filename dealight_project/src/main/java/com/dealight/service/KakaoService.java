@@ -35,8 +35,8 @@ public class KakaoService {
 	private KakaoPayReadyVO kakaoPayReadyVO; //결제 준비 
 	private KakaoPayApprovalVO kakaoPayApprovalVO; //결제 승인
 	
-	Long rsvdId = 0l;
-	int totAmt = 0;
+	private Long rsvdId = 0l;
+	private int totAmt = 0;
 	
 	//결제 준비
 	public String kakaoPayReady(Long rsvdId, List<RsvdMenuDTO> lists, int totAmt, int totQty ) {
@@ -45,11 +45,8 @@ public class KakaoService {
 		RestTemplate restTemplate = new RestTemplate();
 		
 		String menu = lists.stream().map(dto -> dto.getName()).collect(Collectors.joining(", "));
-		String qty = lists.stream().map(dto -> dto.getQty().toString()).collect(Collectors.joining(", "));
 		
 		log.info("====================test menu:" + menu);
-		log.info("====================test menu:" + qty);
-		
 		
 		//요청 헤더
 		HttpHeaders headers = new HttpHeaders();

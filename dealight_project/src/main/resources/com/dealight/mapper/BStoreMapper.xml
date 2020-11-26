@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <!-- 동인 -->
-  
+ 
 <mapper namespace="com.dealight.mapper.BStoreMapper">
 	<select id="getList" resultType="com.dealight.domain.BStoreVO">
 		
@@ -27,8 +27,8 @@
 								acm_pnum,
 								store_id, buser_id, open_tm,
 								brch, rep_menu, rep_img, 
-								close_tm, break_sttm, break_entm, last_ord_tm )
-		values ( 
+								close_tm, break_sttm, last_ord_tm )
+		values (
 				#{n1SeatNo},
 				#{n2SeatNo}, 
 				#{n4SeatNo},

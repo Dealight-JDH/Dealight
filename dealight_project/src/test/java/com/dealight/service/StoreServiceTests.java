@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dealight.domain.AllStoreVO;
 import com.dealight.domain.BStoreVO;
 import com.dealight.domain.MenuVO;
+import com.dealight.domain.NearbyStoreVO;
 import com.dealight.domain.StoreEvalVO;
 import com.dealight.domain.StoreImgVO;
 import com.dealight.domain.StoreLocVO;
@@ -32,9 +33,16 @@ public class StoreServiceTests {
 	@Setter(onMethod_ = @Autowired)
 	private StoreService service;
 	
+	
 	@Test
-	@Transactional
-	@Rollback(false)
+	public void testNearbyStore() {
+		service.nearbyStoreList(1L).forEach(nearbyStore -> log.info(nearbyStore));
+	}
+	
+	
+	//@Test
+	//@Transactional
+	//@Rollback(false)
 	public void testRegister() {
 		
 		StoreVO store = new StoreVO();
@@ -87,20 +95,20 @@ public class StoreServiceTests {
 		
 	}
 	
-	@Autowired
+	//@Autowired
 	private StoreService storeService;
 	
 	String userId = "kjuioq";
 	long storeId = 13;
 	
-	@Test
+	//@Test
 	public void serviceDITest() {
 		
 		log.info(storeService);
 		
 	}
 	
-	@Test
+	//@Test
 	public void getSeatStusTests1() {
 		
 		long storeId = 13;
@@ -114,7 +122,7 @@ public class StoreServiceTests {
 	}
 
 	
-	@Test
+	//@Test
 	public void seatStusChangeTests1() {
 		
 		long storeId = 13;
@@ -133,7 +141,7 @@ public class StoreServiceTests {
 		assertTrue(stus.equals(seatStusCd));
 	}
 	
-	@Test
+	//@Test
 	// @Transactional �ѹ�, ����¸�
 	// @Rollback(false) �ѹ��� �ȵȴ�.
 	public void getCurTests1() {
@@ -141,7 +149,7 @@ public class StoreServiceTests {
 		log.info(storeService.getCurTime());
 	}
 	
-	@Test
+	//@Test
 	public void getStore() {
 		
 		StoreVO store = storeService.getStore(13);
@@ -149,7 +157,7 @@ public class StoreServiceTests {
 		assertNotNull(store);
 	}
 	
-	@Test
+	//@Test
 	public void getBStore() {
 		
 		BStoreVO bstore = storeService.getBStore(13);
@@ -158,7 +166,7 @@ public class StoreServiceTests {
 		
 	}
 	
-	@Test
+	//@Test
 	public void getStoreListByUserIdTest1() {
 		
 		List<StoreVO> list = storeService.getStoreListByUserId(userId);
@@ -172,7 +180,7 @@ public class StoreServiceTests {
 		});
 	}
 	
-	@Test
+	//@Test
 	public void findByStoreIdWithBStoreTest() {
 		
 		StoreVO store = storeService.findByStoreIdWithBStore(storeId);
@@ -215,12 +223,12 @@ public class StoreServiceTests {
 		assertTrue(service.modify(store));
 	}
 	
-	@Test
+	//@Test
 	public void testDelete() {
 		assertTrue(service.delete(10L));
 	}
 	
-	@Test
+	//@Test
 	public void testGetList() {
 		
 		service.getList().forEach(store -> { 
@@ -270,7 +278,7 @@ public class StoreServiceTests {
 	 * }
 	 */
 	
-	@Test
+	//@Test
 	public void findAllStoreByStoreIdTest1() {
 		
 		storeId = 16;
@@ -283,7 +291,7 @@ public class StoreServiceTests {
 		
 	}
 	
-	@Test
+	//@Test
 	public void getStoreImageListTest1() {
 		
 		storeId = 101;
@@ -296,8 +304,8 @@ public class StoreServiceTests {
 		
 	}
 	
-	@Transactional
-	@Test
+	//@Transactional
+	//@Test
 	public void deleteImgAll() {
 		
 		
@@ -308,7 +316,7 @@ public class StoreServiceTests {
 		assertTrue(0 ==storeService.getStoreImageList(storeId).size());
 	}
 	
-	@Test
+	//@Test
 	public void findMenuByStoreIdTest1() {
 		
 		List<MenuVO> list = storeService.findMenuByStoreId(storeId);
@@ -319,8 +327,8 @@ public class StoreServiceTests {
 		
 	}
 	
-	@Transactional
-	@Test
+	//@Transactional
+	//@Test
 	public void registerMenuTest1() {
 		
 		long storeId = 13;
@@ -344,7 +352,7 @@ public class StoreServiceTests {
 		
 	}
 	
-	@Test
+	//@Test
 	public void testBstore() {
 		StoreVO store = service.bstore(3L);
 		log.info(store);

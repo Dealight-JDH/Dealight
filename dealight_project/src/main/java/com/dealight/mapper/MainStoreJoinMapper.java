@@ -15,5 +15,7 @@ public interface MainStoreJoinMapper {
 	
 	public List<MainStoreJoinVO> getListWithPaging(Criteria cri);
 	
+	public List<MainStoreJoinVO> getDistWithPaging(Criteria cri);
+	
 	public int getTotalCount(Criteria cri);
 }
