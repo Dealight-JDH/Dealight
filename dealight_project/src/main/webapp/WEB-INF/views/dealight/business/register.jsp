@@ -233,6 +233,7 @@ $(document).ready(function(e){
 			str += "<input type='hidden' name='imgs["+i+"].image' value='" + jobj.data("type")+"'>";
 			if(i === 0){
 				str += "<input type='hidden' name='repImg' value='" + jobj.data("filename")+"'>";
+				
 			}
 			
 		});
