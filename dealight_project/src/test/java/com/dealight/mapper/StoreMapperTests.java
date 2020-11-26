@@ -24,8 +24,11 @@ public class StoreMapperTests {
 
 	@Setter(onMethod_ = @Autowired)
 	private StoreMapper mapper;
-
 	
+	@Test
+	public void testGetNearbyStoreList() {
+		mapper.getNearbyStoreList(1L).forEach(nearbyStore -> log.info(nearbyStore));
+	}
 	
 	public void testGetList() {
 		mapper.getList().forEach(store -> log.info(store));
@@ -87,16 +90,16 @@ public class StoreMapperTests {
 		mapper.findByUserIdJoinBStore("aaaa").forEach(store-> log.info(store));
 	}
 	
-	@Test
+	
 	public void testGetNstore() {
 		StoreVO store = mapper.getNstore(21L);
 		log.info(store);
 	}
 	
-	public void testGetStoreCd() {
-		String storeCode = mapper.getStoreCd(1L);
-		log.info(storeCode);
-	}
+	/*
+	 * public void testGetStoreCd() { String storeCode = mapper.getStoreCd(1L);
+	 * log.info(storeCode); }
+	 */
 	public void testGetBstore() {
 		StoreVO store = mapper.getBstore(3L);
 		log.info(store);
