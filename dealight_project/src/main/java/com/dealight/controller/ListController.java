@@ -28,6 +28,11 @@ public class ListController {
 						 MediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity<PageDTO> getList(int pageNum, int amount, double distance, double lat, double lng, String sortType, String sortPriority, boolean openStore){
 		Criteria cri = new Criteria(pageNum, amount, distance, lat, lng, sortType, sortPriority, openStore);
+		log.info(cri.getSortType());
+		if(cri.getSortType().equals("D") || cri.getSortType() == null) {
+			
+			return new ResponseEntity<PageDTO>(service.getListDistStore(cri), HttpStatus.OK);
+		}
 		log.info("Critria:"+cri);
 		return new ResponseEntity<PageDTO>(service.getListstore(cri), HttpStatus.OK);
 	}

@@ -9,4 +9,6 @@ public interface SearchService {
 	
 	public int getTotal(Criteria cri);
 	
+	public PageDTO getListDistStore(Criteria cri);
+	
 }
