@@ -23,15 +23,8 @@
 				<h1>매장정보</h1>
 				${store.storeNm }
 				<c:if test="${store.imgs[0].fileName != null}">
-<<<<<<< HEAD
-
-					<img class="imgCon"
-						src='/resources/images/store/<c:out value="${store.imgs[0].fileName}" />'>
-
-=======
 						<img class="imgCon"
 							src='/resources/images/store/<c:out value="${store.imgs[0].fileName}" />'>
->>>>>>> fcdff5354ff6e0c926c5136ef27b19d5ea6b2469
 				</c:if>
 
 

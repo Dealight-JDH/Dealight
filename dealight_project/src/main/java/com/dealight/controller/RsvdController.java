@@ -114,7 +114,7 @@ public class RsvdController {
     }
 
     @GetMapping("/kakaoPaySuccess")
-    public void kakaoPaySuccess(Long rsvdId, String pg_token, Model model){
+    public void kakaoPaySuccess(String pg_token, Model model){
         log.info("paySuccess......");
         log.info("kakaoPay pg_token: "+ pg_token);
         

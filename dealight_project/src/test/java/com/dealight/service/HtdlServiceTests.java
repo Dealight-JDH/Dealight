@@ -3,21 +3,19 @@ package com.dealight.service;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlVO;
 
@@ -35,6 +33,18 @@ public class HtdlServiceTests {
 	private HtdlTimeCheckService timeCheck;
 	//TODO 핫딜 서비스 테스트
 	
+	@Test
+	public void testGetTotal() {
+		String stusCd = "A";
+		HtdlCriteria hCri = new HtdlCriteria();
+		int total = service.getTotal(stusCd, hCri);
+		
+		log.info("total: ============" + total);
+	}
+	@Test
+	public void testGetListwithPaging() {
+		service.getList("A", new HtdlCriteria(2, 10)).forEach(vo -> log.info(vo));
+	}
 //	@Test
 //	public void testAsync() throws ParseException {
 //		service.asyncMethodTest();

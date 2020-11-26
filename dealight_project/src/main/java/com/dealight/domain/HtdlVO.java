@@ -75,6 +75,8 @@ public class HtdlVO {
 	@NotNull
 	private Date updateDate;
 	
+	@NotNull
+	private String brch;
 	// 핫딜 상세
 	private List<HtdlDtlsVO> htdlDtls;
 	// 매장 평가

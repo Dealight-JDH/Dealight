@@ -47,7 +47,6 @@ public class RsvdServiceImpl implements RsvdService{
 		
 		return menuMapper.findById(storeId);
 	}
-
 	
 	@Override
 	public Long getRsvdId() {
@@ -114,6 +113,7 @@ public class RsvdServiceImpl implements RsvdService{
 	@Override
 	public void complete(Long rsvdId) {
 		
+//		rsvdMapper.update(rsvd)
 	}
 
 
@@ -422,4 +422,7 @@ public class RsvdServiceImpl implements RsvdService{
 		
 		return rsvdMapper.findLastWeekRsvdListByStoreId(storeId);
 	}
+
+
+	
 }
