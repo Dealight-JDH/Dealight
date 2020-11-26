@@ -114,9 +114,8 @@ h4{
 		<button class="hotdeal_locationFilterBtn">
 		<span class="hotdeal_locationFilterLabel">지역</span>
 		</button>
-		
 		<input type="text" style="width:60px;height:20px;">
-	
+		
 	</div>
 
 	<div class="hotdeal">
@@ -407,7 +406,7 @@ h4{
 				return;
 			}
 			
-			//페이지가 -1이면 
+			//페이지가 -1이면 첫페이지
 			if(page == -1){
 				pageNum = 1;
 				showListStart(param, pageNum);
@@ -426,6 +425,7 @@ h4{
 	
 	}
 	
+	//핫딜 페이지 그리기
 	function showHtdlPage(listCnt){
 		let endNum = Math.ceil(pageNum / 10.0) * 10;
 		let startNum = endNum - 9;
@@ -458,11 +458,11 @@ h4{
 		}
 		
 		pageStr+="</ul></div>";
-		
 		//console.log(pageStr);
 		htdlPageFooter.html(pageStr);
 	}
 	
+	//핫딜 그리기
 	function htdlHtml(list){
 		let str = "";
 		//list에 따른 핫딜 동적 생성

@@ -35,6 +35,17 @@ public class HtdlMapperTests {
 	private HtdlMapper mapper;
 	
 	@Test
+	public void testSearch() {
+		
+		HtdlCriteria hCri = new HtdlCriteria();
+		hCri.setType("b");
+		hCri.setKeyword("종로");
+		
+		List<HtdlVO> list = mapper.getListWithPaging("I", hCri);
+		
+		list.forEach(vo -> log.info(vo));
+	}
+	@Test
 	public void testPaging() {
 		HtdlCriteria hCri = new HtdlCriteria();
 		hCri.setPageNum(3);

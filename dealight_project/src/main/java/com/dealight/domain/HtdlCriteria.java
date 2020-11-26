@@ -9,6 +9,9 @@ public class HtdlCriteria {
 	private int pageNum;
 	private int amount;
 	
+	private String type;
+	private String keyword;
+	
 	public HtdlCriteria() {
 		this(1,9);
 	}
@@ -16,5 +19,9 @@ public class HtdlCriteria {
 	public HtdlCriteria(int pageNum, int amount) {
 		this.pageNum = pageNum;
 		this.amount = amount;
+	}
+	
+	public String[] getTypeArr() {
+		return type == null? new String[] {}: type.split("");
 	}
 }

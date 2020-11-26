@@ -31,11 +31,10 @@ public class HtdlTimeCheckService {
 	
 	@Autowired
 	private HtdlMapper htdlMapper;
-
+	
 	@Autowired
 	private HtdlService service;
-	
-	List<HtdlVO> lists = null;
+	private List<HtdlVO> lists = null;
 	ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(3);
 	
 	
@@ -75,8 +74,8 @@ public class HtdlTimeCheckService {
 			exec.shutdown();
 			if(!exec.awaitTermination(1, TimeUnit.SECONDS)) {
 				log.info("아직 처리중인 작업 존재");
-				log.info("작업 강제 종료");
 				exec.shutdownNow();
+				log.info("작업 강제 종료");
 				
 			}
 		} catch (InterruptedException e) {
@@ -99,6 +98,7 @@ public class HtdlTimeCheckService {
 		//전체 핫딜 리스트
 		lists = new ArrayList<>(service.findAll());
 	}
+	
 	@Transactional
 	public void service(List<HtdlVO> lists) {
 		
