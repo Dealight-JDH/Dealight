@@ -109,6 +109,10 @@ public class StoreServiceImpl implements StoreService {
 		lMapper.insert(store.getLoc());
 		eMapper.insert(store.getEval());
 		bMapper.insert(store.getBstore());
+		for(StoreImgVO img : store.getImgs()) {
+			img.setStoreId(store.getStoreId());
+		}
+		imgMapper.insertAll(store.getImgs());
 		
 		
 	}

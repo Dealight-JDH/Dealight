@@ -72,7 +72,7 @@
 <%@include file="../../includes/mainMenu.jsp" %>
 <form action="/dealight/business/register" method="post" id='regForm' name="form">
 ===================================================</br></br>
-<label>유저아이디</label> <input name="buserId" value="aaaa" readonly><br>
+<label>유저아이디</label> <input name="buserId" value="${userId }" readonly><br>
 <label>매장코드</label> <input name="clsCd" value="B" readonly><br>
 <label>좌석 상태</label> <input name="seatStusCd" value="B" hidden><br>
 <input name="likeTotNum" value='0' hidden>
@@ -104,8 +104,8 @@
 <label>시도명</label><input type="text"  style="width:500px;" id="siNm"  name="siNm" /><br>
 <label>시군구명</label><input type="text"  style="width:500px;" id="sggNm"  name="sggNm" /><br>
 <label>읍면동명</label><input type="text"  style="width:500px;" id="emdNm"  name="emdNm" /><br>
-<label>lng</label><input type="text"  style="width:500px;" id="lng"  name="lng" /><br>
-<label>lat</label><input type="text"  style="width:500px;" id="lat"  name="lat" /><br>
+<label>위도</label><input type="text"  style="width:500px;" id="lat"  name="lat" /><br>
+<label>경도</label><input type="text"  style="width:500px;" id="lng"  name="lng" /><br>
 <div id="map"></div></br>
 ===================================================<br>
 <div class=""><h2>사진 첨부하기</h2></div>
@@ -215,9 +215,12 @@ $(document).ready(function(e){
 		
 		console.log("form"+formObj);
 		
+		$("#repImg")
+		
 		let str = "";
         
         /* 업로드 결과 화면에 업로드 결과를 작성해준다.*/
+        /* jquery의 foreach문 */
 		$(".uploadResult ul li").each(function(i, obj) {
 			
 			let jobj = $(obj);
@@ -228,10 +231,12 @@ $(document).ready(function(e){
 			str += "<input type='hidden' name='imgs["+i+"].uuid' value='" + jobj.data("uuid")+"'>";
 			str += "<input type='hidden' name='imgs["+i+"].uploadPath' value='" + jobj.data("path")+"'>";
 			str += "<input type='hidden' name='imgs["+i+"].image' value='" + jobj.data("type")+"'>";
+			if(i === 0){
+				str += "<input type='hidden' name='repImg' value='" + jobj.data("filename")+"'>";
+			}
 			
 		});
-        
-		console.log(str);
+        	
 		
         /*위에서 작성한 글을 form에 추가하고 제출한다. */
 		formObj.attr("method", "post");

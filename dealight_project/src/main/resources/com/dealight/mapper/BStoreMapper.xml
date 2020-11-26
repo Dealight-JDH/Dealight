@@ -27,7 +27,7 @@
 								acm_pnum,
 								store_id, buser_id, open_tm,
 								brch, rep_menu, rep_img, 
-								close_tm, break_sttm, last_ord_tm )
+								close_tm, break_sttm, break_entm, last_ord_tm )
 		values ( 
 				#{n1SeatNo},
 				#{n2SeatNo}, 
@@ -38,7 +38,7 @@
 				#{acmPnum},
 				#{storeId}, #{buserId}, #{openTm},
 				#{brch}, #{repMenu}, #{repImg}, 
-				#{closeTm}, #{breakSttm}, #{lastOrdTm})
+				#{closeTm}, #{breakSttm}, #{breakEntm}, #{lastOrdTm})
 	</insert>
   
   	<select id="read" resultType="com.dealight.domain.BStoreVO">

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.BStoreVO;
 import com.dealight.domain.StoreEvalVO;
+import com.dealight.domain.StoreImgVO;
 import com.dealight.domain.StoreLocVO;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserWithRsvdDTO;
@@ -52,11 +53,14 @@ public class BusinessController {
 	//메뉴 사진첨부파일 매장평가 사업자테이블에 태그 메뉴 옵션이 들어가야한다.
 	//DTO에 대한이해가 피요하고 많아지는 객체들을 쪼갤수있는 방법을 생각하자.
 	@PostMapping("/register")
-	public String register(StoreVO store, BStoreVO bStore, StoreLocVO loc, StoreEvalVO eval, RedirectAttributes rttr) {
+	public String register(StoreVO store, BStoreVO bStore, StoreLocVO loc, StoreEvalVO eval,RedirectAttributes rttr) {
 		
+		
+		log.info("store................"+store);
 		log.info("bstore................." + bStore);
 		log.info("loc................." + loc);
 		log.info("store eval................." + eval);
+		// log.info("imgs............." + imgs);
 		
 		store.setBstore(bStore);
 		store.setLoc(loc);
