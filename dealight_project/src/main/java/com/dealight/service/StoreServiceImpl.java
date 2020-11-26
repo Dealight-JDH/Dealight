@@ -1,6 +1,5 @@
 package com.dealight.service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dealight.domain.AllStoreVO;
 import com.dealight.domain.BStoreVO;
 import com.dealight.domain.MenuVO;
-import com.dealight.domain.NearbyStoreVO;
 import com.dealight.domain.RevwVO;
 import com.dealight.domain.StoreEvalVO;
 import com.dealight.domain.StoreImgVO;
@@ -429,30 +427,18 @@ public class StoreServiceImpl implements StoreService {
 		return sMapper.getNstore(storeId);
 	}
 
-	@Override
-	public List<NearbyStoreVO> nearbyStoreList(Long storeId) {
-		log.info("nearby store"+storeId);
-		List<NearbyStoreVO> originStore = sMapper.getNearbyStoreList(storeId);
-		List<NearbyStoreVO> nearbyStore = new ArrayList<>();
-		for(int i=0; i<3;i++) {
-			int idx = (int)(Math.random()* originStore.size());
-			nearbyStore.add(originStore.get(idx));
-			originStore.remove(idx);
-		}
-		
-		return nearbyStore;
-	}
-
-<<<<<<< HEAD
+	
+	//수정필
 	@Override
 	public StoreLocVO getStoreLoc(Long storeId) {
-		return locMapper.read(storeId);
+		// TODO Auto-generated method stub
+		return null;
 	}
-=======
-	/*
-	 * @Override public String storeCd(Long storeId) {
-	 * log.info("store code......"+storeId); return sMapper.getStoreCd(storeId); }
-	 */
->>>>>>> main
+
+
+//	
+//	  @Override public String storeCd(Long storeId) {
+//	  log.info("store code......"+storeId); return sMapper.getStoreCd(storeId); }
+//	 
 
 }

@@ -25,10 +25,6 @@ public class StoreMapperTests {
 	@Setter(onMethod_ = @Autowired)
 	private StoreMapper mapper;
 	
-	@Test
-	public void testGetNearbyStoreList() {
-		mapper.getNearbyStoreList(1L).forEach(nearbyStore -> log.info(nearbyStore));
-	}
 	
 	public void testGetList() {
 		mapper.getList().forEach(store -> log.info(store));

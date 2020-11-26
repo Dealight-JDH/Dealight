@@ -32,7 +32,6 @@ public class StoreController {
 		if (clsCd.equalsIgnoreCase("B")) {
 			log.info("bstore: " + storeId);
 			model.addAttribute("store", service.bstore(storeId));
-			model.addAttribute("nearbyStore", service.nearbyStoreList(storeId));
 			//model.addAttribute("revws", service.revws(storeId,cri));
 			return "/dealight/store/bstore";
 		} else {

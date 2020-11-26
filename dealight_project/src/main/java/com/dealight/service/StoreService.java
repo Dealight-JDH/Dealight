@@ -6,12 +6,8 @@ import java.util.List;
 import com.dealight.domain.AllStoreVO;
 import com.dealight.domain.BStoreVO;
 import com.dealight.domain.MenuVO;
-import com.dealight.domain.NearbyStoreVO;
 import com.dealight.domain.StoreImgVO;
-<<<<<<< HEAD
 import com.dealight.domain.StoreLocVO;
-=======
->>>>>>> main
 import com.dealight.domain.StoreVO;
 
 /*
@@ -76,7 +72,6 @@ public interface StoreService {
 	
 	//public String storeCd(Long storeId);
 	
-	public List<NearbyStoreVO> nearbyStoreList(Long storeId);
 	
 	public StoreLocVO getStoreLoc(Long storeId);
 	

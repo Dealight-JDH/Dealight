@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dealight.domain.AllStoreVO;
 import com.dealight.domain.BStoreVO;
 import com.dealight.domain.MenuVO;
-import com.dealight.domain.NearbyStoreVO;
 import com.dealight.domain.StoreEvalVO;
 import com.dealight.domain.StoreImgVO;
 import com.dealight.domain.StoreLocVO;
@@ -34,10 +33,6 @@ public class StoreServiceTests {
 	private StoreService service;
 	
 	
-	@Test
-	public void testNearbyStore() {
-		service.nearbyStoreList(1L).forEach(nearbyStore -> log.info(nearbyStore));
-	}
 	
 	
 	//@Test
