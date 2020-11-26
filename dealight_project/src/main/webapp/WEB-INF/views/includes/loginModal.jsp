@@ -48,11 +48,10 @@
        </div>
     <div class="modal-footer">
      <button id='loginbtn' type="submit" class="btn btn-warning">Login</button>
-    <button id='registerbtn' type="button" class="btn btn-danger" onclick="location.href='/dealight/prove/authemail'">Register</button>
+    <button id='registerbtn' type="button" class="btn btn-danger" onclick="location.href='/dealight/policies'">Register</button> 
 </div>
  </form> 
 <div>
-	<%--  <input type="hidden" id="msg" value='<c:out value="${msg}"/>'>  --%>
    <!--  <a href="#google"><img id = "googlelogo" src="/resources/img/googlelogo.JPG"></a> -->
 
 </div>

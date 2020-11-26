@@ -7,8 +7,7 @@
   
 <body>
     
-
-    <form action="/dealight/register" method="POST" onsubmit="return validate()">
+    <form action="/dealight/register" method="POST" onsubmit="return validate()" >
     <div class = "register-content">
         <h2>회원가입</h2>
     <p> 아이디 : <input type="text" name="userId" id = "userId" >  <button type="button" class="overlapCheck">중복확인</button> </p>
@@ -41,7 +40,7 @@
 
     if(num.value == "" || authNum.value == ""){
     	alert("잘 못 된 접근입니다.");
-    	location.href = '/dealight/prove/authemail';
+    	location.href = '/dealight/policies';
     }
 
     if(num.value != authNum.value){
@@ -109,7 +108,6 @@
 	})
 	})
 	})
-    
    	//비밀번호와 비밀번호 확인이 일치하는지 확인
     function checkPwd(){
     	if($("#repwd").val() == ""){
@@ -130,6 +128,7 @@
     }//fun end
     
     
+ 
     //회원가입 버튼 클릭시 유효성 검사 한 번 더!!
     function validate() {   	
     	
@@ -252,7 +251,7 @@
         
     	return true;
     }
-    
+  
     
     </script>
 </body>
