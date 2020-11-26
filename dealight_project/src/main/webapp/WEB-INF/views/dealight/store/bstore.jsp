@@ -3,6 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@include file="../../includes/mainMenu.jsp" %>
+<%@include file="../../includes/loginModal.jsp" %>
+<%@include file="../../includes/loginmodalHeader.jsp" %>
 <!DOCTYPE html>
 <!-- 다울 -->
 <html>
@@ -14,10 +16,10 @@
 </head>
 <body>
 	<div class="container">
-	
+
 		<div class="left">
 			<div class="column">
-			
+				<!-- 상태코드에 따라 동그라미색 반영 이모지 추가 필요/핫딜 이모지&처리코드 필요 -->
 				<c:choose>
 					<c:when test="${store.bstore.seatStusCd eq 'O'}">
 						<span> 주황</span>
@@ -31,49 +33,67 @@
 					<c:when test="${store.bstore.seatStusCd eq 'Y'}">
 						<span> 노랑</span>
 					</c:when>
-				</c:choose><h1 style="display:inline-block">${store.storeNm }</h1>	<button type="button">하트</button><br>
+				</c:choose>
+				<!-- 매장이름 -->
+				<h1 style="display: inline-block">${store.storeNm }</h1>
+				<!-- 좋아요 버튼 이모지 추가필요-->
+				<button type="button">하트</button>
+				<c:choose>
+					<c:when test="${store.bstore.seatStusCd eq 'B'}">
+						<span style="border-style:solid; padding:5px; color:black" >영업종료</span>
+					</c:when>
+					<c:when test="${store.bstore.seatStusCd ne 'B'}">
+						<span style="border-style:solid; padding:5px; color:red;" >영업중</span>
+					</c:when>
+					
+				</c:choose>
+				<br>
+				<!-- 웨이팅중인 고객수 -->
 				<c:forEach items="${store.bstore.waits }" var="waits">
 					<h4>
-						<c:out value="${waits.waitTot}" />명이 웨이팅 중 입니다!
-					</h4> 
+						<c:out value="${waits.waitTot}" />
+						명이 웨이팅 중 입니다!
+					</h4>
 					<br>
-				</c:forEach><br>
-			
+				</c:forEach>
+				<br>
+
 				<div class="img">
 
-				<!--체크-->
-						<c:if test="${store.imgs[0].fileName != null}">
-					<c:forEach items="${store.imgs }" var="imgs">
+					<!--대표이미지 추가해야할수도?-->
+					<c:if test="${store.imgs[0].fileName ne null}">
+						<c:forEach items="${store.imgs }" var="imgs">
 							<img class="imgCon"
 								src='/resources/images/store/<c:out value="${imgs.fileName}" />'>
-					</c:forEach>
-						</c:if>
+						</c:forEach>
+					</c:if>
 				</div>
 				<p>평균평점 : ${store.eval.avgRating} 리뷰 : ${store.eval.revwTotNum}
 					좋아요 : ${store.eval.likeTotNum}</p>
 			</div>
+			<!--  미구현 -->
 			<div class="column">
 				<h1>예약 가능상태</h1>
 			</div>
 			<div class="column">
 				<h1>매장정보</h1>
-				<c:if test="${store.bstore.storeIntro!= null}">
+				<c:if test="${store.bstore.storeIntro ne null}">
 					<p>${store.bstore.storeIntro}</p>
 				</c:if>
 				<p>${store.loc.addr}</p>
 				<p>${store.telno}</p>
 
-				<c:if test="${store.bstore.openTm!= null}">
+				<c:if test="${store.bstore.openTm ne null}">
 					<p>영업시간 : ${store.bstore.openTm} - ${store.bstore.closeTm}</p>
 				</c:if>
-				<c:if test="${store.bstore.breakSttm!= null}">
+				<c:if test="${store.bstore.breakSttm ne null}">
 					<p>브레이크 타임 : ${store.bstore.breakSttm} -
 						${store.bstore.breakEntm}</p>
 				</c:if>
-				<c:if test="${store.bstore.lastOrdTm!= null}">
+				<c:if test="${store.bstore.lastOrdTm ne null}">
 					<p>라스트오더 : ${store.bstore.lastOrdTm}</p>
 				</c:if>
-				<c:if test="${store.bstore.hldy!= null}">
+				<c:if test="${store.bstore.hldy ne null}">
 					<p>휴무일 : ${store.bstore.hldy}</p>
 				</c:if>
 			</div>
@@ -89,19 +109,44 @@
 				</c:forEach>
 
 			</div>
+
 			<div class="column">
 				<h1>리뷰</h1>
 				<div class='revwColumn'></div>
 				<div class="revwFooter"></div>
 			</div>
+
+			<div class="column">
+				<h1>지도</h1>
+				<div id="map" style="width: 100%; height: 350px; margin-bottom:50px;"></div>
+			</div>
+
+			<!-- 미구현 -->
 			<div class="column">
 				<h1>주변가게</h1>
+				<div class="conNearByColumn">
+
+					<c:forEach items="${nearbyStore}" var="nearbyStore">
+						<div class="conNearBy">
+							<img class="imgNearBy"
+								src='/resources/images/store/<c:out value="${nearbyStore.repImg}" />'>
+							${nearbyStore.storeNm} ${nearbyStore.avgRating}
+							${nearbyStore.revwTotNum} ${nearbyStore.likeTotNum}<br>
+							${nearbyStore.addr}
+						</div>
+
+					</c:forEach>
+
+				</div>
+
 			</div>
+		
 		</div>
-			<div class="right">
+
+		<div class="right">
 			<div class="sticky">
-			<c:if test="${store.bstore.htdl.htdlId!= null}">
-				
+			<c:if test="${store.bstore.htdl.htdlId ne null}"> <%-- ${store.bstore.htdl.stusCd!=null } --%>
+				<c:if test=" ${store.bstore.htdl.stusCd eq P }">
 				<div class="htdlBtnCon">
 				<button id='htdlBtn'>지금 진행중인 핫딜!</button>
 				</div>	
@@ -109,7 +154,8 @@
 					<P id='htdl'>핫딜상세</p>
 				</div>
 				</c:if>
-			<section class="loginWrapper">
+			</c:if>
+			<section class="tabWrapper">
 					<ul class="tabs">
 						<li class="active">예약</li>
 						<li>줄서기</li>
@@ -142,6 +188,10 @@
 									<div class="row">
 										<select id="menu">
 											<option value="">메뉴</option>
+											<c:if test="${store.bstore.htdl.htdlId ne null}">
+												<%-- <c:if test=" ${store.bstore.htdl.stusCd eq P }"> --%>
+												<%-- </c:if> --%>
+											</c:if>
 											<c:forEach items="${store.bstore.menus }" var="menus">
 												<option value="${menus.menuSeq}">${menus.name }</option>
 											</c:forEach>
@@ -149,16 +199,12 @@
 
 									</div>
 									<div id="container"></div>
-									<span id="menusTotAmtSumMsg"></span> 
-									<span id="menusTotAmt" name="totAmt" value="0"></span>
-									<button type="submit">예약하기</button>
-
+									<span id="menusTotAmtSumMsg"></span> <span id="menusTotAmt" name="totAmt" value="0"></span>
+									<button class ="tabWrapperBtn" type="submit">예약하기</button>
 								</form>
 							</div>
 						</li>
-
-						<li>
-							<div class="content__wrapper">
+						<li><div class="content__wrapper">
 								<form id="waitingForm" action="/dealight/waiting"
 									method="post">
 									<input type='hidden' name='storeId' value='<c:out value="${store.storeId }"/>' />
@@ -173,8 +219,7 @@
 											<option value="4">4</option>
 										</select>
 									</div>
-									
-									<button type="submit">줄서기</button>
+									<button class ="tabWrapperBtn" type="submit">줄서기</button>
 								</form>
 							</div>
 						</li>
@@ -183,6 +228,9 @@
 				</section>
 				</div>
 		</div>
+			<div class="footer">
+			<h1>footer</h1>
+			</div>
 	</div>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -275,8 +323,11 @@
 																+ list[i].regDt
 																+ "</small>"
 														str += "<p>"
-																+ list[i].cnts
-																+ "</p></div></div></div>";
+																+ list[i].cnts;
+														if(list[i].replyCnts !=null){
+														str += "<div class='reply'>"+ list[i].replyCnts+"</div>";
+														}	
+														str	+= "</p></div></div></div>";
 													}
 													revwUL.html(str);
 													showRevwPage(revwCnt);
@@ -299,8 +350,8 @@
 
 						});
 	</script>
-	<!--옵션선택 -->
-
+	
+<!--메뉴선택 -->
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script type="text/javascript">
 		function Menus() {
@@ -532,12 +583,17 @@
 			const watingPersonNum = '<input type="hidden" name=pnum value="'
 					+ $("#waitingNum option:selected").val() + '">';
 			waitingForm.append(watingPersonNum);
+
 			submitted=true;
 			waitingForm.submit();
+
+			//waitingForm.submit();
 		});
 		
 		});
 	</script>
+	
+	<!-- 예약/웨이팅 탭 -->
 	<script>
 		$(document).ready(
 				function() {
@@ -608,5 +664,32 @@
 			});
 		});
 	</script>
+	
+	<!-- 지도 -->
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0e7b9cd1679ce3dedf526e66a6c1a860&libraries=services,clusterer,drawing"></script>
+	<script>
+	var lat =${store.loc.lat};
+	var lng =${store.loc.lng};
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = { 
+        center: new kakao.maps.LatLng(lat, lng), // 지도의 중심좌표
+        level: 5 // 지도의 확대 레벨
+    };
+
+	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+	// 마커가 표시될 위치입니다 
+	var markerPosition  = new kakao.maps.LatLng(lat, lng); 
+
+	// 마커를 생성합니다
+	var marker = new kakao.maps.Marker({
+    position: markerPosition
+	});
+
+	// 마커가 지도 위에 표시되도록 설정합니다
+	marker.setMap(map);
+	</script>
+	
+	
 </body>
 </html>

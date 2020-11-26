@@ -54,6 +54,10 @@ public class AllStoreVO {
 	private int revwTotNum;
 	private int likeTotNum;
 	
+    private String brch;
+    private String repMenu;
+    private String repImg;
+	
     // compoisition
     private List<RevwVO> revwList;
  

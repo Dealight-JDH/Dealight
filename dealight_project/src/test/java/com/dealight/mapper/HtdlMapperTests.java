@@ -2,12 +2,10 @@ package com.dealight.mapper;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +18,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.Criteria;
+import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlRsltVO;
 import com.dealight.domain.HtdlVO;
@@ -34,6 +34,27 @@ public class HtdlMapperTests {
 	@Autowired
 	private HtdlMapper mapper;
 	
+	@Test
+	public void testSearch() {
+		
+		HtdlCriteria hCri = new HtdlCriteria();
+		hCri.setType("b");
+		hCri.setKeyword("종로");
+		
+		List<HtdlVO> list = mapper.getListWithPaging("I", hCri);
+		
+		list.forEach(vo -> log.info(vo));
+	}
+	@Test
+	public void testPaging() {
+		HtdlCriteria hCri = new HtdlCriteria();
+		hCri.setPageNum(3);
+		hCri.setAmount(9);
+		String stusCd = "I";
+		List<HtdlVO> lists = mapper.getListWithPaging(stusCd, hCri);
+		
+		lists.forEach(vo -> log.info(vo));
+	}
 	@Test
 	public void test() {
 		Date date = new Date();

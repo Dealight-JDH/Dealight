@@ -5,10 +5,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
+import com.dealight.domain.HtdlPageDTO;
 import com.dealight.domain.HtdlRsltVO;
 import com.dealight.domain.HtdlVO;
 import com.dealight.domain.StoreMenuVO;
@@ -32,10 +35,47 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class HtdlServiceImpl implements HtdlService {
 
+	@Autowired
+	private HtdlTimeCheckService checkService;
+	
 	private final HtdlMapper htdlMapper;
 	private final StoreMenuMapper menuMapper;
 	private HtdlDtlsMapper htdlDtlsMapper;
 	private HtdlRsltMapper htdlRsltMapper;
+	
+	@Override
+	public List<HtdlVO> findAll() {
+		// TODO Auto-generated method stub
+		return htdlMapper.getList();
+	}
+	
+	@Override
+	public HtdlPageDTO getListPage(String stusCd, HtdlCriteria hCri) {
+		// TODO Auto-generated method stub
+		return new HtdlPageDTO(
+				htdlMapper.getTotalCount(stusCd, hCri),
+				htdlMapper.getListWithPaging(stusCd, hCri));
+	}
+
+//	@Override
+//	public HtdlPageDTO getPageDto(HtdlCriteria hCri, int total, List<HtdlVO> lists) {
+//		// TODO Auto-generated method stub
+//		return new HtdlPageDTO(hCri, total, lists);
+//	}
+	
+	@Override
+	public int getTotal(String stusCd, HtdlCriteria hCri) {
+		// TODO Auto-generated method stub
+		log.info("get total count");
+		return htdlMapper.getTotalCount(stusCd, hCri);
+	}
+
+	@Override
+	public List<HtdlVO> getList(String stusCd, HtdlCriteria hCri) {
+		// TODO Auto-generated method stub
+		log.info("get list with criteria : " + hCri);
+		return htdlMapper.getListWithPaging(stusCd, hCri);
+	}
 	
 	
 	@Transactional
@@ -46,7 +86,9 @@ public class HtdlServiceImpl implements HtdlService {
 		log.info("register....");
 		
 		//핫딜 등록
+		checkService.addHtdl(vo);
 		htdlMapper.insertSelectKey(vo);
+		
 		Long sequence = htdlMapper.getSeqHtdl();
 		
 		//핫딜 메뉴가 하나이상 일 때
@@ -182,5 +224,14 @@ public class HtdlServiceImpl implements HtdlService {
 		
 		return htdlMapper.findByStoreIdStusCd(storeId, "A");
 	}
+
+	
+
+
+	
+
+
+	
+
 
 }

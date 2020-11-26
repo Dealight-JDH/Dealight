@@ -55,10 +55,9 @@
 </select> -->
 
 <select id="getListWithPaging" resultType="com.dealight.domain.MainStoreJoinVO">
-	<![CDATA[
 	select *
 	from (
-			select rownum rn, dist, store_id, store_nm, telno, cls_cd ,
+			select rownum rn, store_id, store_nm, telno, cls_cd ,
 				   addr, lat, lng,
         		   brch, rep_menu, rep_img, seat_stus_cd, htdl_stus_cd,
         		   open_tm, close_tm, break_sttm, break_entm,
@@ -68,43 +67,44 @@
             				l.addr, l.lat, l.lng,
                     		b.brch, b.rep_menu, b.rep_img, b.seat_stus_cd,b.htdl_stus_cd,
                     		b.open_tm, b.close_tm, b.break_sttm, b.break_entm,
-                    		e.avg_rating, e.revw_tot_num, e.like_tot_num,
-                   			calc_distance(#{lat}, #{lng}, l.lat, l.lng) as dist
+                    		e.avg_rating, e.revw_tot_num, e.like_tot_num
+                   			
             		from tbl_store s , tbl_bstore b , tbl_store_loc l, tbl_store_eval e
             		where   (l.lat between #{lat} - #{range} and #{lat} + #{range})
                     	and (l.lng between #{lng} - #{range} and #{lng} + #{range})
 		                and s.store_id = b.store_id 
 		                and s.store_id = l.store_id 
 		                and s.store_id = e.store_id 
-	]]>
+					<!-- 영업매장만 보기 -->
 					<if test="openStore">
 						and b.seat_stus_cd != 'B'
 					</if>
 		           	order by 
+		           			<!-- 우선순위 -->
 							 <choose>
 							 	<when test="sortPriority == 'H'.toString()">
 							 		decode(b.htdl_stus_cd, 'A', 1, 'P',2),
 							 	</when>
 							 	<when test="sortPriority == 'S'.toString()">
-							 		decode(b.seat_stus_cd, 'G', 1, 'O', 2, 'R',3 , 'B',4),
+							 		decode(b.seat_stus_cd, 'G', 1, 'O', 2, 'R',3 ),
 							 	</when>
 							 	<when test="sortPriority == 'W'.toString()">
-							 		decode(b.seat_stus_cd, 'R', 1, 'O', 2, 'G',3 , 'B',4),
+							 		decode(b.seat_stus_cd, 'R', 1, 'O', 2, 'G',3 ),
 							 	</when>
-							 	<!-- 예약가능 우선보기 -->
 							 </choose>
+							 <!-- 정렬순서 -->
 		           			 <choose>
 								<when test="sortType == 'H'.toString()">
-									e.like_tot_num desc , 
+									e.like_tot_num desc
 								</when>		           			 
 								<when test="sortType == 'R'.toString()">
-									e.avg_rating desc , 
+									e.avg_rating desc
 								</when>		           			 
 								<when test="sortType == 'T'.toString()">
-									e.revw_tot_num desc , 
+									e.revw_tot_num desc
 								</when>		           			 
 		           			 </choose>
-		           			 dist
+		           			 
            		 )
 	<![CDATA[
             where rownum <= #{pageNum} * #{amount}
@@ -128,5 +128,36 @@
 		and b.seat_stus_cd != 'B'
 	</if>
 </select>
+
+<select id="getDistWithPaging" resultType="com.dealight.domain.MainStoreJoinVO">
+select *
+	from (
+			select rownum rn, dist, store_id, store_nm, telno, cls_cd ,
+				   addr, lat, lng,
+        		   brch, rep_menu, rep_img, seat_stus_cd, htdl_stus_cd,
+        		   open_tm, close_tm, break_sttm, break_entm,
+        		   avg_rating, revw_tot_num, like_tot_num 
+      		from (
+            		select  s.store_id, s.store_nm, s.telno, s.cls_cd ,
+            				l.addr, l.lat, l.lng,
+                    		b.brch, b.rep_menu, b.rep_img, b.seat_stus_cd,b.htdl_stus_cd,
+                    		b.open_tm, b.close_tm, b.break_sttm, b.break_entm,
+                    		e.avg_rating, e.revw_tot_num, e.like_tot_num,
+                   			calc_distance(#{lat}, #{lng}, l.lat, l.lng) as dist
+            		from tbl_store s , tbl_bstore b , tbl_store_loc l, tbl_store_eval e
+            		where   (l.lat between #{lat} - #{range} and #{lat} + #{range})
+                    	and (l.lng between #{lng} - #{range} and #{lng} + #{range})
+		                and s.store_id = b.store_id 
+		                and s.store_id = l.store_id 
+		                and s.store_id = e.store_id 
+		            order by dist
+	              )
+<![CDATA[
+           where rownum <= #{pageNum} * #{amount}
+	  	  )
+where rn > (#{pageNum} - 1) * #{amount}
+]]>
+</select>
+
 
 </mapper>

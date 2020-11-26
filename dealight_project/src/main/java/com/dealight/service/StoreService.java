@@ -6,11 +6,8 @@ import java.util.List;
 import com.dealight.domain.AllStoreVO;
 import com.dealight.domain.BStoreVO;
 import com.dealight.domain.MenuVO;
+import com.dealight.domain.NearbyStoreVO;
 import com.dealight.domain.StoreImgVO;
-import java.util.List;
-
-import com.dealight.domain.Criteria;
-import com.dealight.domain.RevwVO;
 import com.dealight.domain.StoreVO;
 
 /*
@@ -73,6 +70,8 @@ public interface StoreService {
 	
 	public StoreVO bstore(Long storeId);
 	
-	public String storeCd(Long storeId);
+	//public String storeCd(Long storeId);
+	
+	public List<NearbyStoreVO> nearbyStoreList(Long storeId);
 	
 }

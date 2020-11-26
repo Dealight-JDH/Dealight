@@ -47,7 +47,6 @@ public class RsvdServiceImpl implements RsvdService{
 		
 		return menuMapper.findById(storeId);
 	}
-
 	
 	@Override
 	public Long getRsvdId() {
@@ -114,6 +113,7 @@ public class RsvdServiceImpl implements RsvdService{
 	@Override
 	public void complete(Long rsvdId) {
 		
+//		rsvdMapper.update(rsvd)
 	}
 
 
@@ -238,6 +238,10 @@ public class RsvdServiceImpl implements RsvdService{
 			}
 			
 			log.info("stus check ......................");
+			
+			//String time = getTime(rsvd.getRegdate());
+
+			//log.info("reg date............" + rsvd.getRegDate());
 			
 			String time = rsvd.getTime();
 			
@@ -418,4 +422,7 @@ public class RsvdServiceImpl implements RsvdService{
 		
 		return rsvdMapper.findLastWeekRsvdListByStoreId(storeId);
 	}
+
+
+	
 }

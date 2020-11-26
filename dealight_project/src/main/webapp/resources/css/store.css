@@ -78,6 +78,13 @@
 	border-color: rgba(138, 134, 134, 0.199);
 }
 
+.reply{
+	background-color: rgba(138, 134, 134, 0.199);
+	border-radius : 2px;
+	padding : 5px;
+	margin:5px;
+	
+}
 .right {
 	width: 20%;
 	min-width: 300px;
@@ -148,7 +155,7 @@
 }
 
 .htdlBtnCon {
-  	border-style : solid;
+  	${nearbyStore.repImg}
   
 }
 
@@ -157,16 +164,34 @@
 	border:none;
 	background-color: white;
 }
-
+.conNearByColumn {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	
+}
 /*주변가게*/
 .conNearBy{
-	
+	width:30%;
+	display: inline-block;
+	border-style: solid;
+	border-color: rgba(138, 134, 134, 0.199);
+	margin: 10px;
+	height:250px;
 }
 
 .imgNearBy{
-	
+	border-style: solid;
+	border-color: rgba(138, 134, 134, 0.199);
+	width:100%;
+	height:150px;
 }
 
+.footer{
+	width : 100%;
+	height : 300px;
+}
 
 
 

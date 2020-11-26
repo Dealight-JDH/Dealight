@@ -1,6 +1,24 @@
 
 # Created by https://www.toptal.com/developers/gitignore/api/windows,macos,maven,java
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,maven,java
+### Eclipse ###
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
 
 ### Java ###
 # Compiled class file
@@ -56,6 +74,23 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+### Eclipse ###
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+# External tool builders
+.externalToolBuilders/
+# Locally stored "Eclipse launch configurations"
+*.launch
+
 ### Maven ###
 target/
 pom.xml.tag
@@ -97,23 +132,3 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,maven,java
 /.metadata/
-
-
-/Servers/
-
-### Eclipse ###
-.metadata
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.settings/
-.loadpath
-.recommenders
-# External tool builders
-.externalToolBuilders/
-# Locally stored "Eclipse launch configurations"
-*.launch

@@ -61,11 +61,12 @@
 		<result column="store_id" property="storeId" />
 		<result column="store_nm" property="storeNm" />
 		<result column="telno" property="telno" />
-		<result column="clsCd" property="cls_cd" />
+		<result column="cls_cd" property="clsCd" />
 
 		<association property="bstore" javaType="com.dealight.domain.BStoreVO">
 			<result column="buser_id" property="buserId" />
 			<result column="seat_stus_cd" property="seatStusCd" />
+			<result column="repImg" property="rep_img" />
 			<result column="open_tm" property="openTm" />
 			<result column="close_tm" property="closeTm" />
 			<result column="break_sttm" property="breakSttm" />
@@ -159,11 +160,11 @@
 		</collection>
 	</resultMap>
 	
-	<select id="getStoreCd" resultType="String">
+<!-- 	<select id="getStoreCd" resultType="String">
 		select cls_cd from tbl_store
 		where
 		store_id = #{storeId}
-	</select>
+	</select> -->
 
 
 <!-- <resultMap type="com.dealight.domain.NStoreVO" id="NStoreVO">
@@ -213,7 +214,8 @@
 		select s.store_id,s.store_nm,
 		n.biz_tm,n.menu,
 		e.like_tot_num,
-		i.img_seq,i.fileName
+		i.img_seq,i.fileName,
+		l.lat, l.lng
 		from tbl_store
 		s,tbl_nstore n, tbl_store_loc l, tbl_store_eval e,
 		tbl_store_img i
@@ -223,8 +225,11 @@
 		= e.store_id
 		and s.store_id=i.store_id(+)
 		and s.store_id = #{storeId}
+	
 	</select>
 <!--다울 nstore Mapper end-->
+
+	<!-- bstore -->
 	<select id="getBstore" resultMap="StoreVO">
 		select
 		s.store_id,s.store_nm,s.telno,
@@ -258,6 +263,24 @@
 		and s.store_id = w.store_id(+)
 		and s.store_id
 		=#{storeId}
+	</select>
+	
+	<select id="getNearbyStoreList" resultType="com.dealight.domain.NearbyStoreVO">
+	select 
+	s.store_id,s.store_nm,
+	e.avg_rating,e.revw_tot_num,e.like_tot_num,
+	l.addr,
+	b.rep_img 
+	from tbl_store s, tbl_store_loc l,tbl_store_eval e, tbl_bstore b
+	where s.store_id =b.store_id
+	and s.store_id=e.store_id
+	and s.store_id = l.store_id
+	and not s.store_id = #{storeId}	
+	and substr(l.addr,instr(l.addr,' ')+1,3) = (SELECT
+	substr(addr,instr(addr,' ')+1,3)  
+	FROM tbl_store_loc
+	where store_id=#{storeId})
+	
 	</select>
 
 	<select id="getList" resultType="com.dealight.domain.StoreVO">
@@ -299,7 +322,7 @@
   		update tbl_store
   		set store_nm = #{storeNm},
   			telno = #{telno},
-  			cls_Cd = #{clsCd}
+  			cls_cd = #{clsCd}
   		where store_id = #{storeId}
   	</update>
   

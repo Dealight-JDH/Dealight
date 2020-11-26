@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlRsltVO;
 import com.dealight.domain.HtdlVO;
@@ -19,7 +20,9 @@ public interface HtdlMapper {
 
 	HtdlVO findById(Long htdlId);
 	List<HtdlVO> getList();
+	List<HtdlVO> getListWithPaging(@Param("stusCd") String stusCd, @Param("hCri") HtdlCriteria hCri);
 	int delete(Long htdlId);
+	int getTotalCount(@Param("stusCd") String stusCd, @Param("hCri") HtdlCriteria hCri);
 	
 	Long getSeqHtdl();
 	

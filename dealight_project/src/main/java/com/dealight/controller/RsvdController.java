@@ -110,7 +110,7 @@ public class RsvdController {
 
     	
         log.info("kakao pay.....");
-        return "redirect:" + kakaoService.kakaoPayReady(rsvdId, lists, requestDto.getTotAmt());
+        return "redirect:" + kakaoService.kakaoPayReady(rsvdId, lists, requestDto.getTotAmt(), requestDto.getTotQty());
     }
 
     @GetMapping("/kakaoPaySuccess")

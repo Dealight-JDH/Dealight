@@ -35,21 +35,18 @@ public class KakaoService {
 	private KakaoPayReadyVO kakaoPayReadyVO; //결제 준비 
 	private KakaoPayApprovalVO kakaoPayApprovalVO; //결제 승인
 	
+	private Long rsvdId = 0l;
+	private int totAmt = 0;
 	
 	//결제 준비
-	public String kakaoPayReady(Long rsvdId, List<RsvdMenuDTO> lists, Integer totAmt) {
+	public String kakaoPayReady(Long rsvdId, List<RsvdMenuDTO> lists, int totAmt, int totQty ) {
+		this.rsvdId = rsvdId;
+		this.totAmt = totAmt;
 		RestTemplate restTemplate = new RestTemplate();
 		
-//		StringBuilder menu = new StringBuilder();
-//		StringBuilder quan = new StringBuilder();
-//		
-//		lists.forEach(dto -> {
-//			menu.append(dto.getName());
-//			quan.append(dto.getQuan().toString());
-//		});
 		String menu = lists.stream().map(dto -> dto.getName()).collect(Collectors.joining(", "));
-		String qty = lists.stream().map(dto -> dto.getQty().toString()).collect(Collectors.joining(", "));
 		
+		log.info("====================test menu:" + menu);
 		
 		//요청 헤더
 		HttpHeaders headers = new HttpHeaders();
@@ -61,11 +58,12 @@ public class KakaoService {
         //요청 바디
         MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
         params.add("cid","TC0ONETIME");
-        params.add("partner_order_id", "1001");
+
+        params.add("partner_order_id", String.valueOf(rsvdId));
         params.add("partner_user_id","whddn528");
-        params.add("item_name","agaga");
-        params.add("quantity", "3");
-        params.add("total_amount", "13000");
+        params.add("item_name",menu);
+        params.add("quantity", String.valueOf(totQty));
+        params.add("total_amount", String.valueOf(totAmt));
         params.add("tax_free_amount","0");
         params.add("approval_url","http://localhost:8181/dealight/reservation/kakaoPaySuccess");
         params.add("cancel_url","http://localhost:8181/dealight/reservation/kakaoPayCancel");
@@ -105,10 +103,10 @@ public class KakaoService {
         MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
         params.add("cid","TC0ONETIME");
         params.add("tid", kakaoPayReadyVO.getTid());
-        params.add("partner_order_id","1001");
+        params.add("partner_order_id",String.valueOf(this.rsvdId));
         params.add("partner_user_id","whddn528");
         params.add("pg_token", pg_token);
-        params.add("total_amount","31000");
+        params.add("total_amount", String.valueOf(this.totAmt));
 
         HttpEntity<MultiValueMap<String,String>> body = new HttpEntity<>(params, headers);
 
