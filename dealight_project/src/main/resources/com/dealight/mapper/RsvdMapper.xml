@@ -58,6 +58,7 @@
 			into tbl_rsvd_dtls values (
 				#{item.rsvdId},
 				FN_GET_SEQ('seq_rsvd_dtls'),
+				<!-- seq_rsvd.currval -->
 				#{item.menuNm},
 				#{item.menuTotQty},
 				#{item.menuPrc},

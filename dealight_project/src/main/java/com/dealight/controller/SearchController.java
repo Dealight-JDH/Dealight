@@ -14,14 +14,13 @@ import lombok.extern.log4j.Log4j;
 //현중
 @Controller
 @Log4j
-@RequestMapping("/dealight/search/*")
+//@RequestMapping("/dealight/search/")
 @AllArgsConstructor
 public class SearchController {
 
-	private SearchService sService;
 	
 	
-	@GetMapping("/")
+	@GetMapping("/dealight/search/")
 	public String list(SearchDTO search, Model model) {
 		
 		//searchDTO 유효성검사를 해줘야한다.
@@ -30,6 +29,6 @@ public class SearchController {
 		
 		model.addAttribute("search", search);
 		
-		return "dealight/search/list";
+		return "dealight/search/map";
 	}
 }

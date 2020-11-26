@@ -34,4 +34,11 @@ public class SearchServicImpl implements SearchService {
 		return new PageDTO(cri, mMapper.getTotalCount(cri),
 					mMapper.getListWithPaging(cri));
 	}
+	
+	@Override
+	public PageDTO getListDistStore(Criteria cri) {
+		return new PageDTO(cri, mMapper.getTotalCount(cri),
+				mMapper.getDistWithPaging(cri));
+		
+	}
 }
