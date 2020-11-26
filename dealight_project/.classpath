@@ -26,6 +26,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
+			<attribute name="module" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
@@ -35,7 +36,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Applications/SQLDeveloper.app/Contents/Resources/sqldeveloper/jdbc/lib/ojdbc8.jar">
+	<classpathentry kind="lib" path="C:/Users/kjuio/Desktop/java/Oracle/sqldeveloper-19.2.1.247.2212-x64/sqldeveloper/jdbc/lib/ojdbc8.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
