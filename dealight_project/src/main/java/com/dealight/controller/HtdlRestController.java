@@ -52,6 +52,7 @@ public class HtdlRestController {
 	}
 	
 
+	
 	//핫딜 상세
 	@GetMapping(value = "/get/{htdlId}", produces = {
 			MediaType.APPLICATION_JSON_UTF8_VALUE,
