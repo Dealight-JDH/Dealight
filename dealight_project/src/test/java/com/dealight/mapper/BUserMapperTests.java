@@ -27,6 +27,9 @@ public class BUserMapperTests {
     private String brPhotoSrc = "/a.jpg";
     private String brJdgStusCd;
     private long storeId = 3;
+    private String storeNm = "storeNm";
+    private String telno = "010-2112-1232";
+    private String storeTelno = "02-123-1234";
     
     @Autowired
     private BUserMapper mapper;
@@ -34,7 +37,7 @@ public class BUserMapperTests {
     @Test
     public void insertTest1() {
     	
-    	BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc)
+		BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc,storeNm,telno,storeTelno)
 				.setStoreId(storeId)
 				.build();
     	
@@ -53,7 +56,7 @@ public class BUserMapperTests {
     @Test
     public void insertSelectTest1() {
     	
-    	BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc)
+		BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc,storeNm,telno,storeTelno)
 				.setStoreId(storeId)
 				.build();
     	
@@ -95,7 +98,7 @@ public class BUserMapperTests {
     @Test
     public void deleteTest() {
     	
-    	BUserVO buser = new BUserVO.Builder(2,userId,brno,brPhotoSrc)
+		BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc,storeNm,telno,storeTelno)
 				.setStoreId(storeId)
 				.build();
     	

@@ -3,7 +3,7 @@
 	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!-- 동인 -->
+<!-- 동인, 현중 -->
 
 <mapper namespace="com.dealight.mapper.BUserMapper">
 
@@ -25,9 +25,9 @@
 	<insert id="insert">
 		INSERT
 		INTO
-		tbl_buser(br_seq,user_id,store_id,brno,br_photo_src,br_jdg_stus_cd)
+		tbl_buser(br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno)
 		VALUES
-		(seq_buser.nextval,#{userId},#{storeId},#{brno},#{brPhotoSrc},#{brJdgStusCd})
+		(seq_buser.nextval, #{userId}, #{storeId}, #{brno}, #{brPhotoSrc}, #{brJdgStusCd}, #{storeNm}, #{telno}, #{storeTelno})
 	</insert>
 
 	<insert id="insertSelectKey">
@@ -38,9 +38,9 @@
 
 		INSERT
 		INTO
-		tbl_buser(br_seq,user_id,store_id,brno,br_photo_src,br_jdg_stus_cd)
+		tbl_buser(br_seq,user_id,store_id,brno,br_photo_src,br_jdg_stus_cd, store_nm, telno, store_telno)
 		VALUES
-		(#{brSeq},#{userId},#{storeId},#{brno},#{brPhotoSrc},#{brJdgStusCd})
+		(#{brSeq},#{userId},#{storeId},#{brno},#{brPhotoSrc},#{brJdgStusCd}, #{storeNm}, #{telno}, #{storeTelno})
 	</insert>
 
 
@@ -49,12 +49,13 @@
 		UPDATE tbl_buser
 		SET
 		user_id = #{userId},
-		store_id =
-		#{storeId},
+		store_id = #{storeId},
 		brno = #{brno},
 		br_photo_src = #{brPhotoSrc},
-		br_jdg_stus_cd
-		= #{brJdgStusCd}
+		br_jdg_stus_cd = #{brJdgStusCd},
+		store_nm = #{storeNm},
+		telno = #{telno},
+		store_telno = #{storeTelno}
 		where br_seq = #{brSeq}
 	</update>
 
