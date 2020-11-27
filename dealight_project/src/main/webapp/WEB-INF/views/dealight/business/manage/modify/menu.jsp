@@ -52,6 +52,21 @@
         text-decoration: none;
         cursor: pointer;
         }
+        
+        /* The Delete Button*/
+        .btn_delete {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        }
+
+        .btn_delete:hover,
+        .btn_delete:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+        }
 	
 </style>
 </head>
@@ -96,6 +111,7 @@
 <c:if test="${not empty menus }">
 	<c:forEach items="${menus }" var="menu">
 		<div class="menu">
+			<span class="btn_delete">&times;</span>
 			=========================================
 			<span hidden class='menuSeq'>${menu.menuSeq }</span>
 			<span hidden class='storeId'>${menu.storeId }</span>

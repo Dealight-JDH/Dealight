@@ -267,6 +267,18 @@ public class ManageController {
 		
 		return "redirect:/dealight/business/manage/menu?storeId="+menu.getStoreId();
 	}
+	
+	// 메뉴 수정
+	@PostMapping("/menu/delete")
+	public String menuDelete(Model model, Long menuSeq, Long storeId) {
+		
+		log.info("business menu register..");
+		
+		storeService.delete(menuSeq);
+		
+		
+		return "redirect:/dealight/business/manage/menu?storeId="+storeId;
+	}
 //
 //	// 웨이팅 입장
 //	@GetMapping("/enter")

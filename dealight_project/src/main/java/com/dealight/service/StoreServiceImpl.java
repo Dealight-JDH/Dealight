@@ -438,6 +438,12 @@ public class StoreServiceImpl implements StoreService {
 		return menuMapper.update(menu);
 	}
 
+	@Override
+	public int deleteMenu(Long menuSeq) {
+		
+		return menuMapper.delete(menuSeq);
+	}
+
 
 //	
 //	  @Override public String storeCd(Long storeId) {
