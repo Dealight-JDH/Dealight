@@ -100,7 +100,6 @@ public class UploadController {
 	@GetMapping("/uploadAjax")
 	public void uploadAjax() {
 		
-		
 		log.info("upload ajax");
 		
 	}
@@ -108,6 +107,84 @@ public class UploadController {
 	@PostMapping(value = "/uploadAjaxAction", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ResponseEntity<List<StoreImgVO>> uploadAjaxPost(MultipartFile[] uploadFile) {
+		List<StoreImgVO> list = new ArrayList<>();
+		
+		log.info("upload store img post................");
+		
+		String uploadFolder = ROOT_FOLDER;
+		
+		String uploadFolderPath = getFolder();
+		File uploadPath = new File(uploadFolder, uploadFolderPath);
+		
+		log.info("upload path : " + uploadPath);
+		
+		if(uploadPath.exists() == false) {
+			log.info("maker dir....");
+			uploadPath.mkdirs();
+		}
+		
+		
+		for(MultipartFile multipartFile : uploadFile) {
+			
+			StoreImgVO storeImg = new StoreImgVO();
+			
+			log.info("------------------------------------");
+			
+			log.info("Upload File Name : " + multipartFile
+					.getOriginalFilename());
+			
+			log.info("Upload File Size : " + multipartFile.getSize());
+			
+			String uploadFileName = multipartFile.getOriginalFilename();
+			
+			uploadFileName = uploadFileName.substring(uploadFileName
+					.lastIndexOf("\\") + 1);
+			
+			log.info("only file name : " + uploadFileName);
+			
+			storeImg.setFileName(uploadFileName);
+			
+			UUID uuid = UUID.randomUUID();
+			
+			uploadFileName = uuid.toString() + "_" + uploadFileName;
+			
+			
+			try {
+				//File saveFile = new File(uploadFolder, uploadFileName);
+				
+				File saveFile = new File(uploadPath, uploadFileName);
+				multipartFile.transferTo(saveFile);
+				
+				storeImg.setUuid(uuid.toString());
+				
+				storeImg.setUploadPath(uploadFolderPath);
+				
+				// check image type file
+				if(checkImageType(saveFile)) {
+					
+					storeImg.setImage(true);
+					
+					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" + uploadFileName));
+					
+					Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail,100,100);
+					
+					thumbnail.close();
+				}
+				
+				// add to list
+				list.add(storeImg);
+				
+			} catch (Exception e) {
+				log.error(e.getMessage());
+			} // end catCH
+		} // end for
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/uploadMenuAjaxAction", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<List<StoreImgVO>> uploadMenuAjaxPost(MultipartFile[] uploadFile) {
+		
 		List<StoreImgVO> list = new ArrayList<>();
 		
 		log.info("upload store img post................");

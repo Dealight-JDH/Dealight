@@ -37,7 +37,7 @@ public class HtdlTimeCheckService {
 	private List<HtdlVO> lists = null;
 	ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(3);
 	
-	
+	/*
 	@PostConstruct
 	public void postConstruct() throws ParseException {
 		
@@ -87,6 +87,7 @@ public class HtdlTimeCheckService {
 		log.info("스케줄러 종료");
 	}
 	
+	*/
 	
 	//핫딜을 등록할떄마다 리스트에 추가
 	public void addHtdl(HtdlVO vo) {

@@ -1,10 +1,15 @@
 package com.dealight.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.AllStoreVO;
@@ -38,6 +44,7 @@ import com.dealight.service.WaitService;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
+import net.coobird.thumbnailator.Thumbnailator;
 
 /*
  * 
@@ -196,20 +203,87 @@ public class ManageController {
 		return "/dealight/business/manage/modify/menu";
 	}
 	
+	private String getFolder() {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Date date = new Date();
+		
+		String str = sdf.format(date);
+		
+		return str.replace("-",File.separator);
+	}
+	
+	private boolean checkImageType(File file) {
+		
+		try {
+			
+			String contentType = Files.probeContentType(file.toPath());
+			
+			return contentType.startsWith("image");
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	// 메뉴 등록
 	@PostMapping("/menu/register")
-	public String menuModify(Model model, MenuVO menu) {
+	public String menuRegister(Model model, MenuVO menu, MultipartFile[] uploadFile) {
 		
 		log.info("business menu register..");
 		
 		log.info("menu......" + menu);
 		
-		if(menu.getRecoMenu() == null)
-			menu.setRecoMenu("N");
+		log.info("uploadFile..................."+uploadFile);
+		
+		menu.setImgUrl(ROOT_FOLDER + "\\" +menu.getImgUrl());
+		
+		File path = new File(ROOT_FOLDER,getFolder());
+		
+		if(path.exists() == false) {
+			log.info("maker dir....");
+			path.mkdirs();
+		}
+		
+		UUID uuid = UUID.randomUUID();
+		
+		String name = uuid + uploadFile[0].getOriginalFilename();
+		
+		try {
+			//File saveFile = new File(uploadFolder, uploadFileName);
+			
+			File saveFile = new File(path, name);
+			uploadFile[0].transferTo(saveFile);
+			
+			log.info(path);
+			
+			menu.setImgUrl(path+name);
+			
+			// check image type file
+			if(checkImageType(saveFile)) {
+				
+				FileOutputStream thumbnail = new FileOutputStream(new File(path, "s_" + name));
+				
+				Thumbnailator.createThumbnail(uploadFile[0].getInputStream(), thumbnail,100,100);
+				
+				menu.setThumImgUrl(path + "s_" + name);
+				
+				thumbnail.close();
+			}
+			
+			
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+		
+		
+		menu.setRecoMenu("N");
 
 		if(menu.getRecoMenu().equalsIgnoreCase("on"))
 			menu.setRecoMenu("Y");
-		
 		
 		storeService.registerMenu(menu);
 		

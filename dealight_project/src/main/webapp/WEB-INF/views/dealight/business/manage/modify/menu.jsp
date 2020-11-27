@@ -10,6 +10,11 @@
 <meta charset="UTF-8">
 <title>메뉴 수정</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+	.select_img img{
+		margin : 20px 0;
+	}
+</style>
 </head>
 <body>
 <%@include file="../../../../includes/mainMenu.jsp" %>
@@ -30,7 +35,7 @@
 	<input name="recoMenu" type="checkbox"></br>
 	
 	<div class=""><h2>사진 첨부하기(1개만 가능)</h2></div>
-	<div class="file_body">
+		<div class="file_body">
 		<div class="form_img">
 			<input type="file" name='uploadFile'>
 		</div> 
@@ -57,7 +62,7 @@
 			<h4>메뉴 번호 : ${menu.menuSeq }</h4>
 			<h4>메뉴 이름 : ${menu.name }</h4>
 			<h4>메뉴 가격 : ${menu.price }</h4>
-			<h4>메뉴 사진 : ${menu.imgUrl }</h4>
+			<h4>메뉴 사진 : ${menu.thumImgUrl }</h4>
 			<h4>메뉴 추천 여부 : ${menu.recoMenu }</h4>
 		</div>
 	</c:forEach>

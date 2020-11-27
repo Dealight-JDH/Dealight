@@ -49,6 +49,9 @@ public class BusinessController {
 	
 	private CallService callService;
 	
+	// 파일 저장 경로를 지정한다.
+	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05";
+	
 	
 	//메뉴 사진첨부파일 매장평가 사업자테이블에 태그 메뉴 옵션이 들어가야한다.
 	//DTO에 대한이해가 피요하고 많아지는 객체들을 쪼갤수있는 방법을 생각하자.
@@ -62,6 +65,7 @@ public class BusinessController {
 		log.info("store eval................." + eval);
 		// log.info("imgs............." + imgs);
 		
+		bStore.setRepImg(ROOT_FOLDER +"\\"+ bStore.getRepImg());
 		store.setBstore(bStore);
 		store.setLoc(loc);
 		store.setEval(eval);
@@ -112,6 +116,7 @@ public class BusinessController {
 		// ***쿼리가 너무 많이 생긴다.
 		list.stream().forEach((store)->{
 			long id = store.getStoreId();
+			store.setBstore(storeService.getBStore(id));
 			store.setCurWaitNum(waitService.curStoreWaitList(id, "W").size());
 			store.setCurRsvdNum(rsvdService.readTodayCurRsvdList(id).size());
 		});
