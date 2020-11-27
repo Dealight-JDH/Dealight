@@ -3,6 +3,7 @@ package com.dealight.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -189,13 +190,20 @@ public class ManageController {
 	
 
 
-	// 메뉴 수정 페이지
+	// 메뉴 수정 페이지//
 	@GetMapping("/menu")
 	public String menuModify(Model model, Long storeId) {
 		
 		log.info("business menu modify..");
 		
 		List<MenuVO> menus = storeService.findMenuByStoreId(storeId);
+		
+		log.info("menus................................."+menus);
+		
+		menus.forEach((menu) -> {
+			if(menu.getThumImgUrl() != null)
+				menu.setThumImgUrl(URLEncoder.encode(menu.getThumImgUrl()));
+		});
 		
 		model.addAttribute("menus",menus);
 		model.addAttribute("storeId",storeId);
@@ -231,54 +239,11 @@ public class ManageController {
 	
 	// 메뉴 등록
 	@PostMapping("/menu/register")
-	public String menuRegister(Model model, MenuVO menu, MultipartFile[] uploadFile) {
+	public String menuRegister(Model model, MenuVO menu) {
 		
 		log.info("business menu register..");
 		
 		log.info("menu......" + menu);
-		
-		log.info("uploadFile..................."+uploadFile);
-		
-		menu.setImgUrl(ROOT_FOLDER + "\\" +menu.getImgUrl());
-		
-		File path = new File(ROOT_FOLDER,getFolder());
-		
-		if(path.exists() == false) {
-			log.info("maker dir....");
-			path.mkdirs();
-		}
-		
-		UUID uuid = UUID.randomUUID();
-		
-		String name = uuid + uploadFile[0].getOriginalFilename();
-		
-		try {
-			//File saveFile = new File(uploadFolder, uploadFileName);
-			
-			File saveFile = new File(path, name);
-			uploadFile[0].transferTo(saveFile);
-			
-			log.info(path);
-			
-			menu.setImgUrl(path+name);
-			
-			// check image type file
-			if(checkImageType(saveFile)) {
-				
-				FileOutputStream thumbnail = new FileOutputStream(new File(path, "s_" + name));
-				
-				Thumbnailator.createThumbnail(uploadFile[0].getInputStream(), thumbnail,100,100);
-				
-				menu.setThumImgUrl(path + "s_" + name);
-				
-				thumbnail.close();
-			}
-			
-			
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
-		
 		
 		menu.setRecoMenu("N");
 

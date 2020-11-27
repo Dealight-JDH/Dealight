@@ -32,10 +32,10 @@
 	<insert id="insert">
 		INSERT
 		INTO
-		tbl_menu(store_id,menu_seq,price,img_url,name,reco_menu)
+		tbl_menu(store_id,menu_seq,price,img_url,name,reco_menu,thum_img_url)
 		VALUES
 		(#{storeId},seq_menu.nextval,#{price},#{imgUrl,
-		jdbcType=VARCHAR},#{name},#{recoMenu})
+		jdbcType=VARCHAR},#{name},#{recoMenu},#{thumImgUrl})
 	</insert>
 
 	<insert id="insertSelectKey">
@@ -44,9 +44,9 @@
 			select seq_menu.nextval from dual
 		</selectKey>
 		INSERT
-		INTO tbl_menu(store_id,menu_seq,price,img_url,name,reco_menu)
+		INTO tbl_menu(store_id,menu_seq,price,img_url,name,reco_menu,thum_img_url)
 		VALUES (#{storeId},#{menuSeq},#{price},#{imgUrl,
-		jdbcType=VARCHAR},#{name},#{recoMenu})
+		jdbcType=VARCHAR},#{name},#{recoMenu},#{thumImgUrl})
 	</insert>
 
 	<update id="update">
@@ -57,7 +57,8 @@
 		#{price},
 		img_url = #{imgUrl, jdbcType=VARCHAR},
 		name = #{name},
-		reco_menu = #{recoMenu}
+		reco_menu = #{recoMenu},
+		thum_img_url = #{thumImgUrl}
 		where menu_seq = #{menuSeq}
 	</update>
 

@@ -1,5 +1,6 @@
 package com.dealight.controller;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -65,7 +66,7 @@ public class BusinessController {
 		log.info("store eval................." + eval);
 		// log.info("imgs............." + imgs);
 		
-		bStore.setRepImg(ROOT_FOLDER +"\\"+ bStore.getRepImg());
+		bStore.setRepImg(bStore.getRepImg());
 		store.setBstore(bStore);
 		store.setLoc(loc);
 		store.setEval(eval);
@@ -112,10 +113,14 @@ public class BusinessController {
 		
 		List<StoreVO> list = storeService.getStoreListByUserId(userId);
 		
+		log.info("list............................."+list);
+		
 		// 현재 웨이팅, 현재 예약 상태를 가져온다.
 		// ***쿼리가 너무 많이 생긴다.
 		list.stream().forEach((store)->{
 			long id = store.getStoreId();
+			
+			store.getBstore().setRepImg(URLEncoder.encode(store.getBstore().getRepImg()));
 			store.setBstore(storeService.getBStore(id));
 			store.setCurWaitNum(waitService.curStoreWaitList(id, "W").size());
 			store.setCurRsvdNum(rsvdService.readTodayCurRsvdList(id).size());

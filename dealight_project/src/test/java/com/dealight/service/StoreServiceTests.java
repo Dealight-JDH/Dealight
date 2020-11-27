@@ -3,6 +3,7 @@ package com.dealight.service;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.net.URLEncoder;
 import java.util.List;
 
 import org.junit.Test;
@@ -32,8 +33,56 @@ public class StoreServiceTests {
 	@Setter(onMethod_ = @Autowired)
 	private StoreService service;
 	
+	@Test
+	public void storeTest() {
+		
+		log.info(service);
+		
+		log.info(service.getBStore(1L));
+		
+		
+		
+	}
 	
 	
+	@Test
+	public void URLtest() {
+		
+		Long storeId = 1L;
+		
+		StoreVO store = service.findByStoreIdWithBStore(storeId);
+		
+		log.info("store........................."+store);
+		
+		log.info("repimg......................."+store.getBstore().getRepImg());
+		
+		log.info("get rep img..................."+URLEncoder.encode(store.getBstore().getRepImg()));
+		
+		
+		
+	}
+	
+	@Test
+	public void getStoreListByUserIdTest1() {
+		
+		String userId = "aaaa";
+		
+		log.info("aaaa........................");
+		
+		log.info(service);
+		
+		log.info(service.findAllStoreInfoByStoreId(1L));
+		
+		List<StoreVO> list = service.getStoreListByUserId(userId);
+		
+		log.info(list);
+		
+		list.stream().forEach(store -> {
+			assertNotNull(store.getBstore());
+			assertTrue(store.getBstore().getBuserId().equals(userId));
+			
+		});
+	}
 	
 	//@Test
 	//@Transactional
@@ -152,7 +201,7 @@ public class StoreServiceTests {
 		assertNotNull(store);
 	}
 	
-	//@Test
+	@Test
 	public void getBStore() {
 		
 		BStoreVO bstore = storeService.getBStore(13);
@@ -161,19 +210,7 @@ public class StoreServiceTests {
 		
 	}
 	
-	//@Test
-	public void getStoreListByUserIdTest1() {
-		
-		List<StoreVO> list = storeService.getStoreListByUserId(userId);
-		
-		log.info(list);
-		
-		list.stream().forEach(store -> {
-			assertNotNull(store.getBstore());
-			assertTrue(store.getBstore().getBuserId().equals(userId));
-			
-		});
-	}
+
 	
 	//@Test
 	public void findByStoreIdWithBStoreTest() {

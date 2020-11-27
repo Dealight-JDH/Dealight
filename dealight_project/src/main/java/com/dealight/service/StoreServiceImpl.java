@@ -45,7 +45,6 @@ public class StoreServiceImpl implements StoreService {
 	private BStoreMapper bMapper;
 	private StoreLocMapper lMapper;
 	private StoreEvalMapper eMapper;
-	private StoreMapper storeMapper;
 	private BStoreMapper bStoreMapper;
 	private NStoreMapper nStoreMapper;
 	private AllStoreMapper allStoreMapper;
@@ -104,6 +103,7 @@ public class StoreServiceImpl implements StoreService {
 		
 	}
 
+	
 	@Override
 	public StoreVO getAllInfo(Long storeId) {
 		
@@ -172,7 +172,7 @@ public class StoreServiceImpl implements StoreService {
 		
 		log.info("store service getCurSeatStus....");
 		
-		StoreVO store = storeMapper.read(storeId);
+		StoreVO store = sMapper.read(storeId);
 
 		if(!store.getClsCd().equals("B"))
 			return "현재 착석 상태가 B가 아닙니다.";
@@ -187,7 +187,7 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	public StoreVO getStore(long storeId) {
 		
-		return storeMapper.read(storeId);
+		return sMapper.read(storeId);
 	}
 
 	@Override
@@ -200,14 +200,14 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	public StoreVO findByStoreIdWithBStore(long storeId) {
 		
-		return storeMapper.findByIdJoinBStore(storeId);
+		return sMapper.findByIdJoinBStore(storeId);
 	}
 
 	@Transactional
 	@Override
 	public void registerStoreAndBStore(StoreVO store) {
 		
-		storeMapper.insertSelectKey(store);
+		sMapper.insertSelectKey(store);
 		
 		log.info(store);
 		
@@ -271,7 +271,7 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	public boolean modifyStore(StoreVO store) {
 		
-		int result = storeMapper.update(store);
+		int result = sMapper.update(store);
 		BStoreVO bstore = store.getBstore(); 
 		int result2 = bStoreMapper.update(bstore);
 		
@@ -296,7 +296,7 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	public List<StoreVO> findByUserId(String userId) {
 		
-		return storeMapper.findByUserId(userId);
+		return sMapper.findByUserId(userId);
 	}
 
 	@Override
@@ -379,7 +379,7 @@ public class StoreServiceImpl implements StoreService {
 		List<MenuVO> menuList = store.getMenuList();
 		List<StoreImgVO> imgs = store.getImgs();
 
-		int rslt1 = storeMapper.update(store1);
+		int rslt1 = sMapper.update(store1);
 		int rslt2 = bStoreMapper.update(bstore);
 		int rslt3 = locMapper.update(loca);
 		
