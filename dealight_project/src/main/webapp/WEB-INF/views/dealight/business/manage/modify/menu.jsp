@@ -14,6 +14,45 @@
 	.select_img img{
 		margin : 20px 0;
 	}
+	
+	/* The Modal (background) */
+        .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button */
+        .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+        }
+	
 </style>
 </head>
 <body>
@@ -58,6 +97,13 @@
 	<c:forEach items="${menus }" var="menu">
 		<div class="menu">
 			=========================================
+			<span hidden class='menuSeq'>${menu.menuSeq }</span>
+			<span hidden class='storeId'>${menu.storeId }</span>
+			<span hidden class='name'>${menu.name }</span>
+			<span hidden class='price'>${menu.price }</span>
+			<span hidden class='thumImgUrl'>${menu.thumImgUrl }</span>
+			<span hidden class='recoMenu'>${menu.recoMenu }</span>
+			<span hidden class='imgUrl'>${menu.imgUrl }</span>
 			<h4>매장 번호 : ${menu.storeId }</h4>
 			<h4>메뉴 번호 : ${menu.menuSeq }</h4>
 			<h4>메뉴 이름 : ${menu.name }</h4>
@@ -68,8 +114,67 @@
 		</div>
 	</c:forEach>
 </c:if>
+
+	<div id="myModal" class="modal">
+		<!-- Modal content -->
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<div class="menu_content"></div>
+		</div>
+	</div>
+
+
 <script>
 /* 동인  */
+
+	const menuUl = $(".menu_content");
+
+	// 모달 선택
+	const modal = $("#myModal"),
+		close = $(".close"),
+		modalContent = $(".modal-content"),
+		btn_show_board = $("#btn_show_board");
+
+	close.on("click", (e) => {
+		modal.css("display","none");
+		modal.find("ul").html("");
+	});
+	
+	$(".menu").on("click", e => {
+		
+		let menuSeq = $(e.target).parent().find(".menuSeq").text(),
+			storeId = $(e.target).parent().find(".storeId").text(),
+			name = $(e.target).parent().find(".name").text(),
+			price = $(e.target).parent().find(".price").text(),
+			recoMenu = $(e.target).parent().find(".recoMenu").text(),
+			imgUrl = $(e.target).parent().find(".imgUrl").text();
+		
+		console.log(menuSeq);
+		
+		recoCheck = '';
+		
+		if(recoMenu === 'Y')
+			recoCheck = 'checked';
+		
+		let strMenu = "";
+		strMenu += "<h2>메뉴 수정</h2>"
+		strMenu += "<form action='/dealight/business/manage/menu/modify' method='post'>";
+		strMenu += "매장 번호 : <input type='text' name='storeId' value='"+storeId+"' readonly></br>";
+		strMenu += "메뉴 일련 번호 : <input type='text' name='menuSeq' value='"+menuSeq+"' readonly></br>";
+		strMenu += "메뉴 이름 : <input type='text' name='name' value='"+name+"'></br>";
+		strMenu += "메뉴 가격 : <input type='number' name='price' value='"+price+"'></br>";
+		strMenu += "추천 여부 : <input type='checkbox' name='recoMenu' "+recoCheck+"></br>";
+		strMenu += "이미지(수정필요) : <input type='text name='imgUrl' value='"+imgUrl+"' readonly></br>";
+		strMenu += "썸네일 이미지(수정필요) : <input type='text name='thumImgUrl' value='s_"+imgUrl+"' readonly></br>";
+		strMenu += "<button type='submit'>제출</button>";
+		strMenu += "</form>";
+		
+		$(".menu_content").html(strMenu);
+		modal.css("display", "block");
+		
+	})
+
+	
 
 /* 페이지가 로드 되면 실행된다. */
 $(document).ready(function(e){
@@ -99,9 +204,8 @@ $(document).ready(function(e){
 			let jobj = $(obj);
 			
 			console.dir(jobj);
-			
 			str += "<input type='hidden' name='imgUrl' value='" + jobj.data("path")+"\\"+jobj.data("uuid")+"_"+jobj.data("filename")+"'>";
-			str += "<input type='hidden' name='thumImgUrl' value='" + jobj.data("path")+"\\"+"s_"+jobj.data("uuid")+"_"+jobj.data("filename")+"'>";
+			str += "<input type='hidden' name='thumImgUrl' value='" + jobj.data("path").replace(new RegExp(/\\/g),"/")+"/"+"s_"+jobj.data("uuid")+"_"+jobj.data("filename")+"'>";
 			
 		});
         

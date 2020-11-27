@@ -230,7 +230,7 @@ $(document).ready(function(e){
 			str += "<input type='hidden' name='imgs["+i+"].uploadPath' value='" + jobj.data("path")+"'>";
 			str += "<input type='hidden' name='imgs["+i+"].image' value='" + jobj.data("type")+"'>";
 			if(i === 0){
-			str += "<input type='hidden' name='repImg' value='" + jobj.data("path") +"\\"+ "s_"+ jobj.data("uuid") +"_"+ jobj.data("filename")+"'>";
+			str += "<input type='hidden' name='repImg' value='" + jobj.data("path").replace(new RegExp(/\\/g),"/") +"/"+ "s_"+ jobj.data("uuid") +"_"+ jobj.data("filename")+"'>";
 				
 			}
 			

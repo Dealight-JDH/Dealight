@@ -46,16 +46,13 @@ public class StoreServiceImpl implements StoreService {
 	private StoreLocMapper lMapper;
 	private StoreEvalMapper eMapper;
 	private BStoreMapper bStoreMapper;
-	private NStoreMapper nStoreMapper;
 	private AllStoreMapper allStoreMapper;
 	private StoreImgMapper storeImgMapper;
 	private StoreImgMapper imgMapper;
 	private RevwMapper revwMapper;
 	private MenuMapper menuMapper;
-	private StoreLocMapper locMapper;
 	private StoreEvalMapper evalMapper;
 	private StoreOptionMapper optMapper;
-	private StoreTagMapper tagMapper;
 	
 	private StoreVO setId(StoreVO store) {
 		
@@ -250,7 +247,7 @@ public class StoreServiceImpl implements StoreService {
 		
 		log.info(loc);
 		
-		locMapper.insert(loc);
+		lMapper.insert(loc);
 
 		
 		StoreOptionVO opt = new StoreOptionVO().builder()
@@ -381,7 +378,7 @@ public class StoreServiceImpl implements StoreService {
 
 		int rslt1 = sMapper.update(store1);
 		int rslt2 = bStoreMapper.update(bstore);
-		int rslt3 = locMapper.update(loca);
+		int rslt3 = lMapper.update(loca);
 		
 		if(revwList != null) {
 		
@@ -432,7 +429,13 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	public StoreLocVO getStoreLoc(Long storeId) {
 		// TODO Auto-generated method stub
-		return null;
+		return lMapper.findByStoreId(storeId);
+	}
+
+	@Override
+	public int modifyMenu(MenuVO menu) {
+		
+		return menuMapper.update(menu);
 	}
 
 

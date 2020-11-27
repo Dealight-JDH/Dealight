@@ -52,7 +52,6 @@
 	<update id="update">
 		UPDATE tbl_menu
 		SET
-		store_id = #{storeId},
 		price =
 		#{price},
 		img_url = #{imgUrl, jdbcType=VARCHAR},

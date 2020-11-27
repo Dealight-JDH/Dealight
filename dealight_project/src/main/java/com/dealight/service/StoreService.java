@@ -75,4 +75,6 @@ public interface StoreService {
 	
 	public StoreLocVO getStoreLoc(Long storeId);
 	
+	public int modifyMenu(MenuVO menu);
+	
 }

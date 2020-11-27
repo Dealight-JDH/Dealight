@@ -14,18 +14,19 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreImgVO;
+import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserVO;
 import com.dealight.domain.WaitVO;
 import com.dealight.mapper.RsvdDtlsMapper;
 import com.dealight.mapper.RsvdMapper;
 import com.dealight.mapper.StoreImgMapper;
 import com.dealight.service.RsvdService;
+import com.dealight.service.StoreService;
 import com.dealight.service.UserService;
 import com.dealight.service.WaitService;
 
@@ -62,6 +63,9 @@ public class FileCheckTask {
 	@Setter(onMethod_ = @Autowired)
 	private UserService userService;
 	
+	@Setter(onMethod_ = @Autowired)
+	private StoreService storeService;
+	
 	
 	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05\\";
 	
@@ -93,13 +97,15 @@ public class FileCheckTask {
     	userIdList.add("kim");
     	userIdList.add("abc");
     	
+    	// 테스트용 user id
+    	List<StoreVO> list = storeService.getStoreListByUserId("aaaa");
+    	
     	List<Long> storeList = new ArrayList<>();
     	
-    	storeList.add(1L);
-    	storeList.add(10L);
-    	storeList.add(13L);
-    	storeList.add(16L);
-    	storeList.add(18L);
+    	list.stream().forEach(store -> {
+    		storeList.add(store.getStoreId());
+    	});
+    	
     	
     	List<Integer> waitPnumList = new ArrayList<>();
     	
@@ -160,11 +166,12 @@ public class FileCheckTask {
     	
     	List<Long> storeList = new ArrayList<>();
     	
-    	storeList.add(1L);
-    	storeList.add(10L);
-    	storeList.add(13L);
-    	storeList.add(16L);
-    	storeList.add(18L);
+    	// 테스트용 user id
+    	List<StoreVO> storeTestList = storeService.getStoreListByUserId("aaaa");
+    	
+    	storeTestList.stream().forEach(store -> {
+    		storeList.add(store.getStoreId());
+    	});
     	
     	int storeIdx = (int) (Math.random() * storeList.size());
     	

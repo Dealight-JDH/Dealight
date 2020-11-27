@@ -398,11 +398,11 @@ public class StoreServiceTests {
 	@Test
 	public void getStoreLocTest1() {
 		
-		storeId = 16;
+		storeId = 1L;
 		
-		StoreLocVO loc = storeService.getStoreLoc(storeId);
+		StoreLocVO loc = service.getStoreLoc(storeId);
 		
-		log.info(loc);
+		log.info("loc.........................."+loc);
 		
 	}
 	

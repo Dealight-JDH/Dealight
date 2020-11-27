@@ -1,7 +1,6 @@
 package com.dealight.controller;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
@@ -10,7 +9,6 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,19 +22,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.AllStoreVO;
 import com.dealight.domain.HtdlVO;
 import com.dealight.domain.MenuVO;
 import com.dealight.domain.RevwVO;
-import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreImgVO;
 import com.dealight.domain.StoreTagVO;
-import com.dealight.domain.WaitVO;
 import com.dealight.service.HtdlService;
 import com.dealight.service.RsvdService;
 import com.dealight.service.StoreService;
@@ -45,7 +41,6 @@ import com.dealight.service.WaitService;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
-import net.coobird.thumbnailator.Thumbnailator;
 
 /*
  * 
@@ -244,13 +239,31 @@ public class ManageController {
 		log.info("business menu register..");
 		
 		log.info("menu......" + menu);
-		
-		menu.setRecoMenu("N");
 
 		if(menu.getRecoMenu().equalsIgnoreCase("on"))
 			menu.setRecoMenu("Y");
+		else
+			menu.setRecoMenu("N");
 		
 		storeService.registerMenu(menu);
+		
+		return "redirect:/dealight/business/manage/menu?storeId="+menu.getStoreId();
+	}
+	
+	// 메뉴 수정
+	@PostMapping("/menu/modify")
+	public String menuModify(Model model, MenuVO menu) {
+		
+		log.info("business menu register..");
+		
+		log.info("menu......" + menu);
+		
+		if(menu.getRecoMenu().equalsIgnoreCase("on"))
+			menu.setRecoMenu("Y");
+		else
+			menu.setRecoMenu("N");
+		
+		storeService.modifyMenu(menu);
 		
 		return "redirect:/dealight/business/manage/menu?storeId="+menu.getStoreId();
 	}
