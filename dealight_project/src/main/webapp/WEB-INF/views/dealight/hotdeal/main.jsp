@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@taglib  prefix="spring" uri="http://www.springframework.org/tags" %> 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@include file="../../includes/mainMenu.jsp" %>
 <!DOCTYPE html>
@@ -474,6 +475,7 @@ h4{
 			str += "남은 시간: <span class='js-elapTime css-elapTime'>"+elapTime+"</span><br>"
 			str += "핫딜 번호: <span class='js-htdlId'>"+ list[i].htdlId+"</span><br>"
 			str += "핫딜 이름: "+ list[i].name+"<br>"
+			/* str += "<img src='<spring:url value='/resources/img/testimg.png'/>' width='300px' height='250px'>" */
 			str += "핫딜 할인율: "+ list[i].dcRate * 100+"%"+"<br>"
 			str += "핫딜 시작 시간: "+ "<span class= 'js-start'>"+list[i].startTm+"</span>"+"<br>"
 			str += "핫딜 종료 시간: "+ "<span class= 'js-end'>"+list[i].endTm+"</span>"+"<br>"

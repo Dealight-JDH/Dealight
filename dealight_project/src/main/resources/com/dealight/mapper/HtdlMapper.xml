@@ -140,6 +140,7 @@
 			 
 	 		
 	 	]]> -->
+	 	
 	 	<![CDATA[
 		SELECT h.htdl_id, h.name, h.store_id, h.dc_rate, h.start_tm, h.end_tm, h.lmt_pnum, h.intro ,h.bef_price, h.ddct, h.cur_pnum,stus_cd,
         d.htdl_seq, d.menu_name, e.avg_rating, e.revw_tot_num, e.like_tot_num, h.brch
@@ -149,27 +150,39 @@
 	 		 	rownum rn, htdl_id, name, store_id, htdl_img, dc_rate, start_tm, end_tm, lmt_pnum, intro,
 	 		 	bef_price, ddct, cur_pnum, stus_cd, regdate, updatedate, brch
 	 		 	from tbl_htdl
-	 		 	where 
+	 		 	where stus_cd = #{stusCd}
+	 		 	
 	 	]]>
-	 	<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+	 	
+	 	<trim prefix="AND(" suffix=")" prefixOverrides="OR">
+ 	 	<if test="hCri.type == 'B'.toString()">
+ 	 		brch like '%'||#{hCri.keyword}||'%'
+ 	 	</if>
+ 	 	</trim>
+ 	 	
+ 	 	<if test="hCri.startTm != null and hCri.endTm !=null">
+			<![CDATA[
+ 	 		and to_date(start_tm, 'yyyy/mm/dd HH24:mi:ss') between to_date(#{hCri.startTm}, 'yyyy/mm/dd HH24:mi:ss') and to_date(#{hCri.endTm}, 'yyyy/mm/dd HH24:mi:ss')
+            and to_date(end_tm, 'yyyy/mm/dd HH24:mi:ss') <= to_date(#{hCri.endTm}, 'yyyy/mm/dd HH24:mi:ss')
+            and rownum <= #{hCri.pageNum} * #{hCri.amount}
+	 		 ]]>
+ 	 	</if>
+	 	 <!-- <trim prefix="(" suffix=") AND " prefixOverrides="OR">
 	 		<foreach item='type' collection="hCri.typeArr">
 	 			<trim prefix="OR">
 	 				<choose>
-	 					<when test="type == '종로'.toString()">
-	 						brch = #{hCri.type} and start_tm > #{hCri.}
+	 					<when test="type == 'b'.toString()">
+	 						brch like '%'|| #{hCri.keyword} || '%'
 	 					</when>
 	 					<when test="type == 'i'.toString()">
 	 						intro like '%' || #{hCri.keyword} || '%'
 	 					</when>
 	 				</choose>
-	 			</trim>
+	 			</trim>     
 	 		</foreach>
-	 	
-	 	</trim>
-	 	
+	 	</trim> -->
 	 	<![CDATA[
-	 	htdl_id > 0 and stus_cd = #{stusCd} and rownum <= #{hCri.pageNum} * #{hCri.amount}
-	 		 )
+	 	)
 	 	where
 	 	 rn > (#{hCri.pageNum} -1) * #{hCri.amount}
 	 		 ) h, tbl_htdl_dtls d, tbl_store_eval e
@@ -177,7 +190,7 @@
 			 order by h.htdl_id desc
 	 	]]>
 		</select>
-		
+
 		<select id="getSeqHtdl" resultType="long">
 			select seq_htdl.currval from dual
 		</select>
@@ -209,13 +222,13 @@
 		
 			insert into tbl_htdl 
 			values(#{htdlId}, #{name}, #{storeId}, #{htdlImg}, #{dcRate}, #{startTm},
-			 #{endTm}, #{lmtPnum}, #{intro}, #{befPrice}, #{ddct}, #{curPnum}, #{stusCd}, sysdate + 9/24 , sysdate + 9/24)
+			 #{endTm}, #{lmtPnum}, #{intro}, #{befPrice}, #{ddct}, #{curPnum}, #{stusCd}, sysdate + 9/24 , sysdate + 9/24, #{brch})
 		</insert>
 		
 		<insert id="insert">
 			insert into tbl_htdl 
 			values(seq_htdl.nextval, #{name}, #{storeId}, #{htdlImg}, #{dcRate}, #{startTm},
-			 #{endTm}, #{lmtPnum}, #{intro}, #{befPrice}, #{ddct}, #{curPnum}, #{stusCd}, sysdate + 9/24, sysdate + 9/24)
+			 #{endTm}, #{lmtPnum}, #{intro}, #{befPrice}, #{ddct}, #{curPnum}, #{stusCd}, sysdate + 9/24, sysdate + 9/24, #{brch})
 		</insert>
 
 	<select id="findAll" resultType="com.dealight.domain.HtdlVO">
