@@ -20,9 +20,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -197,7 +197,7 @@ public class ManageController {
 		
 		menus.forEach((menu) -> {
 			if(menu.getThumImgUrl() != null)
-				menu.setThumImgUrl(URLEncoder.encode(menu.getThumImgUrl()));
+				menu.setEncThumImgUrl(URLEncoder.encode(menu.getThumImgUrl()));
 		});
 		
 		model.addAttribute("menus",menus);
@@ -239,11 +239,13 @@ public class ManageController {
 		log.info("business menu register..");
 		
 		log.info("menu......" + menu);
-
+		
+		if(menu.getRecoMenu() == null)
+			menu.setRecoMenu("N");
+			
 		if(menu.getRecoMenu().equalsIgnoreCase("on"))
 			menu.setRecoMenu("Y");
-		else
-			menu.setRecoMenu("N");
+		
 		
 		storeService.registerMenu(menu);
 		
@@ -254,14 +256,15 @@ public class ManageController {
 	@PostMapping("/menu/modify")
 	public String menuModify(Model model, MenuVO menu) {
 		
-		log.info("business menu register..");
+		log.info("business menu modify..");
 		
 		log.info("menu......" + menu);
 		
+		if(menu.getRecoMenu() == null)
+			menu.setRecoMenu("N");
+			
 		if(menu.getRecoMenu().equalsIgnoreCase("on"))
 			menu.setRecoMenu("Y");
-		else
-			menu.setRecoMenu("N");
 		
 		storeService.modifyMenu(menu);
 		
@@ -270,14 +273,16 @@ public class ManageController {
 	
 	// 메뉴 수정
 	@PostMapping("/menu/delete")
-	public String menuDelete(Model model, Long menuSeq, Long storeId) {
+	public String menuDelete(Model model, MenuVO menu) {
 		
 		log.info("business menu register..");
 		
-		storeService.delete(menuSeq);
+		if(storeService.deleteMenu(menu.getMenuSeq())) {
+			log.info(menu.getMenuSeq() + "의 메뉴 제거가 완료되었습니다...............");
+		};
 		
 		
-		return "redirect:/dealight/business/manage/menu?storeId="+storeId;
+		return "redirect:/dealight/business/manage/menu?storeId="+menu.getStoreId();
 	}
 //
 //	// 웨이팅 입장

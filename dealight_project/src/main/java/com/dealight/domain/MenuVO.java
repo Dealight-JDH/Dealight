@@ -22,8 +22,9 @@ public class MenuVO {
 	private Long storeId;
 	private Long menuSeq;
 	private int price;
-	private String imgUrl = "menu_default.png";
+	private String imgUrl;
 	private String name;
 	private String recoMenu; 
-	private String thumImgUrl = "menu_default.png";
+	private String thumImgUrl;
+	private String encThumImgUrl;
 }

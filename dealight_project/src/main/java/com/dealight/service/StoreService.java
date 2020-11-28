@@ -77,6 +77,6 @@ public interface StoreService {
 	
 	public int modifyMenu(MenuVO menu);
 	
-	public int deleteMenu(Long menuSeq);
+	public boolean deleteMenu(Long menuSeq);
 	
 }

@@ -111,7 +111,6 @@
 <c:if test="${not empty menus }">
 	<c:forEach items="${menus }" var="menu">
 		<div class="menu">
-			<span class="btn_delete">&times;</span>
 			=========================================
 			<span hidden class='menuSeq'>${menu.menuSeq }</span>
 			<span hidden class='storeId'>${menu.storeId }</span>
@@ -126,7 +125,7 @@
 			<h4>메뉴 가격 : ${menu.price }</h4>
 			<h4>메뉴 사진 : ${menu.thumImgUrl }</h4>
 			<h4>메뉴 추천 여부 : ${menu.recoMenu }</h4>
-			<h4>메뉴 사진 : <img src="/display?fileName=${menu.thumImgUrl }"></h4>
+			<h4>메뉴 사진 : </h4><img src="/display?fileName=${menu.encThumImgUrl }">
 		</div>
 	</c:forEach>
 </c:if>
@@ -156,14 +155,15 @@
 		modal.find("ul").html("");
 	});
 	
-	$(".menu").on("click", e => {
+	$(".menu > *").on("click", e => {
 		
 		let menuSeq = $(e.target).parent().find(".menuSeq").text(),
 			storeId = $(e.target).parent().find(".storeId").text(),
 			name = $(e.target).parent().find(".name").text(),
 			price = $(e.target).parent().find(".price").text(),
 			recoMenu = $(e.target).parent().find(".recoMenu").text(),
-			imgUrl = $(e.target).parent().find(".imgUrl").text();
+			imgUrl = $(e.target).parent().find(".imgUrl").text(),
+			thumImgUrl = $(e.target).parent().find(".thumImgUrl").text();
 		
 		console.log(menuSeq);
 		
@@ -174,21 +174,75 @@
 		
 		let strMenu = "";
 		strMenu += "<h2>메뉴 수정</h2>"
-		strMenu += "<form action='/dealight/business/manage/menu/modify' method='post'>";
+		strMenu += "<form id='menuForm' action='' method='post'>";
 		strMenu += "매장 번호 : <input type='text' name='storeId' value='"+storeId+"' readonly></br>";
 		strMenu += "메뉴 일련 번호 : <input type='text' name='menuSeq' value='"+menuSeq+"' readonly></br>";
 		strMenu += "메뉴 이름 : <input type='text' name='name' value='"+name+"'></br>";
 		strMenu += "메뉴 가격 : <input type='number' name='price' value='"+price+"'></br>";
 		strMenu += "추천 여부 : <input type='checkbox' name='recoMenu' "+recoCheck+"></br>";
-		strMenu += "이미지(수정필요) : <input type='text name='imgUrl' value='"+imgUrl+"' readonly></br>";
-		strMenu += "썸네일 이미지(수정필요) : <input type='text name='thumImgUrl' value='s_"+imgUrl+"' readonly></br>";
-		strMenu += "<button type='submit'>제출</button>";
+		strMenu += "이미지(수정필요) : <input type='text' name='imgUrl' value='"+imgUrl+"' readonly></br>";
+		strMenu += "썸네일 이미지(수정필요) : <input type='text' name='thumImgUrl' value='"+thumImgUrl+"' readonly></br>";
 		strMenu += "</form>";
+		strMenu += "<button data-oper='modify' class='btn_modify'>수정</button>";
+		strMenu += "<button data-oper='remove' class='btn_remove'>제거</button>";
 		
 		$(".menu_content").html(strMenu);
 		modal.css("display", "block");
 		
-	})
+		let menuForm = $("#menuForm");
+		
+		$("button[data-oper='modify']").on("click", function(e){
+			
+			console.log
+			
+			menuForm.attr("method", "post");
+			menuForm.attr("action", "/dealight/business/manage/menu/modify").submit();
+			
+		});
+		
+		$("button[data-oper='remove']").on("click", function(e){
+			
+			menuForm.attr("method", "post");
+			menuForm.attr("action", "/dealight/business/manage/menu/delete").submit();
+			
+		});
+		
+	});
+	
+	/** REST FUL 대기 **/
+	let menuService = (() => {
+		
+		/* 매장 내용 변경 put */
+		function putModifyMenu(params, callback,error ){
+			
+			$.ajax({
+				
+				type : 'put',
+				url : '/dealight/business/manage/menu/modify',
+				data : {
+					'storeId' : params.storeId,
+					'menuSeq' : params.menuSeq,
+					'name' : params.name,
+					'price' : params.price,
+					'recoMenu' : params.recoMenu,
+					'imgUrl' : params.imgUrl,
+					'thumImgUrl' : params.thumImgUrl
+						},
+			contentType : 'application/json',
+			success : function(result, status, xhr) {
+				if(callback) {
+					callback(result);
+				}
+			},
+			error : function(xhr, status, er) {
+				if(error) {
+					error(er);
+				}
+			}
+			});
+		}
+		
+	});
 
 	
 

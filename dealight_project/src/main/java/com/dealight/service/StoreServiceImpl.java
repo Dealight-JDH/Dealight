@@ -439,9 +439,9 @@ public class StoreServiceImpl implements StoreService {
 	}
 
 	@Override
-	public int deleteMenu(Long menuSeq) {
+	public boolean deleteMenu(Long menuSeq) {
 		
-		return menuMapper.delete(menuSeq);
+		return menuMapper.delete(menuSeq) == 1;
 	}
 
 
