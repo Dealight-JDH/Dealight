@@ -109,4 +109,11 @@ where user_id = #{userId}
 		user_id = #{userId}
 	</select>
 	
+	<update id="addPanaltyCnt">
+		update tbl_user
+		set pm_cnt = pm_cnt + 1,
+		pm_expi = sysdate
+		where user_id = #{userId}
+	</update>
+	
 </mapper>

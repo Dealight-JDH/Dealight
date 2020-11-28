@@ -1,5 +1,6 @@
 package com.dealight.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -38,12 +39,22 @@ public interface UserService {
 	
 	// read
 	// user mapper - select
-	boolean isCurPanalty(String userId); 
 	
 	boolean isCurWaiting(String userId);
 	
 	List<RsvdVO> getRsvdListThisUser(String userId);
 	
 	List<RsvdVO> getRsvdListStoreUser(@Param("storeId") long storeId,@Param("userId") String userId);
+
+	// 현재 패널티 상태인지 확인한다.
+	boolean isCurPanalty(String userId); 
+	
+	// 패널티 expi와 함께 확인하고 expi가 7일 이내이면 pm_stus를 'Y'로 바꾼다.
+	boolean checkCurPanaltyExpi(String pmExpi);
+	
+	// 패널티 누적 획수를 1 증가한다.
+	boolean addPanaltyCnt(String userId);
+	
+	
 
 }
