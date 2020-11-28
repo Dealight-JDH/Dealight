@@ -175,10 +175,11 @@ writeTimeBar = function (curTime) {
         strTime += "<div class='rsvd_time tooltip' id='slide-"+i+"'><h6>"+timeArr[i]+"</h6><div class='time_table'></div></div>";
     }
 	document.querySelector(".rsvd_time_bar").innerHTML = strTime;
+    // 예약 상태바 초기 스크롤 고정
+    document.querySelector(".rsvd_time_bar").scrollLeft = ((parseInt(curPos)*150) - 150);
+	}
 	
-	// 현재 위치값 반환
-	return ((parseInt(curPos)*100) - 100);
-}
+/* 시간 파싱 */
 let curToday = new Date();
 let curHour = curToday.getHours(),
 	curMinutes = curToday.getMinutes();
@@ -190,11 +191,9 @@ let curHour = curToday.getHours(),
 	
 	let curTime = curHour + ":" + curMinutes;
 
-	const curScroll = writeTimeBar(curTime);
+	// TimeBar 작성
+	writeTimeBar(curTime);
 	
-
-$(".rsvd_time_bar").scrollLeft(300);
-
 	// 모달 선택
 	const modal = $("#myModal"),
 		close = $(".close"),
@@ -1297,8 +1296,6 @@ $(".rsvd_time_bar").scrollLeft(300);
             
         });
         
-        // 예약 상태바 초기 스크롤 고정
-        document.querySelector(".rsvd_time_bar").scrollLeft = curScroll;
         
     });
 
