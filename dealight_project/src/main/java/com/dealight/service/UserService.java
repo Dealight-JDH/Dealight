@@ -55,6 +55,7 @@ public interface UserService {
 	// 패널티 누적 획수를 1 증가한다.
 	boolean addPanaltyCnt(String userId);
 	
+	int checkPanaltyDuration();
 	
 
 }

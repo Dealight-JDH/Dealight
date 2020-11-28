@@ -116,4 +116,12 @@ where user_id = #{userId}
 		where user_id = #{userId}
 	</update>
 	
+	<update id="checkPanaltyDuration">
+	<![CDATA[
+		UPDATE tbl_user
+		SET pm_stus = 'N'
+		WHERE pm_expi <= sysdate - 7 and pm_stus = 'Y'
+	]]>
+	</update>
+	
 </mapper>

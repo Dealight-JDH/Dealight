@@ -193,4 +193,10 @@ public class UserServiceImpl implements UserService{
 		return userMapper.addPanaltyCnt(userId) == 1;
 	}
 
+	@Override
+	public int checkPanaltyDuration() {
+		
+		return userMapper.checkPanaltyDuration();
+	}
+
 }

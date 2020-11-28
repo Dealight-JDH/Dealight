@@ -47,5 +47,7 @@ public interface UserMapper {
 	public List<UserVO> findAll();
 	
 	public int addPanaltyCnt(String userId);
+	
+	public int checkPanaltyDuration();
 
 }
