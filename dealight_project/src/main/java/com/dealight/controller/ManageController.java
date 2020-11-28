@@ -101,9 +101,9 @@ public class ManageController {
 		
 		log.info("business store modify get.." + storeId);
 		
-		if(storeId == null) {
+		if(storeId == null)
 			storeId = (Long) request.getAttribute("storeId");
-		}
+		
 		
 		AllStoreVO store = storeService.findAllStoreInfoByStoreId(storeId);
 		
@@ -111,6 +111,15 @@ public class ManageController {
 		
 		if(store != null) {
 			List<MenuVO> menuList = store.getMenuList();
+			
+			log.info(menuList);
+			
+			menuList.stream().forEach((menu) -> {
+				if(menu.getThumImgUrl() != null)
+					menu.setEncThumImgUrl(URLEncoder.encode(menu.getThumImgUrl()));
+				log.info(menu);
+			});
+			
 			List<StoreImgVO> imgs = store.getImgs();
 			List<RevwVO> revwList = store.getRevwList();
 			List<StoreTagVO> tagList = store.getTagList();

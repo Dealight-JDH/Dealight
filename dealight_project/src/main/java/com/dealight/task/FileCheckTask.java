@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.dealight.domain.RsvdDtlsVO;
@@ -90,12 +91,12 @@ public class FileCheckTask {
 		
     	List<String> userIdList = new ArrayList<>();
     	
-    	userIdList.add("kjuioq");
-    	userIdList.add("lim");
-    	userIdList.add("soo");
-    	userIdList.add("bin");
-    	userIdList.add("kim");
-    	userIdList.add("abc");
+    	List<UserVO> userVOList = userService.getList();
+    	
+    	userVOList.stream().forEach(user -> {
+    		
+    		userIdList.add(user.getUserId());
+    	});
     	
     	// 테스트용 user id
     	List<StoreVO> list = storeService.getStoreListByUserId("aaaa");
@@ -153,12 +154,12 @@ public class FileCheckTask {
     	
     	List<String> userIdList = new ArrayList<>();
     	
-    	userIdList.add("kjuioq");
-    	userIdList.add("lim");
-    	userIdList.add("soo");
-    	userIdList.add("bin");
-    	userIdList.add("kim");
-    	userIdList.add("abc");
+    	List<UserVO> userVOList = userService.getList();
+    	
+    	userVOList.stream().forEach(user -> {
+    		
+    		userIdList.add(user.getUserId());
+    	});
     	
     	List<String> menuList = new ArrayList<>();
     	
@@ -288,7 +289,7 @@ public class FileCheckTask {
 	}
 	
 	// 새벽 2시가 되면 하루 전(sysdate -1)의 웨이팅을'W' -> 'E'로 변경한다.
-	//@Scheduled(cron="0 55 * * * *")
+	//@Scheduled(cron="0 10 * * * *")
 	public void waitInit() throws Exception {
 		
 		log.warn("Daily Wait Initialization Task run .....................");

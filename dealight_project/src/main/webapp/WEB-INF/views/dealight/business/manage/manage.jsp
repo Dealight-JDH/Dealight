@@ -162,15 +162,38 @@
 <script>
 
 /*시간바 만들기*/
-writeTimeBar = function () {
+/*현재시간으로 스크롤 고정*/
+writeTimeBar = function (curTime) {
     timeArr = ['','09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30','22:00'];
-    strTime = "";
+    		/*  0    1        2       3        4      5*/
+    		/*  0    0        0     100      200   300*/
+    let strTime = "";
+    let curPos = 0; 
     for(let i = 1; i <= 27; i++){
+    	if(curTime === timeArr[i])
+    		curPos = i - 1;
         strTime += "<div class='rsvd_time tooltip' id='slide-"+i+"'><h6>"+timeArr[i]+"</h6><div class='time_table'></div></div>";
     }
 	document.querySelector(".rsvd_time_bar").innerHTML = strTime;
+	
+	// 현재 위치값 반환
+	return ((parseInt(curPos)*100) - 100);
 }
-writeTimeBar();
+let curToday = new Date();
+let curHour = curToday.getHours(),
+	curMinutes = curToday.getMinutes();
+	
+	if(curMinutes >= 30)
+		curMinutes = '30';
+	else
+		curMinutes = '00';
+	
+	let curTime = curHour + ":" + curMinutes;
+
+	const curScroll = writeTimeBar(curTime);
+	
+
+$(".rsvd_time_bar").scrollLeft(300);
 
 	// 모달 선택
 	const modal = $("#myModal"),
@@ -1274,7 +1297,8 @@ writeTimeBar();
             
         });
         
-        
+        // 예약 상태바 초기 스크롤 고정
+        document.querySelector(".rsvd_time_bar").scrollLeft = curScroll;
         
     });
 
