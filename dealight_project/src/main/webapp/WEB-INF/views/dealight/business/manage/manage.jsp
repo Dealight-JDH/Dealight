@@ -672,6 +672,8 @@ let curHour = curToday.getHours(),
         
         function showRsvdList(storeId){
         	
+        	console.log("show rsvd list..........." + storeId);
+        	
         	boardService.getRsvdList({storeId:storeId}, function (rsvdList) {
                 let strRsvdList = "";
                 if(rsvdList == null){
@@ -1210,7 +1212,7 @@ let curHour = curToday.getHours(),
 	   		// 다른 페이지 어디서든 소켓을 불러올 수 있어야 하기 때문이다.
 	   		
 	   	 	// 소켓을 ws로 연다.
-	   	 	var ws = new WebSocket("ws://localhost:8080/waitEcho");
+	   	 	var ws = new WebSocket("ws://localhost:8080/manageSocket");
 	   	 	socket = ws;
 	
 	   	 	// 커넥션이 연결되었는지 확인한다.
@@ -1228,7 +1230,25 @@ let curHour = curToday.getHours(),
 	   	 	    //if()
 	   	 	    	
 	   	 	   	alert(event.data);
-	   	 		showWaitList(storeId);
+	   	 	    console.log(typeof event.data);
+	   	 	    
+	   	 	    let data = JSON.parse(event.data);
+	   	 	    
+	   	 	    console.log(typeof data);
+	   	 	    console.log("cmd : "+data.cmd);
+	   	 		console.log("sendUser : "+data.sendUser);
+	   	 	    console.log("storeId : "+data.storeId);
+	   	 	    
+	   	 	    
+				if(data.cmd === 'rsvd'){
+		   	 		showRsvdList(storeId);
+		   	 		console.log("rsvd...... : " + data.rsvdId);
+		   	 		console.log(data.msg);
+				} else if (data.cmd === 'wait'){
+		   	 		showWaitList(storeId);
+		   	 		console.log("wait...... : " + data.waitId);
+		   	 		console.log(data.msg);
+				}	   	 	    
 	   	 	    
 	   	 	    //let socketAlert = $('#socektAlert');
 	   	 		//socketAlert.html(event.data);

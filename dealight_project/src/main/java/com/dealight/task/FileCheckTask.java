@@ -141,7 +141,10 @@ public class FileCheckTask {
     	log.info("wait id ................. : " + waitService.registerOnWaiting(wait));
     	
     	log.warn(wait);
-    	log.warn("=========================================wait 웨이팅 완료");
+    	if(wait.getWaitId() > 0 )
+    		log.warn("=========================================wait 웨이팅 완료");
+    	else if(wait.getWaitId() == 0)
+    		log.warn("=========================================wait 웨이팅 실패");
 		
 	}
 	
