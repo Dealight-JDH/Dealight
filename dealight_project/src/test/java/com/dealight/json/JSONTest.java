@@ -1,4 +1,4 @@
-package com.dealight.domain;
+package com.dealight.json;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -30,7 +30,7 @@ import lombok.extern.log4j.Log4j;
 public class JSONTest {
 
 	@Test
-	public void json() throws UnsupportedEncodingException {
+	public void callMessageJson() throws UnsupportedEncodingException {
 		
 		Map<String, Object> map = new HashMap<>();
 
@@ -256,5 +256,43 @@ public class JSONTest {
 		 log.info(jsonInString);
 
 	
+	}
+	
+	@Test
+	public void webSocketJsonTest2() {
+		
+		Gson gson = new Gson();
+		
+		Map<String,Object> map = new HashMap<>();
+		
+		map.put("cmd", "wait");
+		map.put("sendUser","kjuioq");
+		map.put("storeId",123);
+		map.put("waitId",100);
+		
+		String result = gson.toJson(map);
+		
+		log.info("result...................... : "+result);
+		
+	}
+	
+	@Test
+	public void receiveMessageJsonTest() {
+		
+		String text = "{\"sendUser\":\"kjuioq\",\"waitId\":\"100\",\"cmd\":\"wait\",\"storeId\":\"123\"}";
+		
+		log.info(text);
+		
+		Gson gson = new Gson();
+		
+		HashMap<String,Object> map = gson.fromJson(text, HashMap.class);
+		
+		log.info(map);
+		log.info(map.size());
+		
+		String result = gson.toJson(map);
+		
+		log.info(result);
+		
 	}
 }
