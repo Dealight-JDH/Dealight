@@ -2,6 +2,7 @@ package com.dealight.domain;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,13 +35,21 @@ public class BUserVO {
     //사업자등록증사본사진
     private String brPhotoSrc;
     //사업자등록심사상태코드
-    private String brJdgStusCd;
+    private String brJdgStusCd="W";
     //매장명
     private String storeNm;
     //매장전화번호
     private String telno;
     //휴대전화번호
     private String storeTelno;
+    
+    //--------------------첨부파일------------
+    private String uuid;
+    private String uploadPath;
+    private String fileName;
+    
+ 	private Date regDate;
+ 	private Date updateDate;
     
     public static class Builder{
 

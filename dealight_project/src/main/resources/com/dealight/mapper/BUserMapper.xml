@@ -25,9 +25,9 @@
 	<insert id="insert">
 		INSERT
 		INTO
-		tbl_buser(br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno)
+		tbl_buser(br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, uuid, uploadpath, filename)
 		VALUES
-		(seq_buser.nextval, #{userId}, #{storeId}, #{brno}, #{brPhotoSrc}, #{brJdgStusCd}, #{storeNm}, #{telno}, #{storeTelno})
+		(seq_buser.nextval, #{userId}, #{storeId}, #{brno}, #{brPhotoSrc}, #{brJdgStusCd}, #{storeNm}, #{telno}, #{storeTelno}, ${uuid}, ${uploadPath}, ${fileName})
 	</insert>
 
 	<insert id="insertSelectKey">
@@ -55,7 +55,8 @@
 		br_jdg_stus_cd = #{brJdgStusCd},
 		store_nm = #{storeNm},
 		telno = #{telno},
-		store_telno = #{storeTelno}
+		store_telno = #{storeTelno},
+		updatedate = sysdate + 9/24
 		where br_seq = #{brSeq}
 	</update>
 

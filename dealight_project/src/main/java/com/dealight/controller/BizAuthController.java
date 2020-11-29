@@ -34,6 +34,11 @@ public class BizAuthController {
 		return "redirect:/dealight/mypage/bizAuth/list";
 	}
 	
+	@GetMapping("/register")
+	public void register() {
+		
+	}
+	
 	@GetMapping("/list")
 	public void list(Model model) {
 		
