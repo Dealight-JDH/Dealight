@@ -146,6 +146,7 @@ public class BusinessController {
 		// 오늘 예약한 사용자의 사용자 정보와 예약 정보를 가져온다.
 		List<UserWithRsvdDTO> todayRsvdUserList = rsvdService.userListTodayRsvd(storeId);
 		
+		model.addAttribute("userId",userId);
 		model.addAttribute("storeId", storeId);
 		model.addAttribute("todayRsvdUserList", todayRsvdUserList);
 		
@@ -183,5 +184,20 @@ public class BusinessController {
 			model.addAttribute("store",store);
 			
 			return "/dealight/business/manage/waiting/waiting";
+		}
+		
+		@GetMapping("/test")
+		public String test(HttpServletRequest request,Model model) {
+			
+			HttpSession session = request.getSession();
+			
+			session.setAttribute("userId", "kjuioq");
+			
+			String userId = (String) session.getAttribute("userId");
+			
+			model.addAttribute("userId", userId);
+			
+			
+			return "/dealight/business/test";
 		}
 }
