@@ -43,10 +43,6 @@ public class BUserVO {
     //휴대전화번호
     private String storeTelno;
     
-    //--------------------첨부파일------------
-    private String uuid;
-    private String uploadPath;
-    private String fileName;
     
  	private Date regDate;
  	private Date updateDate;

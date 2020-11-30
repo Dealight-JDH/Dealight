@@ -25,9 +25,9 @@
 	<insert id="insert">
 		INSERT
 		INTO
-		tbl_buser(br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, uuid, uploadpath, filename)
+		tbl_buser(br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno)
 		VALUES
-		(seq_buser.nextval, #{userId}, #{storeId}, #{brno}, #{brPhotoSrc}, #{brJdgStusCd}, #{storeNm}, #{telno}, #{storeTelno}, ${uuid}, ${uploadPath}, ${fileName})
+		(seq_buser.nextval, #{userId}, #{storeId}, #{brno}, #{brPhotoSrc}, #{brJdgStusCd}, #{storeNm}, #{telno}, #{storeTelno})
 	</insert>
 
 	<insert id="insertSelectKey">
@@ -65,6 +65,12 @@
 		FROM tbl_buser
 		WHERE br_seq = #{brSeq}
 	</delete>
-
+	
+	<select id="findAllByUserId" resultType="com.dealight.domain.BUserVO">
+		SELECT
+		*
+		FROM tbl_buser
+		WHERE user_id = #{userId}
+	</select>
 
 </mapper>

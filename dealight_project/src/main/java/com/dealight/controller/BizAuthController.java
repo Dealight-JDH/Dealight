@@ -1,5 +1,7 @@
 package com.dealight.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +29,11 @@ public class BizAuthController {
 		
 		log.info("buser : " + buser);
 		
+		//TODO
+		//등록이 실패하면???
 		service.register(buser);
-		
-		rttr.addAttribute("brSeq", buser.getBrSeq());
+		log.info("brSeq :" + buser.getBrSeq());
+		rttr.addFlashAttribute("brSeq", buser.getBrSeq());
 		
 		return "redirect:/dealight/mypage/bizAuth/list";
 	}
@@ -40,11 +44,17 @@ public class BizAuthController {
 	}
 	
 	@GetMapping("/list")
-	public void list(Model model) {
+	public void list(Model model, HttpSession session) {
+		//로그인 유저 아이디를 불러온다.
+		String userId = (String)session.getAttribute("userId");
+		userId = "aaaa";
+		if(userId == null & userId.equals("")) {
+			//처리필요
+		}
 		
 		log.info("list");
 		
-		model.addAttribute("list", service.getList());
+		model.addAttribute("list", service.getListByUserId(userId));
 		
 	}
 	

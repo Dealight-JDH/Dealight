@@ -22,7 +22,7 @@ public class BizAuthServiceImpl implements BizAuthService {
 		
 		log.info("register : " + buser);
 		
-		mapper.insert(buser);
+		mapper.insertSelectKey(buser);
 	}
 
 	@Override
@@ -40,6 +40,13 @@ public class BizAuthServiceImpl implements BizAuthService {
 		
 		
 		return mapper.findAll();
+	}
+	
+	@Override
+	public List<BUserVO> getListByUserId(String userId){
+		log.info("getListByUserId : " + userId);	
+		
+		return mapper.findAllByUserId(userId);
 	}
 
 	@Override

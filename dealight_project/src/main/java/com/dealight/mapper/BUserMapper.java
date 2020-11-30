@@ -29,5 +29,8 @@ public interface BUserMapper {
 	
 	// delete
 	public int delete(long brSeq);
+	
+	//유저로 모록가져오기
+	public List<BUserVO> findAllByUserId(String userId);
 
 }

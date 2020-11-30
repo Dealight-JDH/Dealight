@@ -44,7 +44,8 @@ import net.coobird.thumbnailator.Thumbnailator;
 public class UploadController {
 	
 	// 파일 경로
-	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05\\";
+//	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05\\";
+	final static private String ROOT_FOLDER = "";
 	
 	private String getFolder() {
 		
