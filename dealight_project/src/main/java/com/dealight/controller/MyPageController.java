@@ -11,8 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.Criteria;
 import com.dealight.domain.LikeVO;
@@ -256,6 +258,42 @@ public class MyPageController {
 
 		
 		return "/dealight/mypage/modify";
+	}
+	
+	@PostMapping("/modify")
+	public String modifyPost(Model model, HttpSession session, RedirectAttributes rttr, UserVO user) {
+		
+		log.info("modify............... : " + user);
+		
+		boolean result = userService.modify(user);
+		
+		log.info("result................ : " + result);
+		
+		rttr.addFlashAttribute("result", result);
+		
+		if(result)
+			rttr.addFlashAttribute("msg", "수정이 완료되었습니다.");
+		else
+			rttr.addFlashAttribute("msg", "수정이 실패했습니다.");
+		
+		return "redirect:/dealight/mypage/modif";
+	}
+	
+	
+	@PostMapping("/withdrawal")
+	public String withdrawal(Model model, HttpSession session) {
+		
+		String userId = (String) session.getAttribute("userId");
+		
+		userService.withdrawalUser(userId);
+		
+		return "redirect:/dealight";
+	}
+	
+	@GetMapping("/myreview")
+	public String review() {
+		
+		return "/dealight/mypage/myreview";
 	}
 	
 	@GetMapping("/notice")

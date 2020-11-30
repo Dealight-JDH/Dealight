@@ -199,4 +199,10 @@ public class UserServiceImpl implements UserService{
 		return userMapper.checkPanaltyDuration();
 	}
 
+	@Override
+	public boolean withdrawalUser(String userId) {
+		
+		return 1 == userMapper.withdrawalUser(userId);
+	}
+
 }
