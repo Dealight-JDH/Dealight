@@ -77,4 +77,6 @@ public interface RsvdMapper {
 	
 	public List<RsvdVO> findLastWeekRsvdListByStoreId(long storeId);
 	
+	public List<RsvdVO> findRsvdListByUserId(String userId);
+	
 }

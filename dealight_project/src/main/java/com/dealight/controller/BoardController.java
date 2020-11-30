@@ -95,7 +95,7 @@ public class BoardController {
 		return new ResponseEntity<>(rsvdList, HttpStatus.OK);
 	}
 
-	// storeId로 해당 매장의 '오늘' 예약 맵(시간대별)을 가져온다.
+	// storeId로 해당 매장의 '오늘' 예약 맵(시간대별)을 가져온다..
 	@GetMapping(value = "/board/reservation/map/{storeId}", 
 			produces = {
 					MediaType.APPLICATION_JSON_UTF8_VALUE,

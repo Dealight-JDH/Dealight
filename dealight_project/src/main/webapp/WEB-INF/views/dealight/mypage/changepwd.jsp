@@ -69,9 +69,6 @@ function validate() {
 		return false;
 	}
 }
-
-
-
 </script>
 
 
