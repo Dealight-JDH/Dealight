@@ -29,6 +29,8 @@
 <div id="rsvdWrapper">
 <h2>회원 아이디 : ${userId }</h2>
 
+<h2>현재 예약 횟수 : ${curCnt}회</h2>
+<h2>총 지난 예약 횟수 : ${last}회</h2>
 <h2>총 예약 횟수 : ${total}회</h2>
 
 

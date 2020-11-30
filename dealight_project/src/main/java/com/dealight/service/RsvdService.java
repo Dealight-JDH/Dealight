@@ -129,4 +129,8 @@ public interface RsvdService {
 	
 	int getRsvdTotalCount(String userId, Criteria cri);
 	
+	int getRsvdLastCount(String userId, Criteria cri);
+	
+	int getRsvdCompleteCount(String userId, Criteria cri);
+	
 }

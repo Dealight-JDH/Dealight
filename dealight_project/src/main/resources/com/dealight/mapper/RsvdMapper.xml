@@ -316,5 +316,15 @@
 			AND user_id = #{userId}
 		]]>
 	</select>
+	
+		<select id='getRsvdCount' resultType="int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM tbl_rsvd
+			WHERE rsvd_id > 0 
+			AND user_id = #{userId}
+			AND stus_cd = #{stusCd}
+		]]>
+	</select>
 
 </mapper>

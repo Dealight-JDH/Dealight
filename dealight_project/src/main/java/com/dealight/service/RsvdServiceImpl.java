@@ -442,6 +442,16 @@ public class RsvdServiceImpl implements RsvdService{
 		return rsvdMapper.getRsvdTotalCount(userId, cri);
 	}
 
+	@Override
+	public int getRsvdLastCount(String userId, Criteria cri) {
+		
+		return rsvdMapper.getRsvdCount(userId, cri, "L");
+	}
 
-	
+	@Override
+	public int getRsvdCompleteCount(String userId, Criteria cri) {
+		
+		return rsvdMapper.getRsvdCount(userId, cri, "C");
+	}
+
 }

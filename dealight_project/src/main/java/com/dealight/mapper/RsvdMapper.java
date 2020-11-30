@@ -84,4 +84,6 @@ public interface RsvdMapper {
 	
 	public int getRsvdTotalCount(@Param("userId") String userId, @Param("cri") Criteria cri);
 	
+	public int getRsvdCount(@Param("userId") String userId, @Param("cri") Criteria cri, @Param("stusCd") String stusCd);
+	
 }

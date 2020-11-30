@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.WaitVO;
 
 import lombok.extern.log4j.Log4j;
@@ -280,6 +281,69 @@ public class WaitMapperTests {
     			flag = false;
     	
     	assertTrue(flag);
+    	
+    }
+    
+    @Test
+    public void findWaitListWithPagingByUserIdTest1() {
+    	
+    	userId = "kjuioq";
+    	
+    	int pageNum = 1;
+    	int amount = 3;
+    	
+    	Criteria cri = new Criteria(pageNum,amount);
+    	
+    	userId = "kjuioq";
+    	
+    	List<WaitVO> list = mapper.findWaitListWithPagingByUserId(userId, cri);
+    	
+    	list.stream().forEach(wait -> {
+    		
+    		log.info("wait : " + wait);
+    		
+    		assertTrue(wait.getUserId().equals(userId));
+    	});
+    	
+    	log.info("list : "+list);
+    	log.info("list size : "+list.size());
+    	
+    	assertTrue(list.size() == amount);
+    	
+    }
+    
+    @Test
+    public void getWaitCntTest1() {
+    	
+    	userId = "kjuioq";
+    	
+    	int pageNum = 1;
+    	int amount = 3;
+    	
+    	Criteria cri = new Criteria(pageNum,amount);
+    	
+    	String stusCd = "W";
+    	
+    	int wait = mapper.getWaitCnt(userId, cri, "W");
+    	int enter = mapper.getWaitCnt(userId, cri, "E");
+    	int panalty = mapper.getWaitCnt(userId, cri, "P");
+    	int total = wait + enter + panalty;
+    	
+    	log.info("wait : " + wait);
+    	log.info("enter : " + enter);
+    	log.info("panalty : " + panalty);
+    	log.info("kjuioq의 웨이팅 상태 개수"+total);
+    	
+    }
+    
+    @Test
+    public void getWaitByUserIdTest1() {
+    	
+    	userId = "kjuioq";
+    	
+    	WaitVO wait = mapper.getCurWaitByUserId(userId);
+    	
+    	log.info(wait);
     	
     }
 

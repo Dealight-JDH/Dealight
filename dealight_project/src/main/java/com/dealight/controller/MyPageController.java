@@ -19,6 +19,7 @@ import com.dealight.domain.PageDTO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserVO;
+import com.dealight.domain.WaitVO;
 import com.dealight.service.RevwService;
 import com.dealight.service.RsvdService;
 import com.dealight.service.StoreService;
@@ -97,13 +98,17 @@ public class MyPageController {
 			rsvd.getRsvdDtlsList().get(rsvd.getRsvdDtlsList().size() -1).setMenuNm(tmpNm);
 		});
 		
-		// TODO PageDTO 매개변수 total 구하는 로직 구현 ●
+		// PageDTO 매개변수 total 구하는 로직 구현 ●
 
-		int total = rsvdService.getRsvdTotalCount(userId, cri);
+		int last = rsvdService.getRsvdLastCount(userId, cri);
+		int curCnt = rsvdService.getRsvdCompleteCount(userId, cri);
+		int total = last + curCnt;
 		
 		model.addAttribute("userId",userId);
 		model.addAttribute("rsvdList",rsvdList);
 		model.addAttribute("pageMaker",new PageDTO(cri,total));
+		model.addAttribute("last",last);
+		model.addAttribute("curCnt",curCnt);
 		model.addAttribute("total",total);
 		
 		
@@ -115,7 +120,6 @@ public class MyPageController {
 		// rsvdmapper/xml getRsvdCntByUserId ●
 		// COUNT(*) ●
 		
-		// TODO
 		// 예약상세를 json으로 가져오는 방식은 일단 대기하자. 굳이 json으로 안뿌리고 화면에 뿌려놓아도 될 듯하다.
 		// 예약 상세를 가져온다.
 		// Requestbody 형식으로 json으로 반환하는 컨트롤러가 필요하다.
@@ -123,6 +127,7 @@ public class MyPageController {
 
 		return "/dealight/mypage/reservation";
 	}
+	
 	
 	// TODO
 	// 3. store with store loc를 모달로 보여준다.
@@ -148,28 +153,46 @@ public class MyPageController {
 	}
 	
 	@GetMapping("/wait")
-	public String wait(Model model, HttpSession session) {
+	public String wait(Model model, HttpSession session, Criteria cri) {
+		
+		// 임시로 'kjuioq'의 아이디를 로그인한다.
+		session.setAttribute("userId", "kjuioq");
 		
 		String userId = (String) session.getAttribute("userId");
 		
+		if(cri.getPageNum() == 0)
+			cri = new Criteria(1,5);
 		
-		// TODO
-		// 1. 웨이팅 리스트를 그대로 보여주면 될 듯하다.
-		// waitService findWaitListByUserId
-		// waitMapper/xml findWaitListByUserId
+		// 1. 웨이팅 리스트를 그대로 보여주면 될 듯하다. ●
+		// waitService findWaitListByUserId ●
+		// waitMapper/xml findWaitListByUserId ●
 		
-		// TODO
-		// 2. 웨이팅, 패널티 카운트를 가져온다.
-		// waitService getWaitCnt stuscd = "W" cnt 계산
-		// waitService getWaitCnt stuscd = "E" cnt 계산
-		// waitService getWaitCnt stuscd = "P" cnt 계산
+		List<WaitVO> waitList = waitService.findWaitListWithPagingByUserId(userId, cri);
 		
-		// TODO
+		// 2. 웨이팅, 패널티 카운트를 가져온다. ●
+		// waitService getWaitCnt stuscd = "E" cnt 계산 ●
+		// waitService getWaitCnt stuscd = "P" cnt 계산 ●
+		int curWaitCnt = waitService.getCurWaitCnt(userId, cri);
+		int enterCnt = waitService.getEnterWaitCnt(userId, cri);
+		int panaltyCnt = waitService.getPanaltyWaitCnt(userId, cri);
+		int total = curWaitCnt + enterCnt + panaltyCnt;
+		
+		
 		// 3. 현재 웨이팅 정보를 가져온다.
-		// list -> wait stus cd = "w" wait
-		// 3-1. wait.storeId로 menu와 review를 가져온다
-		// storeService.findMenuByStoreId(storeId);
-		// revwService.getRevwByStoreId(revwId)
+		// list -> wait stus cd = "w" wait ●
+		// 3-1. wait.storeId로 menu와 review를 가져온다 ●
+		// storeService.findMenuByStoreId(storeId); ●
+		// TODO revwService.getRevwByStoreId(revwId);
+		WaitVO curWait = waitService.getCurWaitByUserId(userId);
+		
+		model.addAttribute("userId",userId);
+		model.addAttribute("waitList",waitList);
+		model.addAttribute("curWaitCnt",curWaitCnt);
+		model.addAttribute("enterCnt",enterCnt);
+		model.addAttribute("panaltyCnt",panaltyCnt);
+		model.addAttribute("total",total);
+		model.addAttribute("curWait",curWait);
+		model.addAttribute("pageMaker",new PageDTO(cri,total));
 		
 		
 		return "/dealight/mypage/wait";

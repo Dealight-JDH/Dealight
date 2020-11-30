@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.WaitVO;
 import com.dealight.mapper.UserMapper;
 import com.dealight.mapper.WaitMapper;
@@ -144,6 +145,37 @@ public class WaitServiceImpl implements WaitService {
 	public int waitInit() {
 		
 		return waitMapper.waitInit();
+	}
+
+	@Override
+	public List<WaitVO> findWaitListWithPagingByUserId(String userId, Criteria cri) {
+		
+		return waitMapper.findWaitListWithPagingByUserId(userId, cri);
+	}
+
+
+	@Override
+	public WaitVO getCurWaitByUserId(String userId) {
+		
+		return waitMapper.getCurWaitByUserId(userId);
+	}
+
+	@Override
+	public int getCurWaitCnt(String userId, Criteria cri) {
+
+		return waitMapper.getWaitCnt(userId, cri, "W");
+	}
+
+	@Override
+	public int getEnterWaitCnt(String userId, Criteria cri) {
+
+		return waitMapper.getWaitCnt(userId, cri, "E");
+	}
+
+	@Override
+	public int getPanaltyWaitCnt(String userId, Criteria cri) {
+
+		return waitMapper.getWaitCnt(userId, cri, "P");
 	}
 
 }

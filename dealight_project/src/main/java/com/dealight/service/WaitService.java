@@ -2,6 +2,7 @@ package com.dealight.service;
 
 import java.util.List;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.WaitVO;
 
 /*
@@ -57,5 +58,15 @@ public interface WaitService {
 	WaitVO readNextWait(List<WaitVO> curStoreWaitiList);
 	
 	int waitInit();
+	
+	List<WaitVO> findWaitListWithPagingByUserId(String userId, Criteria cri);
+	
+	int getCurWaitCnt(String userId, Criteria cri);
+	
+	int getEnterWaitCnt(String userId, Criteria cri);
+	
+	int getPanaltyWaitCnt(String userId, Criteria cri);
+	
+	WaitVO getCurWaitByUserId(String userId);
 
 }

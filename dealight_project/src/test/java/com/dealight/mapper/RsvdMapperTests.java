@@ -512,8 +512,14 @@ public class RsvdMapperTests {
     	userId = "kjuioq";
     	Criteria cri = new Criteria(1,3);
     	
+    	int last = mapper.getRsvdCount(userId, cri, "L");
+    	int complete = mapper.getRsvdCount(userId, cri, "C");
+    	int panalty = mapper.getRsvdCount(userId, cri, "P");
     	int total = mapper.getRsvdTotalCount(userId, cri);
     	
+    	log.info("last........................."+last);
+    	log.info("complete........................."+complete);
+    	log.info("panalty........................."+panalty);
     	log.info("total........................."+total);
     	
     }

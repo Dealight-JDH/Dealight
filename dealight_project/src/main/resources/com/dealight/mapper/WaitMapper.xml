@@ -112,5 +112,39 @@
 		WHERE wait_reg_tm < sysdate - 1 and wait_stus_cd = 'W'
 	]]>
 	</update>
+	
+	<select id="findWaitListWithPagingByUserId" resultType="com.dealight.domain.WaitVO">
+		<![CDATA[
+			SELECT 
+			    wait_id, store_id, user_id, wait_reg_tm, wait_pnum, cust_nm, wait_stus_cd,regdate,updatedate,revw_stus
+			FROM 
+			(
+			    SELECT rownum rn,wait_id, store_id, user_id, wait_reg_tm, wait_pnum, cust_nm, wait_stus_cd,regdate,updatedate,revw_stus
+			    /*+ INDEX_DESC(tbl_rsvd tbl_wait_pk)*/
+			    FROM tbl_wait
+			    WHERE  user_id = #{userId}
+			    AND rownum <=  #{cri.pageNum} * #{cri.amount}
+			)
+			WHERE rn > (#{cri.pageNum} -1) * #{cri.amount}
+		]]>
+	</select>
+	
+	<select id='getWaitCnt' resultType="int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM tbl_wait
+			WHERE wait_id > 0 
+			AND user_id = #{userId}
+			AND wait_stus_cd = #{waitStusCd} 
+		]]>
+	</select>
+	
+	<select id="getCurWaitByUserId" resultType="com.dealight.domain.WaitVO">
+		SELECT 
+		    /*+ INDEX_DESC(tbl_rsvd tbl_wait_pk)*/
+		    *
+		FROM tbl_wait
+		WHERE user_id = #{userId} and wait_stus_cd = 'W'
+	</select>
 
 </mapper>
