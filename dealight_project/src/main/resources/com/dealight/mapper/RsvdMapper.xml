@@ -272,5 +272,49 @@
 			and TO_CHAR(regdate,'YYYYMMDD') BETWEEN TO_CHAR(sysdate - 7,'YYYYMMDD')
 			AND TO_CHAR(sysdate,'YYYYMMDD')
 	</select>
+	
+	<select id="findRsvdListWithPagingByUserId" resultType="com.dealight.domain.RsvdVO">
+		<![CDATA[
+		SELECT 
+		    rsvd_id, user_id, aprv_no , htdl_id , pnum, revw_stus, store_id, stus_cd, time, tot_amt, tot_qty, updatedate, regdate
+		FROM 
+		(
+		    SELECT rownum rn, rsvd_id, user_id, aprv_no , htdl_id , pnum, revw_stus, store_id, stus_cd, time, tot_amt, tot_qty, updatedate, regdate
+		    /*+ INDEX_DESC(tbl_rsvd tbl_rsvd_pk)*/
+		    FROM tbl_rsvd
+		    WHERE  user_id = #{userId} 
+		    AND rownum <= #{cri.pageNum} * #{cri.amount}
+		)
+		WHERE rn > (#{cri.pageNum} -1) * #{cri.amount}
+		]]>
+	</select>
+	
+	<select id="findRsvdListWithPagingAndDtlsByUserId" resultMap="RsvdVO">
+		<![CDATA[
+		SELECT 
+		    r.rn, r.rsvd_id, r.user_id, r.aprv_no , r.htdl_id , r.pnum, r.revw_stus, r.store_id, r.stus_cd, r.time, r.tot_amt, r.tot_qty, r.updatedate, r.regdate,
+		    d.rsvd_seq, d.menu_nm, d.menu_prc, d.menu_tot_qty
+		FROM 
+		(
+		    SELECT rownum rn, rsvd_id, user_id, aprv_no , htdl_id , pnum, revw_stus, store_id, stus_cd, time, tot_amt, tot_qty, updatedate, regdate
+		    /*+ INDEX_DESC(tbl_rsvd tbl_rsvd_pk)*/
+		    FROM tbl_rsvd
+		    WHERE  user_id = #{userId} AND
+		    rownum <= #{cri.pageNum} * #{cri.amount}
+		) r, tbl_rsvd_dtls d
+		WHERE 
+		rn > (#{cri.pageNum} -1) * #{cri.amount} AND 
+		r.rsvd_id = d.rsvd_id
+		]]>
+	</select>
+	
+	<select id='getRsvdTotalCount' resultType="int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM tbl_rsvd
+			WHERE rsvd_id > 0 
+			AND user_id = #{userId}
+		]]>
+	</select>
 
 </mapper>

@@ -406,4 +406,19 @@ public class StoreServiceTests {
 		
 	}
 	
+	@Test
+	public void findStoreWithLocByStoreIdTest1() {
+		
+		storeId = 13L;
+		
+		StoreVO store = service.findStoreWithLocByStoreId(storeId);
+		
+		
+		log.info("store : "+store);
+		log.info("store loc"+store.getLoc());
+		
+		assertNotNull(store.getLoc());
+		
+	}
+	
 }

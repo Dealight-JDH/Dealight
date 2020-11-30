@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreMenuVO;
@@ -421,6 +422,24 @@ public class RsvdServiceImpl implements RsvdService{
 	public List<RsvdVO> findLastWeekRsvd(long storeId) {
 		
 		return rsvdMapper.findLastWeekRsvdListByStoreId(storeId);
+	}
+
+	@Override
+	public List<RsvdVO> findRsvdListWithPagingByUserId(String userId, Criteria cri) {
+
+		return rsvdMapper.findRsvdListWithPagingByUserId(userId, cri);
+	}
+
+	@Override
+	public List<RsvdVO> findRsvdListWithPagingAndDtlsByUserId(String userId, Criteria cri) {
+		
+		return rsvdMapper.findRsvdListWithPagingAndDtlsByUserId(userId, cri);
+	}
+
+	@Override
+	public int getRsvdTotalCount(String userId, Criteria cri) {
+		
+		return rsvdMapper.getRsvdTotalCount(userId, cri);
 	}
 
 

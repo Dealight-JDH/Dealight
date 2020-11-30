@@ -362,6 +362,11 @@
 		where s.store_id = #{storeId} AND s.store_id = b.store_id
 	</select>
 	
-	
+	<select id="findStoreWithLocByStoreId" resultMap="StoreVO">
+		select *
+		FROM tbl_store s, tbl_store_loc l
+		where s.store_id = #{storeId}
+		AND s.store_id = l.store_id
+	</select>
 
 </mapper>
