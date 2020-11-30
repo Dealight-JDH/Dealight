@@ -246,6 +246,9 @@ public class MyPageController {
 	@GetMapping("/modify")
 	public String modify(Model model, HttpSession session) {
 		
+		// 임시로 'kjuioq'의 아이디를 로그인한다.
+		session.setAttribute("userId", "kjuioq");
+		
 		String userId = (String) session.getAttribute("userId");
 		
 		// TODO
@@ -276,7 +279,7 @@ public class MyPageController {
 		else
 			rttr.addFlashAttribute("msg", "수정이 실패했습니다.");
 		
-		return "redirect:/dealight/mypage/modif";
+		return "redirect:/dealight/mypage/modify";
 	}
 	
 	
@@ -291,9 +294,25 @@ public class MyPageController {
 	}
 	
 	@GetMapping("/myreview")
-	public String review() {
+	public String review(HttpSession session) {
+		
+		// 임시로 'kjuioq'의 아이디를 로그인한다.
+		session.setAttribute("userId", "kjuioq");
+		
+		String userId = (String) session.getAttribute("userId");
 		
 		return "/dealight/mypage/myreview";
+	}
+	
+	@GetMapping("/changepwd")
+	public String changepwd(HttpSession session) {
+		
+		// 임시로 'kjuioq'의 아이디를 로그인한다.
+		session.setAttribute("userId", "kjuioq");
+		
+		String userId = (String) session.getAttribute("userId");
+		
+		return "/dealight/mypage/changepwd";
 	}
 	
 	@GetMapping("/notice")

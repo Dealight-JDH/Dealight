@@ -1229,7 +1229,7 @@ let curHour = curToday.getHours(),
 	   	 	    // 추후에 message 형식을 JSON으로 변환해서 message type을 지정해줘야 한다.
 	   	 	    //if()
 	   	 	    	
-	   	 	   	alert(event.data);
+	   	 	   	//alert(event.data);
 	   	 	    console.log(typeof event.data);
 	   	 	    
 	   	 	    let data = JSON.parse(event.data);

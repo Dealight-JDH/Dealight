@@ -48,6 +48,7 @@
 					<div>
 						<button type="submit" onclick="alert('회원정보수정이 완료되었습니다.')">회원수정</button>
 						<button type="submit" id="remove" >회원탈퇴</button>
+						<a href="/dealight/mypage/changepwd">비밀번호 변경</a>
 					</div>
 					</form>
 				</div>

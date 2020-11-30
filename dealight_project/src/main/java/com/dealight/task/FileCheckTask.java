@@ -10,12 +10,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdVO;
@@ -23,6 +26,7 @@ import com.dealight.domain.StoreImgVO;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserVO;
 import com.dealight.domain.WaitVO;
+import com.dealight.handler.ManageSocketHandler;
 import com.dealight.mapper.RsvdDtlsMapper;
 import com.dealight.mapper.RsvdMapper;
 import com.dealight.mapper.StoreImgMapper;
@@ -85,7 +89,7 @@ public class FileCheckTask {
 	}
 	
 	// 자동 웨이팅 생성기
-	//@Scheduled(cron ="0 * * * * *")
+	@Scheduled(cron ="0 * * * * *")
 	public void registerOnWait() throws Exception{
 		log.warn("Auto Online Wait Register Task run..................");
 		
@@ -129,7 +133,8 @@ public class FileCheckTask {
     	
     	WaitVO wait = new WaitVO().builder()
     			.waitId(0L)
-    			.storeId(storeId)
+    			//.storeId(storeId)
+    			.storeId(1L)
     			.userId(userId)
     			.waitRegTm(new Date())
     			.waitPnum(waitPnum)
@@ -139,6 +144,14 @@ public class FileCheckTask {
     			.build();
     	
     	log.info("wait id ................. : " + waitService.registerOnWaiting(wait));
+
+    	/* 웹 소켓*/
+    	ManageSocketHandler handler = ManageSocketHandler.getInstance();
+    	Map<String, WebSocketSession> map = handler.getUserSessions();
+    	WebSocketSession session = map.get("kjuioq");
+    	TextMessage message = new TextMessage("{\"sendUser\":\"kjuioq\",\"waitId\":\"100\",\"cmd\":\"wait\",\"storeId\":\"1\"}");
+    	handler.handleMessage(session, message);
+    	
     	
     	log.warn(wait);
     	if(wait.getWaitId() > 0 )

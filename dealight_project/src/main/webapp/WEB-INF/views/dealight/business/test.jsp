@@ -54,7 +54,7 @@
 	// 다른 페이지 어디서든 소켓을 불러올 수 있어야 하기 때문이다.
 	
  	// 소켓을 ws로 연다.
- 	var ws = new WebSocket("ws://localhost:8080/manageSocket");
+ 	let ws = new WebSocket("ws://localhost:8080/manageSocket");
  	socket = ws;
 
  	// 커넥션이 연결되었는지 확인한다.
