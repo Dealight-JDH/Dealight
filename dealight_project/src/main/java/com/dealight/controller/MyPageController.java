@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dealight.domain.Criteria;
+import com.dealight.domain.LikeVO;
 import com.dealight.domain.PageDTO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserVO;
 import com.dealight.domain.WaitVO;
+import com.dealight.service.LikeService;
 import com.dealight.service.RevwService;
 import com.dealight.service.RsvdService;
 import com.dealight.service.StoreService;
@@ -47,6 +49,9 @@ public class MyPageController {
 	
 	@Autowired
 	RevwService revwService;
+	
+	@Autowired
+	LikeService likeService;
 	
 	/*
 	 * 마이페이지 로직 순서
@@ -198,11 +203,11 @@ public class MyPageController {
 		return "/dealight/mypage/wait";
 	}
 	
-	// 리뷰에 관련된 로직은 리뷰 Controller에서 관리한다.
-	// 리뷰는 REST FUL 방식으로 작성하면 좋을  듯 하다.
+	// TODO 리뷰에 관련된 로직은 리뷰 Controller에서 관리한다.
+	// TODO 리뷰는 REST FUL 방식으로 작성하면 좋을  듯 하다.
 	
 	@GetMapping("/like")
-	public String like(Model model, HttpSession session) {
+	public String like(Model model, HttpSession session,Criteria cri) {
 		
 		String userId = (String) session.getAttribute("userId");
 
@@ -213,8 +218,19 @@ public class MyPageController {
 		// 클릭하면 store 상세를 볼 수 있도록 구성한다.
 		// 현재 핫딜 여부를 보여준다.
 		
-		// TODO
 		// 2. 페이징 처리를 한다.
+		// criteria 초기화
+		if(cri.getPageNum() == 0)
+			cri = new Criteria(1,5);
+		
+		List<LikeVO> likeList = likeService.findListWithPagingByUserId(userId, cri);
+		int total = likeService.getLikeTotalByUserId(userId, cri);
+		
+		model.addAttribute("userId", userId);
+		model.addAttribute("likeList", likeList);
+		model.addAttribute("total",total);
+		model.addAttribute("pageMaker",new PageDTO(cri,total));
+		
 		
 		// TODO
 		// 3. 좋아요 취소 로직을 구현한다. 

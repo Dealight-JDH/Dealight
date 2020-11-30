@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- 동인 -->
+<mapper namespace="com.dealight.mapper.LikeMapper">
+
+<select id="findListWithPagingByUserId" resultType="com.dealight.domain.LikeVO">
+<![CDATA[
+		SELECT 
+		    store_id, user_id, regdate, updatedate
+		FROM 
+		(
+		    SELECT rownum rn,store_id, user_id, regdate, updatedate 
+		    /*+ INDEX_DESC(tbl_rsvd tbl_like_pk)*/
+		    FROM tbl_like
+		    WHERE  user_id = #{userId}
+		    AND rownum <= #{cri.pageNum} * #{cri.amount}
+		)
+		WHERE rn > (#{cri.pageNum} -1) * #{cri.amount}
+]]>
+</select>
+
+<select id="findByUserIdAndStoreId" resultType="com.dealight.domain.LikeVO">
+select *
+from tbl_like
+where user_id = #{userId} and store_id = #{storeId}
+</select>
+
+<select id="findListByUserId" resultType="com.dealight.domain.LikeVO">
+select *
+from tbl_like
+where user_id = #{userId}
+</select>
+
+<select id="findListByStoreId" resultType="com.dealight.domain.LikeVO">
+select *
+from tbl_like
+where store_id = #{storeId}
+</select>
+
+<insert id="insert">
+INSERT 
+INTO tbl_like (user_id,store_id,regdate,updatedate)
+VALUES(#{userId},#{storeId},sysdate,sysdate)
+</insert>
+
+<delete id="delete">
+delete
+from tbl_like
+where store_id = #{storeId} AND user_id = #{userId}
+</delete>
+
+<select id="getLikeTotal" resultType="int">
+select COUNT(*)
+from tbl_like
+where user_id = #{userId}
+
+</select>
+
+</mapper>

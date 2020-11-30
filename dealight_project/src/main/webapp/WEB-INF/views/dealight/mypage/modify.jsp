@@ -4,8 +4,6 @@
     <%@include file="../../includes/mainMenu.jsp" %>
    
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!-- 현수현수현수 -->
-
      <script>
     //로그인이 안된 상태면 메인페이지로 넘어가게
 	let msg = '${msg}';
@@ -34,13 +32,13 @@ padding: 20px;
 <h1>회원정보 수정/ 회원탈퇴</h1>
 <div class="modify-content">
 <form action ="/dealight/mypage/modify" method="post" onsubmit="return validate()">
-<p>아이디 : <input type = "text" name="userId" id="userId"value="<c:out value = "${user.userId }"/>" readonly="readonly">
-<p>이름 : <input type = "text" name="name" id="name" value="<c:out value = "${user.name }"/>" >
-<p>이메일 : <input type = "email" name="email" id="email" value="<c:out value = "${user.email }"/>" >
-<p>핸드폰번호 : <input type = "text" name="telno" id="telno"value="<c:out value = "${user.telno }"/>" >
-<p>생년월일 : <input type = "text" name="brdt" id="brdt" value="<c:out value = "${user.brdt }"/>" readonly="readonly">
+<p>아이디 : <input type = "text" name="userId" id="userId"value="${user.userId }" readonly="readonly">
+<p>이름 : <input type = "text" name="name" id="name" value="${user.name }" >
+<p>이메일 : <input type = "email" name="email" id="email" value="${user.email}" >
+<p>핸드폰번호 : <input type = "text" name="telno" id="telno"value="${user.telno }" >
+<p>생년월일 : <input type = "text" name="brdt" id="brdt" value="${user.brdt }" readonly="readonly">
 <p>성별 : 여자<input type="radio" name="sex" value="W">남자<input type="radio" name="sex" value="M">  </p>
-<p>프로필사진 : <input type = "text" name="photoSrc" id="photoSrc"value="<c:out value = "${user.photoSrc }"/>" >
+<p>프로필사진 : <input type = "text" name="photoSrc" id="photoSrc" value="${user.photoSrc }" >
 <p> SNS연동 : <input type="radio" name="snsLginYn" value="Y">yes<input type="radio" name="snsLginYn" value="N">no  </p>
 
 <div><button type="submit" onclick="alert('회원정보수정이 완료되었습니다.')">회원수정</button>
