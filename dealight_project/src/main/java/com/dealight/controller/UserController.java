@@ -35,7 +35,7 @@ import com.dealight.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
-//현수현수현수.
+//jongwoo
 @Controller
 @Log4j
 @RequestMapping("/dealight/*")
