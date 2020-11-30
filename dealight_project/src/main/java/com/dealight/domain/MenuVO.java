@@ -25,4 +25,6 @@ public class MenuVO {
 	private String imgUrl;
 	private String name;
 	private String recoMenu; 
+	private String thumImgUrl;
+	private String encThumImgUrl;
 }

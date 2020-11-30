@@ -20,12 +20,14 @@ import org.springframework.stereotype.Component;
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreImgVO;
+import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserVO;
 import com.dealight.domain.WaitVO;
 import com.dealight.mapper.RsvdDtlsMapper;
 import com.dealight.mapper.RsvdMapper;
 import com.dealight.mapper.StoreImgMapper;
 import com.dealight.service.RsvdService;
+import com.dealight.service.StoreService;
 import com.dealight.service.UserService;
 import com.dealight.service.WaitService;
 
@@ -62,6 +64,9 @@ public class FileCheckTask {
 	@Setter(onMethod_ = @Autowired)
 	private UserService userService;
 	
+	@Setter(onMethod_ = @Autowired)
+	private StoreService storeService;
+	
 	
 	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05\\";
 	
@@ -80,26 +85,28 @@ public class FileCheckTask {
 	}
 	
 	// 자동 웨이팅 생성기
-	//@Scheduled(cron ="0 * * * * *")
+	@Scheduled(cron ="0 * * * * *")
 	public void registerOnWait() throws Exception{
 		log.warn("Auto Online Wait Register Task run..................");
 		
     	List<String> userIdList = new ArrayList<>();
     	
-    	userIdList.add("kjuioq");
-    	userIdList.add("lim");
-    	userIdList.add("soo");
-    	userIdList.add("bin");
-    	userIdList.add("kim");
-    	userIdList.add("abc");
+    	List<UserVO> userVOList = userService.getList();
+    	
+    	userVOList.stream().forEach(user -> {
+    		
+    		userIdList.add(user.getUserId());
+    	});
+    	
+    	// 테스트용 user id
+    	List<StoreVO> list = storeService.getStoreListByUserId("aaaa");
     	
     	List<Long> storeList = new ArrayList<>();
     	
-    	storeList.add(1L);
-    	storeList.add(10L);
-    	storeList.add(13L);
-    	storeList.add(16L);
-    	storeList.add(18L);
+    	list.stream().forEach(store -> {
+    		storeList.add(store.getStoreId());
+    	});
+    	
     	
     	List<Integer> waitPnumList = new ArrayList<>();
     	
@@ -131,10 +138,13 @@ public class FileCheckTask {
     			.waitStusCd("W")
     			.build();
     	
-    	waitService.registerOnWaiting(wait);
+    	log.info("wait id ................. : " + waitService.registerOnWaiting(wait));
     	
     	log.warn(wait);
-    	log.warn("=========================================wait 웨이팅 완료");
+    	if(wait.getWaitId() > 0 )
+    		log.warn("=========================================wait 웨이팅 완료");
+    	else if(wait.getWaitId() == 0)
+    		log.warn("=========================================wait 웨이팅 실패");
 		
 	}
 	
@@ -147,12 +157,12 @@ public class FileCheckTask {
     	
     	List<String> userIdList = new ArrayList<>();
     	
-    	userIdList.add("kjuioq");
-    	userIdList.add("lim");
-    	userIdList.add("soo");
-    	userIdList.add("bin");
-    	userIdList.add("kim");
-    	userIdList.add("abc");
+    	List<UserVO> userVOList = userService.getList();
+    	
+    	userVOList.stream().forEach(user -> {
+    		
+    		userIdList.add(user.getUserId());
+    	});
     	
     	List<String> menuList = new ArrayList<>();
     	
@@ -160,11 +170,12 @@ public class FileCheckTask {
     	
     	List<Long> storeList = new ArrayList<>();
     	
-    	storeList.add(1L);
-    	storeList.add(10L);
-    	storeList.add(13L);
-    	storeList.add(16L);
-    	storeList.add(18L);
+    	// 테스트용 user id
+    	List<StoreVO> storeTestList = storeService.getStoreListByUserId("aaaa");
+    	
+    	storeTestList.stream().forEach(store -> {
+    		storeList.add(store.getStoreId());
+    	});
     	
     	int storeIdx = (int) (Math.random() * storeList.size());
     	
@@ -281,12 +292,24 @@ public class FileCheckTask {
 	}
 	
 	// 새벽 2시가 되면 하루 전(sysdate -1)의 웨이팅을'W' -> 'E'로 변경한다.
-	//@Scheduled(cron="0 55 * * * *")
+	//@Scheduled(cron="0 10 * * * *")
 	public void waitInit() throws Exception {
 		
 		log.warn("Daily Wait Initialization Task run .....................");
 		
 		int upNum = waitService.waitInit();
+		
+		log.warn("=========================================초기화 웨이팅 : " + upNum);
+		
+	}
+	
+	// 새벽 2시가 되면 일주일 전(sysdate - 7)의 패널티 상태를'Y' -> 'N'로 변경한다.
+	//@Scheduled(cron="0 10 * * * *")
+	public void checkPanaltyDuration() throws Exception {
+		
+		log.warn("Daily Check Panalty Duration Task run .....................");
+		
+		int upNum = userService.checkPanaltyDuration();
 		
 		log.warn("=========================================초기화 웨이팅 : " + upNum);
 		

@@ -64,16 +64,12 @@ public class WaitServiceImpl implements WaitService {
 	@Override
 	public boolean isCurWaitingUser(String userId) {
 		
-		log.info("현재 웨이팅 중인 사용자입니다.");
-		
 		return waitMapper.findByUserId(userId, "W").size() > 0;
 	}
 
 	@Override
 	public boolean isCurPanaltyUser(String userId) {
 		
-		log.info("현재 패널티 사용자입니다.");
-
 		return userMapper.findById(userId).getPmStus().equals("P");
 	}
 
@@ -98,10 +94,11 @@ public class WaitServiceImpl implements WaitService {
 		return waitMapper.changeWaitStusCd(waitid, "E") == 1;
 	}
 
+	// query 3번 날리는거 추후에 변경
 	@Override
 	public boolean panaltyWaiting(Long waitid) {
 
-		return waitMapper.changeWaitStusCd(waitid, "P") == 1;
+		return waitMapper.changeWaitStusCd(waitid, "P") == 1 && 1 == userMapper.addPanaltyCnt(waitMapper.findById(waitid).getUserId());
 	}
 
 	@Override

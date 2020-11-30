@@ -20,7 +20,6 @@ public class UserVOTests {
 	// ���� �Է°�
 	String brdt = "931211";
 	String photoSrc = "/a.jpg";
-	Date pmExpi = new Date();
 	
 	// 1. �ʼ� �Է°��� �Է��ϰ� ������ü�� ������ �� �ִ���.
 	// not null ���� �Է�
@@ -63,7 +62,6 @@ public class UserVOTests {
 				.email(email)
 				.photoSrc(photoSrc)
 				.sex(sex)
-				.pmExpi(pmExpi)
 				.build();
 		
 		assertTrue(user.getUserId().equals(userId));
@@ -74,7 +72,6 @@ public class UserVOTests {
 		assertTrue(user.getSex().equals(sex));
 		assertTrue(user.getBrdt().equals(brdt));
 		assertTrue(user.getPhotoSrc().equals(photoSrc));
-		assertTrue(user.getPmExpi().equals(pmExpi));
 		
 		
 		assertNotNull(user);
@@ -170,5 +167,6 @@ public class UserVOTests {
 //			System.out.println(user);
 //			assertNotNull(user);
 //	}
+	
 	
 }
