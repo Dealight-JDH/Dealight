@@ -98,8 +98,19 @@ public class WaitServiceImpl implements WaitService {
 	// query 3번 날리는거 추후에 변경
 	@Override
 	public boolean panaltyWaiting(Long waitid) {
+		
+		log.info("panaltyWaiting.....................");
+		
+		String userId = waitMapper.findById(waitid).getUserId();
+		
+		log.info("waitId....................." + waitid);
+		log.info("userId....................." + userId);
+		
+		if(userId == null)
+			return waitMapper.changeWaitStusCd(waitid, "P") == 1;
+		else 
+			return waitMapper.changeWaitStusCd(waitid, "P") == 1 && 1 == userMapper.addPanaltyCnt(userId);
 
-		return waitMapper.changeWaitStusCd(waitid, "P") == 1 && 1 == userMapper.addPanaltyCnt(waitMapper.findById(waitid).getUserId());
 	}
 
 	@Override

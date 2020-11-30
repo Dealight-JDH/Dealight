@@ -147,13 +147,6 @@
 		</c:forEach>
 	</c:if>
 	
-	<div class="well">
-		<input type="text" id="msg" value="wait,${userId},${storeId},101" class="form-control" />
-		<button id="btnSend" class="btn btn-primary">Send Message</button>
-	</div>
-	
-	<div id="socketAlert" class="alert alert-success" role="alert"">알림!!!</div>
-	
 	<div>
         </div> <!-- end info box -->
         	<!-- The Modal -->
@@ -711,6 +704,8 @@ let curHour = curToday.getHours(),
             boardService.getTodayRsvdMap({storeId:storeId}, function(map){
             	let strRsvdMap = "";
             	
+            	console.log("map.............................."+map);
+            	
             	if(!map)
             		return;
             	Object.entries(map).forEach(([key,value]) => {
@@ -1205,6 +1200,7 @@ let curHour = curToday.getHours(),
         
         
         /* web socket!!!!!!!!!!!!!!!!!!!!*/
+        /* 	<div id="socketAlert" class="alert alert-success" role="alert"">알림!!!</div> */
         let socket = null;
    	 
 	   	 function connectWS() {
