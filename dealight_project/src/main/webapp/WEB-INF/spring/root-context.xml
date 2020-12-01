@@ -34,9 +34,9 @@
 		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
 	</bean>
 	
-	<context:property-placeholder
+	<!-- <context:property-placeholder
 		location="classpath:email.properties" />
-	
+	 -->
 	
 	<bean id="javaMailSender"	class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com" />
@@ -65,6 +65,7 @@
 		
 	<mybatis-spring:scan base-package="com.dealight.mapper"/>
 	<context:component-scan base-package="com.dealight.service"/>
+	<context:component-scan base-package="com.dealight.sns"/>
 	<context:component-scan base-package="com.dealight.mapper"/>
 	
 	<!-- 동인 추가 -->
