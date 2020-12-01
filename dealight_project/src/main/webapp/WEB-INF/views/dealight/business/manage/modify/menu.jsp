@@ -193,11 +193,8 @@
 		
 		$("button[data-oper='modify']").on("click", function(e){
 			
-			console.log
-			
 			menuForm.attr("method", "post");
 			menuForm.attr("action", "/dealight/business/manage/menu/modify").submit();
-			
 		});
 		
 		$("button[data-oper='remove']").on("click", function(e){

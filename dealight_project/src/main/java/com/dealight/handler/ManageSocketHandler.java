@@ -22,6 +22,7 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class ManageSocketHandler extends TextWebSocketHandler {
 	
+	// 싱글톤
 	private static ManageSocketHandler handler;
 	private ManageSocketHandler() {
 		handler = this;

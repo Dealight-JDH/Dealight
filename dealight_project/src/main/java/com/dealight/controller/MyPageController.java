@@ -75,7 +75,6 @@ public class MyPageController {
 		
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
 		session.setAttribute("userId", "kjuioq");
-				
 		String userId = (String) session.getAttribute("userId");
 		
 		// 1.회원의 예약 리스트를 가져온다.
@@ -164,7 +163,6 @@ public class MyPageController {
 		
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
 		session.setAttribute("userId", "kjuioq");
-		
 		String userId = (String) session.getAttribute("userId");
 		
 		if(cri.getPageNum() == 0)
@@ -211,11 +209,13 @@ public class MyPageController {
 	@GetMapping("/like")
 	public String like(Model model, HttpSession session,Criteria cri) {
 		
+		// 임시로 'kjuioq'의 아이디를 로그인한다.
+		session.setAttribute("userId", "kjuioq");
 		String userId = (String) session.getAttribute("userId");
 
 		// TODO
 		// 찜 목록은 Grid 형식으로 보여준다.
-		// 1. userId로 Like List를 가져온다.
+		// 1. userId로 Like List를 가져온다. ●
 		// store 정보를 보여준다.
 		// 클릭하면 store 상세를 볼 수 있도록 구성한다.
 		// 현재 핫딜 여부를 보여준다.
@@ -237,7 +237,6 @@ public class MyPageController {
 		// TODO
 		// 3. 좋아요 취소 로직을 구현한다. 
 		// 비동기 방식으로 구현한다.
-		
 		// 이외 로직은 축소한다.
 		
 		return "/dealight/mypage/like";
@@ -248,18 +247,14 @@ public class MyPageController {
 		
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
 		session.setAttribute("userId", "kjuioq");
-		
 		String userId = (String) session.getAttribute("userId");
 		
-		// TODO
+		
 		// 1. 기존 회원 정보를 가져온다.
 		UserVO user = userService.get(userId);
 		
-		
-		
 		model.addAttribute("user",user);
 
-		
 		return "/dealight/mypage/modify";
 	}
 	
@@ -271,8 +266,6 @@ public class MyPageController {
 		boolean result = userService.modify(user);
 		
 		log.info("result................ : " + result);
-		
-		rttr.addFlashAttribute("result", result);
 		
 		if(result)
 			rttr.addFlashAttribute("msg", "수정이 완료되었습니다.");
