@@ -28,7 +28,7 @@ public class KakaoLoginService {
 	private static final String REDIRECTURI = "http://localhost:8181/oauth";
 	
 	//카카오 인가 요청
-	public String getAuthorizationBaseUrl(HttpSession session) {
+	public String getAuthorizationBaseUrl() {
 
 		return AUTH_URL+"?client_id="+RESTAPIKEY+"&redirect_uri="+REDIRECTURI+"&response_type=code";
 	}

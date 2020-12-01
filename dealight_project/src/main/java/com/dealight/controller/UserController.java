@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -61,14 +62,24 @@ public class UserController {
 	public void email() {}
 	
 	
+	@GetMapping("/accessError")
+	public void accessDenied(Authentication auth, Model model) {
+		log.info("access Denied : " + auth);
+	
+		model.addAttribute("msg", "Access Denied");
+	}
+	
 	//로그인 첫 화면 요청 메소드
-    @RequestMapping(value = "/login", method = { RequestMethod.GET, RequestMethod.POST })
-    public String login(Model model, HttpSession session) {
+    @GetMapping("/login")
+    public void loginInput(String error,  Model model, HttpServletRequest request, HttpSession session) {
+    	String referrer = request.getHeader("Referer");
+
+    	request.getSession().setAttribute("prevPage", referrer);
         
         // 네이버아이디로 인증 URL
         String naverAuthUrl = naverService.getAuthorizationUrl(session);
         // 카카오 아디이 인증 URL
-        String kakaoAuthUrl = kakaService.getAuthorizationBaseUrl(session);
+        String kakaoAuthUrl = kakaService.getAuthorizationBaseUrl();
         
         log.info("네이버:" + naverAuthUrl);
         log.info("kakao : " + kakaoAuthUrl);
@@ -76,10 +87,18 @@ public class UserController {
         model.addAttribute("url", naverAuthUrl);
         //카카오
         model.addAttribute("kakao_url", kakaoAuthUrl);
-
-        return "login";
+        
+        if(error != null) {
+        	model.addAttribute("error", "로그인에 실패하였습니다.");
+        	
+        }
     }
     
+//    @PostMapping("/login")
+//    public void login() {
+//    	
+//    }
+//    
     
 	//회원가입 인증번호 이메일전송
 	@RequestMapping(value = "/prove/authemail",  method= RequestMethod.POST)
@@ -325,8 +344,6 @@ public class UserController {
 			
 	}
 	
-	@GetMapping("/login")
-	public void login() {}
 	
 	// 로그인action 로그인이 메인페이지의 모달창으로 있으므로 메인페이지와 매핑해줌
 	@PostMapping("/dealight")
@@ -376,10 +393,13 @@ public class UserController {
 	
 	//로그아웃
 	@GetMapping("/logout")
-	public String logout(HttpServletRequest request, RedirectAttributes rttr ) {
-		HttpSession session = request.getSession();
-		session.invalidate();  
-		return "redirect:/dealight/dealight";
+	public void logout() {
+		
+		log.info("logout ....");
+//		HttpSession session = request.getSession();
+//		session.invalidate();
+		
+		//return "redirect:/dealight/dealight";
 	}
 	
 	

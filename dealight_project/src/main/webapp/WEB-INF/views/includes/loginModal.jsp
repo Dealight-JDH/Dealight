@@ -33,15 +33,18 @@
          <div class="form-group">
            <label>아이디</label> 
            <input class="form-control" name='userId' value="<%=cookieVal !="" ? cookieVal : "" %>">
-         </div>      
+         </div>
+         
          <div class="form-group">
            <label>비밀번호</label> 
            <input type = 'password' class="form-control" name='pwd'>
            <p>${msg }</p>
          </div>
-          <p class="saveId"> id저장<input type="checkbox" name="saveId"  <%=cookieVal!=""?"checked" : ""%> ></p>
-         <div class="form-group">
-        <p class="find">   <a href="/dealight/findid">아이디 찾기</a>
+         
+         <p class="saveId"> id저장<input type="checkbox" name="saveId"  <%=cookieVal!=""?"checked" : ""%> ></p>
+        <div class="form-group">
+        
+         <p class="find">   <a href="/dealight/findid">아이디 찾기</a>
            <a href="/dealight/findpwd">비밀번호 찾기</a> </p>
          </div>
  

@@ -3,6 +3,7 @@ package com.dealight.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -15,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdMenuDTO;
+import com.dealight.domain.RsvdMenuDTOList;
 import com.dealight.domain.RsvdRequestDTO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.service.KakaoService;
 import com.dealight.service.RsvdService;
+import com.dealight.service.StoreService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -33,6 +36,7 @@ public class RsvdController {
 
 	private final KakaoService kakaoService;
 	private final RsvdService rsvdService;
+	private final StoreService service;
 	
 	@GetMapping("/rsvdForm")
 	public void getReservation(Long storeId, Model model) {
@@ -44,6 +48,34 @@ public class RsvdController {
 		model.addAttribute("menus", rsvdService.getMenuList(storeId));
 		
 	}
+	
+	
+	@GetMapping("/")
+	public void reservation(Model model,HttpSession session, RsvdMenuDTOList rsvdMenuList, String pnum, String time, Long storeId) {
+		//로그인 성공 후 세션에 저장된 user 정보를 꺼내와서 user정보를 불러옴
+//	    UserVO user = (UserVO)session.getAttribute("user");
+//	    if(user == null) {
+//	    	model.addAttribute("msg", "로그인이 필요한 페이지 입니다.");
+//	    	model.addAttribute("storeId",storeId);
+//	    	
+//	    }else {
+//		model.addAttribute("store", service.bstore(storeId));
+//		model.addAttribute("rsvdMenuList", rsvdMenuList); 
+//		model.addAttribute("pnum", pnum); 
+//		model.addAttribute("time", time);
+//		log.info(rsvdMenuList);
+//		}
+	    
+	    model.addAttribute("store", service.bstore(storeId));
+		model.addAttribute("rsvdMenuList", rsvdMenuList); 
+		model.addAttribute("pnum", pnum); 
+		model.addAttribute("time", time);
+		log.info(rsvdMenuList);
+	
+	    //return "/dealight/reservation";
+	    
+	}
+	
 	
 	//카카오 페이 테스트
 	@GetMapping("/kakaoPay")

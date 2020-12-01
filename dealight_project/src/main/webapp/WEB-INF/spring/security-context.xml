@@ -5,11 +5,42 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+<bean id="customLoginSuccess" class="com.dealight.security.CustomLoginSuccessHandler">
+	<constructor-arg name="defaultTargetUrl" value="/dealight/dealight"></constructor-arg>
+</bean>
+
+<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
 <security:http>
-	<security:form-login/>
+
+	<security:intercept-url pattern="/dealight/business/*" access="hasRole('ROLE_MEMBER')"/>
+	<security:intercept-url pattern="/dealight/reservation/*" access="hasRole('ROLE_USER')"/>
+	<security:intercept-url pattern="/dealight/mypage/*" access="hasRole('ROLE_USER')"/>
+	<security:intercept-url pattern="/dealight/*" access="permitAll"/>
+	
+	
+	<!-- <security:form-login/> -->
+	<security:form-login login-page="/dealight/login" authentication-success-handler-ref="customLoginSuccess"/>
+	
+	<security:access-denied-handler error-page="/accessError"/>
+	<security:logout logout-url="/logout" invalidate-session="true" logout-success-url="/dealight/dealight"/>
 </security:http>
 
 <security:authentication-manager>
-
+	<security:authentication-provider>
+			<!-- <security:jdbc-user-service data-source-ref="dataSource"/> -->
+			<!-- <security:password-encoder ref="customPasswordEncoder"/> -->
+			
+			<security:jdbc-user-service data-source-ref="dataSource" users-by-username-query="select user_id, pwd, enabled from tbl_user where user_id = ?"
+			authorities-by-username-query="select user_id, auth from tbl_user_auth where user_id = ?"/>
+			<security:password-encoder ref="bcryptPasswordEncoder"/>
+			
+			<!-- <security:user-service>
+				<security:user name="user" password="{noop}user" authorities="ROLE_USER"/>
+				<security:user name="member" password="{noop}member" authorities="ROLE_MEMBER"/>
+				<security:user name="admin" password="{noop}admin" authorities="ROLE_MEMBER, ROLE_ADMIN"/>
+				
+			</security:user-service> -->
+		</security:authentication-provider>
 </security:authentication-manager>
 </beans>
