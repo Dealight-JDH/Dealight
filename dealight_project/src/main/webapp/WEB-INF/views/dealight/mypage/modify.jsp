@@ -4,7 +4,7 @@
     <%@include file="../../includes/mainMenu.jsp" %>
    
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!-- 현수현수현수 -->
+<!--  -->
 
      <script>
     //로그인이 안된 상태면 메인페이지로 넘어가게

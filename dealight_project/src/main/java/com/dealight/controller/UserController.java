@@ -1,8 +1,5 @@
 package com.dealight.controller;
 
-
-
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
@@ -14,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +28,9 @@ import com.dealight.domain.Email;
 import com.dealight.domain.UserVO;
 import com.dealight.service.MailService;
 import com.dealight.service.UserService;
+//import com.dealight.sns.KakaoLoginService;
+import com.dealight.sns.KakaoLoginService;
+import com.dealight.sns.NaverLoginService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -42,16 +42,45 @@ import lombok.extern.log4j.Log4j;
 @AllArgsConstructor
 public class UserController {
 	
+	
 	private MailService mailService;
+	
+	@Autowired
+	private NaverLoginService naverService;
+	
+	@Autowired
+	private KakaoLoginService kakaService;
+	
 	private Email e_mail;
 	
+	@Autowired
 	private UserService service;
-	
 	
 	//회원가입전 이메일 인증받는 페이지
 	@GetMapping("/prove/authemail")
 	public void email() {}
 	
+	
+	//로그인 첫 화면 요청 메소드
+    @RequestMapping(value = "/login", method = { RequestMethod.GET, RequestMethod.POST })
+    public String login(Model model, HttpSession session) {
+        
+        // 네이버아이디로 인증 URL
+        String naverAuthUrl = naverService.getAuthorizationUrl(session);
+        // 카카오 아디이 인증 URL
+        String kakaoAuthUrl = kakaService.getAuthorizationBaseUrl(session);
+        
+        log.info("네이버:" + naverAuthUrl);
+        log.info("kakao : " + kakaoAuthUrl);
+        //네이버 
+        model.addAttribute("url", naverAuthUrl);
+        //카카오
+        model.addAttribute("kakao_url", kakaoAuthUrl);
+
+        return "login";
+    }
+    
+    
 	//회원가입 인증번호 이메일전송
 	@RequestMapping(value = "/prove/authemail",  method= RequestMethod.POST)
 	public String email(String email, RedirectAttributes rttr) throws IOException {
@@ -94,14 +123,10 @@ public class UserController {
 		rttr.addFlashAttribute("num", num);
         
         if (num.equals(authNum)) {
+            return "redirect:/dealight/register";    
+        }
             
-            return "redirect:/dealight/register";
-            
-        }else {
-            
-            return "redirect:/dealight/prove/authemail";
-        }    
-    
+        return "redirect:/dealight/prove/authemail";
     }
 
 	
@@ -209,10 +234,9 @@ public class UserController {
 		return "redirect:/dealight/mypage/userinfo";
 	}
 	
-		
-		//회원가입후 회원 정보 출력
-		@GetMapping("/mypage/userinfo")
-		public void userinfo() {}
+	//회원가입후 회원 정보 출력
+	@GetMapping("/mypage/userinfo")
+	public void userinfo() {}
 	
 	//중복확인 버튼 처리
 	//메소드에서 리턴되는 값은 View 를 통해서 출력되지 않고 HTTP Response Body 에 직접 쓰여지게 된다.

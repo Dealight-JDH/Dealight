@@ -6,12 +6,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
+import org.springframework.lang.Nullable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//현수현수현수
+//jongwoo
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,7 +22,7 @@ public class UserVO {
 	
     // 회원아이디 
 	@NotEmpty
-	@Pattern(regexp = "[A-za-z0-9]{5,15}")
+	@Pattern(regexp = "[A-za-z0-9]{5,50}")
     private String userId;
 
     // 회원이름 dd
@@ -52,7 +54,8 @@ public class UserVO {
 	@NotEmpty
     private String sex;
 
-    // 회원프로필사진 
+    // 회원프로필사진
+	@Nullable
     private String photoSrc;
 
     // 소셜로그인여부 
@@ -70,6 +73,13 @@ public class UserVO {
 
     // 패널티만료일자 
     private Date pmExpi;
+    
+    private Date regDate;
+    
+    private Date updateDate;
+    
+    //sns 고유식별번호
+    private Long snsNum;
     
     // ***************추가 동인
     // Buser와 조인을 하려고 일단 넣어놨는데 필요없으면 삭제

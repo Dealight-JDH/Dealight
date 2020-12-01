@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@page import="com.dealight.domain.UserVO"%>
 
-<!-- 현수현수현수 -->
 
 <html>
 <head>

@@ -34,6 +34,9 @@
 		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
 	</bean>
 	
+	<context:property-placeholder
+		location="classpath:email.properties" />
+	
 	
 	<bean id="javaMailSender"	class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com" />

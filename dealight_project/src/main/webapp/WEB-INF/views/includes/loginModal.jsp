@@ -12,7 +12,7 @@
                 }
             }
             %>
-<!-- 현수현수현수 -->
+<!-- jongwoo -->
 <!DOCTYPE html>
 <html>
 <head>

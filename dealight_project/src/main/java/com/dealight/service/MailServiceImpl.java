@@ -1,9 +1,7 @@
 package com.dealight.service;
 
-
-
-
 import javax.mail.MessagingException;
+
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -16,7 +14,6 @@ import com.dealight.domain.Email;
 
 import lombok.extern.log4j.Log4j;
 
-//현수현수현수
 @Log4j
 @Service
 public class MailServiceImpl implements MailService{
