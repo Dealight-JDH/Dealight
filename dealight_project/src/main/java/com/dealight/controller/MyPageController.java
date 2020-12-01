@@ -10,13 +10,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.Criteria;
+import com.dealight.domain.LikeListDTO;
 import com.dealight.domain.LikeVO;
 import com.dealight.domain.PageDTO;
 import com.dealight.domain.RsvdVO;
@@ -135,14 +138,13 @@ public class MyPageController {
 	}
 	
 	
-	// TODO
 	// 3. store with store loc를 모달로 보여준다.
 	// rest 방식으로 json으로 모달로 보여주자.
-	@GetMapping(value = "/reservation/store", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value = "/reservation/store/{storeId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public ResponseEntity<StoreVO> storeWithLoc(Long storeId){
+	public ResponseEntity<StoreVO> storeWithLoc(@PathVariable("storeId") Long storeId){
 		
-		return  new ResponseEntity<>(storeService.findStoreWithLocByStoreId(storeId), HttpStatus.OK);
+		return  new ResponseEntity<>(storeService.findStoreWithBStoreAndLocByStoreId(storeId), HttpStatus.OK);
 	}
 	
 	// TODO
@@ -156,6 +158,12 @@ public class MyPageController {
 	public ResponseEntity<StoreVO> getReview(Long storeId){
 		
 		return  new ResponseEntity<>(storeService.findStoreWithLocByStoreId(storeId), HttpStatus.OK);
+	}
+	
+	@PostMapping("/reservation/review")
+	public String regRevw(RedirectAttributes rttr) {
+		
+		return "redirect:/dealight/mypage/reservation";
 	}
 	
 	@GetMapping("/wait")
@@ -216,12 +224,12 @@ public class MyPageController {
 		// TODO
 		// 찜 목록은 Grid 형식으로 보여준다.
 		// 1. userId로 Like List를 가져온다. ●
-		// store 정보를 보여준다.
-		// 클릭하면 store 상세를 볼 수 있도록 구성한다.
-		// 현재 핫딜 여부를 보여준다.
+		// store 정보를 보여준다. ●
+		// 클릭하면 store 상세를 볼 수 있도록 구성한다. ●
+		// 현재 핫딜 여부를 보여준다. ●
 		
-		// 2. 페이징 처리를 한다.
-		// criteria 초기화
+		// 2. 페이징 처리를 한다. ●
+		// criteria 초기화 ●
 		if(cri.getPageNum() == 0)
 			cri = new Criteria(1,5);
 		
@@ -240,6 +248,40 @@ public class MyPageController {
 		// 이외 로직은 축소한다.
 		
 		return "/dealight/mypage/like";
+	}
+	
+	@GetMapping(value = "/like/{pageNum}/{amount}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<LikeListDTO> getLikeList(HttpSession session,@PathVariable("pageNum") int pageNum, @PathVariable("amount") int amount){
+		
+		// 임시로 'kjuioq'의 아이디를 로그인한다.
+		session.setAttribute("userId", "kjuioq");
+		String userId = (String) session.getAttribute("userId");
+		
+		LikeListDTO dto = new LikeListDTO();
+		Criteria cri = new Criteria(pageNum, amount);
+		int total = likeService.getLikeTotalByUserId(userId, cri);
+		
+		log.info("cri......................"+cri);
+		log.info("total......................"+total);
+		
+		dto.setLikeList(likeService.findListWithPagingByUserId(userId, cri));
+		dto.setTotal(total);
+		dto.setPageMaker(new PageDTO(cri,total));
+		log.info("dto......................"+dto);
+				
+		return  new ResponseEntity<>(dto, HttpStatus.OK);
+	} 
+	
+	@DeleteMapping(value = "/like/remove/{userId}/{storeId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<Boolean> removeLike(@PathVariable("userId")String userId, @PathVariable("storeId") Long storeId){
+		
+		log.info("like remove....................");
+		log.info("storeId...................." + storeId);
+		log.info("userID...................." + userId);
+		
+		return  new ResponseEntity<>(likeService.cancel(userId, storeId), HttpStatus.OK);
 	}
 	
 	@GetMapping("/modify")
@@ -298,14 +340,47 @@ public class MyPageController {
 	}
 	
 	@GetMapping("/changepwd")
-	public String changepwd(HttpSession session) {
+	public String changepwd(HttpSession session,Model model) {
 		
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
 		session.setAttribute("userId", "kjuioq");
-		
 		String userId = (String) session.getAttribute("userId");
 		
+		UserVO user = userService.get(userId);
+		
+		model.addAttribute("user",user);
+		
 		return "/dealight/mypage/changepwd";
+	}
+	
+	@PostMapping("/changepwd")
+	public String changepwdPost(HttpSession session, String pwd, String changepwd, RedirectAttributes rttr) {
+		
+		log.info("change pwd...............");
+		
+		// 임시로 'kjuioq'의 아이디를 로그인한다.
+		session.setAttribute("userId", "kjuioq");
+		String userId = (String) session.getAttribute("userId");
+		
+		UserVO user = userService.get(userId);
+		
+		// 비밀번호가 일치할 때
+		if(pwd.equals(user.getPwd())) {
+			user.setPwd(changepwd);
+			boolean result = userService.changePwd(user);
+			if(result) {
+				String msg = "비밀번호가 변경되었습니다.";
+				rttr.addFlashAttribute("msg",msg);
+			}
+			return "redirect:/dealight/mypage/changepwd"; 
+		}
+		// 비밀번호가 일치하지 않을 때
+		else {
+			String msg = "비밀번호가 틀렸습니다.";
+			rttr.addFlashAttribute("msg",msg);
+			return "redirect:/dealight/mypage/changepwd";
+		}
+		
 	}
 	
 	@GetMapping("/notice")

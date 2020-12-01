@@ -189,5 +189,21 @@ public class StoreMapperTests {
 		
 		assertNotNull(store.getLoc());
 	}
+	
+	@Test
+	public void findStoreWithBstoreAndLocByStoreIdTest1() {
+		
+		storeId = 13L;
+		
+		StoreVO store = mapper.findStoreWithBstoreAndLocByStoreId(storeId);
+		
+		log.info(store);
+		
+		assertNotNull(store);
+		assertNotNull(store.getBstore());
+		assertNotNull(store.getLoc());
+		
+		
+	}
 
 }

@@ -81,4 +81,6 @@ public interface StoreService {
 	
 	public StoreVO findStoreWithLocByStoreId(Long storeId);
 	
+	public StoreVO findStoreWithBStoreAndLocByStoreId(Long storeId);
+	
 }

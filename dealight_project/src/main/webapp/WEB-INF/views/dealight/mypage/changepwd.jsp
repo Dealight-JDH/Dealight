@@ -33,8 +33,9 @@
             </div>
             <div class="content_main">
 				<h1>마이페이지 비밀번호변경</h1>
+				<h2>${msg}</h2>
 				<div>
-					<form action="dealight/mypage/changepwd" method="post" onsubmit="return validate()">
+					<form action="/dealight/mypage/changepwd" method="post" onsubmit="return validate()">
 						<p>현재 비밀번호 <input type = 'password' id='pwd' name='pwd'></p>
 						<p>변경할 비밀번호<input type = 'password' id='changepwd' name='changepwd'></p>
 						<p>비밀번호 확인 <input type = 'password' id='repwd' onblur="checkPwd()"></p> 
@@ -73,7 +74,8 @@ function checkPwd(){
 //2. 비밀번호 유효성검사
 function validate() {	
 	
-	if($("#pwd").val() == ""){
+	
+	if($("#pwd").val() === ""){
 		alert('비밀번호를 입력하여 주세요');
 		$("#pwd").focus();
 		return false;
@@ -85,6 +87,8 @@ function validate() {
 		$("#changepwd").focus();
 		return false;
 	}
+	
+	return true;
 }
 </script>
 

@@ -12,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.LikeVO;
 
 import lombok.extern.log4j.Log4j;
@@ -101,6 +102,20 @@ public class LikeServiceTests {
 		
 		assertTrue(result);
 		
+	}
+	
+	@Test
+	public void getLikeTotalByUserIdTest1() {
+		
+		
+		
+		int pageNum = 1;
+		int amount = 3;
+		Criteria cri = new Criteria();
+		
+		int result = likeService.getLikeTotalByUserId(userId, cri);
+		
+		log.info(result);
 	}
 
 }

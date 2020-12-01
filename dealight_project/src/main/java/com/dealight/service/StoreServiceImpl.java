@@ -449,6 +449,12 @@ public class StoreServiceImpl implements StoreService {
 		return sMapper.findStoreWithLocByStoreId(storeId);
 	}
 
+	@Override
+	public StoreVO findStoreWithBStoreAndLocByStoreId(Long storeId) {
+		
+		return sMapper.findStoreWithBstoreAndLocByStoreId(storeId);
+	}
+
 
 //	
 //	  @Override public String storeCd(Long storeId) {

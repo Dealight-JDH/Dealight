@@ -63,4 +63,6 @@ public interface StoreMapper {
 	
 	public StoreVO findStoreWithLocByStoreId(Long storeId);
 	
+	public StoreVO findStoreWithBstoreAndLocByStoreId(Long storeId);
+	
 }
