@@ -85,7 +85,7 @@ public class FileCheckTask {
 	}
 	
 	// 자동 웨이팅 생성기
-	@Scheduled(cron ="0 * * * * *")
+//	@Scheduled(cron ="0 * * * * *")
 	public void registerOnWait() throws Exception{
 		log.warn("Auto Online Wait Register Task run..................");
 		

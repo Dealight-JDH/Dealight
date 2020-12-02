@@ -1,5 +1,9 @@
 package com.dealight.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -24,6 +28,24 @@ public class BizAuthController {
 
 	private BizAuthService service;
 	
+	//첨부파일 삭제
+	private void deleteFile(String imgSrc) {
+		log.info("delete img file.............");
+		log.info(imgSrc);
+		String uploadPath = imgSrc.substring(0, imgSrc.lastIndexOf("/"));
+		String fileName = imgSrc.substring(imgSrc.lastIndexOf("/")+1);
+		try {
+			Path file = Paths.get("/Users/hyeonjung/Desktop/upload/" + imgSrc);
+			Files.deleteIfExists(file);
+			log.info("file : " + file);
+			Path thummbnail = Paths.get("/Users/hyeonjung/Desktop/upload/" + uploadPath + "/s_" + fileName);
+			Files.deleteIfExists(thummbnail);
+			log.info("thumbnail : " + thummbnail);
+		}catch (Exception e) {
+			log.error("delete file error" +e.getMessage());
+		}
+	}
+	
 	@PostMapping("/register")
 	public String brnoRegister(BUserVO buser, RedirectAttributes rttr) {
 		
@@ -33,7 +55,7 @@ public class BizAuthController {
 		//등록이 실패하면???
 		service.register(buser);
 		log.info("brSeq :" + buser.getBrSeq());
-		rttr.addFlashAttribute("brSeq", buser.getBrSeq());
+		rttr.addFlashAttribute("result", buser.getBrSeq());
 		
 		return "redirect:/dealight/mypage/bizAuth/list";
 	}
@@ -58,7 +80,7 @@ public class BizAuthController {
 		
 	}
 	
-	@GetMapping("/get")
+	@GetMapping({"/get", "/modify"})
 	public void get(@RequestParam("brSeq")long brSeq, Model model) {
 		
 		log.info("get by brSeq : " + brSeq);
@@ -67,7 +89,29 @@ public class BizAuthController {
 		
 	}
 	
-//	@PostMapping("/modify")
-//	public String
+	@PostMapping("/modify")
+	public String modify(BUserVO buser, RedirectAttributes rttr) {
+		log.info("modify : "+ buser);
+		
+		if(service.modify(buser)) {
+			rttr.addFlashAttribute("result", "success");
+		}
+		
+		return "redirect:/dealight/mypage/bizAuth/list";
+	}
+	
+	@PostMapping("/remove")
+	public String remove(@RequestParam("brSeq") Long brSeq,@RequestParam("brPhotoSrc") String imgSrc, RedirectAttributes rttr) {
+		log.info("remove...." + brSeq);
+		log.info("imgSrc : " + imgSrc);
+		if(service.delete(brSeq)) {
+			
+			deleteFile(imgSrc);
+			
+			rttr.addFlashAttribute("result", "success");
+		}
+		
+		return "redirect:/dealight/mypage/bizAuth/list";
+	}
 	
 }

@@ -15,7 +15,7 @@ public interface BizAuthService {
 	//해당유저의 목록불러오기
 	public List<BUserVO> getListByUserId(String userId);
 	//수정
-	public int modify(BUserVO buser);
+	public boolean modify(BUserVO buser);
 	//삭제
-	public int delete(long brSeq);
+	public boolean delete(long brSeq);
 }

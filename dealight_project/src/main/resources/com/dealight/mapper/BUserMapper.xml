@@ -25,9 +25,9 @@
 	<insert id="insert">
 		INSERT
 		INTO
-		tbl_buser(br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno)
+		tbl_buser(br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, rep_name)
 		VALUES
-		(seq_buser.nextval, #{userId}, #{storeId}, #{brno}, #{brPhotoSrc}, #{brJdgStusCd}, #{storeNm}, #{telno}, #{storeTelno})
+		(seq_buser.nextval, #{userId}, #{storeId}, #{brno}, #{brPhotoSrc}, #{brJdgStusCd}, #{storeNm}, #{telno}, #{storeTelno}, #{repName})
 	</insert>
 
 	<insert id="insertSelectKey">
@@ -38,9 +38,9 @@
 
 		INSERT
 		INTO
-		tbl_buser(br_seq,user_id,store_id,brno,br_photo_src,br_jdg_stus_cd, store_nm, telno, store_telno)
+		tbl_buser(br_seq,user_id,store_id,brno,br_photo_src,br_jdg_stus_cd, store_nm, telno, store_telno, rep_name)
 		VALUES
-		(#{brSeq},#{userId},#{storeId},#{brno},#{brPhotoSrc},#{brJdgStusCd}, #{storeNm}, #{telno}, #{storeTelno})
+		(#{brSeq},#{userId},#{storeId},#{brno},#{brPhotoSrc},#{brJdgStusCd}, #{storeNm}, #{telno}, #{storeTelno}, #{repName})
 	</insert>
 
 
@@ -56,6 +56,7 @@
 		store_nm = #{storeNm},
 		telno = #{telno},
 		store_telno = #{storeTelno},
+		rep_name = #{repName},
 		updatedate = sysdate + 9/24
 		where br_seq = #{brSeq}
 	</update>
