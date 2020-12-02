@@ -7,15 +7,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<script>
-// 로그인이 안된 상태면 메인페이지로 넘어가게
-let msg = '${msg}';
-	if(msg != ""){
-        alert(msg);
-        location.href = '/dealight/dealight';
-     }
-</script>
-
 <html>
 <head>
 <meta charset="UTF-8">
@@ -43,62 +34,44 @@ let msg = '${msg}';
 </head>
 
 <body>
+	<h2>유저 아이디 : ${userId}</h2>
+	<h2>예약 가능한 리스트</h2>
+	
 	<div class="writable-main">	
-		<h1>작성 가능한 리뷰</h1> <br />
-		
-		<button>
-			<a href="written-list">
-			내가 작성한 리뷰</a>
-		</button> <br /> <br />
 	
-		<c:if test="${empty rsvdList }">
-			<p>작성 가능한 예약내역이 없습니다.</p>
+		<c:if test="${empty dtoList}">
+			리뷰 가능한 항목이 없습니다.
 		</c:if>
 		
-		<c:if test="${not empty rsvdList }">
-			<c:forEach items="${rsvdList }" var="rsvd">
-				<br />
-				회원아이디: <c:out value="${rsvd.userId }" /> <br />
-				매장대표사진: <c:out value="${rsvd.bstore.repImg }" /> <br />
-				예약번호: <c:out value="${rsvd.rsvdId }" /> <br />
-				매장명: <c:out value="${rsvd.store.storeNm }" /> <br />
-				예약날짜: <fmt:formatDate pattern="yyyy-MM-dd" value="${rsvd.regdate }" /> <br />
-				예약인원: <c:out value="${rsvd.pnum }" /><br />
-				예약메뉴: <c:out value="${rsvd.dtls.menuNm }" /> <br />
-				예약메뉴수: <c:out value="${rsvd.dtls.menuTotQty }" /> <br />
-				예약금액: <c:out value="${rsvd.totAmt }" />원 <br />
-		
-				<button class="myBtn">
-					<a href="register/rsvd?rsvdId=<c:out value="${rsvd.rsvdId }" />&waitId=-1">
-						<!-- onclick="window.open(this.href,'','width=450, height=600'); return false;"> --> 
-					리뷰 쓰기</a>
-				</button> <br />
+		<c:if test="${not empty dtoList}">
+			<c:forEach items="${dtoList }" var="dto">
+			==================================================
+				<h5>매장번호 : ${dto.storeId}</h5>
+				<h5>회원 아이디 : ${dto.userId}</h5>
+				<h5>시간 : ${dto.time}</h5>
+				<h5>리뷰 상태 : ${dto.revwStus}</h5>
+				<c:if test="${not empty dto.rsvd }">
+					<h2>예약</h2>
+					<h5>예약 번호 : ${dto.rsvd.rsvdId}</h5>
+					<h5>핫딜 번호 : ${dto.rsvd.htdlId}</h5>
+					<h5>승인 번호 : ${dto.rsvd.aprvNo}</h5>
+					<h5>예약 인원 : ${dto.rsvd.pnum}</h5>
+					<h5>예약 상태 : ${dto.rsvd.stusCd}</h5>
+					<h5>예약 총 금액 : ${dto.rsvd.totAmt}</h5>
+					<h5>예약 총 수량 : ${dto.rsvd.totQty}</h5>
+				</c:if>
+				<c:if test="${not empty dto.wait }">
+					<h2>웨이팅</h2>
+					<h5>웨이팅 번호: ${dto.wait.waitId}</h5>
+					<h5>웨이팅 인원: ${dto.wait.waitPnum}</h5>
+					<h5>손님 이름: ${dto.wait.custNm}</h5>
+					<h5>손님 번호: ${dto.wait.custTelno}</h5>
+					<h5>웨이팅 상태: ${dto.wait.waitStusCd}</h5>
+				</c:if>
 			</c:forEach>
 		</c:if>
 	
-		<c:if test="${empty waitList }">
-			<p>작성 가능한 웨이팅내역이 없습니다.</p>
-		</c:if>
-		
-		<c:if test="${not empty waitList }">
-			<c:forEach items="${waitList }" var="wait"> <br />
-				
-				회원아이디: <c:out value="${wait.userId }" /> <br />
-				매장대표사진: <c:out value="${wait.bstore.repImg }" /> <br />
-				웨이팅번호: <c:out value="${wait.waitId }" /> <br />
-				매장명: <c:out value="${wait.store.storeNm }" /> <br />
-				웨이팅시간: <fmt:formatDate pattern="yyyy-MM-dd" value="${wait.waitRegTm }" /> <br />	
-				웨이팅인원: <c:out value="${wait.waitPnum }" /> <br />
-				
-				<button class="myBtn">
-					<a href="register/wait?waitId=<c:out value="${wait.waitId }" />&rsvdId=-1">
-					리뷰 쓰기</a>
-				</button>
-				<br />
-			</c:forEach>
-		</c:if>
 	</div>
-</div>
 	
 </body>
 </html>

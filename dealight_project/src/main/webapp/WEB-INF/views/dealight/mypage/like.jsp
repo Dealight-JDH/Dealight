@@ -380,13 +380,11 @@ $(document).ready(function() {
             	console.log("dto.total .............." + dto.total);
 				
 				totalDiv.html(strTotal);
-	    		
+				
 	    	})
 	    	
 	    }
 	    
-	    likeWrapper
-	
 	let actionForm = $("#actionForm");
 	
 	$(".paginate_button a").on("click", function(e) {
@@ -410,7 +408,9 @@ $(document).ready(function() {
     });
     
     /* like 삭제 */
-    $(".btn_remove").on("click", e => {
+    listener;
+    
+    let listener = $(".btn_remove").on("click", e => {
     	
     	let storeId = $(e.target).parent().find(".store_id").text(),
     		userId = '${userId}';

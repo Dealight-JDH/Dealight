@@ -319,12 +319,12 @@ body {
 						<%-- <button class="mydropbtn" id="openModal" type="button" <%=loginState%>"> 사람이모지~~</button> --%>
 						<a class="mydropbtn" id="openModal"<%=loginState%>"><i
 							class="fas fa-user" color="black"></i></a>
-
 						<div class="mydropdown-content">
-							<a href="/dealight/mypage/reservation">예약내역(미구현)</a> <a
-								href="#waiting/list">웨이팅(미구현)</a>
-								<a href="/dealight/mypage/review/writable-list">나의리뷰</a>
-							<a href="#like">좋아요(미구현)</a> <a href="/dealight/mypage/modify">회원정보수정</a>
+							<a href="/dealight/mypage/reservation">예약내역</a> 
+							<a href="/dealight/mypage/wait">웨이팅</a>
+							<a href="/dealight/mypage/myreview">나의리뷰</a>
+							<a href="/dealight/mypage/like">찜 목록</a> 
+							<a href="/dealight/mypage/modify">회원정보수정</a>
 							<a href="/dealight/logout" style="display:<%=display %>">로그아웃</a>
 						</div>
 					</div>

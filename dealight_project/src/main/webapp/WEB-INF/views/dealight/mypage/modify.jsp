@@ -49,7 +49,7 @@
 					<div>
 						<button class='btn_modify' data-oper='modify'>회원수정</button>
 						<button class='btn_withdrawal' data-oper='withdrawal' >회원탈퇴</button>
-						<a href="/dealight/mypage/changepwd">비밀번호 변경</a>
+						<a href="/dealight/mypage/changepwd"><button>비밀번호 변경</button></a>
 					</div>
 				</div>
             </div>

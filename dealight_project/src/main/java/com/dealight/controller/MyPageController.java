@@ -221,8 +221,7 @@ public class MyPageController {
 		session.setAttribute("userId", "kjuioq");
 		String userId = (String) session.getAttribute("userId");
 
-		// TODO
-		// 찜 목록은 Grid 형식으로 보여준다.
+		// TODO 찜 목록은 Grid 형식으로 보여준다.
 		// 1. userId로 Like List를 가져온다. ●
 		// store 정보를 보여준다. ●
 		// 클릭하면 store 상세를 볼 수 있도록 구성한다. ●
@@ -325,7 +324,7 @@ public class MyPageController {
 		
 		userService.withdrawalUser(userId);
 		
-		return "redirect:/dealight";
+		return "redirect:/dealight/dealight";
 	}
 	
 	@GetMapping("/myreview")

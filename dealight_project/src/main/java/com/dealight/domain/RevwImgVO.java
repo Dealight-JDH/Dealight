@@ -19,17 +19,18 @@ public class RevwImgVO {
 	
 	// 리뷰번호 
 	@NotNull
-    private int revwId;
+    private Long revwId;
 
 	// 사진일련번호 
 	@NotNull
-    private int imgSeq;
+    private Long imgSeq;
 	
-	// 사진주소
-	@NotNull
-    private String imgUrl = "";
-    
-    private Date regDate;
-    private Date updateDate;
+	String fileName;
+	String uuid;
+	String uploadPath;
+	boolean image;
+	
+    private String regdate;
+    private String updatedate;
 
 }

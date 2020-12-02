@@ -89,7 +89,7 @@ public class FileCheckTask {
 	}
 	
 	// 자동 웨이팅 생성기
-	// @Scheduled(cron ="0 * * * * *")
+	//@Scheduled(cron ="0 * * * * *")
 	public void registerOnWait() throws Exception{
 		log.warn("Auto Online Wait Register Task run..................");
 		
@@ -133,8 +133,8 @@ public class FileCheckTask {
     	
     	WaitVO wait = new WaitVO().builder()
     			.waitId(0L)
-    			//.storeId(storeId)
-    			.storeId(1L)
+    			.storeId(storeId)
+    			//.storeId(1L)
     			.userId(userId)
     			.waitRegTm(new Date())
     			.waitPnum(waitPnum)
@@ -145,24 +145,26 @@ public class FileCheckTask {
     	
     	log.info("wait id ................. : " + waitService.registerOnWaiting(wait));
 
-    	/* 웹 소켓*/
-    	ManageSocketHandler handler = ManageSocketHandler.getInstance();
-    	Map<String, WebSocketSession> map = handler.getUserSessions();
-    	WebSocketSession session = map.get("kjuioq");
-    	TextMessage message = new TextMessage("{\"sendUser\":\"kjuioq\",\"waitId\":\"100\",\"cmd\":\"wait\",\"storeId\":\"1\"}");
-    	handler.handleMessage(session, message);
+    	Long waitId = wait.getWaitId();
     	
     	
     	log.warn(wait);
-    	if(wait.getWaitId() > 0 )
+    	if(waitId > 0 ) {
     		log.warn("=========================================wait 웨이팅 완료");
+        	/* 웹 소켓*/
+        	ManageSocketHandler handler = ManageSocketHandler.getInstance();
+        	Map<String, WebSocketSession> map = handler.getUserSessions();
+        	WebSocketSession session = map.get("kjuioq");
+        	TextMessage message = new TextMessage("{\"sendUser\":\""+userId+"\",\"waitId\":\""+waitId+"\",\"cmd\":\"wait\",\"storeId\":\""+storeId+"\"}");
+        	handler.handleMessage(session, message);
+    	}
     	else if(wait.getWaitId() == 0)
     		log.warn("=========================================wait 웨이팅 실패");
 		
 	}
 	
 	// 자동 예약 생성기//
-	//@Scheduled(cron="0 * * * * *")
+	//@Scheduled(cron="30 * * * * *")
 	public void registerRsvd() throws Exception{
 		log.warn("Auto Rsvd Register Task run .....................");
 		
@@ -299,6 +301,12 @@ public class FileCheckTask {
     	
     	int result = rsvdDtlsMapper.insertRsvdDtls(list);
     	
+    	/* 웹 소켓*/
+    	ManageSocketHandler handler = ManageSocketHandler.getInstance();
+    	Map<String, WebSocketSession> map = handler.getUserSessions();
+    	WebSocketSession session = map.get("kjuioq");
+    	TextMessage message = new TextMessage("{\"sendUser\":\""+userId+"\",\"rsvdId\":\""+rsvdId+"\",\"cmd\":\"rsvd\",\"storeId\":\""+storeId+"\"}");
+    	handler.handleMessage(session, message);
     	
     	log.warn(result);
 		log.warn("=========================================rsvd 예약 완료");
