@@ -25,6 +25,7 @@ $(document).ready(function(e){
 			console.dir(jobj);
 			
 			str += "<input type='hidden' name='imgUrl' value='" + jobj.data("path")+jobj.data("uuid")+jobj.data("filename")+"'>";
+			str += "<input type='hidden' name='thumImgUrl' value='" + jobj.data("path")+ "s_"+jobj.data("uuid")+"_"+jobj.data("filename")+"'>";
 			
 		});
         
@@ -108,7 +109,6 @@ $(document).ready(function(e){
 	}
 	
 	
-    
     /* change() 해당하는 요소의 value에 변화가 생길 경우 이를 감지하여 등록된 콜백함수를 동작시킨다.  */
 	$("input[type='file']").change(function(e){
 		

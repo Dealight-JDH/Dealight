@@ -10,10 +10,6 @@ $(document).ready(function() {
         
         $.getJSON("/business/manage/getStoreImgs", {storeId:storeId}, function(imgs){
             
-            console.log("즉시 함수..");
-            
-            console.log(imgs);
-            
             let str = "";
             
             $(imgs).each(function(i, img){

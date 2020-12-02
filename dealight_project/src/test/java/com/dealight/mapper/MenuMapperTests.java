@@ -90,7 +90,7 @@ public class MenuMapperTests {
     @Test
     public void findTest1() {
     	
-    	MenuVO menu = mapper.findBySeq(3);
+    	MenuVO menu = mapper.findBySeq(3L);
     	
     	assertNotNull(menu);
     	
@@ -120,7 +120,7 @@ public class MenuMapperTests {
 				.name("����")
 				.build();
 
-    	String bf = mapper.findBySeq(1).getName();
+    	String bf = mapper.findBySeq(1L).getName();
     	
     	int result = mapper.update(menu);
     	

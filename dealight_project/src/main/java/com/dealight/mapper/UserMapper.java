@@ -45,5 +45,9 @@ public interface UserMapper {
 	//Read List
 	//@Select("SELECT * FROM tbl_user")
 	public List<UserVO> findAll();
+	
+	public int addPanaltyCnt(String userId);
+	
+	public int checkPanaltyDuration();
 
 }

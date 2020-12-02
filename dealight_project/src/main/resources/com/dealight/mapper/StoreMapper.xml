@@ -66,7 +66,9 @@
 		<association property="bstore" javaType="com.dealight.domain.BStoreVO">
 			<result column="buser_id" property="buserId" />
 			<result column="seat_stus_cd" property="seatStusCd" />
-			<result column="repImg" property="rep_img" />
+			<result column="rep_img" property="repImg" />
+			<result column="rep_menu" property="repMenu" />
+			<result column="brch" property="brch" />
 			<result column="open_tm" property="openTm" />
 			<result column="close_tm" property="closeTm" />
 			<result column="break_sttm" property="breakSttm" />
@@ -239,7 +241,7 @@
 		b.buser_id,b.seat_stus_cd,b.open_tm,b.close_tm, b.break_sttm,
 		b.break_entm,b.last_ord_tm,b.n1_seat_no,b.n2_seat_no,b.n4_seat_no,b.store_intro,b.avg_meal_tm,b.hldy,b.acm_pnum,
 		h.htdl_id,h.name,h.dc_rate,h.start_tm,h.end_tm,h.lmt_pnum,h.intro,h.bef_price,h.ddct,h.cur_pnum,h.stus_cd,
-		m.menu_seq,m.name menu_name,m.price,m.img_url menu_img,m.reco_menu,
+		m.menu_seq,m.name menu_name,m.price,m.img_url, menu_img,m.reco_menu,
 		t.tag_nm,
 		w.wait_tot
 		from tbl_store s,tbl_store_loc l,tbl_store_eval e,
@@ -339,7 +341,8 @@
 		select s.store_id, s.store_nm, s.telno, s.cls_cd, b.buser_id,
 			   b.seat_stus_cd, b.open_tm, b.close_tm,b.break_sttm, 
 			   b.break_entm, b.last_ord_tm, b.n1_seat_no, b.n2_seat_no, 
-			   b.n4_seat_no, b.store_intro, b.avg_meal_tm, hldy, acm_pnum
+			   b.n4_seat_no, b.store_intro, b.avg_meal_tm, b.hldy, b.acm_pnum,
+			   b.rep_menu, b.rep_img, b.brch
 		from tbl_store s, tbl_bstore b
 		where s.store_id = b.store_id 
 		  AND b.buser_id = #{userId}
@@ -354,7 +357,7 @@
 	<select id="findByIdJoinBStore" parameterType="com.dealight.domain.StoreVO" resultMap="StoreVO">
 		select s.store_id, s.store_nm, s.telno, s.cls_cd, b.buser_id, b.seat_stus_cd, b.open_tm, b.close_tm,
 					b.break_sttm, b.break_entm, b.last_ord_tm, b.n1_seat_no, b.n2_seat_no, b.n4_seat_no,
-					b.store_intro, b.avg_meal_tm, hldy, acm_pnum
+					b.store_intro, b.avg_meal_tm, b.hldy, b.acm_pnum, b.rep_menu, b.rep_img, b.brch
 		from tbl_store s, tbl_bstore b
 		where s.store_id = #{storeId} AND s.store_id = b.store_id
 	</select>

@@ -73,12 +73,12 @@
             		where   (l.lat between #{lat} - #{range} and #{lat} + #{range})
                     	and (l.lng between #{lng} - #{range} and #{lng} + #{range})
 		                and s.store_id = b.store_id 
-		                and s.store_id = l.store_id 
-		                and s.store_id = e.store_id 
 					<!-- 영업매장만 보기 -->
 					<if test="openStore">
 						and b.seat_stus_cd != 'B'
 					</if>
+		                and s.store_id = l.store_id 
+		                and s.store_id = e.store_id 
 		           	order by 
 		           			<!-- 우선순위 -->
 							 <choose>
@@ -151,6 +151,7 @@ select *
 		                and s.store_id = l.store_id 
 		                and s.store_id = e.store_id 
 		            order by dist
+		            <!-- 우선순위 -->
 	              )
 <![CDATA[
            where rownum <= #{pageNum} * #{amount}

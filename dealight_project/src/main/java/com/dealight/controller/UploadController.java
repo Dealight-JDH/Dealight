@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dealight.domain.AttachFileDTO;
 import com.dealight.domain.StoreImgVO;
 
 import lombok.extern.log4j.Log4j;
@@ -35,7 +36,7 @@ import net.coobird.thumbnailator.Thumbnailator;
 
 /*
  * 
- *****[김동인] 
+ *****[김동인] [이현중] 
  * 
  */
 
@@ -44,15 +45,16 @@ import net.coobird.thumbnailator.Thumbnailator;
 public class UploadController {
 	
 	// 파일 경로
-	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05\\";
-	
-	private String getFolder() {
+//	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05\\";
+	final static private String ROOT_FOLDER = "/Users/hyeonjung/Desktop/upload";
+	//add param category
+	private String getFolder(String category) {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
 		Date date = new Date();
 		
-		String str = sdf.format(date);
+		String str = category + "-" + sdf.format(date);
 		
 		return str.replace("-",File.separator);
 	}
@@ -72,6 +74,70 @@ public class UploadController {
 		return false;
 	}
 	
+	//현중----------
+	
+	@PostMapping(value = "/uploadImgAjaxAction", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<AttachFileDTO> uploadAjaxPost(MultipartFile uploadFile, String category){
+		
+		AttachFileDTO attachDTO = new AttachFileDTO();
+		
+		// category/yyyy/MM/dd
+		String uploadFolderPath = getFolder(category);
+		
+		//파일경로를 생성한다. (rootfolder / category / yyyy / MM / dd )
+		File uploadPath = new File(ROOT_FOLDER, uploadFolderPath);
+ 		log.info("upload path : " + uploadPath);
+ 		
+ 		//파일이름
+		String uploadFileName = uploadFile.getOriginalFilename();
+		log.info("Upload File Name : " + uploadFile.getOriginalFilename());
+		log.info("Upload File Size : " + uploadFile.getSize());
+		log.info("Category : " + category);
+		
+		//파일 경로가 존재하지 않으면 파일경로생성
+		if(uploadPath.exists()==false) {
+			log.info("uploadPaht mkdir.....");
+			uploadPath.mkdirs();
+		}
+		
+		//uuid 생성
+		UUID uuid = UUID.randomUUID();
+		//기존 파일이름에 uuid 적용
+		uploadFileName = uuid.toString() + "_" + uploadFileName;
+		
+		attachDTO.setFileName(uploadFileName);
+		attachDTO.setUuid(uuid.toString());
+		attachDTO.setUploadPath(uploadFolderPath);
+		
+		try {
+			//저장경로 생성
+			File saveFile = new File(uploadPath, uploadFileName);
+			
+			//읽어온 파일을 지정된경로의 파일로 복사한다.
+			uploadFile.transferTo(saveFile);
+			
+			//이미지면 썸내일 생성
+			if(checkImageType(saveFile)) {
+				
+				attachDTO.setImage(true);
+				
+				FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" + uploadFileName));
+				
+				Thumbnailator.createThumbnail(uploadFile.getInputStream(), thumbnail, 100, 100);
+				
+				thumbnail.close();
+			}
+			
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+	
+		return new ResponseEntity<AttachFileDTO>(attachDTO, HttpStatus.OK);
+	}
+	
+	
+	//-------------
 	@PostMapping("/uploadFormAction")
 	public void uploadFormPost(MultipartFile[] uploadFile, Model model) {
 		
@@ -100,7 +166,6 @@ public class UploadController {
 	@GetMapping("/uploadAjax")
 	public void uploadAjax() {
 		
-		
 		log.info("upload ajax");
 		
 	}
@@ -114,7 +179,85 @@ public class UploadController {
 		
 		String uploadFolder = ROOT_FOLDER;
 		
-		String uploadFolderPath = getFolder();
+		String uploadFolderPath = getFolder("brno");
+		File uploadPath = new File(uploadFolder, uploadFolderPath);
+		
+		log.info("upload path : " + uploadPath);
+		
+		if(uploadPath.exists() == false) {
+			log.info("maker dir....");
+			uploadPath.mkdirs();
+		}
+		
+		
+		for(MultipartFile multipartFile : uploadFile) {
+			
+			StoreImgVO storeImg = new StoreImgVO();
+			
+			log.info("------------------------------------");
+			
+			log.info("Upload File Name : " + multipartFile
+					.getOriginalFilename());
+			
+			log.info("Upload File Size : " + multipartFile.getSize());
+			
+			String uploadFileName = multipartFile.getOriginalFilename();
+			
+			uploadFileName = uploadFileName.substring(uploadFileName
+					.lastIndexOf("\\") + 1);
+			
+			log.info("only file name : " + uploadFileName);
+			
+			storeImg.setFileName(uploadFileName);
+			
+			UUID uuid = UUID.randomUUID();
+			
+			uploadFileName = uuid.toString() + "_" + uploadFileName;
+			
+			
+			try {
+				//File saveFile = new File(uploadFolder, uploadFileName);
+				
+				File saveFile = new File(uploadPath, uploadFileName);
+				multipartFile.transferTo(saveFile);
+				
+				storeImg.setUuid(uuid.toString());
+				
+				storeImg.setUploadPath(uploadFolderPath);
+				
+				// check image type file
+				if(checkImageType(saveFile)) {
+					
+					storeImg.setImage(true);
+					
+					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" + uploadFileName));
+					
+					Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail,100,100);
+					
+					thumbnail.close();
+				}
+				
+				// add to list
+				list.add(storeImg);
+				
+			} catch (Exception e) {
+				log.error(e.getMessage());
+			} // end catCH
+		} // end for
+		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/uploadMenuAjaxAction", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<List<StoreImgVO>> uploadMenuAjaxPost(MultipartFile[] uploadFile) {
+		
+		List<StoreImgVO> list = new ArrayList<>();
+		
+		log.info("upload store img post................");
+		
+		String uploadFolder = ROOT_FOLDER;
+		
+		String uploadFolderPath = getFolder("brno");
 		File uploadPath = new File(uploadFolder, uploadFolderPath);
 		
 		log.info("upload path : " + uploadPath);
@@ -190,7 +333,6 @@ public class UploadController {
 		
 		File file = new File(ROOT_FOLDER + fileName);
 		
-		log.info("file: " + file);
 		
 		ResponseEntity<byte[]> result = null;
 		
@@ -199,6 +341,7 @@ public class UploadController {
 			HttpHeaders header = new HttpHeaders();
 			// Content-Type : img..  
 			header.add("Content-Type", Files.probeContentType(file.toPath()));
+			log.info("file: " + file);
 			
 			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file),header, HttpStatus.OK);
 		} catch (IOException e) {
