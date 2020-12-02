@@ -42,10 +42,12 @@ public class BUserVO {
     private String telno;
     //휴대전화번호
     private String storeTelno;
+    //대표자명
+    private String repName;
     
     
- 	private Date regDate;
- 	private Date updateDate;
+ 	private Date regdate;
+ 	private Date updatedate;
     
     public static class Builder{
 

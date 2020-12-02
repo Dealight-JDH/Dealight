@@ -50,19 +50,19 @@ public class BizAuthServiceImpl implements BizAuthService {
 	}
 
 	@Override
-	public int modify(BUserVO buser) {
+	public boolean modify(BUserVO buser) {
 		
 		log.info("modify.........." + buser);
 		
-		return mapper.update(buser);
+		return mapper.update(buser) == 1;
 	}
 
 	@Override
-	public int delete(long brSeq) {
+	public boolean delete(long brSeq) {
 
 		log.info("delete.........." + brSeq);
 		
-		return mapper.delete(brSeq);
+		return mapper.delete(brSeq) == 1;
 	}
 
 }

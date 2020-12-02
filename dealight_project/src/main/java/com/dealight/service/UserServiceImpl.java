@@ -1,6 +1,9 @@
 package com.dealight.service;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -109,14 +112,6 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public boolean isCurPanalty(String userId) {
-		
-		UserVO user = userMapper.findById(userId);
-		
-		return user.getPmStus().equalsIgnoreCase("Y");
-	}
-
-	@Override
 	public boolean isCurWaiting(String userId) {
 		
 		
@@ -135,6 +130,73 @@ public class UserServiceImpl implements UserService{
 		
 		
 		return rsvdMapper.findByStoreIdAndUserId(storeId, userId);
+	}
+	
+	@Override
+	public boolean isCurPanalty(String userId) {
+		
+		UserVO user = userMapper.findById(userId);
+		
+		// 만약 user의 pmexpi가 7일 이내이면
+		// 상태를 "Y"로 바꾼다.
+		if(checkCurPanaltyExpi(user.getPmExpi())) {
+			user.setPmStus("Y");
+			userMapper.update(user);
+		}
+		
+		return user.getPmStus().equalsIgnoreCase("Y");
+	}
+
+	@Override
+	public boolean checkCurPanaltyExpi(String pmExpi) {
+		
+		log.info("pmExpi.........."+pmExpi);
+		
+		pmExpi = pmExpi.substring(0,11);
+		
+		Date curTime = new Date();
+		
+		
+		try {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			
+			Date pmExpiDate = format.parse(pmExpi);
+			
+			log.info("pmExpiDate................"+pmExpiDate);
+			
+			log.info("curTime................"+curTime);
+			
+			Long calDate = curTime.getTime() - pmExpiDate.getTime();
+			
+			log.info("calDate................"+calDate);
+			
+			Long calDateDays = calDate / (24*60*60*1000);
+			
+			log.info("calDateDays................."+calDateDays);
+			
+			calDateDays = Math.abs(calDateDays);
+			
+			log.info("오늘로부터 날짜 차이 : " + calDateDays);
+			
+			return calDateDays <= 7L;
+		} catch (ParseException e) {
+
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean addPanaltyCnt(String userId) {
+		
+		return userMapper.addPanaltyCnt(userId) == 1;
+	}
+
+	@Override
+	public int checkPanaltyDuration() {
+		
+		return userMapper.checkPanaltyDuration();
 	}
 
 }
