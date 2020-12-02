@@ -65,6 +65,19 @@ public class BizAuthController {
 		
 	}
 	
+	@GetMapping("/request")
+	public String requestReg(@RequestParam("brSeq")long brSeq, Model model) {
+		
+		log.info("get by brSeq : " + brSeq);
+		
+		model.addAttribute("buser", service.read(brSeq));
+		
+		return "dealight/mypage/bizAuth/register";
+	}
+	
+	
+	
+	
 	@GetMapping("/list")
 	public void list(Model model, HttpSession session) {
 		//로그인 유저 아이디를 불러온다.
@@ -88,6 +101,7 @@ public class BizAuthController {
 		model.addAttribute("buser", service.read(brSeq));
 		
 	}
+	
 	
 	@PostMapping("/modify")
 	public String modify(BUserVO buser, RedirectAttributes rttr) {

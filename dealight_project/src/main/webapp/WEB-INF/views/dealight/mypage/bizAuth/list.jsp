@@ -24,6 +24,7 @@
   display: table;
 }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -32,7 +33,7 @@
 <c:forEach items="${list}" var="buser">
 	<div class="container">
 		<div class="buserText">
-			<a href="/dealight/mypage/bizAuth/get?brSeq=<c:out value='${buser.brSeq }'/>">
+			<a class="move" href="<c:out value='${buser.brSeq }'/>">
 				<label>접수번호 : </label><c:out value="${buser.brSeq }"/><br>
 				<label>매장명 : </label><c:out value="${buser.storeNm }"/><br>
 				<label>접수날짜 : </label><fmt:formatDate pattern="yyyy-MM-dd" value="${buser.regdate }"/><br>
@@ -42,23 +43,23 @@
 		<div class="buserBtn">
 			<c:choose>
 				<c:when test="${buser.brJdgStusCd eq 'C'}">
-					<button class="managebtn" data-oper="manage">매장관리</button>
-				</c:when>
-				<c:when test="${buser.brJdgStusCd eq 'W' || buser.brJdgStusCd eq 'P'}">
-					<button class="getbtn" data-oper="get">상세보기</button>
+					<button class="managebtn" data-oper="manage" data-brseq="<c:out value='${buser.brSeq }'/>">
+						매장관리
+					</button>
 				</c:when>
 				<c:when test="${buser.brJdgStusCd eq 'F'}">
-					<button class="requestbtn" data-oper="request">재심사요청하기</button>
+					<button class="requestbtn" data-oper="request" data-brseq="${buser.brSeq }">
+						재심사요청하기
+					</button>
 				</c:when>
 			</c:choose>
-			<button></button>
 		</div>
 	</div>
 </c:forEach>
 <button id="regbtn" class="registerbtn" data-oper="register" >사업자등록하기</button>
 <!-- 버튼제어 폼 -->
-<form action="/dealight/mypage/bizAuth/modify" id="operForm">
-	<input type="hidden" id="brSeq" name="brSeq" value="${buser.brSeq }" > 
+<form action="/dealight/mypage/bizAuth/modify" id="operForm" method="post">
+	<input type="hidden" id="brSeq" name="brSeq" value="" >
 </form>
 
 <!-- 모달 -->
@@ -71,17 +72,29 @@ window.onload = function(){
 
 	const regbtn = document.getElementById("regbtn");
 	let result = '<c:out value="${result}"/>';
-	
+	let formObj = $("#operForm")
+	//게시글 클릭 이벤트
+	$('.move').on("click", function(e){
+		e.preventDefault();
+		formObj.find("input[name='brSeq']").val($(this).attr('href'))
+		formObj.attr("action", "/dealight/mypage/bizAuth/get").attr("method", "get");
+		
+		formObj.submit();
+	});
+		
 	$('button').on("click",function(e){
 		let operation = $(this).data('oper');
-		
 		console.log(operation);
 		
-		if(operation ==='remove'){
-			formObj.attr("action", "/dealight/mypage/bizAuth/remove");
-		}else if(operation === 'list'){
-			formObj.attr("action", "/dealight/mypage/bizAuth/list").attr("method", "get");
-			formObj.empty();
+		formObj.find("input[name='brSeq']").val($(this).data('brseq'))
+		
+		//재심사요청
+		if(operation === 'request'){
+			formObj.attr("action", "/dealight/mypage/bizAuth/request").attr("method", "get");
+		//매장관리
+		}else if(operation === 'manage'){
+			self.location = "/dealight/business/"
+			return;
 		}
 		formObj.submit();
 	})

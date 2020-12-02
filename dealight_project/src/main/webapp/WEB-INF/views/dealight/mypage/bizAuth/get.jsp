@@ -81,6 +81,18 @@
 		<ul>
 		</ul>
 	</div>
+	<c:choose>
+		<c:when test="${buser.brJdgStusCd eq 'C'}">
+			<button class="managebtn" data-oper="manage" data-brseq="<c:out value='${buser.brSeq }'/>">
+				매장관리
+			</button>
+		</c:when>
+		<c:when test="${buser.brJdgStusCd eq 'F'}">
+			<button class="requestbtn" data-oper="request" data-brseq="${buser.brSeq }">
+				재심사요청하기
+			</button>
+		</c:when>
+	</c:choose>
 		<button data-oper="modify">수정하기</button>
 		<button data-oper="list">목록으로</button>
 		
@@ -114,6 +126,7 @@ window.onload = function(){
 		console.log(fileCallPath)
 		str += "<li data-path='"+ srcObj["uploadPath"] +"'";
 		str += "data-filename=\'"+ srcObj["fileName"] +"\'><div>";
+		str += "<span>" + srcObj["realFileName"] +"</span><br>"
 		str += "<img src='/display?fileName=" + fileCallPath + "'>";
 		str += "</div>";
 		str += "</li>";
@@ -129,7 +142,7 @@ window.onload = function(){
 	})
 	
 	$("button[data-oper='list']").on("click", function(e){
-		operForm.find("#bno").remove();
+		operForm.find("#brSeq").remove();
 		operForm.attr("action","/dealight/mypage/bizAuth/list")
 		operForm.submit();
 	})
@@ -171,15 +184,15 @@ window.onload = function(){
 	}
 	
 }
-function subSrc(PhotoSrc){
+function subSrc(photoSrc){
 	let srcObj = {};
-	let index = PhotoSrc.lastIndexOf("/");
+	let index = photoSrc.lastIndexOf("/");
 	
-	srcObj["uploadPath"] = PhotoSrc.substring(0,index);
-	srcObj["fileName"] = PhotoSrc.substring(index + 1);
+	srcObj["uploadPath"] = photoSrc.substring(0,index);
+	srcObj["fileName"] = photoSrc.substring(index + 1);
+	srcObj["realFileName"] = photoSrc.substring(photoSrc.lastIndexOf("_") + 1); 
 	
 	return srcObj;
 }
-	
 
 </script>

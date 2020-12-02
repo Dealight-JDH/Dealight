@@ -65,13 +65,13 @@
 <body>
 <div class="container">
 	<form action="/dealight/mypage/bizAuth/register" method="post" name="register">
-		<label>ID</label><input type="text" name="userId"><br>
+		<label>ID</label><input type="text" name="userId" value="${buser.userId }"><br>
 		-----------------><br>
-		<label>대표자명</label><input type="text" name="name"><br>
-		<label>매장명</label><input type="text" name="storeNm"><br>
-		<label>휴대전화</label><input type="text" name="telno"><br>
-		<label>사업장전화번호</label><input type="text" name="storeTelno"><br>
-		<label>사업자등록번호</label><input type="text" name="brno"><br>
+		<label>대표자명</label><input type="text" name="repName" value="${buser.repName }"><br>
+		<label>매장명</label><input type="text" name="storeNm" value="${buser.storeNm }"><br>
+		<label>휴대전화</label><input type="text" name="telno" value="${buser.telno }"><br>
+		<label>사업장전화번호</label><input type="text" name="storeTelno" value="${buser.storeTelno }"><br>
+		<label>사업자등록번호</label><input type="text" name="brno" value="${buser.brno }"><br>
 	</form>
 	<div>
 	<div class="uploadDiv">
@@ -82,6 +82,7 @@
 		</ul>
 	</div>
 		<button type="button" class="regbtn">신청하기</button>
+		<button type="button" class="listbtn">목록으로</button>
 	</div>
 
 </div>
@@ -97,22 +98,53 @@
 <script>
 
 window.onload = function(){
+	(function(){
+		let brPhotoSrc = "${buser.brPhotoSrc}"
+		
+		if(brPhotoSrc == null || brPhotoSrc == ""){
+			return ;
+		}
+		console.log("photo :" + brPhotoSrc)
+		let srcObj = subSrc(brPhotoSrc);
+		console.log(srcObj)
+		
+		let str = "";
+		
+		
+		let fileCallPath = encodeURIComponent( "/"+ srcObj["uploadPath"] +"/s_"+ srcObj["fileName"]);
+		console.log(fileCallPath)
+		str += "<li data-path='"+ srcObj["uploadPath"] +"'";
+		str += "data-filename=\'"+ srcObj["fileName"] +"\'><div>";
+		str += "<span>" + srcObj["realFileName"] +"</span>"
+		str += " <button type='button' data-file=\'"+fileCallPath+"\'data-type='image'>"
+		str += "(X)</button><br>";
+		str += "<img src='/display?fileName=" + fileCallPath + "'>";
+		str += "</div>";
+		str += "</li>";
+		
+		$(".uploadResult ul").html(str);
+	})();
 	
 	let regbtn = document.querySelector(".regbtn");
+	let listbtn = document.querySelector(".listbtn");
 	
 	//등록버튼이벤트
+	const formObj = $("form[name='register']");
 	regbtn.onclick = function(){
-		const formObj = $("form[name='register']");
 		const uploadResult = document.getElementsByClassName("uploadResult")[0];
 		let obj = (uploadResult.children[0]).children[0];
 		let str = "";
-		
+		//유효성 검사 필수
 		
 		console.dir(obj);
 		
 		str += "<input type='hidden' name='brPhotoSrc' value='"+obj.dataset["path"]+ "/" +obj.dataset["filename"] + "'>";
 		
 		formObj.append(str).submit();
+	}
+	listbtn.onclick = function(){
+		self.location = '/dealight/mypage/bizAuth/list'
+		return;
 	}
 	//================================ 파일첨부 ============================
 	//이미지파일만 저장가능하게 변경
@@ -172,7 +204,7 @@ window.onload = function(){
 		const uploadUL = $(".uploadResult ul");
 		
 		let str = "";
-		let realFileName = uploadResult.fileName.substring(uploadResult.fileName.indexOf("_"+1));
+		let realFileName = uploadResult.fileName.substring(uploadResult.fileName.indexOf("_")+1);
 		
 		let fileCallPath = encodeURIComponent(uploadResult.uploadPath+ "/s_" + uploadResult.fileName);
 		console.log(uploadResult.uuid)
@@ -186,7 +218,7 @@ window.onload = function(){
 		str += "</div>";
 		str += "</li>";
 			
-		uploadUL.append(str);
+		$(".uploadResult ul").html(str);
 	}	
 	});
 	//삭제버튼클릭이벤트
@@ -211,6 +243,16 @@ window.onload = function(){
 		});//ajax
 		
 	});
+	function subSrc(photoSrc){
+		let srcObj = {};
+		let index = photoSrc.lastIndexOf("/");
+		
+		srcObj["uploadPath"] = photoSrc.substring(0,index);
+		srcObj["fileName"] = photoSrc.substring(index + 1);
+		srcObj["realFileName"] = photoSrc.substring(photoSrc.lastIndexOf("_") + 1); 
+		
+		return srcObj;
+	}
 }
 	
 
