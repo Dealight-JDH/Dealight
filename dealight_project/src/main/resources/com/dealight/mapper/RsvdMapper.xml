@@ -45,7 +45,7 @@
 		
 		<update id = "updateDtls">
 			update tbl_rsvd_dtls
-			set menu_nm = #{menuNm}, menu_tot_qty = #{menuTotQty}, menu_Prc = #{menuPrc}, updatedate =sysdate +9/24
+			set menu_nm = #{menuNm}, menu_tot_qty = #{menuTotQty}, menu_Prc = #{menuPrc}, updatedate = sysdate + 9/24
 			where rsvd_id = #{rsvdId} and rsvd_seq = #{rsvdSeq}
 		</update>
 		
@@ -73,7 +73,7 @@
 			<selectKey keyProperty="rsvdSeq" order="BEFORE" resultType="long">
 				select seq_rsvd_dtls.nextval from dual
 			</selectKey>
-			insert into tbl_rsvd_dtls values(#{rsvdId}, #{rsvdSeq}, #{menuNm}, #{menuTotQty}, #{menuPrc}, sysdate + 9/24, sysdate +9/24)
+			insert into tbl_rsvd_dtls values(#{rsvdId}, #{rsvdSeq}, #{menuNm}, #{menuTotQty}, #{menuPrc}, sysdate + 9/24, sysdate + 9/24)
 		</insert>
 		
 		<!--예약 mapper -->
@@ -106,7 +106,7 @@
 				select seq_rsvd.nextval from dual
 			</selectKey>
 				insert into tbl_rsvd
-			 values(#{rsvdId}, #{storeId}, #{userId}, #{htdlId}, #{aprvNo}, #{pnum}, #{time}, #{stusCd}, #{totAmt}, #{totQty}, sysdate+9/24, sysdate+9/24, 0)
+			 values(#{rsvdId}, #{storeId}, #{userId}, #{htdlId}, #{aprvNo}, #{pnum}, #{time}, #{stusCd}, #{totAmt}, #{totQty}, sysdate + 9/24, sysdate + 9/24, 0)
 		
 		</insert>
 		

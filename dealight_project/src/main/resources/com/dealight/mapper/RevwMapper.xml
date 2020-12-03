@@ -56,9 +56,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    WHERE user_id = #{userId}
 		    AND revw_stus = 0
 		    )
+		    ORDER BY time DESC
 		) rs
 		WHERE rownum <= #{cri.pageNum}*#{cri.amount}
-		ORDER BY rs.time DESC
 		) r
 		where r.rn > (#{cri.pageNum}-1)*#{cri.amount}
 	]]>

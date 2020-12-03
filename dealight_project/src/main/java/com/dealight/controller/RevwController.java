@@ -33,7 +33,7 @@ public class RevwController {
 
 	private RevwService revwService;
 
-	@GetMapping("/")
+	@GetMapping("")
 	public String getWritableList(HttpSession session, Model model,Criteria cri) {
 		
 		// 임시로 'kjuioq'의 아이디를 로그인한다.

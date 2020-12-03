@@ -1,6 +1,9 @@
 package com.dealight.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Date;
 
 import org.junit.Test;
 
@@ -13,11 +16,20 @@ public class BUserVOTests {
     private String brJdgStusCd;
     private long storeId = 3;
 
-	// 1. ÇÊ¼ö ÀÔ·Â°ª¸¸ ÀÔ·ÂÇÏ°í À¯Àú°´Ã¼°¡ »ý¼ºµÉ ¼ö ÀÖ´ÂÁö.
-	// not null °ª¸¸ ÀÔ·Â
-	// ÇÊ¼ö°ª : brSeq,userId,brno,brPhotoSrc,brJdgStusCd(deafult °ª)
-	// ¼±ÅÃ°ª : storeId
-	// ÇÊ¼ö ÀÔ·Â°ªÀ» ÀÔ·ÂÇÏÁö ¾Ê¾ÒÀ»½Ã ÄÄÆÄÀÏ¿¡·¯
+    
+    @Test
+    public void test() {
+    	Date date = new Date();
+    	System.out.println(date);
+    	System.out.println(date.getDate());
+    	System.out.println(date.getMonth() );
+    	System.out.println(date.getYear());
+    }
+	// 1. ï¿½Ê¼ï¿½ ï¿½Ô·Â°ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½.
+	// not null ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½
+	// ï¿½Ê¼ï¿½ï¿½ï¿½ : brSeq,userId,brno,brPhotoSrc,brJdgStusCd(deafult ï¿½ï¿½)
+	// ï¿½ï¿½ï¿½Ã°ï¿½ : storeId
+	// ï¿½Ê¼ï¿½ ï¿½Ô·Â°ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½
 	@Test
 	public void buserGenerateTest1() {
 		BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc)
@@ -28,15 +40,15 @@ public class BUserVOTests {
 		assertTrue(buser.getBrno() == brno);
 		assertTrue(buser.getBrPhotoSrc().equals(brPhotoSrc));
 		
-		// default°ªÀÎ "W"°¡ Àß µé¾î°¬´ÂÁö
+		// defaultï¿½ï¿½ï¿½ï¿½ "W"ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½î°¬ï¿½ï¿½ï¿½ï¿½
 		assertTrue(buser.getBrJdgStusCd().equals("W"));
 		assertNotNull(buser);
 		
 	}
 	
-	// 2. ¸ðµç ÀÔ·Â°ªÀ» ÀÔ·ÂÇØ¼­ À¯Àú °´Ã¼¸¦ »ý¼ºÇÑ´Ù.
-	// ÇÊ¼ö°ª : brSeq,userId,brno,brPhotoSrc,brJdgStusCd(deafult °ª)
-	// ¼±ÅÃ°ª : storeId
+	// 2. ï¿½ï¿½ï¿½ ï¿½Ô·Â°ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+	// ï¿½Ê¼ï¿½ï¿½ï¿½ : brSeq,userId,brno,brPhotoSrc,brJdgStusCd(deafult ï¿½ï¿½)
+	// ï¿½ï¿½ï¿½Ã°ï¿½ : storeId
 	@Test
 	public void buserGenerateTest2() {
 		BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc)
@@ -49,7 +61,7 @@ public class BUserVOTests {
 		assertTrue(buser.getBrPhotoSrc().equals(brPhotoSrc));
 		assertTrue(buser.getStoreId() == storeId);
 		
-		// default°ªÀÎ "W"°¡ Àß µé¾î°¬´ÂÁö
+		// defaultï¿½ï¿½ï¿½ï¿½ "W"ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½î°¬ï¿½ï¿½ï¿½ï¿½
 		assertTrue(buser.getBrJdgStusCd().equals("W"));
 		assertNotNull(buser);
 		

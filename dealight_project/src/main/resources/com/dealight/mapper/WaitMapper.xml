@@ -51,7 +51,7 @@
 		*
 		FROM tbl_wait
 		where store_id = #{storeId} and
-		TO_CHAR(wait_reg_tm,'YYYYMMDD') = #{date}
+		TO_CHAR(regdate,'YYYYMMDD') = #{date}
 	</select>
 
 	<insert id="insert">
@@ -109,7 +109,7 @@
 	<![CDATA[
 		UPDATE tbl_wait
 		SET wait_stus_cd = 'E'
-		WHERE wait_reg_tm < sysdate - 1 and wait_stus_cd = 'W'
+		WHERE regdate < sysdate - 1 and wait_stus_cd = 'W'
 	]]>
 	</update>
 	

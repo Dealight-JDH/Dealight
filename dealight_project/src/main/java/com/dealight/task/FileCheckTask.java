@@ -130,13 +130,14 @@ public class FileCheckTask {
         int waitPnum = waitPnumList.get(pnumIdx);
         
         UserVO user = userService.get(userId);
-    	
+		SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		
     	WaitVO wait = new WaitVO().builder()
     			.waitId(0L)
     			.storeId(storeId)
     			//.storeId(1L)
     			.userId(userId)
-    			.waitRegTm(new Date())
+    			.waitRegTm(formater.format(new Date()))
     			.waitPnum(waitPnum)
     			.custTelno(user.getTelno())
     			.custNm(user.getName())
@@ -245,7 +246,8 @@ public class FileCheckTask {
         
         userId = userIdList.get(userIdx);
         storeId = storeList.get(storeIdx);
-    	cal.set(2020, 11, 23);
+        Date date = new Date();
+    	cal.set(2020, date.getMonth() + 1, date.getDate());
     	cal.set(cal.HOUR_OF_DAY,hourList.get(hourIdx));
     	cal.set(cal.MINUTE, minuteList.get(minuteIdx));
     	

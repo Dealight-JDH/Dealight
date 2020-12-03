@@ -3,6 +3,7 @@ package com.dealight.service;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class WaitingServiceTests {
 		
 		assertNotNull(waitingService);
 	}
-	
+	SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	private long waitId = 24;
 	private String userId = "kjuioq";
 	private long storeId = 13;
@@ -58,7 +59,7 @@ public class WaitingServiceTests {
 				.storeId(13L)
 				.userId("aaa")
 				.waitPnum(3)
-				.waitRegTm(new Date())
+				.waitRegTm(formater.format(new Date()))
 				.custTelno("010-2737-3333")
 				.custNm("����")
 				.waitStusCd("W")
@@ -102,7 +103,7 @@ public class WaitingServiceTests {
 				.waitId(30L)
 				.storeId(13L)
 				.waitPnum(3)
-				.waitRegTm(new Date())
+				.waitRegTm(formater.format(new Date()))
 				.custTelno("010-2737-3333")
 				.custNm("����մ�")
 				.waitStusCd("W")

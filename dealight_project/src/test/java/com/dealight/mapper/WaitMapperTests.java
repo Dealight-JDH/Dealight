@@ -25,10 +25,11 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class WaitMapperTests {
 	
+	SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	//�ʼ� �Է°�
     private Long waitId = 1L;
     private Long storeId = 13L;
-    private Date waitRegTm = new Date();
+    private String waitRegTm = formater.format(new Date());
     private int waitPnum = 30;
     private String custTelno = "010-0000-0000";
     private String custNm = "�赿��"; 
@@ -41,8 +42,10 @@ public class WaitMapperTests {
     private WaitMapper mapper;
     
     // create
+    @Transactional
     @Test
     public void insertTest1() {
+    	
     	WaitVO waiting = new WaitVO().builder()
     			.waitId(waitId)
 				.storeId(storeId)
@@ -50,6 +53,7 @@ public class WaitMapperTests {
 				.waitPnum(waitPnum)
 				.custTelno(custTelno)
 				.custNm(custNm)
+				.waitStusCd("Y")
 				.build();
     	
     	List<WaitVO> list = mapper.findAll();
@@ -65,6 +69,7 @@ public class WaitMapperTests {
     }
     
     // create
+    @Transactional
     @Test
     public void insertSelectKeyTest1() {
     	WaitVO waiting = new WaitVO().builder()
@@ -74,6 +79,7 @@ public class WaitMapperTests {
 				.waitPnum(waitPnum)
 				.custTelno(custTelno)
 				.custNm(custNm)
+				.waitStusCd("N")
 				.build();
     	
     	List<WaitVO> list = mapper.findAll();

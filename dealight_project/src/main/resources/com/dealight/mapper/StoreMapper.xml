@@ -121,7 +121,7 @@
 				<result property="waitId" column="wait_id" />
 				<result property="storeId" column="store_id" />
 				<result property="userId" column="user_id" />
-				<result property="waitRegTm" column="wait_reg_tm" />
+				<result property="waitRegTm" column="regdate" />
 				<result property="waitPnum" column="wait_pnum" />
 				<result property="custTelno" column="cust_telno" />
 				<result property="waitStusCd" column="wait_stus_cd" />

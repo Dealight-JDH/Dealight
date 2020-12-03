@@ -31,8 +31,7 @@ public class WaitVO {
 
     private String userId;
 
-    @NonNull
-    private Date waitRegTm = new Date();
+    private String waitRegTm;
 
     private int waitPnum;
 
