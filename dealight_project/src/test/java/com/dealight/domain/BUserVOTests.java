@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Date;
 
 import org.junit.Test;
+import org.springframework.http.StreamingHttpOutputMessage;
 
 public class BUserVOTests {
 	
@@ -15,6 +16,9 @@ public class BUserVOTests {
     private String brPhotoSrc = "/a.jpg";
     private String brJdgStusCd;
     private long storeId = 3;
+    private String storeNm = "storeNm";
+    private String telno = "010-2112-1232";
+    private String storeTelno = "02-123-1234";
 
     
     @Test
@@ -25,14 +29,9 @@ public class BUserVOTests {
     	System.out.println(date.getMonth() );
     	System.out.println(date.getYear());
     }
-	// 1. �ʼ� �Է°��� �Է��ϰ� ������ü�� ������ �� �ִ���.
-	// not null ���� �Է�
-	// �ʼ��� : brSeq,userId,brno,brPhotoSrc,brJdgStusCd(deafult ��)
-	// ���ð� : storeId
-	// �ʼ� �Է°��� �Է����� �ʾ����� �����Ͽ���
 	@Test
 	public void buserGenerateTest1() {
-		BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc)
+		BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc,storeNm,telno,storeTelno)
 				.build();
 		
 		assertTrue(buser.getBrSeq() == brSeq);
@@ -51,7 +50,7 @@ public class BUserVOTests {
 	// ���ð� : storeId
 	@Test
 	public void buserGenerateTest2() {
-		BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc)
+		BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc,storeNm,telno,storeTelno)
 				.setStoreId(storeId)
 				.build();
 		

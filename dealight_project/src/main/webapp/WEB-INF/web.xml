@@ -51,9 +51,10 @@
 		<load-on-startup>1</load-on-startup>
 		<async-supported>true</async-supported>
 
-		<!-- 동인 추가 -->
+		<!-- 동인 추가 & 현중 수정-->
 		<multipart-config>
-			<location>C:\\upload\\temp</location>
+			<!-- <location>C:\\upload\\temp</location> -->
+			<location>/Users/hyeonjung/Desktop/upload</location>
 			<max-file-size>20971520</max-file-size><!-- 1MB * 20 -->
 			<max-request-size>41943040</max-request-size> <!-- 40MB -->
 			<file-size-threshold>209715020</file-size-threshold><!-- 20MB -->

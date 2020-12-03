@@ -71,7 +71,6 @@ public class FileCheckTask {
 	@Setter(onMethod_ = @Autowired)
 	private StoreService storeService;
 	
-	
 	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05\\";
 	
 	private String getFolderYesterDay() {
