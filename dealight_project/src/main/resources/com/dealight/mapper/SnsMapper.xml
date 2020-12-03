@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="com.dealight.mapper.SnsMapper">
+
+	<insert id="insert">
+		insert into tbl_sns_user
+		values(#{userId}, #{id}, #{name}, #{nickName}, #{age}, #{gender}, #{birthday}, #{profileImg}, #{phoneNumber})
+	</insert>
+	
+	<select id="findById" resultType="com.dealight.domain.SnsVO">
+		select *
+		from tbl_sns_user
+		where user_id = #{userId}
+	</select>
+
+</mapper>
+		

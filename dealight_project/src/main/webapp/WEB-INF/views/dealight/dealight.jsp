@@ -6,11 +6,9 @@
     <%@include file="../includes/mainMenu.jsp" %>
     <%@include file="../includes/loginModal.jsp" %>
     
-    <!-- 현수현수현수 --> <!-- 수빈수빈수빈 -->
-    
 <body>
-
- <div class="middleDiv">
+<c:out value="${snsUser }">ffdasfasd</c:out> 
+<div class="middleDiv">
             <div class="imgContainer">
                 <img src="../../../../../resources/img/main.jpg">
 

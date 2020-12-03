@@ -5,9 +5,11 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.dealight.domain.SnsVO;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -34,6 +36,30 @@ public class NaverLoginService {
     // 프로필 조회 API URL 
     private final static String PROFILE_API_URL = "https://openapi.naver.com/v1/nid/me";
     
+    
+    //네이버 snsvo 변환
+    public SnsVO getNaverVO(JSONObject responseDto) {
+    	String userId = String.valueOf(responseDto.get("email"));
+    	Long id = Long.valueOf((String) responseDto.get("id"));
+        String name = String.valueOf(responseDto.get("name"));
+        String nickName = String.valueOf(responseDto.get("nickname"));
+        String age = String.valueOf(responseDto.get("age"));
+        String gender = String.valueOf(responseDto.get("gender"));
+        String birthday = String.valueOf(responseDto.get("birthday"));
+        String profileImg = String.valueOf(responseDto.get("profile_image"));
+    	
+        return SnsVO.builder()
+        		.userId(userId)
+        		.id(id)
+        		.name(name)
+        		.nickName(nickName)
+        		.age(age)
+        		.gender(gender)
+        		.birthday(birthday)
+        		.profileImg(profileImg)
+        		.build();
+    	
+    }
     // 네이버 아이디로 인증  URL 생성  Method
     public String getAuthorizationUrl(HttpSession session) {
  

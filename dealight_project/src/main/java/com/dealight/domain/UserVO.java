@@ -1,6 +1,7 @@
 package com.dealight.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -80,6 +81,9 @@ public class UserVO {
     
     //sns 고유식별번호
     private Long snsNum;
+    
+    //유저 권한
+    private List<AuthVO> authList;
     
     // ***************추가 동인
     // Buser와 조인을 하려고 일단 넣어놨는데 필요없으면 삭제

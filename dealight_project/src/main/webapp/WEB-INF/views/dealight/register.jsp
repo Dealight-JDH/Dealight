@@ -3,7 +3,7 @@
 <%@include file="../includes/registerHeader.jsp" %>
   <%@include file="../includes/mainMenu.jsp" %>
   
-  <!-- 현수현수현수 -->
+  <!--  -->
   
 <body>
     

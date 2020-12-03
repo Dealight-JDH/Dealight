@@ -1,5 +1,6 @@
 package com.dealight.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class RsvdController {
 	
 	
 	@GetMapping("/")
-	public void reservation(Model model,HttpSession session, RsvdMenuDTOList rsvdMenuList, String pnum, String time, Long storeId) {
+	public void reservation(Principal principal, Model model,HttpSession session, RsvdMenuDTOList rsvdMenuList, String pnum, String time, Long storeId) {
 		//로그인 성공 후 세션에 저장된 user 정보를 꺼내와서 user정보를 불러옴
 //	    UserVO user = (UserVO)session.getAttribute("user");
 //	    if(user == null) {
@@ -65,7 +66,8 @@ public class RsvdController {
 //		model.addAttribute("time", time);
 //		log.info(rsvdMenuList);
 //		}
-	    
+		
+	    model.addAttribute("userId", principal.getName());
 	    model.addAttribute("store", service.bstore(storeId));
 		model.addAttribute("rsvdMenuList", rsvdMenuList); 
 		model.addAttribute("pnum", pnum); 

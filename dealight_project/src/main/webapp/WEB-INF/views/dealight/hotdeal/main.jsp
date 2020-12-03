@@ -107,7 +107,6 @@ h4{
 		
 		<button type="submit" data-oper = 'activate'>핫딜 진행중</button>
 		<button type="submit" data-oper = 'pending'>핫딜 예정</button>
-		
 	</div>
 
 	<div class="hotdeal-search">

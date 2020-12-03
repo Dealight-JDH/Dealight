@@ -32,9 +32,6 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 		
 		List<String> roleNames = new ArrayList();
 		
-		String path = request.getHeader("referer");
-		
-		
 		//인증된 유저의 권한 가져오기
 		authentication.getAuthorities().forEach(authority -> {
 			
@@ -73,8 +70,6 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
             super.onAuthenticationSuccess(request, response, authentication);
         }
 
-		
-//		response.sendRedirect(path);
 	}
 
 }

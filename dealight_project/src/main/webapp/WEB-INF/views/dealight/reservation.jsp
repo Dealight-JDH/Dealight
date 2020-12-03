@@ -41,7 +41,7 @@ let msg = '${msg}';
 			<div class="column">
 				<h1>예약정보</h1>
 				
-				회원정보 
+				회원정보 <c:out value="${userId }"></c:out>
 				시간 : ${time } <br> 인원수 : ${pnum }
 				<p>요금세부정보</p>
 				<c:forEach items="${rsvdMenuList.menu }" var="menu"

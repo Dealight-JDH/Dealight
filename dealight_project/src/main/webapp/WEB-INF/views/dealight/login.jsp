@@ -85,17 +85,18 @@
 		<input type="submit">
 	</div>
 	
+
+<input type='hidden' name="${_csrf.parameterName }" value="${_csrf.token }"/>
+ </form>
+ </div>
+ 
     <div id="naver_id_login" style="text-align:center margin-top: 6px;">
-		<a href="${url}">
+		<a href="${naver_url}">
 			<img width="250" src="/resources/img/naver_Bn_Green.PNG"/>
 		</a><br>
  		<a href="${kakao_url }">
      		<img width="250" src="/resources/img/kakao_login_medium_narrow.png">
  		</a>
 	</div>
-
-<input type='hidden' name="${_csrf.parameterName }" value="${_csrf.token }"/>
- </form>
- </div>
 </body>
 </html>

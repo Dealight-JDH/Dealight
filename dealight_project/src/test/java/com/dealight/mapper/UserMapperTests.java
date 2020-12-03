@@ -37,7 +37,13 @@ public class UserMapperTests {
 	String photoSrc = "/a.jpg";
 	Date pmExpi = new Date();
 	
-	
+	@Test
+	public void testUserWithAuthorityRead() {
+		UserVO vo = mapper.read("admin5");
+		log.info(vo);
+		
+		vo.getAuthList().forEach(auth -> log.info(auth));
+	}
 
 	// mapper �� ���ԵǾ����� DI �׽�Ʈ
 	@Test

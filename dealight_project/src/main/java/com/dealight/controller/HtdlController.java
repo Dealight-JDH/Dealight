@@ -1,10 +1,14 @@
 package com.dealight.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,7 +23,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlMenuDTO;
-import com.dealight.domain.HtdlPageDTO;
 import com.dealight.domain.HtdlRequestDTO;
 import com.dealight.domain.HtdlVO;
 import com.dealight.service.HtdlService;
@@ -111,8 +114,8 @@ public class HtdlController {
 
 	//핫딜 메인 페이지
 	@GetMapping("/main")
-	public void getList(HtdlCriteria hCri,Model model) {
-		
+	public void getList(Principal principal, HtdlCriteria hCri, Model model) {
+	
 		log.info("hotdeal getList...");
 		List<HtdlVO> lists = service.getList();
 		

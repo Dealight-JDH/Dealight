@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,30 +34,23 @@ import com.dealight.service.UserService;
 //import com.dealight.sns.KakaoLoginService;
 import com.dealight.sns.KakaoLoginService;
 import com.dealight.sns.NaverLoginService;
+import com.github.scribejava.core.model.OAuth2AccessToken;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 //jongwoo
 @Controller
 @Log4j
 @RequestMapping("/dealight/*")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserController {
 	
-	
-	private MailService mailService;
-	
-	@Autowired
-	private NaverLoginService naverService;
-	
-	@Autowired
-	private KakaoLoginService kakaService;
-	
-	private Email e_mail;
-	
-	@Autowired
-	private UserService service;
+	private final MailService mailService;
+//	private final NaverLoginService naverService;
+//	private final KakaoLoginService kakaService;
+	private final Email e_mail;
+	private final UserService service;
 	
 	//회원가입전 이메일 인증받는 페이지
 	@GetMapping("/prove/authemail")
@@ -69,30 +64,76 @@ public class UserController {
 		model.addAttribute("msg", "Access Denied");
 	}
 	
-	//로그인 첫 화면 요청 메소드
-    @GetMapping("/login")
-    public void loginInput(String error,  Model model, HttpServletRequest request, HttpSession session) {
-    	String referrer = request.getHeader("Referer");
-
-    	request.getSession().setAttribute("prevPage", referrer);
-        
-        // 네이버아이디로 인증 URL
-        String naverAuthUrl = naverService.getAuthorizationUrl(session);
-        // 카카오 아디이 인증 URL
-        String kakaoAuthUrl = kakaService.getAuthorizationBaseUrl();
-        
-        log.info("네이버:" + naverAuthUrl);
-        log.info("kakao : " + kakaoAuthUrl);
-        //네이버 
-        model.addAttribute("url", naverAuthUrl);
-        //카카오
-        model.addAttribute("kakao_url", kakaoAuthUrl);
-        
-        if(error != null) {
-        	model.addAttribute("error", "로그인에 실패하였습니다.");
-        	
-        }
-    }
+//	//로그인 첫 화면 요청 메소드
+//    @GetMapping("/login")
+//    public void loginInput(String error,  Model model, HttpServletRequest request, HttpSession session) {
+//    	String referrer = request.getHeader("Referer");
+//
+//    	request.getSession().setAttribute("prevPage", referrer);
+//        
+//        // 네이버아이디로 인증 URL
+//        String naverAuthUrl = naverService.getAuthorizationUrl(session);
+//        // 카카오 아디이 인증 URL
+//        String kakaoAuthUrl = kakaService.getAuthorizationBaseUrl();
+//        
+//        log.info("네이버:" + naverAuthUrl);
+//        log.info("kakao : " + kakaoAuthUrl);
+//        //네이버 
+//        model.addAttribute("naver_url", naverAuthUrl);
+//        //카카오
+//        model.addAttribute("kakao_url", kakaoAuthUrl);
+//        
+//        if(error != null) {
+//        	model.addAttribute("error", "로그인에 실패하였습니다.");
+//        	
+//        }
+//    }
+    
+     //kakao auth
+//  	 @RequestMapping(value="/oauth", method= {RequestMethod.GET, RequestMethod.POST})
+//  	 public String login(String code) throws Exception {
+//  	     
+//  	     log.info("kakao code: " + code);
+//  	     
+//  	     String accessToken = kakaService.getAccessToken(code);
+//  	     
+//  	     log.info("============" + accessToken);
+//  	     //KakaoUser userInfo = kakaoApi.getKakaoUserInfo(accessToken);
+//  	     JSONObject userInfo = kakaService.getKakaoUserInfo(accessToken);
+//  	     log.info("-----------kakao user : " + userInfo);
+//  	     
+//  	     return "/dealight/dealight";
+//  	 }
+//  	 
+//  	//네이버 로그인 성공시 callback호출 메소드
+//     @RequestMapping(value = "/auth/naver/callback", method = { RequestMethod.GET, RequestMethod.POST })
+//     public String callback(Model model, @RequestParam String code, @RequestParam String state, HttpSession session)
+//             throws IOException, ParseException {
+//         log.info("callback....");
+//         OAuth2AccessToken oauthToken;
+//         oauthToken = naverService.getAccessToken(session, code, state);
+//         //로그인 사용자 정보를 읽어온다.
+//         String apiResult = naverService.getUserProfile(oauthToken);
+//         
+//         //2.String형식인 apiResult를 json형태로 바꾼다
+//         JSONParser parser = new JSONParser();
+//         JSONObject jsonObj = (JSONObject) parser.parse(apiResult);;
+//         
+//         //3. 데이터 파싱
+//         //response 파싱
+//         JSONObject response_obj = (JSONObject)jsonObj.get("response");
+//         //response의 nickname값 파싱
+//         String nickname = String.valueOf(response_obj.get("nickname"));
+//         String name = String.valueOf(response_obj.get("name"));
+//         log.info("name :" + name);
+//         log.info("nickname :"+ nickname);
+//
+//         log.info("====="+ apiResult);
+//         model.addAttribute("result", apiResult);
+//  
+//         /* 네이버 로그인 성공 페이지 View 호출 */
+//         return "/dealight/dealight";
+//     }
     
 //    @PostMapping("/login")
 //    public void login() {
@@ -226,10 +267,10 @@ public class UserController {
 	public void policies() {}
 	
 	//회원 등록은 post방식이지만 화면에서 입력 받아야 하므로 get 방식으로 입력페이지를 볼 수 있게 한다.
-			@GetMapping("/register")
-			public void register() {
-				
-			}
+	@GetMapping("/register")
+	public void register() {
+		
+	}
 	
 	// 회원가입 
 	@PostMapping("/register")
@@ -392,7 +433,7 @@ public class UserController {
 	}
 	
 	//로그아웃
-	@GetMapping("/logout")
+	@PostMapping("/logout")
 	public void logout() {
 		
 		log.info("logout ....");
