@@ -147,12 +147,11 @@ public class MyPageController {
 		return  new ResponseEntity<>(storeService.findStoreWithBStoreAndLocByStoreId(storeId), HttpStatus.OK);
 	}
 	
-	// TODO
-	// 4. 리뷰도 모달로 보여주자.
-	// 4-1.store 정보를 보여줘야 한다.
-	// 4-2. 별점으로 평점을 주는 로직을 구현한다.
-	// 4-3. 리뷰 text 입력 창을 만든다.
-	// 4-4. 다중 사진 첨부 로직을 구현한다.
+	// 4. 리뷰도 모달로 보여주자. ●
+	// 4-1.store 정보를 보여줘야 한다. ●
+	// 4-2. 별점으로 평점을 주는 로직을 구현한다. ●
+	// 4-3. 리뷰 text 입력 창을 만든다. ●
+	// 4-4. 다중 사진 첨부 로직을 구현한다. ●
 	@GetMapping(value = "/reservation/review", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ResponseEntity<StoreVO> getReview(Long storeId){

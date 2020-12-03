@@ -1,5 +1,6 @@
 package com.dealight.service;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,7 +77,7 @@ public class WaitServiceImpl implements WaitService {
 
 	@Override
 	public long registerOffWaiting(WaitVO waiting) {
-
+		
 		waitMapper.insertSelectKey(waiting);
 		
 		return waiting.getWaitId();

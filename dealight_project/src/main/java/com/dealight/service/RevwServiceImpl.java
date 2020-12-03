@@ -160,4 +160,10 @@ public class RevwServiceImpl implements RevwService {
 		return revwMapper.countWritableRsvd(userId);
 	}
 
+	@Override
+	public List<RevwVO> getWrittenListWtihPagingByUserId(String userId, Criteria cri) {
+
+		return revwMapper.getWrittenListWtihPagingByUserId(userId, cri);
+	}
+
 }

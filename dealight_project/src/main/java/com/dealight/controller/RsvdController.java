@@ -76,7 +76,7 @@ public class RsvdController {
     	RsvdVO vo = requestDto.toEntity();
     	vo.setUserId("whddn528");
     	vo.setStusCd("P");
-    	vo.setRevwStus(0);
+    	vo.setRevwStus(0L);
     	
 		//예약 상세vo list
 		List<RsvdDtlsVO> dtlsList = new ArrayList<>();

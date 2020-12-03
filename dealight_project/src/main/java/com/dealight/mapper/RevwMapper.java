@@ -48,6 +48,8 @@ public interface RevwMapper {
 	// 내가 작성한 리뷰 내역
 	public List<RevwVO> getWrittenList(String userId);
 	
+	public List<RevwVO> getWrittenListWtihPagingByUserId(@Param("userId") String userId,@Param("cri") Criteria cri);
+	
 	// 내가 작성한 리뷰 개수
 	public int countRevw(String userId);
 	

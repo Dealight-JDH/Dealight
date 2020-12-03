@@ -132,6 +132,7 @@
     <result column="tot_amt" property="totAmt"/>
     <result column="tot_qty" property="totQty"/>
     <result column="regdate" property="regdate"/>
+    <result column="revw_stus" property="revwStus"/>
     
 	<collection property="rsvdDtlsList" column="rsvd_id" ofType="com.dealight.domain.RsvdDtlsVO">
 		<result column="rsvd_id" property="rsvdId"/>
@@ -298,13 +299,19 @@
 		(
 		    SELECT rownum rn, rsvd_id, user_id, aprv_no , htdl_id , pnum, revw_stus, store_id, stus_cd, time, tot_amt, tot_qty, updatedate, regdate
 		    /*+ INDEX_DESC(tbl_rsvd tbl_rsvd_pk)*/
+		    FROM
+		    (
+		    SELECT rsvd_id, user_id, aprv_no , htdl_id , pnum, revw_stus, store_id, stus_cd, time, tot_amt, tot_qty, updatedate, regdate
 		    FROM tbl_rsvd
-		    WHERE  user_id = #{userId} AND
-		    rownum <= #{cri.pageNum} * #{cri.amount}
+            WHERE user_id = #{userId}
+            ORDER BY time desc
+		    )
+		    WHERE  rownum <= #{cri.pageNum} * #{cri.amount}
 		) r, tbl_rsvd_dtls d
 		WHERE 
 		rn > (#{cri.pageNum} -1) * #{cri.amount} AND 
 		r.rsvd_id = d.rsvd_id
+		ORDER BY time desc
 		]]>
 	</select>
 	

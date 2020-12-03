@@ -42,6 +42,8 @@ public interface RevwService {
 	// 내가 작성한 리뷰
 	List<RevwVO> getWrittenList(String userId);
 	
+	List<RevwVO> getWrittenListWtihPagingByUserId(String userId,Criteria cri);
+	
 	// 내가 작성한 리뷰 개수
 	int countRevw(String userId);
 	
@@ -65,5 +67,5 @@ public interface RevwService {
 
 	// 리뷰 삭제
 	boolean deleteRevw(Long revwId);
-
+	
 }

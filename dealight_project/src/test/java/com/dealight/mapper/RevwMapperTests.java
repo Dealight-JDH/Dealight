@@ -396,4 +396,28 @@ public class RevwMapperTests {
 		
 		log.info(result);
 	}
+	
+	@Test
+	public void getWrittenListWtihPagingByUserIdTest1() {
+		
+		
+		String userId = "kjuioq";
+		int pageNum = 1;
+		int amount = 5;
+		
+		Criteria cri = new Criteria(pageNum,amount);
+		
+		List<RevwVO> list = mapper.getWrittenListWtihPagingByUserId(userId, cri);
+		
+		log.info(list);
+		
+		list.stream().forEachOrdered(revw -> {
+			log.info("revw : " + revw);
+			assertTrue(revw.getUserId().equals(userId));
+			assertTrue(revw.getWaitId() > 0 || revw.getRsvdId() > 0);
+		});
+		
+		assertTrue(list.size() == amount);
+		
+	}
 }

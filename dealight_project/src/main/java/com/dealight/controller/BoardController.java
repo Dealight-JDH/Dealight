@@ -187,9 +187,10 @@ public class BoardController {
 		log.info("register wait.............");
 
 		log.info("WaitingVO ............" + wait);
+		
 		SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		
-		wait.setWaitRegTm(formater.format(wait.getWaitRegTm()));
+		wait.setWaitRegTm(formater.format(new Date()));
 		
 		Long waitNo = waitService.registerOffWaiting(wait);
 

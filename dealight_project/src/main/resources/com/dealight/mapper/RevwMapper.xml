@@ -287,6 +287,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		and r.user_id = #{userId}
 	</select>
 	
+	<select id="getWrittenListWtihPagingByUserId" resultMap="RevwVO">
+	<![CDATA[ 
+		select r.revw_id, r.store_id, r.rsvd_id, r.wait_id, r.user_id, r.cnts, r.reg_dt, r.rating, r.reply_cnts, r.reply_reg_dt, r.regdate, r.updatedate, r.store_nm,
+				i.img_seq, i.fileName, i.uuid, i.uploadpath, i.image
+		from
+		(
+			select
+			rownum rn,revw_id, store_id, rsvd_id, wait_id, user_id, cnts, reg_dt, rating, reply_cnts, reply_reg_dt, regdate, updatedate, store_nm
+			from 
+			(
+            select
+			revw_id, store_id, rsvd_id, wait_id, user_id, cnts, reg_dt, rating, reply_cnts, reply_reg_dt, regdate, updatedate, store_nm
+			from tbl_revw
+			where user_id = #{userId}
+			ORDER BY regdate DESC
+			)
+			where rownum <= #{cri.pageNum}*#{cri.amount}
+		) r, tbl_revw_img i
+		where r.rn > (#{cri.pageNum}-1)*#{cri.amount}
+		AND r.revw_id = i.revw_id(+)
+		ORDER BY regdate DESC
+	]]>
+	</select>
 
 	<!-- 작성한 리뷰 - 작성한 리뷰 수 -->
 	<select id="countRevw" resultType="int">

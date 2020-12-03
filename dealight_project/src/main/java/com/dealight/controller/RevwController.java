@@ -60,59 +60,51 @@ public class RevwController {
 	}
 
 	@GetMapping("/written-list")
-	public void getWrittenList(HttpSession session, Model model) {
+	public void getWrittenList(HttpSession session, Model model,Criteria cri) {
 		
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
 		session.setAttribute("userId", "kjuioq");
 	    String userId = (String) session.getAttribute("userId");
+	    
+	    log.info("before cri................" + cri);
+	    
+		if(cri.getPageNum() == 0)
+			cri = new Criteria(1,5);
+		
+		log.info("after cri................" + cri);
 	    
 	    int countRevw = revwService.countRevw(userId);
 	    int countRsvd = revwService.countRsvd(userId);
 	    int countWait = revwService.countWait(userId);
 	    int countTotal = revwService.countTotal(userId);
 	    
-	    List<RevwVO> writtenList = revwService.getWrittenList(userId);
+	    List<RevwVO> writtenList = revwService.getWrittenListWtihPagingByUserId(userId, cri);
+	    
+	    log.info("writeentList size..................."+writtenList.size());
 		
 		model.addAttribute("countRevw", countRevw);
-		model.addAttribute("countStore", countRsvd);
+		model.addAttribute("countRsvd", countRsvd);
 		model.addAttribute("countWait", countWait);
 		model.addAttribute("countTotal", countTotal);
 		model.addAttribute("writtenList", writtenList);
+		model.addAttribute("pageMaker",new PageDTO(cri,countRevw));
 	}
 
-	// 예약 리뷰 작성 페이지
-	@GetMapping("/register/rsvd")
-	public void getWritableItemByRsvd(HttpSession session, @Param("rsvdId") Long rsvdId, Model model) {
+	// 예약 리뷰 작성
+	@PostMapping("/register")
+	public String registerRevw(HttpSession session, Model model,RevwVO revw,String prevPage) {
 		
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
 		session.setAttribute("userId", "kjuioq");
 	    String userId = (String) session.getAttribute("userId");
 	    
-		log.info("RSVDID: " + rsvdId + "@@");
-		log.info("UPLOAD REVW IMG");
-
-		//model.addAttribute("rsvd", revwService.getWritableItemByRsvd(userId, rsvdId));
-		System.out.println(model);
-	}
-
-	// 리뷰 register 로직
-	@PostMapping("/register/rsvd")
-	public String registerRevwByRsvd(String userId, Long rsvdId, String imgUrl,
-		RevwVO revw, RevwImgVO img, RedirectAttributes rttr, MultipartFile[] uploadRevwImg, Model model) {
-
-			//revwService.getWritableItemByRsvd(userId, rsvdId);
-
-			//revwService.registerRevw(revw);
-			//revwService.registerRevwImg(img);  
-
-			log.info("REGISTER RSVD REVW");
-			log.info("USERID: " + userId + "@@");
-			log.info("RSVDID: " + rsvdId + "@@");
-			log.info("REVW: " + revw + "@@");
-			log.info("IMG: " + img + "@@");
-		
-		//System.out.println(revwService.updateRsvdRevwStus(userId, rsvdId));
-		rttr.addFlashAttribute("result", revw.getRevwId());
-		return "redirect:/dealight/mypage/review/writable-list";
+	    log.info("revw register .......................");
+	    log.info("revw ........................" + revw);
+	    log.info("prev page...................."+prevPage);
+	    
+	    revwService.regRevw(revw);
+	    
+	    
+	    return "redirect:/dealight/mypage/" + prevPage;
 	}
 }
