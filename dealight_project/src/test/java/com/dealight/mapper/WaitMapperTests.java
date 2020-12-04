@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.WaitVO;
 
 import lombok.extern.log4j.Log4j;
@@ -24,10 +25,11 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class WaitMapperTests {
 	
+	SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	//�ʼ� �Է°�
     private Long waitId = 1L;
     private Long storeId = 13L;
-    private Date waitRegTm = new Date();
+    private String waitRegTm = formater.format(new Date());
     private int waitPnum = 30;
     private String custTelno = "010-0000-0000";
     private String custNm = "�赿��"; 
@@ -40,8 +42,10 @@ public class WaitMapperTests {
     private WaitMapper mapper;
     
     // create
+    @Transactional
     @Test
     public void insertTest1() {
+    	
     	WaitVO waiting = new WaitVO().builder()
     			.waitId(waitId)
 				.storeId(storeId)
@@ -49,6 +53,7 @@ public class WaitMapperTests {
 				.waitPnum(waitPnum)
 				.custTelno(custTelno)
 				.custNm(custNm)
+				.waitStusCd("Y")
 				.build();
     	
     	List<WaitVO> list = mapper.findAll();
@@ -64,6 +69,7 @@ public class WaitMapperTests {
     }
     
     // create
+    @Transactional
     @Test
     public void insertSelectKeyTest1() {
     	WaitVO waiting = new WaitVO().builder()
@@ -73,6 +79,7 @@ public class WaitMapperTests {
 				.waitPnum(waitPnum)
 				.custTelno(custTelno)
 				.custNm(custNm)
+				.waitStusCd("N")
 				.build();
     	
     	List<WaitVO> list = mapper.findAll();
@@ -280,6 +287,69 @@ public class WaitMapperTests {
     			flag = false;
     	
     	assertTrue(flag);
+    	
+    }
+    
+    @Test
+    public void findWaitListWithPagingByUserIdTest1() {
+    	
+    	userId = "kjuioq";
+    	
+    	int pageNum = 1;
+    	int amount = 3;
+    	
+    	Criteria cri = new Criteria(pageNum,amount);
+    	
+    	userId = "kjuioq";
+    	
+    	List<WaitVO> list = mapper.findWaitListWithPagingByUserId(userId, cri);
+    	
+    	list.stream().forEach(wait -> {
+    		
+    		log.info("wait : " + wait);
+    		
+    		assertTrue(wait.getUserId().equals(userId));
+    	});
+    	
+    	log.info("list : "+list);
+    	log.info("list size : "+list.size());
+    	
+    	assertTrue(list.size() == amount);
+    	
+    }
+    
+    @Test
+    public void getWaitCntTest1() {
+    	
+    	userId = "kjuioq";
+    	
+    	int pageNum = 1;
+    	int amount = 3;
+    	
+    	Criteria cri = new Criteria(pageNum,amount);
+    	
+    	String stusCd = "W";
+    	
+    	int wait = mapper.getWaitCnt(userId, cri, "W");
+    	int enter = mapper.getWaitCnt(userId, cri, "E");
+    	int panalty = mapper.getWaitCnt(userId, cri, "P");
+    	int total = wait + enter + panalty;
+    	
+    	log.info("wait : " + wait);
+    	log.info("enter : " + enter);
+    	log.info("panalty : " + panalty);
+    	log.info("kjuioq의 웨이팅 상태 개수"+total);
+    	
+    }
+    
+    @Test
+    public void getWaitByUserIdTest1() {
+    	
+    	userId = "kjuioq";
+    	
+    	WaitVO wait = mapper.getCurWaitByUserId(userId);
+    	
+    	log.info(wait);
     	
     }
 

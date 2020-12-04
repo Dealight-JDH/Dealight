@@ -34,7 +34,6 @@ public class RevwVO {
 	private Long storeId;
 	
 	// 매장이름 - 테스트용으로 일단 추가함
-	// 오라클에 추가해야한다.!!!!!!
 	@NotNull
 	private String storeNm;
 	
@@ -55,9 +54,6 @@ public class RevwVO {
 	@NotBlank
     private String cnts;
 
-	// 리뷰작성날짜 - regdate, updatedate 컬럼 반영되기 이전 ver.
-    private String regDt;
-	
 	// 평점 
 	@NotNull
     private double rating;
@@ -68,12 +64,10 @@ public class RevwVO {
     // 답글등록날짜 
     private String replyRegDt;
     
-//    private Date regdate;
-//    private Date updatedate;
+    private String regdate;
+    private String updatedate;
 	
     // composition
     // 리뷰사진첨부파일 - 리뷰 사진 가져오기용
-    // 1:N관계 LIST로 받아야함 (수정 예정)
-    // private List<RevwImgVO> imgs;
-    private RevwImgVO img;
+    private List<RevwImgVO> imgs;
 }

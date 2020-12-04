@@ -62,7 +62,7 @@ values (#{userId}, #{name}, #{pwd}, #{email}, #{telno}, #{brdt}, #{sex}, #{snsLg
 
 <!-- 회원정보 불러오기(마이페이지 회원정보 수정 -->
 <select id="read" resultType="com.dealight.domain.UserVO">
-select user_id, name, pwd, email, telno, brdt, sex, photo_src, sns_lgin_yn
+select *
  from tbl_user where user_id = #{userId}
 </select>
 
@@ -122,6 +122,12 @@ where user_id = #{userId}
 		SET pm_stus = 'N'
 		WHERE pm_expi <= sysdate - 7 and pm_stus = 'Y'
 	]]>
+	</update>
+	
+	<update id="withdrawalUser">
+		UPDATE tbl_user
+		SET cls_cd = 'W'
+		WHERE user_id = #{userId}
 	</update>
 	
 </mapper>

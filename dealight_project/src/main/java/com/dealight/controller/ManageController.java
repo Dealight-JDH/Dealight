@@ -20,7 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,12 +27,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.AllStoreVO;
+import com.dealight.domain.Criteria;
 import com.dealight.domain.HtdlVO;
 import com.dealight.domain.MenuVO;
 import com.dealight.domain.RevwVO;
 import com.dealight.domain.StoreImgVO;
 import com.dealight.domain.StoreTagVO;
 import com.dealight.service.HtdlService;
+import com.dealight.service.RevwService;
 import com.dealight.service.RsvdService;
 import com.dealight.service.StoreService;
 import com.dealight.service.UserService;
@@ -68,6 +69,9 @@ public class ManageController {
 	@Setter(onMethod_ = @Autowired)
 	private UserService userService;
 	
+	@Setter(onMethod_ = @Autowired)
+	private RevwService revwService;
+	
 	// 파일 저장 경로를 지정한다.
 	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05";
 	
@@ -93,7 +97,7 @@ public class ManageController {
 	
 	// 매장 수정 페이지
 	@GetMapping("/modify")
-	public String storeModify(Model model,Long storeId, HttpServletRequest request) {
+	public String storeModify(Model model,Long storeId, HttpServletRequest request,Criteria cri) {
 		
 		HttpSession session = request.getSession();
 		
@@ -109,6 +113,11 @@ public class ManageController {
 		
 		log.info("All store......................"+store);
 		
+		if(cri.getPageNum() == 0)
+			cri = new Criteria(1,5);
+		
+		List<RevwVO> revwList = revwService.getRevwListWithPagingByStoreId(storeId, cri);
+		
 		if(store != null) {
 			List<MenuVO> menuList = store.getMenuList();
 			
@@ -121,17 +130,18 @@ public class ManageController {
 			});
 			
 			List<StoreImgVO> imgs = store.getImgs();
-			List<RevwVO> revwList = store.getRevwList();
+			
 			List<StoreTagVO> tagList = store.getTagList();
 			model.addAttribute("menuList",menuList);
 			model.addAttribute("imgs",imgs);
-			model.addAttribute("revwList",revwList);
+			
 			model.addAttribute("tagList",tagList);
 		}
 		
 		
 		model.addAttribute("store", store);
 		model.addAttribute("userId",userId);
+		model.addAttribute("revwList",revwList);
 		
 		return "/dealight/business/manage/modify/modify";
 	}

@@ -210,10 +210,6 @@ public class UserController {
 	}
 	
 		
-		//회원가입후 회원 정보 출력
-		@GetMapping("/mypage/userinfo")
-		public void userinfo() {}
-	
 	//중복확인 버튼 처리
 	//메소드에서 리턴되는 값은 View 를 통해서 출력되지 않고 HTTP Response Body 에 직접 쓰여지게 된다.
 	@RequestMapping(value = "/overlapCheck", method= {RequestMethod.GET, RequestMethod.POST})
@@ -236,71 +232,6 @@ public class UserController {
 		model.addAttribute("user", service.get(userId));
 	}
 
-	/* 진행예정
-	//비밀번호 변경
-	@GetMapping("/mypage/changepwd")
-	public void changepwd(HttpSession session, Model model) {
-		
-		//로그인된 정보를 가져온다
-				UserVO user = (UserVO)session.getAttribute("user");
-				
-				//로그인이 되어 있지 않다면 접근불가
-				if(user == null) {
-					model.addAttribute("msg", "로그인이 필요한 페이지 입니다.");
-				}
-	}
-	
-	
-	@RequestMapping( value = "/mypage/changepwd", method= RequestMethod.POST)
-	public boolean changepwd(String pwd, String changepwd, HttpSession session ) {
-		UserVO user = (UserVO)session.getAttribute("user");
-	    	  //로그인된 회원의 비밀번호와 입력한 현재 비밀번호가 일치한다면 비밀번호 변경
-	    	  if(user.getPwd().equals(pwd)) {
-	    		  user.setPwd(changepwd);
-	    		  System.out.println("user:"+user);
-	    		  return service.changePwd(user);
-	    	  }
-	    	  return false;
-	      }
-		
-	*/
-	
-	
-	// 회원정보 수정
-	@PostMapping("/mypage/modify")
-	public void modify(UserVO user, Model model) {
-		log.info("modify: "+user);
-		//(이름[닉네임], 이메일, 전화번호, sns연동 만 변경
-		service.modify(user);
-		//프로필 사진 수정
-		service.modifyPhoto(user);
-		
-		model.addAttribute("user", service.get(user.getUserId()));
-		}
-	
-	//회원정보수정 보여주기
-		@GetMapping("/mypage/modify")
-		public void modify(HttpSession session, Model model) throws IOException {
-			//로그인 성공 후 세션에 저장된 user 정보를 꺼내와서 user정보를 불러옴
-			UserVO user = (UserVO)session.getAttribute("user");
-				if(user == null) {
-					model.addAttribute("msg", "로그인이 필요한 페이지 입니다.");
-				}else {
-				model.addAttribute("user", service.get(user.getUserId()));
-				}
-		}
-
-	
-	//회원탈퇴
-	@PostMapping("/mypage/remove")
-	@ResponseBody
-	public boolean remove(@RequestParam("userId") String userId, RedirectAttributes rttr ) {
-		log.info("remove...."+userId);
-		//삭제 되면 true / 삭제 실패 false
-		return service.remove(userId);
-			
-	}
-	
 	@GetMapping("/login")
 	public void login() {}
 	
@@ -339,16 +270,6 @@ public class UserController {
 		return "redirect:/dealight/dealight";
 	}
 	
-	
-	//마이페이지 예약내역 보여주기 로그인 상태일때만!
-	@GetMapping("/mypage/reservation")
-	public void reservation(HttpSession session, Model model) throws IOException {
-		//로그인 성공 후 세션에 저장된 user 정보를 꺼내와서 user정보를 불러옴
-		UserVO user = (UserVO)session.getAttribute("user");
-		if(user == null) {
-			model.addAttribute("msg", "로그인이 필요한 페이지 입니다.");
-		}
-	}
 	
 	//로그아웃
 	@GetMapping("/logout")

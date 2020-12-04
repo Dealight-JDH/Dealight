@@ -10,12 +10,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdVO;
@@ -23,6 +26,7 @@ import com.dealight.domain.StoreImgVO;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserVO;
 import com.dealight.domain.WaitVO;
+import com.dealight.handler.ManageSocketHandler;
 import com.dealight.mapper.RsvdDtlsMapper;
 import com.dealight.mapper.RsvdMapper;
 import com.dealight.mapper.StoreImgMapper;
@@ -67,7 +71,6 @@ public class FileCheckTask {
 	@Setter(onMethod_ = @Autowired)
 	private StoreService storeService;
 	
-	
 	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05\\";
 	
 	private String getFolderYesterDay() {
@@ -85,7 +88,7 @@ public class FileCheckTask {
 	}
 	
 	// 자동 웨이팅 생성기
-//	@Scheduled(cron ="0 * * * * *")
+	//@Scheduled(cron ="0 * * * * *")
 	public void registerOnWait() throws Exception{
 		log.warn("Auto Online Wait Register Task run..................");
 		
@@ -126,12 +129,14 @@ public class FileCheckTask {
         int waitPnum = waitPnumList.get(pnumIdx);
         
         UserVO user = userService.get(userId);
-    	
+		SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		
     	WaitVO wait = new WaitVO().builder()
     			.waitId(0L)
     			.storeId(storeId)
+    			//.storeId(1L)
     			.userId(userId)
-    			.waitRegTm(new Date())
+    			.waitRegTm(formater.format(new Date()))
     			.waitPnum(waitPnum)
     			.custTelno(user.getTelno())
     			.custNm(user.getName())
@@ -139,17 +144,27 @@ public class FileCheckTask {
     			.build();
     	
     	log.info("wait id ................. : " + waitService.registerOnWaiting(wait));
+
+    	Long waitId = wait.getWaitId();
+    	
     	
     	log.warn(wait);
-    	if(wait.getWaitId() > 0 )
+    	if(waitId > 0 ) {
     		log.warn("=========================================wait 웨이팅 완료");
+        	/* 웹 소켓*/
+        	ManageSocketHandler handler = ManageSocketHandler.getInstance();
+        	Map<String, WebSocketSession> map = handler.getUserSessions();
+        	WebSocketSession session = map.get("kjuioq");
+        	TextMessage message = new TextMessage("{\"sendUser\":\""+userId+"\",\"waitId\":\""+waitId+"\",\"cmd\":\"wait\",\"storeId\":\""+storeId+"\"}");
+        	handler.handleMessage(session, message);
+    	}
     	else if(wait.getWaitId() == 0)
     		log.warn("=========================================wait 웨이팅 실패");
 		
 	}
 	
 	// 자동 예약 생성기//
-	//@Scheduled(cron="0 * * * * *")
+	//@Scheduled(cron="30 * * * * *")
 	public void registerRsvd() throws Exception{
 		log.warn("Auto Rsvd Register Task run .....................");
 		
@@ -230,7 +245,8 @@ public class FileCheckTask {
         
         userId = userIdList.get(userIdx);
         storeId = storeList.get(storeIdx);
-    	cal.set(2020, 11, 23);
+        Date date = new Date();
+    	cal.set(2020, date.getMonth() + 1, date.getDate());
     	cal.set(cal.HOUR_OF_DAY,hourList.get(hourIdx));
     	cal.set(cal.MINUTE, minuteList.get(minuteIdx));
     	
@@ -286,6 +302,12 @@ public class FileCheckTask {
     	
     	int result = rsvdDtlsMapper.insertRsvdDtls(list);
     	
+    	/* 웹 소켓*/
+    	ManageSocketHandler handler = ManageSocketHandler.getInstance();
+    	Map<String, WebSocketSession> map = handler.getUserSessions();
+    	WebSocketSession session = map.get("kjuioq");
+    	TextMessage message = new TextMessage("{\"sendUser\":\""+userId+"\",\"rsvdId\":\""+rsvdId+"\",\"cmd\":\"rsvd\",\"storeId\":\""+storeId+"\"}");
+    	handler.handleMessage(session, message);
     	
     	log.warn(result);
 		log.warn("=========================================rsvd 예약 완료");

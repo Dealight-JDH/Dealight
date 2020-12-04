@@ -1,33 +1,51 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@include file="../../includes/mainMenu.jsp" %>
-    <script>
-    //로그인이 안된 상태면 메인페이지로 넘어가게
-   let msg = '${msg}';
-      if(msg != ""){
-         alert(msg);
-         location.href = '/dealight/dealight';
-      }
-</script>
-<!-- 현수현수현수 미완성 진행예정 -->
+<%@include file="../../includes/mainMenu.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>비밀번호변경</title>
+<link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 </head>
 <body>
-<h1>마이페이지 비밀번호변경</h1>
-<div>
-<form action="dealight/mypage/changepwd" method="post" onsubmit="return validate()">
-<p>현재 비밀번호 <input type = 'password' id='pwd' name='pwd'></p>
-<p>변경할 비밀번호<input type = 'password' id='changepwd' name='changepwd'></p>
-<p>비밀번호 확인 <input type = 'password' id='repwd' onblur="checkPwd()"></p> 
-<p class = 'msg' id="repwdmsg">비밀번호를 다시 한 번 입력해주세요</p>
-<button type="submit" id="btn">비밀번호 변경</button>
-</form>
-</div>
-
+    <main class="mypage_wrapper">
+        <div class="mypage_menu_nav">
+            <h2 class="tit_nav">마이 페이지</h2>
+            <div class="inner_nav">
+                <ul class="menu_list">
+                    <li><a href="/dealight/mypage/reservation">예약 내역</a></li>
+                    <li><a href="/dealight/mypage/wait">웨이팅 내역</a></li>
+                    <li><a href="/dealight/mypage/review/">나의 리뷰</a></li>
+                    <li><a href="/dealight/mypage/like">찜 목록</a></li>
+                    <li><a href="/dealight/mypage/modify">회원 정보 수정</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="mypage_content">
+            <div class="content_head">
+                <h2>비밀번호 변경<span>비밀번호를 변경합니다.</span></h2>
+            </div>
+            <div>
+                
+            </div>
+            <div class="content_main">
+				<h1>마이페이지 비밀번호변경</h1>
+				<h2>${msg}</h2>
+				<div>
+					<form action="/dealight/mypage/changepwd" method="post" onsubmit="return validate()">
+						<p>현재 비밀번호 <input type = 'password' id='pwd' name='pwd'></p>
+						<p>변경할 비밀번호<input type = 'password' id='changepwd' name='changepwd'></p>
+						<p>비밀번호 확인 <input type = 'password' id='repwd' onblur="checkPwd()"></p> 
+						<p class = 'msg' id="repwdmsg">비밀번호를 다시 한 번 입력해주세요</p>
+						<button type="submit" id="btn">비밀번호 변경</button>
+					</form>
+				</div>
+            </div>
+        </div>
+    </main>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 const jPwd = /^(?=.*?[a-zA-Z])(?=.*?[#?!@$%^&*-]).{8,16}$/; // 대문자/소문자/특수문자 1개씩은 포함해서 8자리~16자리
@@ -56,7 +74,8 @@ function checkPwd(){
 //2. 비밀번호 유효성검사
 function validate() {	
 	
-	if($("#pwd").val() == ""){
+	
+	if($("#pwd").val() === ""){
 		alert('비밀번호를 입력하여 주세요');
 		$("#pwd").focus();
 		return false;
@@ -68,10 +87,9 @@ function validate() {
 		$("#changepwd").focus();
 		return false;
 	}
+	
+	return true;
 }
-
-
-
 </script>
 
 

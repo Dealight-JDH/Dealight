@@ -16,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.UserWithRsvdDTO;
@@ -469,6 +470,58 @@ public class RsvdMapperTests {
     	log.info(list);
     	
     }
+    
+    @Test
+    public void findRsvdListWithPagingByUserIdTest1() {
+    	
+    	userId = "kjuioq";
+    	Criteria cri = new Criteria(1,3);
+    	
+    	List<RsvdVO> list = mapper.findRsvdListWithPagingByUserId(userId, cri);
+    	
+    	list.stream().forEach((rsvd) -> {
+    		
+    		log.info("rsvd : " + rsvd);
+    	});
+    	
+    	log.info("list size : "+list.size());
+    	
+    }
+    
+    @Test
+    public void findRsvdListWithPagingAndDtlsByUserIdTest1() {
+    	
+    	userId = "kjuioq";
+    	Criteria cri = new Criteria(1,3);
+    	
+    	List<RsvdVO> list = mapper.findRsvdListWithPagingAndDtlsByUserId(userId, cri);
+    	
+    	list.stream().forEach((rsvd) -> {
+    		
+    		log.info("rsvd : " + rsvd);
+    		log.info("rsvd dtls list : " + rsvd.getRsvdDtlsList());
+    	});
+    	
+    	log.info("list size : "+list.size());
+    	
+    }
 
+    @Test
+    public void getRsvdTotalCountTest1() {
+    	
+    	userId = "kjuioq";
+    	Criteria cri = new Criteria(1,3);
+    	
+    	int last = mapper.getRsvdCount(userId, cri, "L");
+    	int complete = mapper.getRsvdCount(userId, cri, "C");
+    	int panalty = mapper.getRsvdCount(userId, cri, "P");
+    	int total = mapper.getRsvdTotalCount(userId, cri);
+    	
+    	log.info("last........................."+last);
+    	log.info("complete........................."+complete);
+    	log.info("panalty........................."+panalty);
+    	log.info("total........................."+total);
+    	
+    }
 
 }

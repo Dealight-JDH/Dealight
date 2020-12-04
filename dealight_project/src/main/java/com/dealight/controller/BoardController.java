@@ -34,7 +34,8 @@ import lombok.extern.log4j.Log4j;
 /*
  * 
  *****[김동인] 
- * *****
+ * ***
+
  * 
  */
 @RestController
@@ -95,7 +96,7 @@ public class BoardController {
 		return new ResponseEntity<>(rsvdList, HttpStatus.OK);
 	}
 
-	// storeId로 해당 매장의 '오늘' 예약 맵(시간대별)을 가져온다.
+	// storeId로 해당 매장의 '오늘' 예약 맵(시간대별)을 가져온다..
 	@GetMapping(value = "/board/reservation/map/{storeId}", 
 			produces = {
 					MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -187,7 +188,11 @@ public class BoardController {
 
 		log.info("WaitingVO ............" + wait);
 		
-		long waitNo = waitService.registerOffWaiting(wait);
+		SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		
+		wait.setWaitRegTm(formater.format(new Date()));
+		
+		Long waitNo = waitService.registerOffWaiting(wait);
 
 		log.info("wait no................" + waitNo);
 

@@ -147,13 +147,6 @@
 		</c:forEach>
 	</c:if>
 	
-	<div class="well">
-		<input type="text" id="msg" value="wait,${userId},${storeId},101" class="form-control" />
-		<button id="btnSend" class="btn btn-primary">Send Message</button>
-	</div>
-	
-	<div id="socketAlert" class="alert alert-success" role="alert"">알림!!!</div>
-	
 	<div>
         </div> <!-- end info box -->
         	<!-- The Modal -->
@@ -711,6 +704,8 @@ let curHour = curToday.getHours(),
             boardService.getTodayRsvdMap({storeId:storeId}, function(map){
             	let strRsvdMap = "";
             	
+            	console.log("map.............................."+map);
+            	
             	if(!map)
             		return;
             	Object.entries(map).forEach(([key,value]) => {
@@ -948,7 +943,7 @@ let curHour = curToday.getHours(),
         	strWaitRegForm += "고객 이름<input name='custNm' id='js_wait_custNm'> <span id='name_msg'></span></br>";
         	strWaitRegForm += "고객 전화번호<input name='custTelno' id='js_wait_custTelno'> <span id='phoneNum_msg'></span></br>";
         	strWaitRegForm += "웨이팅 인원<input name='waitPnum' id='js_wait_pnum'> <span id='pnum_msg'></span></br>";
-        	strWaitRegForm += "<input name='waitRegTm' value='"+today+"' hidden>";
+        	strWaitRegForm += "<input name='waitRegTm' value='"+today.toString()+"' hidden>";
         	strWaitRegForm += "<input name='storeId' value='"+storeId+"' hidden>";
         	strWaitRegForm += "<button id='submit_waitRegForm' type='submit'>제출하기</button>";
         	strWaitRegForm += "</form>";
@@ -1035,7 +1030,7 @@ let curHour = curToday.getHours(),
         	let modalInputCustNm = modal.find("input[name='custNm']"),
 				modalInputCutsTelNo = modal.find("input[name='custTelno']"),
 				modalInputWaitPnum = modal.find("input[name='waitPnum']"),
-				modalInputCurTime = modal.find("input[name='curTime']"),
+				modalInputWaitRegTm = modal.find("input[name='waitRegTm']"),
 				modalInputStoreId = modal.find("input[name='storeId']");
     	
         	btn_submit.addEventListener("click", (e) => {
@@ -1045,7 +1040,7 @@ let curHour = curToday.getHours(),
 	    		let wait = {
 	    				custNm : modalInputCustNm.val(),
 	    				custTelno : modalInputCutsTelNo.val(),
-	    				curTime : modalInputCurTime.val(),
+	    				waitRegTm : modalInputWaitRegTm.val(),
 	    				waitPnum : modalInputWaitPnum.val(),
 	    				storeId : modalInputStoreId.val()
 	    		};
@@ -1205,6 +1200,7 @@ let curHour = curToday.getHours(),
         
         
         /* web socket!!!!!!!!!!!!!!!!!!!!*/
+        /* 	<div id="socketAlert" class="alert alert-success" role="alert"">알림!!!</div> */
         let socket = null;
    	 
 	   	 function connectWS() {
@@ -1229,7 +1225,7 @@ let curHour = curToday.getHours(),
 	   	 	    // 추후에 message 형식을 JSON으로 변환해서 message type을 지정해줘야 한다.
 	   	 	    //if()
 	   	 	    	
-	   	 	   	alert(event.data);
+	   	 	   	//alert(event.data);
 	   	 	    console.log(typeof event.data);
 	   	 	    
 	   	 	    let data = JSON.parse(event.data);

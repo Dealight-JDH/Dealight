@@ -79,4 +79,8 @@ public interface StoreService {
 	
 	public boolean deleteMenu(Long menuSeq);
 	
+	public StoreVO findStoreWithLocByStoreId(Long storeId);
+	
+	public StoreVO findStoreWithBStoreAndLocByStoreId(Long storeId);
+	
 }

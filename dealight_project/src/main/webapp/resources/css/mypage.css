@@ -1,0 +1,65 @@
+		#likeWrapper {
+			margin-left: 30px;
+		}
+		#rsvdWrapper {
+			margin-left: 30px;
+		}
+		#waitWrapper {
+			margin-left: 30px;
+		}
+		.modify-content{
+			border: 1px solid;
+			width: 600px;
+			height: 500px;
+			margin: 20px;
+			padding: 20px;
+		}
+		button {
+		
+			margin : 5px;
+		}
+		.pull-right {
+			float : left;
+		}
+		
+		.mypage_wrapper {
+            padding-top: 60px;
+            width: 1050px;
+            margin: 0 auto;
+        }
+        .mypage_menu_nav{
+            border: 1px solid black;
+            float: left;
+            width: 200px;
+        }
+        .mypage_content {
+            padding-left: 10px;
+            height: auto;
+            border: 1px solid black;
+            float: right;
+            width: 820px;
+        }
+        .content_head {
+            padding : 5px 0 34px;
+        }
+        .content_head > h2 {
+            padding-top: 10px;
+            height: 36px;
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 36px;
+            color: #333;
+            letter-spacing: -.5px;
+        }
+        .content_main {
+            padding-top: 20px;
+            border-top: 2px solid #333;
+        }
+        .tit_nav {
+            padding-top: 20px;
+            margin-bottom: 50px;
+        }
+        .content_head span {
+        	padding-left : 5px;
+        	font-size : 16px;
+        }

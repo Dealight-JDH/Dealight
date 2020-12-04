@@ -1,6 +1,9 @@
 package com.dealight.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Date;
 
 import org.junit.Test;
 import org.springframework.http.StreamingHttpOutputMessage;
@@ -17,6 +20,15 @@ public class BUserVOTests {
     private String telno = "010-2112-1232";
     private String storeTelno = "02-123-1234";
 
+    
+    @Test
+    public void test() {
+    	Date date = new Date();
+    	System.out.println(date);
+    	System.out.println(date.getDate());
+    	System.out.println(date.getMonth() );
+    	System.out.println(date.getYear());
+    }
 	@Test
 	public void buserGenerateTest1() {
 		BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc,storeNm,telno,storeTelno)

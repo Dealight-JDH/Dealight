@@ -176,5 +176,34 @@ public class StoreMapperTests {
 			assertNotNull(store.getBstore().getBuserId().equals(userId));
 		});
 	}
+	
+	@Test
+	public void findStoreWithLocByStoreIdTest1() {
+		
+		storeId = 13L;
+		
+		StoreVO store= mapper.findStoreWithLocByStoreId(storeId);
+		
+		log.info("store : " + store);
+		log.info("store loc : " + store.getLoc());
+		
+		assertNotNull(store.getLoc());
+	}
+	
+	@Test
+	public void findStoreWithBstoreAndLocByStoreIdTest1() {
+		
+		storeId = 13L;
+		
+		StoreVO store = mapper.findStoreWithBstoreAndLocByStoreId(storeId);
+		
+		log.info(store);
+		
+		assertNotNull(store);
+		assertNotNull(store.getBstore());
+		assertNotNull(store.getLoc());
+		
+		
+	}
 
 }

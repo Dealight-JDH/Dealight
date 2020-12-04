@@ -30,30 +30,30 @@ where store_id = #{storeId}
 
 </select>
 
-<insert id="insertAll" parameterType="java.util.List">
-	INSERT ALL
-		<foreach collection="list" item="storeImg">
-		INTO tbl_store_img
-		(
-		store_id,
-		img_seq,
-		uuid,
-		uploadpath,
-		image,
-		filename
-		)
-		VALUES
+	<insert id="insertAll" parameterType="java.util.List">
+		INSERT ALL
+			<foreach collection="list" item="storeImg">
+			INTO tbl_store_img
 			(
-			#{storeImg.storeId},
-			FN_GET_SEQ('seq_img'),
-			#{storeImg.uuid},
-			#{storeImg.uploadPath},
-			#{storeImg.image},
-			#{storeImg.fileName}
+			store_id,
+			img_seq,
+			uuid,
+			uploadpath,
+			image,
+			filename
 			)
-		</foreach>
-		SELECT * FROM dual
-</insert>
+			VALUES
+				(
+				#{storeImg.storeId},
+				FN_GET_SEQ('seq_img'),
+				#{storeImg.uuid},
+				#{storeImg.uploadPath},
+				#{storeImg.image},
+				#{storeImg.fileName}
+				)
+			</foreach>
+			SELECT * FROM dual
+	</insert>
 
 	 <select id="getOldFiles" resultType="com.dealight.domain.StoreImgVO">
 	 SELECT *

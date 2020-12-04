@@ -1,18 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<!-- 수빈 -->
-<%@ include file="../../../includes/mainMenu.jsp" %>
-	
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
+    pageEncoding="UTF-8"%>
+<%@include file="../../includes/mainMenu.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	
+<title>웨이팅 내역</title>
 <link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
@@ -47,25 +42,12 @@
         font-size: 28px;
         font-weight: bold;
         }
-        
-        .btn_remove{
-			color: #aaa;
-	        font-size: 28px;
-	        font-weight: bold;
-        }
-        
-        .btn_remove:hover,
-        .btn_remove:focus {
-	        color: black;
-	        text-decoration: none;
-	        cursor: pointer;
-        }
 
         .close:hover,
         .close:focus {
-	        color: black;
-	        text-decoration: none;
-	        cursor: pointer;
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
         }
         
         /* The Delete Button*/
@@ -84,9 +66,8 @@
         }
 </style>
 </head>
-
 <body>
-<main class="mypage_wrapper">
+    <main class="mypage_wrapper">
         <div class="mypage_menu_nav">
             <h2 class="tit_nav">마이 페이지</h2>
             <div class="inner_nav">
@@ -101,58 +82,45 @@
         </div>
         <div class="mypage_content">
             <div class="content_head">
-                <h2>리뷰 가능 리스트<span>리뷰가 가능한 예약과 웨이팅을 불러옵니다.</span></h2>
-                <a href="/dealight/mypage/review/written-list">작성한 리뷰 보기</a>
+                <h2>웨이팅 내역<span>웨이팅 내역을 가져옵니다.</span></h2>
             </div>
-            <div class='total'>
-            		<h2>유저 아이디 : ${userId}</h2>
-					<h2>리뷰 가능한 리스트</h2>
+            <div>
+                	<h2>회원 아이디 : ${userId }</h2>
+					<h2>현재 웨이팅 횟수 : ${curWaitCnt}회</h2>
+					<h2>총 노쇼 횟수 : ${panaltyCnt}회</h2>
+					<h2>총 웨이팅 횟수 : ${enterCnt}회</h2>
+					<h2>총 웨이팅 횟수 : ${total}회</h2>
             </div>
             <div class="content_main">
-				<div id="revwWrapper">
-					<div class="revw_list">
-						<c:if test="${empty dtoList}">
-							리뷰 가능한 항목이 없습니다.
-						</c:if>
-						
-						<c:if test="${not empty dtoList}">
-							<c:forEach items="${dtoList }" var="dto">
+				<div id="waitWrapper">
+					<c:if test="${empty waitList}">
+						<h2>웨이팅 이력이 없습니다.</h2>
+					</c:if>
+					
+					<c:if test="${not empty waitList}">
+					<h2>웨이팅 리스트</h2>
+						<c:forEach items="${waitList}" var="wait">
 							<div>
-							==================================================
-								<h5>매장번호 : <span class="store_id">${dto.storeId}</span></h5>
-								<h5>회원 아이디 : ${dto.userId}</h5>
-								<h5>시간 : <h2>${dto.time}</h2></h5>
-								<h5>리뷰 상태 : ${dto.revwStus}</h5>
-								<c:if test="${not empty dto.rsvd }">
-									<h2>예약</h2>
-									<h5>예약 번호 : <span class='rsvd_id'>${dto.rsvd.rsvdId}</span></h5>
-									<h5>핫딜 번호 : ${dto.rsvd.htdlId}</h5>
-									<h5>승인 번호 : ${dto.rsvd.aprvNo}</h5>
-									<h5>예약 인원 : ${dto.rsvd.pnum}</h5>
-									<h5>예약 상태 : ${dto.rsvd.stusCd}</h5>
-									<h5>예약 총 금액 : ${dto.rsvd.totAmt}</h5>
-									<h5>예약 총 수량 : ${dto.rsvd.totQty}</h5>
-									<button class="btn_rsvd_dtls">예약 상세 보기</button>
-								</c:if>
-								<c:if test="${not empty dto.wait }">
-									<h2>웨이팅</h2>
-									<h5>웨이팅 번호: <span class='wait_id'>${dto.wait.waitId}</span></h5>
-									<h5>웨이팅 인원: ${dto.wait.waitPnum}</h5>
-									<h5>손님 이름: ${dto.wait.custNm}</h5>
-									<h5>손님 번호: ${dto.wait.custTelno}</h5>
-									<h5>웨이팅 상태: ${dto.wait.waitStusCd}</h5>
-								</c:if>
+								====================================
+								<h3>웨이팅 번호 : <span class="wait_id">${wait.waitId}</span></h3>
+								<h5>매장번호 : <span class="store_id">${wait.storeId}</span></h5></br>
+								날짜 : ${wait.waitRegTm } </br>
+								인원 : ${wait.waitPnum }</br>
+								이용자 전화번호 : ${wait.custTelno }</br>
+								이용자 이름 : ${wait.custNm }</br>
+								현재 웨이팅 상태 : ${wait.waitStusCd}<br>
+								리뷰 상태 : <span class="revw_stus">${wait.revwStus }</span></br>
 								<button class="btn_store_info">매장 정보 보기</button>
-								<button class="btn_revw_reg">리뷰 쓰기</button></br>
-								</div>
-							</c:forEach>
-						</c:if>
-					</div>
+								<button class="btn_revw_reg">리뷰 쓰기</button>
+							</div>
+						</c:forEach>
+					</c:if>
 				</div>
             </div>
             <!-- pagination -->
 			<div class='pull-right'>
 				<ul class='pagination'>
+			
 					<c:if test="${pageMaker.prev}">
 						<li class='paginate_button previous'>
 							<a href="${pageMaker.startPage - 1}">Previous</a>
@@ -172,7 +140,7 @@
 					</c:if>
 				</ul>
 			</div>
-			<form id='actionForm' action="/dealight/mypage/review/" method='get'>
+			<form id='actionForm' action="/dealight/mypage/wait" method='get'>
 				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 				<input type='hidden' name='amount' value = '${pageMaker.cri.amount}'>
 			</form>
@@ -184,25 +152,20 @@
 		<!-- Modal content -->
 		<div class="modal-content">
 			<span class="close">&times;</span>
-			<ul class="rsvdDtls"></ul>
-			<ul class="userRsvdList"></ul>
 			<ul class="revw_regForm"></ul>
 			<ul class="store_info"></ul>
 			<div id="map" style="width:500px;height:400px;"></div>
 		</div>
 	</div>
-		
-	
-	</div>
-	<script type="text/javascript">
+
+<script type="text/javascript">
 $(document).ready(function() {
 	
 	// 모달 선택
 	const modal = $("#myModal"),
 		close = $(".close"),
 		modalContent = $(".modal-content"),
-		btn_show_board = $("#btn_show_board")
-	;
+		btn_show_board = $("#btn_show_board");
 
 	close.on("click", (e) => {
 		modal.css("display","none");
@@ -225,9 +188,7 @@ $(document).ready(function() {
 	
     const userId = '${userId}',
 	    revwRegFormUL = $(".revw_regForm"),
-	    storeInfoUL = $(".store_info"),
-	    userRsvdListUL = $(".userRsvdList"),
-	    rsvdDtlsUL = $(".rsvdDtls")
+	    storeInfoUL = $(".store_info")
 	;
 	    
 	let container,options,map,mapContainer,mapOption,markerPosition,marker;
@@ -243,46 +204,6 @@ $(document).ready(function() {
 		actionForm.find("input[name='pageNum']").val($(this).attr("href"));
 		actionForm.submit();
 	});
-	
-    /*get 함수*/
-	// 예약의 '예약상세'를 가져온다.
-    function getRsvdDtls(param,callback,error) {
-    	
-    	let rsvdId = param.rsvdId;
-    	
-    	$.getJSON("/dealight/business/manage/board/reservation/dtls/" + rsvdId + ".json",
-    		function(data) {
-    			if(callback) {
-    				callback(data);
-    			}
-    	}).fail(function(xhr,status,err){
-    		if(error) {
-    			error();
-    		}
-    	});
-    	
-    };
-    
- // 사용자의 '해당 매장'의 '예약 리스트'를 가져온다.
-	function getUserRsvdList(param,callback,error) {
-      	
-      	let storeId = param.storeId,
-      		userId = param.userId;
-      	
-      	$.getJSON("/dealight/business/manage/board/reservation/list/" + storeId +"/" + userId + ".json",
-      		function(data) {
-      			if(callback) {
-      				callback(data);
-      			}
-      	}).fail(function(xhr,status,err){
-      		if(error) {
-      			error();
-      		}
-       	});
-       	
-       };
-    
-    
 	
     function getStoreInfo(param,callback,error){
        	
@@ -360,84 +281,10 @@ $(document).ready(function() {
        		
        	});
        	
-       };
-       
-       /*
-   	유저의 예약 히스토리를 보여준다.
-
-   	*/
-   	function showUserRsvdList(storeId,userId,selRsvdId){
-   		
-   		getUserRsvdList({storeId:storeId,userId:userId}, function(userRsvdList){
-   			
-   			let strUserRsvdList = "";
-   			if(!userRsvdList)
-   				return;
-   			
-   			strUserRsvdList += "<h1>예약 히스토리</h1>";
-   			userRsvdList.forEach(rsvd => {
-   				strUserRsvdList += "========================================";
-   				strUserRsvdList += "<li>예약 번호 : "+rsvd.rsvdId+"</li>"; 
-   	            strUserRsvdList += "<li>매장번호 : "+ rsvd.storeId + "</li>";
-   	            strUserRsvdList += "<li>회원 아이디 : "+ rsvd.userId + "</li>";
-   	            strUserRsvdList += "<li>핫딜 번호 :"+ rsvd.htdlId + "</li>";
-   	            strUserRsvdList += "<li>승인 번호 : "+ rsvd.aprvNo + "</li>";
-   	            strUserRsvdList += "<li>예약 인원 : "+ rsvd.pnum + "</li>";
-   	            strUserRsvdList += "<li>예약 시간 : "+ rsvd.time + "</li>";
-   	            strUserRsvdList += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
-   	            strUserRsvdList += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
-   	            strUserRsvdList += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-   	            strUserRsvdList += "<li>예약 등록 날짜 : "+ rsvd.regdate + "</li>";
-   			});
-   			
-   			userRsvdListUL.html(strUserRsvdList);
-   			
-   			showRsvdDtls(selRsvdId);
-   		})
-   	};
-   	
-   	/*
-   	예약 상세를 보여준다.
-   	*/
-   	function showRsvdDtls(rsvdId){
-   		
-   		getRsvdDtls({rsvdId:rsvdId}, function(rsvd){
-   			
-   			let strRsvdDtls = "";
-   			if(!rsvd)
-   				return;
-   			
-   			strRsvdDtls += "<h1>해당 유저 예약 상세</h1>"
-   			strRsvdDtls += "<li>예약 번호 :" + rsvd.rsvdId +"</li>";
-   			strRsvdDtls += "<li>매장 번호 :" + rsvd.storeId +"</li>";
-   			strRsvdDtls += "<li>회원 아이디 : " + rsvd.userId +"</li>";
-   			strRsvdDtls += "<li>핫딜 번호 : " + rsvd.htdlId +"</li>";
-   			strRsvdDtls += "<li>승인 번호 : " + rsvd.aprvNo +"</li>";
-   			strRsvdDtls += "<li>예약 인원 : " + rsvd.pnum +"</li>";
-   			strRsvdDtls += "<li>예약 시간 : " + rsvd.time +"</li>";
-   			strRsvdDtls += "<li>예약 상태 : " + rsvd.stusCd +"</li>";
-   			strRsvdDtls += "<li>예약 총 가격 : " + rsvd.totAmt +"</li>";
-   			strRsvdDtls += "<li>예약 총 수량 : " + rsvd.totQty +"</li>";
-   			strRsvdDtls += "<li>예약 등록 날짜 : " + rsvd.regdate +"</li>";
-   			let cnt = 1;
-   			rsvd.rsvdDtlsList.forEach(dtls => {
-   				strRsvdDtls += "==============================";
-   				strRsvdDtls += "<li>상세 순서 [" + cnt +"]</li>";
-   				strRsvdDtls += "<li>예약 상세 번호 : " + dtls.rsvdSeq +"</li>";
-   				strRsvdDtls += "<li>예약 메뉴 이름 : " + dtls.menuNm +"</li>";
-   				strRsvdDtls += "<li>메뉴 가격 : " + dtls.menuPrc +"</li>";
-   				strRsvdDtls += "<li>메뉴 총 개수 : " + dtls.menuTotQty +"</li>";
-   				cnt += 1;
-   			})
-   			
-   			rsvdDtlsUL.html(strRsvdDtls);
-   			
-   		})
-   	};
-       
+       }
        
        /* 리뷰 등록 폼을 보여준다.*/
-       function showRevwRegForm(storeId,userId,waitId,rsvdId){
+       function showRevwRegForm(storeId,userId,waitId){
     	   
     	let strRevwRegForm = "";    			
     			
@@ -453,15 +300,14 @@ $(document).ready(function() {
 	       	strRevwRegForm += "<form id='revwRegForm' action='dsadasdas' method=''>";
 	       	strRevwRegForm += "매장 번호 : <input name='storeId' value='"+store.storeId+"' readonly></br>";
 	       	strRevwRegForm += "매장 이름 : <input name='storeNm' value='"+store.storeNm+"' readonly></br>";
-	       	if(rsvdId) strRevwRegForm += "예약 번호 : <input name='rsvdId' value='"+rsvdId+"' readonly></br>";
-	       	if(waitId) strRevwRegForm += "웨이팅 번호 : <input name='waitId' value='"+waitId+"' readonly></br>";
+	       	strRevwRegForm += "웨이팅 번호 : <input name='waitId' value='"+waitId+"' readonly></br>";
 	       	strRevwRegForm += "회원 아이디 : <input name='userId' value='"+userId+"' readonly></br>";
 	       	strRevwRegForm += "리뷰 내용 : <input type='textarea' name='cnts' id=''></br>";
 	       	strRevwRegForm += "평점 : <input type='number' name='rating' id=''></br>";
 	       	strRevwRegForm += "파일첨부 : <div class='file_body'>"; 
 	       	strRevwRegForm += "<div class='form_img'><input id='js_upload' type='file' name='uploadFile' multiple></div>";
 	       	strRevwRegForm += "<div class='uploadResult'><ul></ul></div></div>";
-	       	strRevwRegForm += "<input name='prevPage' value='review/' id='' hidden>";
+	       	strRevwRegForm += "<input name='prevPage' value='wait' id='' hidden>";
 	       	strRevwRegForm += "<div class='bigPictureWrapper'><div class='bigPicture'></div></div>";
 	       	strRevwRegForm += "</form>";
 	       	strRevwRegForm += "<button id='submit_revwRegForm'>제출하기</button>";
@@ -682,33 +528,17 @@ $(document).ready(function() {
     	
        };
        
-   		/* 이벤트 등록 */
-       /*매장의 예약 리스트 보여주기*/
-       $(".btn_rsvd_dtls").on("click", e => {
-       	
-       	let rstoreId = $(e.target).parent().find(".store_id").text(),
-       		selRsvdId = $(e.target).parent().find(".rsvd_id").text(),
-       		ruserId = '${userId}';
-       		
-       	console.log('store id ............... : ' + rstoreId);
-       	console.log('rsvd id ............... : ' + selRsvdId);
-       	console.log('user id ............... : ' + ruserId);
-       	
-       	modal.css("display","block");
-
-       	showUserRsvdList(rstoreId, ruserId, selRsvdId);
-       	
-       });
-       
-       /* 리뷰 등록  모달 */
+       /* 리뷰 등록 */
        $(".btn_revw_reg").on("click", e => {
        	
        	let storeId = $(e.target).parent().find(".store_id").text(),
        		waitId = $(e.target).parent().find(".wait_id").text(),
-       		rsvdId = $(e.target).parent().find(".rsvd_id").text();
+       		revwStus = $(e.target).parent().find(".revw_stus").text();
+       	
+       	if(revwStus > 0) return;
        	
        	modal.css("display","block");
-       	showRevwRegForm(storeId,userId,waitId,rsvdId);
+       	showRevwRegForm(storeId,userId,waitId);
        	
        	//$("#waitRegForm").submit();        		
        	
@@ -716,14 +546,13 @@ $(document).ready(function() {
        
        /* 매장 상세 */
        $(".btn_store_info").on("click", e => {
-    	   
        	
-	       	let storeId = $(e.target).parent().find(".store_id").text();
-	       	
-    	    console.log('storeId.....................'+storeId);
-    	   
-	       	modal.css("display","block");
-	       	showStoreInfo(storeId);
+       	let storeId = $(e.target).parent().find(".store_id").text()
+       	
+       	modal.css("display","block");
+       	showStoreInfo(storeId);
+       	
+       	//$("#waitRegForm").submit();        		
        	
        });
 	

@@ -444,6 +444,17 @@ public class StoreServiceImpl implements StoreService {
 		return menuMapper.delete(menuSeq) == 1;
 	}
 
+	@Override
+	public StoreVO findStoreWithLocByStoreId(Long storeId) {
+		return sMapper.findStoreWithLocByStoreId(storeId);
+	}
+
+	@Override
+	public StoreVO findStoreWithBStoreAndLocByStoreId(Long storeId) {
+		
+		return sMapper.findStoreWithBstoreAndLocByStoreId(storeId);
+	}
+
 
 //	
 //	  @Override public String storeCd(Long storeId) {

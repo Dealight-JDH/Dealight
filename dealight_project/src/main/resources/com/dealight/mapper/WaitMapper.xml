@@ -51,7 +51,7 @@
 		*
 		FROM tbl_wait
 		where store_id = #{storeId} and
-		TO_CHAR(wait_reg_tm,'YYYYMMDD') = #{date}
+		TO_CHAR(regdate,'YYYYMMDD') = #{date}
 	</select>
 
 	<insert id="insert">
@@ -109,8 +109,47 @@
 	<![CDATA[
 		UPDATE tbl_wait
 		SET wait_stus_cd = 'E'
-		WHERE wait_reg_tm < sysdate - 1 and wait_stus_cd = 'W'
+		WHERE regdate < sysdate - 1 and wait_stus_cd = 'W'
 	]]>
 	</update>
+	
+	<select id="findWaitListWithPagingByUserId" resultType="com.dealight.domain.WaitVO">
+		<![CDATA[
+			SELECT 
+			    wait_id, store_id, user_id, wait_reg_tm, wait_pnum, cust_nm, wait_stus_cd,regdate,updatedate,revw_stus
+			FROM 
+			(
+			    SELECT rownum rn,wait_id, store_id, user_id, wait_reg_tm, wait_pnum, cust_nm, wait_stus_cd,regdate,updatedate,revw_stus
+			    FROM
+			    (
+			    SELECT wait_id, store_id, user_id, wait_reg_tm, wait_pnum, cust_nm, wait_stus_cd,regdate,updatedate,revw_stus
+			    FROM tbl_wait
+			    WHERE  user_id = #{userId}
+                ORDER BY wait_reg_tm desc
+			    )
+			    WHERE rownum <=  #{cri.pageNum} * #{cri.amount}
+			)
+			WHERE rn > (#{cri.pageNum} -1) * #{cri.amount}
+			ORDER BY wait_reg_tm desc
+		]]>
+	</select>
+	
+	<select id='getWaitCnt' resultType="int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM tbl_wait
+			WHERE wait_id > 0 
+			AND user_id = #{userId}
+			AND wait_stus_cd = #{waitStusCd} 
+		]]>
+	</select>
+	
+	<select id="getCurWaitByUserId" resultType="com.dealight.domain.WaitVO">
+		SELECT 
+		    /*+ INDEX_DESC(tbl_rsvd tbl_wait_pk)*/
+		    *
+		FROM tbl_wait
+		WHERE user_id = #{userId} and wait_stus_cd = 'W'
+	</select>
 
 </mapper>

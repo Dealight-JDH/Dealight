@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.WaitVO;
 
 /*
@@ -54,5 +55,10 @@ public interface WaitMapper {
 	
 	// update
 	public int waitInit();
-
+	
+	List<WaitVO> findWaitListWithPagingByUserId(@Param("userId") String userId, @Param("cri") Criteria cri);
+	
+	int getWaitCnt(@Param("userId") String userId,@Param("cri") Criteria cri,@Param("waitStusCd") String waitStusCd);
+	
+	WaitVO getCurWaitByUserId(String userId);
 }

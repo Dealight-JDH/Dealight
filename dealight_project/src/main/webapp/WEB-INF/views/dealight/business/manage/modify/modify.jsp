@@ -91,7 +91,7 @@ ${msg}
 	<input name="likeTotNum" value="${store.likeTotNum }" hidden>
 	<input name="seatStusCd" value="${store.seatStusCd }" hidden>
 	
-	<c:if test="${not empty menuList}">
+<c:if test="${not empty menuList}">
 <c:forEach items="${menuList}" var="menu">
 <input name="menuSeq" value="${menu.menuSeq}" hidden>
 	<input name="price" value="${menu.price }" hidden>
@@ -101,16 +101,18 @@ ${msg}
 </c:forEach>
 </c:if>
 
+<h2>리뷰 리스트</h2>
 <c:if test="${not empty revwList}">
 <c:forEach items="${revwList}" var="revw">
-<input name="rsvdId" value="${revw.rsvdId }" hidden>
-<input name="waitSeq" value="${revw.waitSeq }" hidden>
-<input name="userId" value="${revw.userId }" hidden>
-<input name="cnts" value="${revw.cnts }" hidden>
-<input name="regDt" value="${revw.regDt }" hidden>
-<input name="rating" value="${revw.rating }" hidden>
-<input name="replyCnts" value="${revw.replyCnts }" hidden>
-<input name="replyRegDt" value="${revw.replyRegDt }" hidden>
+=====================================</br>
+<h2>리뷰</h2>
+<h5>예약 번호 : <input name="rsvdId" value="${revw.rsvdId }" readonly></h5>
+<h5>웨이팅 번호 : <input name="waitId" value="${revw.waitId }" readonly></h5>
+<h5>회원 아이디 : <input name="userId" value="${revw.userId }" readonly></h5>
+<h5>리뷰 내용 : <input name="cnts" value="${revw.cnts }" readonly></h5>
+<h5>평점 : <input name="rating" value="${revw.rating }" readonly></h5>
+<h5>답글 내용 : <input name="replyCnts" value="${revw.replyCnts }"></h5>
+<h5>답글 등록 날짜 : <input name="replyRegDt" value="${revw.replyRegDt }"></h5>
 </c:forEach>
 </c:if>
 
@@ -153,21 +155,6 @@ uuid : ${img.uuid }</br>
 매장 사진 주소 : ${img.uploadPath }</br>
 파일 이미지 여부 : ${img.image }</br>
 파일 이름 : ${img.fileName }</br>
-</c:forEach>
-</c:if>
-
-<h2>리뷰 리스트</h2>
-<c:if test="${not empty revwList}">
-<c:forEach items="${revwList}" var="revw">
-=====================================</br>
-예약 번호 : ${revw.rsvdId }</br>
-웨이팅 번호 : ${revw.waitSeq }</br>
-회원 아이디 : ${revw.userId }</br>
-리뷰 내용 : ${revw.cnts }</br>
-리뷰 작성 날짜 : ${revw.regDt }</br>
-리뷰 평점 : ${revw.rating }</br>
-답글 내용 : ${revw.replyCnts }</br>
-답글 등록 날짜 : ${revw.replyRegDt }</br>
 </c:forEach>
 </c:if>
 

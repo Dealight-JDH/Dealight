@@ -61,4 +61,8 @@ public interface StoreMapper {
 	// bstore, menu, eval, img, loc, tag, option
 	public StoreVO findAllStoreById(long storeId);
 	
+	public StoreVO findStoreWithLocByStoreId(Long storeId);
+	
+	public StoreVO findStoreWithBstoreAndLocByStoreId(Long storeId);
+	
 }

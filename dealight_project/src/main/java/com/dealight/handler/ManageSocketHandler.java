@@ -21,7 +21,16 @@ import lombok.extern.log4j.Log4j;
 
 @Log4j
 public class ManageSocketHandler extends TextWebSocketHandler {
-
+	
+	// 싱글톤
+	private static ManageSocketHandler handler;
+	private ManageSocketHandler() {
+		handler = this;
+	};
+	
+	public static ManageSocketHandler getInstance() {
+		return handler;
+	}
 	
 	@Autowired
 	UserService userService;
@@ -35,6 +44,10 @@ public class ManageSocketHandler extends TextWebSocketHandler {
 	// 유저의 아이디를 담을 맵을 생성한다.
 	Map<String, WebSocketSession> userSessions = new HashMap<>();
 	
+	public Map<String, WebSocketSession> getUserSessions() {
+		return userSessions;
+	}
+
 	// connection이 연결되었을 때, 
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception{
