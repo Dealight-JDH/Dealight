@@ -1,8 +1,12 @@
 package com.dealight.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,10 +31,8 @@ import com.dealight.domain.AllStoreVO;
 import com.dealight.domain.HtdlVO;
 import com.dealight.domain.MenuVO;
 import com.dealight.domain.RevwVO;
-import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreImgVO;
 import com.dealight.domain.StoreTagVO;
-import com.dealight.domain.WaitVO;
 import com.dealight.service.HtdlService;
 import com.dealight.service.RsvdService;
 import com.dealight.service.StoreService;
@@ -98,9 +101,9 @@ public class ManageController {
 		
 		log.info("business store modify get.." + storeId);
 		
-		if(storeId == null) {
+		if(storeId == null)
 			storeId = (Long) request.getAttribute("storeId");
-		}
+		
 		
 		AllStoreVO store = storeService.findAllStoreInfoByStoreId(storeId);
 		
@@ -108,6 +111,15 @@ public class ManageController {
 		
 		if(store != null) {
 			List<MenuVO> menuList = store.getMenuList();
+			
+			log.info(menuList);
+			
+			menuList.stream().forEach((menu) -> {
+				if(menu.getThumImgUrl() != null)
+					menu.setEncThumImgUrl(URLEncoder.encode(menu.getThumImgUrl()));
+				log.info(menu);
+			});
+			
 			List<StoreImgVO> imgs = store.getImgs();
 			List<RevwVO> revwList = store.getRevwList();
 			List<StoreTagVO> tagList = store.getTagList();
@@ -182,7 +194,7 @@ public class ManageController {
 	
 
 
-	// 메뉴 수정 페이지
+	// 메뉴 수정 페이지//
 	@GetMapping("/menu")
 	public String menuModify(Model model, Long storeId) {
 		
@@ -190,15 +202,48 @@ public class ManageController {
 		
 		List<MenuVO> menus = storeService.findMenuByStoreId(storeId);
 		
+		log.info("menus................................."+menus);
+		
+		menus.forEach((menu) -> {
+			if(menu.getThumImgUrl() != null)
+				menu.setEncThumImgUrl(URLEncoder.encode(menu.getThumImgUrl()));
+		});
+		
 		model.addAttribute("menus",menus);
 		model.addAttribute("storeId",storeId);
 		
 		return "/dealight/business/manage/modify/menu";
 	}
 	
+	private String getFolder() {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Date date = new Date();
+		
+		String str = sdf.format(date);
+		
+		return str.replace("-",File.separator);
+	}
+	
+	private boolean checkImageType(File file) {
+		
+		try {
+			
+			String contentType = Files.probeContentType(file.toPath());
+			
+			return contentType.startsWith("image");
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	// 메뉴 등록
 	@PostMapping("/menu/register")
-	public String menuModify(Model model, MenuVO menu) {
+	public String menuRegister(Model model, MenuVO menu) {
 		
 		log.info("business menu register..");
 		
@@ -206,12 +251,45 @@ public class ManageController {
 		
 		if(menu.getRecoMenu() == null)
 			menu.setRecoMenu("N");
-
+			
 		if(menu.getRecoMenu().equalsIgnoreCase("on"))
 			menu.setRecoMenu("Y");
 		
 		
 		storeService.registerMenu(menu);
+		
+		return "redirect:/dealight/business/manage/menu?storeId="+menu.getStoreId();
+	}
+	
+	// 메뉴 수정
+	@PostMapping("/menu/modify")
+	public String menuModify(Model model, MenuVO menu) {
+		
+		log.info("business menu modify..");
+		
+		log.info("menu......" + menu);
+		
+		if(menu.getRecoMenu() == null)
+			menu.setRecoMenu("N");
+			
+		if(menu.getRecoMenu().equalsIgnoreCase("on"))
+			menu.setRecoMenu("Y");
+		
+		storeService.modifyMenu(menu);
+		
+		return "redirect:/dealight/business/manage/menu?storeId="+menu.getStoreId();
+	}
+	
+	// 메뉴 수정
+	@PostMapping("/menu/delete")
+	public String menuDelete(Model model, MenuVO menu) {
+		
+		log.info("business menu register..");
+		
+		if(storeService.deleteMenu(menu.getMenuSeq())) {
+			log.info(menu.getMenuSeq() + "의 메뉴 제거가 완료되었습니다...............");
+		};
+		
 		
 		return "redirect:/dealight/business/manage/menu?storeId="+menu.getStoreId();
 	}

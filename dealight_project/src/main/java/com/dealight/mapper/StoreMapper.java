@@ -12,7 +12,7 @@ import com.dealight.domain.StoreVO;
 
 public interface StoreMapper {
 	
-	//일단 매장을 등록하는 로직을 짜자..
+	//일단 매장을 등록하는 로직을 짜자..	123
 		//매장을 등록하는데 단계가있어
 		// mapper -> test -> service -> test -> controller -> mockMVC(test)
 		//사업자매장을 집어넣으면

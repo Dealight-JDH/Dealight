@@ -148,7 +148,10 @@ public class StoreMapperTests {
 		assertNotNull(store.getBstore());
 	}
 	
+	@Test
 	public void findByIdJoinBStoreTest1() {
+		
+		storeId = 1L;
 		
 		StoreVO store = mapper.findByIdJoinBStore(storeId);
 		
@@ -159,7 +162,10 @@ public class StoreMapperTests {
 	
 	}
 
+	@Test
 	public void findByUserIdJoinBStoreTest1() {
+		
+		userId = "aaaa";
 		
 		List<StoreVO> list = mapper.findByUserIdJoinBStore(userId);
 		

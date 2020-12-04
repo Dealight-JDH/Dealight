@@ -1,5 +1,6 @@
 package com.dealight.controller;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -49,6 +50,9 @@ public class BusinessController {
 	
 	private CallService callService;
 	
+	// 파일 저장 경로를 지정한다.
+	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05";
+	
 	
 	//메뉴 사진첨부파일 매장평가 사업자테이블에 태그 메뉴 옵션이 들어가야한다.
 	//DTO에 대한이해가 피요하고 많아지는 객체들을 쪼갤수있는 방법을 생각하자.
@@ -62,6 +66,7 @@ public class BusinessController {
 		log.info("store eval................." + eval);
 		// log.info("imgs............." + imgs);
 		
+		bStore.setRepImg(bStore.getRepImg());
 		store.setBstore(bStore);
 		store.setLoc(loc);
 		store.setEval(eval);
@@ -108,10 +113,15 @@ public class BusinessController {
 		
 		List<StoreVO> list = storeService.getStoreListByUserId(userId);
 		
+		log.info("list............................."+list);
+		
 		// 현재 웨이팅, 현재 예약 상태를 가져온다.
 		// ***쿼리가 너무 많이 생긴다.
 		list.stream().forEach((store)->{
 			long id = store.getStoreId();
+			
+			store.getBstore().setRepImg(URLEncoder.encode(store.getBstore().getRepImg()));
+			store.setBstore(storeService.getBStore(id));
 			store.setCurWaitNum(waitService.curStoreWaitList(id, "W").size());
 			store.setCurRsvdNum(rsvdService.readTodayCurRsvdList(id).size());
 		});
@@ -136,6 +146,7 @@ public class BusinessController {
 		// 오늘 예약한 사용자의 사용자 정보와 예약 정보를 가져온다.
 		List<UserWithRsvdDTO> todayRsvdUserList = rsvdService.userListTodayRsvd(storeId);
 		
+		model.addAttribute("userId",userId);
 		model.addAttribute("storeId", storeId);
 		model.addAttribute("todayRsvdUserList", todayRsvdUserList);
 		
@@ -173,5 +184,20 @@ public class BusinessController {
 			model.addAttribute("store",store);
 			
 			return "/dealight/business/manage/waiting/waiting";
+		}
+		
+		@GetMapping("/test")
+		public String test(HttpServletRequest request,Model model) {
+			
+			HttpSession session = request.getSession();
+			
+			session.setAttribute("userId", "kjuioq");
+			
+			String userId = (String) session.getAttribute("userId");
+			
+			model.addAttribute("userId", userId);
+			
+			
+			return "/dealight/business/test";
 		}
 }
