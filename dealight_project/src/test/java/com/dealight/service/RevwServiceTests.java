@@ -500,7 +500,7 @@ public class RevwServiceTests {
 		log.info("before revw................. : "+revw);
 		log.info("before revw reply cnts................. : "+revw.getReplyCnts());
 		
-		assertTrue(revwService.regReply(replyCnts, revwId));
+		assertTrue(revwService.regReply(revwId,replyCnts));
 
 		revw = revwService.findById(revwId);
 		

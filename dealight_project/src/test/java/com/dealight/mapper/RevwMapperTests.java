@@ -293,7 +293,7 @@ public class RevwMapperTests {
 		RevwVO revw = mapper.findById(revwId);
 		log.info(revw);
 
-		int result = mapper.regReply("내용!", revwId);
+		int result = mapper.regReply(revwId,"내용!");
 		log.info("UPDATED REVW REPLY: " + result);
 		
 		assertTrue(result == 1);

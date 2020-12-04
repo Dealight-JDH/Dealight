@@ -1085,9 +1085,8 @@ let curHour = curToday.getHours(),
         /*현황판 토글*/
 
 		let toggle = $(".switch");
-		
-		toggle.on("click", (e) => {
-			
+        
+        let toggleHandler = function(e){
 			let storeId = ${storeId};
 			
 			e.preventDefault();
@@ -1115,7 +1114,9 @@ let curHour = curToday.getHours(),
 				//console.log("rsvd rslt board block => none");
 				$("#rsvd_rslt_baord").css("display", "none");
 			}
-		});
+        }
+		
+		toggle.on("click", toggleHandler);
 		
         /*당일 예약 결과 가져오기*/
         $("#btn_rsvd_rslt").on("click", e => {
@@ -1129,18 +1130,18 @@ let curHour = curToday.getHours(),
         	showBoard(storeId);
         });
 
+        
+        let showUserRsvdListHandler = function(e) {
+        	let rstoreId = $(e.target).parent().find(".btnStoreId").text(),
+    		ruserId = $(e.target).parent().find(".btnUserId").text();
+    	
+    		modal.css("display","block");
+
+    		showUserRsvdList(rstoreId, ruserId);
+        }
         /*예약리스트에 있는 내용 중, 예약 상세 보여주기*/
         /*회원의 예약 리스트 보여주기*/
-        $(".rsvdList").on("click", e => {
-
-        	let rstoreId = $(e.target).parent().find(".btnStoreId").text(),
-        		ruserId = $(e.target).parent().find(".btnUserId").text();
-        	
-        	modal.css("display","block");
-
-        	showUserRsvdList(rstoreId, ruserId);
-        	
-        });
+        $(".rsvdList").on("click", showUserRsvdListHandler);
         	
         /* 웨이팅 등록 */
         $(".btn_wait_register").on("click", e => {
@@ -1148,13 +1149,10 @@ let curHour = curToday.getHours(),
         	modal.css("display","block");
         	showWaitRegisterForm(storeId);
         	
-        	//$("#waitRegForm").submit();        		
-        	
         });
 
-        /* 매장 착석 상태 처리*/
-        $(".btn_seat_stus").on("click", e => {
-
+        let changeSeatStusHandler = function(e) {
+        	
             e.preventDefault();
             
             let color = "";
@@ -1163,18 +1161,15 @@ let curHour = curToday.getHours(),
             param.storeId = storeId;
             param.seatStusCd = e.target.innerHTML[0];
             
-            // debug
-            //console.log("seat stus cd...................."+e.target.innerHTML[0]);
             
         	boardService.putChangeStatusCd(param, function(result){
-        		//alert(result);
             	showStoreInfo(param.storeId);
         	});
-        	
-        });
-
-        /*웨이팅 입장 처리*/
-        $(".btn_enter_wait").on("click", e => {
+        }
+        /* 매장 착석 상태 처리*/
+        $(".btn_seat_stus").on("click",changeSeatStusHandler);
+        
+        let waitEnterHandler = function(e) {
         	
         	/*dom 코드는 변경될 가능성 있음*/
         	waitId = parseInt($(".nextWait li:eq(2)").text().split(":")[1]);
@@ -1183,11 +1178,12 @@ let curHour = curToday.getHours(),
         		//alert(result);
         		showWaitList(storeId);
         	});
-        	
-        });
+        }
 
-        /*웨이팅 노쇼 처리*/
-        $(".btn_noshow_wait").on("click", e => {
+        /*웨이팅 입장 처리*/
+        $(".btn_enter_wait").on("click", waitEnterHandler);
+        
+        let waitNoshowHandler = function(e){
         	
         	/*dom 코드는 변경될 가능성 있음*/
         	waitId = parseInt($(".nextWait li:eq(2)").text().split(":")[1]);
@@ -1196,7 +1192,10 @@ let curHour = curToday.getHours(),
         		//alert(result);
 	        	showWaitList(storeId);
         	});
-        });
+        }
+
+        /*웨이팅 노쇼 처리*/
+        $(".btn_noshow_wait").on("click", waitNoshowHandler);
         
         
         /* web socket!!!!!!!!!!!!!!!!!!!!*/

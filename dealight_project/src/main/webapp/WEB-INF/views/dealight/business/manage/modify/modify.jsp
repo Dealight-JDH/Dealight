@@ -100,22 +100,6 @@ ${msg}
 	<input name="recoMenu" value="${menu.recoMenu }" hidden>
 </c:forEach>
 </c:if>
-
-<h2>리뷰 리스트</h2>
-<c:if test="${not empty revwList}">
-<c:forEach items="${revwList}" var="revw">
-=====================================</br>
-<h2>리뷰</h2>
-<h5>예약 번호 : <input name="rsvdId" value="${revw.rsvdId }" readonly></h5>
-<h5>웨이팅 번호 : <input name="waitId" value="${revw.waitId }" readonly></h5>
-<h5>회원 아이디 : <input name="userId" value="${revw.userId }" readonly></h5>
-<h5>리뷰 내용 : <input name="cnts" value="${revw.cnts }" readonly></h5>
-<h5>평점 : <input name="rating" value="${revw.rating }" readonly></h5>
-<h5>답글 내용 : <input name="replyCnts" value="${revw.replyCnts }"></h5>
-<h5>답글 등록 날짜 : <input name="replyRegDt" value="${revw.replyRegDt }"></h5>
-</c:forEach>
-</c:if>
-
 <c:if test="${not empty tagList}">
 <c:forEach items="${tagList}" var="tag">
 <input name="tagNm" value="tag.tagNm" hidden>
@@ -123,6 +107,27 @@ ${msg}
 </c:if>
 
 </form>
+
+<h2>리뷰 리스트</h2>
+<c:if test="${not empty revwList}">
+<c:forEach items="${revwList}" var="revw">
+=====================================</br>
+<div>
+	<h2>리뷰</h2>
+	<h5>리뷰 번호 : <input name="revwId" value="${revw.revwId }" readonly></h5>
+	<h5>예약 번호 : <input name="rsvdId" value="${revw.rsvdId }" readonly></h5>
+	<h5>웨이팅 번호 : <input name="waitId" value="${revw.waitId }" readonly></h5>
+	<h5>회원 아이디 : <input name="userId" value="${revw.userId }" readonly></h5>
+	<h5>리뷰 내용 : <input name="cnts" value="${revw.cnts }" readonly></h5>
+	<h5>평점 : <input name="rating" value="${revw.rating }" readonly></h5>
+	<h5>답글 내용 : <input name="replyCnts" value="${revw.replyCnts }"></h5>
+	<h5>답글 등록 날짜 : <input name="replyRegDt" value="${revw.replyRegDt }"></h5>
+	<button class="btn_reg_reply">답글 달기</button>
+</div>
+</c:forEach>
+</c:if>
+
+
 <div id="map" style="width:200px;height:200px;"></div>
 
 매장 주소 : ${store.addr } </br>
@@ -390,6 +395,79 @@ marker.setMap(map);
 
 //아래 코드는 지도 위의 마커를 제거하는 코드입니다
 //marker.setMap(null);    
+
+let getRevw = function (params,callback,error) {
+	
+	let revwId = params.revwId;
+	console.log("getRevw....................." + revwId);
+	
+	$.getJSON("/dealight/business/manage/review/"+revwId+".json",
+    		function(data) {
+    			if(callback) {
+    				callback(data);
+    			}
+    	}).fail(function(xhr,status,err){
+    		if(error) {
+    			error();
+    		}
+    	});
+};
+
+let regReply = function (params,callback,error){
+	
+	let replyCnts = params.replyCnts,
+		revwId = params.revwId;
+	
+	console.log("reg reply....................." + revwId);
+	
+	$.ajax({
+	    type:'put',
+	    url:'/dealight/business/manage/review/reply',
+	    data : JSON.stringify({replyCnts:replyCnts,revwId : revwId}),
+	    contentType : "application/json",
+	    success : function(result, status, xhr) {
+	        if(callback) {
+	            callback(result);
+	        }
+	    },
+	    error : function(xhr, status, er) {
+	        if(error) {
+	            error(er);
+	        }               
+	    }
+	});
+};
+
+let regReplyHandler = function (e) {
+	
+	console.log("reg reply.....................");
+	
+	e.preventDefault();
+	
+	let inputRevwId = $(e.target).parent().find("input[name='revwId']"),
+		inputReplyCnts = $(e.target).parent().find("input[name='replyCnts']"),
+		inputReplyRegDt = $(e.target).parent().find("input[name='replyRegDt']")
+		;
+		
+	let revwId = inputRevwId.val(),
+		replyCnts = inputReplyCnts.val();
+	
+	console.log("revwId : " +revwId +", replyCnts : " + replyCnts);
+	
+	regReply({revwId:revwId,replyCnts:replyCnts});
+	
+	getRevw(revwId, revw => {
+		
+		inputRevwId.text(revw.replyCnts);
+		inputReplyRegDt.text(revw.replyRegDate);
+		
+	});
+	
+}
+
+	$(".btn_reg_reply").on("click",regReplyHandler);
+
+
 </script>
 </body>
 </html>

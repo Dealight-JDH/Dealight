@@ -659,9 +659,9 @@ window.onload = function () {
     $(".btn_rsvd_dtls").on("click", showRsvdDtlsHandler);
 	
     /* 리뷰 등록 */
-    $(".btn_revw_reg").on("click",showRevwRegFormHandler);
+    $(".btn_revw_reg").on("click", showRevwRegFormHandler);
     
-    $(".btn_revw_info").on("click",showRsvdRevwHandler);
+    $(".btn_revw_info").on("click", showRsvdRevwHandler);
     
     /* 매장 상세 */
     $(".btn_store_info").on("click", showStoreInfoHandler);

@@ -68,7 +68,7 @@ public interface RevwService {
 	List<WaitVO> getWritableListByWait(String userId);
 	
 	// 리뷰 답글 달기
-	boolean regReply(@Param("replyCnts") String replyCnts, @Param("revwId") Long revwId);
+	boolean regReply(Long revwId,String replyCnts);
 
 	// 리뷰 삭제
 	boolean deleteRevw(Long revwId);

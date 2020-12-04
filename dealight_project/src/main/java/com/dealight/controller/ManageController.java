@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -109,6 +113,19 @@ public class ManageController {
 			storeId = (Long) request.getAttribute("storeId");
 		
 		
+		// All Store
+		
+		// 매장
+		// B store
+		// 매장 위치
+		// 매장 평가
+		// 사진리스트
+		
+		// 메뉴
+		// 리뷰리스트
+		// 태그리스트
+	
+		
 		AllStoreVO store = storeService.findAllStoreInfoByStoreId(storeId);
 		
 		log.info("All store......................"+store);
@@ -162,6 +179,35 @@ public class ManageController {
 		}
 		 
 		return "redirect:/dealight/business/manage/modify?storeId="+store.getStoreId();
+	}
+	
+	@PutMapping(value="/review/reply",
+			consumes = "application/json",
+			produces = { MediaType.TEXT_PLAIN_VALUE})
+	@ResponseBody
+	public ResponseEntity<String> regReply(@RequestBody HashMap<String, Object> map){
+		
+		String replyCnts = (String) map.get("replyCnts");
+		Long revwId = Long.parseLong((String) map.get("revwId")); 
+		
+		log.info("put revw.................");
+		
+		log.info("replyCnts..............." + replyCnts);
+		log.info("revwId..............." + revwId);
+		
+		return revwService.regReply(revwId, replyCnts)
+				? new ResponseEntity<>("success", HttpStatus.OK)
+						: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	
+	@GetMapping(value="/review/{revwId}")
+	@ResponseBody
+	public ResponseEntity<RevwVO> getRevw(Long revwId){
+		
+		log.info("get revw.................");
+		
+		return new ResponseEntity<>(revwService.findById(revwId),HttpStatus.OK);
 	}
 	
 	// 매장의 이미지를 가져온다.

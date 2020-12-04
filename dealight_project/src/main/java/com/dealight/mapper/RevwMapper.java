@@ -85,9 +85,10 @@ public interface RevwMapper {
 	public int addCntWaitRevwStus(Long waitId);
 	
 	// 리뷰 답글 달기
-	public int regReply(@Param("replyCnts") String replyCnts, @Param("revwId") Long revwId);
+	public int regReply(@Param("revwId") Long revwId,@Param("replyCnts") String replyCnts);
 
 	// 리뷰 삭제
 	public int deleteRevw(Long revwId);
+	
 
 }

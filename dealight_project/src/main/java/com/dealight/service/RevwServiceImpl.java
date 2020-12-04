@@ -125,9 +125,9 @@ public class RevwServiceImpl implements RevwService {
 	}
 
 	@Override
-	public boolean regReply(String replyCnts, Long revwId) {
+	public boolean regReply(Long revwId,String replyCnts) {
 		
-		return revwMapper.regReply(replyCnts, revwId) == 1;
+		return revwMapper.regReply(revwId,replyCnts) == 1;
 	}
 
 	@Override
