@@ -64,6 +64,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	]]>
 	</select>
 	
+	<select id="findRevwWtihImgsByRsvdId" resultMap="RevwVO">
+		select *
+		from tbl_revw r, tbl_revw_img i
+		where rsvd_id = #{rsvdId}
+		AND r.revw_id = i.revw_id(+)		
+	</select>
+	
+	<select id="findRevwWtihImgsByWaitId" resultMap="RevwVO">
+		select *
+		from tbl_revw r, tbl_revw_img i
+		where wait_id = #{waitId}
+		AND r.revw_id = i.revw_id(+)
+	</select>
+	
 	<select id="countWritableWait" resultType="int">
 		select COUNT(*)
 		from tbl_wait

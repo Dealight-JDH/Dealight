@@ -21,6 +21,11 @@ public interface RevwService {
 	
 	int countWritableRsvd(String userId);
 	
+	// 예약 번호로 리뷰 찾기
+	RevwVO findRevwWtihImgsByRsvdId(Long rsvdId);
+	// 웨이팅 번호로 리뷰 찾기
+	RevwVO findRevwWtihImgsByWaitId(Long waitId);
+	
 	// 매장 리뷰 리스트 가져오기(페이징)
 	List<RevwVO> getRevwListWithPagingByStoreId(Long storeId, Criteria cri);
 	

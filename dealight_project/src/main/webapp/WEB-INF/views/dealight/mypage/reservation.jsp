@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+	<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@include file="../../includes/mainMenu.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -11,60 +11,6 @@
 <link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
-<style>
-	/* The Modal (background) */
-        .modal {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
-        left: 0;
-        top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0,0,0); /* Fallback color */
-        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        }
-
-        /* Modal Content/Box */
-        .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto; /* 15% from the top and centered */
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%; /* Could be more or less, depending on screen size */
-        }
-
-        /* The Close Button */
-        .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-        }
-        
-        /* The Delete Button*/
-        .btn_delete {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        }
-
-        .btn_delete:hover,
-        .btn_delete:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-        }
-</style>
 </head>
 <body>
     <main class="mypage_wrapper">
@@ -116,7 +62,8 @@
 								리뷰 상태 : <span class="revw_stus">${rsvd.revwStus }</span></br>
 								<button class="btn_rsvd_dtls">예약 상세 보기</button>
 								<button class="btn_store_info">매장 정보 보기</button>
-								<button class="btn_revw_reg">리뷰 쓰기</button>
+								<c:if test="${rsvd.revwStus > 0}"> <button class="btn_revw_info">리뷰 보기</button></c:if>
+								<c:if test="${rsvd.revwStus == 0}"><button class="btn_revw_reg">리뷰 쓰기</button></c:if>
 							</div>
 						</c:forEach>
 					</c:if>
@@ -161,43 +108,22 @@
 			<ul class="userRsvdList"></ul>
 			<ul class="revw_regForm"></ul>
 			<ul class="store_info"></ul>
+			<ul class="revwInfo"></ul>
 			<div id="map" style="width:500px;height:400px;"></div>
 		</div>
 	</div>
 
+<script type="text/javascript" src="/resources/js/modal.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {
-	
-	// 모달 선택
-	const modal = $("#myModal"),
-		close = $(".close"),
-		modalContent = $(".modal-content"),
-		btn_show_board = $("#btn_show_board");
-
-	close.on("click", (e) => {
-		modal.css("display","none");
-		modal.find("ul").html("");
-		modal.find("#map").html("");
-		modal.find("#map").css("display", "none");
-	});
-	
-	modal.find("#map").css("display", "none");
-	
-	/*
-	 모달이 아닌 화면을 클릭하면 모달이 종료가 되어야 하는데 그렇지 않음.
-	*/
-	window.onclick = function(event) {
-		  if (event.target == modal) {
-			  modal.css("display","none");
-			  modal.find("ul").html("");
-		  }
-	};
+window.onload = function () {
 	
     const userRsvdListUL = $(".userRsvdList"),
 	    rsvdDtlsUL = $(".rsvdDtls"),
 	    userId = '${userId}',
 	    revwRegFormUL = $(".revw_regForm"),
-	    storeInfoUL = $(".store_info")
+	    storeInfoUL = $(".store_info"),
+	    btn_show_board = $("#btn_show_board"),
+	    revwInfoUL = $(".revwInfo")
 	;
 	    
 	let container,options,map,mapContainer,mapOption,markerPosition,marker;
@@ -205,19 +131,21 @@ $(document).ready(function() {
 	/* 페이징 로직*/
 	let actionForm = $("#actionForm");
 	
-	$(".paginate_button a").on("click", function(e) {
-		
+	let pagingHandler = function(e) {
 		e.preventDefault();
 		
 		console.log("page click");
 		
 		actionForm.find("input[name='pageNum']").val($(this).attr("href"));
 		actionForm.submit();
-	});
+	}
+	
+	/* 페이징 핸들러 */
+	$(".paginate_button a").on("click", pagingHandler);
 	
     /*get 함수*/
 	// 예약의 '예약상세'를 가져온다.
-    function getRsvdDtls(param,callback,error) {
+    let getRsvdDtls = function (param,callback,error) {
     	
     	let rsvdId = param.rsvdId;
     	
@@ -235,7 +163,7 @@ $(document).ready(function() {
     }
 	
     // 사용자의 '해당 매장'의 '예약 리스트'를 가져온다.
-	function getUserRsvdList(param,callback,error) {
+	let getUserRsvdList = function (param,callback,error) {
       	
       	let storeId = param.storeId,
       		userId = param.userId;
@@ -256,11 +184,9 @@ $(document).ready(function() {
        	
        };
      
-       function getStoreInfo(param,callback,error){
-       	
+       let getStoreInfo = function (param,callback,error){
        	
        	let storeId = param.storeId;
-       	
        	
        	$.getJSON("/dealight/mypage/reservation/store/"+ storeId +".json",
                    function(data){
@@ -274,11 +200,52 @@ $(document).ready(function() {
            });
        };
        
+       let getRsvdRevw = function (param,callback,error) {
+    	   
+    	   let rsvdId = param.rsvdId;
+    	   
+          	$.getJSON("/dealight/mypage/review/rsvd/"+ rsvdId +".json",
+                    function(data){
+                        if(callback){
+                            callback(data);
+                        }
+                    }).fail(function(xhr,status,err){
+                        if(error){
+                            error();
+                        }
+            });
+       }
+       
     /* 출력 로직*/
     
-    function showStoreInfo(storeId) {
+    let showRsvdRevw = function (rsvdId) {
     	
-    	getStoreInfo({storeId : storeId}, store=>{
+    	getRsvdRevw({rsvdId : rsvdId}, revw => {
+    		
+    		let strRevw = "";
+    		if(!revw) return;
+    		
+    		strRevw += "<h1>리뷰 보기</h1>";
+    		strRevw += "<h5>리뷰 번호 : "+revw.revwId+"</h5>";
+    		strRevw += "<h5>매장 번호 : "+revw.storeId+"</h5>";
+    		strRevw += "<h5>매장 이름 : "+revw.storeNm+"</h5>";
+    		strRevw += "<h5>예약 번호 : "+revw.rsvdId+"</h5>";
+    		strRevw += "<h5>회원 아이디 : "+revw.userId+"</h5>";
+    		strRevw += "<h5>리뷰 내용 : "+revw.cnts+"</h5>";
+    		strRevw += "<h5>평점 : "+revw.rating+"</h5>";
+    		strRevw += "<h5>답글 내용 : "+revw.replyCnts+"</h5>";
+    		strRevw += "<h5>답글 등록 날짜 : "+revw.replyRegDt+"</h5>";
+    		strRevw += "<h5>리뷰 사진</h5>";
+    		for(let i = 0; i < revw.imgs.length; i++)
+    			if(revw.imgs[i].fileName !== null) strRevw += "<img src='/display?fileName="+encodeURIComponent(revw.imgs[i].uploadPath+"/s_"+revw.imgs[i].uuid+"_"+revw.imgs[i].fileName)+"'>";
+    		
+    		revwInfoUL.html(strRevw);
+    	});
+    };
+    
+    let showStoreInfo = function (storeId) {
+    	
+    	getStoreInfo({storeId : storeId}, store => {
     		
     		let strStoreInfo = "";
     		if(!store)
@@ -331,12 +298,11 @@ $(document).ready(function() {
     		
     	});
     	
-    }
+    };
     /*
 	유저의 예약 히스토리를 보여준다.
-
 	*/
-	function showUserRsvdList(storeId,userId,selRsvdId){
+	let showUserRsvdList = function (storeId,userId,selRsvdId){
 		
 		getUserRsvdList({storeId:storeId,userId:userId}, function(userRsvdList){
 			
@@ -364,13 +330,13 @@ $(document).ready(function() {
 			
 			showRsvdDtls(selRsvdId);
 			
-		})
+		});
 	};
 	
 	/*
 	예약 상세를 보여준다.
 	*/
-	function showRsvdDtls(rsvdId){
+	let showRsvdDtls = function (rsvdId){
 		
 		getRsvdDtls({rsvdId:rsvdId}, function(rsvd){
 			
@@ -407,7 +373,7 @@ $(document).ready(function() {
 	};
 	
     /* 리뷰 등록 폼을 보여준다.*/
-    function showRevwRegForm(storeId,userId,rsvdId){
+    let showRevwRegForm = function (storeId,userId,rsvdId){
  	   
  	let strRevwRegForm = "";    			
  			
@@ -417,10 +383,9 @@ $(document).ready(function() {
     		
     		if(!store)
     			return;
-    	
 	       	
 	       	strRevwRegForm += "<h1>리뷰 작성</h1>";
-	       	strRevwRegForm += "<form id='revwRegForm' action='dsadasdas' method=''>";
+	       	strRevwRegForm += "<form id='revwRegForm' action='' method=''>";
 	       	strRevwRegForm += "매장 번호 : <input name='storeId' value='"+store.storeId+"' readonly></br>";
 	       	strRevwRegForm += "매장 이름 : <input name='storeNm' value='"+store.storeNm+"' readonly></br>";
 	       	strRevwRegForm += "예약 번호 : <input name='rsvdId' value='"+rsvdId+"' readonly></br>";
@@ -486,7 +451,7 @@ $(document).ready(function() {
 			let maxSize = 5242880; /* 5MB */
 			
 			/*업로드 결과를 보여준다. */
-			function showUploadResult(uploadResultArr) {
+			let showUploadResult = function (uploadResultArr) {
 				
 				console.log("show upload result..................");
 		        
@@ -541,7 +506,7 @@ $(document).ready(function() {
 			}
 		    
 		    /*파일 valid check */
-			function checkExtension(fileName, fileSize) {
+			let checkExtension = function (fileName, fileSize) {
 		        
 		        /*파일 사이즈를 체크한다. */
 		        if(fileSize >= maxSize){
@@ -600,7 +565,7 @@ $(document).ready(function() {
 		        }
 		    });
 			
-			function showImage(fileCallPath) {
+			let showImage = function (fileCallPath) {
 				
 				alert(fileCallPath);
 				
@@ -650,58 +615,58 @@ $(document).ready(function() {
  			
  	
     };
-	
-	
-	/* 이벤트 등록 */
-    /*매장의 예약 리스트 보여주기*/
-    $(".btn_rsvd_dtls").on("click", e => {
-    	
-    	console.log($(e.target).parent().find(".store_id").text());
-
-    	let rstoreId = $(e.target).parent().find(".store_id").text(),
-    		selRsvdId = $(e.target).parent().find(".rsvd_id").text(),
-    		ruserId = '${userId}';
-    		
-    	
-    	modal.css("display","block");
-
-    	showUserRsvdList(rstoreId, ruserId, selRsvdId);
-    	
-    });
-	
-    /* 리뷰 등록 */
-    $(".btn_revw_reg").on("click", e => {
-    	
-    	let storeId = $(e.target).parent().find(".store_id").text(),
-    		rsvdId = $(e.target).parent().find(".rsvd_id").text(),
-    		revwStus = $(e.target).parent().find(".revw_stus").text();
-           	
-        if(revwStus > 0) return;
-    	
-    	modal.css("display","block");
-    	showRevwRegForm(storeId,userId,rsvdId);
-    	
-    	//$("#waitRegForm").submit();        		
-    	
-    });
     
-    /* 매장 상세 */
-    $(".btn_store_info").on("click", e => {
+    let showRsvdRevwHandler = function(e) {
     	
+    	let rsvdId = $(e.target).parent().find(".rsvd_id").text();
+    	
+    	showRsvdRevw(rsvdId);
+    	modal.css("display","block");
+    	
+    }
+	
+	let showRsvdDtlsHandler = function(e) {
+		
+    	let rstoreId = $(e.target).parent().find(".store_id").text(),
+		selRsvdId = $(e.target).parent().find(".rsvd_id").text(),
+		ruserId = '${userId}';
+	
+	
+		showUserRsvdList(rstoreId, ruserId, selRsvdId);
+		modal.css("display","block");
+	};
+	
+	let showRevwRegFormHandler =  function(e) {
+    	let storeId = $(e.target).parent().find(".store_id").text(),
+		rsvdId = $(e.target).parent().find(".rsvd_id").text(),
+		revwStus = $(e.target).parent().find(".revw_stus").text();
+       	
+	    if(revwStus > 0) return;
+		
+		showRevwRegForm(storeId,userId,rsvdId);
+		modal.css("display","block");
+	}
+	
+	let showStoreInfoHandler = function(e) {
     	let storeId = $(e.target).parent().find(".store_id").text()
     	
     	modal.css("display","block");
     	showStoreInfo(storeId);
-    	
-    	//$("#waitRegForm").submit();        		
-    	
-    });
+	}
+	
+	/* 이벤트 등록 */
+    /*매장의 예약 리스트 보여주기*/
+    $(".btn_rsvd_dtls").on("click", showRsvdDtlsHandler);
+	
+    /* 리뷰 등록 */
+    $(".btn_revw_reg").on("click",showRevwRegFormHandler);
     
+    $(".btn_revw_info").on("click",showRsvdRevwHandler);
     
-	
-	
-	
-}); /* document ready end*/
+    /* 매장 상세 */
+    $(".btn_store_info").on("click", showStoreInfoHandler);
+    
+}; /* document ready end*/
 
 
 

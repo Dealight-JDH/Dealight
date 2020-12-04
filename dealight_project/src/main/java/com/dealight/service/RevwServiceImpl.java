@@ -166,4 +166,16 @@ public class RevwServiceImpl implements RevwService {
 		return revwMapper.getWrittenListWtihPagingByUserId(userId, cri);
 	}
 
+	@Override
+	public RevwVO findRevwWtihImgsByRsvdId(Long rsvdId) {
+		
+		return revwMapper.findRevwWtihImgsByRsvdId(rsvdId);
+	}
+
+	@Override
+	public RevwVO findRevwWtihImgsByWaitId(Long waitId) {
+
+		return revwMapper.findRevwWtihImgsByWaitId(waitId);
+	}
+
 }

@@ -11,73 +11,6 @@
 <link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
-<style>
-	/* The Modal (background) */
-        .modal {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
-        left: 0;
-        top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0,0,0); /* Fallback color */
-        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        }
-
-        /* Modal Content/Box */
-        .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto; /* 15% from the top and centered */
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%; /* Could be more or less, depending on screen size */
-        }
-
-        /* The Close Button */
-        .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        }
-        
-        .btn_remove{
-			color: #aaa;
-	        font-size: 28px;
-	        font-weight: bold;
-        }
-        
-        .btn_remove:hover,
-        .btn_remove:focus {
-	        color: black;
-	        text-decoration: none;
-	        cursor: pointer;
-        }
-
-        .close:hover,
-        .close:focus {
-	        color: black;
-	        text-decoration: none;
-	        cursor: pointer;
-        }
-        
-        /* The Delete Button*/
-        .btn_delete {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        }
-
-        .btn_delete:hover,
-        .btn_delete:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-        }
-</style>
 </head>
 <body>
 <main class="mypage_wrapper">
@@ -161,40 +94,16 @@
 			<div id="map" style="width:500px;height:400px;"></div>
 		</div>
 	</div>
-
+<script type="text/javascript" src="/resources/js/modal.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-	
-	// 모달 선택
-	const modal = $("#myModal"),
-		close = $(".close"),
-		modalContent = $(".modal-content"),
-		btn_show_board = $("#btn_show_board");
-
-	close.on("click", (e) => {
-		modal.css("display","none");
-		modal.find("ul").html("");
-		modal.find("#map").html("");
-		modal.find("#map").css("display", "none");
-	});
-	
-	modal.find("#map").css("display", "none");
-	
-	/*
-	 모달이 아닌 화면을 클릭하면 모달이 종료가 되어야 하는데 그렇지 않음.
-	*/
-	window.onclick = function(event) {
-		  if (event.target == modal) {
-			  modal.css("display","none");
-			  modal.find("ul").html("");
-		  }
-	};
 	
     const userId = '${userId}',
 	    storeInfoUL = $(".store_info"),
 	    likeListDiv = $(".like_list"),
 	    paginationUL = $(".pagination"),
 	    totalDiv = $(".total"),
+	    btn_show_board = $("#btn_show_board"),
 	    pageNum = ${pageMaker.cri.pageNum},
 	    amount = ${pageMaker.cri.amount}
 	;
@@ -281,9 +190,6 @@ $(document).ready(function() {
 	    	let storeId = params.storeId,
 	    		userId = params.userId;
 	    	
-	    	console.log("remove............. store id : " + storeId);
-	    	console.log("remove............. user id : " + userId);
-	    	
 	        $.ajax({
 	            type:'delete',
 	            url:'/dealight/mypage/like/remove/'+userId+'/'+storeId,
@@ -324,9 +230,6 @@ $(document).ready(function() {
 	    
 	    function showLikeList(pageNum,amount) {
 	    	
-	    	console.log("pageNum : "+pageNum);
-	    	console.log("amount : "+amount);
-	    	
 	    	getLikeList({pageNum:pageNum,amount:amount}, dto => {
 	    		
                 let strLikeList = "",
@@ -339,24 +242,18 @@ $(document).ready(function() {
                     return;
                 }
                 
-                console.log("dto..............."+dto);
-                console.log("likeList..............."+dto.likeList);
-				
                 dto.likeList.forEach(like => {
                 	console.log(like.storeId);
                 	console.log(like.regdate);
+                	strLikeList += "<div>";
 					strLikeList += "==================================<span class='btn_remove'>&times;</span>";
 					strLikeList += "<h3>찜 매장 : <span class='store_id'>"+like.storeId+"</span></h3>";
 					strLikeList += "<h3>찜 등록날짜 :"+like.regdate+"</h3>";
 					strLikeList += "<button class='btn_store_info'>매장 상세 보기</button>";
+					strLikeList += "</div>";
                 });
                 
                 likeListDiv.html(strLikeList);
-                
-                console.log("dto.pageMaker.prev : "+dto.pageMaker.prev);
-                console.log("dto.pageMaker.startPage : "+dto.pageMaker.startPage);
-                console.log("dto.pageMaker.endPage : "+dto.pageMaker.endPage);
-                console.log("dto.pageMaker.next : "+dto.pageMaker.next);
                 
                 if(dto.pageMaker.prev){
                 	strPagination += "<li class='paginate_button previous'>";
@@ -364,7 +261,7 @@ $(document).ready(function() {
                 }
 				for(let i = dto.pageMaker.startPage; i < dto.pageMaker.endPage + 1; i++) {
 					console.log("dto.pageMaker.cri.pageNum "+i+" :" + dto.pageMaker.cri.pageNum);
-					strPagination += "<li class='paginate_button "+ (dto.pageMaker.cri.pageNum === i ? 'active' : '') +">";
+					strPagination += "<li class='paginate_button' "+ (dto.pageMaker.cri.pageNum === i ? 'active' : '') +">";
 					strPagination += "<a href='"+i+"'>"+i+"</a></li>";
 				}				
 			
@@ -377,17 +274,26 @@ $(document).ready(function() {
 				
             	strTotal = "<h2>총 찜 횟수 :"+dto.total+"</h2>";
             	
-            	console.log("dto.total .............." + dto.total);
-				
 				totalDiv.html(strTotal);
 				
-	    	})
+		    	let strForm = '';
+		    	
+		    	strForm += "<input type='hidden' name='pageNum' value='"+pageNum+"'>";
+		    	strForm += "<input type='hidden' name='amount' value = '"+amount+"'>";
+		    	
+		    	$(".paginate_button a").on("click", pagingHandler);
+		    	
+		        $(".btn_store_info").on("click", storeInfoHandler);
+		        
+		        $(".btn_remove").on("click", likeRemoveHandler);
+				
+	    	}); //end get like list
 	    	
-	    }
+	    } // end show like list
 	    
 	let actionForm = $("#actionForm");
 	
-	$(".paginate_button a").on("click", function(e) {
+	let pagingHandler = function (e) {
 		
 		e.preventDefault();
 		
@@ -395,35 +301,36 @@ $(document).ready(function() {
 		
 		actionForm.find("input[name='pageNum']").val($(this).attr("href"));
 		actionForm.submit();
-	});
-	
-    /* 매장 상세 */
-    $(".btn_store_info").on("click", e => {
-    	
+	}
+    
+    let storeInfoHandler = function (e) {
     	let storeId = $(e.target).parent().find(".store_id").text()
     	
-    	modal.css("display","block");
     	showStoreInfo(storeId);
-    	
-    });
+    	modal.css("display","block");
+    };
     
-    /* like 삭제 */
-    
-    $(".btn_remove").on("click", e => {
+    let likeRemoveHandler = function(e){
     	
     	let storeId = $(e.target).parent().find(".store_id").text(),
-    		userId = '${userId}';
-    		
-    	removeLike({userId:userId,storeId:storeId});
-    	
-    	// 수정 요망 2번째부터 아마 안될꺼임
-    	showLikeList($("input[name='pageNum']").val(),$("input[name='amount']").val());
-    	
-    	alert('pageNum : ' + pageNum + ', amount : ' + amount );
-    	
-    	location.href = 'http://localhost:8080/dealight/mypage/like?pageNum=' + pageNum + '&amount=' + amount;
-    	
-    });
+			userId = '${userId}';
+		
+		removeLike({userId:userId,storeId:storeId});
+		
+		showLikeList($("input[name='pageNum']").val(),$("input[name='amount']").val());
+		
+		alert('pageNum : ' + pageNum + ', amount : ' + amount + ', userId : ' + userId + ', storeId : ' +storeId);
+    }
+    
+    // 페이징 이벤트 등록
+	$(".paginate_button a").on("click", pagingHandler);
+	
+    /* 매장 상세 */
+    $(".btn_store_info").on("click", storeInfoHandler);
+    
+    /* like 삭제 */
+    $(".btn_remove").on("click", likeRemoveHandler);
+    
 	
 }); /* document ready end*/
 

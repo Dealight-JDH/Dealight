@@ -420,4 +420,30 @@ public class RevwMapperTests {
 		assertTrue(list.size() == amount);
 		
 	}
+	
+	@Test
+	public void findRevwWtihImgsByRsvdIdTest1() {
+		
+		Long rsvdId = 264L;
+		
+		RevwVO revw = mapper.findRevwWtihImgsByRsvdId(rsvdId);
+		
+		assertNotNull(revw);
+		assertTrue(revw.getRsvdId().equals(rsvdId));
+		log.info(revw);
+		
+	}
+	
+	@Test
+	public void findRevwWtihImgsByWaitIdTest1() {
+		
+		Long waitId = 111L;
+		
+		RevwVO revw = mapper.findRevwWtihImgsByWaitId(waitId);
+		
+		assertNotNull(revw);
+		assertTrue(revw.getWaitId().equals(waitId));
+		log.info(revw);
+		
+	}
 }

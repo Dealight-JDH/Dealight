@@ -573,4 +573,30 @@ public class RevwServiceTests {
 		
 	}
 	
+	@Test
+	public void findRevwWtihImgsByRsvdIdTest1() {
+		
+		Long rsvdId = 264L;
+		
+		RevwVO revw = revwService.findRevwWtihImgsByRsvdId(rsvdId);
+		
+		assertNotNull(revw);
+		assertTrue(revw.getRsvdId().equals(rsvdId));
+		log.info(revw);
+		
+	}
+	
+	@Test
+	public void findRevwWtihImgsByWaitIdTest1() {
+		
+		Long waitId = 111L;
+		
+		RevwVO revw = revwService.findRevwWtihImgsByWaitId(waitId);
+		
+		assertNotNull(revw);
+		assertTrue(revw.getWaitId().equals(waitId));
+		log.info(revw);
+		
+	}
+	
 }

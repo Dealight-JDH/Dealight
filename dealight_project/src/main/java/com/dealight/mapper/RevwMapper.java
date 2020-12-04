@@ -25,9 +25,13 @@ public interface RevwMapper {
 	
 	int countWritableRsvd(String userId);
 
-	public List<RevwVO> getRevwListWithPagingByStoreId(@Param("storeId") Long storeId,@Param("cri") Criteria cri);
+	List<RevwVO> getRevwListWithPagingByStoreId(@Param("storeId") Long storeId,@Param("cri") Criteria cri);
 	
-	public List<RevwVO> getRevwListWithPagingByUserId(@Param("userId") String userId,@Param("cri") Criteria cri);
+	List<RevwVO> getRevwListWithPagingByUserId(@Param("userId") String userId,@Param("cri") Criteria cri);
+	
+	RevwVO findRevwWtihImgsByRsvdId(Long rsvdId);
+	
+	RevwVO findRevwWtihImgsByWaitId(Long waitId);
 
 	public int getCountByStoreId(Long storeId);
 	

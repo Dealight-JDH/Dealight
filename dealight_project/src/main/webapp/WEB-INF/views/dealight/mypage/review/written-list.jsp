@@ -6,94 +6,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<script>
-//로그인이 안된 상태면 메인페이지로 넘어가게
-let msg = '${msg}';
-  if(msg != ""){
-     alert(msg);
-     location.href = '/dealight/dealight';
-  }
-</script>
-
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	
 <link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
-<style>
-	/* The Modal (background) */
-        .modal {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
-        left: 0;
-        top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0,0,0); /* Fallback color */
-        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        }
-
-        /* Modal Content/Box */
-        .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto; /* 15% from the top and centered */
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%; /* Could be more or less, depending on screen size */
-        }
-
-        /* The Close Button */
-        .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        }
-        
-        .btn_remove{
-			color: #aaa;
-	        font-size: 28px;
-	        font-weight: bold;
-        }
-        
-        .btn_remove:hover,
-        .btn_remove:focus {
-	        color: black;
-	        text-decoration: none;
-	        cursor: pointer;
-        }
-
-        .close:hover,
-        .close:focus {
-	        color: black;
-	        text-decoration: none;
-	        cursor: pointer;
-        }
-        
-        /* The Delete Button*/
-        .btn_delete {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        }
-
-        .btn_delete:hover,
-        .btn_delete:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-        }
-</style>
 </head>
-
 <body>
 <main class="mypage_wrapper">
         <div class="mypage_menu_nav">
@@ -209,38 +131,15 @@ let msg = '${msg}';
 		
 	
 	</div>
-	<script type="text/javascript">
+<script type="text/javascript" src="/resources/js/modal.js"></script>
+<script type="text/javascript">
 $(document).ready(function() {
-	
-	// 모달 선택
-	const modal = $("#myModal"),
-		close = $(".close"),
-		modalContent = $(".modal-content"),
-		btn_show_board = $("#btn_show_board");
-
-	close.on("click", (e) => {
-		modal.css("display","none");
-		modal.find("ul").html("");
-		modal.find("#map").html("");
-		modal.find("#map").css("display", "none");
-	});
-	
-	modal.find("#map").css("display", "none");
-	
-	/*
-	 모달이 아닌 화면을 클릭하면 모달이 종료가 되어야 하는데 그렇지 않음.
-	*/
-	window.onclick = function(event) {
-		  if (event.target == modal) {
-			  modal.css("display","none");
-			  modal.find("ul").html("");
-		  }
-	};
 	
     const userId = '${userId}',
 	    storeInfoUL = $(".store_info"),
 	    userRsvdListUL = $(".userRsvdList"),
-	    rsvdDtlsUL = $(".rsvdDtls")
+	    rsvdDtlsUL = $(".rsvdDtls"),
+	    btn_show_board = $("#btn_show_board")
 	;
 	    
 	let container,options,map,mapContainer,mapOption,markerPosition,marker;
@@ -490,9 +389,9 @@ $(document).ready(function() {
        	console.log('rsvd id ............... : ' + selRsvdId);
        	console.log('user id ............... : ' + ruserId);
        	
-       	modal.css("display","block");
 
        	showUserRsvdList(rstoreId, ruserId, selRsvdId);
+       	modal.css("display","block");
        	
        });
        
@@ -501,8 +400,8 @@ $(document).ready(function() {
        	
        	let storeId = $(e.target).parent().find(".store_id").text()
        	
-       	modal.css("display","block");
        	showRevwRegForm(storeId);
+       	modal.css("display","block");
        	
        	//$("#waitRegForm").submit();        		
        	
@@ -516,8 +415,8 @@ $(document).ready(function() {
 	       	
     	    console.log('storeId.....................'+storeId);
     	   
-	       	modal.css("display","block");
 	       	showStoreInfo(storeId);
+	       	modal.css("display","block");
        	
        });
 	
