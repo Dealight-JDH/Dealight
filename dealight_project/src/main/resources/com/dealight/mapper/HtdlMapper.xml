@@ -150,7 +150,7 @@
 	 		 	rownum rn, htdl_id, name, store_id, htdl_img, dc_rate, start_tm, end_tm, lmt_pnum, intro,
 	 		 	bef_price, ddct, cur_pnum, stus_cd, regdate, updatedate, brch
 	 		 	from tbl_htdl
-	 		 	where stus_cd = #{stusCd}
+	 		 	where stus_cd = #{stusCd} and rownum <= #{hCri.pageNum} * #{hCri.amount}
 	 		 	
 	 	]]>
 	 	
@@ -159,15 +159,15 @@
  	 		brch like '%'||#{hCri.keyword}||'%'
  	 	</if>
  	 	</trim>
- 	 	
+
  	 	<if test="hCri.startTm != null and hCri.endTm !=null">
 			<![CDATA[
  	 		and to_date(start_tm, 'yyyy/mm/dd HH24:mi:ss') between to_date(#{hCri.startTm}, 'yyyy/mm/dd HH24:mi:ss') and to_date(#{hCri.endTm}, 'yyyy/mm/dd HH24:mi:ss')
             and to_date(end_tm, 'yyyy/mm/dd HH24:mi:ss') <= to_date(#{hCri.endTm}, 'yyyy/mm/dd HH24:mi:ss')
-            and rownum <= #{hCri.pageNum} * #{hCri.amount}
+            
 	 		 ]]>
  	 	</if>
-	 	 <!-- <trim prefix="(" suffix=") AND " prefixOverrides="OR">
+	 	<trim prefix="(" suffix=") AND " prefixOverrides="OR">
 	 		<foreach item='type' collection="hCri.typeArr">
 	 			<trim prefix="OR">
 	 				<choose>
@@ -180,7 +180,7 @@
 	 				</choose>
 	 			</trim>     
 	 		</foreach>
-	 	</trim> -->
+	 	</trim>
 	 	<![CDATA[
 	 	)
 	 	where
