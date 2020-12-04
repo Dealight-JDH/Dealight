@@ -328,7 +328,7 @@ body {
 						
 						<sec:authorize access="isAnonymous()">
 							<a href="/dealight/login">로그인</a>
-							<a href="/dealight/register">회원가입</a>
+							<a href="/dealight/prove/authemail">회원가입</a>
 						</sec:authorize>
 						
 					     <%-- <a href="/dealight/mypage/reservation">예약내역(미구현)</a>

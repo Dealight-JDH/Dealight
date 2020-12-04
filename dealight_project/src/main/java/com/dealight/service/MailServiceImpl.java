@@ -18,13 +18,8 @@ import lombok.extern.log4j.Log4j;
 @Service
 public class MailServiceImpl implements MailService{
 
-		@Autowired
+	@Autowired
 	private JavaMailSender javaMailSender;
-	
-	public void setJavaMailSender(JavaMailSender javaMailSender) {
-		this.javaMailSender = javaMailSender;
-	}
-	
 	
 	@Override
 	public void send(Email email) {

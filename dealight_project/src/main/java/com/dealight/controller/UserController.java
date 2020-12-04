@@ -11,9 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,10 +28,6 @@ import com.dealight.domain.Email;
 import com.dealight.domain.UserVO;
 import com.dealight.service.MailService;
 import com.dealight.service.UserService;
-//import com.dealight.sns.KakaoLoginService;
-import com.dealight.sns.KakaoLoginService;
-import com.dealight.sns.NaverLoginService;
-import com.github.scribejava.core.model.OAuth2AccessToken;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -49,9 +42,8 @@ public class UserController {
 	private final MailService mailService;
 //	private final NaverLoginService naverService;
 //	private final KakaoLoginService kakaService;
-	private final Email e_mail;
 	private final UserService service;
-	
+	private final Email e_mail;
 	//회원가입전 이메일 인증받는 페이지
 	@GetMapping("/prove/authemail")
 	public void email() {}
@@ -150,7 +142,7 @@ public class UserController {
 		String authNum = random.nextInt(999999)+111111 + ""; //인증번호 생성
 		
 		e_mail.setTitle("Dealight 회원가입 인증 메일입니다.");
-        e_mail.setContent(
+		e_mail.setContent(
         		//줄바꿈
         		System.getProperty("line.separator") +
         		"안녕하세요 Dealight 입니다." +
@@ -159,7 +151,7 @@ public class UserController {
         		System.getProperty("line.separator")+
         		"인증번호를 홈페이지에 입력하여 주세요."
         		);
-        e_mail.setTo(email);
+		e_mail.setTo(email);
         mailService.send(e_mail);
 		
        rttr.addFlashAttribute("authNum", authNum);
@@ -197,7 +189,7 @@ public class UserController {
 	//아이디 찾기, 이메일과 일치하는 아이디들을 메일로 전송
 	@RequestMapping( value = "/prove/sendId", method= RequestMethod.POST)
 	@ResponseBody
-	public boolean sendId(String email,   RedirectAttributes rttr) throws Exception {
+	public boolean sendId(String email, RedirectAttributes rttr) throws Exception {
 		
 		System.out.println("email:"+email);
         //입력한 이메일에 해당하는 id정보를 가져온다
