@@ -138,12 +138,12 @@ window.onload = function(){
 	const operForm = $("#operForm");
 	
 	$("button[data-oper='modify']").on("click", function(e){
-		operForm.attr("action","/dealight/mypage/bizAuth/modify").submit();	
+		operForm.attr("action","/dealight/mypage/bizauth/modify").submit();	
 	})
 	
 	$("button[data-oper='list']").on("click", function(e){
 		operForm.find("#brSeq").remove();
-		operForm.attr("action","/dealight/mypage/bizAuth/list")
+		operForm.attr("action","/dealight/mypage/bizauth/list")
 		operForm.submit();
 	})
 	//--------------

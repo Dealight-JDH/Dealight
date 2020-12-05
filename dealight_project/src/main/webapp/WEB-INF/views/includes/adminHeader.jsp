@@ -23,7 +23,7 @@
 
     <!-- Custom styles for this template-->
     <link href="/resources/bootstrap/css/sb-admin-2.min.css" rel="stylesheet">
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body id="page-top">
@@ -74,7 +74,7 @@
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">사업자회원관리</h6>
                         <a class="collapse-item" href="/dealight/admin/usermanage/bizUser">사업자회원관리</a>
-                        <a class="collapse-item" href="/dealight/admin/usermanage/brnomanage">사업자등록관리</a>
+                        <a class="collapse-item" href="/dealight/admin/brnomanage">사업자등록관리</a>
                     </div>
                 </div>
             </li>
