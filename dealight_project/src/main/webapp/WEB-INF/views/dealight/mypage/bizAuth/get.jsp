@@ -171,15 +171,15 @@ window.onload = function(){
 	}
 	
 }
-function subSrc(PhotoSrc){
-	let srcObj = {};
-	let index = PhotoSrc.lastIndexOf("/");
-	
-	srcObj["uploadPath"] = PhotoSrc.substring(0,index);
-	srcObj["fileName"] = PhotoSrc.substring(index + 1);
-	
-	return srcObj;
-}
+	function subSrc(PhotoSrc){
+		let srcObj = {};
+		let index = PhotoSrc.lastIndexOf("/");
+		
+		srcObj["uploadPath"] = PhotoSrc.substring(0, index);
+		srcObj["fileName"] = PhotoSrc.substring(index + 1);
+		
+		return srcObj;
+	}
 	
 
 </script>

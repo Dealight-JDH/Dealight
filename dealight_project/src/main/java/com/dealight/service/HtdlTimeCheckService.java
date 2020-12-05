@@ -28,12 +28,12 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class HtdlTimeCheckService {
 
-	
 	@Autowired
 	private HtdlMapper htdlMapper;
 	
 	@Autowired
 	private HtdlService service;
+	
 	private List<HtdlVO> lists = null;
 	ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(3);
 	
@@ -88,13 +88,13 @@ public class HtdlTimeCheckService {
 	
 	//핫딜을 등록할떄마다 리스트에 추가
 	public void addHtdl(HtdlVO vo) {
-		lists.add(vo);
+		this.lists.add(vo);
 	}
 
 	@Transactional(readOnly = true)
 	public void getList() {
 		//전체 핫딜 리스트
-		lists = new ArrayList<>(service.findAll());
+		this.lists = new ArrayList<>(service.findAll());
 	}
 	
 	@Transactional
@@ -102,8 +102,8 @@ public class HtdlTimeCheckService {
 		
 		SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd hh:mm");
 			
-//		//전체 핫딜 리스트
-//		List<HtdlVO> lists = htdlMapper.getList();
+		//전체 핫딜 리스트
+		//List<HtdlVO> lists = htdlMapper.getList();
 		
 		//핫딜 시작시간	
 		List<Date> startTmList = lists.stream()
@@ -166,11 +166,10 @@ public class HtdlTimeCheckService {
 				if(isStusCdCheck(lists.get(i).getStusCd(), "A")) {
 					
 					lists.get(i).setStusCd("A");
-					htdlMapper.update(lists.get(i));				
+					htdlMapper.update(lists.get(i));
 					log.info("변화================="+lists.get(i).getHtdlId()+"번 핫딜 진행 시작!!");
 						
 				}
-				
 				
 				//진행중인 상태에서 현재인원이 마감되었을 경우..
 				if(isFinished(lists.get(i).getCurPnum(), lists.get(i).getLmtPnum())) {
