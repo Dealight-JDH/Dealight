@@ -66,12 +66,13 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         	
         	session.setAttribute("user", authentication.getName());
             String redirectUrl = (String) session.getAttribute("prevPage");
-            
+            log.warn("==========redirectUrl: " + redirectUrl);
+            System.out.println(redirectUrl);
             if (redirectUrl != null) {
                 session.removeAttribute("prevPage");
                 log.warn("========auth success: " + redirectUrl);
                 
-                if(redirectUrl.equalsIgnoreCase("/dealight/register"))
+                if(redirectUrl.contains("/dealight/register"))
                 	redirectUrl = super.getDefaultTargetUrl();
                 getRedirectStrategy().sendRedirect(request, response, redirectUrl);
             } else {
