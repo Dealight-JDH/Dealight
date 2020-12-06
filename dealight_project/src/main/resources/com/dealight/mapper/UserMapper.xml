@@ -87,8 +87,12 @@ where user_id = #{userId}
 
 <!-- 회원가입 -->
 <insert id="insert">
-insert into tbl_user(user_id, name, pwd, email, telno, brdt, sex, sns_lgin_yn, regdate, updatedate)
-values (#{userId}, #{name}, #{pwd}, #{email}, #{telno}, #{brdt}, #{sex}, #{snsLginYn}, sysdate +9/24, sysdate+9/24)
+insert into tbl_user(user_id, name, pwd, email, telno, brdt, sex, sns_lgin_yn, regdate, updatedate, enabled)
+values (#{userId}, #{name}, #{pwd}, #{email}, #{telno}, #{brdt}, #{sex}, #{snsLginYn}, sysdate +9/24, sysdate+9/24, '1')
+</insert>
+
+<insert id="insertAuth">
+insert into tbl_user_auth (user_id, auth)values(#{userId}, #{auth})
 </insert>
 
 <!-- 회원정보 불러오기(마이페이지 회원정보 수정 -->

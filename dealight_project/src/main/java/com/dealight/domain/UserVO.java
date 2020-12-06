@@ -59,9 +59,9 @@ public class UserVO {
 	@Nullable
     private String photoSrc;
 
-    // 소셜로그인여부 
-    @NotEmpty
-    private String snsLginYn;
+    // 소셜로그인여부
+	@Nullable
+    private String snsLginYn = "N";
 
     // 회원구분코드 
     private String clsCd;
@@ -84,6 +84,7 @@ public class UserVO {
     
     //유저 권한
     private List<AuthVO> authList;
+    
     
     // ***************추가 동인
     // Buser와 조인을 하려고 일단 넣어놨는데 필요없으면 삭제

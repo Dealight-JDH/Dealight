@@ -7,7 +7,6 @@
     <%@include file="../includes/loginModal.jsp" %>
     
 <body>
-<c:out value="${snsUser }">ffdasfasd</c:out> 
 <div class="middleDiv">
             <div class="imgContainer">
                 <img src="../../../../../resources/img/main.jpg">

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.dealight.domain.AuthVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.UserVO;
 
@@ -12,7 +13,7 @@ import com.dealight.domain.UserVO;
 public interface UserService {
 
 	//회원 등록
-	public void register(UserVO user);
+	public void register(UserVO user, AuthVO auth);
 	
 	//해당 회원 찾기
 	public UserVO get(String userId);
@@ -28,6 +29,7 @@ public interface UserService {
 	
 	//모든 회원 가져오기
 	public List<UserVO> getList();
+	
 	
 	//회원 로그인
 	public UserVO login(String userId);

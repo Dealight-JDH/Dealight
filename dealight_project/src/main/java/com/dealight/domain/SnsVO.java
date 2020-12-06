@@ -1,10 +1,11 @@
 package com.dealight.domain;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -16,7 +17,7 @@ public class SnsVO {
 	private String userId;
 	
 	//sns 회원번호
-	private Long id;
+	private String id;
 	//이름
 	private String name;
 	//닉네임
@@ -32,5 +33,6 @@ public class SnsVO {
 	//전화번호
 	private String phoneNumber;
 	
-	
+	List<AuthVO> authList;	
+
 }  

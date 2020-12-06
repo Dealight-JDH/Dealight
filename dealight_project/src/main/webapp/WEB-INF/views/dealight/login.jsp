@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@include file="../includes/mainMenu.jsp" %>
-    <%
+   <%--  <%
            Cookie[] cookies = request.getCookies(); 
            String cookieVal ="";
             
@@ -13,14 +13,14 @@
                     }
                 }
             }
-            %>
+            %> --%>
             
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!--  <style>
+	<style>
         .css-loginForm{
             border: 1px solid;
             margin-top: 150px;
@@ -60,21 +60,44 @@
     	margin: 0;
     	mar
     }
+</style>
+<!-- <style>
+	
+	/* * { /* CSS초기화. 이거 없으면 div태그 사이에 공백 생김*/
+        
+            margin  : 0;   /* 값이 0일 때는 단위 안씀. */
+            border  : 0;
+            padding : 0;
+     } */
+     
+	/* .main-wrraper{
+		width:1050px;
+		height: 700px;
+		margin: auto;
+		border: solid 2px;
+	} */
+	.css-loginForm{
+		width:1050px;
+		height: 700px;
+		margin: 100px;
+		border: solid 2px;
+	} 
 </style> -->
-
 </head>
 <body>
 <h2><c:out value="${error }"/></h2>
+
+
 
 <div class="css-loginForm">
 <form action="/login" method="post"> 
     
     <div>
-		<input type="text" name="username">
-	</div>
+		아이디: <input type="text" name="username">
+	</div><br>
 	
 	<div>
-		<input type="password" name="password">
+		비밀번호: <input type="password" name="password">
 	</div>
 	
 	<div>
@@ -88,7 +111,7 @@
 
 <input type='hidden' name="${_csrf.parameterName }" value="${_csrf.token }"/>
  </form>
- </div>
+ 
  
     <div id="naver_id_login" style="text-align:center margin-top: 6px;">
 		<a href="${naver_url}">
@@ -98,5 +121,6 @@
      		<img width="250" src="/resources/img/kakao_login_medium_narrow.png">
  		</a>
 	</div>
+</div>	
 </body>
 </html>

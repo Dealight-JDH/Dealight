@@ -40,7 +40,7 @@ public class NaverLoginService {
     //네이버 snsvo 변환
     public SnsVO getNaverVO(JSONObject responseDto) {
     	String userId = String.valueOf(responseDto.get("email"));
-    	Long id = Long.valueOf((String) responseDto.get("id"));
+    	String id = String.valueOf(responseDto.get("id"));
         String name = String.valueOf(responseDto.get("name"));
         String nickName = String.valueOf(responseDto.get("nickname"));
         String age = String.valueOf(responseDto.get("age"));

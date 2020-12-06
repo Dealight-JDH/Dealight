@@ -16,7 +16,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
 </script>
  
-<%
+<%-- <%
 	UserVO user = (UserVO) session.getAttribute("user");
 String loginState = "";
 String display = ""; //로그인 전에 로그아웃 메뉴 숨기기
@@ -28,7 +28,7 @@ if (user != null) {
 	display = "none";
 }
 %>
-
+ --%>
 <style>
 * {
 	box-sizing: border-box;
@@ -328,7 +328,7 @@ body {
 						
 						<sec:authorize access="isAnonymous()">
 							<a href="/dealight/login">로그인</a>
-							<a href="/dealight/prove/authemail">회원가입</a>
+							<a href="/dealight/policies">회원가입</a>
 						</sec:authorize>
 						
 					     <%-- <a href="/dealight/mypage/reservation">예약내역(미구현)</a>
@@ -353,7 +353,7 @@ body {
 								<a href="/dealight/mypage/business/">서비스 관리</a>
 							</sec:authorize>
 							
-							<a href="/dealight/mypage/modify">회원정보수정</a>
+							<a href="/dealight/mypage/get">회원정보수정</a>
 							<a href="dealight/logout" onclick="submit(event)">로그아웃</a>
 						</sec:authorize>
 						

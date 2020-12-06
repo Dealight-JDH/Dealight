@@ -39,13 +39,14 @@
 	<!-- <context:property-placeholder
 		location="classpath:email.properties" />
 	  -->
-	 <util:properties id="emailconfig" location="classpath:/emailconfig.properties"/>
+	 <util:properties id="emailConfig" location="classpath:/email.properties"/>
 	
 	<bean id="javaMailSender"	class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com" />
 		<property name="port" value="587" />
-		<property name="username" value="#{emailconfig['username']}" />
-		<property name="password" value="#{emailconfig['password']}" /> 
+		<property name="username" value="#{emailConfig['username']}" />
+		<property name="password" value="#{emailConfig['password']}" /> 
+		
 		<property name="javaMailProperties">
 			<props>
 				<prop key="mail.smtp.auth">true</prop>
@@ -54,6 +55,7 @@
 				<prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
 			</props>
 		</property>
+		
 	</bean>
 	
 	<bean class="com.dealight.domain.Email" id="email"/>

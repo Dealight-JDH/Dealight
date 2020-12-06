@@ -9,5 +9,5 @@ public interface SnsMapper {
 	
 	SnsVO findById(String userId);
 	
-	
+	SnsVO read(String userId);
 }

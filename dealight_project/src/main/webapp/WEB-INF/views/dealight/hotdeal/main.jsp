@@ -206,11 +206,7 @@ h4{
 	    </div>
 	  </div>
 	</div>
-	
-</body>
-</html>
-
-<script>
+	<script>
 	
 	let htdlUL = $(".hotdeal"); //핫딜
 	let size = '<c:out value="${fn:length(lists)}"/>'; //진행중인 핫딜 갯수
@@ -609,3 +605,6 @@ h4{
 		});
 	}
 </script>
+</body>
+</html>
+

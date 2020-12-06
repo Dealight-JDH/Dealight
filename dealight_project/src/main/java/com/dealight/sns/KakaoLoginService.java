@@ -31,7 +31,7 @@ public class KakaoLoginService {
 	//카카오 vo
 	public SnsVO getKakaoVO(JSONObject response) {
 		
-		Long id = (Long)response.get("id");
+		String id = String.valueOf(response.get("id"));
  	    JSONObject kakaoAccount = (JSONObject)response.get("kakao_account");
 		JSONObject profile = (JSONObject)kakaoAccount.get("profile");
 		String nickName = String.valueOf(profile.get("nickname"));

@@ -5,7 +5,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import com.dealight.domain.SnsVO;
 import com.dealight.domain.UserVO;
+import com.dealight.mapper.SnsMapper;
 import com.dealight.mapper.UserMapper;
 import com.dealight.security.domain.CustomUser;
 
@@ -16,17 +18,20 @@ public class CustomUserDetailsService implements UserDetailsService{
 	
 	@Autowired
 	private UserMapper userMapper;
-	
+//	@Autowired
+//	private SnsMapper snsMapper;
+//	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
 		
-		log.warn("load user by username : " + username);
-		UserVO vo = userMapper.read(username);
+			log.warn("load user by username : " + username);
+			UserVO user = userMapper.read(username);
+			
+			log.warn("queried by user mapper : " + user);
+			return user == null ? null : new CustomUser(user);
+			
 		
-		log.warn("queried by user mapper : " + vo);
-		
-		return vo == null ? null : new CustomUser(vo);
 	}
 
 }
