@@ -248,8 +248,6 @@ public class ManageController {
 		}); // end for each
 	}
 	
-
-
 	// 메뉴 수정 페이지//
 	@GetMapping("/menu")
 	public String menuModify(Model model, Long storeId) {

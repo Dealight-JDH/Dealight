@@ -463,7 +463,7 @@ let regReplyHandler = function (e) {
 		
 	});
 	
-}
+};
 
 	$(".btn_reg_reply").on("click",regReplyHandler);
 

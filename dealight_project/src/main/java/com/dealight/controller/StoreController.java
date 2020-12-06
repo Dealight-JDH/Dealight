@@ -1,7 +1,9 @@
 package com.dealight.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -15,10 +17,13 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.dealight.domain.Criteria;
+import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdMenuDTOList;
+import com.dealight.domain.RsvdVO;
 import com.dealight.domain.UserVO;
 import com.dealight.domain.WaitVO;
 import com.dealight.handler.ManageSocketHandler;
+import com.dealight.service.RsvdService;
 import com.dealight.service.StoreService;
 import com.dealight.service.UserService;
 import com.dealight.service.WaitService;
@@ -37,6 +42,8 @@ public class StoreController {
 	private UserService userService;
 	
 	private WaitService waitService;
+	
+	private RsvdService rsvdService;
 
 	@GetMapping("/store")
 	public String store(Long storeId,Criteria cri,Model model,String clsCd) {
@@ -74,16 +81,76 @@ public class StoreController {
 	
 	}
 	
-	@PostMapping("/waiting")
-	public String waiting(Model model, HttpSession session,int pnum, Long storeId) {
+	@PostMapping("/store/rsvd")
+	public String regRsvd(Model model, HttpSession session, RsvdVO rsvd) {
 		
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
 		session.setAttribute("userId", "kjuioq");
 		String userId = (String) session.getAttribute("userId");
 		
+		log.info("register rsvd......................");
+		
 		UserVO user = userService.get(userId);
 		
-		SimpleDateFormat fomater = new SimpleDateFormat("yyyy/MM/dd HH24:mm:ss");
+		log.info("register rsvd...................... user : " + user);
+		
+		SimpleDateFormat fomater = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		
+		List<RsvdDtlsVO> rsvdDtlsList = new ArrayList<>();
+		
+		RsvdDtlsVO dtls = new RsvdDtlsVO();
+		dtls.setMenuNm("돈까스");
+		dtls.setMenuPrc(7000);
+		dtls.setMenuTotQty(3);
+		
+		rsvdDtlsList.add(dtls);
+		
+		rsvd.setUserId(userId);
+		rsvd.setRevwStus(0L);
+		rsvd.setTime(fomater.format(new Date()));
+		rsvd.setStusCd("C");
+		rsvd.setRsvdDtlsList(rsvdDtlsList);
+		
+		log.info("before rsvd.........................."+rsvd);
+		
+		rsvdService.register(rsvd, rsvd.getRsvdDtlsList());
+		
+		log.info("after rsvd.........................."+rsvd);
+		
+		Long storeId = rsvd.getStoreId();
+		Long rsvdId = rsvd.getRsvdId();
+		
+    	ManageSocketHandler handler = ManageSocketHandler.getInstance();
+    	Map<String, WebSocketSession> map = handler.getUserSessions();
+    	WebSocketSession ws = map.get("kjuioq");
+    	if(ws != null) {
+    		TextMessage message = new TextMessage("{\"sendUser\":\""+userId+"\",\"rsvdId\":\""+rsvdId+"\",\"cmd\":\"rsvd\",\"storeId\":\""+storeId+"\"}");
+    		try {
+				handler.handleMessage(ws, message);
+			} catch (Exception e) {
+				
+				log.warn("web socket error...............");
+				e.printStackTrace();
+			}
+    	}
+		
+		return "redirect:/dealight/business/test";
+	}
+	
+	@PostMapping("/store/wait")
+	public String regWait(Model model, HttpSession session,int pnum, Long storeId) {
+		
+		// 임시로 'kjuioq'의 아이디를 로그인한다.
+		session.setAttribute("userId", "kjuioq");
+		String userId = (String) session.getAttribute("userId");
+		
+		log.info("register wait......................");
+		
+		UserVO user = userService.get(userId);
+		
+		log.info("register wait...................... user : " + user);
+		
+		SimpleDateFormat fomater = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		WaitVO wait = new WaitVO().builder()
 				.userId(userId)
 				.storeId(storeId)
@@ -94,14 +161,18 @@ public class StoreController {
 				.waitRegTm(fomater.format(new Date()))
 				.build();
 		
-		waitService.registerOnWaiting(wait);
+		log.info("register wait...................... before wait : " + wait);
 		
+		Long waitId = waitService.registerOnWaiting(wait);
+		
+		log.info("register wait...................... after wait : " + wait);
+		log.info("register wait...................... after wait id: " + waitId);
 
     	ManageSocketHandler handler = ManageSocketHandler.getInstance();
     	Map<String, WebSocketSession> map = handler.getUserSessions();
     	WebSocketSession ws = map.get("kjuioq");
     	if(ws != null) {
-    		TextMessage message = new TextMessage("{\"sendUser\":\""+userId+"\",\"waitId\":\""+wait.getWaitId()+"\",\"cmd\":\"wait\",\"storeId\":\""+storeId+"\"}");
+    		TextMessage message = new TextMessage("{\"sendUser\":\""+userId+"\",\"waitId\":\""+waitId+"\",\"cmd\":\"wait\",\"storeId\":\""+storeId+"\"}");
     		try {
 				handler.handleMessage(ws, message);
 			} catch (Exception e) {
@@ -112,7 +183,7 @@ public class StoreController {
     	}
     	
     	
-    	return "redirect:/dealight/store?storeId=" + storeId;
+    	return "redirect:/dealight/business/test";
 	}
 
 }

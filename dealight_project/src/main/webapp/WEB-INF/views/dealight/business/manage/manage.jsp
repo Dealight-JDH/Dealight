@@ -12,13 +12,55 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="/resources/js/Chart.js"></script>
-<link rel="stylesheet" href="/resources/css/manage.css?ver=1" type ="text/css" />
+<!-- Bootstrap core CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/resources/css/manage.css" type ="text/css" />
+<style>
+	.toast{
+		position : absolute;
+		bottom : 30px;
+		right : 30px;
+		z-index : 101;
+	}
+	@-webkit-keyframes slideDown {
+	    0%, 100% { -webkit-transform: translateY(-50px); }
+	    10%, 90% { -webkit-transform: translateY(0px); }
+	}
+	.cssanimations.csstransforms .toast {
+	    -webkit-transform: translateY(-50px);
+	    -webkit-animation: slideDown 2.5s 1.0s 1 ease forwards;
+	    -moz-transform:    translateY(-50px);
+	    -moz-animation:    slideDown 2.5s 1.0s 1 ease forwards;
+	}
+</style>
+
 </head>
 <body>
 <%@include file="../../../includes/mainMenu.jsp" %>
+	<!-- notification -->
+     <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+        <div class="toast-header">
+          <strong class="mr-auto">예약/웨이팅</strong>
+          <small class="text-muted">(시간 계산)</small>
+          <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="toast-body">
+          (예약/웨이팅 내용 채워넣기)
+        </div>
+      </div>
+      <!-- end notification -->
+      
     <div class="main_box"><!-- main box -->
         <h2>Business Manage Main Page</h2>
         <div class="board"> <!-- board -->
+        	<nav class="tab_nav">
+                    <a class="switch switch_rsvd_rslt">현황판</a>
+                    <a class="switch switch_board">매장관리</a>
+        	</nav>
             <div class="board_top_box"> <!-- top box -->
 
                 <div class="cur_time"> <!-- cur time -->
@@ -45,12 +87,6 @@
                     </form>
                 </div> <!-- end light -->
                 <div class="top_box_blank"></div>
-                <div class="toggle"> <!-- toggle -->
-                    <label class="switch">
-                        <button>매장관리</button>
-                      </label>
-                </div> <!-- end toggle -->
-				
          </div> <!-- end top box -->
 
          <div id="rsvd_rslt_baord" style="display : none">
@@ -83,10 +119,9 @@
                         <ul class="rsvdList"></ul>
                     </div> <!-- end wait -->
             </div>
-            <div class="wait_wrapper">
+            <div class="wait_wrapper" id="rolling_wait">
                 <h1>웨이팅 리스트🗒</h1>
 	            <ul class="waitList">
-	            
 	            </ul>
             </div>
                 <di class="wait_register_wrapper">
@@ -123,7 +158,7 @@
 	<c:if test="${not empty todayRsvdUserList}">
 		<c:forEach items="${todayRsvdUserList}" var="user">
 			
-			<div class="tooltip">
+			<div class="dealight_tooltip">
 				==========================================</br>
 				회원 아이디 : ${user.userId}</br>
 				회원 이름 : ${user.name}</br> 
@@ -133,7 +168,7 @@
 				성별 : ${user.sex }</br> 
 				회원 프로필 사진 : ${user.photoSrc}</br>
 				패널티 회원 여부 : ${user.pmStus}</br>
-  				<div class="tooltiptext">
+  				<div class="dealight_tooltiptext">
   					예약 번호 : ${user.rsvdId}</br>
 					매장 번호 : ${user.storeId }</br>
 					핫딜 번호 : ${user.htdlId }</br>
@@ -159,7 +194,7 @@
 			<ul class="waiting_registerForm"></ul>
 		</div>
 	</div>
-    
+	
 <script>
 
 const storeId = ${storeId};
@@ -173,7 +208,7 @@ writeTimeBar = function (curTime) {
     for(let i = 1; i <= 27; i++){
     	if(curTime === timeArr[i])
     		curPos = i - 1;
-        strTime += "<div class='rsvd_time tooltip' id='slide-"+i+"'><h6>"+timeArr[i]+"</h6><div class='time_table'></div></div>";
+        strTime += "<div class='rsvd_time dealight_tooltip' id='slide-"+i+"'><h6>"+timeArr[i]+"</h6><div class='time_table'></div></div>";
     }
 	document.querySelector(".rsvd_time_bar").innerHTML = strTime;
     // 예약 상태바 초기 스크롤 고정
@@ -206,15 +241,21 @@ let curHour = curToday.getHours(),
 		modal.find("ul").html("");
 	});
 	
-	/*
-	 모달이 아닌 화면을 클릭하면 모달이 종료가 되어야 하는데 그렇지 않음.
-	*/
-	window.onclick = function(event) {
-		  if (event.target == modal) {
+	window.onclick = function(e) {
+		
+		  if (e.target === document.getElementById('myModal')) {
 			  modal.css("display","none");
 			  modal.find("ul").html("");
 		  }
 	}
+	
+    // esc 눌러서 모달 escape
+    $(document).keyup(function(e) {
+    	if(e.key === "Escape"){
+    		modal.css("display","none");
+    		modal.find("ul").html("");
+    	}
+    });
 
 </script>
 	<script>
@@ -709,13 +750,13 @@ let curHour = curToday.getHours(),
             	if(!map)
             		return;
             	Object.entries(map).forEach(([key,value]) => {
-            		strRsvdMap += "<li class='tooltip'>"+key + " : 예약번호[" + value+"] <span class='tooltiptext'>"+value+"번호 안녕?</span></li></br>";
+            		strRsvdMap += "<li class='dealight_tooltip'>"+key + " : 예약번호[" + value+"] <span class='dealight_tooltiptext'>"+value+"번호 안녕?</span></li></br>";
             		for(let i = 1; i < 28; i ++){
             			// debug
-            			//console.log(key+' : '+i+ ' : '+document.querySelector('#slide-'+i+' h6').textContent);
-            			//console.log(key === document.querySelector('#slide-'+i+' h6').textContent);
+            			console.log(key+' : '+i+ ' : '+document.querySelector('#slide-'+i+' h6').textContent);
+            			console.log(key === document.querySelector('#slide-'+i+' h6').textContent);
             			if(key === document.querySelector('#slide-'+i+' h6').textContent){
-            				document.querySelector('#slide-'+i+' .time_table').innerHTML = "<span class='tooltiptext'>"+value+" 번호 예약</span>";
+            				document.querySelector('#slide-'+i+' .time_table').innerHTML = "<span class='dealight_tooltiptext'>"+value+" 번호 예약</span>";
             				document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(251, 255, 41, 0.898)';
             			}
             		}
@@ -1084,39 +1125,49 @@ let curHour = curToday.getHours(),
         
         /*현황판 토글*/
 
-		let toggle = $(".switch");
+		let switchBoard = $(".switch_board");
+		let switchRsvdRslt = $(".switch_rsvd_rslt");
         
-        let toggleHandler = function(e){
-			let storeId = ${storeId};
+        let switchBoardHandler = function(e){
+			
+        	let storeId = ${storeId};
 			
 			e.preventDefault();
 			
 			if($("#board").css("display") === 'none'){
 				// debug
 				//console.log("board none => block");
-				$(".switch > button").text('매장관리');
+				//$(".switch").text('매장관리');
 				showBoard(storeId);
+				$("#rsvd_rslt_baord").css("display", "none");
 				$("#board").css("display", "block");
-			} else if($("#board").css("display") === 'block'){
-				// debug
-				//console.log("board block => none");				
-				$("#board").css("display", "none");
+				$(".switch_board").css("color", "#fff").css("background","#343436");
+				$(".switch_rsvd_rslt").css("color", "#000").css("background","#fff");
 			}
+        }
+		
+        let switchRsvdRsltHandler = function(e){
+			
+        	let storeId = ${storeId};
+			
+			e.preventDefault();
 			
 			if($("#rsvd_rslt_baord").css("display") === 'none'){
 				// debug
 				//console.log("rsvd rslt board none => block");
-				$(".switch > button").text('현황판');
+				//$(".switch").text('현황판');
 				showRsvdBoard(storeId);
+				$("#board").css("display", "none");
 				$("#rsvd_rslt_baord").css("display", "block");
-			} else	if($("#rsvd_rslt_baord").css("display") === 'block'){
-				// debug
-				//console.log("rsvd rslt board block => none");
-				$("#rsvd_rslt_baord").css("display", "none");
+				$(".switch_rsvd_rslt").css("color", "#fff").css("background","#343436");
+				$(".switch_board").css("color", "#000").css("background","#fff");
 			}
+			
         }
-		
-		toggle.on("click", toggleHandler);
+        
+
+        switchBoard.on("click", switchBoardHandler);
+        switchRsvdRslt.on("click", switchRsvdRsltHandler);
 		
         /*당일 예약 결과 가져오기*/
         $("#btn_rsvd_rslt").on("click", e => {
@@ -1234,15 +1285,22 @@ let curHour = curToday.getHours(),
 	   	 		console.log("sendUser : "+data.sendUser);
 	   	 	    console.log("storeId : "+data.storeId);
 	   	 	    
+	   	 		
 	   	 	    
 				if(data.cmd === 'rsvd'){
 		   	 		showRsvdList(storeId);
+		   	 		$('.mr-auto').html('예약 알림');
+		   	 		$('.text-muted').html(data.sendUser);
+		   	 		$('.toast-body').html(data.msg);
+		   	 		$('.toast').toast('show');
 		   	 		console.log("rsvd...... : " + data.rsvdId);
 		   	 		console.log(data.msg);
 				} else if (data.cmd === 'wait'){
 		   	 		showWaitList(storeId);
-		   	 		console.log("wait...... : " + data.waitId);
-		   	 		console.log(data.msg);
+		   	 		$('.mr-auto').html('웨이팅 알림');
+		   	 		$('.text-muted').html(data.sendUser);
+		   	 		$('.toast-body').html(data.msg);
+		   	 		$('.toast').toast('show');
 				}	   	 	    
 	   	 	    
 	   	 	    //let socketAlert = $('#socektAlert');

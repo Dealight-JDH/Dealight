@@ -101,7 +101,7 @@ public class ManageSocketHandler extends TextWebSocketHandler {
 				if(waitIdStr != null) {
 					waitId = Long.parseLong(waitIdStr);
 					msg = sendUser + "님의 " + 
-							"<a href='/dealight/business/waiting/" + waitId + ">" +waitId+ "번</a> 웨이팅이 등록되었습니다!";
+							"<a href='/dealight/business/waiting/" + waitId + "'>" +waitId+ "번</a> 웨이팅이 등록되었습니다!";
 				}
 				else if(rsvdIdStr != null) {
 					rsvdId = Long.parseLong(rsvdIdStr);

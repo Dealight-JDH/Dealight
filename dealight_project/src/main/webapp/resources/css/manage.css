@@ -56,14 +56,37 @@
             order: 3;
             flex-grow: 2;
         }
+        .tab_nav{
+        	width:1400px;
+        	height:50px;
+        	display: inline-block;
+        }
+        .tab_nav .switch{
+        	  font-weight: bold;
+			  padding-top: 14px;
+			  text-align: center;
+			  background: #343436;
+			  color: #fff;
+			  border-radius: 30px 30px 0 0;
+			  height: 50px;
+			  float : right;
+			  margin : 0 20px;
+			  cursor: pointer;
+			  width: 100px;
+	          height: 50px;
+		}
+		.tab_nav .switch{
+		  background: #fff;
+		  color: #000;
+		}
+		.tab_nav .switch_board{
+			  background: #343436;
+			  color: #fff;
+		}
         .toggle{
-            border: solid 1px black;
             position: relative;
             height: 50px;
             display: inline-block;
-            /* flex */
-            order: 4;
-            flex-grow: 2;
         }
         .next_wait{
             border: solid 1px black;
@@ -106,7 +129,7 @@
             width: 800px;
             height: 400px;
             position: absolute;
-            top: 100px;
+            top: 120px;
             right: 30px;
         }
         .rsvd_wrapper{
@@ -145,6 +168,7 @@
         .wait_wrapper{
             border: solid black 1px;
             position: absolute;
+           	width: 300px;
             height: auto;
             top: 15px;
             bottom: 15px;
@@ -206,13 +230,13 @@
         }
         /* hover */
 
-        .tooltip {
+        .dealight_tooltip {
         position: relative;
         display: inline-block;
         border-bottom: 1px dotted black;
         }
 
-        .tooltip .tooltiptext {
+        .dealight_tooltip .dealight_tooltiptext {
         visibility: hidden;
         width: 300px;
         background-color: black;
@@ -221,23 +245,16 @@
         border-radius: 6px;
         padding: 5px 0;
 
-        /* Position the tooltip */
+        /* Position the dealight_tooltip */
         position: absolute;
         z-index: 1;
         }
 
-        .tooltip:hover .tooltiptext {
+        .dealight_tooltip:hover .dealight_tooltiptext {
         visibility: visible;
         }
 
         /* toggle css */
-
-        .switch {
-        position: relative;
-        display: inline-block;
-        width: 100px;
-        height: 50px;
-        }
 
         .switch input { 
         opacity: 0;
@@ -360,12 +377,6 @@
             text-align: center;
             margin: auto;
         }
-        .switch{
-            position: absolute;
-            top: 5px;
-            left: 5px;
-        }
-        
         .info_box {
         	margin-top : 80px;
             border: solid 1px black;
