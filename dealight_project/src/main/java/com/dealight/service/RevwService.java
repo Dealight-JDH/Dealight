@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.dealight.domain.Criteria;
+import com.dealight.domain.RevwImgVO;
 import com.dealight.domain.RevwVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.RsvdWithWaitDTO;
@@ -72,5 +73,7 @@ public interface RevwService {
 
 	// 리뷰 삭제
 	boolean deleteRevw(Long revwId);
+	
+	List<RevwImgVO> findRevwImgsByRevwId(Long revwId);
 	
 }

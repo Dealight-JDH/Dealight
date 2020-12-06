@@ -56,6 +56,8 @@
 								<c:if test="${not empty revw.imgs}">
 									<c:forEach items="${revw.imgs}" var="img">
 									------------------------------------------
+										<input class="revw_id_list" hidden value="${img.revwId}">
+										<ul class='revw_imgs_${img.imgSeq}'></ul>
 										<h5>리뷰 번호 : ${img.revwId}</h5>
 										<h5>사진 일련 번호 : ${img.imgSeq}</h5>
 										<h5>파일 이름 : ${img.fileName}</h5>
@@ -411,6 +413,49 @@ $(document).ready(function() {
 	
 }); /* document ready end*/
 
+/* get review img (즉시실행함수)*/
+$(document).ready(function() {
+
+    (function(){
+        
+    	let revw_id_list = document.getElementsByClassName("revw_id_list");
+    	
+    	for(let i = 0; i < revw_id_list.length; i++){
+    		
+    		let revwId = revw_id_list[i].value;
+    		
+            $.getJSON("/dealight/mypage/getRevwImgs", {revwId:revwId}, function(imgs){
+                
+                let strRevwImg = "";
+                
+                $(imgs).each(function(i, img){
+                	
+                    if(img.image) {
+                    	
+                        let fileCallPath = encodeURIComponent(img.uploadPath+"/s_" +img.uuid + "_" +img.fileName);
+                        strRevwImg += "<li data-path='" + img.uploadPath + "'data-uuid='" + img.uuid + "'data-filename='"
+                            + img.fileName +"'data-type='" + img.image+"'><div>";
+                        strRevwImg += "<img src='/display?fileName=" + fileCallPath+"'>";
+                        strRevwImg += "</li>";
+                        
+                    } else {
+                        
+                    	strRevwImg += "<li data-path='" + img.uploadPath +"' data-uuid='" + img.uuid 
+                                +"' data-filename='" + img.fileName +"' data-type='" + img.image+"'><div>";
+                        strRevwImg += "<span>" + img.fileName+"</span><br/>";
+                        strRevwImg += "<img src='/resources/img/attach.png'>";
+                        strRevwImg += "</div>";
+                        strRevwImg += "</li>";
+                    }
+	                $(".revw_imgs_"+img.imgSeq).html(strRevwImg);
+	                strRevwImg = "";
+                });
+                
+                
+            }); // end getjson
+    	}
+    })(); // end function
+});
 </script>
 </body>
 </html>

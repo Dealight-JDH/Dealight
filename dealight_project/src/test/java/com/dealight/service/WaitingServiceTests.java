@@ -275,4 +275,19 @@ public class WaitingServiceTests {
     	log.info(wait);
     	
     }
+    
+    @Test
+    public void findList() {
+    	
+    	
+    	Long storeId = 1L;
+    	
+    	List<WaitVO> waitList = waitingService.findLastWeekRsvdListByStoreId(storeId);
+		
+		// 예약 등록 날짜의 포맷을 설정해준다.
+		waitList.stream().forEach((wait) -> {
+			wait.setStrWaitRegTm(wait.getWaitRegTm().substring(0,10));
+			log.info("time : " + wait.getStrWaitRegTm());
+		});
+    }
 }

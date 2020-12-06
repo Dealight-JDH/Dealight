@@ -10,13 +10,13 @@
 <meta charset="UTF-8">
 <title>매장 관리</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-<script src="/resources/js/Chart.js"></script>
 <!-- Bootstrap core CSS -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
 <!-- Bootstrap core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="/resources/css/manage.css" type ="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="/resources/js/Chart.js"></script>
 <style>
 	.toast{
 		position : absolute;
@@ -34,6 +34,7 @@
 	    -moz-transform:    translateY(-50px);
 	    -moz-animation:    slideDown 2.5s 1.0s 1 ease forwards;
 	}
+
 </style>
 
 </head>
@@ -53,7 +54,7 @@
         </div>
       </div>
       <!-- end notification -->
-      
+     
     <div class="main_box"><!-- main box -->
         <h2>Business Manage Main Page</h2>
         <div class="board"> <!-- board -->
@@ -90,10 +91,10 @@
          </div> <!-- end top box -->
 
          <div id="rsvd_rslt_baord" style="display : none">
-            <h1>당일 예약 결과💵</h1>
-            <ul class="rsvdRslt"></ul>
             <h1>최근 7일 Trend📈</h1>
             <canvas id="rsvd_chart"></canvas>
+            <h1>당일 예약 결과💵</h1>
+            <ul class="rsvdRslt"></ul>
             <h1>최근 7일 예약 현황</h1>            
             <ul class="last_week_rsvd"></ul>
         </div>
@@ -188,7 +189,7 @@
 	<div id="myModal" class="modal">
 		<!-- Modal content -->
 		<div class="modal-content">
-			<span class="close">&times;</span>
+			<span class="close_modal">&times;</span>
 			<ul class="rsvdDtls"></ul>
 			<ul class="userRsvdList"></ul>
 			<ul class="waiting_registerForm"></ul>
@@ -232,7 +233,7 @@ let curHour = curToday.getHours(),
 	
 	// 모달 선택
 	const modal = $("#myModal"),
-		close = $(".close"),
+		close = $(".close_modal"),
 		modalContent = $(".modal-content"),
 		btn_show_board = $("#btn_show_board");
 
@@ -517,6 +518,23 @@ let curHour = curToday.getHours(),
                         }
             });
         };
+        
+        // 매장의 '웨이팅 현황판' 내용을 가져온다.
+		function getLastWeekWait(param,callback,error) {
+            
+            let storeId = param.storeId;
+            
+            $.getJSON("/dealight/business/manage/board/waiting/rslt/"+storeId+"/list.json",
+                function(data){
+                        if(callback){
+                            callback(data);
+                        }
+                    }).fail(function(xhr,status,err){
+                        if(error){
+                            error();
+                        }
+            });
+        }
     
         // 웨이팅 정보를 등록한다.
         function regWait(wait, callback,error) {
@@ -572,6 +590,7 @@ let curHour = curToday.getHours(),
             getNextRsvd : getNextRsvd,
             getTodayRsvdMap : getTodayRsvdMap,
             getRsvdRslt : getRsvdRslt,
+            getLastWeekWait : getLastWeekWait,
             getUserRsvdList : getUserRsvdList,
             getRsvdDtls : getRsvdDtls,
             getLastWeekRsvd : getLastWeekRsvd
@@ -750,6 +769,7 @@ let curHour = curToday.getHours(),
             	if(!map)
             		return;
             	Object.entries(map).forEach(([key,value]) => {
+            		console.log("key : "+key+", value : " + value);
             		strRsvdMap += "<li class='dealight_tooltip'>"+key + " : 예약번호[" + value+"] <span class='dealight_tooltiptext'>"+value+"번호 안녕?</span></li></br>";
             		for(let i = 1; i < 28; i ++){
             			// debug
@@ -828,6 +848,7 @@ let curHour = curToday.getHours(),
         		year =  today.getFullYear();
         		month = (today.getMonth() + 1);
         		date = today.getDate();
+        		if(date < 10) date = "0" + date.toString();
         		dateArr[i] =    year + '/' + month + '/' + date;
         		today.setDate(today.getDate() - 1);
         	}
@@ -835,6 +856,7 @@ let curHour = curToday.getHours(),
         	
     		let pnumArr = [0,0,0,0,0,0,0];
     		let amountArr = [0,0,0,0,0,0,0];
+    		let waitPnumArr = [0,0,0,0,0,0,0];
         	
         	boardService.getLastWeekRsvd({storeId:storeId}, function(list){
         		
@@ -843,7 +865,7 @@ let curHour = curToday.getHours(),
         			return;
 				
         		list.forEach(rsvd => {
-        			
+        			console.log('rsvd str reg date : ' + rsvd.strRegDate);
         			pnumArr[dateArr.indexOf(rsvd.strRegDate)] += rsvd.pnum;
         			amountArr[dateArr.indexOf(rsvd.strRegDate)] += rsvd.totAmt;
         			
@@ -865,33 +887,53 @@ let curHour = curToday.getHours(),
         		});
         		
         		// test
-        		//console.log(dateArr);
-        		//console.log(pnumArr);
-        		//console.log(amountArr);
+        		console.log('dateArr : '+dateArr);
+        		console.log('pnumArr : '+pnumArr);
+        		console.log('amountArr : '+amountArr);
+        		console.log('waitPnumArr : '+waitPnumArr);
         		
 	        	lastWeekRsvdUL.html(strLastWeekRsvd);
-	        	let chart = document.getElementById('rsvd_chart');
-	        	let context = chart.getContext('2d'),
-	           	rsvdChart = new Chart(context, {
-	           		type : 'line',
-	           		data : {
-	           			labels : [dateArr[6], dateArr[5], dateArr[4], dateArr[3], dateArr[2], dateArr[1], dateArr[0]],
-	           			datasets : [{
-	           				label : '예약 인원',
-	           				lineTension : 0,
-	           				data : [pnumArr[6], pnumArr[5], pnumArr[4], pnumArr[3], pnumArr[2], pnumArr[1], pnumArr[0]],
-	           				backgroundColor : "rgba(153,255,51,0.4)"
-	           			}, {
-	           				label : "예약 금액",
-	           				data : [amountArr[6],amountArr[5],amountArr[4],amountArr[3],amountArr[2],amountArr[1],amountArr[0]],
-	           				backgroundColor: "rgba(255,153,0,0.4)"
-	           			}]
-	           		}
-	           	});
+
         	});
         	
-         
-        	
+        	boardService.getLastWeekWait({storeId:storeId}, function(waitList) {
+        		
+        		let strLastWeekWait = "";
+        		if(!waitList)
+        			return;
+        		
+        		waitList.forEach( wait => {
+        			console.log('wait reg tm : '+wait.strWaitRegTm);
+        			console.log('wait pnum : '+wait.waitPnum);
+        			waitPnumArr[dateArr.indexOf(wait.strWaitRegTm)] += wait.waitPnum;
+        			
+        		});
+        		
+            	let chart = document.getElementById('rsvd_chart');
+            	let context = chart.getContext('2d'),
+               	rsvdChart = new Chart(context, {
+               		type : 'line',
+               		data : {
+               			labels : [dateArr[6], dateArr[5], dateArr[4], dateArr[3], dateArr[2], dateArr[1], dateArr[0]],
+               			datasets : [{
+               				label : '예약 인원',
+               				lineTension : 0,
+               				data : [pnumArr[6], pnumArr[5], pnumArr[4], pnumArr[3], pnumArr[2], pnumArr[1], pnumArr[0]],
+               				backgroundColor : "rgba(153,255,51,0.4)"
+               			},  {
+               				label : "웨이팅 인원",
+               				data : [waitPnumArr[6],waitPnumArr[5],waitPnumArr[4],waitPnumArr[3],waitPnumArr[2],waitPnumArr[1],waitPnumArr[0]],
+               				backgroundColor: "rgba(238, 48, 105, 0.835)"
+               			}
+               			/*,{
+               				label : "예약 금액",
+               				data : [amountArr[6],amountArr[5],amountArr[4],amountArr[3],amountArr[2],amountArr[1],amountArr[0]],
+               				backgroundColor: "rgba(255,153,0,0.4)"
+               			}*/]
+               		}
+               	});
+        		
+        	}); // end get wait rslt list
         	
         };
         
@@ -1289,6 +1331,7 @@ let curHour = curToday.getHours(),
 	   	 	    
 				if(data.cmd === 'rsvd'){
 		   	 		showRsvdList(storeId);
+		   	 		showRsvdMap(storeId);
 		   	 		$('.mr-auto').html('예약 알림');
 		   	 		$('.text-muted').html(data.sendUser);
 		   	 		$('.toast-body').html(data.msg);

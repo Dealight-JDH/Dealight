@@ -15,6 +15,8 @@ import com.dealight.domain.WaitVO;
 
 public interface WaitMapper {
 	
+	List<WaitVO> findLastWeekRsvdListByStoreId(Long storeId);
+	
 	// create
 	public void insert(WaitVO wait);
 	

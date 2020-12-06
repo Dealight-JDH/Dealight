@@ -246,7 +246,7 @@ public class FileCheckTask {
         userId = userIdList.get(userIdx);
         storeId = storeList.get(storeIdx);
         Date date = new Date();
-    	cal.set(2020, date.getMonth() + 1, date.getDate());
+    	cal.set(2020, date.getMonth(), date.getDate());
     	cal.set(cal.HOUR_OF_DAY,hourList.get(hourIdx));
     	cal.set(cal.MINUTE, minuteList.get(minuteIdx));
     	

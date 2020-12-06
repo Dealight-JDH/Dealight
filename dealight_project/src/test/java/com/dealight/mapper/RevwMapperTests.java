@@ -446,4 +446,20 @@ public class RevwMapperTests {
 		log.info(revw);
 		
 	}
+	
+	@Test
+	public void findRevwImgsByRevwIdTest1() {
+		
+		Long revwId = 126L;
+		
+		List<RevwImgVO> list = mapper.findRevwImgsByRevwId(revwId);
+		
+		assertNotNull(list);
+		list.stream().forEach(img -> {
+			assertNotNull(img);
+			assertTrue(img.getRevwId().equals(revwId));
+			log.info("img : " + img);
+		});
+		
+	}
 }

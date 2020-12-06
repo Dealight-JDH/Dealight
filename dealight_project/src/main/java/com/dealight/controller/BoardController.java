@@ -268,6 +268,27 @@ public class BoardController {
 		
 	}
 	
+	// 지난 7일 웨이팅 리스트를 가져온다. 
+	@GetMapping(value="board/waiting/rslt/{storeId}/list", produces = {
+					MediaType.APPLICATION_JSON_UTF8_VALUE,
+					MediaType.APPLICATION_XML_VALUE})
+	public ResponseEntity<List<WaitVO>> getLastWeekWait(@PathVariable("storeId") Long storeId){
+		
+		// 지난 7일의 예약 리스트를 가져온다.
+		List<WaitVO> waitList = waitService.findLastWeekRsvdListByStoreId(storeId);
+		
+		// 예약 등록 날짜의 포맷을 설정해준다.
+		waitList.stream().forEach((wait) -> {
+			wait.setStrWaitRegTm(wait.getWaitRegTm().substring(0,10));
+		});
+		
+		log.info("last week rsvd list............" + waitList);
+		
+		
+		return new ResponseEntity<>(waitList,HttpStatus.OK);
+		
+	}
+	
 	// rsvdId로 예약 객체와 예약 상세 객체를 가져온다.
 	@GetMapping(value = "/board/reservation/dtls/{rsvdId}", 
 			produces = {

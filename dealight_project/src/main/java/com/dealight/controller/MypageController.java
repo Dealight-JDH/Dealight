@@ -22,6 +22,7 @@ import com.dealight.domain.Criteria;
 import com.dealight.domain.LikeListDTO;
 import com.dealight.domain.LikeVO;
 import com.dealight.domain.PageDTO;
+import com.dealight.domain.RevwImgVO;
 import com.dealight.domain.RevwVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreVO;
@@ -332,6 +333,16 @@ public class MypageController {
 			return "redirect:/dealight/mypage/changepwd";
 		}
 
+	}
+	
+	// 리뷰의 이미지를 가져온다.
+	@GetMapping(value = "/getRevwImgs", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<List<RevwImgVO>> getStoreImage(Long revwId) {
+		
+		log.info("getAttachList" + revwId);
+		
+		return new ResponseEntity<>(revwService.findRevwImgsByRevwId(revwId), HttpStatus.OK);
 	}
 
 	@GetMapping("/notice")

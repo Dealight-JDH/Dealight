@@ -1,5 +1,4 @@
 package com.dealight.domain;
-// 수빈
 import java.util.Date;
 import java.util.List;
 
@@ -21,40 +20,30 @@ import lombok.NonNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-//다울
 public class WaitVO {
 	
     private Long waitId;
 
-    @NonNull
+    @NotNull(message = "매장번호는 null일 수 없습니다.")
     private Long storeId;
 
     private String userId;
 
     private String waitRegTm;
 
+    @NotNull(message = "웨이팅 인원은 null일 수 없습니다.")
     private int waitPnum;
 
-    @NonNull
+    @NotNull(message = "회원 전화번호는 null일 수 없습니다.")
     private String custTelno;
 
-    @NonNull
+    @NotNull(message = "회원명은 null일 수 없습니다.")
     private String custNm;
 
-    @NonNull
     private String waitStusCd = "W";
 
-    // 리뷰상태 
-    @NotNull
     private int revwStus = 0;
-
-    //웨이팅 수
-    private int waitTot;
     
-    // composition
-    // 매장
-    // 이 방식이 아닌 조인하는 컬럼들만 묶은 VO를 따로 생성할 예정
-    private StoreVO store;
-    private BStoreVO bstore;
-	
+    private String strWaitRegTm;
+    
 }

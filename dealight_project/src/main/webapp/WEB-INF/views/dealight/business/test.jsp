@@ -15,7 +15,7 @@
 		<form action="/dealight/store/wait" method="post">
 			웨이팅 인원 : <input type="number" name="pnum"></br>
 			매장 번호 : <input type="number" name="storeId"></br>
-			<button type="submit"></button></br>
+			<button type="submit">온라인 웨이팅 등록</button></br>
 		</form>
 	</div>
 	
@@ -32,14 +32,10 @@
 			메뉴 이름 : <input type="text" name="menuNm" value="치킨"></br>
 			메뉴 수량 : <input type="number" name="menuTotQty" value="2"></br>
 			메뉴 가격 : <input type="number" name="menuPrc" value="16000"></br>
-			<button type="submit">제출</button>
+			<button type="submit">예약 등록</button>
 		</form>
 	</div>
 	
-	<div class="wait_register_wrapper">
-       <button class="btn_wait_register">온라인 웨이팅 등록</button>
-    </div><!-- end wait board -->
-    
     	<div id="myModal" class="modal">
 		<!-- Modal content -->
 		<div class="modal-content">
@@ -306,16 +302,6 @@
  	
  	
  };
- 
- /* 웨이팅 등록 */
- $(".btn_wait_register").on("click", e => {
- 	
- 	modal.css("display","block");
- 	showWaitRegisterForm(storeId,userId);
- 	
- 	//$("#waitRegForm").submit();        		
- 	
- });
     </script>
 </body>
 </html>

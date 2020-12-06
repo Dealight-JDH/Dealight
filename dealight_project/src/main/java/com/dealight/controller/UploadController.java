@@ -172,14 +172,18 @@ public class UploadController {
 	
 	@PostMapping(value = "/uploadAjaxAction", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public ResponseEntity<List<StoreImgVO>> uploadAjaxPost(MultipartFile[] uploadFile) {
+	public ResponseEntity<List<StoreImgVO>> uploadAjaxPost(MultipartFile[] uploadFile,String category) {
 		List<StoreImgVO> list = new ArrayList<>();
 		
 		log.info("upload store img post................");
 		
 		String uploadFolder = ROOT_FOLDER;
 		
-		String uploadFolderPath = getFolder("");
+		if(category == null) {
+			category = "";
+		}
+		
+		String uploadFolderPath = getFolder(category);
 		//String uploadFolderPath = getFolder("brno");
 		File uploadPath = new File(uploadFolder, uploadFolderPath);
 		

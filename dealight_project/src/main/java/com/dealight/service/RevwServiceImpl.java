@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.Criteria;
 import com.dealight.domain.RevwImgVO;
@@ -46,6 +47,7 @@ public class RevwServiceImpl implements RevwService {
 	}
 
 	@Override
+	@Transactional
 	public void regRevw(RevwVO revw) {
 		
 		
@@ -176,6 +178,12 @@ public class RevwServiceImpl implements RevwService {
 	public RevwVO findRevwWtihImgsByWaitId(Long waitId) {
 
 		return revwMapper.findRevwWtihImgsByWaitId(waitId);
+	}
+
+	@Override
+	public List<RevwImgVO> findRevwImgsByRevwId(Long revwId) {
+
+		return revwMapper.findRevwImgsByRevwId(revwId);
 	}
 
 }

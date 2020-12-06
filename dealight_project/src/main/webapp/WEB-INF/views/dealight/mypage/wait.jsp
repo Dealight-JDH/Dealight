@@ -239,6 +239,9 @@ window.onload = function () {
 				
 				let files = inputFile[0].files;
 				
+				// add category
+				let category = 'revwImgs';
+				
 				for(let i = 0; i < files.length; i++){
 					
 					if(!checkExtension(files[i].name, files[i].size)) {
@@ -246,6 +249,8 @@ window.onload = function () {
 		            }
 		            /* uploadFile 이라는 변수명에 파일 배열(스프링에서는 MultipartFile[]로 받는다)을 달아서보낸다. */
 					formData.append("uploadFile", files[i]);
+		            // add category
+					formData.append("category", category);
 				}
 				
 				$.ajax({

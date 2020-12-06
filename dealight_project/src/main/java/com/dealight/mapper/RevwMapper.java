@@ -32,6 +32,8 @@ public interface RevwMapper {
 	RevwVO findRevwWtihImgsByRsvdId(Long rsvdId);
 	
 	RevwVO findRevwWtihImgsByWaitId(Long waitId);
+	
+	List<RevwImgVO> findRevwImgsByRevwId(Long revwId);
 
 	public int getCountByStoreId(Long storeId);
 	

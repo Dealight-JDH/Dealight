@@ -428,5 +428,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from tbl_revw
 		where revw_id = #{revwId}
 	</delete>
+	
+	<select id="findRevwImgsByRevwId" resultType="com.dealight.domain.RevwImgVO">
+		SELECT *
+		FROM tbl_revw_img
+		where revw_id = #{revwId}
+	</select>
 
 </mapper>
