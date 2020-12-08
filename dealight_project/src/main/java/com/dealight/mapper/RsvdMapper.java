@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.dealight.domain.RsvdAvailVO;
 import com.dealight.domain.RsvdDtlsVO;
+import com.dealight.domain.RsvdTimeDTO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.UserWithRsvdDTO;
 
@@ -22,7 +24,20 @@ public interface RsvdMapper {
 	RsvdVO findById(Long rsvdId);
 	int delete(Long rsvdId);
 	List<RsvdVO> getList();
+	int completeStusUpdate(Long rsvdId);
+	void updateTid(@Param("aprvNo") String aprvNo, @Param("rsvdId") Long rsvdId); // 결제승인번호
 	
+	//예약 상태 변경
+	List<RsvdTimeDTO> findCurrRsvd();
+	int updateStusCd(@Param("rsvdId") Long rsvdId, @Param("stusCd") String stusCd);
+
+	//예약 가능 mapper
+	void insertRsvdAvail(RsvdAvailVO availVO);
+	void deleteRsvdAvail();
+	RsvdAvailVO findRsvdAvailByStoreId(Long storeId);
+	List<RsvdAvailVO> getRsvdAvailList();
+	void updateRsvdAvail(RsvdAvailVO availVO);
+
 	Long getSeqRsvd();
 	Long getDaySeqRsvd();
 	
@@ -70,10 +85,11 @@ public interface RsvdMapper {
 	// read by rsvd id 
 	// join rsvd dtls
 	public RsvdVO findRsvdByRsvdIdWithDtls(long rsvdId);
-	
-	
+
 	// update
 	public int update(RsvdVO rsvd);
+	
+	
 	
 	public List<RsvdVO> findLastWeekRsvdListByStoreId(long storeId);
 	

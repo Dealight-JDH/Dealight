@@ -34,14 +34,17 @@ public class KakaoService {
 	
 	private KakaoPayReadyVO kakaoPayReadyVO; //결제 준비 
 	private KakaoPayApprovalVO kakaoPayApprovalVO; //결제 승인
+	private final RsvdService rsvdService;
 	
 	private Long rsvdId = 0l;
 	private int totAmt = 0;
 	
 	//결제 준비
-	public String kakaoPayReady(Long rsvdId, List<RsvdMenuDTO> lists, int totAmt, int totQty ) {
+	public String kakaoPayReady(Long rsvdId, String userId, List<RsvdMenuDTO> lists, int totAmt, int totQty ) {
+		
 		this.rsvdId = rsvdId;
 		this.totAmt = totAmt;
+		
 		RestTemplate restTemplate = new RestTemplate();
 		
 		String menu = lists.stream().map(dto -> dto.getName()).collect(Collectors.joining(", "));
@@ -60,12 +63,12 @@ public class KakaoService {
         params.add("cid","TC0ONETIME");
 
         params.add("partner_order_id", String.valueOf(rsvdId));
-        params.add("partner_user_id","whddn528");
-        params.add("item_name",menu);
+        params.add("partner_user_id", userId);
+        params.add("item_name", menu);
         params.add("quantity", String.valueOf(totQty));
         params.add("total_amount", String.valueOf(totAmt));
         params.add("tax_free_amount","0");
-        params.add("approval_url","http://localhost:8181/dealight/reservation/kakaoPaySuccess");
+        params.add("approval_url","http://localhost:8181/dealight/reservation/kakaoPaySuccess?userId="+userId+"&rsvdId="+rsvdId);
         params.add("cancel_url","http://localhost:8181/dealight/reservation/kakaoPayCancel");
         params.add("fail_url","http://localhost:8181/dealight/reservation/kakaoPaySuccessFail");
         
@@ -77,6 +80,7 @@ public class KakaoService {
         	
         	log.info("kakaoPay ready...."+ kakaoPayReadyVO);
         	//log.info("kakaoPay ready...===== getNext_redirect_pc_url: " + kakaoPayReadyVO.getNext_redirect_pc_url());
+        	rsvdService.registerTid(kakaoPayReadyVO.getTid(), rsvdId);
         	
         	return kakaoPayReadyVO.getNext_redirect_pc_url();
         }catch (RestClientException e){
@@ -84,15 +88,16 @@ public class KakaoService {
         } catch(URISyntaxException e) {
             e.printStackTrace();
         }
-		return "/";
+		return "/dealight/dealight";
 	}
 	
 	
 	//결제 승인
-	public KakaoPayApprovalVO kakaoPayInfo(String pg_token){
+	public KakaoPayApprovalVO kakaoPayInfo(String userId, String pg_token){
         log.info("==========kakaoPay info======");
 
         RestTemplate restTemplate = new RestTemplate();
+        
         //todo: 요청 헤더
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "KakaoAK "+ ADMINKEY);
@@ -104,7 +109,7 @@ public class KakaoService {
         params.add("cid","TC0ONETIME");
         params.add("tid", kakaoPayReadyVO.getTid());
         params.add("partner_order_id",String.valueOf(this.rsvdId));
-        params.add("partner_user_id","whddn528");
+        params.add("partner_user_id", userId);
         params.add("pg_token", pg_token);
         params.add("total_amount", String.valueOf(this.totAmt));
 
@@ -113,6 +118,7 @@ public class KakaoService {
         try{
             kakaoPayApprovalVO = restTemplate.postForObject(new URI(HOST+"/v1/payment/approve"), body, KakaoPayApprovalVO.class);
 
+            
             log.info("kakaoPayApprovalVO: "+ kakaoPayApprovalVO);
             return kakaoPayApprovalVO;
         }catch(RestClientException e){

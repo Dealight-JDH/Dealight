@@ -187,6 +187,7 @@ public class UserController {
 							+ "회원가입 인증 번호는 " + authNum + "입니다." + System.getProperty("line.separator")
 							+ "인증번호를 홈페이지에 입력하여 주세요.");
 			e_mail.setTo(emailValue);
+//			e_mail.setTo(email);
 			mailService.send(e_mail);
 	
 //			rttr.addFlashAttribute("authNum", authNum);
@@ -396,7 +397,7 @@ public class UserController {
 //		} else {
 //			model.addAttribute("user", service.get(user.getUserId()));
 //		}
-		String userId = (String) session.getAttribute("user") ;
+		String userId = (String) session.getAttribute("userId") ;
 		if(userId != null) {
 			
 			model.addAttribute("user", service.get(userId));
@@ -465,7 +466,7 @@ public class UserController {
 	@GetMapping("/mypage/reservation")
 	public void reservation(HttpSession session, Model model) throws IOException {
 		// 로그인 성공 후 세션에 저장된 user 정보를 꺼내와서 user정보를 불러옴
-		UserVO user = (UserVO) session.getAttribute("user");
+		UserVO user = (UserVO) session.getAttribute("userId");
 		if (user == null) {
 			model.addAttribute("msg", "로그인이 필요한 페이지 입니다.");
 		}

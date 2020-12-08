@@ -245,7 +245,7 @@ h4{
 		intro = $("#intro"); //핫딜 소개
 	
 	let storeId = 0; //매장번호
-	let paramStusCd = "A"; //핫딜 진행중 코드
+	let paramStusCd = "A"; //핫딜 상태코드
 	
 	$(document).ready(function() {
 
