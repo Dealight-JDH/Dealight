@@ -8,8 +8,6 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import jdk.internal.org.jline.utils.Log;
-
 public class WaitingVOTests {
 	
 	//�ʼ� �Է°�
