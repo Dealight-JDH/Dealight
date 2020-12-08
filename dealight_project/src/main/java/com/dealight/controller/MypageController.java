@@ -242,7 +242,7 @@ public class MypageController {
 		return  new ResponseEntity<>(likeService.cancel(userId, storeId), HttpStatus.OK);
 	}
 
-	@GetMapping("/modify")
+//	@GetMapping("/modify")
 	public String modify(Model model, HttpSession session) {
 
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
@@ -256,7 +256,7 @@ public class MypageController {
 		return "/dealight/mypage/modify";
 	}
 
-	@PostMapping("/modify")
+//	@PostMapping("/modify")
 	public String modifyPost(Model model, HttpSession session, RedirectAttributes rttr, UserVO user) {
 
 		boolean result = userService.modify(user);

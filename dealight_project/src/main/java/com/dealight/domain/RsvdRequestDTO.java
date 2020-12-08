@@ -25,6 +25,9 @@ public class RsvdRequestDTO {
 	@NotNull
 	private Long storeId; //매장번호
 	
+	@NotNull
+	private String userId; //일반 사용자
+	
 	@Nullable
 	private Long htdlId; //핫딜번호
 	
@@ -52,11 +55,14 @@ public class RsvdRequestDTO {
 		
 		return RsvdVO.builder()
 					.storeId(storeId)
+					.userId(userId)
 					.htdlId(htdlId)
 					.pnum(pnum)
 					.time(sysdate + " " + time)
 					.totAmt(totAmt)
 					.totQty(totQty)
+					.stusCd("p")
+					.revwStus(0)
 					.build();
 	}
 }

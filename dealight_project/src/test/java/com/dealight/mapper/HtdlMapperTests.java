@@ -37,11 +37,12 @@ public class HtdlMapperTests {
 	@Test
 	public void testSearch() {
 		
-		HtdlCriteria hCri = new HtdlCriteria();
-		hCri.setType("b");
-		hCri.setKeyword("종로");
-		
-		List<HtdlVO> list = mapper.getListWithPaging("I", hCri);
+		HtdlCriteria hCri = new HtdlCriteria(1,30);
+		hCri.setType("B");
+		hCri.setKeyword("동대문");
+		hCri.setStartTm("2020/11/27 13:00");
+		hCri.setEndTm("2020/11/27 14:00");
+		List<HtdlVO> list = mapper.getListWithPaging("A", hCri);
 		
 		list.forEach(vo -> log.info(vo));
 	}

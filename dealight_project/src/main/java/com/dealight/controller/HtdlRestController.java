@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dealight.domain.HtdlCriteria;
@@ -52,6 +53,7 @@ public class HtdlRestController {
 	}
 	
 
+	
 	//핫딜 상세
 	@GetMapping(value = "/get/{htdlId}", produces = {
 			MediaType.APPLICATION_JSON_UTF8_VALUE,

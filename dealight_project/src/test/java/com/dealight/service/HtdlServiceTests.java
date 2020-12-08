@@ -45,6 +45,7 @@ public class HtdlServiceTests {
 	public void testGetListwithPaging() {
 		service.getList("A", new HtdlCriteria(2, 10)).forEach(vo -> log.info(vo));
 	}
+	
 //	@Test
 //	public void testAsync() throws ParseException {
 //		service.asyncMethodTest();

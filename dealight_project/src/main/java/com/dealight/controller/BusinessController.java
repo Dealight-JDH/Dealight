@@ -99,6 +99,7 @@ public class BusinessController {
 	@GetMapping("/")
 	public String list(Model model,HttpServletRequest request) {
 		
+
 		log.info("business store list..");
 		
 		

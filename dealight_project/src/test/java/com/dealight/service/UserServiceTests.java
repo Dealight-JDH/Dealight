@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.dealight.domain.AuthVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.UserVO;
 
@@ -48,8 +49,8 @@ public class UserServiceTests {
 	    user.setBrdt("20201118");
 		user.setSex("W");
 		user.setSnsLginYn("N");
-		
-		service.register(user);
+		AuthVO auth = AuthVO.builder().userId(user.getUserId()).auth("ROLE_USER").build();
+		service.register(user, auth);
 		
 		log.info("생성된 회원 정보: "+user);
 }

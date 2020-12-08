@@ -7,7 +7,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.AuthVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.UserVO;
 import com.dealight.mapper.RsvdMapper;
@@ -17,7 +19,7 @@ import com.dealight.mapper.WaitMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
-//현수현수현수
+//
 @Log4j
 @Service
 @AllArgsConstructor
@@ -25,18 +27,19 @@ public class UserServiceImpl implements UserService{
 
 	private UserMapper mapper;
 	private UserMapper userMapper;
-	
 	private WaitMapper waitMapper;
 	
 	private RsvdMapper rsvdMapper;
 
+	
+	@Transactional
 	@Override
-	public void register(UserVO user) {
+	public void register(UserVO user, AuthVO auth) {
 		
 		log.info("register...."+user);
 		//회원정보를 등록한다.
 		mapper.insert(user);
-		
+		mapper.insertAuth(auth);
 	}
 
 	@Override
@@ -108,7 +111,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public UserVO read(String userId) {
 		
-		return userMapper.findById(userId);
+		return mapper.findById(userId);
 	}
 
 	@Override

@@ -63,23 +63,6 @@ public class StoreController {
 
 	}
 
-	@PostMapping("/reservation")
-	public void reservation(Model model,HttpSession session, RsvdMenuDTOList rsvdMenuList, String pnum, String time, Long storeId) {
-		//로그인 성공 후 세션에 저장된 user 정보를 꺼내와서 user정보를 불러옴
-	    UserVO user = (UserVO)session.getAttribute("user");
-	    if(user == null) {
-	    	model.addAttribute("msg", "로그인이 필요한 페이지 입니다.");
-	    	model.addAttribute("storeId",storeId);
-	    	
-	    }else {
-		model.addAttribute("store", service.bstore(storeId));
-		model.addAttribute("rsvdMenuList", rsvdMenuList); 
-		model.addAttribute("pnum", pnum); 
-		model.addAttribute("time", time);
-		log.info(rsvdMenuList);
-		}
-	
-	}
 	
 	@PostMapping("/store/rsvd")
 	public String regRsvd(Model model, HttpSession session, RsvdVO rsvd) {
@@ -106,7 +89,7 @@ public class StoreController {
 		rsvdDtlsList.add(dtls);
 		
 		rsvd.setUserId(userId);
-		rsvd.setRevwStus(0L);
+		rsvd.setRevwStus(0);
 		rsvd.setTime(fomater.format(new Date()));
 		rsvd.setStusCd("C");
 		rsvd.setRsvdDtlsList(rsvdDtlsList);

@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="com.dealight.domain.UserVO"%>
-
-<!-- 현수현수현수 -->
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <html>
 <head>
@@ -13,8 +12,11 @@
 <!-- Add icon library -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<%
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+</script>
+ 
+<%-- <%
 	UserVO user = (UserVO) session.getAttribute("user");
 String loginState = "";
 String display = ""; //로그인 전에 로그아웃 메뉴 숨기기
@@ -26,7 +28,7 @@ if (user != null) {
 	display = "none";
 }
 %>
-
+ --%>
 <style>
 * {
 	box-sizing: border-box;
@@ -314,18 +316,34 @@ body {
 					<a href="#"><i class="fas fa-bell" color="black"></i></a>
 				</div>
 
+				
 				<div class="rightIcon">
 					<div class="mydropdown">
-						<%-- <button class="mydropbtn" id="openModal" type="button" <%=loginState%>"> 사람이모지~~</button> --%>
-						<a class="mydropbtn" id="openModal"<%=loginState%>"><i
+						<%-- <<button class="mydropbtn" id="openModal" type="button" <%=loginState%>"> 사람이모지~~</button> --%>
+						<a class="mydropbtn" id="openModal"><i
 							class="fas fa-user" color="black"></i></a>
-						<div class="mydropdown-content">
+						<sec:authorize access="isAnonymous()">
+							<a href="/dealight/login">로그인</a>
+							<a href="/dealight/policies">회원가입</a>
+						</sec:authorize>
+						<sec:authorize access="isAuthenticated()">
+							<sec:authorize access="hasRole('ROLE_USER')">
 							<a href="/dealight/mypage/reservation">예약내역</a> 
 							<a href="/dealight/mypage/wait">웨이팅</a>
 							<a href="/dealight/mypage/myreview">나의리뷰</a>
 							<a href="/dealight/mypage/like">찜 목록</a> 
+							</sec:authorize>
+							<sec:authorize access="hasRole('ROLE_MEMBER')">								
+								<a href="/dealight/mypage/business/">매장 관리</a>
+							</sec:authorize>
+							
+							<sec:authorize access="hasRole('ROLE_ADMIN')">								
+								<a href="/dealight/mypage/business/">서비스 관리</a>
+							</sec:authorize>
 							<a href="/dealight/mypage/modify">회원정보수정</a>
-							<a href="/dealight/logout" style="display:<%=display %>">로그아웃</a>
+							<a href="dealight/logout" onclick="submit(event)">로그아웃</a>
+						</sec:authorize>
+						
 						</div>
 					</div>
 
@@ -336,6 +354,21 @@ body {
 	<!-- </div> -->
 	<script>
 
+	//로그아웃 폼 제출
+	function submit(e){
+		e.preventDefault();
+		let body = $("body");
+		let form = $("<form></form>");
+		form.attr("action", "/logout");
+		form.attr("method", "post");
+		
+		let csrfInput = $("<input type='hidden' name='${_csrf.parameterName}' value='${_csrf.token}'>");
+		form.append(csrfInput);
+		form.appendTo(body);
+		form.submit();
+		
+	}
+	
  //1. 버튼을 누르면 모달창이 띄어지고, 배경 회색으로 변경
    function openModal(){
        document.getElementById('content').style.display='block';

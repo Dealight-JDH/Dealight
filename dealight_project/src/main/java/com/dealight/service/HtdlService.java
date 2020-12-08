@@ -2,6 +2,7 @@ package com.dealight.service;
 
 import java.util.List;
 
+import com.dealight.domain.AttachFileDTO;
 import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlPageDTO;

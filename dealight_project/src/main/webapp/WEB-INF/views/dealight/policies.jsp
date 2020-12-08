@@ -152,7 +152,7 @@
         e. 그 외 내부 관리자의 실수나 기술관리 상의 사고로 인해 개인정보의 상실, 유출, 변조, 훼손이 유발될 경우 회사는 즉각 이용자에게 사실을 알리고
            적절한 대책과 보상을 강구할 것입니다.
     </textarea>
-    <p><input type='radio' class='agree' name ='agree1'>동의함  <input type="radio" class='disagree' name ='agree1'>동의 하지 않음   </p>
+    <p><input type='radio' class='agree' id="agree1" name ='agree1'><label for="agree1"> 동의함</label>  <input type="radio" class='disagree' id="disagree1" name ='agree1'><label for="disagree1">동의 하지 않음 </label>  </p>
 
     <h4>개인정보 제3자 제공동의</h4>
     <textarea class='perinfoagree' readonly>
@@ -187,7 +187,7 @@
             법률상의 근거에 의해 부득이하게 고지를 하지 못할 수도 있습니다. 본래의 수집목적 및 이용목적에 반하여 무분별하게 정보가 제공되지 않도록 최대한 노력하겠습니다.
 
     </textarea>
-    <p><input type='radio' class='agree' name ='agree2'>동의함  <input type="radio" class='disagree' name ='agree2'>동의 하지 않음   </p>
+    <p><input type='radio' class='agree' id="agree2" name ='agree2'><label for="agree2">동의함</label>  <input type="radio" class='disagree' id="disagree2" name ='agree2'><label for="disagree2">동의 하지 않음 </label></p>
     <h4>위치기반 서비스 이용약관</h4>
     <textarea class='perinfoagree' readonly>
     제 1 조 (목적)
@@ -258,7 +258,7 @@
           서면을 첨부하여 회사에 제출하여야 합니다.
         ③ 보호의무자는 8세 이하의 아동 등의 개인위치정보 이용 또는 제공에 동의하는 경우 본 약관 제7조에 의한 이용자의 권리를 모두 가집니다.
         </textarea>
-        <p><input type='radio' class='agree' name ='agree3'>동의함  <input type="radio" class='disagree' name ='agree3'>동의 하지 않음   </p>
+        <p><input type='radio' class='agree' id="agree3" name ='agree3'><label for="agree3">동의함</label>  <input type="radio" class='disagree' id="disagree3" name ='agree3'><label for="disagree3">동의 하지 않음</label></p>
     </div>
         <button type='button'  style='margin-left: 1155px'  onclick="checkedAgree()" >다음</button>
 
@@ -276,7 +276,8 @@ for(let i = 0; i < disagree.length; i++){
 		return;
 	}
 }
-location.href='/dealight/prove/authemail';
+/* location.href='/dealight/prove/authemail'; */
+location.href='/dealight/register';
 }
 
 

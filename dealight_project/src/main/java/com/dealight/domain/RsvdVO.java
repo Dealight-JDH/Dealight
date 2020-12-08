@@ -80,7 +80,7 @@ public class RsvdVO {
     private Date updatedate;
     
     @NotNull
-    private Long revwStus;
+    private int revwStus;
     
     private String strRegDate;
     

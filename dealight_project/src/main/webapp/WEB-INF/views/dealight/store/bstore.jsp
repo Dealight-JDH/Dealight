@@ -165,8 +165,8 @@
 
 						<li class="active">
 							<div class="content__wrapper">
-								<form id="reserveForm" action="/dealight/reservation"
-									method="post">
+								<form id="reserveForm" action="/dealight/reservation/"
+									method="get">
 									<input type='hidden' name='storeId'
 										value='<c:out value="${store.storeId }"/>' />
 
@@ -321,7 +321,7 @@
 																+ "점</strong>"
 														str += " <small class='reg'>"
 																+ list[i].regDt
-																+ "</small>"
+																+ "</small>";
 														str += "<p>"
 																+ list[i].cnts;
 														if(list[i].replyCnts !=null){

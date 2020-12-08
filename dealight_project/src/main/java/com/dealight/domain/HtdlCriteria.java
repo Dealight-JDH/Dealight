@@ -11,6 +11,8 @@ public class HtdlCriteria {
 	
 	private String type;
 	private String keyword;
+	private String startTm;
+	private String endTm;
 	
 	public HtdlCriteria() {
 		this(1,9);

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!-- <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
-	<!-- 이메일 관련 -->
+	이메일 관련
 	<beans:bean id="javaMailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<beans:property name="host" value="smtp.gmail.com" />
@@ -22,5 +22,5 @@
 	<beans:bean id="UserService" class="com.dealight.service.UserServiceImpl">
 		<beans:property name="javaMailSender"	ref="javaMailSender" />
 	</beans:bean>
-</beans:beans>
+</beans:beans> -->
 

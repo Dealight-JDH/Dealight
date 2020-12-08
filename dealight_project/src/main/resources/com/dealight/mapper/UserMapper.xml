@@ -4,12 +4,48 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- 동인 -->
-<!-- 현수 -->
+<!-- jongwoo -->
 <mapper namespace="com.dealight.mapper.UserMapper">
+
+<resultMap type="com.dealight.domain.UserVO" id="userMap">
+
+	<id property="userId" column="user_id"/>
+	<result property="name" column="name"/>
+	<result property="pwd" column="pwd"/>
+	<result property="email" column="email"/>
+	<result property="telno" column="telno"/>
+	<result property="brdt" column="brdt"/>
+	<result property="sex" column="sex"/>
+	<result property="photoSrc" column="photo_src"/>
+	<result property="snsLginYn" column="sns_lgin_yn"/>
+	<result property="clsCd" column="cls_cd"/>
+	<result property="pmStus" column="pm_stus"/>
+	<result property="pmCnt" column="pm_cnt"/>
+	<result property="pmExpi" column="pm_expi"/>
+	<result property="regDate" column="regdate"/>
+	<result property="updateDate" column="updatedate"/>
+	<result property="snsNum" column="sns_num"/>
+
+	<collection property="authList" resultMap="authMap">
+	</collection>
+
+</resultMap>
+
+<resultMap type="com.dealight.domain.AuthVO" id="authMap">
+	<result property="userId" column="user_id"/>
+	<result property="auth" column="auth"/>
+</resultMap>
+
+<!-- 회원 권한 조인 -->
+<select id="read" resultMap="userMap">
+	select u.user_id, name, pwd, email, telno, brdt, sex, photo_src, sns_lgin_yn, cls_cd, pm_stus, pm_cnt, pm_expi, regdate, updatedate, a.auth
+	from tbl_user u, tbl_user_auth a
+	where u.user_id = a.user_id and u.user_id = #{userId}
+</select>
 
 <select id="getList" resultType="com.dealight.domain.UserVO">
 <![CDATA[
-select * from tbl_user
+select * from tbl_user where user_id >0;
 ]]>
 </select>
 
@@ -20,6 +56,7 @@ from tbl_user
 where email = #{email}
 </select>
 
+<!-- service단 확인해보기 -->
 <!-- 아이디 이메일이 일치하는 회원에 대한 비밀번호 찾기-->
 <select id="getPwd" resultType="String">
 select pwd
@@ -35,8 +72,6 @@ set pwd = #{pwd}
 where user_id = #{userId}
 </update>
 
-
-
 <!-- 비밀번호 변경 관련 mapper 
     
     <update id = "pass_change" parameterType="hashMap">
@@ -44,28 +79,24 @@ where user_id = #{userId}
  
     </update>
     -->
-    
-    
-    
 <!-- 아이디 중복체크 중복 값 있으면 숫자 뱉어냄 -->
 <select id="checkId" parameterType="String" resultType="Integer">
 select count(*) from tbl_user
 where user_id = #{userId}
-
 </select>
 
 <!-- 회원가입 -->
 <insert id="insert">
-insert into tbl_user(user_id, name, pwd, email, telno, brdt, sex, sns_lgin_yn)
-values (#{userId}, #{name}, #{pwd}, #{email}, #{telno}, #{brdt}, #{sex}, #{snsLginYn})
+insert into tbl_user(user_id, name, pwd, email, telno, brdt, sex, sns_lgin_yn, regdate, updatedate, enabled)
+values (#{userId}, #{name}, #{pwd}, #{email}, #{telno}, #{brdt}, #{sex}, #{snsLginYn}, sysdate +9/24, sysdate+9/24, '1')
 </insert>
 
-<!-- 회원정보 불러오기(마이페이지 회원정보 수정 -->
-<select id="read" resultType="com.dealight.domain.UserVO">
-select *
- from tbl_user where user_id = #{userId}
-</select>
+<insert id="insertAuth">
+insert into tbl_user_auth (user_id, auth)values(#{userId}, #{auth})
+</insert>
 
+
+<!-- 이것도 확인 -->
 <!-- 로그인 정보 가져오기 -->
 <select id="login" resultType="com.dealight.domain.UserVO">
 select user_id, pwd
@@ -73,9 +104,11 @@ from tbl_user
 where user_id = #{userId}
 </select>
 
+<!-- 상태 탈퇴로 수정하기 -->
 <!-- 회원탈퇴 아이디로 체크 -->
 <delete id="delete">
-delete from tbl_user where user_id = #{userId}
+<!-- delete from tbl_user where user_id = #{userId} -->
+update tbl_user set cls_cd = 'W'
 </delete>
 
 <!-- 회원정보 수정(이름[닉네임], 이메일, 전화번호, sns연동 만 변경가능  -->
