@@ -1,5 +1,7 @@
 package com.dealight.domain;
 
+import org.springframework.web.util.UriComponentsBuilder;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,38 +12,32 @@ import lombok.ToString;
 @Setter
 @ToString
 @AllArgsConstructor
-//다울
+@NoArgsConstructor 
 public class Criteria {
 
 	private int pageNum;
 	private int amount;
+	private String type;
+	private String keyword;
 	//km기준 1km = 1
 	private double distance;
 	private double lat;
 	private double lng;
-	//정렬기준을 알려주는 변수
+	//정렬기준
 	private String sortType;
 	//----------------필터조건---------------
-	//핫딜매우선보기 Htdl
-	//식사가능 우선보기 Seat
-	//예약가능 우선보기 Rsvd
-	//웨이팅하는 매장보기 Wait
+	//정렬우선조건
 	private String sortPriority;
 	//영업중인 매장보기
 	private boolean openStore;
 	//-------------------헤시태그-------------
-	//해시태그는 계속생각해보
+	//해시태그는 계속생각해보기
 	
-	public Criteria() {
-		this(1,20,1,37.570414,126.985320,"D", "", true);
+	
+	public String[] getTypeArr() {
 		
+		return type == null? new String[] {}: type.split("");
 	}
-	
-//	다울이랑 이야기해야
-//	public Criteria() {
-//		this(1,4);
-//	}
-	
 	
 	public double getRange() {
 		return distance * 0.01;
@@ -53,4 +49,24 @@ public class Criteria {
 		this.amount = amount;
 	}
 	
+	public Criteria(int pageNum, int amount, double distance, double lat, double lng, String sortType, String sortPriority, boolean openStore) {
+		this.amount = amount;
+		this.pageNum = pageNum;
+		this.distance = distance;
+		this.lat = lat;
+		this.lng = lng;
+		this.sortPriority = sortPriority;
+		this.sortType = sortPriority;
+		this.openStore = openStore;
+	}
+	
+	public String getBrnoListLink() {
+		UriComponentsBuilder builder = UriComponentsBuilder.fromPath("")
+				.queryParam("page", this.pageNum)
+				.queryParam("amount", this.getAmount())
+				.queryParam("type", this.getType())
+				.queryParam("keyword", this.getKeyword());
+				
+		return builder.toUriString();
+	}
 }

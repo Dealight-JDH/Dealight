@@ -13,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.dealight.domain.BUserVO;
+import com.dealight.domain.Criteria;
 
 import lombok.extern.log4j.Log4j;
 
@@ -117,4 +118,18 @@ public class BUserMapperTests {
     	
     }
 
+    @Test
+    public void testPaging() {
+    	
+    	Criteria cri = new Criteria();
+    	cri.setAmount(5);
+    	cri.setPageNum(1);
+    	cri.setKeyword("aa");
+    	cri.setType("I");
+    	cri.setSortType("D");
+    	
+    	List<BUserVO> list = mapper.getListWithPaging(cri);
+    	list.forEach(buser -> log.info(buser));
+    	
+    }
 }

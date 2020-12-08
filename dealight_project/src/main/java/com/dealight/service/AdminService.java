@@ -3,6 +3,7 @@ package com.dealight.service;
 import java.util.List;
 
 import com.dealight.domain.BUserVO;
+import com.dealight.domain.Criteria;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserVO;
 
@@ -20,11 +21,15 @@ public interface AdminService {
 	//삭제
 	public boolean deleteBUser(long brSeq);
 	
+	public List<BUserVO> getBUserListWithCri(Criteria cri);
+	
+	public int getTotal(Criteria cri);
+	
 	//----------------------매장관리------------------------------
 	//리스트불러오기
 	public List<StoreVO> getStroeList();
 	//조회
-	public StoreVO readStore(long brSeq);
+	public StoreVO readStore(long storeId);
 	//등록
 	public void registerStore(StoreVO store);
 	//수정
@@ -42,7 +47,7 @@ public interface AdminService {
 	//수정
 	public boolean modifyUser(UserVO user);
 	//삭제
-	public boolean delete(long userId);
+	public boolean delete(String userId);
 	//----------------------고객센터------------------------------
 	//리스트불러오기
 	//조회

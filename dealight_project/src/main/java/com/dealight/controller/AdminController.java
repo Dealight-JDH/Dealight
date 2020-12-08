@@ -3,12 +3,17 @@ package com.dealight.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dealight.domain.AdminPageDTO;
 import com.dealight.domain.BUserVO;
+import com.dealight.domain.Criteria;
+import com.dealight.domain.StoreVO;
+import com.dealight.domain.UserVO;
 import com.dealight.service.AdminService;
 
 import lombok.AllArgsConstructor;
@@ -26,23 +31,32 @@ public class AdminController {
 	public void adminMain() {
 	}
 
+	//---------사업자등록--------------
 	@GetMapping("/brnomanage")
-	public String bizAuthList(Model model) {
+	public String bizAuthList(Criteria cri, Model model) {
 
 		log.info("bizAuthList");
 
-		model.addAttribute("list", service.getBUserList());
+		int total = service.getTotal(cri);
+		log.info(cri);
+		log.info("total : " + total);
+		
+		if(cri == null || cri.getPageNum() < 1)
+			cri = new Criteria(1, 10);
+		
+		model.addAttribute("list", service.getBUserListWithCri(cri));
+		model.addAttribute("pageMaker", new AdminPageDTO(cri, total));
 
 		return "/dealight/admin/brnomanage/list";
 	}
 	
 	@GetMapping("/brnomanage/register")
-	public void register() {
+	public void registerBrno() {
 		
 	}
 	
 	@PostMapping("/brnomanage/register")
-	public String register(BUserVO buser, RedirectAttributes rttr) {
+	public String registerBrno(BUserVO buser, RedirectAttributes rttr) {
 		log.info("register :" + buser);
 		
 		service.registerBUser(buser);
@@ -54,7 +68,7 @@ public class AdminController {
 	
 
 	@GetMapping({ "/brnomanage/get", "/brnomanage/modify" })
-	public void get(@RequestParam("brSeq") long brSeq, Model model) {
+	public void getBrno(@RequestParam("brSeq") long brSeq, @ModelAttribute("cri")Criteria cri, Model model) {
 
 		log.info("get by brSeq : " + brSeq);
 
@@ -62,7 +76,7 @@ public class AdminController {
 	}
 
 	@PostMapping("/brnomanage/modify")
-	public String modify(BUserVO buser, RedirectAttributes rttr) {
+	public String modifyBrno(BUserVO buser, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
 		
 		log.info("modify : " + buser);
 		
@@ -70,11 +84,12 @@ public class AdminController {
 			rttr.addFlashAttribute("result", "success");
 		}
 		
-		return "redirect:/dealight/admin/brnomanage";
+		
+		return "redirect:/dealight/admin/brnomanage" + cri.getBrnoListLink();
 	}
 	
 	@PostMapping("/brnomanage/remove")
-	public String delete(@RequestParam("brSeq") long brSeq, RedirectAttributes rttr) {
+	public String deleteBrno(@RequestParam("brSeq") long brSeq, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
 		
 		log.info("remove by brSeq : " +brSeq);
 		
@@ -82,7 +97,120 @@ public class AdminController {
 			rttr.addFlashAttribute("result", "success");
 		}
 		
-		return "redirect:/dealight/admin/brnomanage";
+		return "redirect:/dealight/admin/brnomanage" + cri.getBrnoListLink();
 	}
+	
+	//--------------------회원관리
+	@GetMapping("/usermanage/user")
+	public String userList(Model model) {
+		
+		log.info("list");
+		
+		model.addAttribute("list", service.getUserList());
+		
+		return "/dealight/admin/usermanage/user/list";
+	}
+	
+	@GetMapping({"/usermanage/user/get", "/usermanage/user/modify"})
+	public void getUser(@RequestParam("userId") String userId, Model model) {
+		log.info("get user by id : " + userId);
+		
+		model.addAttribute("user", service.readUser(userId));
+	}
+	
+	@PostMapping("/usermanage/user/modify")
+	public String modifyUser(UserVO user, RedirectAttributes rttr) {
+		log.info("modify user : " + user);
+		
+		if(service.modifyUser(user)) {
+			rttr.addFlashAttribute("result", "success");
+		}
+		
+		return "redirect:/dealight/admin/usermanage/user";
+	}
+	
+	@PostMapping("/usermanage/user/delete")
+	public String deleteUser(String userId, RedirectAttributes rttr) {
+		log.info("remove by userId : " + userId);
+		
+		if(service.delete(userId))
+			rttr.addFlashAttribute("result", "success");
+		
+		
+		return "redirect:/dealight/usermanage/user";
+	}
+
+	//-----------------------------매장관리
+	@GetMapping("/storemanage")
+	public String storeList(Model model) {
+		log.info("get store List....................");
+		
+		model.addAttribute("list", service.getStroeList());
+		
+		return "/dealight/admin/storemanage/list";
+	}
+	
+	@PostMapping("/storemanage/registerbstore")
+	public String registerStore(StoreVO store, RedirectAttributes rttr) {
+		log.info("register : " + store);
+		
+		service.registerStore(store);
+		
+		return "redirect:/dealight/admin/storemanage";
+	}
+	
+	@GetMapping("/storemanage/registerbstore")
+	public void registerStore() {
+		
+	}
+	
+	@GetMapping("/storemanage/get")
+	public String getStore(@RequestParam("storeId") long storeId, @RequestParam("clsCd") String clsCd, Model model) {
+		log.info("get by storeId : " + storeId);
+		
+		if(clsCd.equals("B")) {
+			model.addAttribute("store", service.readStore(storeId));
+			return "dealight/admin/storemanage/getbstore";
+		}
+		
+		return "dealight/admin/storemanage/getnstore";
+			
+	}
+	
+	@GetMapping("/storemanage/modify")
+	public String modifyStore(@RequestParam("storeId") long storeId, @RequestParam("clsCd") String clsCd, Model model) {
+		log.info("get by storeId : " + storeId);
+		
+		if(clsCd.equals("B")) {
+			model.addAttribute("store", service.readStore(storeId));
+			return "dealight/admin/storemanage/modifybstore";
+		}
+		
+		return "dealight/admin/storemanage/modifynstore";
+			
+	}
+	
+	
+	@PostMapping("/storemanage/modify")
+	public String modfiyStore(StoreVO store, RedirectAttributes rttr) {
+		log.info("modify store : " + store);
+		
+		if(service.modifyStore(store))
+			rttr.addFlashAttribute("result", "success");
+		
+		return "redirect:/dealight/admin/storemanage";
+	}
+	
+	@PostMapping("/storemanage/delete")
+	public String deleteStore(@RequestParam("storeId") long storeId, RedirectAttributes rttr) {
+		log.info("delete store : " + storeId);
+		
+		if(service.deleteStore(storeId))
+			rttr.addFlashAttribute("result", "success");
+		
+		return "redirect:/dealight/admin/storemanage";
+	}
+	
+	
 	
 }

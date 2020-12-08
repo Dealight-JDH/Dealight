@@ -17,54 +17,46 @@
 			<h6 class="m-0 font-weight-bold text-primary">BrnoManage</h6>
 		</div>
 		<div class="card-body">
-			<form action="/dealight/mypage/bizauth/modify"  method="post">
-				<input type="hidden" name="pageNum" value="<c:out value='${cri.pageNum }'/>">
-				<input type="hidden" name="amount" value="<c:out value='${cri.amount }'/>">
-				<input type="hidden" name="type" value="<c:out value='${cri.type }'/>">
-				<input type="hidden" name="keyword" value="<c:out value='${cri.keyword }'/>">
-			
+			<form action="/dealight/mypage/bizauth/register"  method="post">
 				<div class="card mb-4">
 					<div class="card-header">심사번호</div>
-					<input type="text" class="card-body" name="brSeq" value="${buser.brSeq }">
+					<input type="text" class="card-body" name="brSeq">
 				</div>
 				<div class="card mb-4">
 					<div class="card-header">유저아이디</div>
-					<input type="text" class="card-body" name="userId" value="${buser.userId }">
+					<input type="text" class="card-body" name="userId">
 				</div>
 				<div class="card mb-4">
 					<div class="card-header">대표자명</div>
-					<input type="text" class="card-body" name="repName" value="${buser.repName }">
+					<input type="text" class="card-body" name="repName">
 				</div>
 				<div class="card mb-4">
 					<div class="card-header">매장명</div>
-					<input type="text" class="card-body" name="storeNm" value="${buser.storeNm }">
+					<input type="text" class="card-body" name="storeNm">
 				</div>
 				<div class="card mb-4">
 					<div class="card-header">휴대전화</div>
-					<input type="text" class="card-body" name="telno" value="${buser.telno }">
+					<input type="text" class="card-body" name="telno">
 				</div>
 				<div class="card mb-4">
 					<div class="card-header">사업장전화번호</div>
-					<input type="text" class="card-body" name="storeTelno" value="${buser.storeTelno }">
+					<input type="text" class="card-body" name="storeTelno">
 				</div>
 				<div class="card mb-4">
 					<div class="card-header">사업자등록번호</div>
-					<input type="text" class="card-body" name="brno" value="${buser.brno }">
+					<input type="text" class="card-body" name="brno">
 				</div>
 				
 				<div class="card mb-4">
 					<div class="card-header">심사상태</div>
 					<select name="type" class="card-body">
-      					<option value="P"
-      						<c:out value="${buser.brJdgStusCd eq 'P'?'selected':'' }"/>>
+      					<option value="P">
       					진행중
       					</option>
-      					<option value="C"
-      						<c:out value="${buser.brJdgStusCd eq 'C'?'selected':'' }"/>>
+      					<option value="C">
       					심사통과
       					</option>
-      					<option value="F"
-      						<c:out value="${buser.brJdgStusCd eq 'F'?'selected':'' }" />>
+      					<option value="F">
       					심사탈락
       					</option>
       				</select>
@@ -72,16 +64,11 @@
 				<div class="card mb-4">
 					<div class="card-header">탈락사유</div>
 					<textarea class="card-body"rows="3" name='' > 
-						<c:out value="${board.content }"/>
 					</textarea>
 				</div>
-				
-				
-
 			</form>
 			<div id="btn">
-				<button class="btn btn-secondary" data-oper="modify" >수정하기</button>
-				<button class="btn btn-secondary" data-oper="remove">삭제하기</button>
+				<button class="btn btn-secondary" data-oper="register">등록하기</button>
 				<button class="btn btn-secondary" data-oper="list" >목록으로</button>
 			</div>
 		</div>
@@ -95,22 +82,6 @@
 <script>
 	window.onload = function() {
 
-		const formObj = $("form");
-		$('#btn  button').on("click",function(e){
-			let operation = $(this).data('oper');
-			
-			if(operation ==='remove'){
-				formObj.attr("action", "/dealight/admin/brnomanage/remove");
-				
-			}else if(operation === 'list'){
-				formObj.attr("action", "/dealight/admin/brnomanage/").attr("method", "get");
-				formObj.empty();
-				
-			}
-			
-			formObj.submit();
-		});
-	
 	}
 </script>
 <%@include file="/WEB-INF/views/includes/adminFooter.jsp"%>

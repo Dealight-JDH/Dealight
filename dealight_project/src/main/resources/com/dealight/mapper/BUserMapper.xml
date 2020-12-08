@@ -73,5 +73,48 @@
 		FROM tbl_buser
 		WHERE user_id = #{userId}
 	</select>
+	
+	<sql id="criteria">
+	<where>
+		<choose>
+			<when test="type == 'I'.toString()">
+				user_id like '%'||#{keyword}||'%'
+			</when>
+			<when test="type == 'S'.toString()">
+				store_nm like '%'||#{keyword}||'%'
+			</when>
+			<when test="type == 'R'.toString()">
+				rep_name like '%'||#{keyword}||'%'
+			</when>
+		</choose>
+     </where> 
+
+     <if test="sortType == 'D'.toString()">
+	 order by br_seq 
+	 </if>
+	</sql>
+	<select id="getListWithPaging" resultType="com.dealight.domain.BUserVO">
+		select
+		*
+		from
+		    (
+		      select 
+		          rownum rn, br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, rep_name,regdate, updatedate
+		      from ( select /*+INDEX_DESC(tbl_buser tbl_buser_pk) */
+		                br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, rep_name, regdate,updatedate
+		             from tbl_buser
+					<include refid="criteria"></include>
+		            )
+		   <![CDATA[
+				where rownum <= #{pageNum} * #{amount}
+				  )
+			where rn > (#{pageNum} - 1) * #{amount}
+		]]>
+	</select>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from tbl_buser
+		<include refid="criteria"></include>
+	</select>
 
 </mapper>

@@ -7,22 +7,37 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-	<h1 class="h3 mb-2 text-gray-800">Tables</h1>
+	<h1 class="h3 mb-2 text-gray-800">사업자등록관리페이지</h1>
 	<p class="mb-4">
-		DataTables is a third party plugin that is used to generate the demo
-		table below. For more information about DataTables, please visit the <a
-			target="_blank" href="https://datatables.net">official DataTables
-			documentation</a>.
 	</p>
 
 	<!-- DataTales Example -->
 	<div class="card shadow mb-4">
 		<div class="card-header py-3">
-			<h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+			<a href="/dealight/admin/brnomanage">
+				<h6 class="m-0 font-weight-bold text-primary">사업자등록</h6>
+			</a>
+			<button id="regBtn" type="button" class="btn btn-default">사업 등록하기</button>
 		</div>
 		<div class="card-body">
-			<div class="table-responsive">
-				<table class="table table-bordered" id="dataTable" width="100%"
+			<div >
+					<!-- ajax처리하고싶다. -->
+					<label>보기</label>
+					<select name="amount" id="amount">
+						<option value="5"
+     						<c:out value="${pageMaker.cri.amount == 5?'selected':'' }"/>>
+     						5개씩
+     					</option>
+						<option value="10"
+     						<c:out value="${pageMaker.cri.amount == 10?'selected':'' }"/>>
+     						10개씩
+     					</option>
+						<option value="20"
+     						<c:out value="${pageMaker.cri.amount == 20?'selected':'' }"/>>
+     						20개씩
+     					</option>
+					</select>
+				<table class="table table-bordered" width="100%"
 					cellspacing="0">
 					<thead>
 						<tr>
@@ -34,16 +49,6 @@
 							<th>수정날짜</th>
 						</tr>
 					</thead>
-					<tfoot>
-						<tr>
-							<th>심사번호</th>
-							<th>아이디</th>
-							<th>매장명</th>
-							<th>상태</th>
-							<th>등록날짜</th>
-							<th>수정날짜</th>
-						</tr>
-					</tfoot>
 					<tbody>
 						<c:forEach items="${list }" var="buser">
 							<tr>
@@ -74,13 +79,72 @@
 						</c:forEach>
 					</tbody>
 				</table>
+				<form id="searchForm" action="/dealight/admin/brnomanage" method="get">
+					<label>검색</label>
+     				<select name="type">
+     					<option value=""
+     						<c:out value="${pageMaker.cri.type == null?'selected':'' }"/>>
+     					--
+     					</option>
+     					
+     					<option value="I"
+     						<c:out value="${pageMaker.cri.type eq 'I'?'selected':'' }"/>>
+     					아이디
+     					</option>
+     					
+     					<option value="S"
+     						<c:out value="${pageMaker.cri.type eq 'S'?'selected':'' }"/>>
+     					가게이름
+     					</option>
+     					
+     					<option value="R"
+     						<c:out value="${pageMaker.cri.type eq 'R'?'selected':'' }" />>
+     					대표자명
+     					</option>
+     				</select>
+     				<input type="text" name="keyword" value="<c:out value='${pageMaker.cri.keyword }'/>" />
+     				<input type="hidden" name="pageNum" value="<c:out value='${pageMaker.cri.pageNum }'/>"/>
+     				<input type="hidden" name="amount" value="<c:out value='${pageMaker.cri.amount }'/>"/>
+     				<button class="btn btn-default">Search</button>
+               </form>
+			</div>
+			<div class="col-sm-12 col-md-7">
+			<div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+                	<ul class="pagination">
+                		
+                		<c:if test="${pageMaker.prev }">
+                			<li class="paginate_button page-item previous">
+                				<a href="${pageMaker.startPage - 1 }">Previous</a>
+                			</li>
+                		</c:if>
+                		
+                		<c:forEach var="num" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
+                			<li class="paginate_button page-item ${pageMaker.cri.pageNum == num ? 'active':'' }">
+                				<c:if test="${num == pageMaker.cri.pageNum }">[</c:if>
+								<a href='${num }' > ${ num} </a> 
+                				<c:if test="${num == pageMaker.cri.pageNum }">]</c:if>
+                			</li>
+                		</c:forEach>
+                		
+                		<c:if test="${pageMaker.next }">
+                			<li class="paginate_button next page-item">
+                				<a href="${pageMaker.endPage + 1 }">Next</a>
+                			</li>
+                		</c:if>
+                		
+                	</ul>
+                </div>
 			</div>
 		</div>
 	</div>
 	
 </div>
 <form  method="get" id="actionForm">
-	<input type="hidden" id="brSeq" name="brSeq" value="" >
+	<input type="hidden" name="brSeq" value="" >
+	<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum }">
+	<input type="hidden" name="amount" value="${pageMaker.cri.amount }">
+	<input type="hidden" name="type" value="<c:out value='${pageMaker.cri.type }'/>">
+	<input type="hidden" name="keyword" value="<c:out value='${pageMaker.cri.keyword }'/>">
 	
 </form>
 <!-- /.container-fluid -->
@@ -105,6 +169,17 @@
 				alert("처리가 완료되었습니다.")
 			}
 		}
+		$('#amount').on('change',function(e){
+			formObj.find("input[name='amount']").val($(this).val())
+			formObj.attr("action", "/dealight/admin/brnomanage");
+			
+			formObj.submit();
+		})
+		
+		$("#regBtn").on("click", function(){
+			self.location = "/dealight/admin/brnomanage/register";
+			
+		});
 		//게시글클릭이벤트
 		$('.move').on("click", function(e){
 			e.preventDefault();
@@ -112,6 +187,38 @@
 			formObj.attr("action", "/dealight/admin/brnomanage/get");
 			
 			formObj.submit();
+		});
+		//페이징처리
+		
+		$(".paginate_button a").on("click", function(e){
+			
+			e.preventDefault();
+			
+			console.log('click');
+			
+			formObj.find("input[name='pageNum']").val($(this).attr("href"));
+			formObj.submit();
+		});
+		//검색이벤트 처리
+		const searchForm = $("#searchForm");
+		
+		$("#searchForm button").on("click", function(e){
+			
+			if(!searchForm.find("option:selected").val()){
+				alert("검색종류를 선택하세요");
+				return false;
+			}
+			
+			if(!searchForm.find("input[name='keyword']").val()){
+				alert("키워드를 입력하세요.");
+				return false;
+			}
+				
+			searchForm.find("input[name='pageNum']").val("1");
+			e.preventDefault();
+			
+			searchForm.submit();
+			
 		});
 	}
 </script>

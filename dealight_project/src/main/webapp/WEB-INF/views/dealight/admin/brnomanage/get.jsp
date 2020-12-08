@@ -61,9 +61,9 @@
 			<form action="/dealight/mypage/bizauth/modify" id="operForm" method="get">
 				<input type="hidden" name="pageNum" value="<c:out value='${cri.pageNum }'/>">
 				<input type="hidden" name="amount" value="<c:out value='${cri.amount }'/>">
-				<%-- <input type="hidden" name="type" value="<c:out value='${cri.type }'/>">
-				<input type="hidden" name="keyword" value="<c:out value='${cri.keyword }'/>"> --%>
-				<input type="hidden" id="brSeq" name="brSeq" value="${buser.brSeq }">
+				<input type="hidden" name="type" value="<c:out value='${cri.type }'/>">
+				<input type="hidden" name="keyword" value="<c:out value='${cri.keyword }'/>">
+				<input type="hidden" name="brSeq" value="${buser.brSeq }">
 			</form>
 		</div>
 		<!-- Default Card Example -->
@@ -73,10 +73,6 @@
 	<!-- Basic Card Example -->
 	<!-- DataTales Example -->
 
-	<form action="#" method="get" id="actionForm">
-		<input type="hidden" id="brSeq" name="brSeq" value="">
-
-	</form>
 </div>
 <!-- /.container-fluid -->
 <script>

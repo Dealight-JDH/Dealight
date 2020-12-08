@@ -34,7 +34,9 @@
 
     <!-- Custom scripts for all pages-->
     <script src="/resources/bootstrap/js/sb-admin-2.min.js"></script>
-
+	<script src="/resources/bootstrap/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="/resources/bootstrap/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+	<script src="/resources/bootstrap/js/demo/datatables-demo.js"></script>
    
 
     <!-- Page level custom scripts -->
