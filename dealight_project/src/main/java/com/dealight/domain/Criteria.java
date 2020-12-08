@@ -29,11 +29,16 @@ public class Criteria {
 	//----------------필터조건---------------
 	//정렬우선조건
 	private String sortPriority;
-	//영업중인 매장보기
+	//필터타입
+	private String filterType;
+	//영업중인 매장보기(필터타입으로 무조건 합쳐짐 생각해라)
 	private boolean openStore;
 	//-------------------헤시태그-------------
 	//해시태그는 계속생각해보기
 	
+	public String[] getFilterTypeArr() {
+		return filterType == null? new String[] {}: type.split("");
+	}
 	
 	public String[] getTypeArr() {
 		
