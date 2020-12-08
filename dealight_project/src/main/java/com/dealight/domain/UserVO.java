@@ -73,7 +73,7 @@ public class UserVO {
     private int pmCnt;
 
     // 패널티만료일자 
-    private Date pmExpi;
+    private String pmExpi;
     
     private Date regDate;
     

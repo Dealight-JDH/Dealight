@@ -31,6 +31,7 @@ public class HtdlRequestDTO {
 	@NotNull
 	private List<HtdlMenuDTO> menu;
 	
+	private String htdlPhotoSrc;
 	@NotNull
 	private double dcRate;
 	
@@ -58,6 +59,7 @@ public class HtdlRequestDTO {
 		
 		return HtdlVO.builder()
 				.name(name)
+				.htdlImg(htdlPhotoSrc)
 				.dcRate(dcRate /100.0)
 				.startTm(sysdate+" "+ startTm)
 				.endTm(sysdate+" "+ endTm)

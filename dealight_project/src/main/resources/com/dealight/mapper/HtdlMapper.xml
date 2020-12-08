@@ -11,6 +11,7 @@
 			<id column="htdl_id" property="htdlId"/> 
 			<result column="name" property="name"/>
 			<result column="store_id" property="storeId"/>
+			<result column="htdl_img" property="htdlImg"/>
 			<result column="dc_rate" property="dcRate"/>
 			<result column="start_tm" property="startTm"/>
 			<result column="end_tm" property="endTm"/>
@@ -142,7 +143,7 @@
 	 	]]> -->
 	 	
 	 	<![CDATA[
-		SELECT h.htdl_id, h.name, h.store_id, h.dc_rate, h.start_tm, h.end_tm, h.lmt_pnum, h.intro ,h.bef_price, h.ddct, h.cur_pnum,stus_cd,
+		SELECT h.htdl_id, h.name, h.store_id, h.htdl_img, h.dc_rate, h.start_tm, h.end_tm, h.lmt_pnum, h.intro ,h.bef_price, h.ddct, h.cur_pnum,stus_cd,
         d.htdl_seq, d.menu_name, e.avg_rating, e.revw_tot_num, e.like_tot_num, h.brch
 		      FROM (select *
 	 		 from (
@@ -150,7 +151,7 @@
 	 		 	rownum rn, htdl_id, name, store_id, htdl_img, dc_rate, start_tm, end_tm, lmt_pnum, intro,
 	 		 	bef_price, ddct, cur_pnum, stus_cd, regdate, updatedate, brch
 	 		 	from tbl_htdl
-	 		 	where stus_cd = #{stusCd}
+	 		 	where stus_cd = #{stusCd} and rownum <= #{hCri.pageNum} * #{hCri.amount}
 	 		 	
 	 	]]>
 	 	
@@ -159,15 +160,15 @@
  	 		brch like '%'||#{hCri.keyword}||'%'
  	 	</if>
  	 	</trim>
- 	 	
+
  	 	<if test="hCri.startTm != null and hCri.endTm !=null">
 			<![CDATA[
  	 		and to_date(start_tm, 'yyyy/mm/dd HH24:mi:ss') between to_date(#{hCri.startTm}, 'yyyy/mm/dd HH24:mi:ss') and to_date(#{hCri.endTm}, 'yyyy/mm/dd HH24:mi:ss')
             and to_date(end_tm, 'yyyy/mm/dd HH24:mi:ss') <= to_date(#{hCri.endTm}, 'yyyy/mm/dd HH24:mi:ss')
-            and rownum <= #{hCri.pageNum} * #{hCri.amount}
+            
 	 		 ]]>
  	 	</if>
-	 	 <!-- <trim prefix="(" suffix=") AND " prefixOverrides="OR">
+	 	<trim prefix="(" suffix=") AND " prefixOverrides="OR">
 	 		<foreach item='type' collection="hCri.typeArr">
 	 			<trim prefix="OR">
 	 				<choose>
@@ -180,7 +181,7 @@
 	 				</choose>
 	 			</trim>     
 	 		</foreach>
-	 	</trim> -->
+	 	</trim>
 	 	<![CDATA[
 	 	)
 	 	where

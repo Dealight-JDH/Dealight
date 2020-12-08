@@ -18,16 +18,17 @@
 .css-hotdeal {
 	display: inline-block;
 	margin: 45px;
+	border: 2px solid red;
+	
 }
+
 .topnav{
 }
 .css-elapTime{
 	color: red;
 	font-weight: bold;
 }
-.css-hotdeal{
-	border: 2px solid red; 
-}
+
 
 /* The Modal (background) */
 .modal {
@@ -92,6 +93,7 @@ h4{
     line-height: 16px;
     color: #FF0000;
     }
+
 </style>
 </head>
 <body>
@@ -172,10 +174,14 @@ h4{
 	    </div>
 
 	    <div class="modal-body">
+	    <div class="modal-htdlImg">
+	    </div>
 	    	<span class= 'modal-startTm' id="startTm"></span> &nbsp; - &nbsp; <span class= 'modal-endTm' id="endTm"></span><br>
 	    	<span class= 'css-elapTime modal-elapTime' id="elapTime"></span><br>
 	    	<h4 class="modal-dcRate" id="dcRate"></h4><br>
-	    	<h4 class="modal-befPrice" id="befPrice"></h4><br>
+	    	<span class="modal-befPrice" id="befPrice" style="text-decoration:line-through; color:#999999;">
+	    	</span>
+	    	<br>
 	    	<h4 class="modal-afterPrice" id="afterPrice"></h4><br>
 	    	<h4 class="modal-avgRating" id="avgRating"></h4><br>
 	    	<h4 class="modal-revwTotNum" id="revwTotNum"></h4><br>
@@ -206,18 +212,25 @@ h4{
 	    </div>
 	  </div>
 	</div>
+<<<<<<< HEAD
 	<script>
+=======
+	
+<script>
+>>>>>>> dev_hotdeal
 	
 	let htdlUL = $(".hotdeal"); //핫딜
 	let size = '<c:out value="${fn:length(lists)}"/>'; //진행중인 핫딜 갯수
-	var showListId = null; //setInterval id
-	
+
+	let showListId = null; //setInterval id
+	let showElapTimeId = null; // elapTime id
 	let pageNum = 1;
 	let htdlPageFooter = $(".panel-footer"); //핫딜 페이지
 	
 	//모달
 	let modal = $(".modal"),
 		/* htdlId = $("#mhtdlId"), */
+		htdlImg = $(".modal-htdlImg"),
 		lmtPnum = $("#lmtPnum"), //제한 인원
 		htdlName = $("#htdlName"), //핫딜 이름
 		startTm = $("#startTm"), //시작 시간
@@ -279,6 +292,7 @@ h4{
 					
 				});  */
 				
+				stop(showListId);
 				htdlUL.empty();
 				paramStusCd = "A";
 				showListStart(paramStusCd, pageNum);
@@ -290,13 +304,15 @@ h4{
 		
 		//모달 닫기
 		$(".close").on("click", function(){
+			clearInterval(showElapTimeId);
+			mElapTime.html("");
 			modal.hide();
 		});
 		
 		//딜 하기 클릭 시 매장 상세로 이동한다
 		$(".js-dealBtn").on("click", function(e){
-			let body = $("body");
 			e.preventDefault();
+			let body = $("body");
 			
 			//해당 핫딜번호,메뉴,가격 
 			let htdlId = $("#mhtdlId").val();
@@ -350,18 +366,44 @@ h4{
 		showListId = setInterval(showList, 1000, stusCd, pageNum);
 	}
 	
-	//경과시간 구하기
-	function getElapTime(endTime){
+	//경과시간 카운트다운
+	function showElapTimeStart(elapTime){
+		showElapTimeId = setInterval(getModalElapTime, 1000, elapTime);
+	}
+	
+	//모달 경과시간
+	function getModalElapTime(endTime, startTime){
 		
+		let elapTime = getElapTime(endTime, startTime);
+		mElapTime.html(elapTime);
+	}
+	
+	//핫딜 경과시간
+	function showHtdlElapTime(endTime, startTime){
+
+		let elapTime = getElapTime(endTime, startTime);
+		/* $(".js-elapTime1").html(elapTime); */
+		return elapTime;
+	}
+	
+	function getElapTime(endTime, startTime){
 		console.log("--------end-----"+ endTime);
 		
-		let date =new Date();
-	    		
-		//var endTime = endTimes[i].innerHTML;
-		//console.log("endTime: " + endTime);
 		//종료 시간 변환
 		let fmtTime = new Date(endTime);
 		console.log("fmtTime: " + fmtTime);
+		let date = null;
+		
+		if(startTime != null)
+			date = new Date(startTime);
+		else 
+			date =new Date();
+		
+	    		
+		//var endTime = endTimes[i].innerHTML;
+		//console.log("endTime: " + endTime);
+		
+		console.log("==================시간계산 startTime: " + startTime);
 		
 		//경과 시간
 		let elapsedTime = (fmtTime.getTime() - date.getTime()) / 1000;
@@ -383,17 +425,18 @@ h4{
 						(elapsedSec > 9  ? '' : '0')+ elapsedSec].join('');
 								
 		console.log("elapTime========"+elapTime);
-		$(".js-elapTime1").html(elapTime);
-		
 		return elapTime;
 	}
+	
+	
 	
 	//핫딜 리스트 보여주기
 	function showList(param, page){
 		
 		getList({stusCd: param, page: page || 1},
 			function(data){
-			console.log("list: " + data.lists);
+			console.log("list: " + JSON.stringify(data.lists));
+			console.log("data: " + JSON.stringify(data));
 			//console.log("listDtls: " + JSON.stringify(data.lists[0].htdlDtls));
 	
 			//ajax 요청 list가 널이거나 0이면 ""
@@ -415,7 +458,7 @@ h4{
 			htdlUL.html(str);
 			//핫딜 페이지
 			showHtdlPage(data.total);
-			eventHtdlListener();
+			eventHtdlListener(data.lists.length);
 			
 		});
 	
@@ -461,12 +504,43 @@ h4{
 	//핫딜 그리기
 	function htdlHtml(list){
 		let str = "";
+		
 		//list에 따른 핫딜 동적 생성
 		for(let i =0, len = list.length || 0; i<len; i++){
-			let elapTime = getElapTime(list[i].endTm);
+			/* let elapTime = getElapTime(list[i].endTm); */
+			let elapTime = "";
+			if(list[i].stusCd === 'A')
+				elapTime = showHtdlElapTime(list[i].endTm, null);
+			else
+				elapTime = showHtdlElapTime(list[i].endTm, list[i].startTm);
+			
+			let fileCallPath = null;
+			let srcObj = null;
+			console.log("hotdeal : " + JSON.stringify(list[i]));
+			console.log("hotdeal image: " + list[i].htdlImg);
+			if(list[i].htdlImg != null){
+				let htdlPhotoSrc = list[i].htdlImg;
+				srcObj = subSrc(htdlPhotoSrc);
+				fileCallPath = encodeURIComponent("/"+ srcObj["uploadPath"] +"/s_"+ srcObj["fileName"]);
+				
+				console.log("================핫딜 이미지: " + htdlPhotoSrc);
+			}
+			
 			str += "<div class='css-hotdeal js-htdl"+i+"'>";
 			/* str += "<div class='css-hotdeal js-htdl'>"; */
 			str += "=========================================<br>"
+			
+			if(fileCallPath != null && srcObj != null){				
+				str += "<div class='uploadResult'>";
+				str += "<ul>";
+				str += "<li data-path='"+ srcObj["uploadPath"] +"'";
+				str += " data-filename=\'"+ srcObj["fileName"] +"\'><div>";
+				str += "<img src='/display?fileName=" + fileCallPath + "'>";
+				str += "</div>";
+				str += "</li>";
+				str += "</ul></div>";
+			}
+			
 			str += "남은 시간: <span class='js-elapTime css-elapTime'>"+elapTime+"</span><br>"
 			str += "핫딜 번호: <span class='js-htdlId'>"+ list[i].htdlId+"</span><br>"
 			str += "핫딜 이름: "+ list[i].name+"<br>"
@@ -487,7 +561,7 @@ h4{
 			str +="<br>";
 			console.log("========="+list[i].befPrice);
 			console.log("========="+list[i].ddct);
-			str += "핫딜 할인 전 가격: "+ list[i].befPrice+"<br>";
+			str += "핫딜 할인 전 가격: <span style='text-decoration:line-through; color:#999999;'>"+ list[i].befPrice+"</span><br>";
 			str += "핫딜 할인 후 가격: "+ (list[i].befPrice - list[i].ddct)+"<br>";
 			str += "핫딜 소개: "+ list[i].intro+"<br>";
 			str += "핫딜 마감 인원: "+ list[i].lmtPnum+"<br>";
@@ -497,6 +571,20 @@ h4{
 			str +="</div>"
 		}
 		return str;
+	}
+	
+	//이미지 url 파일경로 나누기
+	function subSrc(PhotoSrc){
+		let srcObj = {};
+	
+		let index = PhotoSrc.lastIndexOf("/");
+		console.log("photo index ============" + index);			
+		
+		srcObj["uploadPath"] = PhotoSrc.substring(0,index);
+		console.log("photoSrc: " + PhotoSrc.substring(0,index));
+		srcObj["fileName"] = PhotoSrc.substring(index + 1);
+		
+		return srcObj;
 	}
 	
 	//해당 핫딜을 ajax 요청을 통해 불러온다
@@ -521,8 +609,33 @@ h4{
 	 function showModal(htdl){
 		 let size = htdl.htdlDtls.length;		
 		 let str = [];
+		 
+		 if(htdl.stusCd === 'A'){
+			showElapTimeStart(htdl.endTm);			 
+		 }
+		 else{
+			 clearInterval(showElapTimeId);
+			 getModalElapTime(htdl.endTm, htdl.startTm);
+		 }
+		
+		 //핫딜 이미지(uuid+fileName)
+		 let filePath = htdl.htdlImg;
+		 console.log(filePath+"modal filePath==============")
+		 
+		 //원본 이미지 파일 경로
+		 let fileCallPath = encodeURIComponent("/"+ filePath);
+		 console.log("========fileCallPath1: " + fileCallPath);
+		 //섬네일 파일 경로
+		 /* let srcObj = subSrc(filePath);
+		 let thumnailfileCallPath = encodeURIComponent("/"+ srcObj["uploadPath"] +"/s_"+ srcObj["fileName"]);
+		 console.log("=========fileCallPath: " + fileCallPath); */
+		 
+		 /* let fileCallPath = path.replace(new RegExp(/\\/g), "/"); */
+
 		//핫딜 번호
 		let htdlNum = htdl.htdlId;
+		 
+		htdlImg.html("<img src='/display?fileName="+ fileCallPath+ "'>");
 		storeId = htdl.storeId;
 		console.log("============storeId: "+storeId);
 		console.log("=========htdlNum: "+htdlNum);
@@ -535,10 +648,11 @@ h4{
 		
 		//경과시간,할인율,할인전후가격,평균평점,리뷰수
 		let elapTime = getElapTime(htdl.endTm);
+		
 		console.log(elapTime+"===============elapTime");
 		/* htdlId.val(htdlNum); */
 		$("#mhtdlId").val(htdlNum);
-		mElapTime.text(elapTime);
+		
 		dcRate.text(htdl.dcRate*100+"%");
 		befPrice.text("₩"+htdl.befPrice);
 		afterPrice.text("₩"+(htdl.befPrice - htdl.ddct));
@@ -564,7 +678,7 @@ h4{
 	}
 	
 	 //핫딜 클릭(상세) 이벤트 등록
-	function eventHtdlListener(){
+	function eventHtdlListener(size){
 		
 		//생성된 핫딜에 클릭시 이벤트 생성
 		for(let i = 0; i< size; i++){
@@ -607,4 +721,7 @@ h4{
 </script>
 </body>
 </html>
+<<<<<<< HEAD
 
+=======
+>>>>>>> dev_hotdeal

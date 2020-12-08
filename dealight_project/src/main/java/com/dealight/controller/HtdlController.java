@@ -26,6 +26,7 @@ import com.dealight.domain.HtdlMenuDTO;
 import com.dealight.domain.HtdlRequestDTO;
 import com.dealight.domain.HtdlVO;
 import com.dealight.service.HtdlService;
+import com.dealight.service.HtdlTimeCheckService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -39,6 +40,8 @@ import lombok.extern.log4j.Log4j;
 public class HtdlController {
 
 	private final HtdlService service;
+	private final HtdlTimeCheckService htdlChckService;
+	
 	
 	//사업자 회원 매장 핫딜 제안
 	@PostMapping("/register")
@@ -52,14 +55,17 @@ public class HtdlController {
 	            log.info("=====error: " + error.getDefaultMessage());
 	        
 	        rttr.addFlashAttribute("msg", "필수 항목을 입력해 주세요");
+	        
 	        return "redirect:/dealight/hotdeal/register?storeId="+storeId;
 		}
 		
 		//핫딜 상세vo list
 		List<HtdlDtlsVO> dtlsList = new ArrayList<>();
-
+		
+	
 		HtdlVO vo = requestDto.toEntity();
 		vo.setStoreId(storeId);
+		log.info("=====================HtdlVO: " + vo);
 		
 		//String[] menu = requestDto.getMenu();
 		List<HtdlMenuDTO> menuList = requestDto.getMenu();
@@ -78,7 +84,7 @@ public class HtdlController {
 			
 			if(menuDto.getName() != null && menuDto.getPrice() != null) {				
 				HtdlDtlsVO dtlsVO = HtdlDtlsVO.builder()
-						.menuName(menuDto.getName())
+						.menuName(menuDto.getName().trim())
 						.menuPrice(menuDto.getPrice()).build();
 				
 				log.info("===================dtlsVO: " + dtlsVO);
@@ -87,6 +93,7 @@ public class HtdlController {
 		}
 		
 		service.register(vo, dtlsList);
+		htdlChckService.addHtdl(vo);
 		
 		//rttr.addFlashAttribute("result", vo.getHtdlId());
 		

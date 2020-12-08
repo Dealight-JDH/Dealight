@@ -10,6 +10,7 @@
 <meta charset="UTF-8">
 <title>매장 관리</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="/resources/js/Chart.js"></script>
 <link rel="stylesheet" href="/resources/css/manage.css?ver=1" type ="text/css" />
 </head>
@@ -146,6 +147,13 @@
 		</c:forEach>
 	</c:if>
 	
+	<div class="well">
+		<input type="text" id="msg" value="wait,${userId},${storeId},101" class="form-control" />
+		<button id="btnSend" class="btn btn-primary">Send Message</button>
+	</div>
+	
+	<div id="socketAlert" class="alert alert-success" role="alert"">알림!!!</div>
+	
 	<div>
         </div> <!-- end info box -->
         	<!-- The Modal -->
@@ -161,17 +169,39 @@
     
 <script>
 
+const storeId = ${storeId};
+
 /*시간바 만들기*/
-writeTimeBar = function () {
+/*현재시간으로 스크롤 고정*/
+writeTimeBar = function (curTime) {
     timeArr = ['','09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30','22:00'];
-    strTime = "";
+    let strTime = "";
+    let curPos = 0; 
     for(let i = 1; i <= 27; i++){
+    	if(curTime === timeArr[i])
+    		curPos = i - 1;
         strTime += "<div class='rsvd_time tooltip' id='slide-"+i+"'><h6>"+timeArr[i]+"</h6><div class='time_table'></div></div>";
     }
 	document.querySelector(".rsvd_time_bar").innerHTML = strTime;
-}
-writeTimeBar();
+    // 예약 상태바 초기 스크롤 고정
+    document.querySelector(".rsvd_time_bar").scrollLeft = ((parseInt(curPos)*150) - 150);
+	}
+	
+/* 시간 파싱 */
+let curToday = new Date();
+let curHour = curToday.getHours(),
+	curMinutes = curToday.getMinutes();
+	
+	if(curMinutes >= 30)
+		curMinutes = '30';
+	else
+		curMinutes = '00';
+	
+	let curTime = curHour + ":" + curMinutes;
 
+	// TimeBar 작성
+	writeTimeBar(curTime);
+	
 	// 모달 선택
 	const modal = $("#myModal"),
 		close = $(".close"),
@@ -520,7 +550,6 @@ writeTimeBar();
     */
     $(document).ready(() => {
     	/* 변수 설정*/
-        const storeId = ${storeId};
         
         /* HTML 태그 변수 설정*/
         const seatStusForm = $("#seatStusForm"),
@@ -595,6 +624,8 @@ writeTimeBar();
         
         function showWaitList(storeId){
         	
+        	console.log("show wait list.........." + storeId);
+        	
         	boardService.getWaitList({storeId:storeId}, function (waitList) {
                 let strWaitList = "";
                 if(waitList == null){
@@ -640,6 +671,8 @@ writeTimeBar();
         }
         
         function showRsvdList(storeId){
+        	
+        	console.log("show rsvd list..........." + storeId);
         	
         	boardService.getRsvdList({storeId:storeId}, function (rsvdList) {
                 let strRsvdList = "";
@@ -1169,6 +1202,101 @@ writeTimeBar();
 	        	showWaitList(storeId);
         	});
         });
+        
+        
+        /* web socket!!!!!!!!!!!!!!!!!!!!*/
+        let socket = null;
+   	 
+	   	 function connectWS() {
+	   		// 전역변수 socket을 선언한다.
+	   		// 다른 페이지 어디서든 소켓을 불러올 수 있어야 하기 때문이다.
+	   		
+	   	 	// 소켓을 ws로 연다.
+	   	 	var ws = new WebSocket("ws://localhost:8080/manageSocket");
+	   	 	socket = ws;
+	
+	   	 	// 커넥션이 연결되었는지 확인한다.
+	   	 	ws.onopen = function () {
+	   	 	    console.log('Info: connection opened.');
+	   	 	};
+	
+	   	 	
+	   	 	// 받은 메시지를 출력한다.
+	   	 	// 메시지를 수신한 이벤트 핸들러와 같다.
+	   	 	ws.onmessage = function (event) {
+	   	 	    console.log("ReceiveMessage : ", event.data+'\n');
+	   	 	    
+	   	 	    // 추후에 message 형식을 JSON으로 변환해서 message type을 지정해줘야 한다.
+	   	 	    //if()
+	   	 	    	
+	   	 	   	alert(event.data);
+	   	 	    console.log(typeof event.data);
+	   	 	    
+	   	 	    let data = JSON.parse(event.data);
+	   	 	    
+	   	 	    console.log(typeof data);
+	   	 	    console.log("cmd : "+data.cmd);
+	   	 		console.log("sendUser : "+data.sendUser);
+	   	 	    console.log("storeId : "+data.storeId);
+	   	 	    
+	   	 	    
+				if(data.cmd === 'rsvd'){
+		   	 		showRsvdList(storeId);
+		   	 		console.log("rsvd...... : " + data.rsvdId);
+		   	 		console.log(data.msg);
+				} else if (data.cmd === 'wait'){
+		   	 		showWaitList(storeId);
+		   	 		console.log("wait...... : " + data.waitId);
+		   	 		console.log(data.msg);
+				}	   	 	    
+	   	 	    
+	   	 	    //let socketAlert = $('#socektAlert');
+	   	 		//socketAlert.html(event.data);
+	   	 	    //socketAlert.css('display','block');
+			    
+			    // 메시지가 3초 있다가 자동으로 사라지게
+			    /*
+			    setTimeout( function(){
+			    	
+			    	$socketAlert.css('display','none');
+			    },3000);
+	   	 	    */
+			    
+			    /*
+	   	 	    let socketAlert = $('#socektAlert');
+	   	 		socketAlert.innerHTML = event.data;
+	   	 	    socketAlert.style.display = "block";
+	   	 	   	showWaitList(storeId);
+	   	 	    */
+	   	 	   	
+	   	 	    // 메시지가 3초 있다가 자동으로 사라지게
+	   	 	    /*
+	   	 	    setTimeout( function(){
+	   	 	    	
+	   	 	    	$socketAlert.css('display','none');
+	   	 	    },3000);
+	   	 	    */
+	   	 	};
+	
+	
+	   	 	// connection을 닫는다.
+	   	 	ws.onclose = function (event) {
+	   	 		console.log('Info: connection closed.');
+	   	 		//setTimeout( function(){ connect(); }, 1000); // retry connection!!
+	   	 	};
+	   	 	ws.onerror = function (event) { console.log('Error'); };
+	   	 	
+	   	 }
+	   		
+	   		// input 내용을 socket에 send
+	   		$('#btnSend').on('click', function(evt) {
+	   			  evt.preventDefault();
+	   			if (socket.readyState !== 1) return;
+	   				  let msg = $('input#msg').val();
+	   				  socket.send(msg);
+	   			});
+	   		
+	   		connectWS();
    });
 	
     /* get store img (즉시실행함수)*/
@@ -1273,7 +1401,6 @@ writeTimeBar();
             operForm.submit();
             
         });
-        
         
         
     });

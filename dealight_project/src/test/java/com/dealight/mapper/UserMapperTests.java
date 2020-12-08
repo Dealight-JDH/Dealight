@@ -145,4 +145,13 @@ public class UserMapperTests {
 		
 	}
 	
+	@Test
+	public void checkPanaltyDurationTest1() {
+		
+		int upNum = mapper.checkPanaltyDuration();
+		
+		log.info("upNum........................."+upNum);
+		
+	}
+	
 }

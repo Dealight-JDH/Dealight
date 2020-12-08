@@ -3,6 +3,7 @@ package com.dealight.domain;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.springframework.http.StreamingHttpOutputMessage;
 
 public class BUserVOTests {
 	
@@ -12,15 +13,13 @@ public class BUserVOTests {
     private String brPhotoSrc = "/a.jpg";
     private String brJdgStusCd;
     private long storeId = 3;
+    private String storeNm = "storeNm";
+    private String telno = "010-2112-1232";
+    private String storeTelno = "02-123-1234";
 
-	// 1. ÇÊ¼ö ÀÔ·Â°ª¸¸ ÀÔ·ÂÇÏ°í À¯Àú°´Ã¼°¡ »ý¼ºµÉ ¼ö ÀÖ´ÂÁö.
-	// not null °ª¸¸ ÀÔ·Â
-	// ÇÊ¼ö°ª : brSeq,userId,brno,brPhotoSrc,brJdgStusCd(deafult °ª)
-	// ¼±ÅÃ°ª : storeId
-	// ÇÊ¼ö ÀÔ·Â°ªÀ» ÀÔ·ÂÇÏÁö ¾Ê¾ÒÀ»½Ã ÄÄÆÄÀÏ¿¡·¯
 	@Test
 	public void buserGenerateTest1() {
-		BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc)
+		BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc,storeNm,telno,storeTelno)
 				.build();
 		
 		assertTrue(buser.getBrSeq() == brSeq);
@@ -28,18 +27,18 @@ public class BUserVOTests {
 		assertTrue(buser.getBrno() == brno);
 		assertTrue(buser.getBrPhotoSrc().equals(brPhotoSrc));
 		
-		// default°ªÀÎ "W"°¡ Àß µé¾î°¬´ÂÁö
+		// defaultï¿½ï¿½ï¿½ï¿½ "W"ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½î°¬ï¿½ï¿½ï¿½ï¿½
 		assertTrue(buser.getBrJdgStusCd().equals("W"));
 		assertNotNull(buser);
 		
 	}
 	
-	// 2. ¸ðµç ÀÔ·Â°ªÀ» ÀÔ·ÂÇØ¼­ À¯Àú °´Ã¼¸¦ »ý¼ºÇÑ´Ù.
-	// ÇÊ¼ö°ª : brSeq,userId,brno,brPhotoSrc,brJdgStusCd(deafult °ª)
-	// ¼±ÅÃ°ª : storeId
+	// 2. ï¿½ï¿½ï¿½ ï¿½Ô·Â°ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+	// ï¿½Ê¼ï¿½ï¿½ï¿½ : brSeq,userId,brno,brPhotoSrc,brJdgStusCd(deafult ï¿½ï¿½)
+	// ï¿½ï¿½ï¿½Ã°ï¿½ : storeId
 	@Test
 	public void buserGenerateTest2() {
-		BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc)
+		BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc,storeNm,telno,storeTelno)
 				.setStoreId(storeId)
 				.build();
 		
@@ -49,7 +48,7 @@ public class BUserVOTests {
 		assertTrue(buser.getBrPhotoSrc().equals(brPhotoSrc));
 		assertTrue(buser.getStoreId() == storeId);
 		
-		// default°ªÀÎ "W"°¡ Àß µé¾î°¬´ÂÁö
+		// defaultï¿½ï¿½ï¿½ï¿½ "W"ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½î°¬ï¿½ï¿½ï¿½ï¿½
 		assertTrue(buser.getBrJdgStusCd().equals("W"));
 		assertNotNull(buser);
 		

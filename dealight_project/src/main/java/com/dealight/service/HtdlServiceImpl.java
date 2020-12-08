@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.AttachFileDTO;
 import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlPageDTO;
@@ -86,7 +87,7 @@ public class HtdlServiceImpl implements HtdlService {
 		log.info("register....");
 		
 		//핫딜 등록
-		checkService.addHtdl(vo);
+		//checkService.addHtdl(vo);
 		htdlMapper.insertSelectKey(vo);
 		
 		Long sequence = htdlMapper.getSeqHtdl();
@@ -224,12 +225,6 @@ public class HtdlServiceImpl implements HtdlService {
 		
 		return htdlMapper.findByStoreIdStusCd(storeId, "A");
 	}
-
-	
-
-
-	
-
 
 	
 
