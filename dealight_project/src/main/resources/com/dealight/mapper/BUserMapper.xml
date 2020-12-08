@@ -3,7 +3,7 @@
 	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!-- 동인 -->
+<!-- 동인, 현중 -->
 
 <mapper namespace="com.dealight.mapper.BUserMapper">
 
@@ -25,9 +25,9 @@
 	<insert id="insert">
 		INSERT
 		INTO
-		tbl_buser(br_seq,user_id,store_id,brno,br_photo_src,br_jdg_stus_cd)
+		tbl_buser(br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, rep_name)
 		VALUES
-		(seq_buser.nextval,#{userId},#{storeId},#{brno},#{brPhotoSrc},#{brJdgStusCd})
+		(seq_buser.nextval, #{userId}, #{storeId}, #{brno}, #{brPhotoSrc}, #{brJdgStusCd}, #{storeNm}, #{telno}, #{storeTelno}, #{repName})
 	</insert>
 
 	<insert id="insertSelectKey">
@@ -38,9 +38,9 @@
 
 		INSERT
 		INTO
-		tbl_buser(br_seq,user_id,store_id,brno,br_photo_src,br_jdg_stus_cd)
+		tbl_buser(br_seq,user_id,store_id,brno,br_photo_src,br_jdg_stus_cd, store_nm, telno, store_telno, rep_name)
 		VALUES
-		(#{brSeq},#{userId},#{storeId},#{brno},#{brPhotoSrc},#{brJdgStusCd})
+		(#{brSeq},#{userId},#{storeId},#{brno},#{brPhotoSrc},#{brJdgStusCd}, #{storeNm}, #{telno}, #{storeTelno}, #{repName})
 	</insert>
 
 
@@ -49,12 +49,15 @@
 		UPDATE tbl_buser
 		SET
 		user_id = #{userId},
-		store_id =
-		#{storeId},
+		store_id = #{storeId},
 		brno = #{brno},
 		br_photo_src = #{brPhotoSrc},
-		br_jdg_stus_cd
-		= #{brJdgStusCd}
+		br_jdg_stus_cd = #{brJdgStusCd},
+		store_nm = #{storeNm},
+		telno = #{telno},
+		store_telno = #{storeTelno},
+		rep_name = #{repName},
+		updatedate = sysdate + 9/24
 		where br_seq = #{brSeq}
 	</update>
 
@@ -63,6 +66,55 @@
 		FROM tbl_buser
 		WHERE br_seq = #{brSeq}
 	</delete>
+	
+	<select id="findAllByUserId" resultType="com.dealight.domain.BUserVO">
+		SELECT
+		*
+		FROM tbl_buser
+		WHERE user_id = #{userId}
+	</select>
+	
+	<sql id="criteria">
+	<where>
+		<choose>
+			<when test="type == 'I'.toString()">
+				user_id like '%'||#{keyword}||'%'
+			</when>
+			<when test="type == 'S'.toString()">
+				store_nm like '%'||#{keyword}||'%'
+			</when>
+			<when test="type == 'R'.toString()">
+				rep_name like '%'||#{keyword}||'%'
+			</when>
+		</choose>
+     </where> 
 
+     <if test="sortType == 'D'.toString()">
+	 order by br_seq 
+	 </if>
+	</sql>
+	<select id="getListWithPaging" resultType="com.dealight.domain.BUserVO">
+		select
+		*
+		from
+		    (
+		      select 
+		          rownum rn, br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, rep_name,regdate, updatedate
+		      from ( select /*+INDEX_DESC(tbl_buser tbl_buser_pk) */
+		                br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, rep_name, regdate,updatedate
+		             from tbl_buser
+					<include refid="criteria"></include>
+		            )
+		   <![CDATA[
+				where rownum <= #{pageNum} * #{amount}
+				  )
+			where rn > (#{pageNum} - 1) * #{amount}
+		]]>
+	</select>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from tbl_buser
+		<include refid="criteria"></include>
+	</select>
 
 </mapper>

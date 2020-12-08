@@ -66,12 +66,6 @@ public class StoreMapperTests {
 		log.info(mapper.delete(3L));
 	}
 	
-	public void testJoinLoc() {
-		mapper.joinLoc().forEach(store-> {
-			log.info(store);
-			log.info(store.getLoc());
-		});
-	}
 	
 	public void testGetListAllInfo() {
 		mapper.getListAllInfo().forEach(store->{
@@ -148,7 +142,10 @@ public class StoreMapperTests {
 		assertNotNull(store.getBstore());
 	}
 	
+	@Test
 	public void findByIdJoinBStoreTest1() {
+		
+		storeId = 1L;
 		
 		StoreVO store = mapper.findByIdJoinBStore(storeId);
 		
@@ -159,7 +156,10 @@ public class StoreMapperTests {
 	
 	}
 
+	@Test
 	public void findByUserIdJoinBStoreTest1() {
+		
+		userId = "aaaa";
 		
 		List<StoreVO> list = mapper.findByUserIdJoinBStore(userId);
 		
@@ -169,6 +169,35 @@ public class StoreMapperTests {
 			assertNotNull(store.getBstore());
 			assertNotNull(store.getBstore().getBuserId().equals(userId));
 		});
+	}
+	
+	@Test
+	public void findStoreWithLocByStoreIdTest1() {
+		
+		storeId = 13L;
+		
+		StoreVO store= mapper.findStoreWithLocByStoreId(storeId);
+		
+		log.info("store : " + store);
+		log.info("store loc : " + store.getLoc());
+		
+		assertNotNull(store.getLoc());
+	}
+	
+	@Test
+	public void findStoreWithBstoreAndLocByStoreIdTest1() {
+		
+		storeId = 13L;
+		
+		StoreVO store = mapper.findStoreWithBstoreAndLocByStoreId(storeId);
+		
+		log.info(store);
+		
+		assertNotNull(store);
+		assertNotNull(store.getBstore());
+		assertNotNull(store.getLoc());
+		
+		
 	}
 
 }

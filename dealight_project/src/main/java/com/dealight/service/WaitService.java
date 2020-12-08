@@ -2,6 +2,7 @@ package com.dealight.service;
 
 import java.util.List;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.WaitVO;
 
 /*
@@ -12,42 +13,30 @@ import com.dealight.domain.WaitVO;
 
 public interface WaitService {
 	
-	// wait dtls mapper - select
-	// read
+	
+	// get wait by wait id
 	WaitVO read(Long waitId);
 	
-	// wait mapper - inserSelectKey
-	// insert
+	// register wait return wait id
 	long registerOnWaiting(WaitVO waiting);
 	
-	boolean isPossibleWaitingUser(String userId);
-	
 	boolean isCurWaitingUser(String userId);
-	
+
 	boolean isCurPanaltyUser(String userId);
 	
-	// wait mapper - inserSelectKey
-	// insert
+	// isCurWaitingUser + isCurPanaltyUser
+	boolean isPossibleWaitingUser(String userId);
+	
 	long registerOffWaiting(WaitVO waiting);
 	
-	// 웨이팅 상태 변경clsCd waitStusCd = "C" 
-	// wait mapper - update
 	boolean cancelWaiting(Long waitId);
 	
-	// 웨이팅 상태 변경 clsCd waitStusCd = "E" 
-	// wait mapper - update
 	boolean enterWaiting(Long waitId);
 	
-	// 웨이팅 상태 변경 clsCd waitStusCd = "P" 
-	// wait mapper - update
 	boolean panaltyWaiting(Long waitId);
 	
-	// wait mapper - select list
 	List<WaitVO> allStoreWaitList(Long storeId);
 	
-	// wait mapper - select list
-	// -storeid
-	// -clsCd waitStusCd = "C" 
 	List<WaitVO> curStoreWaitList(Long storeId, String waitStusCd);
 	
 	int calWatingOrder(List<WaitVO> curStoreWaitiList, Long waitId);
@@ -57,5 +46,18 @@ public interface WaitService {
 	WaitVO readNextWait(List<WaitVO> curStoreWaitiList);
 	
 	int waitInit();
+	
+	List<WaitVO> findWaitListWithPagingByUserId(String userId, Criteria cri);
+	
+	int getCurWaitCnt(String userId, Criteria cri);
+	
+	int getEnterWaitCnt(String userId, Criteria cri);
+	
+	int getPanaltyWaitCnt(String userId, Criteria cri);
+	
+	WaitVO getCurWaitByUserId(String userId);
+	
+	
+	List<WaitVO> findLastWeekRsvdListByStoreId(Long storeId);
 
 }

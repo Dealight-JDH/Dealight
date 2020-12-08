@@ -2,10 +2,10 @@ package com.dealight.mapper;
 
 
 import java.util.List;
-import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.dealight.domain.AuthVO;
 import com.dealight.domain.UserVO;
 
 /*
@@ -16,6 +16,7 @@ import com.dealight.domain.UserVO;
 //현수현수현수
 public interface UserMapper {
 
+	public void insertAuth(AuthVO auth);
 	//로그인 된 유저 정보 불러오기
 	public UserVO read(String userId);
 	//관리자 한테 필요할 듯 모든 회원 리스트 불러오기
@@ -45,5 +46,11 @@ public interface UserMapper {
 	//Read List
 	//@Select("SELECT * FROM tbl_user")
 	public List<UserVO> findAll();
+	
+	public int addPanaltyCnt(String userId);
+	
+	public int checkPanaltyDuration();
+	
+	public int withdrawalUser(String userId);
 
 }

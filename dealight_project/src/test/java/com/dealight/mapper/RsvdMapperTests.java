@@ -3,6 +3,7 @@ package com.dealight.mapper;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +17,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.Criteria;
+import com.dealight.domain.RsvdAvailVO;
 import com.dealight.domain.RsvdDtlsVO;
+import com.dealight.domain.RsvdTimeDTO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.UserWithRsvdDTO;
 
@@ -30,6 +34,69 @@ public class RsvdMapperTests {
 	private RsvdMapper mapper;
 	//TODO 예약 상세 테스트
 	
+	@Test
+	public void updateRsvdAvail() {
+		log.info("update rsvdAvail...");
+		Long storeId = 3l; 
+		RsvdAvailVO availVO = mapper.findRsvdAvailByStoreId(storeId);
+		
+		//예약 가능인원 수정
+		availVO.setEighteen(8);
+		mapper.updateRsvdAvail(availVO);
+		
+		RsvdAvailVO resultVO = mapper.findRsvdAvailByStoreId(availVO.getStoreId());
+		
+		log.info("update result : " + resultVO);
+		
+	}
+	@Test
+	public void getRsvdAvailList() {
+		log.info("get rsvd Avail list....");
+		List<RsvdAvailVO> list = mapper.getRsvdAvailList();
+		
+		list.forEach(avail -> log.info("get avail List... "+ avail));
+		
+	
+	}
+	@Test
+	public void findRsvdAvail() {
+		log.info("select rsvdAvail...");
+		
+		Long storeId = 3l;
+		RsvdAvailVO findVO = mapper.findRsvdAvailByStoreId(storeId);
+		
+		log.info("find availVO : " + findVO);
+		
+	}
+	
+	@Test
+	public void deleteRsvdAvail() {
+		log.info("delete rsvdAvail..");
+		mapper.deleteRsvdAvail();
+	}
+	
+	@Test
+	public void insertRsvdAvail() {
+		
+		log.info("insert rsvdAvail...");
+		RsvdAvailVO rAvailability = RsvdAvailVO.builder()
+											.storeId(1l).nine(10).nineHalf(10).ten(10).tenHalf(10).eleven(10).elevenHalf(10)
+											.twelve(10).twelveHalf(10).thirteen(10).thirteenHalf(10).fourteen(10).fourteenHalf(10)
+											.fifteen(10).fifteenHalf(10).sixteen(10).sixteenHalf(10).seventeen(10).seventeenHalf(10)
+											.eighteen(10).eighteenHalf(10).nineteen(10).nineteenHalf(10)
+											.build();
+		mapper.insertRsvdAvail(rAvailability);
+		
+	}
+	
+	
+	@Test
+	public void findCurrRsvd() {
+		
+		List<RsvdTimeDTO> list = mapper.findCurrRsvd();
+		
+		list.forEach(rsvd -> log.info("======" + rsvd));
+	}
 	@Test
 	public void getDaySeq() {
 		Long daySeq = mapper.getDaySeqRsvd();
@@ -469,6 +536,58 @@ public class RsvdMapperTests {
     	log.info(list);
     	
     }
+    
+    @Test
+    public void findRsvdListWithPagingByUserIdTest1() {
+    	
+    	userId = "kjuioq";
+    	Criteria cri = new Criteria(1,3);
+    	
+    	List<RsvdVO> list = mapper.findRsvdListWithPagingByUserId(userId, cri);
+    	
+    	list.stream().forEach((rsvd) -> {
+    		
+    		log.info("rsvd : " + rsvd);
+    	});
+    	
+    	log.info("list size : "+list.size());
+    	
+    }
+    
+    @Test
+    public void findRsvdListWithPagingAndDtlsByUserIdTest1() {
+    	
+    	userId = "kjuioq";
+    	Criteria cri = new Criteria(1,3);
+    	
+    	List<RsvdVO> list = mapper.findRsvdListWithPagingAndDtlsByUserId(userId, cri);
+    	
+    	list.stream().forEach((rsvd) -> {
+    		
+    		log.info("rsvd : " + rsvd);
+    		log.info("rsvd dtls list : " + rsvd.getRsvdDtlsList());
+    	});
+    	
+    	log.info("list size : "+list.size());
+    	
+    }
 
+    @Test
+    public void getRsvdTotalCountTest1() {
+    	
+    	userId = "kjuioq";
+    	Criteria cri = new Criteria(1,3);
+    	
+    	int last = mapper.getRsvdCount(userId, cri, "L");
+    	int complete = mapper.getRsvdCount(userId, cri, "C");
+    	int panalty = mapper.getRsvdCount(userId, cri, "P");
+    	int total = mapper.getRsvdTotalCount(userId, cri);
+    	
+    	log.info("last........................."+last);
+    	log.info("complete........................."+complete);
+    	log.info("panalty........................."+panalty);
+    	log.info("total........................."+total);
+    	
+    }
 
 }

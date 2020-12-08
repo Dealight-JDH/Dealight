@@ -4,7 +4,6 @@
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--     <%@include file="../includes/menubar.jsp" %> --%>
 
-<!-- 현수현수현수 -->
 <!DOCTYPE html>
 <html>
 <head>

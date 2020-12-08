@@ -75,4 +75,12 @@ public interface StoreService {
 	
 	public StoreLocVO getStoreLoc(Long storeId);
 	
+	public int modifyMenu(MenuVO menu);
+	
+	public boolean deleteMenu(Long menuSeq);
+	
+	public StoreVO findStoreWithLocByStoreId(Long storeId);
+	
+	public StoreVO findStoreWithBStoreAndLocByStoreId(Long storeId);
+	
 }

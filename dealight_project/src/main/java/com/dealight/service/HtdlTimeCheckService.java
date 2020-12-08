@@ -28,75 +28,73 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class HtdlTimeCheckService {
 
-	
 	@Autowired
 	private HtdlMapper htdlMapper;
 	
 	@Autowired
 	private HtdlService service;
+	
 	private List<HtdlVO> lists = null;
 	ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(3);
 	
-	
-	@PostConstruct
-	public void postConstruct() throws ParseException {
-		
-		//서버 구동시 한번만 조회하여 데이터 가져오기
-		getList();
-		log.info(Thread.currentThread().getName());
-		log.info("------postConstruct");
-
-		//스케쥴러 실행
-		exec.scheduleAtFixedRate(new Runnable() {
-			
-			@Override
-			@Scheduled(fixedDelay = 3000)
-			public void run() {
-				// TODO Auto-generated method stub
-				try {
-					log.info("------check======");
-					//서비스 시작
-					service(lists);
-					log.info("------check"+ Thread.currentThread().getName()+"---------");
-				}catch(Exception e){
-					e.printStackTrace();
-					exec.shutdown();
-				}
-			}
-			
-		}, 0, 3, TimeUnit.SECONDS); 
-	}
-	
-	@PreDestroy
-	public void preDestroy() {
-		log.info("============predestroy");
-		try {
-			exec.shutdown();
-			if(!exec.awaitTermination(1, TimeUnit.SECONDS)) {
-				log.info("아직 처리중인 작업 존재");
-				exec.shutdownNow();
-				log.info("작업 강제 종료");
-				
-			}
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			exec.shutdownNow();
-			
-		}
-		log.info("스케줄러 종료");
-	}
-	
+//	@PostConstruct
+//	public void postConstruct() throws ParseException {
+//		
+//		//서버 구동시 한번만 조회하여 데이터 가져오기
+//		getList();
+//		log.info(Thread.currentThread().getName());
+//		log.info("------postConstruct");
+//
+//		//스케쥴러 실행
+//		exec.scheduleAtFixedRate(new Runnable() {
+//			
+//			@Override
+//			@Scheduled(fixedDelay = 3000)
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				try {
+//					log.info("------check======");
+//					//서비스 시작
+//					service(lists);
+//					log.info("------check"+ Thread.currentThread().getName()+"---------");
+//				}catch(Exception e){
+//					e.printStackTrace();
+//					exec.shutdown();
+//				}
+//			}
+//			
+//		}, 0, 3, TimeUnit.SECONDS); 
+//	}
+//	
+//	@PreDestroy
+//	public void preDestroy() {
+//		log.info("============predestroy");
+//		try {
+//			exec.shutdown();
+//			if(!exec.awaitTermination(1, TimeUnit.SECONDS)) {
+//				log.info("아직 처리중인 작업 존재");
+//				exec.shutdownNow();
+//				log.info("작업 강제 종료");
+//				
+//			}
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			exec.shutdownNow();
+//			
+//		}
+//		log.info("스케줄러 종료");
+//	}
 	
 	//핫딜을 등록할떄마다 리스트에 추가
 	public void addHtdl(HtdlVO vo) {
-		lists.add(vo);
+		this.lists.add(vo);
 	}
 
 	@Transactional(readOnly = true)
 	public void getList() {
 		//전체 핫딜 리스트
-		lists = new ArrayList<>(service.findAll());
+		this.lists = new ArrayList<>(service.findAll());
 	}
 	
 	@Transactional
@@ -104,18 +102,19 @@ public class HtdlTimeCheckService {
 		
 		SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd hh:mm");
 			
-//		//전체 핫딜 리스트
-//		List<HtdlVO> lists = htdlMapper.getList();
+		//전체 핫딜 리스트
+		//List<HtdlVO> lists = htdlMapper.getList();
 		
 		//핫딜 시작시간	
 		List<Date> startTmList = lists.stream()
 										.map(vo -> {
 											try {
 												return format.parse(vo.getStartTm());
-											} catch (ParseException e) {
+											} catch (Exception e) {
 												// TODO Auto-generated catch block
-												throw new RuntimeException(e);
+												e.printStackTrace();
 											}
+											return null;
 										})
 										.collect(Collectors.toList());
 	
@@ -168,11 +167,10 @@ public class HtdlTimeCheckService {
 				if(isStusCdCheck(lists.get(i).getStusCd(), "A")) {
 					
 					lists.get(i).setStusCd("A");
-					htdlMapper.update(lists.get(i));				
+					htdlMapper.update(lists.get(i));
 					log.info("변화================="+lists.get(i).getHtdlId()+"번 핫딜 진행 시작!!");
 						
 				}
-				
 				
 				//진행중인 상태에서 현재인원이 마감되었을 경우..
 				if(isFinished(lists.get(i).getCurPnum(), lists.get(i).getLmtPnum())) {

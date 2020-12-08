@@ -1,17 +1,20 @@
 package com.dealight.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+
+import org.springframework.lang.Nullable;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//현수현수현수
+//jongwoo
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,7 +23,7 @@ public class UserVO {
 	
     // 회원아이디 
 	@NotEmpty
-	@Pattern(regexp = "[A-za-z0-9]{5,15}")
+	@Pattern(regexp = "[A-za-z0-9]{5,50}")
     private String userId;
 
     // 회원이름 dd
@@ -52,12 +55,13 @@ public class UserVO {
 	@NotEmpty
     private String sex;
 
-    // 회원프로필사진 
+    // 회원프로필사진
+	@Nullable
     private String photoSrc;
 
-    // 소셜로그인여부 
-    @NotEmpty
-    private String snsLginYn;
+    // 소셜로그인여부
+	@Nullable
+    private String snsLginYn = "N";
 
     // 회원구분코드 
     private String clsCd;
@@ -69,10 +73,24 @@ public class UserVO {
     private int pmCnt;
 
     // 패널티만료일자 
-    private Date pmExpi;
+    private String pmExpi;
+    
+    private Date regDate;
+    
+    private Date updateDate;
+    
+    //sns 고유식별번호
+    private Long snsNum;
+    
+    //유저 권한
+    private List<AuthVO> authList;
+    
     
     // ***************추가 동인
     // Buser와 조인을 하려고 일단 넣어놨는데 필요없으면 삭제
     private BUserVO buser;
 	 
+    
+    private Date regdate;
+ 	private Date updatedate;
 }

@@ -67,65 +67,72 @@
 		display : hidden;
 	}
 	</style>
+	<style>
+	main{
+		margin : 30px auto;
+		width:1050px;
+	}
+</style>
 </head>
 <body>
 <%@include file="../../includes/mainMenu.jsp" %>
-<form action="/dealight/business/register" method="post" id='regForm' name="form">
-===================================================</br></br>
-<label>유저아이디</label> <input name="buserId" value="${userId }" readonly><br>
-<label>매장코드</label> <input name="clsCd" value="B" readonly><br>
-<label>좌석 상태</label> <input name="seatStusCd" value="B" hidden><br>
-<input name="likeTotNum" value='0' hidden>
-<input name="revwTotNum" value='0' hidden>
-<input name="avgRating" value='0' hidden>
-===================================================</br></br>
-<label>스토어 이름</label> <input name="storeNm" required><br>
-<label>지점</label> <input name="brch" required><br>
-<label>전화번호</label> <input name="telno" required><br>
-<label for="openTm">영업 시작 시간</label><select id="openTm" name="openTm"></select>
- -  
-<label for="closeTm">영업 종료 시간</label><select id="closeTm" name="closeTm"></select></br>
-<label for="breakSttm">브레이크 시작 시간</label><select id="breakSttm" name="breakSttm"></select>
- - 
-<label for="breakEntm">브레이크 종료 시간</label><select id="breakEntm" name="breakEntm"></select></br>
-<label>라스트 오더</label> <select id="lastOrdTm" name="lastOrdTm"></select></br>
-<label>가게휴무일</label> <input name="hldy" value="연중무휴"><br>
-<label>가게 소개</label> <textarea rows="3" name="storeIntro" >존맛탱</textarea><br>
-<label>대표메뉴</label> <input name="repMenu" value="맛난거"><br>
-<label>가게 평균 식사 시간</label> <input name="avgMealTm" value="30"><br>
-<label>1인석 테이블 개수</label> <input name="n1SeatNo" value="0" type="number"><br>
-<label>2인석 테이블 개수</label> <input name="n2SeatNo" value="0" type="number"><br>
-<label>4인석 테이블 개수</label> <input name="n4SeatNo" value="0" type="number"><br>
-<label>수용인원</label> <input name="acmPnum" value="0" type="number"><br>
-===================================================</br></br>
-<label>주소</label><input type="text"  style="width:500px;" id="addr"  name="addr" />
-<input type="button" onClick="goPopup();" value="주소찾기"/><br>
-<label>상세주소</label><input type="text"  style="width:500px;" id="addrDetail"  name="addrDetail" /><br>
-<label>시도명</label><input type="text"  style="width:500px;" id="siNm"  name="siNm" /><br>
-<label>시군구명</label><input type="text"  style="width:500px;" id="sggNm"  name="sggNm" /><br>
-<label>읍면동명</label><input type="text"  style="width:500px;" id="emdNm"  name="emdNm" /><br>
-<label>위도</label><input type="text"  style="width:500px;" id="lat"  name="lat" /><br>
-<label>경도</label><input type="text"  style="width:500px;" id="lng"  name="lng" /><br>
-<div id="map"></div></br>
-===================================================<br>
-<div class=""><h2>사진 첨부하기</h2></div>
-<div class="file_body">
-	<div class="form_img">
-		<input type="file" name='uploadFile' multiple>
-	</div> 
-	<div class='uploadResult'>
-		<ul></ul>
-	</div> <!-- uploadResult -->
-</div>
-<div class='bigPictureWrapper'>
-    <div class='bigPicture'>
-    </div>
-</div>
-===================================================</br></br>
-<button type="submit">등록하기</button><br>
-</form>
+<main>
+	<form action="/dealight/business/register" method="post" id='regForm' name="form">
+	===================================================</br></br>
+	<label>유저아이디</label> <input name="buserId" value="${userId }" readonly><br>
+	<label>매장코드</label> <input name="clsCd" value="B" readonly><br>
+	<label>좌석 상태</label> <input name="seatStusCd" value="B" hidden><br>
+	<input name="likeTotNum" value='0' hidden>
+	<input name="revwTotNum" value='0' hidden>
+	<input name="avgRating" value='0' hidden>
+	===================================================</br></br>
+	<label>스토어 이름</label> <input name="storeNm" required><br>
+	<label>지점</label> <input name="brch" required><br>
+	<label>전화번호</label> <input name="telno" required><br>
+	<label for="openTm">영업 시작 시간</label><select id="openTm" name="openTm"></select>
+	 -  
+	<label for="closeTm">영업 종료 시간</label><select id="closeTm" name="closeTm"></select></br>
+	<label for="breakSttm">브레이크 시작 시간</label><select id="breakSttm" name="breakSttm"></select>
+	 - 
+	<label for="breakEntm">브레이크 종료 시간</label><select id="breakEntm" name="breakEntm"></select></br>
+	<label>라스트 오더</label> <select id="lastOrdTm" name="lastOrdTm"></select></br>
+	<label>가게휴무일</label> <input name="hldy" value="연중무휴"><br>
+	<label>가게 소개</label> <textarea rows="3" name="storeIntro" >존맛탱</textarea><br>
+	<label>대표메뉴</label> <input name="repMenu" value="맛난거"><br>
+	<label>가게 평균 식사 시간</label> <input name="avgMealTm" value="30"><br>
+	<label>1인석 테이블 개수</label> <input name="n1SeatNo" value="0" type="number"><br>
+	<label>2인석 테이블 개수</label> <input name="n2SeatNo" value="0" type="number"><br>
+	<label>4인석 테이블 개수</label> <input name="n4SeatNo" value="0" type="number"><br>
+	<label>수용인원</label> <input name="acmPnum" value="0" type="number"><br>
+	===================================================</br></br>
+	<label>주소</label><input type="text"  style="width:500px;" id="addr"  name="addr" />
+	<input type="button" onClick="goPopup();" value="주소찾기"/><br>
+	<label>상세주소</label><input type="text"  style="width:500px;" id="addrDetail"  name="addrDetail" /><br>
+	<label>시도명</label><input type="text"  style="width:500px;" id="siNm"  name="siNm" /><br>
+	<label>시군구명</label><input type="text"  style="width:500px;" id="sggNm"  name="sggNm" /><br>
+	<label>읍면동명</label><input type="text"  style="width:500px;" id="emdNm"  name="emdNm" /><br>
+	<label>위도</label><input type="text"  style="width:500px;" id="lat"  name="lat" /><br>
+	<label>경도</label><input type="text"  style="width:500px;" id="lng"  name="lng" /><br>
+	<div id="map"></div></br>
+	===================================================<br>
+	<div class=""><h2>사진 첨부하기</h2></div>
+	<div class="file_body">
+		<div class="form_img">
+			<input type="file" name='uploadFile' multiple>
+		</div> 
+		<div class='uploadResult'>
+			<ul></ul>
+		</div> <!-- uploadResult -->
+	</div>
+	<div class='bigPictureWrapper'>
+	    <div class='bigPicture'>
+	    </div>
+	</div>
+	===================================================</br></br>
+	<button type="submit">등록하기</button><br>
+	</form>
 
-
+</main>
 <!-- 카카오 지도  -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -225,14 +232,12 @@ $(document).ready(function(e){
 			
 			let jobj = $(obj);
 			
-			console.dir(jobj);
-			
 			str += "<input type='hidden' name='imgs["+i+"].fileName' value='" + jobj.data("filename")+"'>";
 			str += "<input type='hidden' name='imgs["+i+"].uuid' value='" + jobj.data("uuid")+"'>";
 			str += "<input type='hidden' name='imgs["+i+"].uploadPath' value='" + jobj.data("path")+"'>";
 			str += "<input type='hidden' name='imgs["+i+"].image' value='" + jobj.data("type")+"'>";
 			if(i === 0){
-				str += "<input type='hidden' name='repImg' value='" + jobj.data("filename")+"'>";
+			str += "<input type='hidden' name='repImg' value='" + jobj.data("path").replace(new RegExp(/\\/g),"/") +"/"+ "s_"+ jobj.data("uuid") +"_"+ jobj.data("filename")+"'>";
 				
 			}
 			
@@ -328,7 +333,14 @@ $(document).ready(function(e){
 		
 		let inputFile = $("input[name='uploadFile']");
 		
+		console.log("input file[name uploadFile] : "+inputFile);
+		
 		let files = inputFile[0].files;
+		
+		console.log("files : "+files);
+		
+		// add category
+		let category = 'storeImgs';
 		
 		for(let i = 0; i < files.length; i++){
 			
@@ -337,6 +349,8 @@ $(document).ready(function(e){
             }
             /* uploadFile 이라는 변수명에 파일 배열(스프링에서는 MultipartFile[]로 받는다)을 달아서보낸다. */
 			formData.append("uploadFile", files[i]);
+            // add category
+			formData.append("category", category);
 		}
 		
 		$.ajax({

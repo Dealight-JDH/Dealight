@@ -27,7 +27,6 @@ public class StoreVO {
 	    // 매장분류코드 
 	    private String clsCd;
 	    
-	    //요거
 	    private BStoreVO bstore;
 	    private NStoreVO nstore;
 	    

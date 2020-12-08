@@ -5,12 +5,12 @@
     <%@include file="../includes/loginmodalHeader.jsp" %>
     <%@include file="../includes/mainMenu.jsp" %>
     <%@include file="../includes/loginModal.jsp" %>
+<<<<<<< HEAD
+=======
     
-    <!-- 현수현수현수 --> <!-- 수빈수빈수빈 -->
-    
+>>>>>>> eed2643c43b5278bfd77ebe36083c406b61c0b2d
 <body>
-
- <div class="middleDiv">
+<div class="middleDiv">
             <div class="imgContainer">
                 <img src="../../../../../resources/img/main.jpg">
 

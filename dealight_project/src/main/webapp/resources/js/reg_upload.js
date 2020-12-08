@@ -215,4 +215,11 @@ $(document).ready(function(e){
 			$(this).hide();
 		}, 1000);
 	});
+	
+	function getImage(fileName){
+		
+		$(".repImg")
+		.html("<img src='display?fileName=" + encodeURI(fileName) +"'>")
+		
+	}
 }); // ready end

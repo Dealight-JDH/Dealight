@@ -45,6 +45,7 @@ public class HtdlServiceTests {
 	public void testGetListwithPaging() {
 		service.getList("A", new HtdlCriteria(2, 10)).forEach(vo -> log.info(vo));
 	}
+	
 //	@Test
 //	public void testAsync() throws ParseException {
 //		service.asyncMethodTest();
@@ -133,9 +134,17 @@ public class HtdlServiceTests {
 		dtlsList.forEach(System.out::println);
 		service.register(vo, dtlsList);
 	} 
+	
 	@Test
 	public void testService() {
 		//서비스 객체 확인
 		assertNotNull(service);
+		
+		Long storeId = 1L;
+		
+		List<HtdlVO> list = service.readAllStoreHtdlList(storeId);
+		
+		log.info(list);
+		
 	}
 }

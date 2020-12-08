@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		
+<mapper namespace="com.dealight.mapper.SnsMapper">
+
+
+	<resultMap type="com.dealight.domain.UserVO" id="userMap">
+
+	<id property="userId" column="user_id"/>
+	<result property="id" column="id"/>
+	<result property="name" column="name"/>
+	<result property="nickName" column="nickname"/>
+	<result property="age" column="age"/>
+	<result property="gender" column="gender"/>
+	<result property="birthday" column="birthday"/>
+	<result property="profileImg" column="profile_img"/>
+	<result property="phoneNumber" column="phone_number"/>
+
+	<collection property="authList" resultMap="authMap">
+	</collection>
+
+</resultMap>
+
+<resultMap type="com.dealight.domain.AuthVO" id="authMap">
+	<result property="userId" column="user_id"/>
+	<result property="auth" column="auth"/>
+</resultMap>
+
+	<insert id="insert">
+		insert into tbl_sns_user
+		values(#{userId}, #{id}, #{name}, #{nickName}, #{age}, #{gender}, #{birthday}, #{profileImg}, #{phoneNumber})
+	</insert>
+	
+	<select id="findById" resultType="com.dealight.domain.SnsVO">
+		select *
+		from tbl_sns_user
+		where user_id = #{userId}
+	</select>
+
+	<select id="read" resultMap="userMap">
+		select u.user_id, id, name, nickname, age, gender, birthday, profile_img, phone_number, a.auth
+		from tbl_sns_user u, tbl_sns_auth a
+		where u.user_id = a.user_id and u.user_id = #{userId}
+	</select>
+
+</mapper>
+		

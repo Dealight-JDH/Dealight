@@ -14,17 +14,17 @@ public interface MenuMapper {
 	
 	
 	// read
-	public MenuVO findBySeq(long menuSeq);
+	public MenuVO findBySeq(Long menuSeq);
 	
 	// read list
 	public List<MenuVO> findAll();
 	
-	public List<MenuVO> findByStoreId(long storeId);
+	public List<MenuVO> findByStoreId(Long storeId);
 	
 	// update
 	public int update(MenuVO menu);
 	
 	// delete
-	public int delete(long menuSeq);
+	public int delete(Long menuSeq);
 
 }

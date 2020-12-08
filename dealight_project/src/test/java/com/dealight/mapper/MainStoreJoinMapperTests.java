@@ -33,24 +33,24 @@ public class MainStoreJoinMapperTests {
 		
 	}
 	
-	@Test
-	public void testPaging() {
-		
-		Criteria cri = new Criteria();
-		
-		mapper.getListWithPaging(cri).forEach(store -> log.info(store));
-	}
-	
-	@Test
-	public void testSearch() {
-		
-		Criteria cri = new Criteria();
-//		cri.setSortType("R");
-		cri.setSortPriority("H");
-		cri.setAmount(100);
-		cri.setPageNum(1);
-		mapper.getListWithPaging(cri).forEach(store -> log.info(store));
-	}
+//	@Test
+//	public void testPaging() {
+//		
+//		Criteria cri = new Criteria();
+//		
+//		mapper.getListWithPaging(cri).forEach(store -> log.info(store));
+//	}
+//	
+//	@Test
+//	public void testSearch() {
+//		
+//		Criteria cri = new Criteria();
+////		cri.setSortType("R");
+//		cri.setSortPriority("H");
+//		cri.setAmount(100);
+//		cri.setPageNum(1);
+//		mapper.getListWithPaging(cri).forEach(store -> log.info(store));
+//	}
 	
 	
 }

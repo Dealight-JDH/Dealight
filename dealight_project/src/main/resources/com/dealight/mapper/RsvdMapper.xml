@@ -37,6 +37,42 @@
 
 		</resultMap>
 		 
+		 <!-- 예약 가능 mapper -->
+		 <insert id="insertRsvdAvail">
+		 	insert into tbl_rsvd_availability
+		 	values(#{storeId}, #{nine}, #{nineHalf}, #{ten}, #{tenHalf}, #{eleven}, #{elevenHalf}, #{twelve},
+		 	 #{twelveHalf}, #{thirteen}, #{thirteenHalf}, #{fourteen}, #{fourteenHalf}, #{fifteen}, #{fifteenHalf},
+		 	 #{sixteen}, #{sixteenHalf}, #{seventeen}, #{seventeenHalf}, #{eighteen}, #{eighteenHalf}, #{nineteen},
+		 	 #{nineteenHalf}, sysdate +9/24, sysdate +9/24)
+		 </insert>
+		 
+		 <delete id="deleteRsvdAvail">
+		 	truncate table tbl_rsvd_availability
+		 </delete>
+		 
+		 <select id="findRsvdAvailByStoreId" resultType="com.dealight.domain.RsvdAvailVO">
+		 select *
+		 from tbl_rsvd_availability
+		 where store_id = #{storeId}
+		 </select>
+		 
+		 <update id="updateRsvdAvail">
+		 	update tbl_rsvd_availability
+		 	set nine = #{nine}, nine_half =  #{nineHalf}, ten = #{ten}, ten_half = #{tenHalf}, eleven = #{eleven},
+		 	 eleven_half = #{elevenHalf}, twelve = #{twelve}, twelve_half = #{twelveHalf}, thirteen = #{thirteen},
+		 	 thirteen_half = #{thirteenHalf}, fourteen = #{fourteen}, fourteen_half =  #{fourteenHalf},
+		 	 fifteen =  #{fifteen}, fifteen_half = #{fifteenHalf}, sixteen = #{sixteen}, sixteen_half =  #{sixteenHalf},
+		 	 seventeen =  #{seventeen}, seventeen_half = #{seventeenHalf}, eighteen =  #{eighteen},
+		 	 eighteen_half = #{eighteenHalf}, nineteen = #{nineteen}, nineteen_half = #{nineteenHalf}, updatedate = sysdate +9/24
+		 	where store_id = #{storeId}
+		 </update>
+		 
+		 <select id="getRsvdAvailList" resultType="com.dealight.domain.RsvdAvailVO">
+		 select *
+		 from tbl_rsvd_availability
+		 where store_id > 0
+		 </select>
+		 
 		
 		<!-- 예약 상세 mapper -->
 		<delete id="deleteDtls">
@@ -45,7 +81,7 @@
 		
 		<update id = "updateDtls">
 			update tbl_rsvd_dtls
-			set menu_nm = #{menuNm}, menu_tot_qty = #{menuTotQty}, menu_Prc = #{menuPrc}, updatedate =sysdate +9/24
+			set menu_nm = #{menuNm}, menu_tot_qty = #{menuTotQty}, menu_Prc = #{menuPrc}, updatedate = sysdate + 9/24
 			where rsvd_id = #{rsvdId} and rsvd_seq = #{rsvdSeq}
 		</update>
 		
@@ -73,10 +109,23 @@
 			<selectKey keyProperty="rsvdSeq" order="BEFORE" resultType="long">
 				select seq_rsvd_dtls.nextval from dual
 			</selectKey>
-			insert into tbl_rsvd_dtls values(#{rsvdId}, #{rsvdSeq}, #{menuNm}, #{menuTotQty}, #{menuPrc}, sysdate + 9/24, sysdate +9/24)
+			insert into tbl_rsvd_dtls values(#{rsvdId}, #{rsvdSeq}, #{menuNm}, #{menuTotQty}, #{menuPrc}, sysdate + 9/24, sysdate + 9/24)
 		</insert>
 		
 		<!--예약 mapper -->
+		
+		<update id="updateStusCd">
+			update tbl_rsvd 
+			set stus_cd = #{stusCd}
+			where rsvd_id = #{rsvdId}
+		</update>
+		
+		<select id="findCurrRsvd" resultType="com.dealight.domain.RsvdTimeDTO">
+			select rsvd_id, time, stus_cd
+			from tbl_rsvd
+			where rsvd_id > 0 and stus_cd = 'C'
+		</select>
+		
 		<select id="getSeqRsvd" resultType="long">
 			select seq_rsvd.currval from dual
 		</select>
@@ -85,9 +134,21 @@
 			delete from tbl_rsvd where rsvd_id = #{rsvdId}
 		</delete>
 		
+		<update id ="updateTid">
+			update tbl_rsvd
+			set aprv_no = #{aprvNo}
+			where rsvd_id = #{rsvdId}
+		</update>
+		
 		<update id="update">
 			update tbl_rsvd
 			set htdl_id = #{htdlId}, aprv_no = #{aprvNo}, pnum = #{pnum}, time = #{time}, stus_cd = #{stusCd}, updatedate = sysdate+ 9/24, revw_stus = #{revwStus}
+			where rsvd_id = #{rsvdId}
+		</update>
+		
+		<update id="completeStusUpdate">
+			update tbl_rsvd
+			set stus_cd = 'C'
 			where rsvd_id = #{rsvdId}
 		</update>
 		
@@ -106,7 +167,7 @@
 				select seq_rsvd.nextval from dual
 			</selectKey>
 				insert into tbl_rsvd
-			 values(#{rsvdId}, #{storeId}, #{userId}, #{htdlId}, #{aprvNo}, #{pnum}, #{time}, #{stusCd}, #{totAmt}, #{totQty}, sysdate+9/24, sysdate+9/24, 0)
+			 values(#{rsvdId}, #{storeId}, #{userId}, #{htdlId}, #{aprvNo}, #{pnum}, #{time}, #{stusCd}, #{totAmt}, #{totQty}, sysdate + 9/24, sysdate + 9/24, 0)
 		
 		</insert>
 		
@@ -132,6 +193,7 @@
     <result column="tot_amt" property="totAmt"/>
     <result column="tot_qty" property="totQty"/>
     <result column="regdate" property="regdate"/>
+    <result column="revw_stus" property="revwStus"/>
     
 	<collection property="rsvdDtlsList" column="rsvd_id" ofType="com.dealight.domain.RsvdDtlsVO">
 		<result column="rsvd_id" property="rsvdId"/>
@@ -206,7 +268,7 @@
 		*
 		FROM tbl_rsvd
 		where store_id = #{storeId} and
-		TO_CHAR(regdate,'YYYYMMDD') = #{today}
+		TO_CHAR(to_date(time, 'YYYY/MM/DD HH24/mi/ss'),'YYYYMMDD') = #{today}
 		ORDER BY regdate asc
 	</select>
 
@@ -216,7 +278,7 @@
 		*
 		FROM tbl_rsvd
 		where store_id = #{storeId} and
-		TO_CHAR(regdate,'YYYYMMDD') = #{date}
+		TO_CHAR(to_date(time, 'YYYY/MM/DD HH24/mi/ss'),'YYYYMMDD') = #{date}
 		ORDER BY regdate asc
 	</select>
 
@@ -235,7 +297,7 @@
 		(
 		select rsvd_id
 		from tbl_rsvd
-		where TO_CHAR(regdate,'YYYYMMDD') = #{date} and
+		where TO_CHAR(to_date(time, 'YYYY/MM/DD HH24/mi/ss'),'YYYYMMDD') = #{date} and
 		store_id = #{storeId}
 		) r, tbl_rsvd_dtls d
 		where r.rsvd_id = d.rsvd_id
@@ -252,7 +314,7 @@
 		from tbl_rsvd
 		where store_id = #{storeId}
 		and (stus_cd = 'C' OR stus_cd = 'L')
-		and TO_CHAR(regdate,'YYYYMMDD') = #{date}
+		and TO_CHAR(to_date(time, 'YYYY/MM/DD HH24/mi/ss'),'YYYYMMDD')= #{date}
 		) r, tbl_user u
 		WHERE r.user_id = u.user_id
 		ORDER BY regdate desc
@@ -269,8 +331,68 @@
 		select *
 		from tbl_rsvd
 		where store_id = #{storeId}
-			and TO_CHAR(regdate,'YYYYMMDD') BETWEEN TO_CHAR(sysdate - 7,'YYYYMMDD')
+			and TO_CHAR(to_date(time, 'YYYY/MM/DD HH24/mi/ss'),'YYYYMMDD') BETWEEN TO_CHAR(sysdate - 7,'YYYYMMDD')
 			AND TO_CHAR(sysdate,'YYYYMMDD')
+	</select>
+	
+	<select id="findRsvdListWithPagingByUserId" resultType="com.dealight.domain.RsvdVO">
+		<![CDATA[
+		SELECT 
+		    rsvd_id, user_id, aprv_no , htdl_id , pnum, revw_stus, store_id, stus_cd, time, tot_amt, tot_qty, updatedate, regdate
+		FROM 
+		(
+		    SELECT rownum rn, rsvd_id, user_id, aprv_no , htdl_id , pnum, revw_stus, store_id, stus_cd, time, tot_amt, tot_qty, updatedate, regdate
+		    /*+ INDEX_DESC(tbl_rsvd tbl_rsvd_pk)*/
+		    FROM tbl_rsvd
+		    WHERE  user_id = #{userId} 
+		    AND rownum <= #{cri.pageNum} * #{cri.amount}
+		)
+		WHERE rn > (#{cri.pageNum} -1) * #{cri.amount}
+		]]>
+	</select>
+	
+	<select id="findRsvdListWithPagingAndDtlsByUserId" resultMap="RsvdVO">
+		<![CDATA[
+		SELECT 
+		    r.rn, r.rsvd_id, r.user_id, r.aprv_no , r.htdl_id , r.pnum, r.revw_stus, r.store_id, r.stus_cd, r.time, r.tot_amt, r.tot_qty, r.updatedate, r.regdate,
+		    d.rsvd_seq, d.menu_nm, d.menu_prc, d.menu_tot_qty
+		FROM 
+		(
+		    SELECT rownum rn, rsvd_id, user_id, aprv_no , htdl_id , pnum, revw_stus, store_id, stus_cd, time, tot_amt, tot_qty, updatedate, regdate
+		    /*+ INDEX_DESC(tbl_rsvd tbl_rsvd_pk)*/
+		    FROM
+		    (
+		    SELECT rsvd_id, user_id, aprv_no , htdl_id , pnum, revw_stus, store_id, stus_cd, time, tot_amt, tot_qty, updatedate, regdate
+		    FROM tbl_rsvd
+            WHERE user_id = #{userId}
+            ORDER BY time desc
+		    )
+		    WHERE  rownum <= #{cri.pageNum} * #{cri.amount}
+		) r, tbl_rsvd_dtls d
+		WHERE 
+		rn > (#{cri.pageNum} -1) * #{cri.amount} AND 
+		r.rsvd_id = d.rsvd_id
+		ORDER BY time desc
+		]]>
+	</select>
+	
+	<select id='getRsvdTotalCount' resultType="int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM tbl_rsvd
+			WHERE rsvd_id > 0 
+			AND user_id = #{userId}
+		]]>
+	</select>
+	
+		<select id='getRsvdCount' resultType="int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM tbl_rsvd
+			WHERE rsvd_id > 0 
+			AND user_id = #{userId}
+			AND stus_cd = #{stusCd}
+		]]>
 	</select>
 
 </mapper>

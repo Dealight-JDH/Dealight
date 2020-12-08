@@ -28,12 +28,23 @@ import lombok.extern.log4j.Log4j;
  * 
  *****[김동인]
  *
+ * 카카오 메시지 보내기
+ * 
+ * 1. Oauth
+ * 2. token
+ * 3. 내 profile 가져오기
+ * 4. 친구 목록 가져오기
+ * 5. 친구 동의 받기
+ * 6. 메시지 보내기
  * 
  */
 
 @Service
 @Log4j
 public class CallServiceImpl implements CallService {
+	
+	
+	
 	
 	// 사용자 인가를 가져온다.
 	@Override
@@ -109,7 +120,7 @@ public class CallServiceImpl implements CallService {
 	}
 	
 	// '나에게' 메시지를 보낸다.
-public String sendMessage(String access_token, String title, String description, String web_url) {
+	public String sendMessage(String access_token, String title, String description, String web_url) {
 		
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		

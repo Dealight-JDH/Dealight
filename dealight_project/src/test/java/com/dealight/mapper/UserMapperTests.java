@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.UserVO;
 
@@ -37,7 +38,13 @@ public class UserMapperTests {
 	String photoSrc = "/a.jpg";
 	Date pmExpi = new Date();
 	
-	
+	@Test
+	public void testUserWithAuthorityRead() {
+		UserVO vo = mapper.read("admin5");
+		log.info(vo);
+		
+		vo.getAuthList().forEach(auth -> log.info(auth));
+	}
 
 	// mapper �� ���ԵǾ����� DI �׽�Ʈ
 	@Test
@@ -136,6 +143,31 @@ public class UserMapperTests {
 		
 		//assertTrue(result == 1);
 		assertTrue(!bfUserClsCd.equals(afUser.getClsCd()));
+		
+	}
+	
+	@Test
+	public void checkPanaltyDurationTest1() {
+		
+		int upNum = mapper.checkPanaltyDuration();
+		
+		log.info("upNum........................."+upNum);
+		
+	}
+	
+	@Transactional
+	@Test
+	public void withdrawalUserTest() {
+		
+		String userId = "aaaa";
+		
+		int result = mapper.withdrawalUser(userId);
+		
+		assertTrue(result == 1);
+		
+		UserVO user = mapper.read(userId);
+		
+		log.info(user);
 		
 	}
 	

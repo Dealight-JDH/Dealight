@@ -1,9 +1,14 @@
 package com.dealight.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,19 +23,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.AllStoreVO;
+import com.dealight.domain.Criteria;
 import com.dealight.domain.HtdlVO;
 import com.dealight.domain.MenuVO;
 import com.dealight.domain.RevwVO;
-import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreImgVO;
 import com.dealight.domain.StoreTagVO;
-import com.dealight.domain.WaitVO;
 import com.dealight.service.HtdlService;
+import com.dealight.service.RevwService;
 import com.dealight.service.RsvdService;
 import com.dealight.service.StoreService;
 import com.dealight.service.UserService;
@@ -65,6 +73,9 @@ public class ManageController {
 	@Setter(onMethod_ = @Autowired)
 	private UserService userService;
 	
+	@Setter(onMethod_ = @Autowired)
+	private RevwService revwService;
+	
 	// 파일 저장 경로를 지정한다.
 	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05";
 	
@@ -90,7 +101,7 @@ public class ManageController {
 	
 	// 매장 수정 페이지
 	@GetMapping("/modify")
-	public String storeModify(Model model,Long storeId, HttpServletRequest request) {
+	public String storeModify(Model model,Long storeId, HttpServletRequest request,Criteria cri) {
 		
 		HttpSession session = request.getSession();
 		
@@ -98,28 +109,56 @@ public class ManageController {
 		
 		log.info("business store modify get.." + storeId);
 		
-		if(storeId == null) {
+		if(storeId == null)
 			storeId = (Long) request.getAttribute("storeId");
-		}
+		
+		
+		// All Store
+		
+		// 매장
+		// B store
+		// 매장 위치
+		// 매장 평가
+		// 사진리스트
+		
+		// 메뉴
+		// 리뷰리스트
+		// 태그리스트
+	
 		
 		AllStoreVO store = storeService.findAllStoreInfoByStoreId(storeId);
 		
 		log.info("All store......................"+store);
 		
+		if(cri.getPageNum() == 0)
+			cri = new Criteria(1,5);
+		
+		List<RevwVO> revwList = revwService.getRevwListWithPagingByStoreId(storeId, cri);
+		
 		if(store != null) {
 			List<MenuVO> menuList = store.getMenuList();
+			
+			log.info(menuList);
+			
+			menuList.stream().forEach((menu) -> {
+				if(menu.getThumImgUrl() != null)
+					menu.setEncThumImgUrl(URLEncoder.encode(menu.getThumImgUrl()));
+				log.info(menu);
+			});
+			
 			List<StoreImgVO> imgs = store.getImgs();
-			List<RevwVO> revwList = store.getRevwList();
+			
 			List<StoreTagVO> tagList = store.getTagList();
 			model.addAttribute("menuList",menuList);
 			model.addAttribute("imgs",imgs);
-			model.addAttribute("revwList",revwList);
+			
 			model.addAttribute("tagList",tagList);
 		}
 		
 		
 		model.addAttribute("store", store);
 		model.addAttribute("userId",userId);
+		model.addAttribute("revwList",revwList);
 		
 		return "/dealight/business/manage/modify/modify";
 	}
@@ -140,6 +179,35 @@ public class ManageController {
 		}
 		 
 		return "redirect:/dealight/business/manage/modify?storeId="+store.getStoreId();
+	}
+	
+	@PutMapping(value="/review/reply",
+			consumes = "application/json",
+			produces = { MediaType.TEXT_PLAIN_VALUE})
+	@ResponseBody
+	public ResponseEntity<String> regReply(@RequestBody HashMap<String, Object> map){
+		
+		String replyCnts = (String) map.get("replyCnts");
+		Long revwId = Long.parseLong((String) map.get("revwId")); 
+		
+		log.info("put revw.................");
+		
+		log.info("replyCnts..............." + replyCnts);
+		log.info("revwId..............." + revwId);
+		
+		return revwService.regReply(revwId, replyCnts)
+				? new ResponseEntity<>("success", HttpStatus.OK)
+						: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	
+	@GetMapping(value="/review/{revwId}")
+	@ResponseBody
+	public ResponseEntity<RevwVO> getRevw(Long revwId){
+		
+		log.info("get revw.................");
+		
+		return new ResponseEntity<>(revwService.findById(revwId),HttpStatus.OK);
 	}
 	
 	// 매장의 이미지를 가져온다.
@@ -180,9 +248,7 @@ public class ManageController {
 		}); // end for each
 	}
 	
-
-
-	// 메뉴 수정 페이지
+	// 메뉴 수정 페이지//
 	@GetMapping("/menu")
 	public String menuModify(Model model, Long storeId) {
 		
@@ -190,15 +256,48 @@ public class ManageController {
 		
 		List<MenuVO> menus = storeService.findMenuByStoreId(storeId);
 		
+		log.info("menus................................."+menus);
+		
+		menus.forEach((menu) -> {
+			if(menu.getThumImgUrl() != null)
+				menu.setEncThumImgUrl(URLEncoder.encode(menu.getThumImgUrl()));
+		});
+		
 		model.addAttribute("menus",menus);
 		model.addAttribute("storeId",storeId);
 		
 		return "/dealight/business/manage/modify/menu";
 	}
 	
+	private String getFolder() {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Date date = new Date();
+		
+		String str = sdf.format(date);
+		
+		return str.replace("-",File.separator);
+	}
+	
+	private boolean checkImageType(File file) {
+		
+		try {
+			
+			String contentType = Files.probeContentType(file.toPath());
+			
+			return contentType.startsWith("image");
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	// 메뉴 등록
 	@PostMapping("/menu/register")
-	public String menuModify(Model model, MenuVO menu) {
+	public String menuRegister(Model model, MenuVO menu) {
 		
 		log.info("business menu register..");
 		
@@ -206,12 +305,45 @@ public class ManageController {
 		
 		if(menu.getRecoMenu() == null)
 			menu.setRecoMenu("N");
-
+			
 		if(menu.getRecoMenu().equalsIgnoreCase("on"))
 			menu.setRecoMenu("Y");
 		
 		
 		storeService.registerMenu(menu);
+		
+		return "redirect:/dealight/business/manage/menu?storeId="+menu.getStoreId();
+	}
+	
+	// 메뉴 수정
+	@PostMapping("/menu/modify")
+	public String menuModify(Model model, MenuVO menu) {
+		
+		log.info("business menu modify..");
+		
+		log.info("menu......" + menu);
+		
+		if(menu.getRecoMenu() == null)
+			menu.setRecoMenu("N");
+			
+		if(menu.getRecoMenu().equalsIgnoreCase("on"))
+			menu.setRecoMenu("Y");
+		
+		storeService.modifyMenu(menu);
+		
+		return "redirect:/dealight/business/manage/menu?storeId="+menu.getStoreId();
+	}
+	
+	// 메뉴 수정
+	@PostMapping("/menu/delete")
+	public String menuDelete(Model model, MenuVO menu) {
+		
+		log.info("business menu register..");
+		
+		if(storeService.deleteMenu(menu.getMenuSeq())) {
+			log.info(menu.getMenuSeq() + "의 메뉴 제거가 완료되었습니다...............");
+		};
+		
 		
 		return "redirect:/dealight/business/manage/menu?storeId="+menu.getStoreId();
 	}

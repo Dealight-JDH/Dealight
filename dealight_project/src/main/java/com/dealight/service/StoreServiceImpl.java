@@ -45,18 +45,14 @@ public class StoreServiceImpl implements StoreService {
 	private BStoreMapper bMapper;
 	private StoreLocMapper lMapper;
 	private StoreEvalMapper eMapper;
-	private StoreMapper storeMapper;
 	private BStoreMapper bStoreMapper;
-	private NStoreMapper nStoreMapper;
 	private AllStoreMapper allStoreMapper;
 	private StoreImgMapper storeImgMapper;
 	private StoreImgMapper imgMapper;
 	private RevwMapper revwMapper;
 	private MenuMapper menuMapper;
-	private StoreLocMapper locMapper;
 	private StoreEvalMapper evalMapper;
 	private StoreOptionMapper optMapper;
-	private StoreTagMapper tagMapper;
 	
 	private StoreVO setId(StoreVO store) {
 		
@@ -104,6 +100,7 @@ public class StoreServiceImpl implements StoreService {
 		
 	}
 
+	
 	@Override
 	public StoreVO getAllInfo(Long storeId) {
 		
@@ -172,7 +169,7 @@ public class StoreServiceImpl implements StoreService {
 		
 		log.info("store service getCurSeatStus....");
 		
-		StoreVO store = storeMapper.read(storeId);
+		StoreVO store = sMapper.read(storeId);
 
 		if(!store.getClsCd().equals("B"))
 			return "현재 착석 상태가 B가 아닙니다.";
@@ -187,7 +184,7 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	public StoreVO getStore(long storeId) {
 		
-		return storeMapper.read(storeId);
+		return sMapper.read(storeId);
 	}
 
 	@Override
@@ -200,14 +197,14 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	public StoreVO findByStoreIdWithBStore(long storeId) {
 		
-		return storeMapper.findByIdJoinBStore(storeId);
+		return sMapper.findByIdJoinBStore(storeId);
 	}
 
 	@Transactional
 	@Override
 	public void registerStoreAndBStore(StoreVO store) {
 		
-		storeMapper.insertSelectKey(store);
+		sMapper.insertSelectKey(store);
 		
 		log.info(store);
 		
@@ -250,7 +247,7 @@ public class StoreServiceImpl implements StoreService {
 		
 		log.info(loc);
 		
-		locMapper.insert(loc);
+		lMapper.insert(loc);
 
 		
 		StoreOptionVO opt = new StoreOptionVO().builder()
@@ -269,9 +266,10 @@ public class StoreServiceImpl implements StoreService {
 
 	
 	@Override
+	@Transactional
 	public boolean modifyStore(StoreVO store) {
 		
-		int result = storeMapper.update(store);
+		int result = sMapper.update(store);
 		BStoreVO bstore = store.getBstore(); 
 		int result2 = bStoreMapper.update(bstore);
 		
@@ -296,7 +294,7 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	public List<StoreVO> findByUserId(String userId) {
 		
-		return storeMapper.findByUserId(userId);
+		return sMapper.findByUserId(userId);
 	}
 
 	@Override
@@ -379,9 +377,9 @@ public class StoreServiceImpl implements StoreService {
 		List<MenuVO> menuList = store.getMenuList();
 		List<StoreImgVO> imgs = store.getImgs();
 
-		int rslt1 = storeMapper.update(store1);
+		int rslt1 = sMapper.update(store1);
 		int rslt2 = bStoreMapper.update(bstore);
-		int rslt3 = locMapper.update(loca);
+		int rslt3 = lMapper.update(loca);
 		
 		if(revwList != null) {
 		
@@ -432,7 +430,30 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	public StoreLocVO getStoreLoc(Long storeId) {
 		// TODO Auto-generated method stub
-		return null;
+		return lMapper.findByStoreId(storeId);
+	}
+
+	@Override
+	public int modifyMenu(MenuVO menu) {
+		
+		return menuMapper.update(menu);
+	}
+
+	@Override
+	public boolean deleteMenu(Long menuSeq) {
+		
+		return menuMapper.delete(menuSeq) == 1;
+	}
+
+	@Override
+	public StoreVO findStoreWithLocByStoreId(Long storeId) {
+		return sMapper.findStoreWithLocByStoreId(storeId);
+	}
+
+	@Override
+	public StoreVO findStoreWithBStoreAndLocByStoreId(Long storeId) {
+		
+		return sMapper.findStoreWithBstoreAndLocByStoreId(storeId);
 	}
 
 

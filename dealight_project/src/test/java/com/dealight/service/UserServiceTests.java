@@ -3,6 +3,9 @@ package com.dealight.service;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.dealight.domain.AuthVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.UserVO;
 
@@ -45,13 +49,13 @@ public class UserServiceTests {
 	    user.setBrdt("20201118");
 		user.setSex("W");
 		user.setSnsLginYn("N");
-		
-		service.register(user);
+		AuthVO auth = AuthVO.builder().userId(user.getUserId()).auth("ROLE_USER").build();
+		service.register(user, auth);
 		
 		log.info("생성된 회원 정보: "+user);
 }
 	
-//	@Test
+	@Test
 	public void testGetList() {
 		service.getList().forEach(user -> log.info(user));
 	}
@@ -151,6 +155,43 @@ public class UserServiceTests {
 			assertTrue(rsvd.getStoreId() == storeId);
 			assertTrue(rsvd.getUserId().equals(userId));
 		});
+	}
+	
+	@Test
+	public void checkCurPanaltyExpiTest1() {
+		
+		Calendar cal = Calendar.getInstance();
+		cal.set(2020, Calendar.NOVEMBER, 21);
+		
+		log.info(cal);
+		
+		Date date = new Date(cal.getTimeInMillis());
+		
+		log.info(date);
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		
+		log.info("result.............."+userService.checkCurPanaltyExpi(formatter.format(date) + " :::"));
+		
+	}
+	
+	@Test
+	public void addPanaltyCntTest() {
+		
+		UserVO user = userService.get("kjuioq");
+		
+		log.info(user);
+		
+		log.info("cnt...................."+user.getPmCnt());
+		
+		userService.addPanaltyCnt("kjuioq");
+		
+		user = userService.get("kjuioq");
+		
+		log.info(user);
+		
+		log.info("cnt...................."+user.getPmCnt());
+		
 	}
 
 	

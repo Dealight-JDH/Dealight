@@ -1,0 +1,130 @@
+		#likeWrapper {
+			margin-left: 30px;
+		}
+		#rsvdWrapper {
+			margin-left: 30px;
+		}
+		#waitWrapper {
+			margin-left: 30px;
+		}
+		.modify-content{
+			border: 1px solid;
+			width: 600px;
+			height: 500px;
+			margin: 20px;
+			padding: 20px;
+		}
+		button {
+		
+			margin : 5px;
+		}
+		.pull-right {
+			float : left;
+		}
+		
+		.mypage_wrapper {
+            padding-top: 60px;
+            width: 1050px;
+            margin: 0 auto;
+        }
+        .mypage_menu_nav{
+            border: 1px solid black;
+            float: left;
+            width: 200px;
+        }
+        .mypage_content {
+            padding-left: 10px;
+            height: auto;
+            border: 1px solid black;
+            float: right;
+            width: 820px;
+        }
+        .content_head {
+            padding : 5px 0 34px;
+        }
+        .content_head > h2 {
+            padding-top: 10px;
+            height: 36px;
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 36px;
+            color: #333;
+            letter-spacing: -.5px;
+        }
+        .content_main {
+            padding-top: 20px;
+            border-top: 2px solid #333;
+        }
+        .tit_nav {
+            padding-top: 20px;
+            margin-bottom: 50px;
+        }
+        .content_head span {
+        	padding-left : 5px;
+        	font-size : 16px;
+        }
+        	/* The Modal (background) */
+        .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 60%; /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button */
+        .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        }
+        
+        .btn_remove{
+			color: #aaa;
+	        font-size: 28px;
+	        font-weight: bold;
+        }
+        
+        .btn_remove:hover,
+        .btn_remove:focus {
+	        color: black;
+	        text-decoration: none;
+	        cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+	        color: black;
+	        text-decoration: none;
+	        cursor: pointer;
+        }
+        
+        /* The Delete Button*/
+        .btn_delete {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        }
+
+        .btn_delete:hover,
+        .btn_delete:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+        }

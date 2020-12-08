@@ -5,12 +5,14 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.Criteria;
 import com.dealight.domain.RevwImgVO;
 import com.dealight.domain.RevwPageDTO;
 import com.dealight.domain.RevwVO;
 import com.dealight.domain.RsvdVO;
+import com.dealight.domain.RsvdWithWaitDTO;
 import com.dealight.domain.WaitVO;
 import com.dealight.mapper.RevwMapper;
 
@@ -23,134 +25,165 @@ import lombok.extern.log4j.Log4j;
 @AllArgsConstructor
 public class RevwServiceImpl implements RevwService {
 
-	// === 수빈 ===
-	
 	@Setter(onMethod_ = @Autowired)
-	private RevwMapper mapper;
+	private RevwMapper revwMapper;
+
+	@Override
+	public List<RevwVO> getRevwListWithPagingByStoreId(Long storeId, Criteria cri) {
+
+		return revwMapper.getRevwListWithPagingByStoreId(storeId, cri);
+	}
+
+	@Override
+	public List<RevwVO> getRevwListWithPagingByUserId(String userId, Criteria cri) {
+
+		return revwMapper.getRevwListWithPagingByUserId(userId, cri);
+	}
+
+	@Override
+	public int getCountByStoreId(Long storeId) {
+
+		return revwMapper.getCountByStoreId(storeId);
+	}
+
+	@Override
+	@Transactional
+	public void regRevw(RevwVO revw) {
+		
+		
+		revwMapper.insertSelectKey(revw);
+
+		List<RevwImgVO> imgs = revw.getImgs();
+		if(imgs != null) {
+			imgs.stream().forEach(img -> {
+				img.setRevwId(revw.getRevwId());
+			});
+			revwMapper.insertAllImgs(imgs);
+		}
+		
+		
+		Long rsvdId = revw.getRsvdId();
+		Long waitId = revw.getWaitId();
+		if(rsvdId != null && rsvdId > 0)
+			revwMapper.addCntRsvdRevwStus(rsvdId);
+		else if(waitId != null && waitId > 0)
+			revwMapper.addCntWaitRevwStus(waitId);
+		
+	}
+
+	@Override
+	public RevwVO findById(Long revwId) {
+
+		return revwMapper.findById(revwId);
+	}
+
+	@Override
+	public RevwVO findRevwWtihImgsById(Long revwId) {
+
+		return revwMapper.findRevwWtihImgsById(revwId);
+	}
 
 	@Override
 	public List<RevwVO> getWrittenList(String userId) {
-		log.info("GET WRITTEN LIST");
-		return mapper.getWrittenList(userId);
+
+		return revwMapper.getWrittenList(userId);
 	}
-	
-//	@Override
-//	public List<RevwImgVO> getWrittenListImg(String userId) {
-//		log.info("get written list img...");
-//		return mapper.getWrittenListImg(userId);
-//	}
 
 	@Override
 	public int countRevw(String userId) {
-		log.info("COUNT REVW");
-		return mapper.countRevw(userId);
+		
+		return revwMapper.countRevw(userId);
 	}
 
 	@Override
-	public int countStore(String userId) {
-		log.info("COUNT STORE");
-		return mapper.countStore(userId);
+	public int countTotal(String userId) {
+
+		return countWait(userId) + countRsvd(userId);
+	}
+	
+
+	@Override
+	public int countRsvd(String userId) {
+		
+		return revwMapper.countRsvd(userId);
 	}
 
 	@Override
-	public RevwVO getRevw(Long revwId) {
-		log.info("GET REVW");
-		log.info("REVWID: " + revwId + "@@");
-		return mapper.readRevw(revwId);
+	public int countWait(String userId) {
+
+		return revwMapper.countWait(userId);
 	}
 
 	@Override
 	public List<RsvdVO> getWritableListByRsvd(String userId) {
-		log.info("GET WRITABLE LIST BY RSVD");
-		return mapper.getWritableListByRsvd(userId);
+
+		return revwMapper.getWritableListByRsvd(userId);
 	}
 
 	@Override
 	public List<WaitVO> getWritableListByWait(String userId) {
-		log.info("GET WRITABLE LIST BY WAIT");
-		return mapper.getWritableListByWait(userId);
+
+		return revwMapper.getWritableListByWait(userId);
 	}
 
 	@Override
-	public void registerRevw(RevwVO revw) {
-		log.info("REGISTER REVW");
-		log.info("REVW: " + revw);
-		mapper.insertRevw(revw);
+	public boolean regReply(Long revwId,String replyCnts) {
+		
+		return revwMapper.regReply(revwId,replyCnts) == 1;
 	}
 
 	@Override
-	public void registerRevwImg(RevwImgVO img) {
-		log.info("REGISTER REVW IMG");
-		log.info("IMG: " + img);
-		mapper.insertRevwImg(img);
+	public boolean deleteRevw(Long revwId) {
+		
+		return revwMapper.deleteRevw(revwId) == 1;
 	}
 
 	@Override
-	public RsvdVO getWritableItemByRsvd(@Param("userId") String userId, @Param("rsvdId") Long rsvdId) {
-		log.info("GET WRITABLE ITEM BY RSVD");
-		log.info("USERID: " + userId + "@@");
-		log.info("RSVDID: " + rsvdId + "@@");
-		return mapper.getWritableItemByRsvd(userId, rsvdId);
+	public List<RsvdWithWaitDTO> getWritableListWithPagingByUserId(String userId, Criteria cri) {
+
+		return revwMapper.getWritableListWithPagingByUserId(userId, cri);
 	}
 
 	@Override
-	public WaitVO getWritableItemByWait(@Param("userId") String userId, @Param("waitId") Long waitId) {
-		log.info("GET WRITABLE ITEM BY WAIT");
-		log.info("USERID: " + userId);
-		log.info("WAITID: " + waitId);
-		return mapper.getWritableItemByWait(userId, waitId);
-	}
-	
-	@Override
-	public boolean updateRsvdRevwStus(@Param("userId") String userId, @Param("rsvdId") Long rsvdId) {
-		log.info("UPDATE RSVD REVW STUS");
-		log.info("USERID: " + userId + "@@");
-		log.info("RSVDID: " + rsvdId + "@@");
-		return mapper.updateRsvdRevwStus(userId, rsvdId) == 1;
-	}
-	
-	@Override
-	public boolean updateWaitRevwStus(@Param("userId") String userId, @Param("waitId") Long waitId) {
-		log.info("UPDATE WAIT REVW STUS");
-		log.info("USERID: " + userId + "@@");
-		log.info("WAITID: " + waitId + "@@");
-		return mapper.updateWaitRevwStus(userId, waitId) == 1;
+	public int countWritableTotal(String userId) {
+
+		return revwMapper.countWritableWait(userId) + revwMapper.countWritableRsvd(userId);
 	}
 
 	@Override
-	public boolean updateRevwReply(RevwVO revw) {
-		log.info("UPDATE REVW REPLY");
-		log.info(revw);
-		return mapper.updateRevwReply(revw) == 1;
+	public int countWritableWait(String userId) {
+
+		return revwMapper.countWritableWait(userId);
 	}
 
 	@Override
-	public boolean removeRevw(Long revwId) {
-		log.info("REMOVE REVW");
-		log.info("REVWID: " + revwId);
-		return mapper.deleteRevw(revwId) == 1;
-	}
-	
-	// === === ===
-	
-//	@Override
-//	public List<RevwVO> revws(Long storeId) {
-//		log.info("revws............"+storeId);
-//		return mapper.getRevwList(storeId);
-//	}
+	public int countWritableRsvd(String userId) {
 
-	@Override
-	public List<RevwVO> revws(Long storeId, Criteria cri) {
-		log.info("revws with paging......" + storeId);
-
-		return mapper.getRevwListWithPaging(storeId, cri);
+		return revwMapper.countWritableRsvd(userId);
 	}
 
 	@Override
-	public RevwPageDTO getListPage(Criteria cri, Long storeId) {
-		return  new RevwPageDTO(
-				mapper.getCountByStoreId(storeId),
-				mapper.getRevwListWithPaging(storeId, cri));
+	public List<RevwVO> getWrittenListWtihPagingByUserId(String userId, Criteria cri) {
+
+		return revwMapper.getWrittenListWtihPagingByUserId(userId, cri);
+	}
+
+	@Override
+	public RevwVO findRevwWtihImgsByRsvdId(Long rsvdId) {
+		
+		return revwMapper.findRevwWtihImgsByRsvdId(rsvdId);
+	}
+
+	@Override
+	public RevwVO findRevwWtihImgsByWaitId(Long waitId) {
+
+		return revwMapper.findRevwWtihImgsByWaitId(waitId);
+	}
+
+	@Override
+	public List<RevwImgVO> findRevwImgsByRevwId(Long revwId) {
+
+		return revwMapper.findRevwImgsByRevwId(revwId);
 	}
 
 }

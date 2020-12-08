@@ -1,10 +1,14 @@
 package com.dealight.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,10 +23,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlMenuDTO;
-import com.dealight.domain.HtdlPageDTO;
 import com.dealight.domain.HtdlRequestDTO;
 import com.dealight.domain.HtdlVO;
 import com.dealight.service.HtdlService;
+import com.dealight.service.HtdlTimeCheckService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -36,6 +40,8 @@ import lombok.extern.log4j.Log4j;
 public class HtdlController {
 
 	private final HtdlService service;
+	private final HtdlTimeCheckService htdlChckService;
+	
 	
 	//사업자 회원 매장 핫딜 제안
 	@PostMapping("/register")
@@ -49,14 +55,17 @@ public class HtdlController {
 	            log.info("=====error: " + error.getDefaultMessage());
 	        
 	        rttr.addFlashAttribute("msg", "필수 항목을 입력해 주세요");
+	        
 	        return "redirect:/dealight/hotdeal/register?storeId="+storeId;
 		}
 		
 		//핫딜 상세vo list
 		List<HtdlDtlsVO> dtlsList = new ArrayList<>();
-
+		
+	
 		HtdlVO vo = requestDto.toEntity();
 		vo.setStoreId(storeId);
+		log.info("=====================HtdlVO: " + vo);
 		
 		//String[] menu = requestDto.getMenu();
 		List<HtdlMenuDTO> menuList = requestDto.getMenu();
@@ -75,7 +84,7 @@ public class HtdlController {
 			
 			if(menuDto.getName() != null && menuDto.getPrice() != null) {				
 				HtdlDtlsVO dtlsVO = HtdlDtlsVO.builder()
-						.menuName(menuDto.getName())
+						.menuName(menuDto.getName().trim())
 						.menuPrice(menuDto.getPrice()).build();
 				
 				log.info("===================dtlsVO: " + dtlsVO);
@@ -84,6 +93,7 @@ public class HtdlController {
 		}
 		
 		service.register(vo, dtlsList);
+		htdlChckService.addHtdl(vo);
 		
 		//rttr.addFlashAttribute("result", vo.getHtdlId());
 		
@@ -111,8 +121,8 @@ public class HtdlController {
 
 	//핫딜 메인 페이지
 	@GetMapping("/main")
-	public void getList(HtdlCriteria hCri,Model model) {
-		
+	public void getList(Principal principal, HtdlCriteria hCri, Model model) {
+	
 		log.info("hotdeal getList...");
 		List<HtdlVO> lists = service.getList();
 		

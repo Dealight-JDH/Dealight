@@ -13,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.dealight.domain.BUserVO;
+import com.dealight.domain.Criteria;
 
 import lombok.extern.log4j.Log4j;
 
@@ -27,6 +28,9 @@ public class BUserMapperTests {
     private String brPhotoSrc = "/a.jpg";
     private String brJdgStusCd;
     private long storeId = 3;
+    private String storeNm = "storeNm";
+    private String telno = "010-2112-1232";
+    private String storeTelno = "02-123-1234";
     
     @Autowired
     private BUserMapper mapper;
@@ -34,7 +38,7 @@ public class BUserMapperTests {
     @Test
     public void insertTest1() {
     	
-    	BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc)
+		BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc,storeNm,telno,storeTelno)
 				.setStoreId(storeId)
 				.build();
     	
@@ -53,7 +57,7 @@ public class BUserMapperTests {
     @Test
     public void insertSelectTest1() {
     	
-    	BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc)
+		BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc,storeNm,telno,storeTelno)
 				.setStoreId(storeId)
 				.build();
     	
@@ -95,7 +99,7 @@ public class BUserMapperTests {
     @Test
     public void deleteTest() {
     	
-    	BUserVO buser = new BUserVO.Builder(2,userId,brno,brPhotoSrc)
+		BUserVO buser = new BUserVO.Builder(brSeq,userId,brno,brPhotoSrc,storeNm,telno,storeTelno)
 				.setStoreId(storeId)
 				.build();
     	
@@ -114,4 +118,18 @@ public class BUserMapperTests {
     	
     }
 
+    @Test
+    public void testPaging() {
+    	
+    	Criteria cri = new Criteria();
+    	cri.setAmount(5);
+    	cri.setPageNum(1);
+    	cri.setKeyword("aa");
+    	cri.setType("I");
+    	cri.setSortType("D");
+    	
+    	List<BUserVO> list = mapper.getListWithPaging(cri);
+    	list.forEach(buser -> log.info(buser));
+    	
+    }
 }
