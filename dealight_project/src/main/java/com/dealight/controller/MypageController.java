@@ -75,7 +75,7 @@ public class MypageController {
 	 */
 
 	//마이페이지 예약내역
-	@GetMapping("/reservation")
+	@GetMapping({"/reservation","/" })
 	public String reservation(Model model, HttpSession session, Criteria cri) {
 
 		// 임시로 'kjuioq'의 아이디를 로그인한다.

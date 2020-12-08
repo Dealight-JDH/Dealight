@@ -74,7 +74,7 @@ public class ManageSocketHandler extends TextWebSocketHandler {
 		log.info("senderId : " + senderId);
 		
 		// JSON으로 보내면 가장 좋지만 일단 String으로 구현해보자.
-		// protocol : cmd,댓글작성자,게시글작성,bno (ex : wait,sendUser,storeUser,waitId)
+		// protocol : cmd,요청자,매장아이디,웨이팅아이디/예약아이디 (ex : wait,sendUser,storeUser,waitId/rsvdId/htdlId)
 		// cmd는 reply 말고도 다른 기능을 구현할 때  달라질 수 있다.
 		String jsonStr = message.getPayload();
 		

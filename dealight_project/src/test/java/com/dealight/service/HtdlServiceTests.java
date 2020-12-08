@@ -133,9 +133,17 @@ public class HtdlServiceTests {
 		dtlsList.forEach(System.out::println);
 		service.register(vo, dtlsList);
 	} 
+	
 	@Test
 	public void testService() {
 		//서비스 객체 확인
 		assertNotNull(service);
+		
+		Long storeId = 1L;
+		
+		List<HtdlVO> list = service.readAllStoreHtdlList(storeId);
+		
+		log.info(list);
+		
 	}
 }

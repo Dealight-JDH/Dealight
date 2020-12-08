@@ -182,7 +182,6 @@ public class StoreController {
 			}
     	}
     	
-    	
     	return "redirect:/dealight/business/test";
 	}
 
