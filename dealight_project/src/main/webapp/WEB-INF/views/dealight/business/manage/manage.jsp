@@ -840,128 +840,178 @@ let curHour = curToday.getHours(),
     		let amountArr = [0,0,0,0,0,0,0];
     		let waitPnumArr = [0,0,0,0,0,0,0];
         	
-        	boardService.getRsvdRslt({storeId:storeId}, function(dto){
-        		let strRsvdRslt = "";
-        		if(!dto)
-        			return;
-        		
-        		strRsvdRslt += "<li>오늘 총 예약 수 : " + dto.totalTodayRsvd  +"</li>";
-        		strRsvdRslt += "<li>오늘 총 예약 인원 : " + dto.totalTodayRsvdPnum  +"</li>";
-        		strRsvdRslt += "<li>[오늘의 인기 메뉴]</li>";
-        		Object.entries(dto.todayFavMenuMap).forEach(([key,value]) => {
-	        		strRsvdRslt += "<li>" + key +' : '+ value  +"</li>";
-        		})
-        		
-        		rsvdRsltUL.html(strRsvdRslt);
-        		
-        	});
-        	
-        	boardService.getLastWeekRsvd({storeId:storeId}, function(list){
-        		
-        		let strLastWeekRsvd = "";
-        		if(!list)
-        			return;
-				
-        		list.forEach(rsvd => {
-        			console.log('rsvd str reg date : ' + rsvd.strRegDate);
-        			pnumArr[dateArr.indexOf(rsvd.strRegDate)] += rsvd.pnum;
-        			amountArr[dateArr.indexOf(rsvd.strRegDate)] += rsvd.totAmt;
-        			
-        			//pnumArr[dateArr.indexOf(rsvd.strInDate)].push(rsvd)
-        			
-        			strLastWeekRsvd += "<li hidden class='btnStoreId'>"+rsvd.storeId+"</li>";
-        			strLastWeekRsvd += "<li hidden class='btnUserId'>"+rsvd.userId+"</li>";
-        			strLastWeekRsvd += "<li>매장번호 : "+ rsvd.storeId + "</li>";
-        			strLastWeekRsvd += "<li>회원 아이디 : "+ rsvd.userId + "</li>";
-        			strLastWeekRsvd += "<li>핫딜 번호 :"+ rsvd.htdlId + "</li>";
-        			strLastWeekRsvd += "<li>승인 번호 : "+ rsvd.aprvNo + "</li>";
-        			strLastWeekRsvd += "<li>예약 인원 : "+ rsvd.pnum + "</li>";
-        			strLastWeekRsvd += "<li>예약 시간 : "+ rsvd.time + "</li>";
-        			strLastWeekRsvd += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
-        			strLastWeekRsvd += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
-        			strLastWeekRsvd += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-        			strLastWeekRsvd += "<li>예약 등록 날짜 : "+ rsvd.strRegDate + "</li>";
-        			strLastWeekRsvd += "===========================================";
-        		});
-	        	lastWeekRsvdUL.html(strLastWeekRsvd);
-	        	
-	            // test
-	           	console.log('dateArr : '+dateArr);
-	           	console.log('pnumArr : '+pnumArr);
-	           	console.log('amountArr : '+amountArr);
-	           	console.log('waitPnumArr : '+waitPnumArr);
-	           	var chart = document.getElementById('rsvd_chart');
-	           	var context = chart.getContext('2d'),
-	            rsvdChart = new Chart(context, {
-	            	type : 'line',
-	            	data : {
-	            		labels : [dateArr[6], dateArr[5], dateArr[4], dateArr[3], dateArr[2], dateArr[1], dateArr[0]],
-	            		datasets : [{
-	            			label : '예약 인원',
-	            			lineTension : 0,
-	            			data : [pnumArr[6], pnumArr[5], pnumArr[4], pnumArr[3], pnumArr[2], pnumArr[1], pnumArr[0]],
-	            			backgroundColor : "rgba(153,255,51,0.4)"
-	            		},  {
-	            			label : "웨이팅 인원",
-	            			data : [waitPnumArr[6],waitPnumArr[5],waitPnumArr[4],waitPnumArr[3],waitPnumArr[2],waitPnumArr[1],waitPnumArr[0]],
-	            			backgroundColor: "rgba(238, 48, 105, 0.835)"
-	            		}
-	            		/*,{
-	               			label : "예약 금액",
-	               			data : [amountArr[6],amountArr[5],amountArr[4],amountArr[3],amountArr[2],amountArr[1],amountArr[0]],
-	               			backgroundColor: "rgba(255,153,0,0.4)"
-	               		}*/]
-	               	}
-	
-	        	}); // end chart js
-        	});
-        		
-	        	
-        		boardService.getLastWeekWait({storeId:storeId}, function(waitList) {
-        		
-	        		let strLastWeekWait = "";
-	        		if(!waitList)
-	        			return;
-	        		
-	        		waitList.forEach( wait => {
-	        			console.log('wait reg tm : '+wait.strWaitRegTm);
-	        			console.log('wait pnum : '+wait.waitPnum);
-	        			waitPnumArr[dateArr.indexOf(wait.strWaitRegTm)] += wait.waitPnum;
-	        			
-	        		});
-	        		
-		            // test
-		           	console.log('dateArr : '+dateArr);
-		           	console.log('pnumArr : '+pnumArr);
-		           	console.log('amountArr : '+amountArr);
-		           	console.log('waitPnumArr : '+waitPnumArr);
-		           	var chart = document.getElementById('rsvd_chart');
-		           	var context = chart.getContext('2d'),
-		            rsvdChart = new Chart(context, {
-		            	type : 'line',
-		            	data : {
-		            		labels : [dateArr[6], dateArr[5], dateArr[4], dateArr[3], dateArr[2], dateArr[1], dateArr[0]],
-		            		datasets : [{
-		            			label : '예약 인원',
-		            			lineTension : 0,
-		            			data : [pnumArr[6], pnumArr[5], pnumArr[4], pnumArr[3], pnumArr[2], pnumArr[1], pnumArr[0]],
-		            			backgroundColor : "rgba(153,255,51,0.4)"
-		            		},  {
-		            			label : "웨이팅 인원",
-		            			data : [waitPnumArr[6],waitPnumArr[5],waitPnumArr[4],waitPnumArr[3],waitPnumArr[2],waitPnumArr[1],waitPnumArr[0]],
-		            			backgroundColor: "rgba(238, 48, 105, 0.835)"
-		            		}
-		            		/*,{
-		               			label : "예약 금액",
-		               			data : [amountArr[6],amountArr[5],amountArr[4],amountArr[3],amountArr[2],amountArr[1],amountArr[0]],
-		               			backgroundColor: "rgba(255,153,0,0.4)"
-		               		}*/]
-		               	}
-		
-		        	}); // end chart js
-	        		
-               	});
-        		
+            // 매장의 '예약 현황판' 내용을 가져온다.
+    		let getRsvdRsltPr = function (param) {
+                
+                let storeId = param.storeId;
+
+                return new Promise(function(resolve,reject){
+                    $.getJSON("/dealight/business/manage/board/reservation/rslt/"+storeId+".json",
+                        function (data) {
+                                if(data){
+                                    resolve(data);
+                                }
+                                reject(new Error("Request is Failed"));
+                        });
+                });
+                
+            };
+
+            // 매장의 '지난 7일 웨이팅 현황' 내용을 가져온다.
+    		let getLastWeekWaitPr = function(param) {
+                
+                let storeId = param.storeId;
+                
+                return new Promise(function(resolve,reject){
+                    $.getJSON("/dealight/business/manage/board/waiting/rslt/"+storeId+"/list.json",
+                        function (data) {
+                                    if(data){
+                                        resolve(data);
+                                    }
+                                    reject(new Error("Request is Failed"));
+                                }
+                            );
+                    });
+            };
+
+            // '해당 매장'의 지난주 예약 정보를 가져온다.
+            let getLastWeekRsvdPr = function (param) {
+            	
+    			let storeId = param.storeId;
+                
+                return new Promise(function(resolve,reject){
+                    $.getJSON("/dealight/business/manage/board/reservation/rslt/"+ storeId +"/list.json",
+                        function (data) {
+                                if(data){
+                                    resolve(data);
+                                }
+                                reject(new Error("Request is Failed"));
+                            }
+                        );
+                    });
+            };
+
+            let createChartPr = function(){
+            	
+            	console.log("promise 4th.....................................");
+                        
+                console.log('dateArr : '+dateArr);
+    		    console.log('pnumArr : '+pnumArr);
+    		    console.log('amountArr : '+amountArr);
+    		    console.log('waitPnumArr : '+waitPnumArr);
+    		    var chart = document.getElementById('rsvd_chart');
+    		    var context = chart.getContext('2d'),
+    		    rsvdChart = new Chart(context, {
+    		         	type : 'line',
+    		          	data : {
+    		          		labels : [dateArr[6], dateArr[5], dateArr[4], dateArr[3], dateArr[2], dateArr[1], dateArr[0]],
+    		          		datasets : [{
+    		           			label : '예약 인원',
+    		           			lineTension : 0,
+    		           			data : [pnumArr[6], pnumArr[5], pnumArr[4], pnumArr[3], pnumArr[2], pnumArr[1], pnumArr[0]],
+    		           			backgroundColor : "rgba(153,255,51,0.4)"
+    		           		},  {
+    		           			label : "웨이팅 인원",
+    		           			data : [waitPnumArr[6],waitPnumArr[5],waitPnumArr[4],waitPnumArr[3],waitPnumArr[2],waitPnumArr[1],waitPnumArr[0]],
+    		          			backgroundColor: "rgba(238, 48, 105, 0.835)"
+    		           		}
+    		           		/*,{
+    		           			label : "예약 금액",
+    		          			data : [amountArr[6],amountArr[5],amountArr[4],amountArr[3],amountArr[2],amountArr[1],amountArr[0]],
+    		          			backgroundColor: "rgba(255,153,0,0.4)"
+    		           		}*/]
+    		           	}
+    		       	}); // end chart js
+            }
+
+            let p1 = getRsvdRsltPr;
+            let p2 = getLastWeekWaitPr;
+            let p3 = getLastWeekRsvdPr;
+            let p4 = createChartPr;
+
+            let p5 = Promise.all([p1,p2,p3,p4]);
+
+            p5.then(function (value) {
+            	
+            	console.log("promise start.....................................");
+            	console.log("p5 : " + p5);
+
+
+                value[0]({storeId:storeId}).then(dto => {
+                	
+                	console.log("promise 1st.....................................");
+                	console.log('dto : '+dto);
+
+                    let strRsvdRslt = "";
+            		if(!dto)
+            			return;
+            		
+            		strRsvdRslt += "<li>오늘 총 예약 수 : " + dto.totalTodayRsvd  +"</li>";
+            		strRsvdRslt += "<li>오늘 총 예약 인원 : " + dto.totalTodayRsvdPnum  +"</li>";
+            		strRsvdRslt += "<li>[오늘의 인기 메뉴]</li>";
+            		Object.entries(dto.todayFavMenuMap).forEach(([key,value]) => {
+    	        		strRsvdRslt += "<li>" + key +' : '+ value  +"</li>";
+                    })
+
+                    console.log('strRsvdRslt : '+strRsvdRslt);
+                    rsvdRsltUL.html(strRsvdRslt);
+                        
+                    return value[1]({storeId:storeId});
+                }).then(waitList => {
+                	console.log("promise 2nd.....................................");
+                	console.log("wait list : "+waitList);
+    	        		
+    	        		waitList.forEach( wait => {
+    	        			console.log('wait reg tm : '+wait.strWaitRegTm);
+    	        			console.log('wait pnum : '+wait.waitPnum);
+    	        			waitPnumArr[dateArr.indexOf(wait.strWaitRegTm)] += wait.waitPnum;
+    	        			
+                        });
+                    
+                    return value[2]({storeId:storeId});
+                    
+                }).then(rsvdList => {
+                	
+                	console.log("promise 3rd.....................................");
+                	
+                    let strLastWeekRsvd = "";
+            		if(!rsvdList)
+            			return;
+            		
+            		console.log(rsvdList[0].pnum);
+            		console.log('wait id : '+rsvdList[0].waitId);
+            		console.dir(rsvdList[0]);
+    				
+            		rsvdList.forEach(rsvd => {
+            			console.log('rsvd str reg date : ' + rsvd.strRegDate);
+            			pnumArr[dateArr.indexOf(rsvd.strRegDate)] += rsvd.pnum;
+            			amountArr[dateArr.indexOf(rsvd.strRegDate)] += rsvd.totAmt;
+            			
+            			//pnumArr[dateArr.indexOf(rsvd.strInDate)].push(rsvd)
+            			
+            			strLastWeekRsvd += "<li hidden class='btnStoreId'>"+rsvd.storeId+"</li>";
+            			strLastWeekRsvd += "<li hidden class='btnUserId'>"+rsvd.userId+"</li>";
+            			strLastWeekRsvd += "<li>매장번호 : "+ rsvd.storeId + "</li>";
+            			strLastWeekRsvd += "<li>회원 아이디 : "+ rsvd.userId + "</li>";
+            			strLastWeekRsvd += "<li>핫딜 번호 :"+ rsvd.htdlId + "</li>";
+            			strLastWeekRsvd += "<li>승인 번호 : "+ rsvd.aprvNo + "</li>";
+            			strLastWeekRsvd += "<li>예약 인원 : "+ rsvd.pnum + "</li>";
+            			strLastWeekRsvd += "<li>예약 시간 : "+ rsvd.time + "</li>";
+            			strLastWeekRsvd += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
+            			strLastWeekRsvd += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
+            			strLastWeekRsvd += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
+            			strLastWeekRsvd += "<li>예약 등록 날짜 : "+ rsvd.strRegDate + "</li>";
+            			strLastWeekRsvd += "===========================================";
+                    });
+            		
+            		console.log('str Last Week Rsvd : ' + rsvdList);
+                    
+    	        	lastWeekRsvdUL.html(strLastWeekRsvd);
+
+                    return value[3]();
+                }).then();
+               
+            });
         };
         
         /*
