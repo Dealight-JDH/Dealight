@@ -2,19 +2,20 @@
  
         *{
             margin: auto;
+            font-size: 11px;
         }
         .main_box{
             top:30px;
+            margin : 0 auto;
             border: solid 1px black;
-            width: 1600px;
+            width: 80%;
             height: 800px;
-            overflow: hidden;
             position: relative;
         }
         .board{
             border: solid 1px black;
             position: relative;
-            width: 1400px;
+            width: 90%;
             height: 600px;
             overflow: scroll;
             top: 50px;
@@ -26,6 +27,7 @@
             flex-wrap: nowrap;
             justify-content: space-between;
             align-items: center;
+            width:100%;
         }
         .cur_time{
             border: solid 1px black;
@@ -56,20 +58,43 @@
             order: 3;
             flex-grow: 2;
         }
+        .tab_nav{
+        	width:100%;
+        	height:50px;
+        	display: inline-block;
+        }
+        .tab_nav .switch{
+        	  font-weight: bold;
+			  padding-top: 14px;
+			  text-align: center;
+			  background: #343436;
+			  color: #fff;
+			  border-radius: 30px 30px 0 0;
+			  height: 50px;
+			  float : right;
+			  margin : 0 20px;
+			  cursor: pointer;
+			  width: 100px;
+	          height: 50px;
+		}
+		.tab_nav .switch{
+		  background: #fff;
+		  color: #000;
+		}
+		.tab_nav .switch_board{
+			  background: #343436;
+			  color: #fff;
+		}
         .toggle{
-            border: solid 1px black;
             position: relative;
             height: 50px;
             display: inline-block;
-            /* flex */
-            order: 4;
-            flex-grow: 2;
         }
         .next_wait{
             border: solid 1px black;
             display: block;
             height: 150px;
-            width: 400px;
+            width: 30%;
             position: absolute;
             top : 150px;
             left: 30px;
@@ -90,7 +115,7 @@
             border: solid 1px black;
             display: block;
             height: 150px;
-            width: 400px;
+            width: 30%;
             position: absolute;
             top : 325px;
             left: 30px;
@@ -103,10 +128,10 @@
         }
         .wait_board{
             border: solid 1px black;
-            width: 800px;
+            width: 55%;
             height: 400px;
             position: absolute;
-            top: 100px;
+            top: 120px;
             right: 30px;
         }
         .rsvd_wrapper{
@@ -115,9 +140,9 @@
             height: auto;
             top: 15px;
             bottom: 15px;
-            left: 450px;
+            right : 50px;
             display: flex;
-	
+			width:40%;
 	
 			justify-content : center;
             flex-direction: column;
@@ -128,7 +153,7 @@
         	margin : 0px;
         	padding : 0;
             border: solid 1px black;
-            width: 300px;
+            width: 100%;
             height: 100px;
             min-height: 90px;
             flex-grow: 1;
@@ -145,19 +170,23 @@
         .wait_wrapper{
             border: solid black 1px;
             position: absolute;
+           	width: 300px;
             height: auto;
             top: 15px;
             bottom: 15px;
             left: 50px;
             display: flex;
-			
+			width:40%;
 			justify-content : center;
             flex-direction: column;
             align-content: center;
             overflow: scroll;
+            margin-right: 50px;
         }
         .waitList {
         	padding : 0;
+        	width:100%;
+        	margin : 0 0;
         }
         .wait{
             border: solid 1px black;
@@ -182,11 +211,10 @@
         }
         .rsvd_time_bar{
             border: solid 1px black;
-            position: absolute;
-            left: 100px;
-            bottom: 30px;
-            width: 1400px;
-            height: 75px;
+            margin : 0 auto;
+            margin-top : 80px;
+            width: 90%;
+            height: 100px;
             display: flex;
 
             flex-direction: row;
@@ -206,13 +234,13 @@
         }
         /* hover */
 
-        .tooltip {
+        .dealight_tooltip {
         position: relative;
         display: inline-block;
         border-bottom: 1px dotted black;
         }
 
-        .tooltip .tooltiptext {
+        .dealight_tooltip .dealight_tooltiptext {
         visibility: hidden;
         width: 300px;
         background-color: black;
@@ -221,23 +249,16 @@
         border-radius: 6px;
         padding: 5px 0;
 
-        /* Position the tooltip */
+        /* Position the dealight_tooltip */
         position: absolute;
         z-index: 1;
         }
 
-        .tooltip:hover .tooltiptext {
+        .dealight_tooltip:hover .dealight_tooltiptext {
         visibility: visible;
         }
 
         /* toggle css */
-
-        .switch {
-        position: relative;
-        display: inline-block;
-        width: 100px;
-        height: 50px;
-        }
 
         .switch input { 
         opacity: 0;
@@ -312,23 +333,32 @@
         /* Modal Content/Box */
         .modal-content {
 	        background-color: #fefefe;
-	        margin: 15% auto; /* 15% from the top and centered */
+	        margin: 10% auto; /* 15% from the top and centered */
 	        padding: 20px;
 	        border: 1px solid #888;
-	        width: 80%; /* Could be more or less, depending on screen size */
+	        width: 60%; /* Could be more or less, depending on screen size */
 	        animation: fadeEffect 0.3s;
+        }
+        
+         .modal-content ul{
+         	margin : 0 0;
+         	display : inline-block;
         }
 
         /* The Close Button */
-        .close {
+        .close_modal {
+        position : absolute;
+        right : 20px;
+        top : 5px;
+        display : inline-block;
+        margin : 0 0;
         color: #aaa;
-        float: right;
-        font-size: 28px;
+        font-size: 50px;
         font-weight: bold;
         }
 
-        .close:hover,
-        .close:focus {
+        .close_modal:hover,
+        .close_modal:focus {
         color: black;
         text-decoration: none;
         cursor: pointer;
@@ -360,19 +390,13 @@
             text-align: center;
             margin: auto;
         }
-        .switch{
-            position: absolute;
-            top: 5px;
-            left: 5px;
-        }
-        
         .info_box {
-        	margin-top : 80px;
             border: solid 1px black;
-            width: 1600px;
+            width: 80%;
             height: 400px;
             overflow: scroll;
             position: relative;
+            margin : 80px auto;
         }
         #map_wrapper{
         	position: absolute;

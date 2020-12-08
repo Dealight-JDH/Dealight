@@ -45,8 +45,8 @@ import net.coobird.thumbnailator.Thumbnailator;
 public class UploadController {
 	
 	// 파일 경로
-//	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05\\";
-	final static private String ROOT_FOLDER = "/Users/hyeonjung/Desktop/upload";
+	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05\\";
+//	final static private String ROOT_FOLDER = "/Users/hyeonjung/Desktop/upload";
 	//add param category
 	private String getFolder(String category) {
 		
@@ -172,14 +172,19 @@ public class UploadController {
 	
 	@PostMapping(value = "/uploadAjaxAction", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public ResponseEntity<List<StoreImgVO>> uploadAjaxPost(MultipartFile[] uploadFile) {
+	public ResponseEntity<List<StoreImgVO>> uploadAjaxPost(MultipartFile[] uploadFile,String category) {
 		List<StoreImgVO> list = new ArrayList<>();
 		
 		log.info("upload store img post................");
 		
 		String uploadFolder = ROOT_FOLDER;
 		
-		String uploadFolderPath = getFolder("brno");
+		if(category == null) {
+			category = "";
+		}
+		
+		String uploadFolderPath = getFolder(category);
+		//String uploadFolderPath = getFolder("brno");
 		File uploadPath = new File(uploadFolder, uploadFolderPath);
 		
 		log.info("upload path : " + uploadPath);
@@ -257,7 +262,8 @@ public class UploadController {
 		
 		String uploadFolder = ROOT_FOLDER;
 		
-		String uploadFolderPath = getFolder("brno");
+		String uploadFolderPath = getFolder("");
+		//String uploadFolderPath = getFolder("brno");
 		File uploadPath = new File(uploadFolder, uploadFolderPath);
 		
 		log.info("upload path : " + uploadPath);

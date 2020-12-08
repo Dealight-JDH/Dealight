@@ -10,15 +10,58 @@
 <meta charset="UTF-8">
 <title>매장 관리</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Bootstrap core CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/resources/css/manage.css" type ="text/css" />
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="/resources/js/Chart.js"></script>
-<link rel="stylesheet" href="/resources/css/manage.css?ver=1" type ="text/css" />
+<style>
+	.toast{
+		position : absolute;
+		bottom : 30px;
+		right : 30px;
+		z-index : 101;
+	}
+	@-webkit-keyframes slideDown {
+	    0%, 100% { -webkit-transform: translateY(-50px); }
+	    10%, 90% { -webkit-transform: translateY(0px); }
+	}
+	.cssanimations.csstransforms .toast {
+	    -webkit-transform: translateY(-50px);
+	    -webkit-animation: slideDown 2.5s 1.0s 1 ease forwards;
+	    -moz-transform:    translateY(-50px);
+	    -moz-animation:    slideDown 2.5s 1.0s 1 ease forwards;
+	}
+
+</style>
+
 </head>
 <body>
 <%@include file="../../../includes/mainMenu.jsp" %>
+	<!-- notification -->
+     <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+        <div class="toast-header">
+          <strong class="mr-auto">예약/웨이팅</strong>
+          <small class="text-muted">(시간 계산)</small>
+          <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="toast-body">
+          (예약/웨이팅 내용 채워넣기)
+        </div>
+      </div>
+      <!-- end notification -->
+     
     <div class="main_box"><!-- main box -->
         <h2>Business Manage Main Page</h2>
         <div class="board"> <!-- board -->
+        	<nav class="tab_nav">
+                    <a class="switch switch_rsvd_rslt">현황판</a>
+                    <a class="switch switch_board">매장관리</a>
+        	</nav>
             <div class="board_top_box"> <!-- top box -->
 
                 <div class="cur_time"> <!-- cur time -->
@@ -45,19 +88,13 @@
                     </form>
                 </div> <!-- end light -->
                 <div class="top_box_blank"></div>
-                <div class="toggle"> <!-- toggle -->
-                    <label class="switch">
-                        <button>매장관리</button>
-                      </label>
-                </div> <!-- end toggle -->
-				
          </div> <!-- end top box -->
 
          <div id="rsvd_rslt_baord" style="display : none">
-            <h1>당일 예약 결과💵</h1>
-            <ul class="rsvdRslt"></ul>
             <h1>최근 7일 Trend📈</h1>
             <canvas id="rsvd_chart"></canvas>
+            <h1>당일 예약 결과💵</h1>
+            <ul class="rsvdRslt"></ul>
             <h1>최근 7일 예약 현황</h1>            
             <ul class="last_week_rsvd"></ul>
         </div>
@@ -83,10 +120,9 @@
                         <ul class="rsvdList"></ul>
                     </div> <!-- end wait -->
             </div>
-            <div class="wait_wrapper">
+            <div class="wait_wrapper" id="rolling_wait">
                 <h1>웨이팅 리스트🗒</h1>
 	            <ul class="waitList">
-	            
 	            </ul>
             </div>
                 <di class="wait_register_wrapper">
@@ -123,7 +159,7 @@
 	<c:if test="${not empty todayRsvdUserList}">
 		<c:forEach items="${todayRsvdUserList}" var="user">
 			
-			<div class="tooltip">
+			<div class="dealight_tooltip">
 				==========================================</br>
 				회원 아이디 : ${user.userId}</br>
 				회원 이름 : ${user.name}</br> 
@@ -133,7 +169,7 @@
 				성별 : ${user.sex }</br> 
 				회원 프로필 사진 : ${user.photoSrc}</br>
 				패널티 회원 여부 : ${user.pmStus}</br>
-  				<div class="tooltiptext">
+  				<div class="dealight_tooltiptext">
   					예약 번호 : ${user.rsvdId}</br>
 					매장 번호 : ${user.storeId }</br>
 					핫딜 번호 : ${user.htdlId }</br>
@@ -153,13 +189,13 @@
 	<div id="myModal" class="modal">
 		<!-- Modal content -->
 		<div class="modal-content">
-			<span class="close">&times;</span>
+			<span class="close_modal">&times;</span>
 			<ul class="rsvdDtls"></ul>
 			<ul class="userRsvdList"></ul>
 			<ul class="waiting_registerForm"></ul>
 		</div>
 	</div>
-    
+	
 <script>
 
 const storeId = ${storeId};
@@ -173,7 +209,7 @@ writeTimeBar = function (curTime) {
     for(let i = 1; i <= 27; i++){
     	if(curTime === timeArr[i])
     		curPos = i - 1;
-        strTime += "<div class='rsvd_time tooltip' id='slide-"+i+"'><h6>"+timeArr[i]+"</h6><div class='time_table'></div></div>";
+        strTime += "<div class='rsvd_time dealight_tooltip' id='slide-"+i+"'><h6>"+timeArr[i]+"</h6><div class='time_table'></div></div>";
     }
 	document.querySelector(".rsvd_time_bar").innerHTML = strTime;
     // 예약 상태바 초기 스크롤 고정
@@ -197,7 +233,7 @@ let curHour = curToday.getHours(),
 	
 	// 모달 선택
 	const modal = $("#myModal"),
-		close = $(".close"),
+		close = $(".close_modal"),
 		modalContent = $(".modal-content"),
 		btn_show_board = $("#btn_show_board");
 
@@ -206,15 +242,21 @@ let curHour = curToday.getHours(),
 		modal.find("ul").html("");
 	});
 	
-	/*
-	 모달이 아닌 화면을 클릭하면 모달이 종료가 되어야 하는데 그렇지 않음.
-	*/
-	window.onclick = function(event) {
-		  if (event.target == modal) {
+	window.onclick = function(e) {
+		
+		  if (e.target === document.getElementById('myModal')) {
 			  modal.css("display","none");
 			  modal.find("ul").html("");
 		  }
 	}
+	
+    // esc 눌러서 모달 escape
+    $(document).keyup(function(e) {
+    	if(e.key === "Escape"){
+    		modal.css("display","none");
+    		modal.find("ul").html("");
+    	}
+    });
 
 </script>
 	<script>
@@ -476,6 +518,23 @@ let curHour = curToday.getHours(),
                         }
             });
         };
+        
+        // 매장의 '지난 7일 웨이팅 현황' 내용을 가져온다.
+		function getLastWeekWait(param,callback,error) {
+            
+            let storeId = param.storeId;
+            
+            $.getJSON("/dealight/business/manage/board/waiting/rslt/"+storeId+"/list.json",
+                function(data){
+                        if(callback){
+                            callback(data);
+                        }
+                    }).fail(function(xhr,status,err){
+                        if(error){
+                            error();
+                        }
+            });
+        };
     
         // 웨이팅 정보를 등록한다.
         function regWait(wait, callback,error) {
@@ -514,9 +573,7 @@ let curHour = curToday.getHours(),
                             error();
                         }
             });
-        	
-        	
-        }
+        };
     
         return {
             regWait:regWait,
@@ -531,6 +588,7 @@ let curHour = curToday.getHours(),
             getNextRsvd : getNextRsvd,
             getTodayRsvdMap : getTodayRsvdMap,
             getRsvdRslt : getRsvdRslt,
+            getLastWeekWait : getLastWeekWait,
             getUserRsvdList : getUserRsvdList,
             getRsvdDtls : getRsvdDtls,
             getLastWeekRsvd : getLastWeekRsvd
@@ -693,7 +751,7 @@ let curHour = curToday.getHours(),
                 });
     
               rsvdListUL.html(strRsvdList);
-   
+              
             }); 
         }
         
@@ -709,13 +767,14 @@ let curHour = curToday.getHours(),
             	if(!map)
             		return;
             	Object.entries(map).forEach(([key,value]) => {
-            		strRsvdMap += "<li class='tooltip'>"+key + " : 예약번호[" + value+"] <span class='tooltiptext'>"+value+"번호 안녕?</span></li></br>";
+            		console.log("key : "+key+", value : " + value);
+            		strRsvdMap += "<li class='dealight_tooltip'>"+key + " : 예약번호[" + value+"] <span class='dealight_tooltiptext'>"+value+"번호 안녕?</span></li></br>";
             		for(let i = 1; i < 28; i ++){
             			// debug
-            			//console.log(key+' : '+i+ ' : '+document.querySelector('#slide-'+i+' h6').textContent);
-            			//console.log(key === document.querySelector('#slide-'+i+' h6').textContent);
+            			console.log(key+' : '+i+ ' : '+document.querySelector('#slide-'+i+' h6').textContent);
+            			console.log(key === document.querySelector('#slide-'+i+' h6').textContent);
             			if(key === document.querySelector('#slide-'+i+' h6').textContent){
-            				document.querySelector('#slide-'+i+' .time_table').innerHTML = "<span class='tooltiptext'>"+value+" 번호 예약</span>";
+            				document.querySelector('#slide-'+i+' .time_table').innerHTML = "<span class='dealight_tooltiptext'>"+value+" 번호 예약</span>";
             				document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(251, 255, 41, 0.898)';
             			}
             		}
@@ -762,22 +821,6 @@ let curHour = curToday.getHours(),
         // 예약 현황판을 보여준다.
         function showRsvdBoard(storeId) {
         	
-        	boardService.getRsvdRslt({storeId:storeId}, function(dto){
-        		let strRsvdRslt = "";
-        		if(!dto)
-        			return;
-        		
-        		strRsvdRslt += "<li>오늘 총 예약 수 : " + dto.totalTodayRsvd  +"</li>";
-        		strRsvdRslt += "<li>오늘 총 예약 인원 : " + dto.totalTodayRsvdPnum  +"</li>";
-        		strRsvdRslt += "<li>[오늘의 인기 메뉴]</li>";
-        		Object.entries(dto.todayFavMenuMap).forEach(([key,value]) => {
-	        		strRsvdRslt += "<li>" + key +' : '+ value  +"</li>";
-        		})
-        		
-        		rsvdRsltUL.html(strRsvdRslt);
-        		
-        	});
-        	
         	let dateArr = new Array();
         	
         	let today = new Date();
@@ -787,6 +830,7 @@ let curHour = curToday.getHours(),
         		year =  today.getFullYear();
         		month = (today.getMonth() + 1);
         		date = today.getDate();
+        		if(date < 10) date = "0" + date.toString();
         		dateArr[i] =    year + '/' + month + '/' + date;
         		today.setDate(today.getDate() - 1);
         	}
@@ -794,64 +838,180 @@ let curHour = curToday.getHours(),
         	
     		let pnumArr = [0,0,0,0,0,0,0];
     		let amountArr = [0,0,0,0,0,0,0];
+    		let waitPnumArr = [0,0,0,0,0,0,0];
         	
-        	boardService.getLastWeekRsvd({storeId:storeId}, function(list){
-        		
-        		let strLastWeekRsvd = "";
-        		if(!list)
-        			return;
-				
-        		list.forEach(rsvd => {
-        			
-        			pnumArr[dateArr.indexOf(rsvd.strRegDate)] += rsvd.pnum;
-        			amountArr[dateArr.indexOf(rsvd.strRegDate)] += rsvd.totAmt;
-        			
-        			//pnumArr[dateArr.indexOf(rsvd.strInDate)].push(rsvd)
-        			
-        			strLastWeekRsvd += "<li hidden class='btnStoreId'>"+rsvd.storeId+"</li>";
-        			strLastWeekRsvd += "<li hidden class='btnUserId'>"+rsvd.userId+"</li>";
-        			strLastWeekRsvd += "<li>매장번호 : "+ rsvd.storeId + "</li>";
-        			strLastWeekRsvd += "<li>회원 아이디 : "+ rsvd.userId + "</li>";
-        			strLastWeekRsvd += "<li>핫딜 번호 :"+ rsvd.htdlId + "</li>";
-        			strLastWeekRsvd += "<li>승인 번호 : "+ rsvd.aprvNo + "</li>";
-        			strLastWeekRsvd += "<li>예약 인원 : "+ rsvd.pnum + "</li>";
-        			strLastWeekRsvd += "<li>예약 시간 : "+ rsvd.time + "</li>";
-        			strLastWeekRsvd += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
-        			strLastWeekRsvd += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
-        			strLastWeekRsvd += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-        			strLastWeekRsvd += "<li>예약 등록 날짜 : "+ rsvd.strRegDate + "</li>";
-        			strLastWeekRsvd += "===========================================";
-        		});
-        		
-        		// test
-        		//console.log(dateArr);
-        		//console.log(pnumArr);
-        		//console.log(amountArr);
-        		
-	        	lastWeekRsvdUL.html(strLastWeekRsvd);
-	        	let chart = document.getElementById('rsvd_chart');
-	        	let context = chart.getContext('2d'),
-	           	rsvdChart = new Chart(context, {
-	           		type : 'line',
-	           		data : {
-	           			labels : [dateArr[6], dateArr[5], dateArr[4], dateArr[3], dateArr[2], dateArr[1], dateArr[0]],
-	           			datasets : [{
-	           				label : '예약 인원',
-	           				lineTension : 0,
-	           				data : [pnumArr[6], pnumArr[5], pnumArr[4], pnumArr[3], pnumArr[2], pnumArr[1], pnumArr[0]],
-	           				backgroundColor : "rgba(153,255,51,0.4)"
-	           			}, {
-	           				label : "예약 금액",
-	           				data : [amountArr[6],amountArr[5],amountArr[4],amountArr[3],amountArr[2],amountArr[1],amountArr[0]],
-	           				backgroundColor: "rgba(255,153,0,0.4)"
-	           			}]
-	           		}
-	           	});
-        	});
-        	
-         
-        	
-        	
+            // 매장의 '예약 현황판' 내용을 가져온다.
+    		let getRsvdRsltPr = function (param) {
+                
+                let storeId = param.storeId;
+
+                return new Promise(function(resolve,reject){
+                    $.getJSON("/dealight/business/manage/board/reservation/rslt/"+storeId+".json",
+                        function (data) {
+                                if(data){
+                                    resolve(data);
+                                }
+                                reject(new Error("Request is Failed"));
+                        });
+                });
+                
+            };
+
+            // 매장의 '지난 7일 웨이팅 현황' 내용을 가져온다.
+    		let getLastWeekWaitPr = function(param) {
+                
+                let storeId = param.storeId;
+                
+                return new Promise(function(resolve,reject){
+                    $.getJSON("/dealight/business/manage/board/waiting/rslt/"+storeId+"/list.json",
+                        function (data) {
+                                    if(data){
+                                        resolve(data);
+                                    }
+                                    reject(new Error("Request is Failed"));
+                                }
+                            );
+                    });
+            };
+
+            // '해당 매장'의 지난주 예약 정보를 가져온다.
+            let getLastWeekRsvdPr = function (param) {
+            	
+    			let storeId = param.storeId;
+                
+                return new Promise(function(resolve,reject){
+                    $.getJSON("/dealight/business/manage/board/reservation/rslt/"+ storeId +"/list.json",
+                        function (data) {
+                                if(data){
+                                    resolve(data);
+                                }
+                                reject(new Error("Request is Failed"));
+                            }
+                        );
+                    });
+            };
+
+            let createChartPr = function(){
+            	
+            	console.log("promise 4th.....................................");
+                        
+                console.log('dateArr : '+dateArr);
+    		    console.log('pnumArr : '+pnumArr);
+    		    console.log('amountArr : '+amountArr);
+    		    console.log('waitPnumArr : '+waitPnumArr);
+    		    var chart = document.getElementById('rsvd_chart');
+    		    var context = chart.getContext('2d'),
+    		    rsvdChart = new Chart(context, {
+    		         	type : 'line',
+    		          	data : {
+    		          		labels : [dateArr[6], dateArr[5], dateArr[4], dateArr[3], dateArr[2], dateArr[1], dateArr[0]],
+    		          		datasets : [{
+    		           			label : '예약 인원',
+    		           			lineTension : 0,
+    		           			data : [pnumArr[6], pnumArr[5], pnumArr[4], pnumArr[3], pnumArr[2], pnumArr[1], pnumArr[0]],
+    		           			backgroundColor : "rgba(153,255,51,0.4)"
+    		           		},  {
+    		           			label : "웨이팅 인원",
+    		           			data : [waitPnumArr[6],waitPnumArr[5],waitPnumArr[4],waitPnumArr[3],waitPnumArr[2],waitPnumArr[1],waitPnumArr[0]],
+    		          			backgroundColor: "rgba(238, 48, 105, 0.835)"
+    		           		}
+    		           		/*,{
+    		           			label : "예약 금액",
+    		          			data : [amountArr[6],amountArr[5],amountArr[4],amountArr[3],amountArr[2],amountArr[1],amountArr[0]],
+    		          			backgroundColor: "rgba(255,153,0,0.4)"
+    		           		}*/]
+    		           	}
+    		       	}); // end chart js
+            }
+
+            let p1 = getRsvdRsltPr;
+            let p2 = getLastWeekWaitPr;
+            let p3 = getLastWeekRsvdPr;
+            let p4 = createChartPr;
+
+            let p5 = Promise.all([p1,p2,p3,p4]);
+
+            p5.then(function (value) {
+            	
+            	console.log("promise start.....................................");
+            	console.log("p5 : " + p5);
+
+
+                value[0]({storeId:storeId}).then(dto => {
+                	
+                	console.log("promise 1st.....................................");
+                	console.log('dto : '+dto);
+
+                    let strRsvdRslt = "";
+            		if(!dto)
+            			return;
+            		
+            		strRsvdRslt += "<li>오늘 총 예약 수 : " + dto.totalTodayRsvd  +"</li>";
+            		strRsvdRslt += "<li>오늘 총 예약 인원 : " + dto.totalTodayRsvdPnum  +"</li>";
+            		strRsvdRslt += "<li>[오늘의 인기 메뉴]</li>";
+            		Object.entries(dto.todayFavMenuMap).forEach(([key,value]) => {
+    	        		strRsvdRslt += "<li>" + key +' : '+ value  +"</li>";
+                    })
+
+                    console.log('strRsvdRslt : '+strRsvdRslt);
+                    rsvdRsltUL.html(strRsvdRslt);
+                        
+                    return value[1]({storeId:storeId});
+                }).then(waitList => {
+                	console.log("promise 2nd.....................................");
+                	console.log("wait list : "+waitList);
+    	        		
+    	        		waitList.forEach( wait => {
+    	        			console.log('wait reg tm : '+wait.strWaitRegTm);
+    	        			console.log('wait pnum : '+wait.waitPnum);
+    	        			waitPnumArr[dateArr.indexOf(wait.strWaitRegTm)] += wait.waitPnum;
+    	        			
+                        });
+                    
+                    return value[2]({storeId:storeId});
+                    
+                }).then(rsvdList => {
+                	
+                	console.log("promise 3rd.....................................");
+                	
+                    let strLastWeekRsvd = "";
+            		if(!rsvdList)
+            			return;
+            		
+            		console.log(rsvdList[0].pnum);
+            		console.log('wait id : '+rsvdList[0].waitId);
+            		console.dir(rsvdList[0]);
+    				
+            		rsvdList.forEach(rsvd => {
+            			console.log('rsvd str reg date : ' + rsvd.strRegDate);
+            			pnumArr[dateArr.indexOf(rsvd.strRegDate)] += rsvd.pnum;
+            			amountArr[dateArr.indexOf(rsvd.strRegDate)] += rsvd.totAmt;
+            			
+            			//pnumArr[dateArr.indexOf(rsvd.strInDate)].push(rsvd)
+            			
+            			strLastWeekRsvd += "<li hidden class='btnStoreId'>"+rsvd.storeId+"</li>";
+            			strLastWeekRsvd += "<li hidden class='btnUserId'>"+rsvd.userId+"</li>";
+            			strLastWeekRsvd += "<li>매장번호 : "+ rsvd.storeId + "</li>";
+            			strLastWeekRsvd += "<li>회원 아이디 : "+ rsvd.userId + "</li>";
+            			strLastWeekRsvd += "<li>핫딜 번호 :"+ rsvd.htdlId + "</li>";
+            			strLastWeekRsvd += "<li>승인 번호 : "+ rsvd.aprvNo + "</li>";
+            			strLastWeekRsvd += "<li>예약 인원 : "+ rsvd.pnum + "</li>";
+            			strLastWeekRsvd += "<li>예약 시간 : "+ rsvd.time + "</li>";
+            			strLastWeekRsvd += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
+            			strLastWeekRsvd += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
+            			strLastWeekRsvd += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
+            			strLastWeekRsvd += "<li>예약 등록 날짜 : "+ rsvd.strRegDate + "</li>";
+            			strLastWeekRsvd += "===========================================";
+                    });
+            		
+            		console.log('str Last Week Rsvd : ' + rsvdList);
+                    
+    	        	lastWeekRsvdUL.html(strLastWeekRsvd);
+
+                    return value[3]();
+                }).then();
+               
+            });
         };
         
         /*
@@ -1084,43 +1244,52 @@ let curHour = curToday.getHours(),
         
         /*현황판 토글*/
 
-		let toggle = $(".switch");
-		
-		toggle.on("click", (e) => {
+		let switchBoard = $(".switch_board");
+		let switchRsvdRslt = $(".switch_rsvd_rslt");
+        
+        let switchBoardHandler = function(e){
 			
-			let storeId = ${storeId};
+        	let storeId = ${storeId};
 			
 			e.preventDefault();
 			
 			if($("#board").css("display") === 'none'){
 				// debug
 				//console.log("board none => block");
-				$(".switch > button").text('매장관리');
+				//$(".switch").text('매장관리');
 				showBoard(storeId);
+				$("#rsvd_rslt_baord").css("display", "none");
 				$("#board").css("display", "block");
-			} else if($("#board").css("display") === 'block'){
-				// debug
-				//console.log("board block => none");				
-				$("#board").css("display", "none");
+				$(".switch_board").css("color", "#fff").css("background","#343436");
+				$(".switch_rsvd_rslt").css("color", "#000").css("background","#fff");
 			}
+        }
+		
+        let switchRsvdRsltHandler = function(e){
+			
+        	let storeId = ${storeId};
+			
+			e.preventDefault();
 			
 			if($("#rsvd_rslt_baord").css("display") === 'none'){
 				// debug
 				//console.log("rsvd rslt board none => block");
-				$(".switch > button").text('현황판');
+				//$(".switch").text('현황판');
 				showRsvdBoard(storeId);
+				$("#board").css("display", "none");
 				$("#rsvd_rslt_baord").css("display", "block");
-			} else	if($("#rsvd_rslt_baord").css("display") === 'block'){
-				// debug
-				//console.log("rsvd rslt board block => none");
-				$("#rsvd_rslt_baord").css("display", "none");
+				$(".switch_rsvd_rslt").css("color", "#fff").css("background","#343436");
+				$(".switch_board").css("color", "#000").css("background","#fff");
 			}
-		});
+			
+        }
+        
+
+        switchBoard.on("click", switchBoardHandler);
+        switchRsvdRslt.on("click", switchRsvdRsltHandler);
 		
         /*당일 예약 결과 가져오기*/
-        $("#btn_rsvd_rslt").on("click", e => {
-        	showRsvdBoard(storeId);
-        });
+        $("#btn_rsvd_rslt").on("click",switchRsvdRsltHandler);
 
         /*새로고침*/
         $("#refresh").on("click", e => {
@@ -1129,18 +1298,18 @@ let curHour = curToday.getHours(),
         	showBoard(storeId);
         });
 
+        
+        let showUserRsvdListHandler = function(e) {
+        	let rstoreId = $(e.target).parent().find(".btnStoreId").text(),
+    		ruserId = $(e.target).parent().find(".btnUserId").text();
+    	
+    		modal.css("display","block");
+
+    		showUserRsvdList(rstoreId, ruserId);
+        }
         /*예약리스트에 있는 내용 중, 예약 상세 보여주기*/
         /*회원의 예약 리스트 보여주기*/
-        $(".rsvdList").on("click", e => {
-
-        	let rstoreId = $(e.target).parent().find(".btnStoreId").text(),
-        		ruserId = $(e.target).parent().find(".btnUserId").text();
-        	
-        	modal.css("display","block");
-
-        	showUserRsvdList(rstoreId, ruserId);
-        	
-        });
+        $(".rsvdList").on("click", showUserRsvdListHandler);
         	
         /* 웨이팅 등록 */
         $(".btn_wait_register").on("click", e => {
@@ -1148,13 +1317,10 @@ let curHour = curToday.getHours(),
         	modal.css("display","block");
         	showWaitRegisterForm(storeId);
         	
-        	//$("#waitRegForm").submit();        		
-        	
         });
 
-        /* 매장 착석 상태 처리*/
-        $(".btn_seat_stus").on("click", e => {
-
+        let changeSeatStusHandler = function(e) {
+        	
             e.preventDefault();
             
             let color = "";
@@ -1163,18 +1329,15 @@ let curHour = curToday.getHours(),
             param.storeId = storeId;
             param.seatStusCd = e.target.innerHTML[0];
             
-            // debug
-            //console.log("seat stus cd...................."+e.target.innerHTML[0]);
             
         	boardService.putChangeStatusCd(param, function(result){
-        		//alert(result);
             	showStoreInfo(param.storeId);
         	});
-        	
-        });
-
-        /*웨이팅 입장 처리*/
-        $(".btn_enter_wait").on("click", e => {
+        }
+        /* 매장 착석 상태 처리*/
+        $(".btn_seat_stus").on("click",changeSeatStusHandler);
+        
+        let waitEnterHandler = function(e) {
         	
         	/*dom 코드는 변경될 가능성 있음*/
         	waitId = parseInt($(".nextWait li:eq(2)").text().split(":")[1]);
@@ -1183,11 +1346,12 @@ let curHour = curToday.getHours(),
         		//alert(result);
         		showWaitList(storeId);
         	});
-        	
-        });
+        }
 
-        /*웨이팅 노쇼 처리*/
-        $(".btn_noshow_wait").on("click", e => {
+        /*웨이팅 입장 처리*/
+        $(".btn_enter_wait").on("click", waitEnterHandler);
+        
+        let waitNoshowHandler = function(e){
         	
         	/*dom 코드는 변경될 가능성 있음*/
         	waitId = parseInt($(".nextWait li:eq(2)").text().split(":")[1]);
@@ -1196,7 +1360,10 @@ let curHour = curToday.getHours(),
         		//alert(result);
 	        	showWaitList(storeId);
         	});
-        });
+        }
+
+        /*웨이팅 노쇼 처리*/
+        $(".btn_noshow_wait").on("click", waitNoshowHandler);
         
         
         /* web socket!!!!!!!!!!!!!!!!!!!!*/
@@ -1235,15 +1402,21 @@ let curHour = curToday.getHours(),
 	   	 		console.log("sendUser : "+data.sendUser);
 	   	 	    console.log("storeId : "+data.storeId);
 	   	 	    
-	   	 	    
 				if(data.cmd === 'rsvd'){
 		   	 		showRsvdList(storeId);
+		   	 		showRsvdMap(storeId);
+		   	 		$('.mr-auto').html('예약 알림');
+		   	 		$('.text-muted').html(data.sendUser);
+		   	 		$('.toast-body').html(data.msg);
+		   	 		$('.toast').toast('show');
 		   	 		console.log("rsvd...... : " + data.rsvdId);
 		   	 		console.log(data.msg);
 				} else if (data.cmd === 'wait'){
 		   	 		showWaitList(storeId);
-		   	 		console.log("wait...... : " + data.waitId);
-		   	 		console.log(data.msg);
+		   	 		$('.mr-auto').html('웨이팅 알림');
+		   	 		$('.text-muted').html(data.sendUser);
+		   	 		$('.toast-body').html(data.msg);
+		   	 		$('.toast').toast('show');
 				}	   	 	    
 	   	 	    
 	   	 	    //let socketAlert = $('#socektAlert');

@@ -207,12 +207,8 @@ public class RsvdServiceImpl implements RsvdService{
 		String strMinute ="";
 		
 		if(minute < 60)
-			result = 45;
-		if(minute < 45)
 			result = 30;
 		if(minute < 30)
-			result = 15;
-		if(minute < 15)
 			result = 0;
 		
 		strMinute = Integer.toString(result);

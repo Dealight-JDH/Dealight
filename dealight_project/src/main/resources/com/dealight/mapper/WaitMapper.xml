@@ -152,4 +152,12 @@
 		WHERE user_id = #{userId} and wait_stus_cd = 'W'
 	</select>
 
+	<select id="findLastWeekRsvdListByStoreId" resultType="com.dealight.domain.WaitVO">
+		select *
+		from tbl_wait
+		where store_id = #{storeId}
+        and wait_reg_tm
+        BETWEEN TO_CHAR(sysdate - 7,'yyyy/MM/DD HH24:mi:SS')	AND TO_CHAR(sysdate,'yyyy/MM/DD HH24:mi:SS')
+	</select>
+
 </mapper>

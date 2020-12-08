@@ -25,9 +25,15 @@ public interface RevwMapper {
 	
 	int countWritableRsvd(String userId);
 
-	public List<RevwVO> getRevwListWithPagingByStoreId(@Param("storeId") Long storeId,@Param("cri") Criteria cri);
+	List<RevwVO> getRevwListWithPagingByStoreId(@Param("storeId") Long storeId,@Param("cri") Criteria cri);
 	
-	public List<RevwVO> getRevwListWithPagingByUserId(@Param("userId") String userId,@Param("cri") Criteria cri);
+	List<RevwVO> getRevwListWithPagingByUserId(@Param("userId") String userId,@Param("cri") Criteria cri);
+	
+	RevwVO findRevwWtihImgsByRsvdId(Long rsvdId);
+	
+	RevwVO findRevwWtihImgsByWaitId(Long waitId);
+	
+	List<RevwImgVO> findRevwImgsByRevwId(Long revwId);
 
 	public int getCountByStoreId(Long storeId);
 	
@@ -81,9 +87,10 @@ public interface RevwMapper {
 	public int addCntWaitRevwStus(Long waitId);
 	
 	// 리뷰 답글 달기
-	public int regReply(@Param("replyCnts") String replyCnts, @Param("revwId") Long revwId);
+	public int regReply(@Param("revwId") Long revwId,@Param("replyCnts") String replyCnts);
 
 	// 리뷰 삭제
 	public int deleteRevw(Long revwId);
+	
 
 }

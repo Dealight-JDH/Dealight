@@ -266,6 +266,7 @@ public class StoreServiceImpl implements StoreService {
 
 	
 	@Override
+	@Transactional
 	public boolean modifyStore(StoreVO store) {
 		
 		int result = sMapper.update(store);

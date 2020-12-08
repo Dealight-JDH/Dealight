@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.dealight.domain.Criteria;
+import com.dealight.domain.RevwImgVO;
 import com.dealight.domain.RevwVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.RsvdWithWaitDTO;
@@ -20,6 +21,11 @@ public interface RevwService {
 	int countWritableWait(String userId);
 	
 	int countWritableRsvd(String userId);
+	
+	// 예약 번호로 리뷰 찾기
+	RevwVO findRevwWtihImgsByRsvdId(Long rsvdId);
+	// 웨이팅 번호로 리뷰 찾기
+	RevwVO findRevwWtihImgsByWaitId(Long waitId);
 	
 	// 매장 리뷰 리스트 가져오기(페이징)
 	List<RevwVO> getRevwListWithPagingByStoreId(Long storeId, Criteria cri);
@@ -63,9 +69,11 @@ public interface RevwService {
 	List<WaitVO> getWritableListByWait(String userId);
 	
 	// 리뷰 답글 달기
-	boolean regReply(@Param("replyCnts") String replyCnts, @Param("revwId") Long revwId);
+	boolean regReply(Long revwId,String replyCnts);
 
 	// 리뷰 삭제
 	boolean deleteRevw(Long revwId);
+	
+	List<RevwImgVO> findRevwImgsByRevwId(Long revwId);
 	
 }

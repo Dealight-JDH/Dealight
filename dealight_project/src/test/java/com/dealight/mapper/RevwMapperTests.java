@@ -293,7 +293,7 @@ public class RevwMapperTests {
 		RevwVO revw = mapper.findById(revwId);
 		log.info(revw);
 
-		int result = mapper.regReply("내용!", revwId);
+		int result = mapper.regReply(revwId,"내용!");
 		log.info("UPDATED REVW REPLY: " + result);
 		
 		assertTrue(result == 1);
@@ -418,6 +418,48 @@ public class RevwMapperTests {
 		});
 		
 		assertTrue(list.size() == amount);
+		
+	}
+	
+	@Test
+	public void findRevwWtihImgsByRsvdIdTest1() {
+		
+		Long rsvdId = 264L;
+		
+		RevwVO revw = mapper.findRevwWtihImgsByRsvdId(rsvdId);
+		
+		assertNotNull(revw);
+		assertTrue(revw.getRsvdId().equals(rsvdId));
+		log.info(revw);
+		
+	}
+	
+	@Test
+	public void findRevwWtihImgsByWaitIdTest1() {
+		
+		Long waitId = 111L;
+		
+		RevwVO revw = mapper.findRevwWtihImgsByWaitId(waitId);
+		
+		assertNotNull(revw);
+		assertTrue(revw.getWaitId().equals(waitId));
+		log.info(revw);
+		
+	}
+	
+	@Test
+	public void findRevwImgsByRevwIdTest1() {
+		
+		Long revwId = 126L;
+		
+		List<RevwImgVO> list = mapper.findRevwImgsByRevwId(revwId);
+		
+		assertNotNull(list);
+		list.stream().forEach(img -> {
+			assertNotNull(img);
+			assertTrue(img.getRevwId().equals(revwId));
+			log.info("img : " + img);
+		});
 		
 	}
 }

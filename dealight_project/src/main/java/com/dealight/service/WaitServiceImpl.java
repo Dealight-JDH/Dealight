@@ -190,4 +190,10 @@ public class WaitServiceImpl implements WaitService {
 		return waitMapper.getWaitCnt(userId, cri, "P");
 	}
 
+	@Override
+	public List<WaitVO> findLastWeekRsvdListByStoreId(Long storeId) {
+
+		return waitMapper.findLastWeekRsvdListByStoreId(storeId);
+	}
+
 }

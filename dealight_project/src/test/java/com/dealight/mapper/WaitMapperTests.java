@@ -352,5 +352,22 @@ public class WaitMapperTests {
     	log.info(wait);
     	
     }
+    
+    @Test
+    public void findLastWeekRsvdListByStoreIdTest1() {
+    	
+    	Long storeId = 1L;
+    	
+    	List<WaitVO> list = mapper.findLastWeekRsvdListByStoreId(storeId);
+    	
+    	assertNotNull(list);
+    	
+    	list.stream().forEachOrdered(wait -> {
+    		
+    		assertTrue(wait.getStoreId().equals(storeId));
+    		log.info("wait : " + wait);
+    	});
+    	
+    }
 
 }

@@ -500,7 +500,7 @@ public class RevwServiceTests {
 		log.info("before revw................. : "+revw);
 		log.info("before revw reply cnts................. : "+revw.getReplyCnts());
 		
-		assertTrue(revwService.regReply(replyCnts, revwId));
+		assertTrue(revwService.regReply(revwId,replyCnts));
 
 		revw = revwService.findById(revwId);
 		
@@ -570,6 +570,32 @@ public class RevwServiceTests {
 		});
 		
 		assertTrue(list.size() == amount);
+		
+	}
+	
+	@Test
+	public void findRevwWtihImgsByRsvdIdTest1() {
+		
+		Long rsvdId = 264L;
+		
+		RevwVO revw = revwService.findRevwWtihImgsByRsvdId(rsvdId);
+		
+		assertNotNull(revw);
+		assertTrue(revw.getRsvdId().equals(rsvdId));
+		log.info(revw);
+		
+	}
+	
+	@Test
+	public void findRevwWtihImgsByWaitIdTest1() {
+		
+		Long waitId = 111L;
+		
+		RevwVO revw = revwService.findRevwWtihImgsByWaitId(waitId);
+		
+		assertNotNull(revw);
+		assertTrue(revw.getWaitId().equals(waitId));
+		log.info(revw);
 		
 	}
 	

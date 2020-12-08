@@ -12,20 +12,30 @@
 <body>
 	<div class="well">
 		<h2>웨이팅 등록</h2>
-		<input type="text" class="msg_wait" value='{"sendUser":"${userId}","waitId":"100","cmd":"wait","storeId":"1"}' class="form-control" />
-		<button class="btn btn-primary btn_wait">Send Message</button>
+		<form action="/dealight/store/wait" method="post">
+			웨이팅 인원 : <input type="number" name="pnum"></br>
+			매장 번호 : <input type="number" name="storeId"></br>
+			<button type="submit">온라인 웨이팅 등록</button></br>
+		</form>
 	</div>
 	
 	<div class="well">
 		<h2>예약 등록</h2>
-		<input type="text" class="msg_rsvd" value='{"sendUser":"${userId}","rsvdId":"100","cmd":"rsvd","storeId":"1"}' class="form-control" />
-		<button class="btn btn-primary btn_rsvd">Send Message</button>
+		<form action="/dealight/store/rsvd" method="post">
+			예약 인원 : <input type="number" name="pnum"></br>
+			매장 번호 : <input type="number" name="storeId" value="1"></br>
+			핫딜 번호 : <input type="number" name="htdlId"></br>
+			결제 승인 번호 : <input type="number" name="aprvNo" value="1111"></br>
+			총 수량 : <input type="number" name="totQty" value="2"></br>
+			총 가격 : <input type="number" name="totAmt" value="16000"></br>
+			==========================================</br>
+			메뉴 이름 : <input type="text" name="menuNm" value="치킨"></br>
+			메뉴 수량 : <input type="number" name="menuTotQty" value="2"></br>
+			메뉴 가격 : <input type="number" name="menuPrc" value="16000"></br>
+			<button type="submit">예약 등록</button>
+		</form>
 	</div>
 	
-	<div class="wait_register_wrapper">
-       <button class="btn_wait_register">온라인 웨이팅 등록</button>
-    </div><!-- end wait board -->
-    
     	<div id="myModal" class="modal">
 		<!-- Modal content -->
 		<div class="modal-content">
@@ -292,16 +302,6 @@
  	
  	
  };
- 
- /* 웨이팅 등록 */
- $(".btn_wait_register").on("click", e => {
- 	
- 	modal.css("display","block");
- 	showWaitRegisterForm(storeId,userId);
- 	
- 	//$("#waitRegForm").submit();        		
- 	
- });
     </script>
 </body>
 </html>

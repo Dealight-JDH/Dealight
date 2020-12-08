@@ -11,75 +11,10 @@
 <link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
-<style>
-	/* The Modal (background) */
-        .modal {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
-        left: 0;
-        top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0,0,0); /* Fallback color */
-        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        }
-
-        /* Modal Content/Box */
-        .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto; /* 15% from the top and centered */
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%; /* Could be more or less, depending on screen size */
-        }
-
-        /* The Close Button */
-        .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-        }
-        
-        /* The Delete Button*/
-        .btn_delete {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        }
-
-        .btn_delete:hover,
-        .btn_delete:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-        }
-</style>
 </head>
 <body>
     <main class="mypage_wrapper">
-        <div class="mypage_menu_nav">
-            <h2 class="tit_nav">마이 페이지</h2>
-            <div class="inner_nav">
-                <ul class="menu_list">
-                    <li><a href="/dealight/mypage/reservation">예약 내역</a></li>
-                    <li><a href="/dealight/mypage/wait">웨이팅 내역</a></li>
-                    <li><a href="/dealight/mypage/review/">나의 리뷰</a></li>
-                    <li><a href="/dealight/mypage/like">찜 목록</a></li>
-                    <li><a href="/dealight/mypage/modify">회원 정보 수정</a></li>
-                </ul>
-            </div>
-        </div>
+        <%@include file="/WEB-INF/views/includes/mypageSidebar.jsp" %>
         <div class="mypage_content">
             <div class="content_head">
                 <h2>웨이팅 내역<span>웨이팅 내역을 가져옵니다.</span></h2>
@@ -158,37 +93,14 @@
 		</div>
 	</div>
 
+<script type="text/javascript" src="/resources/js/modal.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {
-	
-	// 모달 선택
-	const modal = $("#myModal"),
-		close = $(".close"),
-		modalContent = $(".modal-content"),
-		btn_show_board = $("#btn_show_board");
-
-	close.on("click", (e) => {
-		modal.css("display","none");
-		modal.find("ul").html("");
-		modal.find("#map").html("");
-		modal.find("#map").css("display", "none");
-	});
-	
-	modal.find("#map").css("display", "none");
-	
-	/*
-	 모달이 아닌 화면을 클릭하면 모달이 종료가 되어야 하는데 그렇지 않음.
-	*/
-	window.onclick = function(event) {
-		  if (event.target == modal) {
-			  modal.css("display","none");
-			  modal.find("ul").html("");
-		  }
-	};
+window.onload = function () {
 	
     const userId = '${userId}',
 	    revwRegFormUL = $(".revw_regForm"),
-	    storeInfoUL = $(".store_info")
+	    storeInfoUL = $(".store_info"),
+	    btn_show_board = $("#btn_show_board")
 	;
 	    
 	let container,options,map,mapContainer,mapOption,markerPosition,marker;
@@ -327,6 +239,9 @@ $(document).ready(function() {
 				
 				let files = inputFile[0].files;
 				
+				// add category
+				let category = 'revwImgs';
+				
 				for(let i = 0; i < files.length; i++){
 					
 					if(!checkExtension(files[i].name, files[i].size)) {
@@ -334,6 +249,8 @@ $(document).ready(function() {
 		            }
 		            /* uploadFile 이라는 변수명에 파일 배열(스프링에서는 MultipartFile[]로 받는다)을 달아서보낸다. */
 					formData.append("uploadFile", files[i]);
+		            // add category
+					formData.append("category", category);
 				}
 				
 				$.ajax({
@@ -528,35 +445,31 @@ $(document).ready(function() {
     	
        };
        
-       /* 리뷰 등록 */
-       $(".btn_revw_reg").on("click", e => {
-       	
+   	let showRevwRegFormHandler =  function(e) {
        	let storeId = $(e.target).parent().find(".store_id").text(),
-       		waitId = $(e.target).parent().find(".wait_id").text(),
-       		revwStus = $(e.target).parent().find(".revw_stus").text();
+	   		waitId = $(e.target).parent().find(".wait_id").text(),
+	   		revwStus = $(e.target).parent().find(".revw_stus").text();
        	
-       	if(revwStus > 0) return;
-       	
-       	modal.css("display","block");
+	    if(revwStus > 0) return;
+		
        	showRevwRegForm(storeId,userId,waitId);
-       	
-       	//$("#waitRegForm").submit();        		
-       	
-       });
+       	modal.css("display","block");
+	}
+   	
+	let showStoreInfoHandler = function(e) {
+    	let storeId = $(e.target).parent().find(".store_id").text()
+    	
+    	showStoreInfo(storeId);
+    	modal.css("display","block");
+	}
+       
+       /* 리뷰 등록 */
+       $(".btn_revw_reg").on("click",showRevwRegFormHandler);
        
        /* 매장 상세 */
-       $(".btn_store_info").on("click", e => {
-       	
-       	let storeId = $(e.target).parent().find(".store_id").text()
-       	
-       	modal.css("display","block");
-       	showStoreInfo(storeId);
-       	
-       	//$("#waitRegForm").submit();        		
-       	
-       });
+       $(".btn_store_info").on("click",showStoreInfoHandler);
 	
-}); /* document ready end*/
+}; /* document ready end*/
 
 </script>
 </body>

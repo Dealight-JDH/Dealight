@@ -207,7 +207,7 @@
 		*
 		FROM tbl_rsvd
 		where store_id = #{storeId} and
-		TO_CHAR(regdate,'YYYYMMDD') = #{today}
+		TO_CHAR(to_date(time, 'YYYY/MM/DD HH24/mi/ss'),'YYYYMMDD') = #{today}
 		ORDER BY regdate asc
 	</select>
 
@@ -217,7 +217,7 @@
 		*
 		FROM tbl_rsvd
 		where store_id = #{storeId} and
-		TO_CHAR(regdate,'YYYYMMDD') = #{date}
+		TO_CHAR(to_date(time, 'YYYY/MM/DD HH24/mi/ss'),'YYYYMMDD') = #{date}
 		ORDER BY regdate asc
 	</select>
 
@@ -236,7 +236,7 @@
 		(
 		select rsvd_id
 		from tbl_rsvd
-		where TO_CHAR(regdate,'YYYYMMDD') = #{date} and
+		where TO_CHAR(to_date(time, 'YYYY/MM/DD HH24/mi/ss'),'YYYYMMDD') = #{date} and
 		store_id = #{storeId}
 		) r, tbl_rsvd_dtls d
 		where r.rsvd_id = d.rsvd_id
@@ -253,7 +253,7 @@
 		from tbl_rsvd
 		where store_id = #{storeId}
 		and (stus_cd = 'C' OR stus_cd = 'L')
-		and TO_CHAR(regdate,'YYYYMMDD') = #{date}
+		and TO_CHAR(to_date(time, 'YYYY/MM/DD HH24/mi/ss'),'YYYYMMDD')= #{date}
 		) r, tbl_user u
 		WHERE r.user_id = u.user_id
 		ORDER BY regdate desc
@@ -270,7 +270,7 @@
 		select *
 		from tbl_rsvd
 		where store_id = #{storeId}
-			and TO_CHAR(regdate,'YYYYMMDD') BETWEEN TO_CHAR(sysdate - 7,'YYYYMMDD')
+			and TO_CHAR(to_date(time, 'YYYY/MM/DD HH24/mi/ss'),'YYYYMMDD') BETWEEN TO_CHAR(sysdate - 7,'YYYYMMDD')
 			AND TO_CHAR(sysdate,'YYYYMMDD')
 	</select>
 	
