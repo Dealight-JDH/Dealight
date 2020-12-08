@@ -118,7 +118,6 @@
    			
    			let data = {email : emailValue};
    			
-   			
    			//인증번호 발송하기
    			sendMail(data, function(result){
    				console.log("========" + result);

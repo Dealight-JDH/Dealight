@@ -54,17 +54,17 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 			return;
 		}
 		
-//		log.info("fsafsadf: " + authentication.getName());
 //		log.info("====="+((UserDetails)authentication.getPrincipal()).getUsername());
 //		log.info("principal: " + authentication.getPrincipal());
 //		log.info("auth details : " + authentication.getDetails().toString());
+//		log.info("auth get Name: " + authentication.getName());
 		
 		// 서비스 요청 시 로그인 페이지에서 로그인 후 
 		//이전 페이지로 리다이렉트
 		HttpSession session = request.getSession();
         if (session != null) {
         	
-        	session.setAttribute("user", authentication.getName());
+        	session.setAttribute("userId", authentication.getName());
             String redirectUrl = (String) session.getAttribute("prevPage");
             log.warn("==========redirectUrl: " + redirectUrl);
             System.out.println(redirectUrl);

@@ -112,10 +112,11 @@ public class HtdlTimeCheckService {
 										.map(vo -> {
 											try {
 												return format.parse(vo.getStartTm());
-											} catch (ParseException e) {
+											} catch (Exception e) {
 												// TODO Auto-generated catch block
-												throw new RuntimeException(e);
+												e.printStackTrace();
 											}
+											return null;
 										})
 										.collect(Collectors.toList());
 	

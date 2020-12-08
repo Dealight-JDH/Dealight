@@ -1,12 +1,11 @@
 package com.dealight.controller;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +18,7 @@ import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdMenuDTO;
 import com.dealight.domain.RsvdMenuDTOList;
 import com.dealight.domain.RsvdRequestDTO;
+import com.dealight.domain.RsvdRequestInfoDTO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.service.KakaoService;
 import com.dealight.service.RsvdService;
@@ -51,7 +51,7 @@ public class RsvdController {
 	}
 	
 	@GetMapping("/")
-	public void reservation(Principal principal, Model model,HttpSession session, RsvdMenuDTOList rsvdMenuList, String pnum, String time, Long storeId) {
+	public void reservation(Authentication auth, Model model, @Valid RsvdMenuDTOList rsvdMenuList, @Valid RsvdRequestInfoDTO requestInfo) {
 		//로그인 성공 후 세션에 저장된 user 정보를 꺼내와서 user정보를 불러옴
 //	    UserVO user = (UserVO)session.getAttribute("user");
 //	    if(user == null) {
@@ -66,12 +66,16 @@ public class RsvdController {
 //		log.info(rsvdMenuList);
 //		}
 		
-	    model.addAttribute("userId", principal.getName());
-	    model.addAttribute("store", service.bstore(storeId));
+		
+		
+	    model.addAttribute("userId", auth.getName());
+	    model.addAttribute("store", service.bstore(requestInfo.getStoreId()));
 		model.addAttribute("rsvdMenuList", rsvdMenuList); 
-		model.addAttribute("pnum", pnum); 
-		model.addAttribute("time", time);
+		model.addAttribute("pnum", requestInfo.getPnum()); 
+		model.addAttribute("time", requestInfo.getTime());
+		
 		log.info(rsvdMenuList);
+		log.info(requestInfo);
 	
 	    //return "/dealight/reservation";
 	    
@@ -107,9 +111,6 @@ public class RsvdController {
     	
     	//결제 요청 시 예약 등록
     	RsvdVO vo = requestDto.toEntity();
-    	vo.setUserId("whddn528");
-    	vo.setStusCd("P");
-    	vo.setRevwStus(0);
     	
 		//예약 상세vo list
 		List<RsvdDtlsVO> dtlsList = new ArrayList<>();
@@ -125,8 +126,7 @@ public class RsvdController {
 //			MenuDTO menuDto = rsvdService.findPriceByName(vo.getStoreId(), menu[i].trim());
 			
 			//log.info("======================menuDto: "+ menuDto);
-			
-			
+
 			if(lists.get(i).getName() != null && lists.get(i).getPrice() != null) {
 				
 				//메뉴 수량 파라미터...
@@ -141,17 +141,22 @@ public class RsvdController {
     	rsvdService.register(vo, dtlsList);
     	Long rsvdId = rsvdService.getRsvdId();
 
-    	
         log.info("kakao pay.....");
-        return "redirect:" + kakaoService.kakaoPayReady(rsvdId, lists, requestDto.getTotAmt(), requestDto.getTotQty());
+        return "redirect:" + kakaoService.kakaoPayReady(rsvdId, vo.getUserId(), lists, requestDto.getTotAmt(), requestDto.getTotQty());
     }
 
     @GetMapping("/kakaoPaySuccess")
-    public void kakaoPaySuccess(String pg_token, Model model){
+    public void kakaoPaySuccess(String userId, Long rsvdId, String pg_token, Model model){
         log.info("paySuccess......");
         log.info("kakaoPay pg_token: "+ pg_token);
         
-        model.addAttribute("info", kakaoService.kakaoPayInfo(pg_token));
+        
+        //카카오 결제 성공시 예약 상태 업데이트
+        //String userId = auth.getName();
+        
+        rsvdService.complete(rsvdId);
+        
+        model.addAttribute("info", kakaoService.kakaoPayInfo(userId, pg_token));
     }
     
     @GetMapping("/kakaoPayCancel")

@@ -37,6 +37,42 @@
 
 		</resultMap>
 		 
+		 <!-- 예약 가능 mapper -->
+		 <insert id="insertRsvdAvail">
+		 	insert into tbl_rsvd_availability
+		 	values(#{storeId}, #{nine}, #{nineHalf}, #{ten}, #{tenHalf}, #{eleven}, #{elevenHalf}, #{twelve},
+		 	 #{twelveHalf}, #{thirteen}, #{thirteenHalf}, #{fourteen}, #{fourteenHalf}, #{fifteen}, #{fifteenHalf},
+		 	 #{sixteen}, #{sixteenHalf}, #{seventeen}, #{seventeenHalf}, #{eighteen}, #{eighteenHalf}, #{nineteen},
+		 	 #{nineteenHalf}, sysdate +9/24, sysdate +9/24)
+		 </insert>
+		 
+		 <delete id="deleteRsvdAvail">
+		 	truncate table tbl_rsvd_availability
+		 </delete>
+		 
+		 <select id="findRsvdAvailByStoreId" resultType="com.dealight.domain.RsvdAvailVO">
+		 select *
+		 from tbl_rsvd_availability
+		 where store_id = #{storeId}
+		 </select>
+		 
+		 <update id="updateRsvdAvail">
+		 	update tbl_rsvd_availability
+		 	set nine = #{nine}, nine_half =  #{nineHalf}, ten = #{ten}, ten_half = #{tenHalf}, eleven = #{eleven},
+		 	 eleven_half = #{elevenHalf}, twelve = #{twelve}, twelve_half = #{twelveHalf}, thirteen = #{thirteen},
+		 	 thirteen_half = #{thirteenHalf}, fourteen = #{fourteen}, fourteen_half =  #{fourteenHalf},
+		 	 fifteen =  #{fifteen}, fifteen_half = #{fifteenHalf}, sixteen = #{sixteen}, sixteen_half =  #{sixteenHalf},
+		 	 seventeen =  #{seventeen}, seventeen_half = #{seventeenHalf}, eighteen =  #{eighteen},
+		 	 eighteen_half = #{eighteenHalf}, nineteen = #{nineteen}, nineteen_half = #{nineteenHalf}, updatedate = sysdate +9/24
+		 	where store_id = #{storeId}
+		 </update>
+		 
+		 <select id="getRsvdAvailList" resultType="com.dealight.domain.RsvdAvailVO">
+		 select *
+		 from tbl_rsvd_availability
+		 where store_id > 0
+		 </select>
+		 
 		
 		<!-- 예약 상세 mapper -->
 		<delete id="deleteDtls">
@@ -77,6 +113,19 @@
 		</insert>
 		
 		<!--예약 mapper -->
+		
+		<update id="updateStusCd">
+			update tbl_rsvd 
+			set stus_cd = #{stusCd}
+			where rsvd_id = #{rsvdId}
+		</update>
+		
+		<select id="findCurrRsvd" resultType="com.dealight.domain.RsvdTimeDTO">
+			select rsvd_id, time, stus_cd
+			from tbl_rsvd
+			where rsvd_id > 0 and stus_cd = 'C'
+		</select>
+		
 		<select id="getSeqRsvd" resultType="long">
 			select seq_rsvd.currval from dual
 		</select>
@@ -85,9 +134,21 @@
 			delete from tbl_rsvd where rsvd_id = #{rsvdId}
 		</delete>
 		
+		<update id ="updateTid">
+			update tbl_rsvd
+			set aprv_no = #{aprvNo}
+			where rsvd_id = #{rsvdId}
+		</update>
+		
 		<update id="update">
 			update tbl_rsvd
 			set htdl_id = #{htdlId}, aprv_no = #{aprvNo}, pnum = #{pnum}, time = #{time}, stus_cd = #{stusCd}, updatedate = sysdate+ 9/24, revw_stus = #{revwStus}
+			where rsvd_id = #{rsvdId}
+		</update>
+		
+		<update id="completeStusUpdate">
+			update tbl_rsvd
+			set stus_cd = 'C'
 			where rsvd_id = #{rsvdId}
 		</update>
 		

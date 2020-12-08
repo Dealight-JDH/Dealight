@@ -1,10 +1,10 @@
 package com.dealight.service;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import com.dealight.domain.RsvdDtlsVO;
+import com.dealight.domain.RsvdTimeDTO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreMenuVO;
 import com.dealight.domain.UserWithRsvdDTO;
@@ -31,10 +31,15 @@ public interface RsvdService {
 	void register(RsvdVO vo, List<RsvdDtlsVO> dtlsList);
 	//예약을 생성한다, 예약 상세
 	
+	//결제승인번호 등록
+	void registerTid(String aprvNo, Long rsvdId);
+	
 	//현재 결제번호 가져온다
 	//결제 완료 아닌 경우-> 예약 취소
 	Long getRsvdId();
 	boolean cancel(Long rsvdId);
+	
+
 	
 	//해당 스토어 메뉴 가져오기
 	List<StoreMenuVO> getMenuList(Long storeId);
@@ -48,7 +53,18 @@ public interface RsvdService {
 	//결제 완료
 	
 	//예약 완료(상태코드 업데이트)
-	void complete(Long rsvdId);
+	boolean complete(Long rsvdId);
+	
+	//현재 예약 get
+	List<RsvdTimeDTO> getCurrRsvdList();
+	
+	//과거 예약 update
+	boolean modifyStusCd(Long rsvdId, String stusCd);
+	
+	//예약 가능 테이블 삭제
+	boolean removeRsvdAvail();
+	
+	//예약 가능 테이블 등록 초기화
 	
 	//테이블 갯수 업데이트
 	//해당 핫딜이 있을 경우 핫딜 예약 인원 업데이트

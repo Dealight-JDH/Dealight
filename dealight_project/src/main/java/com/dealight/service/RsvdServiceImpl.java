@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.RsvdDtlsVO;
+import com.dealight.domain.RsvdTimeDTO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreMenuVO;
 import com.dealight.domain.UserWithRsvdDTO;
@@ -41,6 +42,29 @@ public class RsvdServiceImpl implements RsvdService{
 
 	private final RsvdMapper rsvdMapper;
 	private final StoreMenuMapper menuMapper;
+	
+
+	@Override
+	public boolean modifyStusCd(Long rsvdId, String stusCd) {
+		// TODO Auto-generated method stub
+		log.info("change rsvd stusCd..");
+		return rsvdMapper.updateStusCd(rsvdId, stusCd) == 1;
+	}
+
+	@Override
+	public List<RsvdTimeDTO> getCurrRsvdList() {
+		// TODO Auto-generated method stub
+		
+		log.info("get current rsvd list...");
+		return rsvdMapper.findCurrRsvd() ;
+	}
+
+	@Override
+	public void registerTid(String aprvNo, Long rsvdId) {
+		// TODO Auto-generated method stub
+		log.info("kakao pay... tid register");
+		rsvdMapper.updateTid(aprvNo, rsvdId);
+	}
 	
 	@Override
 	public List<StoreMenuVO> getMenuList(Long storeId) {
@@ -111,9 +135,11 @@ public class RsvdServiceImpl implements RsvdService{
 	}
 
 	@Override
-	public void complete(Long rsvdId) {
+	public boolean complete(Long rsvdId) {
 		
-//		rsvdMapper.update(rsvd)
+		log.info("reservation complete ....");
+		
+		return rsvdMapper.completeStusUpdate(rsvdId) == 1;
 	}
 
 
@@ -422,6 +448,8 @@ public class RsvdServiceImpl implements RsvdService{
 		
 		return rsvdMapper.findLastWeekRsvdListByStoreId(storeId);
 	}
+
+	
 
 
 	

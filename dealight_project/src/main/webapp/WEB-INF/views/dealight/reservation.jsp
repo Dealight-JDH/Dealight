@@ -13,8 +13,6 @@ let msg = '${msg}';
         alert(msg);
         location.href = '/dealight/store?clsCd=B&storeId='+${storeId};
      }
-	
-	
 </script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -27,7 +25,7 @@ let msg = '${msg}';
 			<div class="column">
 				<a
 					href='/dealight/store?clsCd=B&storeId=<c:out value="${store.storeId}"/>'>
-					< </a>
+					</a>
 				<!--  <input type="button" value="<" onClick="history.go(-1)">-->
 				<h1>매장정보</h1>
 				${store.storeNm }
@@ -62,6 +60,7 @@ let msg = '${msg}';
 					<form id="kakaoPayForm" action="/dealight/reservation/kakaoPay"
 						method="post">
 						<input type="hidden" name="storeId" value="${store.storeId }">
+						<input type="hidden" name="userId" value="${userId }">
 						<c:if test="${store.bstore.htdl.htdlId ne null }">
 							<input type="hidden" name="htdlId"
 								value="${store.bstore.htdl.htdlId}">
@@ -78,10 +77,11 @@ let msg = '${msg}';
 								value="${menu.qty}">
 
 						</c:forEach>
-						<input type="hidden" name="pnum" value="${pnum}"> <input
-							type="hidden" name="time" value="${time}"> <input
-							type="hidden" name="totAmt" value="${totAmt}"> <input
-							type="hidden" name="totQty" value="${totQty}">
+						
+						<input type="hidden" name="pnum" value="${pnum}">
+						 <input type="hidden" name="time" value="${time}"> 
+						 <input type="hidden" name="totAmt" value="${totAmt}"> 
+						 <input type="hidden" name="totQty" value="${totQty}">
 						<button class="payment2">카카오 페이</button>
 					</form>
 				</div>

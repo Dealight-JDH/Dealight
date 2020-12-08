@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -150,7 +151,6 @@ public class HtdlServiceImpl implements HtdlService {
 		return htdlMapper.delete(htdlId) == 1 && htdlMapper.deleteDtls(htdlId) == findDtlsList.size();
 	}
 
-//	@Async
 //	@Override
 //	public void asyncMethodTest() {
 //		log.info("==============async meyhod : " + Thread.currentThread().getName());
