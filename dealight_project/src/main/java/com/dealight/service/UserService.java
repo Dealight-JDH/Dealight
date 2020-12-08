@@ -57,5 +57,7 @@ public interface UserService {
 	
 	int checkPanaltyDuration();
 	
+	boolean withdrawalUser(String userId);
+	
 
 }

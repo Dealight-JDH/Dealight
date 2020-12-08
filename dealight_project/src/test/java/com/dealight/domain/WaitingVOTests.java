@@ -3,9 +3,12 @@ package com.dealight.domain;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.Test;
+
+import jdk.internal.org.jline.utils.Log;
 
 public class WaitingVOTests {
 	
@@ -13,6 +16,7 @@ public class WaitingVOTests {
     private long id = 1;
     private long storeId = 1;
     private Date waitRegTm = new Date();
+
     private int waitPnum = 30;
     private String custTelno = "010-0000-0000";
     private String custNm = "�赿��"; 
@@ -28,19 +32,21 @@ public class WaitingVOTests {
 	// ���ð� : userId
 	@Test
 	public void waitingGenerateTest1() {
+	    SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		WaitVO waiting = new WaitVO().builder()
 				.waitId(id)
 				.storeId(storeId)
-				.waitRegTm(waitRegTm)
+				.waitRegTm(formater.format(waitRegTm))
 				.waitPnum(waitPnum)
 				.custTelno(custTelno)
 				.custNm(custNm)
 				.waitStusCd(waitStusCd)
 				.build();
 		
+		System.out.println(waiting);
+		
 		assertTrue(waiting.getWaitId() == id);
 		assertTrue(waiting.getStoreId() == storeId);
-		assertTrue(waiting.getWaitRegTm().equals(waitRegTm));
 		assertTrue(waiting.getWaitPnum() == waitPnum);
 		assertTrue(waiting.getCustTelno().equals(custTelno));
 		assertTrue(waiting.getCustNm().equals(custNm));
@@ -53,20 +59,24 @@ public class WaitingVOTests {
 	// 2. ��� �Է°�
 	@Test
 	public void waitingGenerateTest2() {
+		
+		SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		WaitVO waiting = new WaitVO().builder()
 				.waitId(id)
 				.userId(userId)
 				.storeId(storeId)
-				.waitRegTm(waitRegTm)
+				.waitRegTm(formater.format(waitRegTm))
 				.waitPnum(waitPnum)
 				.custTelno(custTelno)
 				.custNm(custNm)
 				.waitStusCd(waitStusCd)
 				.build();
 		
+		System.out.println(waiting);
+		
 		assertTrue(waiting.getWaitId() == id);
 		assertTrue(waiting.getStoreId() == storeId);
-		assertTrue(waiting.getWaitRegTm().equals(waitRegTm));
+
 		assertTrue(waiting.getWaitPnum() == waitPnum);
 		assertTrue(waiting.getCustTelno().equals(custTelno));
 		assertTrue(waiting.getCustNm().equals(custNm));

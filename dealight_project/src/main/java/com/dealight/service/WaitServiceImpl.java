@@ -1,11 +1,13 @@
 package com.dealight.service;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.WaitVO;
 import com.dealight.mapper.UserMapper;
 import com.dealight.mapper.WaitMapper;
@@ -75,7 +77,7 @@ public class WaitServiceImpl implements WaitService {
 
 	@Override
 	public long registerOffWaiting(WaitVO waiting) {
-
+		
 		waitMapper.insertSelectKey(waiting);
 		
 		return waiting.getWaitId();
@@ -97,8 +99,19 @@ public class WaitServiceImpl implements WaitService {
 	// query 3번 날리는거 추후에 변경
 	@Override
 	public boolean panaltyWaiting(Long waitid) {
+		
+		log.info("panaltyWaiting.....................");
+		
+		String userId = waitMapper.findById(waitid).getUserId();
+		
+		log.info("waitId....................." + waitid);
+		log.info("userId....................." + userId);
+		
+		if(userId == null)
+			return waitMapper.changeWaitStusCd(waitid, "P") == 1;
+		else 
+			return waitMapper.changeWaitStusCd(waitid, "P") == 1 && 1 == userMapper.addPanaltyCnt(userId);
 
-		return waitMapper.changeWaitStusCd(waitid, "P") == 1 && 1 == userMapper.addPanaltyCnt(waitMapper.findById(waitid).getUserId());
 	}
 
 	@Override
@@ -144,6 +157,43 @@ public class WaitServiceImpl implements WaitService {
 	public int waitInit() {
 		
 		return waitMapper.waitInit();
+	}
+
+	@Override
+	public List<WaitVO> findWaitListWithPagingByUserId(String userId, Criteria cri) {
+		
+		return waitMapper.findWaitListWithPagingByUserId(userId, cri);
+	}
+
+
+	@Override
+	public WaitVO getCurWaitByUserId(String userId) {
+		
+		return waitMapper.getCurWaitByUserId(userId);
+	}
+
+	@Override
+	public int getCurWaitCnt(String userId, Criteria cri) {
+
+		return waitMapper.getWaitCnt(userId, cri, "W");
+	}
+
+	@Override
+	public int getEnterWaitCnt(String userId, Criteria cri) {
+
+		return waitMapper.getWaitCnt(userId, cri, "E");
+	}
+
+	@Override
+	public int getPanaltyWaitCnt(String userId, Criteria cri) {
+
+		return waitMapper.getWaitCnt(userId, cri, "P");
+	}
+
+	@Override
+	public List<WaitVO> findLastWeekRsvdListByStoreId(Long storeId) {
+
+		return waitMapper.findLastWeekRsvdListByStoreId(storeId);
 	}
 
 }

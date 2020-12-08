@@ -1,5 +1,6 @@
 package com.dealight.service;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.text.SimpleDateFormat;
@@ -14,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdVO;
 
@@ -25,14 +27,14 @@ import lombok.extern.log4j.Log4j;
 public class RsvdServiceTests {
 	
 	@Autowired
-	private RsvdService service;
+	private RsvdService rsvdService;
 	
 	@Test
 	@Transactional
 	public void testRemove() {
 		Long rsvdId = 12l;
 		
-		assertTrue(service.cancel(rsvdId));
+		assertTrue(rsvdService.cancel(rsvdId));
 	}
 	
 	
@@ -66,7 +68,68 @@ public class RsvdServiceTests {
 			dtlsList.add(dtlsVO);
 		}
 		
-		service.register(vo, dtlsList);
+		rsvdService.register(vo, dtlsList);
+		
+	}
+	
+	@Test
+	public void findRsvdListWithPagingByUserIdTest1() {
+		
+		String userId = "kjuioq";
+		
+		int pageNum = 3;
+		int amount = 10;
+		
+		Criteria cri = new Criteria(pageNum,amount);
+		
+		List<RsvdVO> list = rsvdService.findRsvdListWithPagingByUserId(userId, cri);
+		
+		list.stream().forEach(rsvd -> {
+			log.info("rsvd : " + rsvd);
+		});
+		
+		log.info("rsvd list size : " + list.size());
+		
+		
+	}
+	
+	@Test
+	public void findRsvdListWithPagingAndDtlsByUserIdTest1() {
+		
+		String userId = "kjuioq";
+		
+		int pageNum = 1;
+		int amount = 10;
+		
+		Criteria cri = new Criteria(pageNum,amount);
+		
+		List<RsvdVO> list = rsvdService.findRsvdListWithPagingAndDtlsByUserId(userId, cri);
+		
+		list.stream().forEach(rsvd -> {
+			log.info("rsvd : " + rsvd);
+			assertNotNull(rsvd.getRsvdDtlsList());
+			
+		});
+		
+		log.info("rsvd list size : " + list.size());
+		assertTrue(list.size() == amount);
+		
+		
+	}
+	
+	@Test
+	public void getRsvdTotalCountTest1() {
+		
+		String userId = "kjuioq";
+		
+		int pageNum = 1;
+		int amount = 10;
+		
+		Criteria cri = new Criteria(pageNum,amount);
+		
+		int total = rsvdService.getRsvdTotalCount(userId, cri);
+		
+		log.info("total....................."+total);
 		
 	}
 }

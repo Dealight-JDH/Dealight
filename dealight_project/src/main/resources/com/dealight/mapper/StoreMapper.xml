@@ -121,7 +121,7 @@
 				<result property="waitId" column="wait_id" />
 				<result property="storeId" column="store_id" />
 				<result property="userId" column="user_id" />
-				<result property="waitRegTm" column="wait_reg_tm" />
+				<result property="waitRegTm" column="regdate" />
 				<result property="waitPnum" column="wait_pnum" />
 				<result property="custTelno" column="cust_telno" />
 				<result property="waitStusCd" column="wait_stus_cd" />
@@ -362,6 +362,22 @@
 		where s.store_id = #{storeId} AND s.store_id = b.store_id
 	</select>
 	
+	<select id="findStoreWithLocByStoreId" resultMap="StoreVO">
+		select *
+		FROM tbl_store s, tbl_store_loc l
+		where s.store_id = #{storeId}
+		AND s.store_id = l.store_id
+	</select>
 	
+	<select id="findStoreWithBstoreAndLocByStoreId" resultMap="StoreVO">
+		select s.store_id, s.store_nm, s.telno, s.cls_cd, b.buser_id, b.seat_stus_cd, b.open_tm, b.close_tm,
+			   b.break_sttm, b.break_entm, b.last_ord_tm, b.n1_seat_no, b.n2_seat_no, b.n4_seat_no,
+			   b.store_intro, b.avg_meal_tm, b.hldy, b.acm_pnum, b.rep_menu, b.rep_img, b.brch,
+			   l.addr, l.lat, l.lng
+		from tbl_store s, tbl_bstore b, tbl_store_loc l
+		WHERE s.store_id = b.store_id
+		AND s.store_id = l.store_id
+		AND s.store_id = #{storeId}
+	</select>
 
 </mapper>

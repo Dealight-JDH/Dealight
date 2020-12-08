@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.UserWithRsvdDTO;
@@ -76,5 +77,13 @@ public interface RsvdMapper {
 	public int update(RsvdVO rsvd);
 	
 	public List<RsvdVO> findLastWeekRsvdListByStoreId(long storeId);
+	
+	public List<RsvdVO> findRsvdListWithPagingByUserId(@Param("userId") String userId, @Param("cri") Criteria cri);
+	
+	public List<RsvdVO> findRsvdListWithPagingAndDtlsByUserId(@Param("userId") String userId, @Param("cri") Criteria cri);
+	
+	public int getRsvdTotalCount(@Param("userId") String userId, @Param("cri") Criteria cri);
+	
+	public int getRsvdCount(@Param("userId") String userId, @Param("cri") Criteria cri, @Param("stusCd") String stusCd);
 	
 }

@@ -94,5 +94,17 @@ public class RsvdVOTests {
 		
 		System.out.println(formatter.format(new Date(cal.getTimeInMillis())));
 	}
+	
+	@Test
+	public void test1() {
+		
+		int storeIdx = 0;
+		
+		for(int i = 0; i < 100; i++) {
+			
+			storeIdx = (int) (Math.random() * 5);
+			System.out.println(storeIdx);
+		}
+	}
 
 }

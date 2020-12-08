@@ -34,7 +34,7 @@ public class AllStoreVOTests {
 	// �ʼ� �Է°�
     private long id = 1;
     private String cnts = "�ʹ� ���־��~";
-    private String regDt = "20201113"; 
+    private String regdate = "20201113"; 
     private double rating = 5.5;
     private String replyCnts = "�� �����ּ���~";
     private String replyRegDt = "20201107";
@@ -116,7 +116,7 @@ public class AllStoreVOTests {
 				.storeId(storeId)
 				.userId(userId)
 				.cnts(cnts)
-				.regDt(regDt)
+				.regdate(regdate)
 				.rating(rating)
 				.replyCnts(replyCnts)
 				.replyRegDt(replyRegDt)

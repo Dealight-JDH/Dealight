@@ -21,6 +21,7 @@ public class Criteria {
 	private double lng;
 	//정렬기준을 알려주는 변수
 	private String sortType;
+	
 	//----------------필터조건---------------
 	//핫딜매우선보기 Htdl
 	//식사가능 우선보기 Seat
@@ -32,10 +33,7 @@ public class Criteria {
 	//-------------------헤시태그-------------
 	//해시태그는 계속생각해보
 	
-	public Criteria() {
-		this(1,20,1,37.570414,126.985320,"D", "", true);
-		
-	}
+	public Criteria() {}
 	
 //	다울이랑 이야기해야
 //	public Criteria() {

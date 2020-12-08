@@ -49,5 +49,7 @@ public interface UserMapper {
 	public int addPanaltyCnt(String userId);
 	
 	public int checkPanaltyDuration();
+	
+	public int withdrawalUser(String userId);
 
 }

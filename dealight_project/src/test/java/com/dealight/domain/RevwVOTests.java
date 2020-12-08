@@ -14,7 +14,7 @@ public class RevwVOTests {
     private long storeId = 1;
     private String userId = "kjuioq";
     private String cnts = "�ʹ� ���־��~";
-    private String regDt = "20201107"; 
+    private String regdate = "20201107"; 
     private double rating = 5.5;
     private String replyCnts = "�� �����ּ���~";
     private String replyRegDt = "20201107";
@@ -32,7 +32,7 @@ public class RevwVOTests {
 				.storeId(storeId)
 				.userId(userId)
 				.cnts(cnts)
-				.regDt(regDt)
+				.regdate(regdate)
 				.rating(rating)
 				.replyCnts(replyCnts)
 				.replyRegDt(replyRegDt)
@@ -42,10 +42,10 @@ public class RevwVOTests {
 		assertTrue(review.getStoreId() == storeId);
 		assertTrue(review.getUserId().equals(userId));
 		assertTrue(review.getCnts().equals(cnts));
-		assertTrue(review.getRegDt().equals(regDt));
+		assertTrue(review.getRegdate().equals(regdate));
 		assertTrue(review.getRating() == rating);
 		assertTrue(review.getReplyCnts().equals(replyCnts));
-		assertTrue(review.getRegDt().equals(replyRegDt));
+		assertTrue(review.getReplyRegDt().equals(replyRegDt));
 		
 		
 	}
@@ -59,7 +59,7 @@ public class RevwVOTests {
 				.storeId(storeId)
 				.userId(userId)
 				.cnts(cnts)
-				.regDt(regDt)
+				.regdate(regdate)
 				.rating(rating)
 				.replyCnts(replyCnts)
 				.replyRegDt(replyRegDt)
@@ -71,10 +71,10 @@ public class RevwVOTests {
 		assertTrue(review.getStoreId() == storeId);
 		assertTrue(review.getUserId().equals(userId));
 		assertTrue(review.getCnts().equals(cnts));
-		assertTrue(review.getRegDt().equals(regDt));
+		assertTrue(review.getRegdate().equals(regdate));
 		assertTrue(review.getRating() == rating);
 		assertTrue(review.getReplyCnts().equals(replyCnts));
-		assertTrue(review.getRegDt().equals(replyRegDt));
+		assertTrue(review.getReplyRegDt().equals(replyRegDt));
 		assertTrue(review.getRsvdId() == rsvdId);
 		assertTrue(review.getWaitId() == waitId);
 		

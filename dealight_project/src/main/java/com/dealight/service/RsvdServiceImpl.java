@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreMenuVO;
@@ -206,12 +207,8 @@ public class RsvdServiceImpl implements RsvdService{
 		String strMinute ="";
 		
 		if(minute < 60)
-			result = 45;
-		if(minute < 45)
 			result = 30;
 		if(minute < 30)
-			result = 15;
-		if(minute < 15)
 			result = 0;
 		
 		strMinute = Integer.toString(result);
@@ -423,6 +420,34 @@ public class RsvdServiceImpl implements RsvdService{
 		return rsvdMapper.findLastWeekRsvdListByStoreId(storeId);
 	}
 
+	@Override
+	public List<RsvdVO> findRsvdListWithPagingByUserId(String userId, Criteria cri) {
 
-	
+		return rsvdMapper.findRsvdListWithPagingByUserId(userId, cri);
+	}
+
+	@Override
+	public List<RsvdVO> findRsvdListWithPagingAndDtlsByUserId(String userId, Criteria cri) {
+		
+		return rsvdMapper.findRsvdListWithPagingAndDtlsByUserId(userId, cri);
+	}
+
+	@Override
+	public int getRsvdTotalCount(String userId, Criteria cri) {
+		
+		return rsvdMapper.getRsvdTotalCount(userId, cri);
+	}
+
+	@Override
+	public int getRsvdLastCount(String userId, Criteria cri) {
+		
+		return rsvdMapper.getRsvdCount(userId, cri, "L");
+	}
+
+	@Override
+	public int getRsvdCompleteCount(String userId, Criteria cri) {
+		
+		return rsvdMapper.getRsvdCount(userId, cri, "C");
+	}
+
 }

@@ -20,8 +20,9 @@ import lombok.extern.log4j.Log4j;
 @AllArgsConstructor
 @Log4j
 public class StoreRevwController {
-	private RevwService service;
+	private RevwService revwService;
 
+	/*
 	@GetMapping(value="/pages/{storeId}/{page}",
 			produces= {
 					MediaType.APPLICATION_XML_VALUE,
@@ -35,6 +36,7 @@ public class StoreRevwController {
 		log.info("getList revw list"+ storeId);
 		log.info("cri: "+cri);
 		
-		return new ResponseEntity<>(service.getListPage(cri, storeId), HttpStatus.OK);
+		return new ResponseEntity<>(revwService.getRevwListWithPagingByStoreId(storeId, cri), HttpStatus.OK);
 	}
+	*/
 }

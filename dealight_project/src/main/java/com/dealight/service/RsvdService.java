@@ -1,9 +1,9 @@
 package com.dealight.service;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreMenuVO;
@@ -122,5 +122,15 @@ public interface RsvdService {
 	List<UserWithRsvdDTO> userListTodayRsvd(long storeId);
 	
 	List<RsvdVO> findLastWeekRsvd(long storeId);
+	
+	List<RsvdVO> findRsvdListWithPagingByUserId(String userId, Criteria cri);
+	
+	List<RsvdVO> findRsvdListWithPagingAndDtlsByUserId(String userId, Criteria cri);
+	
+	int getRsvdTotalCount(String userId, Criteria cri);
+	
+	int getRsvdLastCount(String userId, Criteria cri);
+	
+	int getRsvdCompleteCount(String userId, Criteria cri);
 	
 }

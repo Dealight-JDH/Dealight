@@ -266,6 +266,7 @@ public class StoreServiceImpl implements StoreService {
 
 	
 	@Override
+	@Transactional
 	public boolean modifyStore(StoreVO store) {
 		
 		int result = sMapper.update(store);
@@ -442,6 +443,17 @@ public class StoreServiceImpl implements StoreService {
 	public boolean deleteMenu(Long menuSeq) {
 		
 		return menuMapper.delete(menuSeq) == 1;
+	}
+
+	@Override
+	public StoreVO findStoreWithLocByStoreId(Long storeId) {
+		return sMapper.findStoreWithLocByStoreId(storeId);
+	}
+
+	@Override
+	public StoreVO findStoreWithBStoreAndLocByStoreId(Long storeId) {
+		
+		return sMapper.findStoreWithBstoreAndLocByStoreId(storeId);
 	}
 
 

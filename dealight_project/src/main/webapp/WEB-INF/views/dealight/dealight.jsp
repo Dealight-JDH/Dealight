@@ -5,9 +5,6 @@
     <%@include file="../includes/loginmodalHeader.jsp" %>
     <%@include file="../includes/mainMenu.jsp" %>
     <%@include file="../includes/loginModal.jsp" %>
-    
-    <!-- 현수현수현수 --> <!-- 수빈수빈수빈 -->
-    
 <body>
 
  <div class="middleDiv">

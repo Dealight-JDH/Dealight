@@ -21,5 +21,9 @@ public class LikeVO {
     private String userId;
 
     private Long storeId;
+    
+    private String regdate;
+    
+    private String updatedate;
 
 }
