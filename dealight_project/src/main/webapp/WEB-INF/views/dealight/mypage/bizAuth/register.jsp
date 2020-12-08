@@ -64,7 +64,7 @@
 </head>
 <body>
 <div class="container">
-	<form action="/dealight/mypage/bizAuth/register" method="post" name="register">
+	<form action="/dealight/mypage/bizauth/register" method="post" name="register">
 		<label>ID</label><input type="text" name="userId" value="${buser.userId }"><br>
 		-----------------><br>
 		<label>대표자명</label><input type="text" name="repName" value="${buser.repName }"><br>
@@ -143,7 +143,7 @@ window.onload = function(){
 		formObj.append(str).submit();
 	}
 	listbtn.onclick = function(){
-		self.location = '/dealight/mypage/bizAuth/list'
+		self.location = '/dealight/mypage/bizauth/list'
 		return;
 	}
 	//================================ 파일첨부 ============================

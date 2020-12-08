@@ -2,8 +2,8 @@ package com.dealight.mapper;
 
 import java.util.List;
 
-import com.dealight.domain.BStoreVO;
 import com.dealight.domain.BUserVO;
+import com.dealight.domain.Criteria;
 
 /*
  * 
@@ -24,6 +24,10 @@ public interface BUserMapper {
 	// read list
 	public List<BUserVO> findAll();
 	
+	public List<BUserVO> getListWithPaging(Criteria cri);
+	
+	public int getTotalCount(Criteria cri);
+	
 	// update
 	public int update(BUserVO buser);
 	
@@ -32,5 +36,7 @@ public interface BUserMapper {
 	
 	//유저로 모록가져오기
 	public List<BUserVO> findAllByUserId(String userId);
+	
+	
 
 }

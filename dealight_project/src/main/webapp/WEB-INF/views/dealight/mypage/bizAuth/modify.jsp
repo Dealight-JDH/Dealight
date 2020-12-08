@@ -65,7 +65,7 @@
 <body>
 
 <div class="container">
-	<form action="/dealight/mypage/bizAuth/modify" method="post" name="modify">
+	<form action="/dealight/mypage/bizauth/modify" method="post" name="modify">
 		<label>ID</label><input type="text" name="userId" value="${buser.userId }" readonly="readonly"><br>
 		<label>심사코드</label><input type="text" name="brJdgStusCd" value="${buser.brJdgStusCd }" ><br>
 		<label>접수날짜</label><input type="text" name="regdate" value='<fmt:formatDate pattern="yyyy/MM/dd" value="${buser.regdate }"/>'><br>
@@ -137,9 +137,9 @@ window.onload = function(){
 	$('#btn  button').on("click",function(e){
 		let operation = $(this).data('oper');
 		if(operation ==='remove'){
-			formObj.attr("action", "/dealight/mypage/bizAuth/remove");
+			formObj.attr("action", "/dealight/mypage/bizauth/remove");
 		}else if(operation === 'list'){
-			formObj.attr("action", "/dealight/mypage/bizAuth/list").attr("method", "get");
+			formObj.attr("action", "/dealight/mypage/bizauth/list").attr("method", "get");
 			formObj.empty();
 		}else if(operation === 'modify'){
 			const uploadResult = document.getElementsByClassName("uploadResult")[0];

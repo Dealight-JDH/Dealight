@@ -203,7 +203,7 @@
 </resultMap> -->
 
 
-	<select id="findById" resultType="com.dealight.domain.StoreVO">
+	<select id="findByUserId" resultType="com.dealight.domain.StoreVO">
 		SELECT
 		*
 		FROM tbl_store
@@ -315,15 +315,6 @@
   	<delete id="delete">
   		delete from tbl_store where store_id = #{storeId}
   	</delete>
-  	
-  	
-  	
-  	<select id="joinLoc" resultType="com.dealight.domain.StoreVO" resultMap="StoreVO">
-  		<!-- 좌표를 계산해서 반경범위안에 들어오는 가게들만 뽑아오는 로직필요 -->
-  		select s.store_id, s.store_nm, s.telno, s.cls_cd, l.addr, l.lat, l.lng
-  		from tbl_store s , tbl_store_loc l
-  		where s.store_id = l.store_id
-  	</select>
   	
   	<select id="getListAllInfo" resultType="com.dealight.domain.StoreVO" resultMap="StoreVO">
   		select s.store_id, s.store_nm, s.telno, s.cls_cd, l.addr, l.lat, l.lng,

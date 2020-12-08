@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.dealight.domain.BUserVO;
+import com.dealight.domain.Criteria;
 import com.dealight.mapper.BUserMapper;
 
 import lombok.AllArgsConstructor;
@@ -40,6 +41,14 @@ public class BizAuthServiceImpl implements BizAuthService {
 		
 		
 		return mapper.findAll();
+	}
+	
+	@Override
+	public List<BUserVO> getListWithCri(Criteria cri){
+		
+		log.info("getList with cri : " + cri);
+		
+		return mapper.getListWithPaging(cri);
 	}
 	
 	@Override

@@ -58,7 +58,7 @@
 </c:forEach>
 <button id="regbtn" class="registerbtn" data-oper="register" >사업자등록하기</button>
 <!-- 버튼제어 폼 -->
-<form action="/dealight/mypage/bizAuth/modify" id="operForm" method="post">
+<form action="/dealight/mypage/bizauth/modify" id="operForm" method="post">
 	<input type="hidden" id="brSeq" name="brSeq" value="" >
 </form>
 
@@ -77,7 +77,7 @@ window.onload = function(){
 	$('.move').on("click", function(e){
 		e.preventDefault();
 		formObj.find("input[name='brSeq']").val($(this).attr('href'))
-		formObj.attr("action", "/dealight/mypage/bizAuth/get").attr("method", "get");
+		formObj.attr("action", "/dealight/mypage/bizauth/get").attr("method", "get");
 		
 		formObj.submit();
 	});
@@ -90,7 +90,7 @@ window.onload = function(){
 		
 		//재심사요청
 		if(operation === 'request'){
-			formObj.attr("action", "/dealight/mypage/bizAuth/request").attr("method", "get");
+			formObj.attr("action", "/dealight/mypage/bizauth/request").attr("method", "get");
 		//매장관리
 		}else if(operation === 'manage'){
 			self.location = "/dealight/business/"
@@ -118,7 +118,7 @@ window.onload = function(){
 	
 	//등록버튼 클릭 이벤트
 	regbtn.onclick = function(){
-		self.location = "/dealight/mypage/bizAuth/register"
+		self.location = "/dealight/mypage/bizauth/register"
 	}
 	
 }

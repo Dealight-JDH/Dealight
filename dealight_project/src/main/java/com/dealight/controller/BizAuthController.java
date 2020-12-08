@@ -22,7 +22,7 @@ import lombok.extern.log4j.Log4j;
 
 @Controller
 @Log4j
-@RequestMapping("/dealight/mypage/bizAuth/*")
+@RequestMapping("/dealight/mypage/bizauth/*")
 @AllArgsConstructor
 public class BizAuthController {
 
@@ -57,7 +57,7 @@ public class BizAuthController {
 		log.info("brSeq :" + buser.getBrSeq());
 		rttr.addFlashAttribute("result", buser.getBrSeq());
 		
-		return "redirect:/dealight/mypage/bizAuth/list";
+		return "redirect:/dealight/mypage/bizauth/list";
 	}
 	
 	@GetMapping("/register")
@@ -72,7 +72,7 @@ public class BizAuthController {
 		
 		model.addAttribute("buser", service.read(brSeq));
 		
-		return "dealight/mypage/bizAuth/register";
+		return "dealight/mypage/bizauth/register";
 	}
 	
 	
@@ -111,7 +111,7 @@ public class BizAuthController {
 			rttr.addFlashAttribute("result", "success");
 		}
 		
-		return "redirect:/dealight/mypage/bizAuth/list";
+		return "redirect:/dealight/mypage/bizauth/list";
 	}
 	
 	@PostMapping("/remove")
@@ -125,7 +125,7 @@ public class BizAuthController {
 			rttr.addFlashAttribute("result", "success");
 		}
 		
-		return "redirect:/dealight/mypage/bizAuth/list";
+		return "redirect:/dealight/mypage/bizauth/list";
 	}
 	
 }

@@ -96,7 +96,7 @@
 		<button data-oper="modify">수정하기</button>
 		<button data-oper="list">목록으로</button>
 		
-		<form action="/dealight/mypage/bizAuth/modify" id="operForm">
+		<form action="/dealight/mypage/bizauth/modify" id="operForm">
 			<input type="hidden" id="brSeq" name="brSeq" value="${buser.brSeq }" > 
 		</form>
 	</div>
@@ -138,12 +138,12 @@ window.onload = function(){
 	const operForm = $("#operForm");
 	
 	$("button[data-oper='modify']").on("click", function(e){
-		operForm.attr("action","/dealight/mypage/bizAuth/modify").submit();	
+		operForm.attr("action","/dealight/mypage/bizauth/modify").submit();	
 	})
 	
 	$("button[data-oper='list']").on("click", function(e){
 		operForm.find("#brSeq").remove();
-		operForm.attr("action","/dealight/mypage/bizAuth/list")
+		operForm.attr("action","/dealight/mypage/bizauth/list")
 		operForm.submit();
 	})
 	//--------------

@@ -66,12 +66,6 @@ public class StoreMapperTests {
 		log.info(mapper.delete(3L));
 	}
 	
-	public void testJoinLoc() {
-		mapper.joinLoc().forEach(store-> {
-			log.info(store);
-			log.info(store.getLoc());
-		});
-	}
 	
 	public void testGetListAllInfo() {
 		mapper.getListAllInfo().forEach(store->{
