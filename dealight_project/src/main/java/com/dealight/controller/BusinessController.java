@@ -1,8 +1,6 @@
 package com.dealight.controller;
 
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.BStoreVO;
 import com.dealight.domain.StoreEvalVO;
-import com.dealight.domain.StoreImgVO;
 import com.dealight.domain.StoreLocVO;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserWithRsvdDTO;
@@ -27,6 +24,7 @@ import com.dealight.service.CallService;
 import com.dealight.service.HtdlService;
 import com.dealight.service.RsvdService;
 import com.dealight.service.StoreService;
+import com.dealight.service.UserService;
 import com.dealight.service.WaitService;
 
 import lombok.AllArgsConstructor;
@@ -49,6 +47,8 @@ public class BusinessController {
 	private HtdlService htdlService;
 	
 	private CallService callService;
+	
+	private UserService userService;
 	
 	// 파일 저장 경로를 지정한다.
 	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05";
@@ -97,20 +97,17 @@ public class BusinessController {
 	
 	// 해당 유저의 매장 리스트를 보여준다.
 	@GetMapping("/")
-	public String list(Model model,HttpServletRequest request) {
+	public String list(Model model,HttpSession session) {
 		
 
 		log.info("business store list..");
 		
-		
-		HttpSession session = request.getSession();
-		
 		// 임시로 'aaaa'이라는 아이디의 매장을 보여준다.
-		session.setAttribute("userId", "aaaa");
-		
+		//session.setAttribute("userId", "aaaa");
 		String userId = (String) session.getAttribute("userId");
-		
 		model.addAttribute("userId", userId);
+		
+		log.info(".........................................userId : "+userId);
 		
 		List<StoreVO> list = storeService.getStoreListByUserId(userId);
 		
@@ -143,6 +140,7 @@ public class BusinessController {
 		HttpSession session = request.getSession();
 		
 		String userId = (String) session.getAttribute("userId");
+		 
 
 		// 오늘 예약한 사용자의 사용자 정보와 예약 정보를 가져온다.
 		List<UserWithRsvdDTO> todayRsvdUserList = rsvdService.userListTodayRsvd(storeId);

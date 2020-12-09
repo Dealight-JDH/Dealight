@@ -43,16 +43,16 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 		log.warn("role names: " + roleNames);
 		
 		//관리자 리다이렉트
-		if(roleNames.contains("ROLE_ADMIN")) {
-			response.sendRedirect("/dealight/admin");
-			return;
-		}
+//		if(roleNames.contains("ROLE_ADMIN")) {
+//			response.sendRedirect("/dealight/admin");
+//			return;
+//		}
 		
 		//사업자 리다이렉트
-		if(roleNames.contains("ROLE_MEMBER")) {
-			response.sendRedirect("/dealight/business/");
-			return;
-		}
+//		if(roleNames.contains("ROLE_MEMBER")) {
+//			response.sendRedirect("/dealight/business/");
+//			return;
+//		}
 		
 //		log.info("====="+((UserDetails)authentication.getPrincipal()).getUsername());
 //		log.info("principal: " + authentication.getPrincipal());
@@ -61,10 +61,14 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 		
 		// 서비스 요청 시 로그인 페이지에서 로그인 후 
 		//이전 페이지로 리다이렉트
+		
+		log.warn("==================session===================");
 		HttpSession session = request.getSession();
+		
         if (session != null) {
         	
         	session.setAttribute("userId", authentication.getName());
+        	log.info("session....................................user id : "+session.getAttribute("userId"));
             String redirectUrl = (String) session.getAttribute("prevPage");
             log.warn("==========redirectUrl: " + redirectUrl);
             System.out.println(redirectUrl);

@@ -462,15 +462,6 @@ public class UserController {
 //		return "redirect:/dealight/dealight";
 //	}
 
-	// 마이페이지 예약내역 보여주기 로그인 상태일때만!
-	@GetMapping("/mypage/reservation")
-	public void reservation(HttpSession session, Model model) throws IOException {
-		// 로그인 성공 후 세션에 저장된 user 정보를 꺼내와서 user정보를 불러옴
-		UserVO user = (UserVO) session.getAttribute("userId");
-		if (user == null) {
-			model.addAttribute("msg", "로그인이 필요한 페이지 입니다.");
-		}
-	}
 
 	// 로그아웃
 	@PostMapping("/logout")

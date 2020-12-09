@@ -37,7 +37,7 @@ public class RevwController {
 	public String getWritableList(HttpSession session, Model model,Criteria cri) {
 		
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		session.setAttribute("userId", "kjuioq");
+		//session.setAttribute("userId", "kjuioq");
 		String userId = (String) session.getAttribute("userId");
 
 		if(cri.getPageNum() == 0)
@@ -63,7 +63,7 @@ public class RevwController {
 	public void getWrittenList(HttpSession session, Model model,Criteria cri) {
 		
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		session.setAttribute("userId", "kjuioq");
+		//session.setAttribute("userId", "kjuioq");
 	    String userId = (String) session.getAttribute("userId");
 	    
 	    log.info("before cri................" + cri);
@@ -95,7 +95,7 @@ public class RevwController {
 	public String registerRevw(HttpSession session, Model model,RevwVO revw,String prevPage) {
 		
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		session.setAttribute("userId", "kjuioq");
+		//session.setAttribute("userId", "kjuioq");
 	    String userId = (String) session.getAttribute("userId");
 	    
 	    log.info("revw register .......................");

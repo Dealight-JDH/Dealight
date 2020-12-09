@@ -45,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <select id="getList" resultType="com.dealight.domain.UserVO">
 <![CDATA[
-select * from tbl_user where user_id >0;
+select * from tbl_user
 ]]>
 </select>
 
@@ -88,7 +88,7 @@ where user_id = #{userId}
 <!-- 회원가입 -->
 <insert id="insert">
 insert into tbl_user(user_id, name, pwd, email, telno, brdt, sex, sns_lgin_yn, regdate, updatedate, enabled)
-values (#{userId}, #{name}, #{pwd}, #{email}, #{telno}, #{brdt}, #{sex}, #{snsLginYn}, sysdate +9/24, sysdate+9/24, '1')
+values (#{userId}, #{name}, #{pwd}, #{email}, #{telno}, #{brdt}, #{sex}, #{snsLginYn}, sysdate +9/24, sysdate+9/24, 1)
 </insert>
 
 <insert id="insertAuth">

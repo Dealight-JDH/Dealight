@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +49,7 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model, String code) {
+	public String home(Locale locale, Model model, HttpSession session) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
 		Date date = new Date();
@@ -55,8 +57,12 @@ public class HomeController {
 		
 		String formattedDate = dateFormat.format(date);
 		
+		String userId = (String) session.getAttribute("userId");
+		
+		log.info(".................................user id : "+userId);
+		
 		model.addAttribute("serverTime", formattedDate );
-		model.addAttribute("code",code);
+		model.addAttribute("userId", userId);
 		
 		
 		

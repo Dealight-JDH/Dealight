@@ -171,4 +171,15 @@ public class UserMapperTests {
 		
 	}
 	
+	@Test
+	public void readTest1() {
+		
+		String userId = "aaaa";
+		
+		UserVO user = mapper.read(userId);
+		
+		log.info(user);
+		
+	}
+	
 }
