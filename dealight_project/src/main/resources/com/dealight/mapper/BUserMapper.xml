@@ -75,23 +75,23 @@
 	</select>
 	
 	<sql id="criteria">
-	<where>
-		<choose>
-			<when test="type == 'I'.toString()">
-				user_id like '%'||#{keyword}||'%'
-			</when>
-			<when test="type == 'S'.toString()">
-				store_nm like '%'||#{keyword}||'%'
-			</when>
-			<when test="type == 'R'.toString()">
-				rep_name like '%'||#{keyword}||'%'
-			</when>
-		</choose>
-     </where> 
-
-     <if test="sortType == 'D'.toString()">
-	 order by br_seq 
-	 </if>
+		<where>
+			<choose>
+				<when test="type == 'I'.toString()">
+					user_id like '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'S'.toString()">
+					store_nm like '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'R'.toString()">
+					rep_name like '%'||#{keyword}||'%'
+				</when>
+			</choose>
+	     </where> 
+	
+	     <if test="sortType == 'D'.toString()">
+		 order by br_seq 
+		 </if>
 	</sql>
 	<select id="getListWithPaging" resultType="com.dealight.domain.BUserVO">
 		select

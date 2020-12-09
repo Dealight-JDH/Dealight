@@ -202,6 +202,53 @@
     <collection property="bstore" resultMap="BStoreVO"/>
 </resultMap> -->
 
+<sql id="criteria">
+	<where>
+		<choose>
+			<when test="type == 'I'.toString()">
+				user_id like '%'||#{keyword}||'%'
+			</when>
+			<when test="type == 'S'.toString()">
+				store_nm like '%'||#{keyword}||'%'
+			</when>
+		</choose>
+     </where> 
+     <if test="sortType == 'D'.toString()">
+	 order by store_id
+	 </if>
+</sql>
+
+	<select id="findStoreListWithPaging" resultMap="StoreVO">
+			SELECT
+			    store_id, store_nm, telno, cls_cd, regdate, updatedate
+			FROM
+			(
+			    
+			    SELECT *
+			    FROM
+			    (
+			    SELECT rownum rn, store_id, store_nm, telno, cls_cd, regdate, updatedate
+			    FROM tbl_store
+			    <include refid="criteria"></include>
+			    )
+		<![CDATA[
+			    WHERE store_id > 0
+			    AND rownum <= #{pageNum} * #{amount}
+			)
+			WHERE rn > (#{pageNum} -1) * #{amount}
+		]]>
+	</select>
+	
+	<select id="getTotalCnt" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		(
+		SELECT *
+        FROM tbl_store
+		<include refid="criteria"></include>
+		)
+		WHERE store_id > 0
+	</select>
 
 	<select id="findByUserId" resultType="com.dealight.domain.StoreVO">
 		SELECT
@@ -370,5 +417,11 @@
 		AND s.store_id = l.store_id
 		AND s.store_id = #{storeId}
 	</select>
+	
+	<update id="suspendStore">
+		UPDATE tbl_store
+		SET cls_cd = 'I'
+		WHERE store_id = #{storeId}
+	</update>
 
 </mapper>

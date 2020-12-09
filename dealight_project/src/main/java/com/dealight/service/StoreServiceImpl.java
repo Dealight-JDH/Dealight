@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.AllStoreVO;
 import com.dealight.domain.BStoreVO;
+import com.dealight.domain.Criteria;
 import com.dealight.domain.MenuVO;
 import com.dealight.domain.RevwVO;
 import com.dealight.domain.StoreEvalVO;
@@ -92,9 +93,11 @@ public class StoreServiceImpl implements StoreService {
 		lMapper.insert(store.getLoc());
 		eMapper.insert(store.getEval());
 		bMapper.insert(store.getBstore());
-		for(StoreImgVO img : store.getImgs()) {
-			img.setStoreId(store.getStoreId());
-		}
+		
+		if(store.getImgs() != null)
+			for(StoreImgVO img : store.getImgs()) 
+				img.setStoreId(store.getStoreId());
+		
 		imgMapper.insertAll(store.getImgs());
 		
 		
@@ -454,6 +457,24 @@ public class StoreServiceImpl implements StoreService {
 	public StoreVO findStoreWithBStoreAndLocByStoreId(Long storeId) {
 		
 		return sMapper.findStoreWithBstoreAndLocByStoreId(storeId);
+	}
+
+	@Override
+	public boolean suspendStore(Long storeId) {
+		
+		return sMapper.suspendStore(storeId) == 1;
+	}
+
+	@Override
+	public List<StoreVO> findStoreListWithPaging(Criteria cri) {
+		
+		return sMapper.findStoreListWithPaging(cri);
+	}
+
+	@Override
+	public int getTotalCnt(Criteria cri) {
+		
+		return sMapper.getTotalCnt(cri);
 	}
 
 
