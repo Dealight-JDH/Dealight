@@ -1,7 +1,10 @@
 package com.dealight.security;
 
+import static org.junit.Assert.assertTrue;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -11,14 +14,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.dealight.domain.UserVO;
+import com.dealight.service.UserService;
 
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({
 	"file:src/main/webapp/WEB-INF/spring/root-context.xml",
 	"file:src/main/webapp/WEB-INF/spring/security-context.xml"
 })
+@Log4j
 public class UserTests {
 	
 	@Setter(onMethod_ = @Autowired)
@@ -26,6 +35,9 @@ public class UserTests {
 	  
 	 @Setter(onMethod_ = @Autowired)
 	 private DataSource ds;
+	 
+	 @Setter(onMethod_ = @Autowired)
+	 private UserService userSerivce;
 	
 			  
 		  @Test
@@ -120,5 +132,36 @@ public class UserTests {
 				  }
 			}
 		}
+		  
+		  
+		 
+		 @Transactional
+		 @Test
+		 public void pwdUpdate() {
+			 
+			  List<UserVO> beforeList = userSerivce.getList();
+			  
+			 List<UserVO> list = userSerivce.getList();
+			 
+			 list.stream().forEach(user -> {
+				 
+				 if(user.getPwd().length() < 10) {
+					 user.setPwd(pwencoder.encode(user.getPwd()));
+					 assertTrue(userSerivce.changePwd(user));
+				 }
+				 
+			 });
+			 
+			 log.info("=============================before list=============================");
+			 beforeList.stream().forEach(user -> {
+				 
+				 log.info("user pwd : "+user.getPwd());
+			 });
+			 list = userSerivce.getList();
+			 log.info("=============================after list=============================");
+			 list.stream().forEach(user -> {
+				 log.info("user pwd : "+user.getPwd());
+			 });
+		 }
 
 }

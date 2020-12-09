@@ -76,6 +76,7 @@ public class StoreMapperTests {
 	}
 	
 	//사업자아이디로 검색
+	@Test
 	public void testFindByUserIdJoinBStore() {
 		mapper.findByUserIdJoinBStore("aaaa").forEach(store-> log.info(store));
 	}

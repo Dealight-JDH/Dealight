@@ -310,7 +310,7 @@ body {
 				<!--이 icon들은 굳이 div로 안 나눠도 될듯?-->
 				<div class="rightIcon">
 					<a href="#"><i class="fas fa-question-circle" color="black"></i></a>
-
+					<span>아이디 : ${userId }</span>
 				</div>
 				<div class="rightIcon">
 					<a href="#"><i class="fas fa-bell" color="black"></i></a>
@@ -330,11 +330,11 @@ body {
 							<sec:authorize access="hasRole('ROLE_USER')">
 							<a href="/dealight/mypage/reservation">예약내역</a> 
 							<a href="/dealight/mypage/wait">웨이팅</a>
-							<a href="/dealight/mypage/myreview">나의리뷰</a>
+							<a href="/dealight/mypage/review/">나의리뷰</a>
 							<a href="/dealight/mypage/like">찜 목록</a> 
 							</sec:authorize>
 							<sec:authorize access="hasRole('ROLE_MEMBER')">								
-								<a href="/dealight/mypage/business/">매장 관리</a>
+								<a href="/dealight/business/">매장 관리</a>
 							</sec:authorize>
 							
 							<sec:authorize access="hasRole('ROLE_ADMIN')">								

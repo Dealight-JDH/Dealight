@@ -79,7 +79,7 @@ public class MypageController {
 	public String reservation(Model model, HttpSession session, Criteria cri) {
 
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		session.setAttribute("userId", "kjuioq");
+		//session.setAttribute("userId", "kjuioq");
 		String userId = (String) session.getAttribute("userId");
 
 		if(cri.getPageNum() == 0)
@@ -139,7 +139,7 @@ public class MypageController {
 	public ResponseEntity<RevwVO> getRevwByRsvdId(HttpSession session,@PathVariable("rsvdId") Long rsvdId){
 
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		session.setAttribute("userId", "kjuioq");
+		//session.setAttribute("userId", "kjuioq");
 		String userId = (String) session.getAttribute("userId");
 		
 		log.info("rsvd id .................. : " + rsvdId);
@@ -155,7 +155,7 @@ public class MypageController {
 	public String wait(Model model, HttpSession session, Criteria cri) {
 
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		session.setAttribute("userId", "kjuioq");
+		//session.setAttribute("userId", "kjuioq");
 		String userId = (String) session.getAttribute("userId");
 
 		if(cri.getPageNum() == 0)
@@ -188,7 +188,7 @@ public class MypageController {
 	public ResponseEntity<RevwVO> getRevwByWaitId(HttpSession session,@PathVariable("waitId") Long waitId){
 
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		session.setAttribute("userId", "kjuioq");
+		//session.setAttribute("userId", "kjuioq");
 		String userId = (String) session.getAttribute("userId");
 
 		return  new ResponseEntity<>(revwService.findRevwWtihImgsByWaitId(waitId), HttpStatus.OK);
@@ -198,8 +198,9 @@ public class MypageController {
 	public String like(Model model, HttpSession session,Criteria cri) {
 
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		session.setAttribute("userId", "kjuioq");
+		//session.setAttribute("userId", "kjuioq");
 		String userId = (String) session.getAttribute("userId");
+		
 
 		// TODO 찜 목록은 Grid 형식으로 보여준다.
 		if(cri.getPageNum() == 0)
@@ -221,7 +222,7 @@ public class MypageController {
 	public ResponseEntity<LikeListDTO> getLikeList(HttpSession session,@PathVariable("pageNum") int pageNum, @PathVariable("amount") int amount){
 
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		session.setAttribute("userId", "kjuioq");
+		//session.setAttribute("userId", "kjuioq");
 		String userId = (String) session.getAttribute("userId");
 
 		LikeListDTO dto = new LikeListDTO();
@@ -246,10 +247,10 @@ public class MypageController {
 	public String modify(Model model, HttpSession session) {
 
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		session.setAttribute("userId", "kjuioq");
+		//session.setAttribute("userId", "kjuioq");
 		String userId = (String) session.getAttribute("userId");
-
-		UserVO user = userService.get(userId);
+		UserVO user = userService.read(userId);
+		
 
 		model.addAttribute("user",user);
 
@@ -284,7 +285,7 @@ public class MypageController {
 	public String review(HttpSession session) {
 
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		session.setAttribute("userId", "kjuioq");
+		//session.setAttribute("userId", "kjuioq");
 
 		String userId = (String) session.getAttribute("userId");
 
@@ -295,10 +296,8 @@ public class MypageController {
 	public String changepwd(HttpSession session,Model model) {
 
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		session.setAttribute("userId", "kjuioq");
 		String userId = (String) session.getAttribute("userId");
-
-		UserVO user = userService.get(userId);
+		UserVO user = userService.read(userId);
 
 		model.addAttribute("user",user);
 
@@ -311,10 +310,9 @@ public class MypageController {
 		log.info("change pwd...............");
 
 		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		session.setAttribute("userId", "kjuioq");
+		//session.setAttribute("userId", "kjuioq");
 		String userId = (String) session.getAttribute("userId");
-
-		UserVO user = userService.get(userId);
+		UserVO user = userService.read(userId);
 
 		// 비밀번호가 일치할 때
 		if(pwd.equals(user.getPwd())) {

@@ -10,68 +10,12 @@
 <title>회원 정보 수정</title>
 <link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<style type="text/css">
- 		* { /* CSS초기화. 이거 없으면 div태그 사이에 공백 생김*/
-
-            margin  : 0;   /* 값이 0일 때는 단위 안씀. */
-            border  : 0;
-            padding : 0;
-        }
-		#profile{
-            margin: 30px;
-            margin-bottom: 50px;
-            width: 150px;
-            height: 100px;
-            border: solid 2px black;
-        }
-        #asideMenu{
-            margin: 50px;
-            border: solid 2px red;
-            width : 15%;
-            height: 550px;
-            display: inline-block;
-            /* width : 15%;
-            height : 500px;
-            margin: 30px; */
-        }
-        #asideMenu ul li {                     
-            list-style: none;        
-            color: white;              
-            background-color: red;  
-            float: bottom;
-            width: 100%;        
-            line-height: 50px;
-            text-align: center;
-            border: solid 1px black;
-            
-        }
-        #asideMenu .menuLink {                              
-            text-decoration:none;             
-            color: white;                     
-            display: block;                   
-            width: 150px;                     
-            font-size: 12px;                  
-            font-weight: bold;                
-            
-        }
-        .modify-content{
-
-            position: absolute;
-            margin-top: 50px;
-            display: inline-block;
-            border: 1px solid;
-            width: 800px;
-            height: 600px;
-            margin-left: 100px;
-            padding: 20px;
-        }
-
-</style>
 </head>
 <body>
- <%@include file="/WEB-INF/views/includes/mypageSidebar.jsp" %>
 <div id="container">
-            <div class="modify-content">
+	<main class="mypage_wrapper">
+		<%@include file="/WEB-INF/views/includes/mypageSidebar.jsp" %>
+			<div class="mypage_content">
                 <h1>회원정보수정</h1>
                 
                 <form role="form" action ="/dealight/mypage/modify" method="post" onsubmit="return validate()">
@@ -90,8 +34,8 @@
                 <button type="submit" data-oper="get" >뒤로가기</button>
                 </div>
                 </form>
-                
-           </div>
+                </div>
+          </main>
 </div>
 <!-- 수정이 성공했는지 실패했는지 메세지를 받아옴 -->
 <%-- <input type="hidden"  id = msg2 value='<c:out value="${msg2}"/>'> --%>

@@ -25,7 +25,10 @@
 <h2>${userId}</h2>
 
 <h2><a href="/dealight/business/register">등록하기</a></h2>
-
+	<c:if test="${empty storeList}">
+		<h2>등록하신 매장이 없습니다.🤣</h2>
+	</c:if>	
+<c:if test="${not empty storeList}">
 <c:forEach items="${storeList}" var="store">
 ============================================
 	<a class='storeInfo' href='/dealight/business/manage/?storeId=${store.storeId}'><div>
@@ -42,6 +45,7 @@
 	</div></a>
 ============================================</br>
 </c:forEach>
+</c:if>
 </main>
 <script type="text/javascript">
 $(document).ready(function() {
