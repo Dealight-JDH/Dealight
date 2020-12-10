@@ -156,6 +156,11 @@ public class RsvdController {
         
         rsvdService.complete(rsvdId);
         
+        //핫딜이 존재하는 경우
+        //핫딜 마감인원 - 이용인원
+        
+        //예약 가능 여부 차감
+        
         model.addAttribute("info", kakaoService.kakaoPayInfo(userId, pg_token));
     }
     

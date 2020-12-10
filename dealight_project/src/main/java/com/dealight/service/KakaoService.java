@@ -40,7 +40,7 @@ public class KakaoService {
 	private int totAmt = 0;
 	
 	//결제 준비
-	public String kakaoPayReady(Long rsvdId, String userId, List<RsvdMenuDTO> lists, int totAmt, int totQty ) {
+	public String kakaoPayReady(Long rsvdId, String userId, List<RsvdMenuDTO> lists, int totAmt, int totQty) {
 		
 		this.rsvdId = rsvdId;
 		this.totAmt = totAmt;

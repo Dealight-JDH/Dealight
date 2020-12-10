@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.dealight.domain.Criteria;
+import com.dealight.domain.RsvdAvailVO;
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdTimeDTO;
 import com.dealight.domain.RsvdVO;
@@ -39,9 +40,7 @@ public interface RsvdService {
 	//결제 완료 아닌 경우-> 예약 취소
 	Long getRsvdId();
 	boolean cancel(Long rsvdId);
-	
 
-	
 	//해당 스토어 메뉴 가져오기
 	List<StoreMenuVO> getMenuList(Long storeId);
 	
@@ -64,8 +63,21 @@ public interface RsvdService {
 	
 	//예약 가능 테이블 삭제
 	boolean removeRsvdAvail();
-	
 	//예약 가능 테이블 등록 초기화
+	void initRsvdAvail();
+	
+	List<RsvdAvailVO> getRsvdAvailList();
+	
+	RsvdAvailVO getRsvdAvailByStoreId(Long storeId);
+	
+	//예약 완료후
+	//예약 가능 여부 차감 || 핫딜이 존재하는 경우 차감
+	boolean completeUpdateAvail(Long storeId, String time, int pnum);
+	
+	
+	boolean completeUpdateHtdl();
+	
+	
 	
 	//테이블 갯수 업데이트
 	//해당 핫딜이 있을 경우 핫딜 예약 인원 업데이트

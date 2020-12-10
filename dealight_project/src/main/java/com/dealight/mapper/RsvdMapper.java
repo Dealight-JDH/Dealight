@@ -34,10 +34,17 @@ public interface RsvdMapper {
 
 	//예약 가능 mapper
 	void insertRsvdAvail(RsvdAvailVO availVO);
-	void deleteRsvdAvail();
+	int deleteRsvdAvail();
+	int countAll();
 	RsvdAvailVO findRsvdAvailByStoreId(Long storeId);
 	List<RsvdAvailVO> getRsvdAvailList();
 	void updateRsvdAvail(RsvdAvailVO availVO);
+	
+	//예약 완료 후
+	//예약 가능 여부 && 핫딜 차감
+	int completeUpdateAvail(RsvdAvailVO availVO);
+	int completeUpdateHtdl();
+	
 
 	Long getSeqRsvd();
 	Long getDaySeqRsvd();
@@ -48,6 +55,8 @@ public interface RsvdMapper {
 	List<RsvdDtlsVO> findDtlsById(Long rsvdId);
 	int updateDtls(RsvdDtlsVO vo);
 	int deleteDtls(Long rsvdId);
+	
+	
 	
 	//예약+상세
 	

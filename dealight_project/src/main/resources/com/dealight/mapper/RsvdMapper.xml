@@ -38,6 +38,23 @@
 		</resultMap>
 		 
 		 <!-- 예약 가능 mapper -->
+		 
+		 <update id="completeUpdateAvail">
+		 	update tbl_rsvd_availability
+		 	set nine = #{nine}, nine_half =  #{nineHalf}, ten = #{ten}, ten_half = #{tenHalf}, eleven = #{eleven},
+			 	 eleven_half = #{elevenHalf}, twelve = #{twelve}, twelve_half = #{twelveHalf}, thirteen = #{thirteen},
+			 	 thirteen_half = #{thirteenHalf}, fourteen = #{fourteen}, fourteen_half =  #{fourteenHalf},
+			 	 fifteen =  #{fifteen}, fifteen_half = #{fifteenHalf}, sixteen = #{sixteen}, sixteen_half =  #{sixteenHalf},
+			 	 seventeen =  #{seventeen}, seventeen_half = #{seventeenHalf}, eighteen =  #{eighteen},
+			 	 eighteen_half = #{eighteenHalf}, nineteen = #{nineteen}, nineteen_half = #{nineteenHalf}, updatedate = sysdate +9/24
+		 	where store_id = #{storeId}
+		 </update>
+		 
+		 <update id="completeUpdateHtdl">
+		 	
+		 	
+		 </update>
+		 
 		 <insert id="insertRsvdAvail">
 		 	insert into tbl_rsvd_availability
 		 	values(#{storeId}, #{nine}, #{nineHalf}, #{ten}, #{tenHalf}, #{eleven}, #{elevenHalf}, #{twelve},
@@ -45,6 +62,10 @@
 		 	 #{sixteen}, #{sixteenHalf}, #{seventeen}, #{seventeenHalf}, #{eighteen}, #{eighteenHalf}, #{nineteen},
 		 	 #{nineteenHalf}, sysdate +9/24, sysdate +9/24)
 		 </insert>
+		 
+		 <select id="countAll" resultType="int">
+		 	select count(*) from tbl_rsvd_availability
+		 </select>
 		 
 		 <delete id="deleteRsvdAvail">
 		 	truncate table tbl_rsvd_availability
