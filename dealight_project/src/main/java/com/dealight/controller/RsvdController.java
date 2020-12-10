@@ -65,9 +65,7 @@ public class RsvdController {
 //		model.addAttribute("time", time);
 //		log.info(rsvdMenuList);
 //		}
-		
-		
-		
+
 	    model.addAttribute("userId", auth.getName());
 	    model.addAttribute("store", service.bstore(requestInfo.getStoreId()));
 		model.addAttribute("rsvdMenuList", rsvdMenuList); 
@@ -142,11 +140,11 @@ public class RsvdController {
     	Long rsvdId = rsvdService.getRsvdId();
 
         log.info("kakao pay.....");
-        return "redirect:" + kakaoService.kakaoPayReady(rsvdId, vo.getUserId(), lists, requestDto.getTotAmt(), requestDto.getTotQty());
+        return "redirect:" + kakaoService.kakaoPayReady(rsvdId, vo.getUserId(), lists, requestDto);
     }
 
     @GetMapping("/kakaoPaySuccess")
-    public void kakaoPaySuccess(String userId, Long rsvdId, String pg_token, Model model){
+    public void kakaoPaySuccess(RsvdRequestDTO requestDto, Long rsvdId,  String pg_token, Model model){
         log.info("paySuccess......");
         log.info("kakaoPay pg_token: "+ pg_token);
         
@@ -155,13 +153,15 @@ public class RsvdController {
         //String userId = auth.getName();
         
         rsvdService.complete(rsvdId);
+    
+        
+        //예약 가능 여부 차감
+        rsvdService.completeUpdateAvail(requestDto.getStoreId(), requestDto.getTime(), requestDto.getPnum());
         
         //핫딜이 존재하는 경우
         //핫딜 마감인원 - 이용인원
         
-        //예약 가능 여부 차감
-        
-        model.addAttribute("info", kakaoService.kakaoPayInfo(userId, pg_token));
+        model.addAttribute("info", kakaoService.kakaoPayInfo(requestDto.getUserId(), pg_token));
     }
     
     @GetMapping("/kakaoPayCancel")
