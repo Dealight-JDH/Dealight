@@ -107,8 +107,13 @@ public class AdminServiceImpl implements AdminService {
 	public boolean modifyStore(StoreVO store) {
 		log.info("modify : " + store);
 		
-		//iMapper.deleteAll(store.getStoreId());
-		//iMapper.insertAll(store.getImgs());
+		iMapper.deleteAll(store.getStoreId());
+		if(store.getImgs() != null) {
+			store.getImgs().stream().forEach(img -> {
+				img.setStoreId(store.getStoreId());
+			});
+			iMapper.insertAll(store.getImgs());
+		}
 		
 		return sMapper.update(store) + lMapper.update(store.getLoc()) + eMapper.update(store.getEval()) + 
 					bsMapper.update(store.getBstore()) == 4;

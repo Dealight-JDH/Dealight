@@ -16,59 +16,104 @@
 			<h6 class="m-0 font-weight-bold text-primary">매장정보조회</h6>
 		</div>
 		<div class="card-body">
-			
 			<div class="card mb-4">
 				<div class="card-header">매장번호</div>
 				<input type="text" class="card-body" name="storeId" value="${store.storeId }" readonly="readonly">
 			</div>
 			<div class="card mb-4">
 				<div class="card-header">매장명</div>
-				<input type="text" class="card-body" name="storeNm" value="${store.storeNm }" readonly="readonly">
+				<input type="text" class="card-body" name="storeNm" value="${store.storeNm }">
 			</div>
 			<div class="card mb-4">
 				<div class="card-header">전화번호</div>
-				<input type="text" class="card-body" name="telno" value="${store.telno }" readonly="readonly">
+				<input type="text" class="card-body" name="telno" value="${store.telno }" >
 			</div>
 			<div class="card mb-4">
 				<div class="card-header">대표메뉴</div>
-				<input type="text" class="card-body" name="repMenu" value="${store.bstore.repMenu }" readonly="readonly">
+				<input type="text" class="card-body" name="repMenu" value="${store.bstore.repMenu }" >
 			</div>
 			<div class="card mb-4">
 				<div class="card-header">영업시간</div>
 				<div class="card-body">
-				<input type="time" name="openTm" value="${store.bstore.openTm }" readonly="readonly">-
-				<input type="time" name="closeTm" value="${store.bstore.closeTm }" readonly="readonly">
+				<input type="time" name="openTm" value="${store.bstore.openTm }" >-
+				<input type="time" name="closeTm" value="${store.bstore.closeTm }" >
 				</div>
 			</div>
 			<div class="card mb-4">
 				<div class="card-header">브레이크시간</div>
 				<div class="card-body">
-				<input type="time" name="breakSttm" value="${store.bstore.breakSttm }" readonly="readonly">-
-				<input type="time" name="breakEntm" value="${store.bstore.breakEntm }" readonly="readonly">
+				<input type="time" name="breakSttm" value="${store.bstore.breakSttm }" >-
+				<input type="time" name="breakEntm" value="${store.bstore.breakEntm }" >
 				</div>
 			</div>
 			<div class="card mb-4">
-				<div class="card-header">주소</div>
-				<input type="text" class="card-body" name="storeIntro" value="${store.loc.addr }" readonly="readonly">
+				<div class="card-header">라스트 오더 시간</div>
+				<input type="text" class="card-body" name="lastOrdTm" value="${store.bstore.lastOrdTm}" >
+			</div>
+			<div class="card mb-4">
+				<div class="card-header">1인 테이블 개수</div>
+				<input type="text" class="card-body" name="n1SeatNo" value="${store.bstore.n1SeatNo}" >
+			</div>
+			<div class="card mb-4">
+				<div class="card-header">2인 테이블 개수</div>
+				<input type="text" class="card-body" name="n2SeatNo" value="${store.bstore.n2SeatNo}" >
+			</div>
+			<div class="card mb-4">
+				<div class="card-header">4인 테이블 개수</div>
+				<input type="text" class="card-body" name="n4SeatNo" value="${store.bstore.n4SeatNo}" >
+			</div>
+			<div class="card mb-4">
+				<div class="card-header">매장소개</div>
+				<input type="text" class="card-body" name="storeIntro" value="${store.loc.addr }" >
+			</div>
+			<div class="card mb-4">
+				<div class="card-header">매장 평균 식사 시간</div>
+				<input type="text" class="card-body" name="avgMealTm" value="${store.bstore.avgMealTm}" >
+			</div>
+			<div class="card mb-4">
+				<div class="card-header">매장 휴무일</div>
+				<input type="text" class="card-body" name="hldy" value="${store.bstore.hldy}" >
+			</div>
+			<div class="card mb-4">
+				<div class="card-header">매장 수용인원</div>
+				<input type="text" class="card-body" name="acmPnum" value="${store.bstore.acmPnum}" >
+			</div>
+			<div class="card mb-4">
+				<div class="card-header">매장 위치</div>
+				<input type="text" class="card-body" name="lastOrdTm" value="${store.loc.addr}" >
 				<div id="map" style="width:200px;height:200px;"></div>
 			</div>
 			<div class="card mb-4">
 				<div class="card-header">평점</div>
-				<input type="text" class="card-body" name="storeIntro" value="${store.eval.avgRating }" readonly="readonly">
+				<input type="text" class="card-body" name="storeIntro" value="${store.eval.avgRating }" readonly>
 			</div>
 			<div class="card mb-4">
 				<div class="card-header">리뷰수</div>
-				<input type="text" class="card-body" name="storeIntro" value="${store.eval.revwTotNum }" readonly="readonly">
+				<input type="text" class="card-body" name="storeIntro" value="${store.eval.revwTotNum }" readonly>
 			</div>
-			
+			<div class="card mb-4">
+				<div class="card-header">찜 수</div>
+				<input type="text" class="card-body" name="storeIntro" value="${store.eval.likeTotNum }" readonly>
+			</div>
+			<div class="card mb-4">
+				<div class="card-header">현재 착석 상태</div>
+				<input type="text" class="card-body" name="storeIntro" value="${store.bstore.seatStusCd}" readonly >
+			</div>
 			<c:if test="${not empty store.imgs}">
 				<div class="card mb-4">
 				<div class="card-header">매장 사진</div>
-						<input class="store_id" hidden value="${store.storeId}">
-						<ul class='store_imgs'></ul>
+					<div class="file_body">
+						<div class='uploadResult'>
+							<ul>
+							</ul>
+						</div> <!-- uploadResult -->
+					</div> 
+						<div class='bigPictureWrapper'>
+							<div class='bigPicture'>
+							</div>
+						</div>
 				</div>
 			</c:if>
-			
 			<button data-oper="modify" class="btn btn-secondary">수정하기</button>
 			<button data-oper="list" class="btn btn-secondary">목록으로</button><br>
 			
@@ -88,6 +133,25 @@
 	
 </div>
 <!-- /.container-fluid -->
+<script>
+    /* form 역할을 하는 엘리먼트를 선택한다. */
+	const formObj = $("#modifyForm");
+    /* 정규식으로 파일 형식을 제한한다. */
+    const regex = new RegExp("(.*>)\.(exe|sh|zip|alz)$");
+    /*최대 파일 크기를 제어한다  */
+	const maxSize = 5242880; /* 5MB */
+	// add category ***페이지마다 변경 필요
+	const category = 'storeImgs';
+	// page type
+	const pageType = "get";
+	// storeId
+	const storeId = ${store.storeId};
+	// btn id
+	const btnSubmit = "#btnSubmit";
+	// isModal
+	const isModal = false;
+</script>
+<script type="text/javascript" src="/resources/js/reg_file.js?ver=1"></script>
 <script>
 	window.onload = function() {
 

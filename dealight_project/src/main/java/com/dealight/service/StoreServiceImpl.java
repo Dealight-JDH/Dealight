@@ -277,20 +277,21 @@ public class StoreServiceImpl implements StoreService {
 		int result2 = bStoreMapper.update(bstore);
 		
 		List<StoreImgVO> imgs = store.getImgs();
-		imgs.stream().forEach(img -> {
-			img.setStoreId(store.getStoreId());
-		});
+		if(imgs != null) {
+			imgs.stream().forEach(img -> {
+				img.setStoreId(store.getStoreId());
+			});
+			log.info("store : "+store);
+			log.info("imgs : "+imgs);
+			storeImgMapper.deleteAll(store.getStoreId());
+			storeImgMapper.insertAll(imgs);
+		}
 		StoreLocVO loc = new StoreLocVO();
 		StoreEvalVO eval = new StoreEvalVO();
 		StoreOptionVO opt = new StoreOptionVO();
 		
-		
-		storeImgMapper.deleteAll(store.getStoreId());
-		storeImgMapper.insertAll(imgs);
-		
-		
-		
 
+		
 		return result == 1 && result2 == 1;
 	}
 

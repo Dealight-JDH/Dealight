@@ -117,6 +117,25 @@
 	
 	</div>
 <script type="text/javascript" src="/resources/js/modal.js"></script>
+<script>
+	/* 정규식으로 파일 형식을 제한한다. */
+	const regex = new RegExp("(.*>)\.(exe|sh|zip|alz)$");
+	/*최대 파일 크기를 제어한다  */
+	const maxSize = 5242880; /* 5MB */
+	// add category ***페이지마다 변경 필요
+	const category = 'revwImgs';
+	// page type
+	const pageType = "register";
+	// storeId
+	const storeId = null;
+	// isModal
+	const isModal = true;
+	// btn id
+	let btnSubmit = "#submit_revwRegForm";
+	/* form 역할을 하는 엘리먼트를 선택한다. */
+	let formObj = $("#revwRegForm");
+</script>
+<script type="text/javascript" src="/resources/js/reg_file.js?ver=1"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	
@@ -335,7 +354,7 @@ $(document).ready(function() {
        
        
        /* 리뷰 등록 폼을 보여준다.*/
-       function showRevwRegForm(storeId,userId,waitId,rsvdId){
+       let showRevwRegForm = function (storeId,userId,waitId,rsvdId){
     	   
     	let strRevwRegForm = "";    			
     			
@@ -348,7 +367,7 @@ $(document).ready(function() {
        	
 	       	
 	       	strRevwRegForm += "<h1>리뷰 작성</h1>";
-	       	strRevwRegForm += "<form id='revwRegForm' action='dsadasdas' method=''>";
+	       	strRevwRegForm += "<form id='revwRegForm' action='/dealight/mypage/review/register' method='post'>";
 	       	strRevwRegForm += "매장 번호 : <input name='storeId' value='"+store.storeId+"' readonly></br>";
 	       	strRevwRegForm += "매장 이름 : <input name='storeNm' value='"+store.storeNm+"' readonly></br>";
 	       	if(rsvdId) strRevwRegForm += "예약 번호 : <input name='rsvdId' value='"+rsvdId+"' readonly></br>";
@@ -366,224 +385,22 @@ $(document).ready(function() {
 	       	
 	       	revwRegFormUL.html(strRevwRegForm);
 	       	
-	       	/* change() 해당하는 요소의 value에 변화가 생길 경우 이를 감지하여 등록된 콜백함수를 동작시킨다.  */
-			$("#js_upload").change(function(e){
-				
-				console.log("change..................");
-				
-				let cloneObj = $(".form_img").clone();
-				
-				let formData = new FormData();
-				
-				let inputFile = $("input[name='uploadFile']");
-				
-				let files = inputFile[0].files;
-				
-				// add category
-				let category = 'revwImgs';
-				
-				for(let i = 0; i < files.length; i++){
-					
-					if(!checkExtension(files[i].name, files[i].size)) {
-						return false;
-		            }
-		            /* uploadFile 이라는 변수명에 파일 배열(스프링에서는 MultipartFile[]로 받는다)을 달아서보낸다. */
-					formData.append("uploadFile", files[i]);
-		            // add category
-					formData.append("category", category);
-				}
-				
-				$.ajax({
-					url : '/uploadAjaxAction',
-					processData : false,
-		            contentType : false, 
-		            data: formData,
-		            type: 'POST',
-					dataType : 'json',
-					success : function(result) {
-					    console.log(result);
-					    showUploadResult(result); // 업로드 결과 처리 함수
-					    $(".form_img").html(cloneObj.html()); // 첨부파일 개수 초기화
-					}
-					
-					
-				})
-				
-			});
-	       	
-			let revwRegForm = $("#revwRegForm");
-	    	
-			/* 정규식으로 파일 형식을 제한한다. */
-		    let regex = new RegExp("(.*>)\.(exe|sh|zip|alz)$");
-		    
-		    /*최대 파일 크기를 제어한다  */
-			let maxSize = 5242880; /* 5MB */
-			
-			/*업로드 결과를 보여준다. */
-			function showUploadResult(uploadResultArr) {
-				
-				console.log("show upload result..................");
-		        
-		        /**업로드 된게 없으면 그대로 반환 */
-				if(!uploadResultArr || uploadResultArr.length == 0){return; }
-		        
-		        /*업로드 결과를 보여줄 ul를 선택 */
-				let uploadUL = $(".uploadResult ul");
-				
-				let str = "";
-		        
-		        /*업로드 결과를 보여준다. */
-				$(uploadResultArr).each(function(i,obj){
-					
-		            /* 만일 파일이 이미지 형식이면 */
-		            /* data에 path,uuid,filename,type을 각각 저장한다. */
-					if(obj.image) {
-						let fileCallPath = encodeURIComponent(obj.uploadPath+"/s_"+obj.uuid+"_"+obj.fileName);
-						
-						let originPath = obj.uploadPath + "\\" + obj.uuid +"_" + obj.fileName;
-						
-						originPath = originPath.replace(new RegExp(/\\/g),"/");
-						
-						str += "<li data-path='" + obj.uploadPath +"'";
-						str += "data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"'data-type='"+obj.image+"'";
-						str += "><a href=\"javascript:showImage(" + originPath + ")\">" + "<div>";
-						str += "<span>" + obj.fileName +"</span>";
-						str += "<img src='/display?fileName=" + fileCallPath + "'>";
-						str += "</div></a>";
-						str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image' class='btn btn-warning btn-circle'><i class='fa fa-times'></i>삭제</button><br>";
-						str += "</li>";
-		                /* 만일 파일이 이미지 형식이 아니면 */
-		                /* default img를 보여준다. */
-					} else {
-						let fileCallPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
-						let fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
+	    	// btn id
+	    	btnSubmit = "#submit_revwRegForm";
+	    	/* form 역할을 하는 엘리먼트를 선택한다. */
+	    	formObj = $("#revwRegForm");
 
-						str += "<li "
-						str += "data-path='" + obj.uploadPath + "'data-uuid='" + obj.uuid + "'data-filename='" + obj.fileName + "' data-type='" +obj.image+"'><a href='/download?fileName=" + fileCallPath + "'>" + "<div>";
-						str += "<span> " + obj.fileName + "</span>";
-						str += "<img src='/resources/img/attach.png'>";
-						str += "</a></div>";
-						str += "<button type='button' data-file=\'"+fileCallPath+"\'data-type='file' class='btn btn-warning btn-circle'><i class='fa fa-times'></i>삭제</button><br>";
-						str += "</li>";
-					}
-		            
-					uploadUL.append(str);
-				});
-		        
-				
-				
-			}
-		    
-		    /*파일 valid check */
-			function checkExtension(fileName, fileSize) {
-		        
-		        /*파일 사이즈를 체크한다. */
-		        if(fileSize >= maxSize){
-					alert("파일 사이즈 초과");
-					return false;
-				}
-				/*파일 형식을 체크한다. */
-				if(regex.test(fileName)) {
-					alert("해당 종류의 파일은 업로드 할 수 없습니다.");
-					return false;
-				}
-				return true;
-			};
-			
-			
-		    
-		    /* 업로드 결과를 누르면 해당 파일을 제거한다.  */
-			$(".uploadResult").on("click", "button", function(e) {
-				
-				let targetFile = $(this).data("file");
-				
-				console.log(targetFile);
-				
-				let type = $(this).data("type");
-				
-				console.log(type);
-				
-				let targetLi = $(this).closest("li");
-				
-				console.log(targetLi);
-				
-				$.ajax({
-					url : '/deleteFile',
-					data : {fileName : targetFile, type:type},
-					dataType : 'text',
-					type : 'POST',
-					success : function(result) {
-						alert(result);
-						targetLi.remove();
-					}
-				}); // $.ajax
-			});
-		    
-			$(".uploadResult").on("click", "li", function(e){
-		        
-		        let liObj = $(this);
-		        
-		        let path = encodeURIComponent(liObj.data("path")+ "/" + liObj.data("uuid") +"_" +liObj.data("filename"));
-		        
-		        if(liObj.data("type")){
-		            
-		            showImage(path.replace(new RegExp(/\\/g), "/"));
-		        } else {
-		            //download
-		            self.location = "/download?fileName=" + path
-		        }
-		    });
-			
-			function showImage(fileCallPath) {
-				
-				alert(fileCallPath);
-				
-				$(".bigPictureWrapper").css("display","flex").show();
-				
-				$(".bigPicture")
-				.html("<img src='/display?fileName=" +encodeURI(fileCallPath) + "'>")
-				.animate({width:'100%',height:'100%'},1000);
-				
-				
-			}// end show image
-			
-			$(".bigPictureWrapper").on("click",function(e){
-				$(".bigPicture").animate({width:'0%',height:'0%'},1000);
-				setTimeout(()=>{
-					$(this).hide();
-				}, 1000);
-			});
-	    	
-	    	$("#submit_revwRegForm").on("click", function(e) {
-	    		
-	    		e.preventDefault();
-	    		
-	    		let str = "";
-	    		
-	    		$(".uploadResult ul li").each(function(i, obj) {
-	    			
-	    			let jobj = $(obj);
-	    			
-	    			str += "<input type='hidden' name='imgs["+i+"].fileName' value='" + jobj.data("filename")+"'>";
-	    			str += "<input type='hidden' name='imgs["+i+"].uuid' value='" + jobj.data("uuid")+"'>";
-	    			str += "<input type='hidden' name='imgs["+i+"].uploadPath' value='" + jobj.data("path")+"'>";
-	    			str += "<input type='hidden' name='imgs["+i+"].image' value='" + jobj.data("type")+"'>";
-	    			if(i === 0){
-	    			str += "<input type='hidden' name='repImg' value='" + jobj.data("path").replace(new RegExp(/\\/g),"/") +"/"+ "s_"+ jobj.data("uuid") +"_"+ jobj.data("filename")+"'>";
-	    				
-	    			}
-	    			
-	    		});
-       	
-    		revwRegForm.attr("method","post");
-    		revwRegForm.append(str);
-    		revwRegForm.attr("action", "/dealight/mypage/review/register").submit();
+	       	// 파일첨부 관련 이벤트 등록
+	       	if(btnSubmit) $(btnSubmit).on("click", inputHandler);
+	    	if(!isModal) $("input[type='file']").change(uploadHandler);
+	    	if(isModal)  $("#js_upload").change(uploadHandler); 
+	    	$(".uploadResult").on("click", "button", deleteHandler);
+	        $(".uploadResult").on("click", "li", showImageHandler);
+	    	$(".bigPictureWrapper").on("click",bigImgAniHandler);
+	       	
     	});
-    		
-    	});
-    			
-    	
        };
+	       	
        
    		/* 이벤트 등록 */
        /*매장의 예약 리스트 보여주기*/
@@ -629,7 +446,6 @@ $(document).ready(function() {
        });
 	
 }); /* document ready end*/
-
 </script>
 </body>
 </html>

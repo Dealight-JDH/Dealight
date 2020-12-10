@@ -230,14 +230,13 @@ public class AdminController {
 	public String modfiyStore(StoreVO store, RedirectAttributes rttr) {
 		log.info("modify store : " + store);
 		
-		
 		if(service.modifyStore(store))
 			rttr.addFlashAttribute("result", "success");
 		
 		
 		rttr.addFlashAttribute("storeId",store.getStoreId());
 		rttr.addFlashAttribute("clsCd",store.getClsCd());
-		return "redirect:/dealight/admin/storemanage/get";
+		return "redirect:/dealight/admin/storemanage/get?storeId=" + store.getStoreId() + "&clsCd=" +store.getClsCd();
 	}
 	
 	@PostMapping("/storemanage/suspend")

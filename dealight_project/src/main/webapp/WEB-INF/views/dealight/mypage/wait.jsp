@@ -46,7 +46,8 @@
 								현재 웨이팅 상태 : ${wait.waitStusCd}<br>
 								리뷰 상태 : <span class="revw_stus">${wait.revwStus }</span></br>
 								<button class="btn_store_info">매장 정보 보기</button>
-								<button class="btn_revw_reg">리뷰 쓰기</button>
+								<c:if test="${wait.revwStus > 0}"> <button class="btn_revw_info">리뷰 보기</button></c:if>
+								<c:if test="${wait.revwStus == 0}"><button class="btn_revw_reg">리뷰 쓰기</button></c:if>
 							</div>
 						</c:forEach>
 					</c:if>
@@ -89,18 +90,39 @@
 			<span class="close">&times;</span>
 			<ul class="revw_regForm"></ul>
 			<ul class="store_info"></ul>
+			<ul class="revwInfo"></ul>
 			<div id="map" style="width:500px;height:400px;"></div>
 		</div>
 	</div>
 
 <script type="text/javascript" src="/resources/js/modal.js"></script>
+<script>
+	/* 정규식으로 파일 형식을 제한한다. */
+	const regex = new RegExp("(.*>)\.(exe|sh|zip|alz)$");
+	/*최대 파일 크기를 제어한다  */
+	const maxSize = 5242880; /* 5MB */
+	// add category ***페이지마다 변경 필요
+	const category = 'revwImgs';
+	// page type
+	const pageType = "register";
+	// storeId
+	const storeId = null;
+	// isModal
+	const isModal = true;
+	// btn id
+	let btnSubmit = "#submit_revwRegForm";
+	/* form 역할을 하는 엘리먼트를 선택한다. */
+	let formObj = $("#revwRegForm");
+</script>
+<script type="text/javascript" src="/resources/js/reg_file.js?ver=1"></script>
 <script type="text/javascript">
 window.onload = function () {
 	
     const userId = '${userId}',
 	    revwRegFormUL = $(".revw_regForm"),
 	    storeInfoUL = $(".store_info"),
-	    btn_show_board = $("#btn_show_board")
+	    btn_show_board = $("#btn_show_board"),
+	    revwInfoUL = $(".revwInfo")
 	;
 	    
 	let container,options,map,mapContainer,mapOption,markerPosition,marker;
@@ -135,8 +157,49 @@ window.onload = function () {
            });
        };
        
+       let getWaitRevw = function (param,callback,error) {
+    	   
+    	   let waitId = param.waitId;
+    	   
+          	$.getJSON("/dealight/mypage/review/wait/"+ waitId +".json",
+                    function(data){
+                        if(callback){
+                            callback(data);
+                        }
+                    }).fail(function(xhr,status,err){
+                        if(error){
+                            error();
+                        }
+            });
+       }
+       
        
        /* 출력 로직*/
+       
+      let showWaitRevw = function (waitId) {
+    	
+    	getWaitRevw({waitId : waitId}, revw => {
+    		
+    		let strRevw = "";
+    		if(!revw) return;
+    		
+    		strRevw += "<h1>리뷰 보기</h1>";
+    		strRevw += "<h5>리뷰 번호 : "+revw.revwId+"</h5>";
+    		strRevw += "<h5>매장 번호 : "+revw.storeId+"</h5>";
+    		strRevw += "<h5>매장 이름 : "+revw.storeNm+"</h5>";
+    		strRevw += "<h5>웨이팅 번호 : "+revw.waitId+"</h5>";
+    		strRevw += "<h5>회원 아이디 : "+revw.userId+"</h5>";
+    		strRevw += "<h5>리뷰 내용 : "+revw.cnts+"</h5>";
+    		strRevw += "<h5>평점 : "+revw.rating+"</h5>";
+    		strRevw += "<h5>답글 내용 : "+revw.replyCnts+"</h5>";
+    		strRevw += "<h5>답글 등록 날짜 : "+revw.replyRegDt+"</h5>";
+    		strRevw += "<h5>리뷰 사진</h5>";
+    		for(let i = 0; i < revw.imgs.length; i++)
+    			if(revw.imgs[i].fileName !== null) strRevw += "<img src='/display?fileName="+encodeURIComponent(revw.imgs[i].uploadPath+"/s_"+revw.imgs[i].uuid+"_"+revw.imgs[i].fileName)+"'>";
+    		
+    		revwInfoUL.html(strRevw);
+    	});
+    };
        
        function showStoreInfo(storeId) {
        	
@@ -209,7 +272,7 @@ window.onload = function () {
        	
 	       	
 	       	strRevwRegForm += "<h1>리뷰 작성</h1>";
-	       	strRevwRegForm += "<form id='revwRegForm' action='dsadasdas' method=''>";
+	       	strRevwRegForm += "<form id='revwRegForm' action='/dealight/mypage/review/register' method='post'>";
 	       	strRevwRegForm += "매장 번호 : <input name='storeId' value='"+store.storeId+"' readonly></br>";
 	       	strRevwRegForm += "매장 이름 : <input name='storeNm' value='"+store.storeNm+"' readonly></br>";
 	       	strRevwRegForm += "웨이팅 번호 : <input name='waitId' value='"+waitId+"' readonly></br>";
@@ -226,220 +289,19 @@ window.onload = function () {
 	       	
 	       	revwRegFormUL.html(strRevwRegForm);
 	       	
-	       	/* change() 해당하는 요소의 value에 변화가 생길 경우 이를 감지하여 등록된 콜백함수를 동작시킨다.  */
-			$("#js_upload").change(function(e){
-				
-				console.log("change..................");
-				
-				let cloneObj = $(".form_img").clone();
-				
-				let formData = new FormData();
-				
-				let inputFile = $("input[name='uploadFile']");
-				
-				let files = inputFile[0].files;
-				
-				// add category
-				let category = 'revwImgs';
-				
-				for(let i = 0; i < files.length; i++){
-					
-					if(!checkExtension(files[i].name, files[i].size)) {
-						return false;
-		            }
-		            /* uploadFile 이라는 변수명에 파일 배열(스프링에서는 MultipartFile[]로 받는다)을 달아서보낸다. */
-					formData.append("uploadFile", files[i]);
-		            // add category
-					formData.append("category", category);
-				}
-				
-				$.ajax({
-					url : '/uploadAjaxAction',
-					processData : false,
-		            contentType : false, 
-		            data: formData,
-		            type: 'POST',
-					dataType : 'json',
-					success : function(result) {
-					    console.log(result);
-					    showUploadResult(result); // 업로드 결과 처리 함수
-					    $(".form_img").html(cloneObj.html()); // 첨부파일 개수 초기화
-					}
-					
-					
-				})
-				
-			});
-	       	
-			let revwRegForm = $("#revwRegForm");
-	    	
-			/* 정규식으로 파일 형식을 제한한다. */
-		    let regex = new RegExp("(.*>)\.(exe|sh|zip|alz)$");
-		    
-		    /*최대 파일 크기를 제어한다  */
-			let maxSize = 5242880; /* 5MB */
-			
-			/*업로드 결과를 보여준다. */
-			function showUploadResult(uploadResultArr) {
-				
-				console.log("show upload result..................");
-		        
-		        /**업로드 된게 없으면 그대로 반환 */
-				if(!uploadResultArr || uploadResultArr.length == 0){return; }
-		        
-		        /*업로드 결과를 보여줄 ul를 선택 */
-				let uploadUL = $(".uploadResult ul");
-				
-				let str = "";
-		        
-		        /*업로드 결과를 보여준다. */
-				$(uploadResultArr).each(function(i,obj){
-					
-		            /* 만일 파일이 이미지 형식이면 */
-		            /* data에 path,uuid,filename,type을 각각 저장한다. */
-					if(obj.image) {
-						let fileCallPath = encodeURIComponent(obj.uploadPath+"/s_"+obj.uuid+"_"+obj.fileName);
-						
-						let originPath = obj.uploadPath + "\\" + obj.uuid +"_" + obj.fileName;
-						
-						originPath = originPath.replace(new RegExp(/\\/g),"/");
-						
-						str += "<li data-path='" + obj.uploadPath +"'";
-						str += "data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"'data-type='"+obj.image+"'";
-						str += "><a href=\"javascript:showImage(" + originPath + ")\">" + "<div>";
-						str += "<span>" + obj.fileName +"</span>";
-						str += "<img src='/display?fileName=" + fileCallPath + "'>";
-						str += "</div></a>";
-						str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image' class='btn btn-warning btn-circle'><i class='fa fa-times'></i>삭제</button><br>";
-						str += "</li>";
-		                /* 만일 파일이 이미지 형식이 아니면 */
-		                /* default img를 보여준다. */
-					} else {
-						let fileCallPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
-						let fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
+	       	// 리뷰
+	    	// btn id
+	    	btnSubmit = "#submit_revwRegForm";
+	    	/* form 역할을 하는 엘리먼트를 선택한다. */
+	    	formObj = $("#revwRegForm");
 
-						str += "<li "
-						str += "data-path='" + obj.uploadPath + "'data-uuid='" + obj.uuid + "'data-filename='" + obj.fileName + "' data-type='" +obj.image+"'><a href='/download?fileName=" + fileCallPath + "'>" + "<div>";
-						str += "<span> " + obj.fileName + "</span>";
-						str += "<img src='/resources/img/attach.png'>";
-						str += "</a></div>";
-						str += "<button type='button' data-file=\'"+fileCallPath+"\'data-type='file' class='btn btn-warning btn-circle'><i class='fa fa-times'></i>삭제</button><br>";
-						str += "</li>";
-					}
-		            
-					uploadUL.append(str);
-				});
-		        
-				
-				
-			}
-		    
-		    /*파일 valid check */
-			function checkExtension(fileName, fileSize) {
-		        
-		        /*파일 사이즈를 체크한다. */
-		        if(fileSize >= maxSize){
-					alert("파일 사이즈 초과");
-					return false;
-				}
-				/*파일 형식을 체크한다. */
-				if(regex.test(fileName)) {
-					alert("해당 종류의 파일은 업로드 할 수 없습니다.");
-					return false;
-				}
-				return true;
-			};
-			
-			
-		    
-		    /* 업로드 결과를 누르면 해당 파일을 제거한다.  */
-			$(".uploadResult").on("click", "button", function(e) {
-				
-				let targetFile = $(this).data("file");
-				
-				console.log(targetFile);
-				
-				let type = $(this).data("type");
-				
-				console.log(type);
-				
-				let targetLi = $(this).closest("li");
-				
-				console.log(targetLi);
-				
-				$.ajax({
-					url : '/deleteFile',
-					data : {fileName : targetFile, type:type},
-					dataType : 'text',
-					type : 'POST',
-					success : function(result) {
-						alert(result);
-						targetLi.remove();
-					}
-				}); // $.ajax
-			});
-		    
-			$(".uploadResult").on("click", "li", function(e){
-		        
-		        let liObj = $(this);
-		        
-		        let path = encodeURIComponent(liObj.data("path")+ "/" + liObj.data("uuid") +"_" +liObj.data("filename"));
-		        
-		        if(liObj.data("type")){
-		            
-		            showImage(path.replace(new RegExp(/\\/g), "/"));
-		        } else {
-		            //download
-		            self.location = "/download?fileName=" + path
-		        }
-		    });
-			
-			function showImage(fileCallPath) {
-				
-				alert(fileCallPath);
-				
-				$(".bigPictureWrapper").css("display","flex").show();
-				
-				$(".bigPicture")
-				.html("<img src='/display?fileName=" +encodeURI(fileCallPath) + "'>")
-				.animate({width:'100%',height:'100%'},1000);
-				
-				
-			}// end show image
-			
-			$(".bigPictureWrapper").on("click",function(e){
-				$(".bigPicture").animate({width:'0%',height:'0%'},1000);
-				setTimeout(()=>{
-					$(this).hide();
-				}, 1000);
-			});
-	    	
-	    	$("#submit_revwRegForm").on("click", function(e) {
-	    		
-	    		e.preventDefault();
-	    		
-	    		let str = "";
-	    		
-	    		$(".uploadResult ul li").each(function(i, obj) {
-	    			
-	    			let jobj = $(obj);
-	    			
-	    			str += "<input type='hidden' name='imgs["+i+"].fileName' value='" + jobj.data("filename")+"'>";
-	    			str += "<input type='hidden' name='imgs["+i+"].uuid' value='" + jobj.data("uuid")+"'>";
-	    			str += "<input type='hidden' name='imgs["+i+"].uploadPath' value='" + jobj.data("path")+"'>";
-	    			str += "<input type='hidden' name='imgs["+i+"].image' value='" + jobj.data("type")+"'>";
-	    			if(i === 0){
-	    			str += "<input type='hidden' name='repImg' value='" + jobj.data("path").replace(new RegExp(/\\/g),"/") +"/"+ "s_"+ jobj.data("uuid") +"_"+ jobj.data("filename")+"'>";
-	    				
-	    			}
-	    			
-	    		});
-       	
-    		revwRegForm.attr("method","post");
-    		revwRegForm.append(str);
-    		revwRegForm.attr("action", "/dealight/mypage/review/register").submit();
-    	});
-    		
+	       	// 파일첨부 관련 이벤트 등록
+	       	if(btnSubmit) $(btnSubmit).on("click", inputHandler);
+	    	if(!isModal) $("input[type='file']").change(uploadHandler);
+	    	if(isModal)  $("#js_upload").change(uploadHandler); 
+	    	$(".uploadResult").on("click", "button", deleteHandler);
+	        $(".uploadResult").on("click", "li", showImageHandler);
+	    	$(".bigPictureWrapper").on("click",bigImgAniHandler);
     	});
     			
     	
@@ -456,6 +318,15 @@ window.onload = function () {
        	modal.css("display","block");
 	}
    	
+    let showWaitRevwHandler = function(e) {
+    	
+    	let waitId = $(e.target).parent().find(".wait_id").text();
+    	
+    	showWaitRevw(waitId);
+    	modal.css("display","block");
+    	
+    }
+   	
 	let showStoreInfoHandler = function(e) {
     	let storeId = $(e.target).parent().find(".store_id").text()
     	
@@ -465,6 +336,9 @@ window.onload = function () {
        
        /* 리뷰 등록 */
        $(".btn_revw_reg").on("click",showRevwRegFormHandler);
+       
+       /* 리뷰 보기 */
+       $(".btn_revw_info").on("click", showWaitRevwHandler);
        
        /* 매장 상세 */
        $(".btn_store_info").on("click",showStoreInfoHandler);
