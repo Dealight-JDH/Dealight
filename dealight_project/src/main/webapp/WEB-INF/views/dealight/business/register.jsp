@@ -66,6 +66,11 @@
 	#map {
 		display : hidden;
 	}
+	#rep_img_box{
+		border:1px solid black;
+		width:200px;
+		height:200px;
+	}
 	</style>
 	<style>
 	main{
@@ -73,6 +78,21 @@
 		width:1050px;
 	}
 </style>
+        <script>
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+     
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+     
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+        </script>
 </head>
 <body>
 <%@include file="../../includes/mainMenu.jsp" %>
@@ -128,6 +148,10 @@
 	    <div class='bigPicture'>
 	    </div>
 	</div>
+	<!-- 
+	<div id="rep_img_box" ondrop="drop(event)" ondragover="allowDrop(event)">
+	</div>
+	 -->
 	===================================================</br></br>
 	<button type="submit" id="btnSubmit">등록하기</button><br>
 	</form>
@@ -219,6 +243,7 @@ function jusoCallBack(roadAddrPart1,addrDetail,siNm,sggNm,emdNm){
 	const btnSubmit = "#btnSubmit";
 	// isModal
 	const isModal = false;
+	let storeId = null;
 </script>
 <script type="text/javascript" src="/resources/js/reg_file.js?ver=1"></script>
 </body>

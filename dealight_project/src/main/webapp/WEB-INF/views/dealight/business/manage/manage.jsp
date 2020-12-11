@@ -10,51 +10,44 @@
 <meta charset="UTF-8">
 <title>매장 관리</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!-- Bootstrap core CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
-<!-- Bootstrap core JavaScript -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="/resources/css/manage.css" type ="text/css" />
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="/resources/js/Chart.js"></script>
 <style>
-	.toast{
-		position : absolute;
-		bottom : 30px;
-		right : 30px;
-		z-index : 101;
-	}
-	@-webkit-keyframes slideDown {
-	    0%, 100% { -webkit-transform: translateY(-50px); }
-	    10%, 90% { -webkit-transform: translateY(0px); }
-	}
-	.cssanimations.csstransforms .toast {
-	    -webkit-transform: translateY(-50px);
-	    -webkit-animation: slideDown 2.5s 1.0s 1 ease forwards;
-	    -moz-transform:    translateY(-50px);
-	    -moz-animation:    slideDown 2.5s 1.0s 1 ease forwards;
-	}
+.alert {
+	
+  position : fixed;
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+  margin-bottom: 15px;
+  width:15%;
+  z-index : 10;
+}
 
+.alert.manage_rsvd {right : 30px;bottom : 15px;background-color: #4CAF50; display:none;}
+.alert.manage_wait {right : 30px;bottom: 15px; background-color: #2196F3; display:none;}
+.alert.manage_htdl {right : 30px;top : 15px background-color: #ff9800; display:none;}
+
+.alert_closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.alert_closebtn:hover {
+  color: black;
+}
 </style>
-
 </head>
 <body>
 <%@include file="../../../includes/mainMenu.jsp" %>
-	<!-- notification -->
-     <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
-        <div class="toast-header">
-          <strong class="mr-auto">예약/웨이팅</strong>
-          <small class="text-muted">(시간 계산)</small>
-          <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="toast-body">
-          (예약/웨이팅 내용 채워넣기)
-        </div>
-      </div>
-      <!-- end notification -->
-     
+	
     <div class="main_box"><!-- main box -->
         <h2>Business Manage Main Page</h2>
         <div class="board"> <!-- board -->
@@ -196,6 +189,27 @@
 		</div>
 	</div>
 	
+	
+		<div class="alert manage_rsvd">
+		  <span class="alert_closebtn">&times;</span>  
+		  <strong class="alert_tit">예약</strong>
+		  <span class="alert_senduser"></span>
+		  <span class="alert_msg">예약 관련 notification 입니다.</span>
+		</div>
+		
+		<div class="alert manage_wait">
+		  <span class="alert_closebtn">&times;</span>  
+		  <strong class="alert_tit">예약</strong>
+		  <span class="alert_senduser"></span>
+		  <span class="alert_msg">예약 관련 notification 입니다.</span>
+		</div>
+		
+		<div class="alert manage_htdl">
+		  <span class="alert_closebtn">&times;</span>  
+		  <strong class="alert_tit">예약</strong>
+		  <span class="alert_senduser"></span>
+		  <span class="alert_msg">예약 관련 notification 입니다.</span>
+		</div>
 <script>
 
 const storeId = ${storeId};
@@ -257,9 +271,11 @@ let curHour = curToday.getHours(),
     		modal.find("ul").html("");
     	}
     });
+    
+    	$(".alert_closebtn").on("click", e => $(e.target).parent().fadeOut());
 
 </script>
-	<script>
+<script>
 
     /*
     REST 방식으로 서버와 통신
@@ -835,7 +851,6 @@ let curHour = curToday.getHours(),
         		today.setDate(today.getDate() - 1);
         	}
         	
-        	
     		let pnumArr = [0,0,0,0,0,0,0];
     		let amountArr = [0,0,0,0,0,0,0];
     		let waitPnumArr = [0,0,0,0,0,0,0];
@@ -899,8 +914,8 @@ let curHour = curToday.getHours(),
     		    console.log('pnumArr : '+pnumArr);
     		    console.log('amountArr : '+amountArr);
     		    console.log('waitPnumArr : '+waitPnumArr);
-    		    var chart = document.getElementById('rsvd_chart');
-    		    var context = chart.getContext('2d'),
+    		    let chart = document.getElementById('rsvd_chart');
+    		    let context = chart.getContext('2d'),
     		    rsvdChart = new Chart(context, {
     		         	type : 'line',
     		          	data : {
@@ -1405,19 +1420,20 @@ let curHour = curToday.getHours(),
 				if(data.cmd === 'rsvd'){
 		   	 		showRsvdList(storeId);
 		   	 		showRsvdMap(storeId);
-		   	 		$('.mr-auto').html('예약 알림');
-		   	 		$('.text-muted').html(data.sendUser);
-		   	 		$('.toast-body').html(data.msg);
-		   	 		$('.toast').toast('show');
-		   	 		console.log("rsvd...... : " + data.rsvdId);
+		   	 		$('.alert.manage_rsvd .alert_tit').html('예약 알림');
+		   	 		$('.alert.manage_rsvd .alert_senduser').html(data.sendUser);
+		   	 		$('.alert.manage_rsvd .alert_msg').html(data.msg);
+		   	 		$('.alert.manage_rsvd').fadeIn();
 		   	 		console.log(data.msg);
 				} else if (data.cmd === 'wait'){
 		   	 		showWaitList(storeId);
-		   	 		$('.mr-auto').html('웨이팅 알림');
-		   	 		$('.text-muted').html(data.sendUser);
-		   	 		$('.toast-body').html(data.msg);
-		   	 		$('.toast').toast('show');
-				}	   	 	    
+		   	 		$('.alert.manage_wait .alert_tit').html('웨이팅 알림');
+		   	 		$('.alert.manage_wait .alert_senduser').html(data.sendUser);
+		   			$('.alert.manage_wait .alert_msg').html(data.msg);
+		   			$('.alert.manage_wait').fadeIn();
+				} else if (data.cmd === 'htdl') {
+					
+				}
 	   	 	    
 	   	 	    //let socketAlert = $('#socektAlert');
 	   	 		//socketAlert.html(event.data);
