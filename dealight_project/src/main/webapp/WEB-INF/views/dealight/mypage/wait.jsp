@@ -142,10 +142,11 @@ window.onload = function () {
     function getStoreInfo(param,callback,error){
        	
        	
-       	let storeId = param.storeId;
+      	let storeId = param.storeId,
+  			userId = param.userId;
        	
        	
-       	$.getJSON("/dealight/mypage/reservation/store/"+ storeId +".json",
+       	$.getJSON("/dealight/mypage/reservation/store/"+userId+"/"+ storeId +".json",
                    function(data){
                        if(callback){
                            callback(data);
@@ -172,6 +173,54 @@ window.onload = function () {
                         }
             });
        }
+       
+	    let removeLike = function (params,callback,error) {
+	    	
+	    	let storeId = params.storeId,
+	    		userId = params.userId;
+	    	
+	        $.ajax({
+	            type:'delete',
+	            url:'/dealight/mypage/like/remove/'+userId+'/'+storeId,
+	            data : {'userId' : userId, 'storeId':storeId},
+	            contentType : "application/json",
+	            success : function(result, status, xhr) {
+	                if(callback) {
+	                    callback(result);
+	                }
+	            },
+	            error : function(xhr, status, er) {
+	                if(error) {
+	                    error(er);
+	                }               
+	            }
+	        });
+	        
+        }
+	    
+	    let addLike = function (params,callback,error) {
+	    	
+	    	let storeId = params.storeId,
+	    		userId = params.userId;
+	    	
+	        $.ajax({
+	            type:'post',
+	            url:'/dealight/mypage/like/add/'+userId+'/'+storeId,
+	            data : {'userId' : userId, 'storeId':storeId},
+	            contentType : "application/json",
+	            success : function(result, status, xhr) {
+	                if(callback) {
+	                    callback(result);
+	                }
+	            },
+	            error : function(xhr, status, er) {
+	                if(error) {
+	                    error(er);
+	                }               
+	            }
+	        });
+	        
+        }
        
        
        /* 출력 로직*/
@@ -201,17 +250,19 @@ window.onload = function () {
     	});
     };
        
-       function showStoreInfo(storeId) {
+       function showStoreInfo(userId,storeId) {
        	
-       	getStoreInfo({storeId : storeId}, store=>{
+       	getStoreInfo({userId:userId,storeId : storeId}, store=>{
        		
        		let strStoreInfo = "";
        		if(!store)
        			return;
        		
        		strStoreInfo += "<h1>매장 정보</h1>";
-       		strStoreInfo += "<img src='/display?fileName="+store.bstore.repImg+"'>";
-       		strStoreInfo += "<li>매장 번호 : "+store.storeId+"</l1>";
+       		strStoreInfo += "<img src='/display?fileName="+store.bstore.repImg+"'>";    		
+       		if(!store.like) strStoreInfo += "<button class='btn_like_pick'>찜 하기</button>";
+    		if(store.like) strStoreInfo += "<button class='btn_like_cancel'>찜 취소하기</button>";
+    		strStoreInfo += "<li>매장 번호 : <span class='store_info_id'>"+store.storeId+"</span></l1>";
        		strStoreInfo += "<li>매장 이름 : "+store.storeNm+"</l1>";
        		strStoreInfo += "<li>매장 번호 : "+store.telno+"</l1>";
        		strStoreInfo += "<li>매장 상태 : "+store.clsCd+"</l1>";
@@ -231,6 +282,9 @@ window.onload = function () {
        		strStoreInfo += "<li>매장 평균 식사 시간 : "+store.bstore.avgMealTm+"</l1>";
        		strStoreInfo += "<li>매장 휴무일 : "+store.bstore.hldy+"</l1>";
        		strStoreInfo += "<li>매장 수용 가능 인원 : "+store.bstore.acmPnum+"</l1>";
+    		strStoreInfo += "<li>매장 좋아요 수 : "+store.eval.likeTotNum+"</l1>";
+    		strStoreInfo += "<li>매장 리뷰 수 : "+store.eval.revwTotNum+"</l1>";
+    		strStoreInfo += "<li>매장 평균 평점 : "+store.eval.avgRating+"</l1>";
        		strStoreInfo += "<li>매장 주소 : "+store.loc.addr+"</l1>";
        		
        		modal.find("#map").css("display", "block");
@@ -253,6 +307,8 @@ window.onload = function () {
        		marker.setMap(map);
        		
        		storeInfoUL.html(strStoreInfo);
+    	    $(".btn_like_pick").on("click",likeAddHandler);
+    	    $(".btn_like_cancel").on("click",likeRemoveHandler);
        		
        	});
        	
@@ -263,7 +319,7 @@ window.onload = function () {
     	   
     	let strRevwRegForm = "";    			
     			
-    	getStoreInfo({storeId : storeId}, store=>{
+    	getStoreInfo({userId:userId,storeId : storeId}, store=>{
     		
     		console.log("get store info..................");
        		
@@ -328,11 +384,37 @@ window.onload = function () {
     }
    	
 	let showStoreInfoHandler = function(e) {
-    	let storeId = $(e.target).parent().find(".store_id").text()
-    	
-    	showStoreInfo(storeId);
+    	let storeId = $(e.target).parent().find(".store_id").text(),
+    		userId = '${userId}';
+    	showStoreInfo(userId,storeId);
     	modal.css("display","block");
 	}
+	
+    let likeRemoveHandler = function(e){
+    	
+    	let storeId = $(e.target).parent().find(".store_info_id").text(),
+			userId = '${userId}';
+
+		
+		removeLike({userId:userId,storeId:storeId});
+		alert("찜이 취소 되었습니다.");		
+		showStoreInfo(userId, storeId);
+		
+    }
+    
+    let likeAddHandler = function(e){
+    	
+    	let storeId = $(e.target).parent().find(".store_info_id").text(),
+			userId = '${userId}';
+
+		addLike({userId:userId,storeId:storeId});
+		
+		alert($(e.target).parent().find(".store_info_id").text()+"번이 추가 되었습니다.");
+
+		
+		
+		showStoreInfo(userId, storeId);
+    }
        
        /* 리뷰 등록 */
        $(".btn_revw_reg").on("click",showRevwRegFormHandler);
@@ -342,6 +424,9 @@ window.onload = function () {
        
        /* 매장 상세 */
        $(".btn_store_info").on("click",showStoreInfoHandler);
+       
+	    $(".btn_like_pick").on("click",likeAddHandler);
+	    $(".btn_like_cancel").on("click",likeRemoveHandler);
 	
 }; /* document ready end*/
 

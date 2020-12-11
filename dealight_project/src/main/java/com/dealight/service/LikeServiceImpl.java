@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.dealight.domain.Criteria;
 import com.dealight.domain.LikeVO;
 import com.dealight.mapper.LikeMapper;
+import com.dealight.mapper.StoreEvalMapper;
 
 import lombok.AllArgsConstructor;
 
@@ -18,15 +19,22 @@ public class LikeServiceImpl implements LikeService {
 	@Autowired
 	LikeMapper likeMapper;
 	
+	@Autowired
+	StoreEvalMapper evalMapper;
+	
 	@Override
-	public void pick(LikeVO like) {
+	public void pick(String userId, Long storeId) {
 		
-		likeMapper.insert(like);
+		evalMapper.addLike(storeId);
+		
+		likeMapper.insert(userId,storeId);
 
 	}
 
 	@Override
 	public boolean cancel(String userId, Long storeId) {
+		
+		evalMapper.removeLike(storeId);
 		
 		return 1 == likeMapper.delete(userId, storeId);
 	}

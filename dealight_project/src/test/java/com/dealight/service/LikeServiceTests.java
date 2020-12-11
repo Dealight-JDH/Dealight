@@ -77,17 +77,12 @@ public class LikeServiceTests {
 		userId = "hyun";
 		storeId = 20L;
 		
-		LikeVO like = new LikeVO().builder()
-				.storeId(storeId)
-				.userId(userId)
-				.build();
-		
-		likeService.pick(like);
+		likeService.pick(userId,storeId);
 		
 		LikeVO insertLike = likeService.findByUserIdAndStoreId(userId, storeId);
 		
-		assertTrue(like.getStoreId() == insertLike.getStoreId());
-		assertTrue(like.getUserId().equals(insertLike.getUserId()));
+		assertTrue(storeId == insertLike.getStoreId());
+		assertTrue(userId.equals(insertLike.getUserId()));
 		
 	}
 	

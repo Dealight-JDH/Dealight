@@ -283,7 +283,7 @@
 		select
 		s.store_id,s.store_nm,s.telno,
 		l.addr,l.lat,l.lng,
-		e.avg_rating,e.revw_tot_num,e.like_tot_num,
+		e.ROUND(e.avg_rating,2) avg_rating,e.revw_tot_num,e.like_tot_num,
 		i.img_seq,i.fileName,
 		b.buser_id,b.seat_stus_cd,b.open_tm,b.close_tm, b.break_sttm,
 		b.break_entm,b.last_ord_tm,b.n1_seat_no,b.n2_seat_no,b.n4_seat_no,b.store_intro,b.avg_meal_tm,b.hldy,b.acm_pnum,
@@ -343,7 +343,7 @@
   			   b.buser_id, b.brch, b.rep_menu, b.rep_img, b.seat_stus_cd,
   			   b.open_tm, b.close_tm, b.break_sttm, b.break_entm, b.last_ord_tm, 
   			   b.n1_seat_no, b.n2_seat_no, b.n4_seat_no, b.store_intro, b.avg_meal_tm, b.hldy, b.acm_pnum, 
-  			   e.avg_rating, e.revw_tot_num, e.like_tot_num
+  			   e.ROUND(e.avg_rating,2) avg_rating, e.revw_tot_num, e.like_tot_num
   		from tbl_store s , tbl_bstore b, tbl_store_loc l, tbl_store_eval e
   		where s.store_id = #{storeId} 
   		  and s.store_id = b.store_id 
@@ -368,7 +368,7 @@
   			   b.buser_id, b.brch, b.rep_menu, b.rep_img, b.seat_stus_cd, b.open_tm, 
   			   b.close_tm, b.break_sttm, b.break_entm, b.last_ord_tm, b.n1_seat_no, 
   			   b.n2_seat_no, b.n4_seat_no, b.store_intro, b.avg_meal_tm, b.hldy, b.acm_pnum,
-  			   e.avg_rating, e.revw_tot_num, e.like_tot_num
+  			   e.ROUND(e.avg_rating,2) avg_rating, e.revw_tot_num, e.like_tot_num
   		from tbl_store s , tbl_bstore b, tbl_store_loc l, tbl_store_eval e
   		where s.store_id = b.store_id 
   		  and s.store_id = l.store_id 

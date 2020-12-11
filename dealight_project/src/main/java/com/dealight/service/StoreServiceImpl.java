@@ -478,6 +478,12 @@ public class StoreServiceImpl implements StoreService {
 		return sMapper.getTotalCnt(cri);
 	}
 
+	@Override
+	public StoreEvalVO getEval(Long storeId) {
+		
+		return eMapper.findByStoreID(storeId);
+	}
+
 
 //	
 //	  @Override public String storeCd(Long storeId) {

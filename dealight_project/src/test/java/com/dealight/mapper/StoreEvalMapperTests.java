@@ -1,10 +1,14 @@
 package com.dealight.mapper;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.StoreEvalVO;
 
@@ -53,6 +57,42 @@ public class StoreEvalMapperTests {
 //	@Test
 	public void testDelet() {
 		log.info(mapper.delete(2L));
+	}
+	
+	@Test
+	public void readTest1() {
+		
+		Long storeId = 10L;
+		
+		StoreEvalVO eval = mapper.read(storeId);
+		
+		assertNotNull(eval);
+		log.info("eval : "+eval);
+		
+	}
+	
+	@Test
+	@Transactional
+	public void addRevwRatingTest1() {
+		
+		Long storeId = 10L;
+		
+		StoreEvalVO eval = mapper.read(storeId);
+		log.info("eval : "+eval);
+		double befRat = eval.getAvgRating();
+		int befRevwNum = eval.getRevwTotNum();
+		
+		double rating = 5.0;
+		int result = mapper.addRevwRating(storeId, rating);
+		
+		assertTrue(result == 1);
+		eval = mapper.read(storeId);
+		assertTrue(befRat<eval.getAvgRating());
+		log.info("after eval : "+eval);
+		log.info("before rating : " + befRat);
+		log.info("before revw num : " + befRevwNum);
+		log.info("after rating : "+eval.getAvgRating());
+		log.info("after revw num : "+eval.getRevwTotNum());
 	}
 
 }

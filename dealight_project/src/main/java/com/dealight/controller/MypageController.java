@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -114,11 +115,21 @@ public class MypageController {
 
 	// 3. store with store loc를 모달로 보여준다.
 	// rest 방식으로 json으로 모달로 보여주자.
-	@GetMapping(value = "/reservation/store/{storeId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value = "/reservation/store/{userId}/{storeId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public ResponseEntity<StoreVO> storeWithLoc(@PathVariable("storeId") Long storeId){
+	public ResponseEntity<StoreVO> storeWithLoc(@PathVariable("userId") String userId, @PathVariable("storeId") Long storeId){
+		
+		StoreVO store = storeService.findStoreWithBStoreAndLocByStoreId(storeId);
+		
+		store.setEval(storeService.getEval(storeId));
+		
+		LikeVO like = likeService.findByUserIdAndStoreId(userId, storeId);
+		
+		if(like != null)
+			store.setLike(true);
+		store.isLike();
 
-		return  new ResponseEntity<>(storeService.findStoreWithBStoreAndLocByStoreId(storeId), HttpStatus.OK);
+		return  new ResponseEntity<>(store, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/reservation/review", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -128,12 +139,6 @@ public class MypageController {
 		return  new ResponseEntity<>(storeService.findStoreWithLocByStoreId(storeId), HttpStatus.OK);
 	}
 
-	@PostMapping("/reservation/review")
-	public String regRevw(RedirectAttributes rttr) {
-
-		return "redirect:/dealight/mypage/reservation";
-	}
-	
 	@GetMapping(value = "/review/rsvd/{rsvdId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ResponseEntity<RevwVO> getRevwByRsvdId(HttpSession session,@PathVariable("rsvdId") Long rsvdId){
@@ -234,6 +239,19 @@ public class MypageController {
 		dto.setPageMaker(new PageDTO(cri,total));
 
 		return  new ResponseEntity<>(dto, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/like/add/{userId}/{storeId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<Boolean> pickLike(@PathVariable("userId")String userId, @PathVariable("storeId") Long storeId){
+
+		log.info("like add.........................");
+		log.info("user id : " + userId);
+		log.info("store id : " + storeId);
+		
+		likeService.pick(userId,storeId);
+		
+		return new ResponseEntity<>(true, HttpStatus.OK);
 	}
 	
 	@DeleteMapping(value = "/like/remove/{userId}/{storeId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
