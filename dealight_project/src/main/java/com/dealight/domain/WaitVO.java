@@ -43,7 +43,7 @@ public class WaitVO {
     private String waitStusCd = "W";
 
     private int revwStus = 0;
-    
+    private int waitTot;
     private String strWaitRegTm;
     
 }

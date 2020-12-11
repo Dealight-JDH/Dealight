@@ -109,6 +109,8 @@
 				<result property="name" column="menu_name" />
 				<result property="recoMenu" column="reco_menu" />
 			</collection>
+			
+			
 			<!-- <collection property="revws" ofType="RevwVO"> <result property="id" 
 				column="id" /> <result property="storeId" column="store_id" /> <result property="rsvdId" 
 				column="rsvd_id" /> <result property="waitId" column="wait_id" /> <result 
@@ -241,7 +243,7 @@
 		b.buser_id,b.seat_stus_cd,b.open_tm,b.close_tm, b.break_sttm,
 		b.break_entm,b.last_ord_tm,b.n1_seat_no,b.n2_seat_no,b.n4_seat_no,b.store_intro,b.avg_meal_tm,b.hldy,b.acm_pnum,
 		h.htdl_id,h.name,h.dc_rate,h.start_tm,h.end_tm,h.lmt_pnum,h.intro,h.bef_price,h.ddct,h.cur_pnum,h.stus_cd,
-		m.menu_seq,m.name menu_name,m.price,m.img_url, menu_img,m.reco_menu,
+		m.menu_seq,m.name menu_name, m.price,m.img_url menu_img, m.reco_menu,
 		t.tag_nm,
 		w.wait_tot
 		from tbl_store s,tbl_store_loc l,tbl_store_eval e,
@@ -250,21 +252,25 @@
 		select
 		store_id,count(wait_id) wait_tot
 		from tbl_wait
-		where wait_stus_cd='W'
+		where
+		wait_stus_cd='W'
 		GROUP by store_id)w
 		where s.store_id = l.store_id
-		and s.store_id
+		and
+		s.store_id
 		=i.store_id(+)
 		and s.store_id = b.store_id
-		and s.store_id =e.store_id
+		and s.store_id
+		=e.store_id
 		and s.store_id =
 		h.store_id(+)
 		and s.store_id = m.store_id(+)
 		and
 		s.store_id = t.store_id(+)
 		and s.store_id = w.store_id(+)
-		and s.store_id
-		=#{storeId}
+		and
+		s.store_id
+		= #{storeId}
 	</select>
 	
 	

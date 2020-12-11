@@ -177,7 +177,8 @@
 											<option value="13:30">13:30</option>
 											<option value="14:00">14:00</option>
 											<option value="14:30">14:30</option>
-										</select> <select id="num" required="required">
+										</select> 
+										<select id="num" required="required">
 											<option value="">인원수</option>
 											<option value="1">1</option>
 											<option value="2">2</option>

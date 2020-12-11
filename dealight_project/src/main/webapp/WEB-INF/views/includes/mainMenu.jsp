@@ -316,7 +316,6 @@ body {
 					<a href="#"><i class="fas fa-bell" color="black"></i></a>
 				</div>
 
-				
 				<div class="rightIcon">
 					<div class="mydropdown">
 						<%-- <<button class="mydropbtn" id="openModal" type="button" <%=loginState%>"> 사람이모지~~</button> --%>

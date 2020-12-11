@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		<mapper namespace="com.dealight.mapper.PymtMapper">
+		
+		
+		<select id="getList" resultType="com.dealight.domain.PymtVO">
+			select * from tbl_pymt where pymt_id > 0
+		</select>
+		
+		<select id="findById" resultType="com.dealight.domain.PymtVO">
+			select * from tbl_pymt where pymt_id = #{pymtId}
+		</select>
+		
+		
+		<delete id="delete">
+			delete from tbl_pymt where pymt_id = #{pymtId}
+		</delete>
+		
+		<update id="update">
+			update tbl_pymt
+			set stus_cd = #{stusCd}, approved_at = #{approvedAt}
+			where pymt_id = #{pymtId}
+		</update>
+	
+		<insert id="insertSelectKey">
+			<selectKey keyProperty="pymtId" order="BEFORE" resultType = "long">
+			select seq_pymt.nextval from dual
+			</selectKey>
+				insert into tbl_pymt
+			values(#{pymtId}, #{rsvdId}, #{mtd}, #{tamt}, #{stusCd}, #{aprvNo}, sysdate +9/24, sysdate+9/24, #{userId}, #{createdAt}, #{approvedAt})
+		</insert>
+		
+		<insert id="insert">
+			insert into tbl_pymt
+			values(seq_pymt.nextval, #{rsvdId}, #{mtd}, #{tamt}, #{stusCd}, #{aprvNo}, sysdate +9/24, sysdate+9/24), #{userId}, #{createdAt}, #{approvedAt})
+		</insert>	
+		
+		</mapper>

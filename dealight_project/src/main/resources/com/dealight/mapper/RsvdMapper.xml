@@ -38,7 +38,6 @@
 		</resultMap>
 		 
 		 <!-- 예약 가능 mapper -->
-		 
 		 <update id="completeUpdateAvail">
 		 	update tbl_rsvd_availability
 		 	set nine = #{nine}, nine_half =  #{nineHalf}, ten = #{ten}, ten_half = #{tenHalf}, eleven = #{eleven},
@@ -134,6 +133,12 @@
 		</insert>
 		
 		<!--예약 mapper -->
+		
+		<select id="checkExistHtdl" resultType="int">
+			select count(*)
+			from tbl_rsvd
+			where user_id = #{userId} and htdl_id = #{htdlId} and stus_cd != 'P' 
+		</select>
 		
 		<update id="updateStusCd">
 			update tbl_rsvd 

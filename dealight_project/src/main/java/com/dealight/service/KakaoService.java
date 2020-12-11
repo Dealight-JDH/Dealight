@@ -2,6 +2,8 @@ package com.dealight.service;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,11 +15,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.dealight.domain.KakaoPayApprovalVO;
 import com.dealight.domain.KakaoPayReadyVO;
+import com.dealight.domain.PymtVO;
 import com.dealight.domain.RsvdMenuDTO;
 import com.dealight.domain.RsvdRequestDTO;
 
@@ -36,6 +38,7 @@ public class KakaoService {
 	public static final String ADMINKEY = "41b5e82a25d9b62cb31484ccfab285b5";
 	
 	private final RsvdService rsvdService;
+	private final PymtService pymtService;
 	private KakaoPayReadyVO kakaoPayReadyVO; //결제 준비 
 	private KakaoPayApprovalVO kakaoPayApprovalVO; //결제 승인
 	
@@ -86,13 +89,20 @@ public class KakaoService {
         HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<>(params, headers);
         
         try {
-        	
+        	//결제 준비 
         	kakaoPayReadyVO = restTemplate.postForObject(new URI(HOST+"/v1/payment/ready"), body, KakaoPayReadyVO.class);
+        	//시간 포맷
+        	Date created_at = setDateFormat(kakaoPayReadyVO.getCreated_at());
+        	kakaoPayReadyVO.setCreated_at(created_at);
         	
         	log.info("kakaoPay ready...."+ kakaoPayReadyVO);
         	//log.info("kakaoPay ready...===== getNext_redirect_pc_url: " + kakaoPayReadyVO.getNext_redirect_pc_url());
-        	rsvdService.registerTid(kakaoPayReadyVO.getTid(), rsvdId);
         	
+        	//예약 테이블 결제 고유번호 등록
+        	rsvdService.registerTid(kakaoPayReadyVO.getTid(), rsvdId);
+        	//결제 테이블 등록
+        	PymtVO pymtVO = createPymtEntity(requestDto, rsvdId, kakaoPayReadyVO);
+        	pymtService.register(pymtVO);
         	
         	return kakaoPayReadyVO.getNext_redirect_pc_url();
         }catch (RestClientException e){
@@ -107,7 +117,7 @@ public class KakaoService {
 	//결제 승인
 	public KakaoPayApprovalVO kakaoPayInfo(String userId, String pg_token){
         log.info("==========kakaoPay info======");
-
+        
         RestTemplate restTemplate = new RestTemplate();
         
         //todo: 요청 헤더
@@ -129,8 +139,15 @@ public class KakaoService {
 
         try{
             kakaoPayApprovalVO = restTemplate.postForObject(new URI(HOST+"/v1/payment/approve"), body, KakaoPayApprovalVO.class);
-
+            Date created_at = setDateFormat(kakaoPayApprovalVO.getCreated_at());
+            Date approved_at = setDateFormat(kakaoPayApprovalVO.getApproved_at());
             
+            kakaoPayApprovalVO.setCreated_at(created_at);
+            kakaoPayApprovalVO.setApproved_at(approved_at);
+//            log.info("approval create Date : " + new Date(cal.getTimeInMillis()));
+//            kakaoPayApprovalVO.setCreated_at(new Date(cal.getTimeInMillis()));
+            
+
             log.info("kakaoPayApprovalVO: "+ kakaoPayApprovalVO);
             this.rsvdId = 0l;
             this.totAmt = 0;
@@ -144,5 +161,24 @@ public class KakaoService {
         return null;
 
     }
+	
+	//결제 vo 생성
+	private PymtVO createPymtEntity(RsvdRequestDTO requestDto, Long rsvdId, KakaoPayReadyVO readyVo) {
+		
+		return PymtVO.builder()
+				.rsvdId(rsvdId)
+				.userId(requestDto.getUserId())
+				.tamt(requestDto.getTotAmt())
+				.stusCd("R")
+				.aprvNo(readyVo.getTid())
+				.createdAt(readyVo.getCreated_at()).build();
+	}
+	//한국시간에 맞추기
+	private Date setDateFormat(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+        cal.add(Calendar.HOUR_OF_DAY, -9);
+        return new Date(cal.getTimeInMillis());
+	}
 	
 }

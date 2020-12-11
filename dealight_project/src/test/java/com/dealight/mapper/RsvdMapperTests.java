@@ -35,6 +35,15 @@ public class RsvdMapperTests {
 	//TODO 예약 상세 테스트
 	
 	@Test
+	public void testCheckExistHtdl() {
+		String userId = "whddn528";
+		Long htdlId = 13l;
+		int count = mapper.checkExistHtdl(userId, htdlId);
+		
+		log.info("htdl exist count: " + count);
+	}
+	
+	@Test
 	public void updateRsvdAvail() {
 		log.info("update rsvdAvail...");
 		Long storeId = 3l; 

@@ -212,13 +212,8 @@ h4{
 	    </div>
 	  </div>
 	</div>
-<<<<<<< HEAD
+
 	<script>
-=======
-	
-<script>
->>>>>>> dev_hotdeal
-	
 	let htdlUL = $(".hotdeal"); //핫딜
 	let size = '<c:out value="${fn:length(lists)}"/>'; //진행중인 핫딜 갯수
 
@@ -248,7 +243,7 @@ h4{
 	let paramStusCd = "A"; //핫딜 상태코드
 	
 	$(document).ready(function() {
-
+		
 		console.log("==="+size);
 		//showList(paramStusCd);
 		showListStart(paramStusCd, pageNum); //1초마다 핫딜 리스트를 그린다
@@ -718,10 +713,9 @@ h4{
 			}
 		});
 	}
+	
+	
 </script>
 </body>
 </html>
-<<<<<<< HEAD
 
-=======
->>>>>>> dev_hotdeal

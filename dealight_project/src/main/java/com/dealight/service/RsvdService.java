@@ -67,17 +67,26 @@ public interface RsvdService {
 	void initRsvdAvail();
 	
 	List<RsvdAvailVO> getRsvdAvailList();
-	
 	RsvdAvailVO getRsvdAvailByStoreId(Long storeId);
 	
 	//예약 완료후
 	//예약 가능 여부 차감 || 핫딜이 존재하는 경우 차감
 	boolean completeUpdateAvail(Long storeId, String time, int pnum);
-	
-	
 	boolean completeUpdateHtdl();
 	
+	//핫딜 예약이 있는 경우
+	boolean checkExistHtdl(String userId, Long htdlId);
+	//핫딜 예약이 없는 경우 o
 	
+	//해당 핫딜의 
+	//예약이 있는 경우
+	//예약 내역을 가져온다
+	//한 회원의 핫딜번호가 존재하는 예약 내역을 가져온다
+	//해당 핫딜번호의 예약은 하나이어야 한다
+	//해당 핫딜번호의 구매는 x
+	
+	
+
 	
 	//테이블 갯수 업데이트
 	//해당 핫딜이 있을 경우 핫딜 예약 인원 업데이트

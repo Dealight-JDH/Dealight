@@ -36,6 +36,15 @@ public class RsvdServiceTests {
 	private RsvdService rsvdService;
 
 	@Test
+	public void testCheckExistHtdl() {
+		
+		log.info("hotdeal exist check...");
+		String userId = "whddn528";
+		Long htdlId = 13l;
+		assertTrue(rsvdService.checkExistHtdl(userId, htdlId));
+	}
+	
+	@Test
 	public void testCompleteUpdateAvail() {
 		
 		Long storeId = 4l;
@@ -127,7 +136,7 @@ public class RsvdServiceTests {
 					breakTimeList.add(timeValue);
 					
 					//예약 가능 VO클래스
-					Class availClass = vo.getClass();
+					Class<?> availClass = vo.getClass();
 					//VO클래스 에 대한 필드 추출(private까지)
 					Field fields[] = availClass.getDeclaredFields();
 					

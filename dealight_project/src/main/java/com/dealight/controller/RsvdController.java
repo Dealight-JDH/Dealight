@@ -3,16 +3,23 @@ package com.dealight.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.print.attribute.standard.Media;
 import javax.validation.Valid;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdMenuDTO;
@@ -38,6 +45,18 @@ public class RsvdController {
 	private final KakaoService kakaoService;
 	private final RsvdService rsvdService;
 	private final StoreService service;
+		
+//	@GetMapping("/htdlcheck/{userId}/{htdlId}")
+	
+	@RequestMapping(value ="/htdlcheck/{userId}/{htdlId}")
+	public @ResponseBody boolean htdlCheck(@PathVariable String userId, @PathVariable Long htdlId){
+		
+		boolean checked = rsvdService.checkExistHtdl(userId, htdlId);
+		log.info("hotdeal rsvd checked : " + checked);
+
+//		return new ResponseEntity<Boolean>(!checked, HttpStatus.OK);
+		return !checked;
+	}
 	
 	@GetMapping("/rsvdForm")
 	public void getReservation(Long storeId, Model model) {
@@ -106,7 +125,7 @@ public class RsvdController {
 	            log.info("=====error: " + error.getDefaultMessage());
 	        
 		}
-    	
+    	log.info("=========================requestDto : "  + requestDto);
     	//결제 요청 시 예약 등록
     	RsvdVO vo = requestDto.toEntity();
     	
@@ -125,8 +144,7 @@ public class RsvdController {
 			
 			//log.info("======================menuDto: "+ menuDto);
 
-			if(lists.get(i).getName() != null && lists.get(i).getPrice() != null) {
-				
+			if(isRsvdMenuCheck(lists.get(i))) {
 				//메뉴 수량 파라미터...
 				RsvdDtlsVO dtlsVO = RsvdDtlsVO.builder()
 						.menuNm(lists.get(i).getName())
@@ -142,6 +160,10 @@ public class RsvdController {
         log.info("kakao pay.....");
         return "redirect:" + kakaoService.kakaoPayReady(rsvdId, vo.getUserId(), lists, requestDto);
     }
+    
+    private boolean isRsvdMenuCheck(RsvdMenuDTO rsvdDto) {
+    	return rsvdDto.getName() != null && rsvdDto.getPrice() != null;
+    }
 
     @GetMapping("/kakaoPaySuccess")
     public void kakaoPaySuccess(RsvdRequestDTO requestDto, Long rsvdId,  String pg_token, Model model){
@@ -151,7 +173,6 @@ public class RsvdController {
         
         //카카오 결제 성공시 예약 상태 업데이트
         //String userId = auth.getName();
-        
         rsvdService.complete(rsvdId);
     
         

@@ -44,8 +44,9 @@ public interface RsvdMapper {
 	//예약 가능 여부 && 핫딜 차감
 	int completeUpdateAvail(RsvdAvailVO availVO);
 	int completeUpdateHtdl();
+	//핫딜이 존재하는 경우 확인
+	int checkExistHtdl(@Param("userId") String userId, @Param("htdlId") Long htdlId);
 	
-
 	Long getSeqRsvd();
 	Long getDaySeqRsvd();
 	

@@ -56,6 +56,14 @@ public class RsvdServiceImpl implements RsvdService{
 //	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/mm/dd hh:mm");
 	
 	@Override
+	public boolean checkExistHtdl(String userId, Long htdlId) {
+		// TODO Auto-generated method stub
+		log.info("hotdeal rsvd check...");
+		
+		return rsvdMapper.checkExistHtdl(userId, htdlId) > 0;
+	}
+	
+	@Override
 	public RsvdAvailVO getRsvdAvailByStoreId(Long storeId) {
 		// TODO Auto-generated method stub
 		log.info("get Rsvd availVO....");
@@ -70,13 +78,13 @@ public class RsvdServiceImpl implements RsvdService{
 		//해당 매장의 예약 가능 row가져오기
 		RsvdAvailVO findRsvdAvailVO = rsvdMapper.findRsvdAvailByStoreId(storeId);
 		
-		//시간 상수와 예약 시간 매핑
-		TimeDTO updateTimeField = mappingTime(time);
+		//해당 예약시간의 값 가져오기
+		TimeDTO updateTimeField = getTimeValue(time);
 		
 		//예약 vo reflect
 		log.info("=========Time DTO: " + updateTimeField);
 		try {			
-			Class availClass = findRsvdAvailVO.getClass();
+			Class<?> availClass = findRsvdAvailVO.getClass();
 			
 			Field[] fields = availClass.getDeclaredFields();
 			
@@ -157,8 +165,8 @@ public class RsvdServiceImpl implements RsvdService{
 		});
 		
 	}
-	//상수 시간과 예약 시간 매핑
-	private TimeDTO mappingTime(String time) {
+	//해당 예약시간의 시간상수 반환
+	private TimeDTO getTimeValue(String time) {
 		
 //		String strRsvdTime = sysdate.getYear()+"-"+sysdate.getMonthValue()+"-"+sysdate.getDayOfMonth()+"T"+time;
 //		LocalDateTime rsvdTime = LocalDateTime.parse(strRsvdTime);
@@ -687,6 +695,8 @@ public class RsvdServiceImpl implements RsvdService{
 		
 		return rsvdMapper.getRsvdCount(userId, cri, "C");
 	}
+
+	
 
 	
 	

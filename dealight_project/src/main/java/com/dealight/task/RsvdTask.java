@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import com.dealight.domain.RsvdTimeDTO;
 import com.dealight.service.RsvdService;
