@@ -12,6 +12,7 @@ public interface PymtMapper {
 	
 	//상태코드, 결제승인시간
 	int update(PymtVO vo);	
+	int stusCdUpdate(PymtVO vo);
 	PymtVO findById(Long pymtId);
 	PymtVO findByRsvdId(Long rsvdId);
 	int delete(Long pymtId);

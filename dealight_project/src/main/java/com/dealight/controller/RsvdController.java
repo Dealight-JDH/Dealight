@@ -208,12 +208,15 @@ public class RsvdController {
     	log.info("payCancel...");
     	
     	PymtVO vo = pymtService.getByRsvdId(rsvdId);
+    	log.info("=========cancel pymtVO: " + vo);
     	vo.setStusCd("W");
     	//결제 취소 상태 업데이트
-    	pymtService.modify(vo);
+    	pymtService.stusCdModify(vo);
 //    	Long rsvdId = rsvdService.getRsvdId();
 //    	rsvdService.cancel(rsvdId);
     }
+    
+    
     
     private boolean isRsvdMenuCheck(RsvdMenuDTO rsvdDto) {
     	return rsvdDto.getName() != null && rsvdDto.getPrice() != null;

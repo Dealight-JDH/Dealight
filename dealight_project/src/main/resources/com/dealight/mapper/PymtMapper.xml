@@ -22,9 +22,15 @@
 			delete from tbl_pymt where pymt_id = #{pymtId}
 		</delete>
 		
+		<update id="stusCdUpdate">
+			update tbl_pymt
+			set stus_cd = #{stusCd}, updatedate = sysdate +9/24
+			where pymt_id = #{pymtId}
+		</update>
+		
 		<update id="update">
 			update tbl_pymt
-			set mtd = #{mtd}, aprv_no = #{aprvNo}, stus_cd = #{stusCd}, approved_at = #{approvedAt}
+			set mtd = #{mtd}, aprv_no = #{aprvNo}, stus_cd = #{stusCd}, approved_at = #{approvedAt}, updatedate = sysdate+9/24
 			where pymt_id = #{pymtId}
 		</update>
 	

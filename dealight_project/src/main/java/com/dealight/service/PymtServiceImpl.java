@@ -17,6 +17,12 @@ public class PymtServiceImpl implements PymtService{
 
 	private final PymtMapper mapper;
 	
+	
+	@Override
+	public boolean stusCdModify(PymtVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.stusCdUpdate(vo) == 1;
+	}
 	@Override
 	public PymtVO getByRsvdId(Long rsvdId) {
 		// TODO Auto-generated method stub
@@ -64,6 +70,8 @@ public class PymtServiceImpl implements PymtService{
 		log.info("pymt get List ....");
 		return mapper.getList();
 	}
+
+	
 
 	
 

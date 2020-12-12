@@ -12,6 +12,7 @@ public interface PymtService {
 	PymtVO get(Long pymtId);
 	PymtVO getByRsvdId(Long rsvdId);
 	boolean modify(PymtVO vo);
+	boolean stusCdModify(PymtVO vo);
 	boolean remove(Long pymtId);
 	
 	List<PymtVO> getList();
