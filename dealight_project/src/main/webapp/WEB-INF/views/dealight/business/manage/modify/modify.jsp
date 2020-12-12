@@ -299,17 +299,22 @@ let regReplyHandler = function (e) {
 	
 	regReply({revwId:revwId,replyCnts:replyCnts});
 	
-	getRevw(revwId, revw => {
+	
+	
+	getRevw({revwId:revwId}, revw => {
 		
-		inputRevwId.text(revw.replyCnts);
-		inputReplyRegDt.text(revw.replyRegDate);
+		console.log("revw.replyCnts : " + revw.replyCnts);
+		console.log("revw.replyRegDate : " + revw.replyRegDt);
+		
+		inputReplyCnts.val(revw.replyCnts);
+		inputReplyRegDt.val(revw.replyRegDt);
+		console.log("reg reply complete");
 		
 	});
 	
 };
 
 	$(".btn_reg_reply").on("click",regReplyHandler);
-
 
 </script>
 </body>
