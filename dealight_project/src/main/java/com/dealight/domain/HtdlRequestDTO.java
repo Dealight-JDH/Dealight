@@ -32,6 +32,7 @@ public class HtdlRequestDTO {
 	private List<HtdlMenuDTO> menu;
 	
 	private String htdlPhotoSrc;
+	
 	@NotNull
 	private double dcRate;
 	

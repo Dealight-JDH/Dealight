@@ -56,6 +56,14 @@ public class RsvdServiceImpl implements RsvdService{
 //	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/mm/dd hh:mm");
 	
 	@Override
+	public RsvdVO readRsvdVO(Long rsvdId) {
+		// TODO Auto-generated method stub
+		log.info("rsvd find vo..");
+		return rsvdMapper.findRsvdById(rsvdId);
+	}
+	
+	
+	@Override
 	public boolean checkExistHtdl(String userId, Long htdlId) {
 		// TODO Auto-generated method stub
 		log.info("hotdeal rsvd check...");
@@ -695,6 +703,8 @@ public class RsvdServiceImpl implements RsvdService{
 		
 		return rsvdMapper.getRsvdCount(userId, cri, "C");
 	}
+
+	
 
 	
 

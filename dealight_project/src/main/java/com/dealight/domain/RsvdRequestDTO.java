@@ -56,7 +56,7 @@ public class RsvdRequestDTO {
 		return RsvdVO.builder()
 					.storeId(storeId)
 					.userId(userId)
-					.htdlId(htdlId)
+					.htdlId(185l)
 					.pnum(pnum)
 					.time(sysdate + " " + time)
 					.totAmt(totAmt)

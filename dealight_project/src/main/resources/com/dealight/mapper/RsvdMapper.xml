@@ -184,6 +184,10 @@
 	 	]]>
 		</select>
 		
+		<select id="findRsvdById" resultType="com.dealight.domain.RsvdVO">
+			select * from tbl_rsvd where rsvd_id = #{rsvdId}
+		</select>
+		
 		<select id="findById" resultType="com.dealight.domain.RsvdVO">
 			select * from tbl_rsvd where rsvd_id = #{rsvdId}
 		</select>

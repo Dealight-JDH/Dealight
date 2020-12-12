@@ -199,7 +199,7 @@ public class RsvdServiceTests {
 		RsvdVO vo = RsvdVO.builder()
 							.storeId(3l)
 							.userId("whddn528")
-							.aprvNo(202011073583l)
+							.aprvNo("202011073583l")
 							.pnum(2)
 							.time(sysdate+" 18:00")
 							.stusCd("P")

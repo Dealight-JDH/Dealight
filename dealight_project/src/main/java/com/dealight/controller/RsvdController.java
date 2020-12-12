@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dealight.domain.HtdlCheckReqDTO;
+import com.dealight.domain.HtdlVO;
 import com.dealight.domain.KakaoPayApprovalVO;
 import com.dealight.domain.PymtVO;
 import com.dealight.domain.RsvdDtlsVO;
@@ -29,6 +30,7 @@ import com.dealight.domain.RsvdMenuDTOList;
 import com.dealight.domain.RsvdRequestDTO;
 import com.dealight.domain.RsvdRequestInfoDTO;
 import com.dealight.domain.RsvdVO;
+import com.dealight.service.HtdlService;
 import com.dealight.service.KakaoService;
 import com.dealight.service.PymtService;
 import com.dealight.service.RsvdService;
@@ -48,6 +50,7 @@ public class RsvdController {
 	private final KakaoService kakaoService;
 	private final RsvdService rsvdService;
 	private final PymtService pymtService;
+	private final HtdlService htdlService;
 	private final StoreService service;
 		
 //	@GetMapping("/htdlcheck/{userId}/{htdlId}")
@@ -62,7 +65,6 @@ public class RsvdController {
 		boolean checked = rsvdService.checkExistHtdl(dto.getUesrId(), dto.getHtdlId());
 		log.info("hotdeal rsvd checked : " + checked);
 
-//		return new ResponseEntity<Boolean>(!checked, HttpStatus.OK);
 		return new ResponseEntity<Boolean>(!checked, HttpStatus.OK);
 	}
 	
@@ -79,6 +81,7 @@ public class RsvdController {
 	
 	@GetMapping("/")
 	public void reservation(Authentication auth, Model model, @Valid RsvdMenuDTOList rsvdMenuList, @Valid RsvdRequestInfoDTO requestInfo) {
+		
 		//로그인 성공 후 세션에 저장된 user 정보를 꺼내와서 user정보를 불러옴
 //	    UserVO user = (UserVO)session.getAttribute("user");
 //	    if(user == null) {
@@ -187,15 +190,30 @@ public class RsvdController {
         
         //핫딜이 존재하는 경우
         //핫딜 마감인원 - 이용인원
-        
+        /*요청 request를 통해 진행되야됨*/
+        RsvdVO vo = rsvdService.readRsvdVO(rsvdId);
+        //
+        if(vo.getHtdlId() != null) {
+        	//핫딜 vo를 가져온다
+        	HtdlVO hotdeal = htdlService.readHtdl(vo.getHtdlId());
+        	log.info("=========hotdeal : "+ hotdeal);
+        	//현재인원 증가(한 계정당 1개 구매)
+        	int curPnum = hotdeal.getCurPnum() + 1;
+        	hotdeal.setCurPnum(curPnum);
+        	htdlService.curPnumModify(hotdeal);
+        	//핫딜 구매 체크는 매장 상세에서 ajax..
+        	
+        	
+        }
+                
         //결제 상태 업데이트 (상태, 결제수단, 결제 승인번호, 결제 승인 시간)
-        PymtVO vo = pymtService.getByRsvdId(rsvdId);
-        vo.setStusCd("C");
-        vo.setMtd(kakaoPayApprovalVO.getPayment_method_type());
-        vo.setAprvNo(kakaoPayApprovalVO.getTid());
-        vo.setApprovedAt(kakaoPayApprovalVO.getApproved_at());
+        PymtVO successVO = pymtService.getByRsvdId(rsvdId);
+        successVO.setStusCd("C");
+        successVO.setMtd(kakaoPayApprovalVO.getPayment_method_type());
+        successVO.setAprvNo(kakaoPayApprovalVO.getTid());
+        successVO.setApprovedAt(kakaoPayApprovalVO.getApproved_at());
         
-        pymtService.modify(vo);
+        pymtService.modify(successVO);
         
         model.addAttribute("kakaoPayInfo", kakaoPayApprovalVO);
         model.addAttribute("rsvdId", rsvdId);
@@ -204,19 +222,29 @@ public class RsvdController {
     }
     
     @GetMapping("/kakaoPayCancel")
-    public void kakaoPayCancel(Long rsvdId) {
+    public void kakaoPayCancel(Long rsvdId, Long storeId, Model model) {
     	log.info("payCancel...");
     	
-    	PymtVO vo = pymtService.getByRsvdId(rsvdId);
-    	log.info("=========cancel pymtVO: " + vo);
-    	vo.setStusCd("W");
+    	PymtVO cancelVO = pymtService.getByRsvdId(rsvdId);
+    	log.info("=========cancel pymtVO: " + cancelVO);
+    	cancelVO.setStusCd("W");
     	//결제 취소 상태 업데이트
-    	pymtService.stusCdModify(vo);
+    	pymtService.stusCdModify(cancelVO);
+    	model.addAttribute("storeId", storeId);
 //    	Long rsvdId = rsvdService.getRsvdId();
 //    	rsvdService.cancel(rsvdId);
     }
     
-    
+    @GetMapping("/kakaoPaySuccessFail")
+    public void kakaoPaySuccessFail(Long rsvdId) {
+    	log.info("pay Success Fail...");
+    	PymtVO failVO = pymtService.getByRsvdId(rsvdId);
+    	failVO.setStusCd("F");
+    	
+    	//결제 실패 상태 업데이트
+    	pymtService.stusCdModify(failVO);
+    	
+    }
     
     private boolean isRsvdMenuCheck(RsvdMenuDTO rsvdDto) {
     	return rsvdDto.getName() != null && rsvdDto.getPrice() != null;

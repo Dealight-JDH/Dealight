@@ -78,6 +78,7 @@ public interface RsvdService {
 	boolean checkExistHtdl(String userId, Long htdlId);
 	//핫딜 예약이 없는 경우 o
 	
+	RsvdVO readRsvdVO(Long rsvdId);
 	//해당 핫딜의 
 	//예약이 있는 경우
 	//예약 내역을 가져온다

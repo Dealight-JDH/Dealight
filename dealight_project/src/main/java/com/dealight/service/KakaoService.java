@@ -84,7 +84,7 @@ public class KakaoService {
         params.add("total_amount", String.valueOf(totAmt));
         params.add("tax_free_amount","0");
         params.add("approval_url", builder.toUriString());
-        params.add("cancel_url","http://localhost:8181/dealight/reservation/kakaoPayCancel?rsvdId="+rsvdId);
+        params.add("cancel_url","http://localhost:8181/dealight/reservation/kakaoPayCancel?rsvdId="+rsvdId+"&storeId="+requestDto.getStoreId());
         params.add("fail_url","http://localhost:8181/dealight/reservation/kakaoPaySuccessFail");
         
         HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<>(params, headers);

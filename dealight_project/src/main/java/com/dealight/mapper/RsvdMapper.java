@@ -22,7 +22,7 @@ import com.dealight.domain.UserWithRsvdDTO;
 public interface RsvdMapper {
 
 	//예약 mapper
-	RsvdVO findById(Long rsvdId);
+	RsvdVO findRsvdById(Long rsvdId);
 	int delete(Long rsvdId);
 	List<RsvdVO> getList();
 	int completeStusUpdate(Long rsvdId);
