@@ -9,6 +9,10 @@
 			select * from tbl_pymt where pymt_id > 0
 		</select>
 		
+		<select id="findByRsvdId" resultType="com.dealight.domain.PymtVO">
+			select * from tbl_pymt where rsvd_id = #{rsvdId}
+		</select>
+		
 		<select id="findById" resultType="com.dealight.domain.PymtVO">
 			select * from tbl_pymt where pymt_id = #{pymtId}
 		</select>
@@ -20,7 +24,7 @@
 		
 		<update id="update">
 			update tbl_pymt
-			set stus_cd = #{stusCd}, approved_at = #{approvedAt}
+			set mtd = #{mtd}, aprv_no = #{aprvNo}, stus_cd = #{stusCd}, approved_at = #{approvedAt}
 			where pymt_id = #{pymtId}
 		</update>
 	
@@ -28,13 +32,13 @@
 			<selectKey keyProperty="pymtId" order="BEFORE" resultType = "long">
 			select seq_pymt.nextval from dual
 			</selectKey>
-				insert into tbl_pymt
-				values(#{pymtId}, #{rsvdId}, #{userId}, #{mtd}, #{tamt}, #{stusCd}, #{aprvNo}, #{regDate}, sysdate +9/24, #{approvedAt})
+				insert into tbl_pymt (pymt_id, rsvd_id, user_id, mtd, tamt, stus_cd, aprv_no, regdate, updatedate, approved_at)
+				values(#{pymtId}, #{rsvdId}, #{userId}, #{mtd}, #{tamt}, #{stusCd}, #{aprvNo}, #{regDate} , sysdate+9/24, null)
 		</insert>
 		
-		<insert id="insert">
+ 		<insert id="insert">
 			insert into tbl_pymt
 			values(seq_pymt.nextval, #{rsvdId},#{userId}, #{mtd}, #{tamt}, #{stusCd}, #{aprvNo}, sysdate +9/24, sysdate +9/24, #{approvedAt})
-		</insert>	
+		</insert>
 		
 		</mapper>

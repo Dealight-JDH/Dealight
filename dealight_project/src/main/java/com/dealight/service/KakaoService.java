@@ -84,7 +84,7 @@ public class KakaoService {
         params.add("total_amount", String.valueOf(totAmt));
         params.add("tax_free_amount","0");
         params.add("approval_url", builder.toUriString());
-        params.add("cancel_url","http://localhost:8181/dealight/reservation/kakaoPayCancel");
+        params.add("cancel_url","http://localhost:8181/dealight/reservation/kakaoPayCancel?rsvdId="+rsvdId);
         params.add("fail_url","http://localhost:8181/dealight/reservation/kakaoPaySuccessFail");
         
         HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<>(params, headers);
@@ -92,6 +92,7 @@ public class KakaoService {
         try {
         	//결제 준비 
         	kakaoPayReadyVO = restTemplate.postForObject(new URI(HOST+"/v1/payment/ready"), body, KakaoPayReadyVO.class);
+        	
         	//시간 포맷
         	Date created_at = setDateFormat(kakaoPayReadyVO.getCreated_at());
         	kakaoPayReadyVO.setCreated_at(created_at);
@@ -99,14 +100,11 @@ public class KakaoService {
         	log.info("kakaoPay ready...."+ kakaoPayReadyVO);
         	//log.info("kakaoPay ready...===== getNext_redirect_pc_url: " + kakaoPayReadyVO.getNext_redirect_pc_url());
         	
-        	//예약 테이블 결제 고유번호 등록
-        	rsvdService.registerTid(kakaoPayReadyVO.getTid(), rsvdId);
-        	
         	log.info("============================created_at: " + kakaoPayReadyVO.getCreated_at());
         	//결제 테이블 등록
         	PymtVO pymtVO = createPymtEntity(requestDto, rsvdId, created_at);
-        	log.info("==============================="+ pymtVO);
-        	//pymtService.register(pymtVO);
+        	log.info("=============================PymtVO: "+ pymtVO);
+        	pymtService.register(pymtVO);
         	
         	return kakaoPayReadyVO.getNext_redirect_pc_url();
         }catch (RestClientException e){
@@ -124,13 +122,13 @@ public class KakaoService {
         
         RestTemplate restTemplate = new RestTemplate();
         
-        //todo: 요청 헤더
+        //TODO: 요청 헤더
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "KakaoAK "+ ADMINKEY);
         headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
         headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE+";charset=UTF-8");
 
-        //todo: 요청 바디
+        //TODO: 요청 바디
         MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
         params.add("cid","TC0ONETIME");
         params.add("tid", kakaoPayReadyVO.getTid());
@@ -148,6 +146,10 @@ public class KakaoService {
             
             kakaoPayApprovalVO.setCreated_at(created_at);
             kakaoPayApprovalVO.setApproved_at(approved_at);
+            
+            //예약 테이블 결제 승인번호 등록
+            rsvdService.registerTid(kakaoPayApprovalVO.getTid(), rsvdId);
+            
 //            log.info("approval create Date : " + new Date(cal.getTimeInMillis()));
 //            kakaoPayApprovalVO.setCreated_at(new Date(cal.getTimeInMillis()));
             

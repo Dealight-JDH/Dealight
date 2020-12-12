@@ -40,6 +40,7 @@ public interface RsvdMapper {
 	List<RsvdAvailVO> getRsvdAvailList();
 	void updateRsvdAvail(RsvdAvailVO availVO);
 	
+	
 	//예약 완료 후
 	//예약 가능 여부 && 핫딜 차감
 	int completeUpdateAvail(RsvdAvailVO availVO);

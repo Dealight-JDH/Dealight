@@ -3,10 +3,8 @@ package com.dealight.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.print.attribute.standard.Media;
 import javax.validation.Valid;
 
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +14,15 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dealight.domain.HtdlCheckReqDTO;
+import com.dealight.domain.KakaoPayApprovalVO;
+import com.dealight.domain.PymtVO;
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdMenuDTO;
 import com.dealight.domain.RsvdMenuDTOList;
@@ -28,6 +30,7 @@ import com.dealight.domain.RsvdRequestDTO;
 import com.dealight.domain.RsvdRequestInfoDTO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.service.KakaoService;
+import com.dealight.service.PymtService;
 import com.dealight.service.RsvdService;
 import com.dealight.service.StoreService;
 
@@ -44,18 +47,23 @@ public class RsvdController {
 
 	private final KakaoService kakaoService;
 	private final RsvdService rsvdService;
+	private final PymtService pymtService;
 	private final StoreService service;
 		
 //	@GetMapping("/htdlcheck/{userId}/{htdlId}")
 	
-	@RequestMapping(value ="/htdlcheck/{userId}/{htdlId}")
-	public @ResponseBody boolean htdlCheck(@PathVariable String userId, @PathVariable Long htdlId){
+	@RequestMapping(value ="/htdlcheck", method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public @ResponseBody ResponseEntity<Boolean>htdlCheck(@RequestBody HtdlCheckReqDTO dto){
 		
-		boolean checked = rsvdService.checkExistHtdl(userId, htdlId);
+//		log.info("========userId  : " + userId );
+//		log.info("========htdlId  : " + htdlId );
+		log.info("====================="+ dto);
+		boolean checked = rsvdService.checkExistHtdl(dto.getUesrId(), dto.getHtdlId());
 		log.info("hotdeal rsvd checked : " + checked);
 
 //		return new ResponseEntity<Boolean>(!checked, HttpStatus.OK);
-		return !checked;
+		return new ResponseEntity<Boolean>(!checked, HttpStatus.OK);
 	}
 	
 	@GetMapping("/rsvdForm")
@@ -149,32 +157,30 @@ public class RsvdController {
 				RsvdDtlsVO dtlsVO = RsvdDtlsVO.builder()
 						.menuNm(lists.get(i).getName())
 						.menuPrc(lists.get(i).getPrice())
-						.menuTotQty(requestDto.getTotQty()).build();
+						.menuTotQty(requestDto.getMenu().get(i).getQty()).build();
 				dtlsList.add(dtlsVO);
 			}
 		}
     	
     	rsvdService.register(vo, dtlsList);
     	Long rsvdId = rsvdService.getRsvdId();
-
+    	
         log.info("kakao pay.....");
         return "redirect:" + kakaoService.kakaoPayReady(rsvdId, vo.getUserId(), lists, requestDto);
     }
     
-    private boolean isRsvdMenuCheck(RsvdMenuDTO rsvdDto) {
-    	return rsvdDto.getName() != null && rsvdDto.getPrice() != null;
-    }
 
     @GetMapping("/kakaoPaySuccess")
     public void kakaoPaySuccess(RsvdRequestDTO requestDto, Long rsvdId,  String pg_token, Model model){
         log.info("paySuccess......");
         log.info("kakaoPay pg_token: "+ pg_token);
         
-        
+        //카카오 페이 승인 vo
+        KakaoPayApprovalVO kakaoPayApprovalVO =  kakaoService.kakaoPayInfo(requestDto.getUserId(), pg_token);
         //카카오 결제 성공시 예약 상태 업데이트
         //String userId = auth.getName();
+        
         rsvdService.complete(rsvdId);
-    
         
         //예약 가능 여부 차감
         rsvdService.completeUpdateAvail(requestDto.getStoreId(), requestDto.getTime(), requestDto.getPnum());
@@ -182,13 +188,34 @@ public class RsvdController {
         //핫딜이 존재하는 경우
         //핫딜 마감인원 - 이용인원
         
-        model.addAttribute("info", kakaoService.kakaoPayInfo(requestDto.getUserId(), pg_token));
+        //결제 상태 업데이트 (상태, 결제수단, 결제 승인번호, 결제 승인 시간)
+        PymtVO vo = pymtService.getByRsvdId(rsvdId);
+        vo.setStusCd("C");
+        vo.setMtd(kakaoPayApprovalVO.getPayment_method_type());
+        vo.setAprvNo(kakaoPayApprovalVO.getTid());
+        vo.setApprovedAt(kakaoPayApprovalVO.getApproved_at());
+        
+        pymtService.modify(vo);
+        
+        model.addAttribute("kakaoPayInfo", kakaoPayApprovalVO);
+        model.addAttribute("rsvdId", rsvdId);
+        model.addAttribute("userId", requestDto.getUserId());
+        model.addAttribute("storeId", requestDto.getStoreId());
     }
     
     @GetMapping("/kakaoPayCancel")
-    public void kakaoPayCancel() {
+    public void kakaoPayCancel(Long rsvdId) {
     	log.info("payCancel...");
+    	
+    	PymtVO vo = pymtService.getByRsvdId(rsvdId);
+    	vo.setStusCd("W");
+    	//결제 취소 상태 업데이트
+    	pymtService.modify(vo);
 //    	Long rsvdId = rsvdService.getRsvdId();
 //    	rsvdService.cancel(rsvdId);
+    }
+    
+    private boolean isRsvdMenuCheck(RsvdMenuDTO rsvdDto) {
+    	return rsvdDto.getName() != null && rsvdDto.getPrice() != null;
     }
 }

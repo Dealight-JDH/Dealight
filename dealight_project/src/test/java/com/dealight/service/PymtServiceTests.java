@@ -42,7 +42,6 @@ public class PymtServiceTests {
 //		.regDate(date).build();
 //		
 		service.register(vo);
-		
 	}
 	
 	//결제 vo 생성
@@ -50,9 +49,9 @@ public class PymtServiceTests {
 		
 		return PymtVO.builder()
 					.rsvdId(100l)
+					.userId("whddn528")
 					.tamt(3500)
 					.stusCd("R")
-					.userId("whddn528")
 					.regDate(createdAt)
 					.build();
 	}

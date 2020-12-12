@@ -95,6 +95,8 @@ let msg = '${msg}';
 
 
 	<script>
+	
+	
 		function myFunction() {
 			const x = document.getElementById("myDIV");
 			if (x.style.display === "block") {

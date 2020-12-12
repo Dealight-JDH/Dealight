@@ -18,6 +18,13 @@ public class PymtServiceImpl implements PymtService{
 	private final PymtMapper mapper;
 	
 	@Override
+	public PymtVO getByRsvdId(Long rsvdId) {
+		// TODO Auto-generated method stub
+		log.info("find pymt by rsvdId....");
+		return mapper.findByRsvdId(rsvdId);
+	}
+	
+	@Override
 	public void register(PymtVO vo) {
 		// TODO Auto-generated method stub
 		log.info("pymt register...");
@@ -57,5 +64,7 @@ public class PymtServiceImpl implements PymtService{
 		log.info("pymt get List ....");
 		return mapper.getList();
 	}
+
+	
 
 }

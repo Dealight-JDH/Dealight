@@ -243,7 +243,6 @@
 				.ready(
 						function() {
 							
-							
 							let storeIdValue = '<c:out value="${store.storeId}"/>';
 							let revwUL = $(".revwColumn");
 							showList(1);
@@ -518,8 +517,11 @@
 		const reserve =$("#reserve");
 		const pnum =$("#pnum");
 		var submitted = false;
+		
 		$("#reserveForm button").on("click", function(e) {
-			  if(submitted == true) { return; }
+			  if(submitted == true) { 
+				  return;
+			  }
 			//1.기존 이벤트(페이지 이동)를 막는다
 			e.preventDefault();
 			
@@ -547,6 +549,7 @@
 			//3. 2에서 하고 싶은 거 실행 후  submit()
 
 			for (let i = 0; i < menus.arrSelMenus.length; i++) {
+				
 				if(menus.arrSelMenus[i].cnt === 0){
 					alert("메뉴 수량을 선택해주세요");
 				return; 
@@ -559,16 +562,21 @@
 				const menuQty = '<input type="hidden" name=menu['+i+'].qty value="'+menus.arrSelMenus[i].cnt+'">'; 
 				reserveForm.append(menuQty);
 				
+				
+				
 			}
-
-			submitted =true;
+			submitted = true;
+			
 			reserveForm.submit();
 		
 		});
 		
+		
+		
+
 	
-	const waitingForm = $("#waitingForm");
-	$(document).ready(function() {
+		const waitingForm = $("#waitingForm");
+		$(document).ready(function() {
 		
  			$("#waitingForm button").on("click",function(e) {
  				 if(submitted == true) { return; }

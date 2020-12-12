@@ -99,8 +99,6 @@ h4{
 <body>
 <h1>핫딜</h1>
 
-
-
 	<div class="topnav">
 		<form action = "/dealight/hotdeal/register">
 			<input type="number" min = "0" name = "storeId" placeholder="매장번호를 선택해주세요">
@@ -713,8 +711,6 @@ h4{
 			}
 		});
 	}
-	
-	
 </script>
 </body>
 </html>
