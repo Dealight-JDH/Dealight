@@ -356,8 +356,9 @@ window.onload = function () {
 	    	if(!isModal) $("input[type='file']").change(uploadHandler);
 	    	if(isModal)  $("#js_upload").change(uploadHandler); 
 	    	$(".uploadResult").on("click", "button", deleteHandler);
-	        $(".uploadResult").on("click", "li", showImageHandler);
-	    	$(".bigPictureWrapper").on("click",bigImgAniHandler);
+	        //$(".uploadResult").on("click", "li", showImageHandler);
+	    	//$(".bigPictureWrapper").on("click",bigImgAniHandler);
+	    	if(pageType === 'modify' || pageType === 'register') $(".uploadResult").on("click","img",selRepImgHandler);
     	});
     			
     	

@@ -71,6 +71,9 @@
 		width:200px;
 		height:200px;
 	}
+	.selected_img{
+		border : 4px red solid;
+	}
 	</style>
 	<style>
 	main{

@@ -22,6 +22,9 @@
 		margin : 30px auto;
 		width:1050px;
 	}
+	.selected_img{
+		border : 4px red solid;
+	}
 </style>
 </head>
 <body>
@@ -181,7 +184,7 @@
 	메뉴사진주소 : ${menu.imgUrl}</br>
 	메뉴이름 : ${menu.name }</br>
 	메뉴추천여부 : ${menu.recoMenu }</br>
-	<img src="/display?fileName=${menu.encThumImgUrl}"></br>
+	<c:if test="${menu.imgUrl != null}"><img src="/display?fileName=${menu.encThumImgUrl}"></c:if></br>
 	</c:forEach>
 	</c:if>
 	

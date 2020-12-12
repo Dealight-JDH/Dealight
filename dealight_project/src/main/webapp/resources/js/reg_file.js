@@ -31,7 +31,8 @@
 		            str += "<span> " + img.fileName + "</span>";
 		            str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='image'";
 		            str += "class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
-		            str += "<img id='upload_img_"+i+"' draggable='true' ondragstart='drag(event)' src='/display?fileName=" + fileCallPath+"'>";
+		            if(img.rep === 'Y') str += "<img class='selected_img' id='upload_img_"+i+"' src='/display?fileName=" + fileCallPath+"'>";
+		            if(img.rep !== 'Y') str += "<img id='upload_img_"+i+"' src='/display?fileName=" + fileCallPath+"'>";
 		            str += "</div></li>";
 		            
 		        } else {
@@ -80,7 +81,9 @@
 				str += "data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"'data-type='"+obj.image+"'";
 				str += "><div>";
 				str += "<span>" + obj.fileName +"</span>";
-				str += "<img id='upload_img_"+i+"' draggable='true' ondragstart='drag(event)' src='/display?fileName=" + fileCallPath + "'>";
+				if(obj.rep==='Y')str += "<img id='upload_img_"+i+"' class='selected_img' src='/display?fileName=" + fileCallPath + "'>";
+				if(obj.rep!=='Y' && i !== 0)str += "<img id='upload_img_"+i+"' src='/display?fileName=" + fileCallPath + "'>";
+				if(obj.rep !=='Y' && i === 0) str += "<img id='upload_img_"+i+"' class='selected_img' src='/display?fileName=" + fileCallPath + "'>";
 				str += "</div>";
 				str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image'"
 							+" class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
@@ -137,13 +140,19 @@
 				str += "<input type='hidden' name='imgs["+i+"].uuid' value='" + jobj.data("uuid")+"'>";
 				str += "<input type='hidden' name='imgs["+i+"].uploadPath' value='" + jobj.data("path")+"'>";
 				str += "<input type='hidden' name='imgs["+i+"].image' value='" + jobj.data("type")+"'>";
-				
+				if(jobj.find(".selected_img").length === 0) str += "<input type='hidden' name='imgs["+i+"].rep' value='" + 'N' +"'>";
+				if(jobj.find(".selected_img").length > 0) str += "<input type='hidden' name='imgs["+i+"].rep' value='" + 'Y' +"'>";;  
+				/*
 				if(i === 0 && (category === 'storeImgs'||category === 'revwImgs')){
 					str += "<input type='hidden' name='repImg' value='" + jobj.data("path").replace(new RegExp(/\\/g),"/") +"/"+ "s_"+ jobj.data("uuid") +"_"+ jobj.data("filename")+"'>";
-					
 				}
+				*/
 				
 			});
+			let jobj = $(".uploadResult .selected_img").parent().parent();
+			if(category === 'storeImgs'||category === 'revwImgs'){
+				str += "<input type='hidden' name='repImg' value='" + jobj.data("path").replace(new RegExp(/\\/g),"/") +"/"+ "s_"+ jobj.data("uuid") +"_"+ jobj.data("filename")+"'>";
+			}
 	        	
 	        /*위에서 작성한 글을 form에 추가하고 제출한다. */
 			formObj.attr("method", "post");
@@ -257,13 +266,29 @@
 		}, 1000);
 	}
 	
+	let selRepImgHandler = function (e) {
+		
+		console.log(e.target);
+		console.log($(e.target).parent().parent().parent().find("li"));
+		
+		let jobj = $(e.target).parent().parent();
+		
+		console.log(jobj);
+		
+		$("img").removeClass("selected_img");
+		
+		jobj.find("img").addClass("selected_img");
+		
+	}
+	
 	/* submit 타입의 버튼을 제어한다.*/
 	if(btnSubmit) $(btnSubmit).on("click", inputHandler);
 	if(!isModal) $("input[type='file']").change(uploadHandler);
 	if(isModal)  $("#js_upload").change(uploadHandler); 
-	$(".uploadResult").on("click", "button", deleteHandler);
-    $(".uploadResult").on("click", "li", showImageHandler);
-	$(".bigPictureWrapper").on("click",bigImgAniHandler);
+	if(pageType === 'modify' || pageType === 'register') $(".uploadResult").on("click", "button", deleteHandler);
+    //$(".uploadResult").on("click", "li", showImageHandler);
+	//$(".bigPictureWrapper").on("click",bigImgAniHandler);
+	if(pageType === 'modify' || pageType === 'register') $(".uploadResult").on("click","img",selRepImgHandler);
 	
 	
 	if(storeId) getImg(storeId);
