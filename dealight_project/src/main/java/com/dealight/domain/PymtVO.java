@@ -27,9 +27,10 @@ public class PymtVO {
 	@NotNull(message = "예약번호는 null일 수 없습니다.")
     private Long rsvdId;
 	
+	// 회원아이디
 	@NotNull
 	private String userId;
-
+	
     // 결제수단
 	@Nullable
 	@Length(min = 1, max = 10)
@@ -48,10 +49,11 @@ public class PymtVO {
     private String aprvNo;
 	
 	@NotNull
-	private Date createdAt;
+	private Date regDate;
 	
+	@NotNull
+	private Date updateDate;
+	@Nullable
 	private Date approvedAt;
 	
-	private Date regDate;
-	private Date updateDate;
 }

@@ -1,5 +1,6 @@
 package com.dealight.mapper;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -51,6 +52,9 @@ public class PymtMapperTests {
 	public void insertTest() {
 		long time = System.currentTimeMillis();
 		Date date = new Date(time);
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.HOUR_OF_DAY, -9);
+		Date calDate = new Date(cal.getTimeInMillis());
 		System.out.println(date);
 		PymtVO vo = PymtVO.builder()
 							.rsvdId(3l)
@@ -59,7 +63,7 @@ public class PymtMapperTests {
 							.tamt(4000)
 							.stusCd("R")
 							.aprvNo("T2839131261777955995")
-							.createdAt(date)
+							.regDate(calDate)
 							.build();
 		
 		mapper.insertSelectKey(vo);

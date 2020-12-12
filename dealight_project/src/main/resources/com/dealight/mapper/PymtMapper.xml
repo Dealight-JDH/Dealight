@@ -29,12 +29,12 @@
 			select seq_pymt.nextval from dual
 			</selectKey>
 				insert into tbl_pymt
-			values(#{pymtId}, #{rsvdId}, #{mtd}, #{tamt}, #{stusCd}, #{aprvNo}, sysdate +9/24, sysdate+9/24, #{userId}, #{createdAt}, #{approvedAt})
+				values(#{pymtId}, #{rsvdId}, #{userId}, #{mtd}, #{tamt}, #{stusCd}, #{aprvNo}, #{regDate}, sysdate +9/24, #{approvedAt})
 		</insert>
 		
 		<insert id="insert">
 			insert into tbl_pymt
-			values(seq_pymt.nextval, #{rsvdId}, #{mtd}, #{tamt}, #{stusCd}, #{aprvNo}, sysdate +9/24, sysdate+9/24), #{userId}, #{createdAt}, #{approvedAt})
+			values(seq_pymt.nextval, #{rsvdId},#{userId}, #{mtd}, #{tamt}, #{stusCd}, #{aprvNo}, sysdate +9/24, sysdate +9/24, #{approvedAt})
 		</insert>	
 		
 		</mapper>

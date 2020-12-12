@@ -11,6 +11,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
@@ -100,9 +101,12 @@ public class KakaoService {
         	
         	//예약 테이블 결제 고유번호 등록
         	rsvdService.registerTid(kakaoPayReadyVO.getTid(), rsvdId);
+        	
+        	log.info("============================created_at: " + kakaoPayReadyVO.getCreated_at());
         	//결제 테이블 등록
-        	PymtVO pymtVO = createPymtEntity(requestDto, rsvdId, kakaoPayReadyVO);
-        	pymtService.register(pymtVO);
+        	PymtVO pymtVO = createPymtEntity(requestDto, rsvdId, created_at);
+        	log.info("==============================="+ pymtVO);
+        	//pymtService.register(pymtVO);
         	
         	return kakaoPayReadyVO.getNext_redirect_pc_url();
         }catch (RestClientException e){
@@ -163,16 +167,17 @@ public class KakaoService {
     }
 	
 	//결제 vo 생성
-	private PymtVO createPymtEntity(RsvdRequestDTO requestDto, Long rsvdId, KakaoPayReadyVO readyVo) {
+	private PymtVO createPymtEntity(RsvdRequestDTO requestDto, Long rsvdId, Date createdAt) {
 		
 		return PymtVO.builder()
-				.rsvdId(rsvdId)
-				.userId(requestDto.getUserId())
-				.tamt(requestDto.getTotAmt())
-				.stusCd("R")
-				.aprvNo(readyVo.getTid())
-				.createdAt(readyVo.getCreated_at()).build();
+					.rsvdId(rsvdId)
+					.userId(requestDto.getUserId())
+					.tamt(requestDto.getTotAmt())
+					.stusCd("R")
+					.regDate(createdAt)
+					.build();
 	}
+	
 	//한국시간에 맞추기
 	private Date setDateFormat(Date date) {
 		Calendar cal = Calendar.getInstance();
