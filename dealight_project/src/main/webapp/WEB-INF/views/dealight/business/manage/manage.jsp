@@ -13,37 +13,6 @@
 <link rel="stylesheet" href="/resources/css/manage.css" type ="text/css" />
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="/resources/js/Chart.js"></script>
-<style>
-.alert {
-	
-  position : fixed;
-  padding: 20px;
-  background-color: #f44336;
-  color: white;
-  margin-bottom: 15px;
-  width:15%;
-  z-index : 10;
-}
-
-.alert.manage_rsvd {right : 30px;bottom : 15px;background-color: #4CAF50; display:none;}
-.alert.manage_wait {right : 30px;bottom: 15px; background-color: #2196F3; display:none;}
-.alert.manage_htdl {right : 30px;top : 15px background-color: #ff9800; display:none;}
-
-.alert_closebtn {
-  margin-left: 15px;
-  color: white;
-  font-weight: bold;
-  float: right;
-  font-size: 22px;
-  line-height: 20px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.alert_closebtn:hover {
-  color: black;
-}
-</style>
 </head>
 <body>
 <%@include file="../../../includes/mainMenu.jsp" %>

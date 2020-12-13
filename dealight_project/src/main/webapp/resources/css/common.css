@@ -7,7 +7,7 @@ a {
 /* main */
         main{
             min-height: 200px;
-            height: 600px;
+            height: auto;
             width: 100%;
             /*border:  1px black solid;*/
             max-width: 1050px;

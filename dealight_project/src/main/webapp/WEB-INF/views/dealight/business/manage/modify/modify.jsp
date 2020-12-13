@@ -317,5 +317,6 @@ let regReplyHandler = function (e) {
 	$(".btn_reg_reply").on("click",regReplyHandler);
 
 </script>
+<%@include file="../../../../includes/mainFooter.jsp" %>
 </body>
 </html>

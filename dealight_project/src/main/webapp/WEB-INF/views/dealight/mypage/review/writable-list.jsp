@@ -534,5 +534,6 @@ $(document).ready(function() {
 	
 }); /* document ready end*/
 </script>
+<%@include file="../../../includes/mainFooter.jsp" %>
 </body>
 </html>

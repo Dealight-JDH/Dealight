@@ -578,5 +578,6 @@ window.onload = function () {
 
 
 </script>
+<%@include file="../../includes/mainFooter.jsp" %>
 </body>
 </html>

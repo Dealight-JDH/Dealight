@@ -1,0 +1,29 @@
+.alert {
+	
+  position : fixed;
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+  margin-bottom: 15px;
+  width:15%;
+  z-index : 10;
+}
+
+.alert.manage_rsvd {right : 30px;bottom : 15px;background-color: #4CAF50; display:none;}
+.alert.manage_wait {right : 30px;bottom: 15px; background-color: #2196F3; display:none;}
+.alert.manage_htdl {right : 30px;top : 15px; background-color: #ff9800; display:none;}
+
+.alert_closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.alert_closebtn:hover {
+  color: black;
+}

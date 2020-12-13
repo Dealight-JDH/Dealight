@@ -97,5 +97,6 @@ else if(sns == 'N'){
 	//정규식
 
 </script>
+<%@include file="../../includes/mainFooter.jsp" %>
 </body>
 </html>

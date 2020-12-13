@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="/resources/css/common.css" type ="text/css" />
 <link rel="stylesheet" href="/resources/css/main_footer.css" type ="text/css" />
 <link rel="stylesheet" href="/resources/css/main_header.css" type ="text/css" />
+<link rel="stylesheet" href="/resources/css/alert_manager.css" type ="text/css" />
 <link rel="shortcut icon" href="/resources/icon/favicon.png" type="image/x-icon">
 <link rel="icon" href="/resources/icon/favicon.png" type="image/x-icon">
 <!--  end common  -->

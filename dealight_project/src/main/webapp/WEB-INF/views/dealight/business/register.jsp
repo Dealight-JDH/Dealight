@@ -249,5 +249,6 @@ function jusoCallBack(roadAddrPart1,addrDetail,siNm,sggNm,emdNm){
 	let storeId = null;
 </script>
 <script type="text/javascript" src="/resources/js/reg_file.js?ver=1"></script>
+<%@include file="../../includes/mainFooter.jsp" %>
 </body>
 </html>

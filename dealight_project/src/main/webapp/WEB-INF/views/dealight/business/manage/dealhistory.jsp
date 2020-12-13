@@ -75,5 +75,6 @@
 	</c:forEach>
 	</c:if>
 </main>
+<%@include file="../../../includes/mainFooter.jsp" %>
 </body>
 </html>
