@@ -47,6 +47,14 @@ public class HtdlServiceImpl implements HtdlService {
 	
 	
 	@Override
+	public HtdlVO readHtdlDtls(Long htdlId) {
+		// TODO Auto-generated method stub
+		
+		log.info("htdl read dtls...");
+		return htdlMapper.findHtdlDtlsById(htdlId);
+	}
+	
+	@Override
 	public boolean curPnumModify(HtdlVO vo) {
 		// TODO Auto-generated method stub
 		
@@ -245,6 +253,9 @@ public class HtdlServiceImpl implements HtdlService {
 		
 		return htdlMapper.findByStoreIdStusCd(storeId, "A");
 	}
+
+
+	
 
 
 

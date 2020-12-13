@@ -61,9 +61,8 @@ let msg = '${msg}';
 						method="post">
 						<input type="hidden" name="storeId" value="${store.storeId }">
 						<input type="hidden" name="userId" value="${userId }">
-						<c:if test="${store.bstore.htdl.htdlId ne null }">
-							<input type="hidden" name="htdlId"
-								value="${store.bstore.htdl.htdlId}">
+						<c:if test="${htdlId ne null }">
+							<input type="hidden" name="htdlId" value="${htdlId}">
 						</c:if>
 
 						<%-- ${status.index} 따옴표안에 넣지말고 그냥 써줘야함 --%>

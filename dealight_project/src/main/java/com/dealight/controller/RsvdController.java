@@ -97,6 +97,7 @@ public class RsvdController {
 //		}
 
 	    model.addAttribute("userId", auth.getName());
+	    model.addAttribute("htdlId", requestInfo.getHtdlId());
 	    model.addAttribute("store", service.bstore(requestInfo.getStoreId()));
 		model.addAttribute("rsvdMenuList", rsvdMenuList); 
 		model.addAttribute("pnum", requestInfo.getPnum()); 
@@ -191,11 +192,11 @@ public class RsvdController {
         //핫딜이 존재하는 경우
         //핫딜 마감인원 - 이용인원
         /*요청 request를 통해 진행되야됨*/
-        RsvdVO vo = rsvdService.readRsvdVO(rsvdId);
+        //RsvdVO vo = rsvdService.readRsvdVO(rsvdId);
         //
-        if(vo.getHtdlId() != null) {
+        if(requestDto.getHtdlId() != null) {
         	//핫딜 vo를 가져온다
-        	HtdlVO hotdeal = htdlService.readHtdl(vo.getHtdlId());
+        	HtdlVO hotdeal = htdlService.readHtdl(requestDto.getHtdlId());
         	log.info("=========hotdeal : "+ hotdeal);
         	//현재인원 증가(한 계정당 1개 구매)
         	int curPnum = hotdeal.getCurPnum() + 1;

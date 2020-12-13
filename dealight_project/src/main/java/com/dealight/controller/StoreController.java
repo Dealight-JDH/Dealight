@@ -8,21 +8,27 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.dealight.domain.Criteria;
+import com.dealight.domain.HtdlVO;
 import com.dealight.domain.RsvdDtlsVO;
-import com.dealight.domain.RsvdMenuDTOList;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.UserVO;
 import com.dealight.domain.WaitVO;
 import com.dealight.handler.ManageSocketHandler;
+import com.dealight.service.HtdlService;
 import com.dealight.service.RsvdService;
 import com.dealight.service.StoreService;
 import com.dealight.service.UserService;
@@ -42,18 +48,39 @@ public class StoreController {
 	private UserService userService;
 	
 	private WaitService waitService;
-	
+	private HtdlService htdlService;
 	private RsvdService rsvdService;
 
+	
+	
+	//핫딜 상세(스토어)
+	@GetMapping(value = "/store/htdl/get/{htdlId}", produces = {
+			MediaType.APPLICATION_JSON_UTF8_VALUE,
+			MediaType.APPLICATION_XML_VALUE
+	})
+	public ResponseEntity<HtdlVO> getStoreHtdl(@PathVariable Long htdlId) {
+		log.info("get...");
+		HtdlVO dealVO = htdlService.readHtdlDtls(htdlId);
+		return new ResponseEntity<>(dealVO, HttpStatus.OK);
+	}
+	
+	
 	@GetMapping("/store")
-	public String store(Long storeId,Criteria cri,Model model,String clsCd) {
+	public String store(Long storeId, Long htdlId, Criteria cri,String clsCd, Model model) {
 		// store타입을 체크 한다 n일경우 n 스토어를 보여줌 b일 경우 b를 보여줌
 		
 		//다울 nstore check
 		if (clsCd.equalsIgnoreCase("B")) {
 			log.info("bstore: " + storeId);
+			
 			model.addAttribute("store", service.bstore(storeId));
 			//model.addAttribute("revws", service.revws(storeId,cri));
+			log.info("=========================htdlId: " + htdlId);
+			if(htdlId != null) {
+//				HtdlVO dealVO = htdlService.readHtdlDtls(htdlId);
+//				log.info("==============request htdlId : " + dealVO);
+				model.addAttribute("htdlId", htdlId);
+			}
 			return "/dealight/store/bstore";
 		} else {
 			log.info("nstore: " + storeId);

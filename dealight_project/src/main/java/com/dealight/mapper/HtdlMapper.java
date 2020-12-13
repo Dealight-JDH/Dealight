@@ -39,6 +39,7 @@ public interface HtdlMapper {
 	HtdlRsltVO findRsltById(@Param("storeId") Long storeId, @Param("htdlId") Long htdlId);
 	List<HtdlRsltVO> getRsltList(Long storeId);
 	
+	HtdlVO findHtdlDtlsById(Long htdlId);
 	//핫딜+상세+매장평가
 	HtdlVO findHtdlById(Long htdlId);
 	List<HtdlVO> getHtdlList();

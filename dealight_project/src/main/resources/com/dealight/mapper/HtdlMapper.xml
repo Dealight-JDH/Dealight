@@ -57,6 +57,12 @@
 			 WHERE h.htdl_id = d.htdl_id and h.store_id = e.store_id and h.htdl_id = #{htdlId}
 		</select>
 		
+		<select id="findHtdlDtlsById" parameterType="long" resultMap="HtdlDetail">
+			select h.htdl_Id, h.bef_price, h.ddct, d.htdl_seq, d.menu_name
+			from tbl_htdl h, tbl_htdl_dtls d
+			where h.htdl_id = d.htdl_id and h.htdl_id = #{htdlId}
+		</select>
+		
 		<!-- <select id="selectHtdlVoById" parameterType="long" resultMap="HtdlDetail">
 			SELECT h.*, d.*
 		      FROM tbl_htdl h, tbl_htdl_dtls d

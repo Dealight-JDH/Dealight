@@ -28,9 +28,10 @@
 	console.log(userId);
 	console.log(storeId);
 	
+	let sendObj = "{\"sendUser\":\""+userId+"\",\"rsvdId\":\""+rsvdId+"\",\"cmd\":\"rsvd\",\"storeId\":\""+storeId+"\"}";
+	console.log(sendObj);
 	/* if(socket != null){
-		
-		socket.send("{\"sendUser\":\""+userId+"\",\"rsvdId\":\""+rsvdId+"\",\"cmd\":\"rsvd\",\"storeId\":\""+storeId+"\"}");
+		socket.send(sendObj);
 	} */
 
 </script>

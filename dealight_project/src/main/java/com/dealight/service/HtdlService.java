@@ -43,6 +43,9 @@ public interface HtdlService {
 	//해당 핫딜(핫딜+상세+매장평가)
 	HtdlVO read(Long htdlId);
 	
+	//(핫딜+상세 핫딜번호,메뉴이름, 할인가격)
+	HtdlVO readHtdlDtls(Long htdlId);
+	
 	//핫딜 수정
 	boolean modify(HtdlVO vo);
 	//핫딜 현재인원 수정

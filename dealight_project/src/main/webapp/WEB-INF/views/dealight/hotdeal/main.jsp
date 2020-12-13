@@ -168,7 +168,7 @@ h4{
 	    <div class="modal-header">
 	    	선착순: <h4 class="modal-lmtPnum" id="lmtPnum"></h4><label>명</label><br>
 	    	<h4 class="modal-name" id="htdlName"></h4><br>
-	    	<input type="hidden" id="mhtdlId" name = "htdlId">
+	    	<!-- <input type="hidden" id="mhtdlId" name = "htdlId"> -->
 	    </div>
 
 	    <div class="modal-body">
@@ -239,7 +239,7 @@ h4{
 	
 	let storeId = 0; //매장번호
 	let paramStusCd = "A"; //핫딜 상태코드
-	
+	let htdlId = 0; //핫딜번호
 	$(document).ready(function() {
 		
 		console.log("==="+size);
@@ -307,21 +307,23 @@ h4{
 			e.preventDefault();
 			let body = $("body");
 			
+			console.log("================htdlId: " + htdlId);
 			//해당 핫딜번호,메뉴,가격 
-			let htdlId = $("#mhtdlId").val();
+			/* let htdlId = $("#mhtdlId").val(); */
 			let htdlMenu = $("#menuName").text();
 			let afterPrice = $("#afterPrice").text().substr(1);
+			
 			//폼 만들기
 			let form = $("<form></form>");
 			form.attr("action", "/dealight/store");
 			form.attr("method", "get");
 			//요청 폼 입력
 			let storeIdInput = $("<input type='hidden' value='"+ storeId +"' name='storeId'>");
-			let htdlIdInput = $("<input type='hidden' value=''"+ htdlId +"' name='htdlId'>");
+			let htdlIdInput = $("<input type='hidden' value='"+ htdlId +"' name='htdlId'>");
 			let clsCdInput = $("<input type='hidden' value='B' name='clsCd'>");
 		    form.append(storeIdInput);
+		    form.append(htdlIdInput);
 		    form.append(clsCdInput);
-		    /* form.append(htdlIdInput); */
 		    form.appendTo(body);
 		    //전송
 		    form.submit();
@@ -627,7 +629,8 @@ h4{
 
 		//핫딜 번호
 		let htdlNum = htdl.htdlId;
-		 
+		htdlId = htdlNum;
+		console.log("========htdlNUm : " + htdlNum);
 		htdlImg.html("<img src='/display?fileName="+ fileCallPath+ "'>");
 		storeId = htdl.storeId;
 		console.log("============storeId: "+storeId);
