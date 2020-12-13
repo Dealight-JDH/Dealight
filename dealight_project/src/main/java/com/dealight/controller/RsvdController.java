@@ -16,15 +16,14 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dealight.domain.HtdlCheckReqDTO;
 import com.dealight.domain.HtdlVO;
 import com.dealight.domain.KakaoPayApprovalVO;
 import com.dealight.domain.PymtVO;
+import com.dealight.domain.RsvdAvailVO;
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdMenuDTO;
 import com.dealight.domain.RsvdMenuDTOList;
@@ -54,7 +53,7 @@ public class RsvdController {
 	private final HtdlService htdlService;
 	private final StoreService service;
 		
-//	@GetMapping("/htdlcheck/{userId}/{htdlId}")
+
 	
 	@RequestMapping(value ="/htdlcheck/{userId}/{htdlId}", method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -62,20 +61,22 @@ public class RsvdController {
 		
 		log.info("========userId  : " + userId );
 		log.info("========htdlId  : " + htdlId );
-//		log.info("====================="+ dto);
 		boolean checked = rsvdService.checkExistHtdl(userId, htdlId);
 		log.info("hotdeal rsvd checked : " + checked);
 
 		return new ResponseEntity<Boolean>(!checked, HttpStatus.OK);
 	}
 	
-	@GetMapping("/rsvdavailcheck/{storeId}/{time}/{pnum}")
+	@GetMapping(value = "/rsvdavailcheck/{storeId}/{time}/{pnum}")
 	public @ResponseBody ResponseEntity<Boolean> rsvdAvailCheck(
-			@PathVariable String storeId,@PathVariable String time, @PathVariable int pnum){
+			@PathVariable Long storeId ,@PathVariable String time, @PathVariable Integer pnum){
 		
+		//해당 매장의 예약가능 여부
+		RsvdAvailVO rsvdAvailVO = rsvdService.getRsvdAvailByStoreId(storeId);
 		
+		boolean checked = rsvdService.isRsvdAvailChecked(rsvdAvailVO, time, pnum);
 //		return new ResponseEntity<Boolean>(body, status);
-		return null;
+		return new ResponseEntity<Boolean>(checked, HttpStatus.OK);
 	}
 	
 	@GetMapping("/rsvdForm")

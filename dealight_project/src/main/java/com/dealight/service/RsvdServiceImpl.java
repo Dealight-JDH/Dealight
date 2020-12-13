@@ -173,6 +173,34 @@ public class RsvdServiceImpl implements RsvdService{
 		});
 		
 	}
+	
+	//예약 가능여부 체크
+	@Override
+	public boolean isRsvdAvailChecked(RsvdAvailVO vo, String time, int pnum) {
+		TimeDTO timeValue = getTimeValue(time);
+		
+		//해당 시간에 맞는 vo 필드 뽑아내기
+		try {
+			Class<?> availClass = vo.getClass();
+			
+			Field[] fields = availClass.getDeclaredFields();
+			
+			for(Field field : fields) {
+				
+				if(field.getName().equalsIgnoreCase(timeValue.toString())) {
+					field.setAccessible(true);
+					int curPnum = field.getInt(vo);
+					return curPnum - pnum >= 0;
+				}
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
 	//해당 예약시간의 시간상수 반환
 	private TimeDTO getTimeValue(String time) {
 		
@@ -197,6 +225,7 @@ public class RsvdServiceImpl implements RsvdService{
 		LocalDateTime formatTime = LocalDateTime.parse(strTime);
 		return formatTime;
 	}
+	
 	//브레이크 타임 확인
 	private boolean isBreakTime(String startTm, String endTm) {	
 		return (startTm != null && !startTm.isEmpty()) && (endTm != null && !endTm.isEmpty());
@@ -230,7 +259,7 @@ public class RsvdServiceImpl implements RsvdService{
 					//breakTimeList.add(timeValue);
 					
 					//예약 가능 VO클래스
-					Class availClass = vo.getClass();
+					Class<?> availClass = vo.getClass();
 					
 					//VO클래스 에 대한 필드 추출(private까지)
 					Field fields[] = availClass.getDeclaredFields();

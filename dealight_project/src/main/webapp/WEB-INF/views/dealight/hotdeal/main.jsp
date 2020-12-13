@@ -688,7 +688,7 @@ h4{
 	
 	
 	//핫딜 구매이력 체크
-	 function htdlPayExistChecked(param, callback, error){
+	 function isHtdlPayExistChecked(param, callback, error){
 			let userId = param.userId;
 			let htdlId = param.htdlId;
 			console.log("======userId : " + userId);
@@ -719,7 +719,7 @@ h4{
 			 console.log($(this).find(".js-htdlId").text());
 
 			 if(userId != null){				 
-				 htdlPayExistChecked({htdlId: param, userId: userId}, function(result){
+				 isHtdlPayExistChecked({htdlId: param, userId: userId}, function(result){
 					 console.log("===========hotdeal pay check: "+ result);
 					 ishtdlPayHistory = result;
 				 });

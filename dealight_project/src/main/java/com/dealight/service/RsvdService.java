@@ -65,9 +65,11 @@ public interface RsvdService {
 	boolean removeRsvdAvail();
 	//예약 가능 테이블 등록 초기화
 	void initRsvdAvail();
-	
+		
 	List<RsvdAvailVO> getRsvdAvailList();
+	//예약 가능여부 체크
 	RsvdAvailVO getRsvdAvailByStoreId(Long storeId);
+	boolean isRsvdAvailChecked(RsvdAvailVO vo, String time, int pnum);
 	
 	//예약 완료후
 	//예약 가능 여부 차감 || 핫딜이 존재하는 경우 차감

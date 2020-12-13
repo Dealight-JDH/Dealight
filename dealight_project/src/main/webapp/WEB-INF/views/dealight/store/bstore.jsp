@@ -377,9 +377,9 @@
 	
 	let paramHtdlId = '<c:out value="${htdlId}"/>' || null;
 	let paramUserId = '<c:out value="${userId}"/>' || null;
-	
-	let ishtdlPayHistory = false;//핫딜을 구매했는지 체크
-	
+	let storeId = '<c:out value="${store.storeId}"/>';
+	let isHtdlPayHistory = false;//핫딜을 구매했는지 체크
+
 	$(document).ready(function() {
 
 
@@ -457,7 +457,9 @@
 		}
 	}
 	
-	function htdlPayExistChecked(param, callback, error){
+	
+	//핫딜 구매이력 체크
+	function isHtdlPayExistChecked(param, callback, error){
 		
 		let userId = param.userId;
 		let htdlId = param.htdlId;
@@ -492,8 +494,29 @@
 				error();
 			}
 		});
-			
+	}
+	
+	//예약 가능여부 체크
+	function isRsvdAvailChecked(param, callback, error){
 		
+		let storeId = param.storeId;
+		let time = param.time;
+		let pnum = param.pnum;
+		
+		return new Promise(function(resolve, reject){
+			
+			$.getJSON("/dealight/reservation/rsvdavailcheck/"+storeId+"/"+time+"/"+pnum+".json",
+					function(data){
+						/* if(callback){
+							callback(data);
+						} */
+						resolve(data);
+				}).fail(function(xhr,status, err){
+					if(error){
+						error();
+					}
+				});
+		});
 	}
 	
 	function Menus() {
@@ -667,14 +690,22 @@
 						//1.기존 이벤트(페이지 이동)를 막는다
 						e.preventDefault();
 						
+						//시간,인원 수
+						let time = $("#time option:selected").val();
+						let pnum = $("#num option:selected").val();
+
+						let RsvdAvailChecked = false;
+						
+						
+						
 						//해당 핫딜 구매했는지 체크
 						if(paramHtdlId != null && paramUserId != null){
 							
-							htdlPayExistChecked({userId : paramUserId, htdlId: paramHtdlId},
+							isHtdlPayExistChecked({userId : paramUserId, htdlId: paramHtdlId},
 									function(result){
 								
 								console.log("===========hotdeal pay check: "+ result);
-								ishtdlPayHistory = result;
+								isHtdlPayHistory = result;
 							});
 						}
 						
@@ -695,10 +726,25 @@
 							return;
 						}
 						
-						if(!ishtdlPayHistory){
-							alert('이미 핫딜을 구매하셨습니다. 감사합니다.');
+						if(!isHtdlPayHistory && paramHtdlId != null){
+							alert('이미 핫딜 상품을 구매하셨습니다. 감사합니다');
 							return;
 						}
+						
+						//예약 가능여부 체크
+						/* isRsvdAvailChecked({storeId: storeId, time: time, pnum: pnum},
+								function(data){
+							console.log("reserve avail check: " + data);
+							
+							RsvdAvailChecked = data;
+							
+						}); */
+						isRsvdAvailChecked({storeId: storeId, time: time, pnum: pnum}).then(function(result){
+							console.log("reserve avlail check: " + result);
+							
+							RsvdAvailChecked = result;
+						})
+						
 						
 
 						const personNum = '<input type="hidden" name=pnum value="'
@@ -731,9 +777,14 @@
 							reserveForm.append(menuQty);
 
 						}
-						submitted = true;
-
-						reserveForm.submit();
+						
+						setTimeout(()=>{
+							console.log("loading.....");							
+							if(RsvdAvailChecked)
+								reserveForm.submit();
+							else
+								alert('선택하신 현재 인원은 예약을 할 수 없습니다. 죄송합니다');
+						}, 200)
 
 					});
 
@@ -743,9 +794,7 @@
 					function() {
 
 						$("#waitingForm button")
-								.on(
-										"click",
-										function(e) {
+								.on("click", function(e) {
 											if (submitted == true) {
 												return;
 											}
