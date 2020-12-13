@@ -26,7 +26,6 @@ import lombok.NonNull;
 public class RevwVO {
 
 	// 리뷰번호
-	@NotNull
 	private Long revwId;
 	
 	// 매장번호

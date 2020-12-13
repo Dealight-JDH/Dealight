@@ -185,7 +185,7 @@ public class BoardController {
 	@PostMapping(value="/board/waiting/new",
 			consumes = "application/json",
 			produces = { MediaType.TEXT_PLAIN_VALUE})
-	public ResponseEntity<String> registerOffWait(@RequestBody WaitVO wait) {
+	public ResponseEntity<String> registerOffWait(@Valid @RequestBody WaitVO wait) {
 
 		log.info("register wait.............");
 

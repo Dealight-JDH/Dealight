@@ -175,8 +175,6 @@
 			</div>
 		</c:forEach>
 	</c:if>
-	
-	<div>
         </div> <!-- end info box -->
         	<!-- The Modal -->
 	<div id="myModal" class="modal">
@@ -188,28 +186,6 @@
 			<ul class="waiting_registerForm"></ul>
 		</div>
 	</div>
-	
-	
-		<div class="alert manage_rsvd">
-		  <span class="alert_closebtn">&times;</span>  
-		  <strong class="alert_tit">예약</strong>
-		  <span class="alert_senduser"></span>
-		  <span class="alert_msg">예약 관련 notification 입니다.</span>
-		</div>
-		
-		<div class="alert manage_wait">
-		  <span class="alert_closebtn">&times;</span>  
-		  <strong class="alert_tit">예약</strong>
-		  <span class="alert_senduser"></span>
-		  <span class="alert_msg">예약 관련 notification 입니다.</span>
-		</div>
-		
-		<div class="alert manage_htdl">
-		  <span class="alert_closebtn">&times;</span>  
-		  <strong class="alert_tit">예약</strong>
-		  <span class="alert_senduser"></span>
-		  <span class="alert_msg">예약 관련 notification 입니다.</span>
-		</div>
 <script>
 
 const storeId = ${storeId};
@@ -1592,5 +1568,6 @@ let curHour = curToday.getHours(),
 
     </script>
  <script src="/resources/js/clock.js"></script>
+ <%@include file="../../../includes/mainFooter.jsp" %>
 </body>
 </html>

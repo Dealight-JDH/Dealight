@@ -1,14 +1,15 @@
 package com.dealight.domain;
-import java.util.Date;
-import java.util.List;
-
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 /*
  * 
@@ -31,13 +32,15 @@ public class WaitVO {
 
     private String waitRegTm;
 
-    @NotNull(message = "웨이팅 인원은 null일 수 없습니다.")
+    @Min(value = 1, message = "웨이팅 인원은 1명 이상이어야 합니다.")
+    @Max(value = 10, message = "웨이팅 인원은 10명을 넘을 수 없습니다.")
     private int waitPnum;
 
-    @NotNull(message = "회원 전화번호는 null일 수 없습니다.")
+    @NotBlank(message = "회원 전화번호는 blank일 수 없습니다.")
     private String custTelno;
 
-    @NotNull(message = "회원명은 null일 수 없습니다.")
+    @NotBlank(message = "회원명은 blank일 수 없습니다.")
+    @Length(max = 5)
     private String custNm;
 
     private String waitStusCd = "W";

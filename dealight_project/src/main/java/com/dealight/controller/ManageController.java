@@ -271,32 +271,6 @@ public class ManageController {
 		return "/dealight/business/manage/modify/menu";
 	}
 	
-	private String getFolder() {
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		
-		Date date = new Date();
-		
-		String str = sdf.format(date);
-		
-		return str.replace("-",File.separator);
-	}
-	
-	private boolean checkImageType(File file) {
-		
-		try {
-			
-			String contentType = Files.probeContentType(file.toPath());
-			
-			return contentType.startsWith("image");
-			
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-	
 	// 메뉴 등록
 	@PostMapping("/menu/register")
 	public String menuRegister(Model model, MenuVO menu) {
