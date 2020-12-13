@@ -376,14 +376,19 @@
 	</c:forEach>
 	
 	let paramHtdlId = '<c:out value="${htdlId}"/>' || null;
+	let paramUserId = '<c:out value="${userId}"/>' || null;
+	
+	let ishtdlPayHistory = false;//핫딜을 구매했는지 체크
+	
 	$(document).ready(function() {
 
 
 		console.log("hotdeal htdlId.........."+ paramHtdlId);
 		
+		
+		
 		if(paramHtdlId != null){
 			
-		
 		//핫딜 페이지에서 넘어온 핫딜 ajax
 		getHtdl({htdlId : paramHtdlId},function(result){
 			
@@ -450,12 +455,30 @@
 			menus.afterProc();
 			
 		}
+	}
+	
+	function htdlPayExistChecked(param, callback, error){
 		
+		let userId = param.userId;
+		let htdlId = param.htdlId;
+		
+		$.getJSON("/dealight/reservation/htdlcheck/"+userId+"/"+htdlId+".json",
+				function(data){
+			if(callback){
+				callback(data);
+			}
+			
+		}).fail(function(xhr, status, err){
+			if(error){
+				error();
+			}
+		});
 		
 	}
 	
 	//전달받은 핫딜번호를 ajax를 통해 vo 가져오기
 	function getHtdl(param, callback, error){
+		
 		let htdlId = param.htdlId;
 		console.log("htdlId: " + htdlId);
 		
@@ -636,16 +659,25 @@
 	const reserveForm = $("#reserveForm");
 	const reserve = $("#reserve");
 	const pnum = $("#pnum");
-	var submitted = false;
+	
 
 	$("#reserveForm button")
 			.on("click", function(e) {
-						if (submitted == true) {
-							return;
-						}
+				
 						//1.기존 이벤트(페이지 이동)를 막는다
 						e.preventDefault();
-
+						
+						//해당 핫딜 구매했는지 체크
+						if(paramHtdlId != null && paramUserId != null){
+							
+							htdlPayExistChecked({userId : paramUserId, htdlId: paramHtdlId},
+									function(result){
+								
+								console.log("===========hotdeal pay check: "+ result);
+								ishtdlPayHistory = result;
+							});
+						}
+						
 						//2.이벤트 막고 하고 싶은거
 						//2.1 페이지 이동시 다음페이지에 데이터를 넘길 수 있도록 input hidden에 선택된 메뉴 수량 넣음
 						//시간
@@ -662,6 +694,12 @@
 							alert("예약시간을 선택해 주세요");
 							return;
 						}
+						
+						if(!ishtdlPayHistory){
+							alert('이미 핫딜을 구매하셨습니다. 감사합니다.');
+							return;
+						}
+						
 
 						const personNum = '<input type="hidden" name=pnum value="'
 								+ $("#num option:selected").val() + '">';

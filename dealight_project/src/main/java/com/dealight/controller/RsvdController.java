@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,17 +56,26 @@ public class RsvdController {
 		
 //	@GetMapping("/htdlcheck/{userId}/{htdlId}")
 	
-	@RequestMapping(value ="/htdlcheck", method = RequestMethod.POST,
+	@RequestMapping(value ="/htdlcheck/{userId}/{htdlId}", method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public @ResponseBody ResponseEntity<Boolean>htdlCheck(@RequestBody HtdlCheckReqDTO dto){
+	public @ResponseBody ResponseEntity<Boolean>htdlCheck(@PathVariable String userId, @PathVariable Long htdlId){
 		
-//		log.info("========userId  : " + userId );
-//		log.info("========htdlId  : " + htdlId );
-		log.info("====================="+ dto);
-		boolean checked = rsvdService.checkExistHtdl(dto.getUesrId(), dto.getHtdlId());
+		log.info("========userId  : " + userId );
+		log.info("========htdlId  : " + htdlId );
+//		log.info("====================="+ dto);
+		boolean checked = rsvdService.checkExistHtdl(userId, htdlId);
 		log.info("hotdeal rsvd checked : " + checked);
 
 		return new ResponseEntity<Boolean>(!checked, HttpStatus.OK);
+	}
+	
+	@GetMapping("/rsvdavailcheck/{storeId}/{time}/{pnum}")
+	public @ResponseBody ResponseEntity<Boolean> rsvdAvailCheck(
+			@PathVariable String storeId,@PathVariable String time, @PathVariable int pnum){
+		
+		
+//		return new ResponseEntity<Boolean>(body, status);
+		return null;
 	}
 	
 	@GetMapping("/rsvdForm")
@@ -183,14 +193,13 @@ public class RsvdController {
         KakaoPayApprovalVO kakaoPayApprovalVO =  kakaoService.kakaoPayInfo(requestDto.getUserId(), pg_token);
         //카카오 결제 성공시 예약 상태 업데이트
         //String userId = auth.getName();
-        
         rsvdService.complete(rsvdId);
         
         //예약 가능 여부 차감
         rsvdService.completeUpdateAvail(requestDto.getStoreId(), requestDto.getTime(), requestDto.getPnum());
         
         //핫딜이 존재하는 경우
-        //핫딜 마감인원 - 이용인원
+        //핫딜 현재인원 + 1
         /*요청 request를 통해 진행되야됨*/
         //RsvdVO vo = rsvdService.readRsvdVO(rsvdId);
         //

@@ -52,7 +52,6 @@ public class StoreController {
 	private RsvdService rsvdService;
 
 	
-	
 	//핫딜 상세(스토어)
 	@GetMapping(value = "/store/htdl/get/{htdlId}", produces = {
 			MediaType.APPLICATION_JSON_UTF8_VALUE,
@@ -66,7 +65,7 @@ public class StoreController {
 	
 	
 	@GetMapping("/store")
-	public String store(Long storeId, Long htdlId, Criteria cri,String clsCd, Model model) {
+	public String store(HttpSession session, Long storeId, Long htdlId, Criteria cri,String clsCd, Model model) {
 		// store타입을 체크 한다 n일경우 n 스토어를 보여줌 b일 경우 b를 보여줌
 		
 		//다울 nstore check
@@ -81,6 +80,12 @@ public class StoreController {
 //				log.info("==============request htdlId : " + dealVO);
 				model.addAttribute("htdlId", htdlId);
 			}
+			
+			String userId = (String)session.getAttribute("userId");
+			
+			if(userId != null)
+				model.addAttribute("userId", userId);
+			
 			return "/dealight/store/bstore";
 		} else {
 			log.info("nstore: " + storeId);

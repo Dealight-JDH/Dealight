@@ -71,9 +71,9 @@
 		 </delete>
 		 
 		 <select id="findRsvdAvailByStoreId" resultType="com.dealight.domain.RsvdAvailVO">
-		 select *
-		 from tbl_rsvd_availability
-		 where store_id = #{storeId}
+			 select *
+			 from tbl_rsvd_availability
+			 where store_id = #{storeId}
 		 </select>
 		 
 		 <update id="updateRsvdAvail">

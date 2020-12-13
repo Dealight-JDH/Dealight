@@ -240,11 +240,14 @@ h4{
 	let storeId = 0; //매장번호
 	let paramStusCd = "A"; //핫딜 상태코드
 	let htdlId = 0; //핫딜번호
+	const userId= "<c:out value="${userId}"/>" || null;
+	let ishtdlPayHistory = false;
+	
 	$(document).ready(function() {
 		
 		console.log("==="+size);
-		//showList(paramStusCd);
-		showListStart(paramStusCd, pageNum); //1초마다 핫딜 리스트를 그린다
+		showList(paramStusCd);
+		//showListStart(paramStusCd, pageNum); //1초마다 핫딜 리스트를 그린다
 		
 		/* for(var i=0; i< size; i++){
 			$(".js-htdl"+i).on('click', function(){
@@ -601,10 +604,14 @@ h4{
 	
 	
 	//모달 띄우기
-	 function showModal(htdl){
+	 function showModal(htdl, ishtdlPayHistory){
 		 let size = htdl.htdlDtls.length;		
 		 let str = [];
 		 
+		 //비로그인 상태 
+		 if(userId == null)
+			ishtdlPayHistory = true;
+
 		 if(htdl.stusCd === 'A'){
 			showElapTimeStart(htdl.endTm);			 
 		 }
@@ -662,7 +669,11 @@ h4{
 		
 		intro.text(htdl.intro); 
 		const dealBtn = $(".js-dealBtn");
-		if(htdl.stusCd !== 'A'){
+		
+		if(!ishtdlPayHistory){
+			dealBtn.text("🔥이미 구매하신 상품입니다.");
+			dealBtn.prop("disabled", true);
+		}else if(htdl.stusCd !== 'A'){
 			dealBtn.text("🔥오픈 예정입니다.");
 			dealBtn.prop("disabled", true);
 		}else{
@@ -670,7 +681,29 @@ h4{
 			dealBtn.prop("disabled", false);
 		}
 		
+		
+		
 		modal.show();
+	}
+	
+	
+	//핫딜 구매이력 체크
+	 function htdlPayExistChecked(param, callback, error){
+			let userId = param.userId;
+			let htdlId = param.htdlId;
+			console.log("======userId : " + userId);
+			console.log("======htdlId : " + htdlId);
+			
+			$.getJSON("/dealight/reservation/htdlcheck/"+userId+"/"+htdlId+".json",
+					function(data){
+				if(callback){
+					callback(data);
+				}
+			}).fail(function(xhr, status, err){
+				if(error){
+					error();
+				}
+			});
 	}
 	
 	 //핫딜 클릭(상세) 이벤트 등록
@@ -684,13 +717,21 @@ h4{
 			 //핫딜번호를 가져온다
 			 let param = $(this).find(".js-htdlId").text();
 			 console.log($(this).find(".js-htdlId").text());
-			 
+
+			 if(userId != null){				 
+				 htdlPayExistChecked({htdlId: param, userId: userId}, function(result){
+					 console.log("===========hotdeal pay check: "+ result);
+					 ishtdlPayHistory = result;
+				 });
+			 }
+
 			 getHtdl({htdlId: param}, function(result){
-				 console.log("핫딜 get.."+ JSON.stringify(result));
 				 
+				 console.log("핫딜 get.."+ JSON.stringify(result));
 				 //모달에 값 전달하기
-				 showModal(result);
-			 });
+				 showModal(result, ishtdlPayHistory);
+			 }); 
+			 
 		 });
 		}
 	}
