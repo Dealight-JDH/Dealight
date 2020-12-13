@@ -7,6 +7,14 @@
 <head>
 <meta charset="UTF-8">
 <title>웨이팅 상세</title>
+<!--  common  -->
+<link rel="stylesheet" href="/resources/css/common.css" type ="text/css" />
+<link rel="stylesheet" href="/resources/css/main_footer.css" type ="text/css" />
+<link rel="stylesheet" href="/resources/css/main_header.css" type ="text/css" />
+<link rel="stylesheet" href="/resources/css/alert_manager.css" type ="text/css" />
+<link rel="shortcut icon" href="/resources/icon/favicon.png" type="image/x-icon">
+<link rel="icon" href="/resources/icon/favicon.png" type="image/x-icon">
+<!--  end common  -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
     <style>
         main {

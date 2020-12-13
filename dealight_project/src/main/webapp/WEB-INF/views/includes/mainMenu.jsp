@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
 <!--  common  -->
@@ -18,11 +19,8 @@
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 
 <!-- Add icon library -->
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
-</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
 
 .top {
@@ -271,7 +269,7 @@
         </nav>
         <div class="main_nav_logo"><img id="logo" src="/resources/icon/logo.png" alt=""></div>
         <nav class="main_nav_right">
-            <div><span id="nav_user_id">${userId }님</span></div>
+            <div><c:if test="${userId != null}"> <span id="nav_user_id">${userId }님</span></c:if></div>
             <div class="bell_btn"><img src="/resources/icon/bell.png" alt=""></div>
             <div class="account_btn">
             	<img src="/resources/icon/account.png">
@@ -300,7 +298,6 @@
             </div>
         </nav>
     </header>
-    
    		<div class="alert manage_rsvd">
 		  <span class="alert_closebtn">&times;</span>  
 		  <strong class="alert_tit">예약</strong>
@@ -321,6 +318,7 @@
 		  <span class="alert_senduser"></span>
 		  <span class="alert_msg">예약 관련 notification 입니다.</span>
 		</div>
+	
 	<script>
 
 	//로그아웃 폼 제출
@@ -362,4 +360,117 @@ function goMypage(){
 	 location.href="/dealight/mypage/reservation";
 
 }
+
+/* web socket!!!!!!!!!!!!!!!!!!!!*/
+/* 	<div id="socketAlert" class="alert alert-success" role="alert"">알림!!!</div> */
+	let socket = null;
+
+	 function connectWS() {
+		// 전역변수 socket을 선언한다.
+		// 다른 페이지 어디서든 소켓을 불러올 수 있어야 하기 때문이다.
+		
+	 	// 소켓을 ws로 연다.
+	 	var ws = new WebSocket("ws://localhost:8080/manageSocket");
+	 	socket = ws;
+
+	 	// 커넥션이 연결되었는지 확인한다.
+	 	ws.onopen = function () {
+	 	    console.log('Info: connection opened.');
+	 	};
+
+	 	
+	 	// 받은 메시지를 출력한다.
+	 	// 메시지를 수신한 이벤트 핸들러와 같다.
+	 	ws.onmessage = function (event) {
+	 	    console.log("ReceiveMessage : ", event.data+'\n');
+	 	    
+	 	    // 추후에 message 형식을 JSON으로 변환해서 message type을 지정해줘야 한다.
+	 	    //if()
+	 	    	
+	 	   	//alert(event.data);
+	 	    console.log(typeof event.data);
+	 	    
+	 	    let data = JSON.parse(event.data);
+	 	    
+	 	    console.log(typeof data);
+	 	    console.log("cmd : "+data.cmd);
+	 		console.log("sendUser : "+data.sendUser);
+	 	    console.log("storeId : "+data.storeId);
+	 	    
+	 	    let curNotiCnt = 0;
+	 	    
+	 	    for(let i = 0; i < document.getElementsByClassName("alert").length; i++){
+	 	    	if(document.getElementsByClassName("alert")[i].style.display === 'block')
+	 	    		curNotiCnt += 1;
+	 	    }
+	 	    
+	 	    console.log("curNotiCnt : "+curNotiCnt);
+	 	    
+		if(data.cmd === 'rsvd'){
+   	 		showRsvdList(storeId);
+   	 		showRsvdMap(storeId);
+   	 		$('.alert.manage_rsvd .alert_tit').html('예약 알림');
+   	 		$('.alert.manage_rsvd .alert_senduser').html(data.sendUser);
+   	 		$('.alert.manage_rsvd .alert_msg').html(data.msg);
+   	 		document.getElementsByClassName("manage_rsvd")[0].style.bottom = 15 + curNotiCnt*100;
+   	 		$('.alert.manage_rsvd').fadeIn();
+   	 		console.log(data.msg);
+		} else if (data.cmd === 'wait'){
+   	 		showWaitList(storeId);
+   	 		$('.alert.manage_wait .alert_tit').html('웨이팅 알림');
+   	 		$('.alert.manage_wait .alert_senduser').html(data.sendUser);
+   			$('.alert.manage_wait .alert_msg').html(data.msg);
+   			document.getElementsByClassName("manage_wait")[0].style.bottom = 15 + curNotiCnt*100;
+   			$('.alert.manage_wait').fadeIn();
+		} else if (data.cmd === 'htdl') {
+			
+		}
+	 	    
+	 	    //let socketAlert = $('#socektAlert');
+	 		//socketAlert.html(event.data);
+	 	    //socketAlert.css('display','block');
+	    
+	    // 메시지가 3초 있다가 자동으로 사라지게
+	    /*
+	    setTimeout( function(){
+	    	
+	    	$socketAlert.css('display','none');
+	    },3000);
+	 	    */
+	    
+	    /*
+	 	    let socketAlert = $('#socektAlert');
+	 		socketAlert.innerHTML = event.data;
+	 	    socketAlert.style.display = "block";
+	 	   	showWaitList(storeId);
+	 	    */
+	 	   	
+	 	    // 메시지가 3초 있다가 자동으로 사라지게
+	 	    /*
+	 	    setTimeout( function(){
+	 	    	
+	 	    	$socketAlert.css('display','none');
+	 	    },3000);
+	 	    */
+	 	};
+
+
+	 	// connection을 닫는다.
+	 	ws.onclose = function (event) {
+	 		console.log('Info: connection closed.');
+	 		//setTimeout( function(){ connect(); }, 1000); // retry connection!!
+	 	};
+	 	ws.onerror = function (event) { console.log('Error'); };
+	 	
+	 }
+		
+		// input 내용을 socket에 send
+		$('#btnSend').on('click', function(evt) {
+			  evt.preventDefault();
+			if (socket.readyState !== 1) return;
+				  let msg = $('input#msg').val();
+				  socket.send(msg);
+			});
+		
+		//connectWS();
    </script>

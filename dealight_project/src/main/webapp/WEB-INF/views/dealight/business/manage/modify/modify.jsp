@@ -4,6 +4,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@include file="../../../../includes/mainMenu.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +13,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
 <style>
-	img {
+	.file_body img {
 	
 	width : 100px;
 	height : 100px;
@@ -28,7 +29,6 @@
 </style>
 </head>
 <body>
-<%@include file="../../../../includes/mainMenu.jsp" %>
 <main>
 	<h1>Business Modify Page</h1>
 	

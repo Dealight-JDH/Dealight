@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dealight.domain.MenuVO;
 import com.dealight.domain.RsvdRsltDTO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreVO;
@@ -318,6 +319,22 @@ public class BoardController {
 		return new ResponseEntity<>(rsvdList, HttpStatus.OK);
 		//return new ResponseEntity<>(userService.getRsvdListStoreUser(storeId, userId), HttpStatus.OK);
 	}	
+	
+	// 해당 매장의 메뉴 리스트를 보여준다. 
+	@GetMapping(value = "/board/menus/{storeId}", 
+			produces = {
+					MediaType.APPLICATION_JSON_UTF8_VALUE,
+					MediaType.APPLICATION_XML_VALUE
+	})
+	public ResponseEntity<List<MenuVO>> getMenuList(@PathVariable("storeId") Long storeId) {
+		
+		log.info("get store menu list....................");		
+		
+		List<MenuVO> menuList = storeService.findMenuByStoreId(storeId);
+		
+		return new ResponseEntity<>(menuList, HttpStatus.OK);
+		//return new ResponseEntity<>(userService.getRsvdListStoreUser(storeId, userId), HttpStatus.OK);
+	}
 	
 	// 메시지를 보낸다.
 //	@PostMapping(value = "/board/message/send/ 

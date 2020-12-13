@@ -22,11 +22,6 @@
 			float : left;
 		}
 		
-		.mypage_wrapper {
-            padding-top: 60px;
-            width: 1050px;
-            margin: 0 auto;
-        }
         .mypage_menu_nav{
             border: 1px solid black;
             float: left;

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@include file="../../../../includes/mainMenu.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,7 +69,7 @@
 	
 </style>
 <style>
-	img {
+	.file_body img {
 	
 	width : 100px;
 	height : 100px;
@@ -81,7 +82,6 @@
 </style>
 </head>
 <body>
-<%@include file="../../../../includes/mainMenu.jsp" %>
 <main>
 	<h1>Business Menu Page</h1>
 	

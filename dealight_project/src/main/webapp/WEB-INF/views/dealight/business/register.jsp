@@ -4,6 +4,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@include file="../../includes/mainMenu.jsp" %>
 <!-- 현중 -->
 <!DOCTYPE html>
 <html>
@@ -98,7 +99,6 @@
         </script>
 </head>
 <body>
-<%@include file="../../includes/mainMenu.jsp" %>
 <main>
 	<form action="/dealight/business/register" method="post" id='regForm' name="form">
 	===================================================</br></br>

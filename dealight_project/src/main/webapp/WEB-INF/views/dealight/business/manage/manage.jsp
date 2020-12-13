@@ -4,18 +4,17 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@include file="../../../includes/mainMenu.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>매장 관리</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="/resources/css/manage.css" type ="text/css" />
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="/resources/js/Chart.js"></script>
 </head>
 <body>
-<%@include file="../../../includes/mainMenu.jsp" %>
 	
     <div class="main_box"><!-- main box -->
         <h2>Business Manage Main Page</h2>
@@ -88,6 +87,7 @@
 	            </ul>
             </div>
                 <di class="wait_register_wrapper">
+                	<button class='btnAcceptHtdl'>핫딜 등록</button>
                     <button class="btn_wait_register">오프라인 웨이팅 등록</button>
                 </div><!-- end wait board -->
                 <p id="dealhistory"><a href="/dealight/business/manage/dealhistory?storeId=${storeId}">핫딜 히스토리</a></p>
@@ -153,6 +153,7 @@
 			<ul class="rsvdDtls"></ul>
 			<ul class="userRsvdList"></ul>
 			<ul class="waiting_registerForm"></ul>
+			<ul class="regHtdl"></ul>
 		</div>
 	</div>
 <script>
@@ -535,6 +536,25 @@ let curHour = curToday.getHours(),
                         }
             });
         };
+        
+        function getMenuList(param,callback,error) {
+        	
+        	let storeId = param.storeId;
+        	
+        	$.getJSON("/dealight/business/manage/board/menus/"+ storeId +".json",
+                    function(data){
+        					console.log(data);
+                        if(callback){
+                            callback(data);
+                        }
+                    }).fail(function(xhr,status,err){
+                        if(error){
+                            error();
+                        }
+            });
+        	
+        }
+        
     
         return {
             regWait:regWait,
@@ -552,7 +572,8 @@ let curHour = curToday.getHours(),
             getLastWeekWait : getLastWeekWait,
             getUserRsvdList : getUserRsvdList,
             getRsvdDtls : getRsvdDtls,
-            getLastWeekRsvd : getLastWeekRsvd
+            getLastWeekRsvd : getLastWeekRsvd,
+            getMenuList : getMenuList
         };
     })();
     
@@ -577,7 +598,9 @@ let curHour = curToday.getHours(),
 	        userRsvdListUL = $(".userRsvdList"),
 	        rsvdDtlsUL = $(".rsvdDtls"),
 	        waitRegFormUL = $(".waiting_registerForm"),
-	        lastWeekRsvdUL = $(".last_week_rsvd")
+	        lastWeekRsvdUL = $(".last_week_rsvd"),
+	        regHtdlFormUL = $(".regHtdl"),
+	        btnAcceptHtdl = $(".btnAcceptHtdl")
         ;
         
         function init(storeId){
@@ -1200,6 +1223,147 @@ let curHour = curToday.getHours(),
     		});
         };
         
+        // 메뉴리스트
+        
+        let showRegHtdl = function(storeId){
+        	
+        	let strHtdl = "";
+        	
+        	console.log('show reg htdl store id : '+storeId);
+        	
+        	boardService.getMenuList({storeId:storeId}, function(menuList){
+        	
+        		console.log('show reg htdl store id : '+storeId);
+        		
+	        	strHtdl += "<form class='regHtdlForm' action='/dealight/hotdeal/register' method='post'>";
+	        	strHtdl += "<label>핫딜 제목</label> <input class='form-control' name='name'><br>";
+	        	strHtdl += "<div>";
+	        	strHtdl += "<label>핫딜 메뉴</label><br>";
+	        	
+	        	if(menuList)
+	        	menuList.forEach((menu,i) => {
+		        	strHtdl += "<input type='checkbox' id='menu"+i+"' class='js-menu' value='"+menu.price+"'>";
+		        	strHtdl += "<label for='menu"+i+"'>" +menu.name+"</label>";
+	        	});
+		       	strHtdl += "<div class='uploadDiv'><input type='file' name='uploadFile'></div>";
+		       	strHtdl += "<div class='uploadResult'><ul></ul></div></div>";
+	        	strHtdl += "<label>할인율</label> <select id='dcRate' name='dcRate'>";
+	        	strHtdl += "<option value=''>--</option>";
+	        	strHtdl += "<option value='10'>10%</option>";
+	        	strHtdl += "<option value='20'>20%</option>";
+	        	strHtdl += "<option value='30'>30%</option>";
+	        	strHtdl += "<option value='40'>40%</option>";
+	        	strHtdl += "<option value='50'>50%</option>";
+	        	strHtdl += "</select><br><label>할인 적용전 가격</label> <input class='js-befPrice'";
+	        	strHtdl += "value='0' name='befPrice' readonly='readonly'><br> <label>할인";
+	        	strHtdl += "적용후 가격</label> <input class='js-aftPrice' readonly='readonly'><br>";
+	        	strHtdl += "<label>핫딜 기간</label> <input type='time' name='startTm'> <input";
+	        	strHtdl += "type='time' name='endTm'><br> <label>핫딜 제안 인원:";
+	        	strHtdl += "</label> <input class='form-control' type='number' min='0' max='50'";
+	        	strHtdl += "name='suggPnum' readonly='readonly'><br> <label>핫딜";
+	        	strHtdl += "예약 손님 인원: </label> <input class='form-control' type='number' min='0'";
+	        	strHtdl += "max='50' name='lmtPnum'><br> <label>핫딜 소개</label><br>";
+	        	strHtdl += "<textarea rows='2' cols='22' name='intro'></textarea>";
+	        	strHtdl += "<br> <input type='hidden' id='storeId' name='storeId'";
+	        	strHtdl += "value='"+storeId+"'>";
+	        	strHtdl += "<button class='regHtdlBtn' type='submit' data-oper='register'>승낙</button>";
+	        	strHtdl += "<button class='regHtdlBtn' type='submit' data-oper='refuse'>거절</button>";
+	        	strHtdl += "</form>";
+	        	
+        		console.log("before strHtdl : "+ strHtdl);
+	        	regHtdlFormUL.html(strHtdl);
+	        	
+	        	/* jong woo js*/
+	        	//메뉴 리스트, 할인율, 메뉴 체크박스
+	        	let menus = document.querySelectorAll(".js-menu"),
+		        	dcRate = document.querySelector("#dcRate"),
+		        	menuBox = document.querySelectorAll(".js-menu");
+	        	
+	        	//할인 적용 전/후 가격
+	        	let befPrice = document.querySelector(".js-befPrice"),
+	        		afterPrice = document.querySelector(".js-aftPrice"),
+	        		total = 0,
+	        		rate = 0;
+	        	
+	        	//메뉴에 따른 가격 선택
+	    		for (let i = 0; i < menus.length; i++) {
+	    			$(".js-menu").eq(i).click(function() {
+	    				console.log($(this).val());
+	    				menuCheck($(this).val(), i);
+	    			});
+	    		};
+	    		
+	    		//할인율 변화
+	    		$("#dcRate").change(function(){
+	    			rate = $(this).val()/100;
+	    			console.log("change: " + rate);
+	
+	    			getAfterPrice(total, rate);
+	    		});
+	    		
+	    		
+	    		let regHtdlFormObj = $(".regHtdlForm");
+	    		
+	    		$(".regHtdlBtn").on("click", function(e){
+	    			e.preventDefault();
+	    			
+	    			let operation = $(this).data("oper");
+	    			console.log(operation);
+	    			let path = $(".uploadResult ul li").data("path");
+	    			let fileName = $(".uploadResult ul li").data("filename");
+	    			
+	    			if(operation === 'register'){
+	    				
+	    				for(let i =0; i< menuBox.length; i++){
+	    					//체크된 라벨 input 추가
+	    					if(menuBox[i].checked){		
+	    						console.log(i+"================");
+	    						regHtdlFormObj.append("<input type='hidden' name='menu["+i+"].name' value='"+ $("label[for='menu"+(i+1)+"']").text()+"'>");
+	    						regHtdlFormObj.append("<input type='hidden' name='menu["+i+"].price' value='"+ $("#menu"+(i+1)).val()+"'>");
+	    							
+	    					}
+	    				}
+	    				regHtdlFormObj.append("<input type='hidden' name='htdlPhotoSrc' value='"+ path + "/" + fileName + "'>");
+	    				regHtdlFormObj.submit();
+	    				
+	    			}else if(operation === 'refuse'){
+	    				alert("핫딜이 거절 되었습니다.");
+	    			}
+	    			
+	    			//할인 적용한 가격 계산
+	    			function getAfterPrice(total, rate) {
+	    				let price = total - (total * rate);
+	    				console.log(price);
+	    				afterPrice.value = price;
+	    			}
+	
+	    			//메뉴 체크
+	    			function menuCheck(price, idx) {
+	
+	    				if (menus[idx].checked)
+	    					total += Number(price);
+	    				else
+	    					total -= Number(price);
+	    				befPrice.value = total;
+	
+	    				getAfterPrice(total, rate);
+	    			};
+	    			
+	    		}); // reg btn click
+        	});// end get menuList
+        	
+        	
+        }; // end show  reg htdl
+        
+        let showRegHtdlHandler = function(e) {
+        	
+        	if(confirm("핫딜을 등록하시겠습니까?")){
+        		showRegHtdl(storeId);
+        		modal.css("display","block");        		
+        	}
+        }
+        btnAcceptHtdl.on("click",showRegHtdlHandler);
+        
         /* 이벤트 처리*/
         
         /*현황판 토글*/
@@ -1330,7 +1494,7 @@ let curHour = curToday.getHours(),
         /* 	<div id="socketAlert" class="alert alert-success" role="alert"">알림!!!</div> */
         let socket = null;
    	 
-	   	 function connectWS() {
+	   	function connectWS() {
 	   		// 전역변수 socket을 선언한다.
 	   		// 다른 페이지 어디서든 소켓을 불러올 수 있어야 하기 때문이다.
 	   		
@@ -1362,12 +1526,22 @@ let curHour = curToday.getHours(),
 	   	 		console.log("sendUser : "+data.sendUser);
 	   	 	    console.log("storeId : "+data.storeId);
 	   	 	    
+				let curNotiCnt = 0;
+	 	    
+		 	    for(let i = 0; i < document.getElementsByClassName("alert").length; i++){
+		 	    	if(document.getElementsByClassName("alert")[i].style.display === 'block')
+		 	    		curNotiCnt += 1;
+		 	    }
+	 	    
+	 	    	console.log("curNotiCnt : "+curNotiCnt);
+	   	 	    
 				if(data.cmd === 'rsvd'){
 		   	 		showRsvdList(storeId);
 		   	 		showRsvdMap(storeId);
 		   	 		$('.alert.manage_rsvd .alert_tit').html('예약 알림');
 		   	 		$('.alert.manage_rsvd .alert_senduser').html(data.sendUser);
 		   	 		$('.alert.manage_rsvd .alert_msg').html(data.msg);
+		   	 		document.getElementsByClassName("manage_rsvd")[0].style.bottom = 15 + curNotiCnt*75;
 		   	 		$('.alert.manage_rsvd').fadeIn();
 		   	 		console.log(data.msg);
 				} else if (data.cmd === 'wait'){
@@ -1375,6 +1549,7 @@ let curHour = curToday.getHours(),
 		   	 		$('.alert.manage_wait .alert_tit').html('웨이팅 알림');
 		   	 		$('.alert.manage_wait .alert_senduser').html(data.sendUser);
 		   			$('.alert.manage_wait .alert_msg').html(data.msg);
+		   			document.getElementsByClassName("manage_wait")[0].style.bottom = 15 + curNotiCnt*75;
 		   			$('.alert.manage_wait').fadeIn();
 				} else if (data.cmd === 'htdl') {
 					
@@ -1536,7 +1711,7 @@ let curHour = curToday.getHours(),
     });
 
     </script>
- <script src="/resources/js/clock.js"></script>
  <%@include file="../../../includes/mainFooter.jsp" %>
+ <script src="/resources/js/clock.js"></script>
 </body>
 </html>

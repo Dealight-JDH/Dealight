@@ -13,7 +13,7 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
 </head>
 <body>
-<main class="mypage_wrapper">
+	<main>
         <%@include file="/WEB-INF/views/includes/mypageSidebar.jsp" %>
         <div class="mypage_content">
             <div class="content_head">
@@ -83,6 +83,8 @@
 			<div id="map" style="width:500px;height:400px;"></div>
 		</div>
 	</div>
+	
+	
 <script type="text/javascript" src="/resources/js/modal.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {

@@ -6,7 +6,6 @@ a {
 }
 /* main */
         main{
-            min-height: 200px;
             height: auto;
             width: 100%;
             /*border:  1px black solid;*/
