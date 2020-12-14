@@ -131,10 +131,24 @@
        		
 		}
         /* end account btn */
+        .bell_btn {
+        	position: relative;
+        }
         
         .bell_btn > img{
             width: 30%;
         }
+        /* 알림함 */
+        .alert_badge {
+			  position: absolute;
+			  top: 0px;
+			  right: 4px;
+			  padding: 5px 8px;
+			  border-radius: 50%;
+			  background-color: red;
+			  color: white;
+		}
+        
         .log_img{
             border: solid 1px black;
             height: 50%;

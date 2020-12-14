@@ -270,7 +270,10 @@
         <div class="main_nav_logo"><img id="logo" src="/resources/icon/logo.png" alt=""></div>
         <nav class="main_nav_right">
             <div><c:if test="${userId != null}"> <span id="nav_user_id">${userId }님</span></c:if></div>
-            <div class="bell_btn"><img src="/resources/icon/bell.png" alt=""></div>
+            <div class="bell_btn">
+            	<span class='alert_badge'>3</span>
+            	<img src="/resources/icon/bell.png" alt="">
+            </div>
             <div class="account_btn">
             	<img src="/resources/icon/account.png">
             		<div class="account-dropdown-content">

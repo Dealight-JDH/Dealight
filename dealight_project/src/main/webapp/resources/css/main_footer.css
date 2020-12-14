@@ -47,7 +47,7 @@
         .footer_container_left > div > .item_left{
         	margin: 0 0;
             /*border: 1px black solid;*/
-            min-width: 40%;
+            min-width: 60%;
             min-height: 100%;
             display: flex;
             flex-direction: column;
@@ -84,7 +84,7 @@
         .footer_container_left > div > .item_right{
         	margin: 0 0;
             /*border: 1px black solid;*/
-            min-width: 60%;
+            min-width: 40%;
             min-height: 100%;
             display: flex;
             flex-direction: column;
