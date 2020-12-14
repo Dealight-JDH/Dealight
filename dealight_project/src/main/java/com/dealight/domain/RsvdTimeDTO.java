@@ -1,7 +1,6 @@
 package com.dealight.domain;
 
 
-import java.sql.Date;
 
 import lombok.Data;
 

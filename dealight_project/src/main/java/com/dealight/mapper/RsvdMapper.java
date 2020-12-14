@@ -22,7 +22,7 @@ import com.dealight.domain.UserWithRsvdDTO;
 public interface RsvdMapper {
 
 	//예약 mapper
-	RsvdVO findById(Long rsvdId);
+	RsvdVO findRsvdById(Long rsvdId);
 	int delete(Long rsvdId);
 	List<RsvdVO> getList();
 	int completeStusUpdate(Long rsvdId);
@@ -34,11 +34,20 @@ public interface RsvdMapper {
 
 	//예약 가능 mapper
 	void insertRsvdAvail(RsvdAvailVO availVO);
-	void deleteRsvdAvail();
+	int deleteRsvdAvail();
+	int countAll();
 	RsvdAvailVO findRsvdAvailByStoreId(Long storeId);
 	List<RsvdAvailVO> getRsvdAvailList();
 	void updateRsvdAvail(RsvdAvailVO availVO);
-
+	
+	
+	//예약 완료 후
+	//예약 가능 여부 && 핫딜 차감
+	int completeUpdateAvail(RsvdAvailVO availVO);
+	int completeUpdateHtdl();
+	//핫딜이 존재하는 경우 확인
+	int checkExistHtdl(@Param("userId") String userId, @Param("htdlId") Long htdlId);
+	
 	Long getSeqRsvd();
 	Long getDaySeqRsvd();
 	
@@ -48,6 +57,8 @@ public interface RsvdMapper {
 	List<RsvdDtlsVO> findDtlsById(Long rsvdId);
 	int updateDtls(RsvdDtlsVO vo);
 	int deleteDtls(Long rsvdId);
+	
+	
 	
 	//예약+상세
 	

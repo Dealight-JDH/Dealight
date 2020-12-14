@@ -23,7 +23,7 @@ public class RsvdVOTests {
     
     // �����Է°�
     private long htdlId = 2;
-    private Long aprvNo = 1111L; // ***************변경
+    private String aprvNo = "1111L"; // ***************변경
 
 	// 1. �ʼ� �Է°��� �Է��ϰ� ���尴ü�� ������ �� �ִ���.
 	@Test

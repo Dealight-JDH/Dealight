@@ -135,7 +135,7 @@ public class UserTests {
 		  
 		  
 		 
-		 @Transactional
+
 		 @Test
 		 public void pwdUpdate() {
 			 

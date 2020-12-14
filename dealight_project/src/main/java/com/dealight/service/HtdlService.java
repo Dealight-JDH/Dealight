@@ -23,6 +23,9 @@ public interface HtdlService {
 	//핫딜 등록
 	void register(HtdlVO vo, List<HtdlDtlsVO> dtlsList);
 
+	//핫딜 read
+	HtdlVO readHtdl(Long htdlId);
+	
 	//전체 핫딜(핫딜+상세+매장평가) 조회
 	
 	List<HtdlVO> getList();
@@ -40,8 +43,13 @@ public interface HtdlService {
 	//해당 핫딜(핫딜+상세+매장평가)
 	HtdlVO read(Long htdlId);
 	
+	//(핫딜+상세 핫딜번호,메뉴이름, 할인가격)
+	HtdlVO readHtdlDtls(Long htdlId);
+	
 	//핫딜 수정
 	boolean modify(HtdlVO vo);
+	//핫딜 현재인원 수정
+	boolean curPnumModify(HtdlVO vo);
 	
 	int getTotal(String stusCd, HtdlCriteria hCri);
 	
