@@ -3,6 +3,7 @@ package com.dealight.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.PymtVO;
 import com.dealight.mapper.PymtMapper;
@@ -17,7 +18,26 @@ public class PymtServiceImpl implements PymtService{
 
 	private final PymtMapper mapper;
 	
+
+	@Transactional
+	@Override
+	public boolean removeCancelAll() {
+		// TODO Auto-generated method stub
+		
+		log.info("delete cancel list...");
+		List<PymtVO> lists = mapper.findCancelList();
+		lists.forEach(cancelVO -> log.info(cancelVO));
+		
+		return mapper.deleteCancelAll() == lists.size();
+	}
 	
+	@Override
+	public List<PymtVO> getCancelList() {
+		// TODO Auto-generated method stub
+		log.info("pymt cancel list....");
+		return mapper.findCancelList();
+	}
+
 	@Override
 	public boolean stusCdModify(PymtVO vo) {
 		// TODO Auto-generated method stub
@@ -71,6 +91,10 @@ public class PymtServiceImpl implements PymtService{
 		return mapper.getList();
 	}
 
+
+
+	
+	
 	
 
 	

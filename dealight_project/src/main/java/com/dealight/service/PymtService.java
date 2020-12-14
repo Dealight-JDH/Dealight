@@ -15,6 +15,8 @@ public interface PymtService {
 	boolean stusCdModify(PymtVO vo);
 	boolean remove(Long pymtId);
 	
+	List<PymtVO> getCancelList();
+	boolean removeCancelAll();
 	List<PymtVO> getList();
 	
 }

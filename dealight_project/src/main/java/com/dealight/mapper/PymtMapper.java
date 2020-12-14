@@ -17,6 +17,8 @@ public interface PymtMapper {
 	PymtVO findByRsvdId(Long rsvdId);
 	int delete(Long pymtId);
 	
+	List<PymtVO> findCancelList();
+	int deleteCancelAll();
 	List<PymtVO> getList();
 	
 }

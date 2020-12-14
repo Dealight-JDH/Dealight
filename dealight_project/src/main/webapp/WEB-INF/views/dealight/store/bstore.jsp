@@ -208,7 +208,10 @@
 									<button class ="tabWrapperBtn" type="submit">예약하기</button>
 								</form>
 							</div>
+							
+							
 						</li>
+							
 						<li><div class="content__wrapper">
 								<form id="waitingForm" action="/dealight/waiting"
 									method="post">
@@ -230,6 +233,11 @@
 						</li>
 
 					</ul>
+					
+					<form id='reserveFormObj' action="/dealight/reservation/" method="get">
+									<input type='hidden' name='storeId'
+										value='<c:out value="${store.storeId }"/>' />
+					</form>
 				</section>
 				</div>
 		</div>
@@ -378,15 +386,14 @@
 	let paramHtdlId = '<c:out value="${htdlId}"/>' || null;
 	let paramUserId = '<c:out value="${userId}"/>' || null;
 	let storeId = '<c:out value="${store.storeId}"/>';
+	
 	let isHtdlPayHistory = false;//핫딜을 구매했는지 체크
 
 	$(document).ready(function() {
 
 
 		console.log("hotdeal htdlId.........."+ paramHtdlId);
-		
-		
-		
+
 		if(paramHtdlId != null){
 			
 		//핫딜 페이지에서 넘어온 핫딜 ajax
@@ -496,8 +503,8 @@
 		});
 	}
 	
-	//예약 가능여부 체크
-	function isRsvdAvailChecked(param, callback, error){
+	 //예약 가능여부 체크
+	/* function isRsvdAvailChecked(param, callback, error){
 		
 		let storeId = param.storeId;
 		let time = param.time;
@@ -507,16 +514,29 @@
 			
 			$.getJSON("/dealight/reservation/rsvdavailcheck/"+storeId+"/"+time+"/"+pnum+".json",
 					function(data){
-						/* if(callback){
-							callback(data);
-						} */
 						resolve(data);
-				}).fail(function(xhr,status, err){
-					if(error){
-						error();
-					}
 				});
 		});
+	}  */
+	
+	//예약 가능여부 체크
+	function isRsvdAvailChecked(param, callback, error){
+		
+		let storeId = param.storeId;
+		let time = param.time;
+		let pnum = param.pnum;
+
+		$.getJSON("/dealight/reservation/rsvdavailcheck/"+storeId+"/"+time+"/"+pnum+".json",
+				function(data){
+					 if(callback){
+						callback(data);
+					}
+					
+			}).fail(function(xhr,status, err){
+				if(error){
+					error();
+				}
+			});
 	}
 	
 	function Menus() {
@@ -682,20 +702,34 @@
 	const reserveForm = $("#reserveForm");
 	const reserve = $("#reserve");
 	const pnum = $("#pnum");
+	const reserveFormObj = $("#reserveFormObj");
 	
-
 	$("#reserveForm button")
 			.on("click", function(e) {
 				
 						//1.기존 이벤트(페이지 이동)를 막는다
 						e.preventDefault();
-						
+
+						if(paramUserId === null){
+							alert("로그인 후 서비스를 이용해 주세요.");
+							return;
+						}
 						//시간,인원 수
 						let time = $("#time option:selected").val();
 						let pnum = $("#num option:selected").val();
 
 						let RsvdAvailChecked = false;
 						
+						//예약 가능여부 체크
+						isRsvdAvailChecked({storeId: storeId, time: time, pnum: pnum},
+								function(data){
+							console.log("reserve avail check: " + data);
+							
+							RsvdAvailChecked = data;
+							
+							
+							
+						});
 						
 						
 						//해당 핫딜 구매했는지 체크
@@ -706,12 +740,19 @@
 								
 								console.log("===========hotdeal pay check: "+ result);
 								isHtdlPayHistory = result;
+								
+								if(!isHtdlPayHistory && paramHtdlId != null){
+									alert('이미 핫딜 상품을 구매하셨습니다. 감사합니다');
+									return;
+								}
+								
 							});
 						}
 						
 						//2.이벤트 막고 하고 싶은거
 						//2.1 페이지 이동시 다음페이지에 데이터를 넘길 수 있도록 input hidden에 선택된 메뉴 수량 넣음
 						//시간
+						
 						if (menus.arrSelMenus.length === 0) {
 							alert("메뉴가 선택되지않았습니다");
 							return;
@@ -721,38 +762,29 @@
 							alert("인원수를 선택해 주세요");
 							return;
 						}
+						
 						if ($("#time option:selected").val() === "") {
 							alert("예약시간을 선택해 주세요");
 							return;
 						}
 						
-						if(!isHtdlPayHistory && paramHtdlId != null){
-							alert('이미 핫딜 상품을 구매하셨습니다. 감사합니다');
-							return;
-						}
 						
-						//예약 가능여부 체크
-						/* isRsvdAvailChecked({storeId: storeId, time: time, pnum: pnum},
-								function(data){
-							console.log("reserve avail check: " + data);
 							
-							RsvdAvailChecked = data;
-							
-						}); */
-						isRsvdAvailChecked({storeId: storeId, time: time, pnum: pnum}).then(function(result){
-							console.log("reserve avlail check: " + result);
-							
-							RsvdAvailChecked = result;
-						})
-						
+						/* isRsvdAvailChecked({storeId: storeId, time: time, pnum: pnum})
+							.then(function(result){
+								console.log("reserve avlail check: " + result);
+								
+								RsvdAvailChecked = result;
+						});
+						 */
 						
 
 						const personNum = '<input type="hidden" name=pnum value="'
 								+ $("#num option:selected").val() + '">';
-						reserveForm.append(personNum);
+								reserveFormObj.append(personNum);
 						const reserveTime = '<input type="hidden" name=time value="'
 								+ $("#time option:selected").val() + '">';
-						reserveForm.append(reserveTime);
+								reserveFormObj.append(reserveTime);
 						//3. 2에서 하고 싶은 거 실행 후  submit()
 
 						for (let i = 0; i < menus.arrSelMenus.length; i++) {
@@ -765,27 +797,34 @@
 							//핫딜번호
 							if(paramHtdlId != null){
 								const htdlIdInput = '<input type="hidden" name="htdlId" value="'+paramHtdlId+'">';
-								reserveForm.append(htdlIdInput);
+								reserveFormObj.append(htdlIdInput);
 								
 							}
+							
+							
 							//메뉴이름
 							const menuNm = '<input type="hidden" name=menu['+i+'].name value="'+menus.arrSelMenus[i].menusNm+'">';
-							reserveForm.append(menuNm);
+							reserveFormObj.append(menuNm);
 							const menuPrice = '<input type="hidden" name=menu['+i+'].price value="'+menus.arrSelMenus[i].menusUnprc+'">';
-							reserveForm.append(menuPrice);
+							reserveFormObj.append(menuPrice);
 							const menuQty = '<input type="hidden" name=menu['+i+'].qty value="'+menus.arrSelMenus[i].cnt+'">';
-							reserveForm.append(menuQty);
+							reserveFormObj.append(menuQty);
 
 						}
 						
 						setTimeout(()=>{
-							console.log("loading.....");							
-							if(RsvdAvailChecked)
-								reserveForm.submit();
-							else
-								alert('선택하신 현재 인원은 예약을 할 수 없습니다. 죄송합니다');
-						}, 200)
-
+							if(RsvdAvailChecked){
+								reserveFormObj.submit();
+							}
+							else{
+								let storeIdTag = $("input[name='storeId']").clone();
+								reserveFormObj.empty();
+								reserveFormObj.append(storeIdTag);
+								alert('선택하신 현재 인원은 예약이 불가합니다. 죄송합니다.');
+								return;
+							}
+						}, 200);
+						
 					});
 
 	const waitingForm = $("#waitingForm");

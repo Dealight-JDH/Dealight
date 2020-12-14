@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-
 import com.dealight.domain.RsvdTimeDTO;
+import com.dealight.service.PymtService;
 import com.dealight.service.RsvdService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,15 @@ import lombok.extern.log4j.Log4j;
 public class RsvdTask {
 
 	private final RsvdService service;
-
+	private final PymtService pymtService;
+	
+	//새벽 12시마다 결제 취소 delete
+	@Scheduled(cron = "0 0 0 * * *")
+	public void cancelRemove() {
+		log.info("pymt cancel list remove...");
+		pymtService.removeCancelAll();
+	}
+	
 	//새벽 2시마다 예약 가능 테이블 초기화
 	@Scheduled(cron = "0 0 2 * * *")
 	public void initRsvdAvail() {

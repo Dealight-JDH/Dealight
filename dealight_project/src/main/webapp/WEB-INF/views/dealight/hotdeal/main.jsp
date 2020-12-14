@@ -246,8 +246,8 @@ h4{
 	$(document).ready(function() {
 		
 		console.log("==="+size);
-		showList(paramStusCd);
-		//showListStart(paramStusCd, pageNum); //1초마다 핫딜 리스트를 그린다
+		//showList(paramStusCd);
+		showListStart(paramStusCd, pageNum); //1초마다 핫딜 리스트를 그린다
 		
 		/* for(var i=0; i< size; i++){
 			$(".js-htdl"+i).on('click', function(){
@@ -433,8 +433,8 @@ h4{
 		
 		getList({stusCd: param, page: page || 1},
 			function(data){
-			console.log("list: " + JSON.stringify(data.lists));
-			console.log("data: " + JSON.stringify(data));
+			//console.log("list: " + JSON.stringify(data.lists));
+			//console.log("data: " + JSON.stringify(data));
 			//console.log("listDtls: " + JSON.stringify(data.lists[0].htdlDtls));
 	
 			//ajax 요청 list가 널이거나 0이면 ""
@@ -514,14 +514,14 @@ h4{
 			
 			let fileCallPath = null;
 			let srcObj = null;
-			console.log("hotdeal : " + JSON.stringify(list[i]));
-			console.log("hotdeal image: " + list[i].htdlImg);
+			//console.log("hotdeal : " + JSON.stringify(list[i]));
+			//console.log("hotdeal image: " + list[i].htdlImg);
 			if(list[i].htdlImg != null){
 				let htdlPhotoSrc = list[i].htdlImg;
 				srcObj = subSrc(htdlPhotoSrc);
 				fileCallPath = encodeURIComponent("/"+ srcObj["uploadPath"] +"/s_"+ srcObj["fileName"]);
 				
-				console.log("================핫딜 이미지: " + htdlPhotoSrc);
+				//console.log("================핫딜 이미지: " + htdlPhotoSrc);
 			}
 			
 			str += "<div class='css-hotdeal js-htdl"+i+"'>";
@@ -548,17 +548,17 @@ h4{
 			str += "핫딜 종료 시간: "+ "<span class= 'js-end'>"+list[i].endTm+"</span>"+"<br>"
 			
 			str += "메뉴: ";
-			console.log("======="+ list[i].htdlDtls);
-			console.log(list[i].htdlDtls);
+			//console.log("======="+ list[i].htdlDtls);
+			//console.log(list[i].htdlDtls);
 		
 		//핫딜 메뉴 리스트 생성
 		for(let j=0, dtlsLen = list[i].htdlDtls.length || 0; j<dtlsLen; j++){
 			str += list[i].htdlDtls[j].menuName+" ";
-			console.log(list[i].htdlDtls[j].menuName);
+			//console.log(list[i].htdlDtls[j].menuName);
 		}
 			str +="<br>";
-			console.log("========="+list[i].befPrice);
-			console.log("========="+list[i].ddct);
+			//console.log("========="+list[i].befPrice);
+			//console.log("========="+list[i].ddct);
 			str += "핫딜 할인 전 가격: <span style='text-decoration:line-through; color:#999999;'>"+ list[i].befPrice+"</span><br>";
 			str += "핫딜 할인 후 가격: "+ (list[i].befPrice - list[i].ddct)+"<br>";
 			str += "핫딜 소개: "+ list[i].intro+"<br>";
@@ -576,7 +576,7 @@ h4{
 		let srcObj = {};
 	
 		let index = PhotoSrc.lastIndexOf("/");
-		console.log("photo index ============" + index);			
+		//console.log("photo index ============" + index);			
 		
 		srcObj["uploadPath"] = PhotoSrc.substring(0,index);
 		console.log("photoSrc: " + PhotoSrc.substring(0,index));
@@ -589,7 +589,7 @@ h4{
 	function getHtdl(param, callback, error){
 		let htdlId = param.htdlId;
 		
-		console.log("htdlId: "+ htdlId);
+		//console.log("htdlId: "+ htdlId);
 		
 		$.get("/dealight/hotdeal/get/"+htdlId+".json", function(result){
 			if(callback){
@@ -622,11 +622,11 @@ h4{
 		
 		 //핫딜 이미지(uuid+fileName)
 		 let filePath = htdl.htdlImg;
-		 console.log(filePath+"modal filePath==============")
+		 //console.log(filePath+"modal filePath==============")
 		 
 		 //원본 이미지 파일 경로
 		 let fileCallPath = encodeURIComponent("/"+ filePath);
-		 console.log("========fileCallPath1: " + fileCallPath);
+		 //console.log("========fileCallPath1: " + fileCallPath);
 		 //섬네일 파일 경로
 		 /* let srcObj = subSrc(filePath);
 		 let thumnailfileCallPath = encodeURIComponent("/"+ srcObj["uploadPath"] +"/s_"+ srcObj["fileName"]);
@@ -637,7 +637,7 @@ h4{
 		//핫딜 번호
 		let htdlNum = htdl.htdlId;
 		htdlId = htdlNum;
-		console.log("========htdlNUm : " + htdlNum);
+		//console.log("========htdlNUm : " + htdlNum);
 		htdlImg.html("<img src='/display?fileName="+ fileCallPath+ "'>");
 		storeId = htdl.storeId;
 		console.log("============storeId: "+storeId);
@@ -672,12 +672,15 @@ h4{
 		
 		if(!ishtdlPayHistory){
 			dealBtn.text("🔥이미 구매하신 상품입니다.");
+			dealBtn.css("background", "black");
 			dealBtn.prop("disabled", true);
 		}else if(htdl.stusCd !== 'A'){
 			dealBtn.text("🔥오픈 예정입니다.");
+			dealBtn.css("background", "orange");
 			dealBtn.prop("disabled", true);
 		}else{
 			dealBtn.text("🔥딜 하기");
+			dealBtn.css("background", "red");
 			dealBtn.prop("disabled", false);
 		}
 		
