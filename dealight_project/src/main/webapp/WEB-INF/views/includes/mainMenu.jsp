@@ -298,25 +298,25 @@
             </div>
         </nav>
     </header>
-   		<div class="alert manage_rsvd">
+   		<div class="alert manage_rsvd hide">
 		  <span class="alert_closebtn">&times;</span>  
 		  <strong class="alert_tit">예약</strong>
 		  <span class="alert_senduser"></span>
 		  <span class="alert_msg">예약 관련 notification 입니다.</span>
 		</div>
 		
-		<div class="alert manage_wait">
+		<div class="alert manage_wait hide">
 		  <span class="alert_closebtn">&times;</span>  
-		  <strong class="alert_tit">예약</strong>
+		  <strong class="alert_tit">웨이팅</strong>
 		  <span class="alert_senduser"></span>
-		  <span class="alert_msg">예약 관련 notification 입니다.</span>
+		  <span class="alert_msg">웨이팅 관련 notification 입니다.</span>
 		</div>
 		
-		<div class="alert manage_htdl">
+		<div class="alert manage_htdl hide">
 		  <span class="alert_closebtn">&times;</span>  
-		  <strong class="alert_tit">예약</strong>
+		  <strong class="alert_tit">핫딜</strong>
 		  <span class="alert_senduser"></span>
-		  <span class="alert_msg">예약 관련 notification 입니다.</span>
+		  <span class="alert_msg">핫딜 관련 notification 입니다.</span>
 		</div>
 	
 	<script>
@@ -400,7 +400,7 @@ function goMypage(){
 	 	    let curNotiCnt = 0;
 	 	    
 	 	    for(let i = 0; i < document.getElementsByClassName("alert").length; i++){
-	 	    	if(document.getElementsByClassName("alert")[i].style.display === 'block')
+	 	    	if(document.getElementsByClassName("alert")[i].style.display === 'show')
 	 	    		curNotiCnt += 1;
 	 	    }
 	 	    
@@ -413,7 +413,9 @@ function goMypage(){
    	 		$('.alert.manage_rsvd .alert_senduser').html(data.sendUser);
    	 		$('.alert.manage_rsvd .alert_msg').html(data.msg);
    	 		document.getElementsByClassName("manage_rsvd")[0].style.bottom = 15 + curNotiCnt*100;
-   	 		$('.alert.manage_rsvd').fadeIn();
+   	 		$('.alert.manage_rsvd').removeClass("hide");
+   	 		$('.alert.manage_rsvd').addClass("show");
+   	 		$('.alert.manage_rsvd').addClass("showAlert");
    	 		console.log(data.msg);
 		} else if (data.cmd === 'wait'){
    	 		showWaitList(storeId);
@@ -421,7 +423,9 @@ function goMypage(){
    	 		$('.alert.manage_wait .alert_senduser').html(data.sendUser);
    			$('.alert.manage_wait .alert_msg').html(data.msg);
    			document.getElementsByClassName("manage_wait")[0].style.bottom = 15 + curNotiCnt*100;
-   			$('.alert.manage_wait').fadeIn();
+   			$('.alert.manage_wait').removeClass("hide");
+   	 		$('.alert.manage_wait').addClass("show");
+   	 		$('.alert.manage_wait').addClass("showAlert");
 		} else if (data.cmd === 'htdl') {
 			
 		}
@@ -461,8 +465,9 @@ function goMypage(){
 	 		//setTimeout( function(){ connect(); }, 1000); // retry connection!!
 	 	};
 	 	ws.onerror = function (event) { console.log('Error'); };
-	 	
+	 	 
 	 }
+	 
 		
 		// input 내용을 socket에 send
 		$('#btnSend').on('click', function(evt) {

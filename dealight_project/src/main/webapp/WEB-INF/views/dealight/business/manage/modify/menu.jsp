@@ -244,6 +244,7 @@
 $(document).ready(function(e){
     
 	let showMenuModalHandler = function(e) {
+		
 			let menuSeq = $(e.target).parent().find(".menuSeq").text(),
 			storeId = $(e.target).parent().find(".storeId").text(),
 			name = $(e.target).parent().find(".name").text(),
@@ -276,6 +277,8 @@ $(document).ready(function(e){
 		strMenu += "<div class='uploadResult_modify'>";
 		strMenu += "<ul></ul></div></div> ";
 		strMenu += "<div class='bigPictureWrapper_modify'><div class='bigPicture_modify'></div></div>";
+		strMenu += "<input hidden name='imgUrl' value='"+imgUrl+"'>";
+		strMenu += "<input hidden name='thumImgUrl' value='"+thumImgUrl+"'>";
 		strMenu += "</form>";
 		strMenu += "<button data-oper='modify' class='btn_modify'>수정</button>";
 		strMenu += "<button data-oper='remove' class='btn_remove'>제거</button>";
@@ -350,15 +353,15 @@ $(document).ready(function(e){
 					
 					let jobj = $(obj);
 					
-					str += "<input type='hidden' name='imgUrl' value='" + jobj.data("path").replace(new RegExp(/\\/g),"/")+"/"+jobj.data("uuid")+"_"+jobj.data("filename")+"'>";
-					str += "<input type='hidden' name='thumImgUrl' value='" + jobj.data("path").replace(new RegExp(/\\/g),"/")+"/"+"s_"+jobj.data("uuid")+"_"+jobj.data("filename")+"'>";
+					$("#menuForm_modify").find("input[name='imgUrl']").val(jobj.data("path").replace(new RegExp(/\\/g),"/")+"/"+jobj.data("uuid")+"_"+jobj.data("filename"));
+					$("#menuForm_modify").find("input[name='thumImgUrl']").val(jobj.data("path").replace(new RegExp(/\\/g),"/")+"/"+"s_"+jobj.data("uuid")+"_"+jobj.data("filename"));
 					
 				});
 		        	
 		        /*위에서 작성한 글을 form에 추가하고 제출한다. */
 		        formObj_modify.attr("action","/dealight/business/manage/menu/modify");
 		        formObj_modify.attr("method", "post");
-		        formObj_modify.append(str).submit();
+		        formObj_modify.submit();
 			
 		};
 		
@@ -471,7 +474,7 @@ $(document).ready(function(e){
 		$(".bigPictureWrapper_modify").on("click",bigImgAniHandler_modify);
 		$(".btn_modify").on("click", inputHandler_modify);
 		$(".btn_remove").on("click", function(e){
-			if(comfirm("정말로 삭제하시겠습니까?")){
+			if(confirm("정말로 삭제하시겠습니까?")){
 				formObj_modify.attr("method", "post");
 				formObj_modify.attr("action", "/dealight/business/manage/menu/delete").submit();
 			}

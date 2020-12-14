@@ -103,7 +103,7 @@
 			}
 		});
         
-		uploadUL.append(str);
+		uploadUL.html(str);
 	}
     
     /*파일 valid check */

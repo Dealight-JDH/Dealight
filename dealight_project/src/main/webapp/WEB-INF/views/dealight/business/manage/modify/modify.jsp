@@ -297,20 +297,19 @@ let regReplyHandler = function (e) {
 	
 	console.log("revwId : " +revwId +", replyCnts : " + replyCnts);
 	
-	regReply({revwId:revwId,replyCnts:replyCnts});
-	
-	
-	
-	getRevw({revwId:revwId}, revw => {
+	regReply({revwId:revwId,replyCnts:replyCnts}, () => {
 		
-		console.log("revw.replyCnts : " + revw.replyCnts);
-		console.log("revw.replyRegDate : " + revw.replyRegDt);
+				getRevw({revwId:revwId}, revw => {
 		
-		inputReplyCnts.val(revw.replyCnts);
-		inputReplyRegDt.val(revw.replyRegDt);
-		console.log("reg reply complete");
+					console.log("revw.replyCnts : " + revw.replyCnts);
+					console.log("revw.replyRegDate : " + revw.replyRegDt);
+					
+					inputReplyCnts.val(revw.replyCnts);
+					inputReplyRegDt.val(revw.replyRegDt);
+					console.log("reg reply complete");
 		
-	});
+				});
+		});
 	
 };
 

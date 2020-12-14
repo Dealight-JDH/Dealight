@@ -49,6 +49,7 @@
 		    });
 		    
 		    $(".uploadResult ul").html(str);
+		    if(pageType === 'get') $(".btn.btn-warning.btn-circle").css("display","none"); // remove button delete
 		    
 		}); // end json
 		
@@ -82,8 +83,9 @@
 				str += "><div>";
 				str += "<span>" + obj.fileName +"</span>";
 				if(obj.rep==='Y')str += "<img id='upload_img_"+i+"' class='selected_img' src='/display?fileName=" + fileCallPath + "'>";
-				if(obj.rep!=='Y' && i !== 0)str += "<img id='upload_img_"+i+"' src='/display?fileName=" + fileCallPath + "'>";
-				if(obj.rep !=='Y' && i === 0) str += "<img id='upload_img_"+i+"' class='selected_img' src='/display?fileName=" + fileCallPath + "'>";
+				if(obj.rep!=='Y' && i !== 0) str += "<img id='upload_img_"+i+"' src='/display?fileName=" + fileCallPath + "'>";
+				if(obj.rep !=='Y' && i === 0 && $(".selected_img").length >= 1) str += "<img id='upload_img_"+i+"' src='/display?fileName=" + fileCallPath + "'>";
+				if(obj.rep !=='Y' && i === 0 && $(".selected_img").length < 1) str += "<img id='upload_img_"+i+"' class='selected_img' src='/display?fileName=" + fileCallPath + "'>";
 				str += "</div>";
 				str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image'"
 							+" class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
@@ -214,7 +216,16 @@
 				console.log(type);
 		
 				let targetLi = $(this).closest("li");
-				console.log(targetLi);
+				
+				console.log("targetLi : "+targetLi);
+				console.log("targetLi class length : "+targetLi.find(".selected_img").length);
+				
+				let isRefresh = false;
+				
+				if(targetLi.find(".selected_img").length > 0){
+					isRefresh = true;
+				}
+					
 		
 		$.ajax({
 				url : '/deleteFile',
@@ -224,6 +235,9 @@
 				success : function(result) {
 					alert(result);
 					targetLi.remove();
+					$("img").removeClass("selected_img");
+					let selectedImg = $(".uploadResult").find("img")[0];
+					$(selectedImg).addClass("selected_img");
 				}
 				}); // $.ajax
 		};
@@ -286,9 +300,9 @@
 	if(!isModal) $("input[type='file']").change(uploadHandler);
 	if(isModal)  $("#js_upload").change(uploadHandler); 
 	if(pageType === 'modify' || pageType === 'register') $(".uploadResult").on("click", "button", deleteHandler);
-    //$(".uploadResult").on("click", "li", showImageHandler);
-	//$(".bigPictureWrapper").on("click",bigImgAniHandler);
 	if(pageType === 'modify' || pageType === 'register') $(".uploadResult").on("click","img",selRepImgHandler);
+	if(pageType === 'get') $(".uploadResult").on("click", "li", showImageHandler);
+	if(pageType === 'get') $(".bigPictureWrapper").on("click",bigImgAniHandler);
 	
-	
+	console.log("pageType : "+pageType)
 	if(storeId) getImg(storeId);

@@ -218,7 +218,14 @@ let curHour = curToday.getHours(),
     	}
     });
     
-    	$(".alert_closebtn").on("click", e => $(e.target).parent().fadeOut());
+    	$(".alert_closebtn").on("click", e => {
+    		$(e.target).parent().addClass("hide");
+    		$(e.target).parent().removeClass("show");
+    		//setTimeout($(e.target).parent().removeClass("showAlert"),5000); 	
+    	});
+    	
+        
+    	
 
 </script>
 <script>
@@ -752,19 +759,52 @@ let curHour = curToday.getHours(),
             		return;
             	Object.entries(map).forEach(([key,value]) => {
             		console.log("key : "+key+", value : " + value);
-            		strRsvdMap += "<li class='dealight_tooltip'>"+key + " : 예약번호[" + value+"] <span class='dealight_tooltiptext'>"+value+"번호 안녕?</span></li></br>";
+            		strRsvdMap += "<li class='dealight_tooltip'>"+key + " : 예약번호[" + value+"] <span class='dealight_tooltiptext'>"+value+"번호 상세보기</span></li></br>";
             		for(let i = 1; i < 28; i ++){
             			// debug
             			console.log(key+' : '+i+ ' : '+document.querySelector('#slide-'+i+' h6').textContent);
             			console.log(key === document.querySelector('#slide-'+i+' h6').textContent);
             			if(key === document.querySelector('#slide-'+i+' h6').textContent){
-            				document.querySelector('#slide-'+i+' .time_table').innerHTML = "<span class='dealight_tooltiptext'>"+value+" 번호 예약</span>";
-            				document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(251, 255, 41, 0.898)';
+            				let strHtml = "";
+            				let strVal = value.toString();
+            				
+            				console.log("strVal : " + strVal);
+            				let parVal = strVal.split(",");
+            				let ppVal = parVal[parVal.length - 1].split(" ");
+            				parVal[parVal.length-1] = ppVal[0];
+            				
+            				strHtml += "<span class='dealight_tooltiptext'>";
+            				for(let i = 0; i < parVal.length; i++){
+            					if(i !== parVal.length -1) strHtml += "<span class='time_table_rsvd_dtls'>"+parVal[i]+'</span>,';
+            					if(i === parVal.length -1) strHtml += "<span class='time_table_rsvd_dtls'>"+parVal[i]+'</span>';
+            				}
+            				strHtml += " 번호 예약</span>";
+            				document.querySelector('#slide-'+i+' .time_table').innerHTML = strHtml;
+            				document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'yellow';
             			}
             		}
             	})
             	
             	rsvdMapUL.html(strRsvdMap);
+                
+                
+                $(".time_table_rsvd_dtls").on("click", function(e) {
+                	let rsvdId = $(e.target).text();
+                	
+                	console.log("rsvd id : " + rsvdId);
+                	
+                	boardService.getRsvdDtls({rsvdId:rsvdId}, rsvd=>{
+                		console.log("rsvd id : " + rsvd.rsvdId);
+                		let userId = rsvd.userId;
+                		console.log("user id : " + userId);
+                		let storeId = rsvd.storeId;
+                		console.log("store id : " + storeId);
+                		showUserRsvdList(storeId,userId);
+	            		
+	            		modal.css("display","block");
+                	})
+            	
+            	});
             	
             });
             
@@ -1526,12 +1566,7 @@ let curHour = curToday.getHours(),
 	   	 		console.log("sendUser : "+data.sendUser);
 	   	 	    console.log("storeId : "+data.storeId);
 	   	 	    
-				let curNotiCnt = 0;
-	 	    
-		 	    for(let i = 0; i < document.getElementsByClassName("alert").length; i++){
-		 	    	if(document.getElementsByClassName("alert")[i].style.display === 'block')
-		 	    		curNotiCnt += 1;
-		 	    }
+				let curNotiCnt = $(".show").length;
 	 	    
 	 	    	console.log("curNotiCnt : "+curNotiCnt);
 	   	 	    
@@ -1542,7 +1577,9 @@ let curHour = curToday.getHours(),
 		   	 		$('.alert.manage_rsvd .alert_senduser').html(data.sendUser);
 		   	 		$('.alert.manage_rsvd .alert_msg').html(data.msg);
 		   	 		document.getElementsByClassName("manage_rsvd")[0].style.bottom = 15 + curNotiCnt*75;
-		   	 		$('.alert.manage_rsvd').fadeIn();
+		   	 		$('.alert.manage_rsvd').removeClass("hide");
+		   	 		$('.alert.manage_rsvd').addClass("show");
+		   	 		$('.alert.manage_rsvd').addClass("showAlert");
 		   	 		console.log(data.msg);
 				} else if (data.cmd === 'wait'){
 		   	 		showWaitList(storeId);
@@ -1550,9 +1587,17 @@ let curHour = curToday.getHours(),
 		   	 		$('.alert.manage_wait .alert_senduser').html(data.sendUser);
 		   			$('.alert.manage_wait .alert_msg').html(data.msg);
 		   			document.getElementsByClassName("manage_wait")[0].style.bottom = 15 + curNotiCnt*75;
-		   			$('.alert.manage_wait').fadeIn();
+		   			$('.alert.manage_wait').removeClass("hide");
+		   	 		$('.alert.manage_wait').addClass("show");
+		   	 		$('.alert.manage_wait').addClass("showAlert");
 				} else if (data.cmd === 'htdl') {
-					
+		   	 		$('.alert.manage_htdl .alert_tit').html('핫딜 알림');
+		   	 		$('.alert.manage_htdl .alert_senduser').html(data.sendUser);
+		   			$('.alert.manage_htdl .alert_msg').html(data.msg);
+		   			document.getElementsByClassName("manage_htdl")[0].style.bottom = 15 + curNotiCnt*75;
+		   			$('.alert.manage_htdl').removeClass("hide");
+		   	 		$('.alert.manage_htdl').addClass("show");
+		   	 		$('.alert.manage_htdl').addClass("showAlert");
 				}
 	   	 	    
 	   	 	    //let socketAlert = $('#socektAlert');
@@ -1560,7 +1605,7 @@ let curHour = curToday.getHours(),
 	   	 	    //socketAlert.css('display','block');
 			    
 			    // 메시지가 3초 있다가 자동으로 사라지게
-			    /*
+			    /*	
 			    setTimeout( function(){
 			    	
 			    	$socketAlert.css('display','none');
@@ -1706,7 +1751,6 @@ let curHour = curToday.getHours(),
             operForm.submit();
             
         });
-        
         
     });
 

@@ -197,7 +197,7 @@
 			operForm.find("#userId").remove();
 			operForm.attr("action", "/dealight/admin/storemanage")
 			operForm.submit();
-		});
+		});	
 	
 	/* get review img (즉시실행함수)*/
 	    (function(){
