@@ -3,6 +3,7 @@ package com.dealight.service;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +34,21 @@ public class HtdlServiceTests {
 	private HtdlTimeCheckService timeCheck;
 	//TODO 핫딜 서비스 테스트
 	
+	@Test
+	public void testTime() throws ParseException {
+		SimpleDateFormat format = new SimpleDateFormat("yy/MM/dd hh:mm");
+		SimpleDateFormat format1 = new SimpleDateFormat("hh:mm:ss");
+		String endTimeStr = "2020/12/14 13:00";
+		String startTimeStr = "2020/12/14 14:00";
+		Date endTime = format.parse(endTimeStr);
+		Date startTime = format.parse(startTimeStr);
+		
+		long diffSec = Math.abs(endTime.getTime() - startTime.getTime())/1000; 
+		String elapTime = (diffSec / 3600) + ":" + (diffSec % 3600 / 60) + ":" + (diffSec % 3600 % 60);
+		Date result = format1.parse(elapTime);
+		System.out.println(format1.format(result));
+		System.out.println(elapTime);
+	}
 	@Test
 	public void testGetTotal() {
 		String stusCd = "A";

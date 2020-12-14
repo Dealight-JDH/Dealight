@@ -211,8 +211,8 @@ public class HtdlTimeCheckService {
 	}
 	
 	//핫딜 결과 register
-	public void registerHtdlRsltVO(HtdlVO htdlVO, HtdlMapper mapper, Date startTime, Date endTime) {
-		
+	public void registerHtdlRsltVO(HtdlVO htdlVO, HtdlMapper mapper, Date startTime, Date endTime)  {
+		SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss");
 			htdlVO.setStusCd("I");
 			mapper.update(htdlVO);
 			
@@ -226,8 +226,16 @@ public class HtdlTimeCheckService {
 			
 			//경과시간
 			long diffSec = Math.abs(endTime.getTime() - startTime.getTime())/1000; 
-			String elapTime = (diffSec / 3600) + ":" + (diffSec % 3600 / 60) + ":" + (diffSec % 3600 % 60);
+			String elapTimeStr = (diffSec / 3600) + ":" + (diffSec % 3600 / 60) + ":" + (diffSec % 3600 % 60);
+			Date result = null;
+			try {
+				result = format.parse(elapTimeStr);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
+			String elapTime = format.format(result);
 			log.info("elapTm: " + elapTime);
 			log.info("diffSec : "+diffSec);
 			log.info("rsvdRage: " + rsvdRate);

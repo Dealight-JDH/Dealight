@@ -6,9 +6,12 @@ import org.springframework.stereotype.Service;
 
 import com.dealight.domain.BUserVO;
 import com.dealight.domain.Criteria;
+import com.dealight.domain.HtdlVO;
+import com.dealight.domain.HtdlWithStoreDTO;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserVO;
 import com.dealight.mapper.BUserMapper;
+import com.dealight.mapper.HtdlMapper;
 import com.dealight.mapper.StoreMapper;
 import com.dealight.mapper.UserMapper;
 
@@ -23,6 +26,8 @@ public class AdminServiceImpl implements AdminService {
 	private BUserMapper bMapper;
 	private StoreMapper sMapper;
 	private UserMapper	uMapper;
+	private HtdlMapper hMapper;
+	
 	@Override
 	public List<BUserVO> getBUserList() {
 		log.info("getBUserList........................");
@@ -133,6 +138,45 @@ public class AdminServiceImpl implements AdminService {
 	public boolean delete(String userId) {
 		log.info("delete : " + userId);
 		return uMapper.delete(userId)==1;
+	}
+
+	//-----------------핫딜관리----------------
+	@Override
+	public List<HtdlWithStoreDTO> getHtdlList(String stusCd) {
+		// TODO Auto-generated method stub
+		log.info("htdl with store list ....");
+		return hMapper.getHtdlWithStoreList(stusCd);
+	}
+
+	@Override
+	public HtdlVO readHtdl(String stusCd, Long htdlId) {
+		// TODO Auto-generated method stub
+		log.info("htdl get dtls..........");
+		
+		if("I".equalsIgnoreCase(stusCd)){
+			return hMapper.getHtdlDtlsRslt(htdlId);
+		}
+		
+		return hMapper.findHtdlDtlsById(htdlId);
+		
+	}
+
+	@Override
+	public void registerHtdl(HtdlVO htdl) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean modifyHtdl(HtdlVO htdl) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteHtdl(Long htdlId) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

@@ -94,7 +94,7 @@
                         <a class="collapse-item" href="utilities-border.html">사업자매장</a>
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">핫딜관리</h6>
-                        <a class="collapse-item" href="blank.html">핫딜관리</a>
+                        <a class="collapse-item" href="/dealight/admin/htdlmanage/A">핫딜관리</a>
                         <a class="collapse-item" href="404.html">핫딜제안</a>
                     </div>
                 </div>

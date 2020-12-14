@@ -18,11 +18,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dealight.domain.Criteria;
 import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlRsltVO;
 import com.dealight.domain.HtdlVO;
+import com.dealight.domain.HtdlWithStoreDTO;
 
 import lombok.extern.log4j.Log4j;
 
@@ -33,6 +33,33 @@ public class HtdlMapperTests {
 
 	@Autowired
 	private HtdlMapper mapper;
+	
+	
+	@Test
+	public void testHtdlDtlsRslt() {
+	
+		Long htdlId = 185l;
+		
+		HtdlVO vo = mapper.getHtdlDtlsRslt(htdlId);
+		
+		log.info("==========vo: " +  vo);
+	}
+	
+	@Test
+	public void testFindHtdlDtlsById() {
+		Long htdlId = 191l;
+		HtdlVO vo = mapper.findHtdlDtlsById(htdlId);
+		
+		log.info("============htdlVO: " + vo);
+		vo.getHtdlDtls().forEach(dtls -> log.info(dtls));
+	}
+	@Test
+	public void testHtdlWithStore() {
+		
+		List<HtdlWithStoreDTO> lists = mapper.getHtdlWithStoreList("I");
+		
+		lists.forEach(vo -> log.info(vo));
+	}
 	
 	@Test
 	public void testSearch() {
