@@ -132,4 +132,22 @@ public class BUserMapperTests {
     	list.forEach(buser -> log.info(buser));
     	
     }
+    
+    @Test
+    public void findComBrListByUserIdAndStusCdTest1() {
+    	
+    	String userId = "aaaa";
+    	String brJdgStusCd = "C";
+    	
+    	List<BUserVO> list = mapper.findComBrListByUserIdAndStusCd(userId, brJdgStusCd);
+    	
+    	list.stream().forEachOrdered(buser -> {
+    		buser.getUserId().equals(userId);
+    		buser.getBrJdgStusCd().equals(brJdgStusCd);
+    		log.info("buser : " + buser);
+    	});
+    	
+    	log.info(list);
+    	
+    }
 }

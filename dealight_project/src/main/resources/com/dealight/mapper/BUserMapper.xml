@@ -116,5 +116,11 @@
 		select count(*) from tbl_buser
 		<include refid="criteria"></include>
 	</select>
+	
+	<select id="findComBrListByUserIdAndStusCd" resultType="com.dealight.domain.BUserVO">
+		select *
+		from tbl_buser
+		where br_jdg_stus_cd = #{brJdgStusCd} AND user_id = #{userId}
+	</select>
 
 </mapper>

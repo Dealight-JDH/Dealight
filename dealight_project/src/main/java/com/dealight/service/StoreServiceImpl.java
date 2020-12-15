@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.AllStoreVO;
 import com.dealight.domain.BStoreVO;
+import com.dealight.domain.BUserVO;
 import com.dealight.domain.Criteria;
 import com.dealight.domain.MenuVO;
 import com.dealight.domain.RevwVO;
@@ -18,6 +19,7 @@ import com.dealight.domain.StoreOptionVO;
 import com.dealight.domain.StoreVO;
 import com.dealight.mapper.AllStoreMapper;
 import com.dealight.mapper.BStoreMapper;
+import com.dealight.mapper.BUserMapper;
 import com.dealight.mapper.MenuMapper;
 import com.dealight.mapper.NStoreMapper;
 import com.dealight.mapper.RevwMapper;
@@ -54,6 +56,7 @@ public class StoreServiceImpl implements StoreService {
 	private MenuMapper menuMapper;
 	private StoreEvalMapper evalMapper;
 	private StoreOptionMapper optMapper;
+	private BUserMapper buserMapper;
 	
 	private StoreVO setId(StoreVO store) {
 		
@@ -483,6 +486,14 @@ public class StoreServiceImpl implements StoreService {
 		
 		return eMapper.findByStoreID(storeId);
 	}
+
+	@Override
+	public List<BUserVO> comBrListByUserId(String userId) {
+		
+		return buserMapper.findComBrListByUserIdAndStusCd(userId, "C");
+	}
+	
+	
 
 
 //	

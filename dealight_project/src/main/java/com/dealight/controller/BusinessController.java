@@ -1,6 +1,5 @@
 package com.dealight.controller;
 
-import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.BStoreVO;
+import com.dealight.domain.BUserVO;
 import com.dealight.domain.StoreEvalVO;
 import com.dealight.domain.StoreLocVO;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserWithRsvdDTO;
 import com.dealight.domain.WaitVO;
+import com.dealight.service.BizAuthService;
 import com.dealight.service.CallService;
 import com.dealight.service.HtdlService;
 import com.dealight.service.RsvdService;
@@ -49,6 +50,8 @@ public class BusinessController {
 	private CallService callService;
 	
 	private UserService userService;
+	
+	private BizAuthService bizAuthService;
 	
 	// 파일 저장 경로를 지정한다.
 	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05";
@@ -111,20 +114,26 @@ public class BusinessController {
 		
 		List<StoreVO> list = storeService.getStoreListByUserId(userId);
 		
-		log.info("list............................."+list);
 		
+		// 현재 심사 대기중인 사업자등록번호
+		List<BUserVO> buserList = storeService.comBrListByUserId(userId);
+		
+		log.info(".................................buser list : " + buserList);
+		
+		log.info("list............................."+list);
 		// 현재 웨이팅, 현재 예약 상태를 가져온다.
 		// ***쿼리가 너무 많이 생긴다.
+		// 반정규화 고려
 		list.stream().forEach((store)->{
-			long id = store.getStoreId();
+			long id = store.getStoreId(); 	
 			
-			store.getBstore().setRepImg(URLEncoder.encode(store.getBstore().getRepImg()));
 			store.setBstore(storeService.getBStore(id));
 			store.setCurWaitNum(waitService.curStoreWaitList(id, "W").size());
 			store.setCurRsvdNum(rsvdService.readTodayCurRsvdList(id).size());
 		});
 		
 		model.addAttribute("storeList", list);
+		model.addAttribute("buserList", buserList);
 		
 		return "/dealight/business/list";
 	}
