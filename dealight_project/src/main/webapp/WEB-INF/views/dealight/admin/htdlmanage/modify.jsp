@@ -147,14 +147,40 @@
 			
 			
 			<button data-oper="modify" class="btn btn-primary">수정하기</button>
-			<button data-oper="get" class="btn btn-secondary">뒤로가기</button><br>
+			<button data-oper="end" class="btn btn-warning">종료하기</button>
+			<button data-oper="remove" class="btn btn-danger">삭제하기</button>
+			<button data-oper="get" class="btn btn-secondary">뒤로가기</button>
+			<br>
 			
 			<input type="hidden" name="stusCd" value="${htdl.stusCd }">
 			
 		</form>
 		</div>
 		<!-- Default Card Example -->
-
+		
+			<!-- Modal -->
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+					aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-hidden="true">&times;</button>
+								
+							</div>
+							<div class="modal-body">처리가 완료되었습니다</div>
+							<div class="modal-footer">
+							<button type="button" id="btn-yes" class="btn btn-primary">네</button>
+							<button type="button" class="btn btn-default"
+									data-dismiss="modal">아니오</button>
+								
+							</div>
+						</div>
+						<!-- /.modal-content -->
+					</div>
+					<!-- /.modal-dialog -->
+				</div>
+				<!-- /.modal -->
 
 	</div>
 	<!-- Basic Card Example -->
@@ -171,8 +197,6 @@ let size = '<c:out value="${fn:length(htdl.htdlDtls)}"/>';
 //할인 적용 전/후 가격
 let befPrice = $("#befPrice").val();
 $(document).ready(function(){
-	
-	
 	
 	//버튼 클릭시
 	$("button").on("click", function(e){
@@ -191,6 +215,72 @@ $(document).ready(function(){
 			formObj.attr("action", "/dealight/admin/htdlmanage/get");
 			formObj.attr("method", "get");
 			formObj.submit();
+		}else if(operation === 'end'){
+			$(".modal-body").html("핫딜을 종료시키겠습니까");
+			$("#myModal").modal("show");
+			$("#btn-yes").on("click", function(){
+				let htdlIdTag = formObj.find("input[name='htdlId']").clone();
+				let stusCdTag = formObj.find("input[name='stusCd']").clone();
+				
+				formObj.empty();
+				$("#myModal").modal("hide");
+				
+				formObj.append(htdlIdTag);
+				formObj.append(stusCdTag);
+				
+				formObj.attr("action", "/dealight/admin/htdlmanage/end");
+				formObj.attr("method", "post");
+				formObj.submit();
+				
+			})
+		}else if(operation === 'remove'){
+			$(".modal-body").html("정말로 삭제하시겠습니까?");
+			
+			$("#myModal").modal("show");
+			
+			$("#btn-yes").on("click", function(){
+				let htdlIdTag = formObj.find("input[name='htdlId']").clone();
+				let stusCdTag = formObj.find("input[name='stusCd']").clone();
+				formObj.empty();
+				$("#myModal").modal("hide");
+				
+				formObj.append(htdlIdTag);
+				formObj.append(stusCdTag);
+				
+				formObj.attr("action", "/dealight/admin/htdlmanage/remove");
+				formObj.attr("method", "post");
+				formObj.submit();
+				
+				console.log("====");
+			})
+			
+		}else if(operation === 'modify'){
+			
+			if(stusCd != 'P'){			
+				let dcRate = $("input[name='dcRate']");
+				let dcRateValue = dcRate.val();
+				console.log(typeof dcRateValue);
+				dcRateValue = dcRateValue.substring(0, dcRateValue.length-1);
+				dcRateValue /= 100;
+				dcRate.val(dcRateValue);
+				console.log(dcRateValue);
+			}
+				
+				//할인율, 핫딜전가격,차감,현재인원,마감인원 문자열 자르기
+				let befPrice = $("input[name='befPrice']");
+				let befValue = befPrice.val();
+				befValue = befValue.substring(0, befValue.length-1);
+				befPrice.val(befValue);
+				console.log(befValue);
+				
+				let ddct = $("input[name='ddct']");
+				let ddctValue = ddct.val();
+				ddctValue = ddctValue.substring(0, ddctValue.length-1);
+				ddct.val(ddctValue);
+				console.log(ddctValue);
+
+			
+				formObj.submit();
 		}
 		
 		/* for(let i=0; i<size; i++){
@@ -200,31 +290,7 @@ $(document).ready(function(){
 			$("#menuPrice["+i+"]").val(priceValue.substring(0, priceValue.length-1)); */
 		//}
 		
-		if(stusCd != 'P'){			
-			let dcRate = $("input[name='dcRate']");
-			let dcRateValue = dcRate.val();
-			console.log(typeof dcRateValue);
-			dcRateValue = dcRateValue.substring(0, dcRateValue.length-1);
-			dcRateValue /= 100;
-			dcRate.val(dcRateValue);
-			console.log(dcRateValue);
-		}
-			
-			//할인율, 핫딜전가격,차감,현재인원,마감인원 문자열 자르기
-			let befPrice = $("input[name='befPrice']");
-			let befValue = befPrice.val();
-			befValue = befValue.substring(0, befValue.length-1);
-			befPrice.val(befValue);
-			console.log(befValue);
-			
-			let ddct = $("input[name='ddct']");
-			let ddctValue = ddct.val();
-			ddctValue = ddctValue.substring(0, ddctValue.length-1);
-			ddct.val(ddctValue);
-			console.log(ddctValue);
 
-		
-			formObj.submit();
 		
 	});
 	

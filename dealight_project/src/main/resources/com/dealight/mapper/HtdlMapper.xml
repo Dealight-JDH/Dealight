@@ -100,13 +100,13 @@
 		 	select h.htdl_id, h.name, h.dc_rate, h.start_tm, h.end_tm, h.bef_price, h.ddct, h.stus_cd,
 		 	d.htdl_seq, d.menu_name, d.menu_price, r.last_pnum, r.htdl_lmt_pnum, r.rsvd_rate, r.elap_tm, r.regdate
 		 	from tbl_htdl h, tbl_htdl_dtls d, tbl_htdl_rslt r
-		 	where h.htdl_id = #{htdlId} and h.htdl_id = d.htdl_id and h.htdl_id = r.htdl_id
+		 	where h.htdl_id = #{htdlId} and h.htdl_id = d.htdl_id and h.htdl_id = r.htdl_id(+)
 		 	
 		 </select>
 		 
 		 <!-- 핫딜+상세 -->
 		<select id="findHtdlDtlsById" parameterType="long" resultMap="HtdlDetail">
-			SELECT h.htdl_id, h.name, h.dc_rate,h.start_tm,h.end_tm, h.lmt_pnum, h.intro, h.bef_price, h.ddct,
+			SELECT h.htdl_id, h.name, h.store_id, h.dc_rate, h.start_tm, h.end_tm, h.lmt_pnum, h.intro, h.bef_price, h.ddct,
 			h.cur_pnum,h.stus_cd, d.htdl_seq, d.menu_name, d.menu_price
 		      FROM tbl_htdl h, tbl_htdl_dtls d
 			 WHERE h.htdl_id = #{htdlId} and h.htdl_id = d.htdl_id 
@@ -244,6 +244,12 @@
 		<select id="getSeqHtdl" resultType="long">
 			select seq_htdl.currval from dual
 		</select>
+		
+		<update id="updateEndHtdl">
+			update tbl_htdl
+			set stus_cd = #{stusCd}
+			where htdl_id = #{htdlId}
+		</update>
 		
 		<update id="updateHtdl">
 			update tbl_htdl

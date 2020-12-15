@@ -253,6 +253,30 @@ public class AdminController {
 	
 	
 	//--------------------------핫딜관리
+	
+	
+	@PostMapping("/htdlmanage/end")
+	public String endHtdl(Long htdlId, String stusCd, RedirectAttributes rttr) {
+		log.info("end htdl....");
+		
+		service.endHtdl(htdlId, "I");
+		
+		return "redirect:/dealight/admin/htdlmanage/"+stusCd;
+	}
+	@PostMapping("/htdlmanage/remove")
+	public String removeHtdl(Long htdlId, String stusCd, RedirectAttributes rttr){
+		
+		log.info("remove htdl...");
+		
+		log.info("======================htdlId: " + htdlId );
+		log.info("======================stusCd: " + stusCd );
+		
+		service.removeHtdl(htdlId);
+		rttr.addFlashAttribute("result", "핫딜이 삭제되었습니다.");
+		return "redirect:/dealight/admin/htdlmanage/"+stusCd;
+		
+	}
+	
 	@PostMapping("/htdlmanage/modify")
 	public String modifyHtdl(HtdlVO vo, RedirectAttributes rttr) {
 		
@@ -293,6 +317,9 @@ public class AdminController {
 		log.info("========stusCd: " + stusCd);
 		
 			HtdlVO htdlVO = service.readHtdl(stusCd, htdlId);
+			if(htdlVO.getStusCd().equalsIgnoreCase("P")) {
+				model.addAttribute("menuList", service.readMenu(htdlVO.getStoreId())); 
+			}
 			log.info("=====htdlVO : " + htdlVO);
 			log.info("=======time: " + htdlVO.getStartTm()+"," + htdlVO.getEndTm());
 			log.info("=======price: " + htdlVO.getHtdlDtls().get(0).getMenuPrice());

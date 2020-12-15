@@ -186,7 +186,7 @@ public class HtdlServiceImpl implements HtdlService {
 //	}
 
 	@Override
-	public List<StoreMenuVO> findById(Long storeId) {
+	public List<StoreMenuVO> findMenuById(Long storeId) {
 		// TODO Auto-generated method stub
 		log.info("find menus....");
 		return menuMapper.findById(storeId);

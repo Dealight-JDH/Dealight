@@ -21,9 +21,11 @@ public interface HtdlMapper {
 	//핫딜
 	HtdlVO findById(Long htdlId);
 	int updateHtdl(HtdlVO vo);
+	int updateEndHtdl(@Param("htdlId") Long htdlId, @Param("stusCd") String stusCd);
 	List<HtdlVO> getList();
 	List<HtdlVO> getListWithPaging(@Param("stusCd") String stusCd, @Param("hCri") HtdlCriteria hCri);
 	int delete(Long htdlId);
+	
 	int getTotalCount(@Param("stusCd") String stusCd, @Param("hCri") HtdlCriteria hCri);
 	int curPnumUpdate(HtdlVO vo);
 	

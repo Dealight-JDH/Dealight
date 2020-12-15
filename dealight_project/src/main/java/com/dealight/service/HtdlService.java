@@ -15,7 +15,7 @@ import com.dealight.domain.StoreMenuVO;
 public interface HtdlService {
 	
 	//식당 메뉴 조회
-	List<StoreMenuVO> findById(Long storeId); 
+	List<StoreMenuVO> findMenuById(Long storeId); 
 
 	//메뉴에 해당하는 가격 조회
 //	MenuDTO findPriceByName(Long storeId, String name);

@@ -10,6 +10,7 @@ import com.dealight.domain.Criteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlVO;
 import com.dealight.domain.HtdlWithStoreDTO;
+import com.dealight.domain.StoreMenuVO;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserVO;
 import com.dealight.mapper.BStoreMapper;
@@ -19,6 +20,7 @@ import com.dealight.mapper.StoreEvalMapper;
 import com.dealight.mapper.StoreImgMapper;
 import com.dealight.mapper.StoreLocMapper;
 import com.dealight.mapper.StoreMapper;
+import com.dealight.mapper.StoreMenuMapper;
 import com.dealight.mapper.UserMapper;
 
 import lombok.AllArgsConstructor;
@@ -34,7 +36,7 @@ public class AdminServiceImpl implements AdminService {
 	private UserMapper	uMapper;
 
 	private HtdlMapper hMapper;
-
+	private StoreMenuMapper mnMapper;
 	/* 동인 추가 */
 	private StoreLocMapper lMapper;
 	private StoreEvalMapper eMapper;
@@ -210,10 +212,27 @@ public class AdminServiceImpl implements AdminService {
 		return false;
 	}
 
+
 	@Override
-	public boolean deleteHtdl(Long htdlId) {
+	public boolean removeHtdl(Long htdlId) {
 		// TODO Auto-generated method stub
-		return false;
+		log.info("remove htdl...");
+		
+		return hMapper.delete(htdlId) == 1;
+	}
+
+	@Override
+	public boolean endHtdl(Long htdlId, String stusCd) {
+		// TODO Auto-generated method stub
+		log.info("end htdl...");
+		return hMapper.updateEndHtdl(htdlId, stusCd) == 1;
+	}
+
+	@Override
+	public List<StoreMenuVO> readMenu(Long storeId) {
+		// TODO Auto-generated method stub
+		log.info("find menu list.....");
+		return mnMapper.findById(storeId);
 	}
 
 }
