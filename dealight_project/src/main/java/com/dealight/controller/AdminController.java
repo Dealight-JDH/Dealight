@@ -227,8 +227,8 @@ public class AdminController {
 	}
 	
 
-	@GetMapping("/htdlmanage/get")
-	public String getHtdl(String stusCd, Long htdlId, Model model) {
+	@GetMapping({"/htdlmanage/get", "/htdlmanage/modify"})
+	public void getHtdl(String stusCd, Long htdlId, Model model) {
 		log.info("========stusCd: " + stusCd);
 		
 			HtdlVO htdlVO = service.readHtdl(stusCd, htdlId);
@@ -238,7 +238,7 @@ public class AdminController {
 			
 			model.addAttribute("htdl", htdlVO);
 			
-		return "/dealight/admin/htdlmanage/get";
+		
 	}
 	
 	
