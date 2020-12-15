@@ -14,30 +14,7 @@
 <body>
 
  <main id="main-container" class="flex-column">
-        <nav class="sidebar">
-            <div class="sidebar-header">
-                <div style="margin-left: 10px">
-                    고객센터
-                </div>
-            </div>
-            <div class="sidebar-body flex-column">
-
-                <div class="menu select">
-                    <div class="menu-child">
-                        FAQ
-                    </div>
-                    
-                </div>
-                <div class="menu">
-                    <div class="menu-child">
-                        QnA
-                    </div>
-                </div>
-            </div>
-        </nav>
-        <script type="text/javascript">
-        
-        </script>
+       <%@include file="/WEB-INF/views/includes/custservicemenu.jsp" %>
 
         <div class="box-container flex-column">
             <div class="board-header flex-column">

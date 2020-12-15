@@ -3,7 +3,7 @@
 	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!-- 동인, 현중 -->
+<!-- 현중 -->
 
 <mapper namespace="com.dealight.mapper.FaqMapper">
 
@@ -23,7 +23,7 @@
 	
 	<sql id="criteria">
 		<trim suffix="and">
-		<if test="(filterType != null) and !(filterType eq 'A'.toString())">
+		<if test='(filterType != null) and (filterType != "") and !(filterType eq "A".toString())'>
 			q_cls_cd = #{filterType}
 		</if>
 		</trim>

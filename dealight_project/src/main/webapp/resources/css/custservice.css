@@ -35,9 +35,9 @@
         }
         .board-body{
             width: 100%;
-            justify-content: center;
             align-items: center; 
             margin-bottom: 30px;
+            min-height:400px;
         }
 
         .contents-wrapper{
@@ -45,13 +45,12 @@
             align-content: center; 
             padding-bottom: 5px;
             width: 100%;
-            min-height: 400px;
+            min-height:100px;
 
         }
 
         .content-wrapper{
             border-radius: 30px;
-            background-color: #FFCBCB;
             display:flex;
             justify-content: center;
             align-content: center; 
@@ -152,15 +151,14 @@
 
         .faq-contents{
             display:flex;
-            justify-content: center;
-            align-content: center; 
+            align-items: baseline;
             min-width: 500px;
             max-width: 700px;
-            height:auto;
             margin-top: 5px;
             border : none;
             resize: none;
             background-color: cornsilk;
+            min-height: 60px;
         }
         textarea:focus {
     		outline: none;
