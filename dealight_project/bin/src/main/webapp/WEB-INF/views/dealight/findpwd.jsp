@@ -3,7 +3,7 @@
    <%@include file="../includes/loginmodalHeader.jsp" %>
     <%@include file="../includes/mainMenu.jsp" %>
     <%@include file="../includes/loginModal.jsp" %>
-<!-- 현수현수현수 -->
+<!--  -->
 <!DOCTYPE html>
 
 <html>

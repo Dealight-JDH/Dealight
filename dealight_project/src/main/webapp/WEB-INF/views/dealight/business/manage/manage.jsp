@@ -1592,12 +1592,15 @@ let curHour = curToday.getHours(),
 		   	 		$('.alert.manage_wait').addClass("showAlert");
 				} else if (data.cmd === 'htdl') {
 		   	 		$('.alert.manage_htdl .alert_tit').html('핫딜 알림');
-		   	 		$('.alert.manage_htdl .alert_senduser').html(data.sendUser);
+		   	 		//$('.alert.manage_htdl .alert_senduser').html(data.sendUser);
 		   			$('.alert.manage_htdl .alert_msg').html(data.msg);
 		   			document.getElementsByClassName("manage_htdl")[0].style.bottom = 15 + curNotiCnt*75;
 		   			$('.alert.manage_htdl').removeClass("hide");
 		   	 		$('.alert.manage_htdl').addClass("show");
 		   	 		$('.alert.manage_htdl').addClass("showAlert");
+		   	 		
+		   	 		// 핫딜 넘어오는 데이터 storeid, start tm, end tm, htdl name, 
+		   	 		// 
 				}
 	   	 	    
 	   	 	    //let socketAlert = $('#socektAlert');

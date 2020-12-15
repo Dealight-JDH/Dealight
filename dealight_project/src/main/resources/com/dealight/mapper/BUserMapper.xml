@@ -99,7 +99,7 @@
 		from
 		    (
 		      select 
-		          rownum rn, br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, rep_name,regdate, updatedate
+		          rownum rn, br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, rep_name, regdate, updatedate
 		      from ( select /*+INDEX_DESC(tbl_buser tbl_buser_pk) */
 		                br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, rep_name, regdate,updatedate
 		             from tbl_buser
@@ -115,6 +115,12 @@
 	<select id="getTotalCount" resultType="int">
 		select count(*) from tbl_buser
 		<include refid="criteria"></include>
+	</select>
+	
+	<select id="findComBrListByUserIdAndStusCd" resultType="com.dealight.domain.BUserVO">
+		select *
+		from tbl_buser
+		where br_jdg_stus_cd = #{brJdgStusCd} AND user_id = #{userId}
 	</select>
 
 </mapper>

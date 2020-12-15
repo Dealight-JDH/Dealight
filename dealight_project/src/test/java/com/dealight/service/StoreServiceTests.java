@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.AllStoreVO;
 import com.dealight.domain.BStoreVO;
+import com.dealight.domain.BUserVO;
 import com.dealight.domain.MenuVO;
 import com.dealight.domain.StoreEvalVO;
 import com.dealight.domain.StoreImgVO;
@@ -434,6 +435,22 @@ public class StoreServiceTests {
 		assertNotNull(store);
 		assertNotNull(store.getLoc());
 		assertNotNull(store.getBstore());
+		
+	}
+	
+	@Test
+	public void findComBrListByUserIdAndStusCdTest1() {
+		
+    	String userId = "aaaa";
+    	
+    	List<BUserVO> list = service.comBrListByUserId(userId);
+    	
+    	list.stream().forEachOrdered(buser -> {
+    		buser.getUserId().equals(userId);
+    		log.info("buser : " + buser);
+    	});
+    	
+    	log.info(list);
 		
 	}
 	
