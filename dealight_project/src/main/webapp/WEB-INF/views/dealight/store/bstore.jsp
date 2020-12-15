@@ -47,7 +47,6 @@
 					<c:when test="${store.bstore.seatStusCd ne 'B'}">
 						<span style="border-style:solid; padding:5px; color:red;" >영업중</span>
 					</c:when>
-					
 				</c:choose>
 				<br>
 				<!-- 웨이팅중인 고객수 -->
@@ -250,118 +249,102 @@
 
 	<!--리뷰 -->
 	<script type="text/javascript">
-		$(document)
-				.ready(
-						function() {
-							
-							
-							
-							let storeIdValue = '<c:out value="${store.storeId}"/>';
-							let revwUL = $(".revwColumn");
-							showList(1);
+		$(document).ready(function() {
+			let storeIdValue = '<c:out value="${store.storeId}"/>';
+			let revwUL = $(".revwColumn");
+			showList(1);
 
-							let pageNum = 1;
-							let revwPageFooter = $(".revwFooter");
+			let pageNum = 1;
+			let revwPageFooter = $(".revwFooter");
 
-							function showRevwPage(revwCnt) {
-								let endNum = Math.ceil(pageNum / 5.0) * 5;
-								let startNum = endNum - 4;
+			function showRevwPage(revwCnt) {
+				let endNum = Math.ceil(pageNum / 5.0) * 5;
+				let startNum = endNum - 4;
 
-								let prev = startNum != 1;
-								let next = false;
+				let prev = startNum != 1;
+				let next = false;
 
-								if (endNum * 4 >= revwCnt) {
-									endNum = Math.ceil(revwCnt / 4.0);
-								}
-								if (endNum * 4 < revwCnt) {
-									next = true;
-								}
-								let str = "<ul>";
+				if (endNum * 4 >= revwCnt) {
+					endNum = Math.ceil(revwCnt / 4.0);
+				}
+				if (endNum * 4 < revwCnt) {
+					next = true;
+				}
+				
+				let str = "<ul>";
 
-								if (prev) {
-									str += "<li><a href='" + (startNum - 1)
-											+ "'>Previous</a></li>";
-								}
+				if (prev) {
+					str += "<li><a href='" + (startNum - 1)
+							+ "'>Previous</a></li>";
+				}
 
-								for (let i = startNum; i <= endNum; i++) {
-									/* var active= pageNum ==i?"active":""; */
-									str += "<li><a href='"+i+"'>" + i
-											+ "</a></li>";
-								}
-								if (next) {
-									str += "<li><a href='" + (endNum + 1)
-											+ "'>Next</a></li>";
-								}
-								str += "</ul></div>";
-								console.log(str);
-								revwPageFooter.html(str);
+				for (let i = startNum; i <= endNum; i++) {
+					/* var active= pageNum ==i?"active":""; */
+					str += "<li><a href='"+i+"'>" + i
+							+ "</a></li>";
+				}
+				if (next) {
+					str += "<li><a href='" + (endNum + 1)
+							+ "'>Next</a></li>";
+				}
+				str += "</ul></div>";
+				console.log(str);
+				revwPageFooter.html(str);
 
-							}
+			}
 
-							function showList(page) {
-								console.log("show list" + page);
-								revwService
-										.getList(
-												{
-													storeId : storeIdValue,
-													page : page || 1
-												},
-												function(revwCnt, list) {
-													console.log("revwCnt: "
-															+ revwCnt);
-													console
-															.log("list: "
-																	+ list);
-													console.log(list);
-													if (page == -1) {
-														pageNum = Math
-																.ceil(revwCnt / 4.0);
-														showList(pageNum);
-														return;
-													}
+			function showList(page) {
+				console.log("show list" + page);
+				revwService.getList(
+								{
+									storeId : storeIdValue,
+									page : page || 1
+								},
+								function(revwCnt, list) {
+									console.log("revwCnt: "+ revwCnt);
+									console.log("list: "+ list);
+									console.log(list);
+									if (page == -1) {
+										pageNum = Math.ceil(revwCnt / 4.0);
+										showList(pageNum);
+										return;
+									}
 
-													let str = "";
-													if (list == null
-															|| list.length == 0) {
-														return;
-													}
-													for (let i = 0, len = list.length || 0; i < len; i++) {
-														str += "<div class='revwCon'><strong>"
-																+ list[i].userId
-																+ "</strong>";
-														str += " <strong>"
-																+ list[i].rating
-																+ "점</strong>"
-														str += " <small class='reg'>"
-																+ list[i].regDt
-																+ "</small>";
-														str += "<p>"
-																+ list[i].cnts;
-														if(list[i].replyCnts !=null){
-														str += "<div class='reply'>"+ list[i].replyCnts+"</div>";
-														}	
-														str	+= "</p></div></div></div>";
-													}
-													revwUL.html(str);
-													showRevwPage(revwCnt);
-												});
+									let str = "";
+									if (list == null || list.length == 0) {
+										return;
+									}
+									for (let i = 0, len = list.length || 0; i < len; i++) {
+										str += "<div class='revwCon'><strong>"+ list[i].userId+ "</strong>";
+										str += " <strong>"+ list[i].rating+ "점</strong>"
+										str += " <small class='reg'>"+ list[i].regDt+ "</small>";
+										str += "<p>"+ list[i].cnts;
+										
+										if(list[i].replyCnts !=null){
+											str += "<div class='reply'>"+ list[i].replyCnts+"</div>";
+										}	
+										str	+= "</p></div></div></div>";
+									}
+									revwUL.html(str);
+									showRevwPage(revwCnt);
+								});
 
-							}
-							revwPageFooter.on("click", "li a", function(e) {
-								e.preventDefault();
-								console.log("page click");
+			}
+			revwPageFooter.on("click", "li a", function(e) {
+				e.preventDefault();
+				console.log("page click");
 
-								let targetPageNum = $(this).attr("href");
+				let targetPageNum = $(this).attr("href");
 
-								console.log("targetPageNum :" + targetPageNum);
+				console.log("targetPageNum :" + targetPageNum);
 
-								pageNum = targetPageNum;
+				pageNum = targetPageNum;
 
-								showList(pageNum);
+				showList(pageNum);
 
-							});
+			});
 
-						});
+		});
 	</script>
 	
 <!--메뉴선택 -->
@@ -375,14 +358,14 @@
 	//jstl로 전체 상품 목록 미리 세팅<select id="menu" onchange="mySelect()" >
 
 	<c:forEach items="${store.bstore.menus }" var="menus">
-	menus.arrAllMenus.push({
-		menusId : "${menus.menuSeq}",
-		menusUnprc : "${menus.price}",
-		menusNm : "${menus.name }",
-		cnt : 0
-	});
+		menus.arrAllMenus.push({
+			menusId : "${menus.menuSeq}",
+			menusUnprc : "${menus.price}",
+			menusNm : "${menus.name }",
+			cnt : 0
+		});
 	</c:forEach>
-	
+	//종우 ------------------------
 	let paramHtdlId = '<c:out value="${htdlId}"/>' || null;
 	let paramUserId = '<c:out value="${userId}"/>' || null;
 	let storeId = '<c:out value="${store.storeId}"/>';
@@ -390,43 +373,39 @@
 	let isHtdlPayHistory = false;//핫딜을 구매했는지 체크
 
 	$(document).ready(function() {
-
-
 		console.log("hotdeal htdlId.........."+ paramHtdlId);
 
 		if(paramHtdlId != null){
 			
-		//핫딜 페이지에서 넘어온 핫딜 ajax
-		getHtdl({htdlId : paramHtdlId},function(result){
+			//핫딜 페이지에서 넘어온 핫딜 ajax
+			getHtdl({htdlId : paramHtdlId},function(result){
+												console.log(result);
+												if(result != null){
+													let menusNm = [];
+													
+													for(let i=0,len=result.htdlDtls.length; i<len; i++){
+														menusNm.push(result.htdlDtls[i].menuName);
+													}
+													let menusNmStr = menusNm.join(",");
+													
+													//선택 메뉴 배열에 담기
+													menus.arrSelMenus.push({
+														htdlId : result.htdlId+"htdl",
+														menusNm : menusNmStr,
+														menusUnprc : result.befPrice - result.ddct,
+														cnt : 1
+													});
+													
+													showHtdlForm(result);
+													//핫딜 상품 삭제
+													$("#htdlRemoveBtn").on("click", function(e){
+														console.log("click");
+														$("#div_htdl"+paramHtdlId).remove();
+														menus.htdlDeSelect(result.htdlId+"htdl");
+													});
+												}
 			
-			console.log(result);
-			
-			if(result != null){
-				let menusNm = [];
-				
-				for(let i=0,len=result.htdlDtls.length; i<len; i++){
-					menusNm.push(result.htdlDtls[i].menuName);
-				}
-				let menusNmStr = menusNm.join(",");
-				
-				//선택 메뉴 배열에 담기
-				menus.arrSelMenus.push({
-					htdlId : result.htdlId+"htdl",
-					menusNm : menusNmStr,
-					menusUnprc : result.befPrice - result.ddct,
-					cnt : 1
-				});
-				
-				showHtdlForm(result);
-				//핫딜 상품 삭제
-				$("#htdlRemoveBtn").on("click", function(e){
-					console.log("click");
-					$("#div_htdl"+paramHtdlId).remove();
-					menus.htdlDeSelect(result.htdlId+"htdl");
-				});
-			}
-			
-		  });
+		  									});
 		}
 	});
 	
@@ -538,6 +517,7 @@
 				}
 			});
 	}
+	//=================================================
 	
 	function Menus() {
 
@@ -596,7 +576,7 @@
 			}
 			p.afterProc();
 		}
-		
+		//종우----------
 		//핫딜 상품 제거 시
 		this.htdlDeSelect = function(trgtMenusId) {
 
@@ -610,6 +590,7 @@
 			}
 			p.afterProc();
 		}
+		//--------------
 
 		this.appendChoiceDiv = function(prmtObj) {
 
@@ -699,6 +680,8 @@
 	$('#btnAddMenus').on('click', function() {
 		menus.select($('#menu option:selected').val());
 	});
+	
+	//종우
 	const reserveForm = $("#reserveForm");
 	const reserve = $("#reserve");
 	const pnum = $("#pnum");
@@ -726,9 +709,6 @@
 							console.log("reserve avail check: " + data);
 							
 							RsvdAvailChecked = data;
-							
-							
-							
 						});
 						
 						
