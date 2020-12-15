@@ -43,5 +43,4 @@ public interface BUserMapper {
 	public List<BUserVO> findComBrListByUserIdAndStusCd(@Param("userId")String userId, @Param("brJdgStusCd") String brJdgStusCd);
 	
 	
-
 }

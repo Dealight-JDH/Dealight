@@ -17,7 +17,7 @@
 			<h6 class="m-0 font-weight-bold text-primary">BrnoManage</h6>
 		</div>
 		<div class="card-body">
-			<form action="/dealight/mypage/bizauth/modify"  method="post">
+			<form action="/dealight/admin/brnomanage/modify"  method="post">
 				<input type="hidden" name="pageNum" value="<c:out value='${cri.pageNum }'/>">
 				<input type="hidden" name="amount" value="<c:out value='${cri.amount }'/>">
 				<input type="hidden" name="type" value="<c:out value='${cri.type }'/>">
@@ -54,7 +54,7 @@
 				
 				<div class="card mb-4">
 					<div class="card-header">심사상태</div>
-					<select name="type" class="card-body">
+					<select name="type" class="card-body" >
       					<option value="P"
       						<c:out value="${buser.brJdgStusCd eq 'P'?'selected':'' }"/>>
       					진행중
@@ -69,13 +69,15 @@
       					</option>
       				</select>
 				</div>
-				<div class="card mb-4">
-					<div class="card-header">탈락사유</div>
-					<textarea class="card-body"rows="3" name='' > 
-						<c:out value="${board.content }"/>
-					</textarea>
+				<div class="card mb-4" id="reason">
+					<c:if test="${buser.brJdgStusCd eq 'F'}">
+						<div class="card-header">탈락사유</div>
+						<textarea class="card-body"rows="3" name='' > 
+							<c:out value="${buser.reason }"/>
+						</textarea>
+					</c:if>
 				</div>
-				
+				<input type="hidden" name="brPhotoSrc" value="${buser.brPhotoSrc }" readonly="readonly">
 				
 
 			</form>
@@ -110,7 +112,18 @@
 			
 			formObj.submit();
 		});
-	
+		
+		const reason = $("#reason");
+		$("select[name='type']").on("change",function(){
+			if($(this).val()=='F'){
+				let str = "";
+				str +='<div class="card-header">탈락사유</div>';
+				str +='<textarea class="card-body"rows="3" name="reason"></textarea>';
+				reason.html(str);
+			}else{
+				reason.empty();
+			}
+		})
 	}
 </script>
 <%@include file="/WEB-INF/views/includes/adminFooter.jsp"%>
