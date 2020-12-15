@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.dealight.domain.AllStoreVO;
 import com.dealight.domain.BStoreVO;
+import com.dealight.domain.BUserVO;
 import com.dealight.domain.Criteria;
 import com.dealight.domain.MenuVO;
 import com.dealight.domain.StoreEvalVO;
@@ -92,5 +93,8 @@ public interface StoreService {
 	int getTotalCnt(Criteria cri);
 	
 	StoreEvalVO getEval(Long storeId);
+	
+	
+	List<BUserVO> comBrListByUserId(String userId);
 	
 }

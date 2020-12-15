@@ -24,6 +24,21 @@
 <h1>Business List Page</h1>
 
 <h2>${userId}</h2>
+<c:if test="${not empty buserList}">
+	<div class="buser_wrapper">
+		<h5>사업자 상세 일련번호 : ${brSeq}</h5>
+		<h5>회원 아이디 : ${userId}</h5>
+		<h5>매장 번호 : ${storeId}</h5>
+		<h5>사업자등록번호 : ${brno}</h5>
+		<h5>사업자등록증사본사진 : ${brPhotoSrc}</h5>
+		<h5>사업자 등록 심사 상태 코드 : ${brJdgStusCd}</h5>
+		<h5>매장명 : ${storeNm}</h5>
+		<h5>휴대전화번호 : ${telno}</h5>
+		<h5>매장전화번호 : ${storeTelno}</h5>
+		<h5>대표자명 : ${repName}</h5>
+	</div>
+</c:if>
+
 
 <h2><a href="/dealight/business/register">등록하기</a></h2>
 	<c:if test="${empty storeList}">

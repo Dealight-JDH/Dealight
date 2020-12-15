@@ -3,11 +3,11 @@ package com.dealight.domain;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import org.springframework.lang.Nullable;
 
 import lombok.AllArgsConstructor;
@@ -49,6 +49,8 @@ public class HtdlVO {
 	@NotEmpty
 	@Length(min = 1, max = 20)
 	private String endTm;
+	
+	private String time;
 	// 핫딜마감인원
 	@NotNull
 	private int lmtPnum;
@@ -77,8 +79,14 @@ public class HtdlVO {
 	
 	@NotNull
 	private String brch;
+
+	//핫딜 결과
+	private HtdlRsltVO htdlRslt;
+	
 	// 핫딜 상세
 	private List<HtdlDtlsVO> htdlDtls;
+	
+	
 	// 매장 평가
 	private StoreEvalVO storeEval;
 }
