@@ -27,6 +27,7 @@
 		</div>
 		<div class="card-body">
 			
+			<form id="postForm" action="/dealight/admin/htdlmanage/modify" method="post">
 			<div class="card mb-4">
 				<div class="card-header">핫딜번호</div>
 				<input type="text" class="card-body" name="htdlId" value="${htdl.htdlId }" readonly="readonly">
@@ -52,6 +53,7 @@
 				</c:if>
 				
 				<c:if test="${htdl.stusCd ne 'P' }">
+					<%-- <input type="text" class="card-body" name="dcRate" value='<fmt:formatNumber value="${htdl.dcRate}" type='percent'/>' readonly="readonly"> --%>
 					<input type="text" class="card-body" name="dcRate" value='<fmt:formatNumber value="${htdl.dcRate}" type='percent'/>' readonly="readonly">
 				</c:if>
 			
@@ -63,11 +65,11 @@
 			</div>
 			<div class="card mb-4">
 				<div class="card-header">할인 차감 가격</div>
-				<input type="text" class="card-body" id="ddct" name="ddct" value="${htdl.ddct }원" readonly="readonly">
+				<input type="text" class="card-body" id="ddct" name="ddct" value="${htdl.ddct}원" readonly="readonly">
 			</div>
 			<div class="card mb-4">
 				<div class="card-header">할인 후 가격</div>
-				<input type="text" class="card-body" id="afterPrice" name="afterPrice" value="${htdl.befPrice - htdl.ddct }원" readonly="readonly">
+				<input type="text" class="card-body" id="afterPrice"  value="${htdl.befPrice - htdl.ddct }원" readonly="readonly">
 			</div>
 			<div class="card mb-4">
 				<div class="card-header">핫딜시간</div>
@@ -88,7 +90,7 @@
 			<div class="card mb-4">
 				<div class="card-header">현재인원</div>
 				<div class="card-body">
-				<input type="text" name="curPnum" style="width: 50px" value="${htdl.curPnum }" readonly="readonly">명
+				<input type="text" style="width: 50px" value="${htdl.curPnum }명" readonly="readonly">
 				</div>
 			</div>
 			</c:if>
@@ -104,8 +106,9 @@
 			
 			<div class="card mb-4">
 				<div class="card-header">마감인원</div>
+				
 				<div class="card-body">
-				<input type="number" name="lmtPnum" style="width: 50px" min="0" value="${htdl.htdlRslt.htdlLmtPnum }">명
+				<input type="number" name="lmtPnum" style="width: 50px" min="0" value="${htdl.lmtPnum }명">
 				</div>
 			</div>
 			
@@ -129,27 +132,26 @@
 			
 			<div class="card mb-4">
 				<div class="card-header">소개</div>
-				<input type="text" class="card-body" name="htdlIntro" value="${htdl.intro }">
+				<input type="text" class="card-body" name="intro" value="${htdl.intro }">
 			</div>
 			<div class="card mb-4">
 				<div class="card-header">핫딜 메뉴</div>
-				<c:forEach items="${htdl.htdlDtls }" var="htdlDtls">
-					<input type="text" class="card-body" name="menuName" value="${htdlDtls.menuName }" readonly="readonly">
-					<input type="text" class="card-body" name="menuPrice" value="${htdlDtls.menuPrice }원" readonly="readonly">
+				
+				<c:forEach items="${htdl.htdlDtls }" var="htdlDtls" varStatus="status">
+					<input type="hidden" name="htdlDtls[${status.index}].htdlSeq" value="${htdlDtls.htdlSeq }">
+					<input type="text" class="card-body" name="htdlDtls[${status.index}].menuName" value="${htdlDtls.menuName }" readonly="readonly">
+					<input type="text" class="card-body" id="menuPrice[${status.index }]" name="htdlDtls[${status.index}].menuPrice" value="${htdlDtls.menuPrice }" readonly="readonly">
 				</c:forEach>
 			</div>
 			
 			
 			
+			<button data-oper="modify" class="btn btn-primary">수정하기</button>
+			<button data-oper="get" class="btn btn-secondary">뒤로가기</button><br>
 			
-			<button data-oper="modify" class="btn btn-secondary">수정하기</button>
-			<button data-oper="list" class="btn btn-secondary">목록으로</button><br>
+			<input type="hidden" name="stusCd" value="${htdl.stusCd }">
 			
-
-			<form action="#" id="operForm" method="get">
-				<input type="hidden" name="storeId" value="${store.storeId }">
-				<input type="hidden" name="clsCd" value="${store.clsCd }">
-			</form>
+		</form>
 		</div>
 		<!-- Default Card Example -->
 
@@ -163,9 +165,68 @@
 
 <script>
 
+let formObj = $("#postForm");
+let stusCd = "<c:out value='${htdl.stusCd}'/>";
+let size = '<c:out value="${fn:length(htdl.htdlDtls)}"/>';
 //할인 적용 전/후 가격
 let befPrice = $("#befPrice").val();
 $(document).ready(function(){
+	
+	
+	
+	//버튼 클릭시
+	$("button").on("click", function(e){
+		e.preventDefault();
+		let operation = $(this).data("oper");
+		
+		if(operation === 'get'){
+			
+			let htdlIdTag = formObj.find("input[name='htdlId']").clone();
+			let stusCdTag = formObj.find("input[name='stusCd']").clone();
+			formObj.empty();
+			
+			formObj.append(htdlIdTag);
+			formObj.append(stusCdTag);
+			
+			formObj.attr("action", "/dealight/admin/htdlmanage/get");
+			formObj.attr("method", "get");
+			formObj.submit();
+		}
+		
+		/* for(let i=0; i<size; i++){
+			console.log(i);
+			/* let priceValue = $("#menuPrice["+i+"]").val();
+			console.log("======="+ priceValue);
+			$("#menuPrice["+i+"]").val(priceValue.substring(0, priceValue.length-1)); */
+		//}
+		
+		if(stusCd != 'P'){			
+			let dcRate = $("input[name='dcRate']");
+			let dcRateValue = dcRate.val();
+			console.log(typeof dcRateValue);
+			dcRateValue = dcRateValue.substring(0, dcRateValue.length-1);
+			dcRateValue /= 100;
+			dcRate.val(dcRateValue);
+			console.log(dcRateValue);
+		}
+			
+			//할인율, 핫딜전가격,차감,현재인원,마감인원 문자열 자르기
+			let befPrice = $("input[name='befPrice']");
+			let befValue = befPrice.val();
+			befValue = befValue.substring(0, befValue.length-1);
+			befPrice.val(befValue);
+			console.log(befValue);
+			
+			let ddct = $("input[name='ddct']");
+			let ddctValue = ddct.val();
+			ddctValue = ddctValue.substring(0, ddctValue.length-1);
+			ddct.val(ddctValue);
+			console.log(ddctValue);
+
+		
+			formObj.submit();
+		
+	});
 	
 	//할인율 변화
 	$("#dcRate").change(function(){
@@ -191,8 +252,8 @@ function getAfterPrice(total, rate) {
 	console.log("ddct: " + ddct);
 	console.log("price: " + price);
 	
-	$("#ddct").val(ddct);
-	$("#afterPrice").val(price);
+	$("#ddct").val(ddct+"원");
+	$("#afterPrice").val(price+"원");
 }
 
 </script>

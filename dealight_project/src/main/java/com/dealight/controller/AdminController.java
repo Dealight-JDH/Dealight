@@ -1,8 +1,9 @@
 package com.dealight.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,14 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.AdminPageDTO;
-import com.dealight.domain.BStoreVO;
 import com.dealight.domain.BUserVO;
 import com.dealight.domain.Criteria;
-import com.dealight.domain.RsvdVO;
-import com.dealight.domain.StoreEvalVO;
-import com.dealight.domain.StoreImgVO;
-import com.dealight.domain.StoreLocVO;
 import com.dealight.domain.HtdlVO;
+import com.dealight.domain.StoreImgVO;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserVO;
 import com.dealight.service.AdminService;
@@ -256,6 +253,29 @@ public class AdminController {
 	
 	
 	//--------------------------핫딜관리
+	@PostMapping("/htdlmanage/modify")
+	public String modifyHtdl(HtdlVO vo, RedirectAttributes rttr) {
+		
+		log.info("modify.......");
+		log.info("==========request: " + vo);
+		
+		if(vo.getStusCd().equalsIgnoreCase("p")) {
+			//현재 날짜
+			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+			Date date = new Date();
+			String sysdate = format.format(date);
+			vo.setStartTm(sysdate+" " + vo.getStartTm());
+			vo.setEndTm(sysdate+" " + vo.getEndTm());
+			vo.setDcRate(vo.getDcRate()/100.0);
+		}
+		
+		service.modifyHtdl(vo);
+		rttr.addFlashAttribute("result", "success");
+		
+		return "redirect:/dealight/admin/htdlmanage/get?htdlId="+vo.getHtdlId()+"&stusCd="+vo.getStusCd();
+		
+	}
+	
 	@GetMapping("/htdlmanage/{stusCd}")
 	public String htdlList(@PathVariable String stusCd, Model model) {
 		

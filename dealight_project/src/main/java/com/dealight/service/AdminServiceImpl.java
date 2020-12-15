@@ -7,19 +7,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.BUserVO;
 import com.dealight.domain.Criteria;
+import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlVO;
 import com.dealight.domain.HtdlWithStoreDTO;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserVO;
 import com.dealight.mapper.BStoreMapper;
 import com.dealight.mapper.BUserMapper;
-
 import com.dealight.mapper.HtdlMapper;
-
 import com.dealight.mapper.StoreEvalMapper;
 import com.dealight.mapper.StoreImgMapper;
 import com.dealight.mapper.StoreLocMapper;
-
 import com.dealight.mapper.StoreMapper;
 import com.dealight.mapper.UserMapper;
 
@@ -193,9 +191,22 @@ public class AdminServiceImpl implements AdminService {
 		
 	}
 
+	@Transactional
 	@Override
 	public boolean modifyHtdl(HtdlVO htdl) {
 		// TODO Auto-generated method stub
+		
+		log.info("htdl modify....");
+		List<HtdlDtlsVO> dtlsList = htdl.getHtdlDtls();
+		
+		//핫딜vo수정
+		hMapper.updateHtdl(htdl);
+		
+		//핫딜 상세 수정
+		for(HtdlDtlsVO vo : dtlsList) {
+			return hMapper.updateDtls(vo) == dtlsList.size();			
+		}
+		
 		return false;
 	}
 

@@ -18,8 +18,9 @@ import com.dealight.domain.HtdlWithStoreDTO;
 //jongwoo
 
 public interface HtdlMapper {
-
+	//핫딜
 	HtdlVO findById(Long htdlId);
+	int updateHtdl(HtdlVO vo);
 	List<HtdlVO> getList();
 	List<HtdlVO> getListWithPaging(@Param("stusCd") String stusCd, @Param("hCri") HtdlCriteria hCri);
 	int delete(Long htdlId);

@@ -86,9 +86,19 @@
 			
 			<div class="card mb-4">
 				<div class="card-header">마감인원</div>
-				<div class="card-body">
-				<input type="text" name="lmtPnum" value="${htdl.htdlRslt.htdlLmtPnum }명" readonly="readonly">
-				</div>
+					<c:choose>
+				<c:when test="${htdl.stusCd eq 'I'}">
+					<div class="card-body">
+					<input type="text" name="lmtPnum" value="${htdl.htdlRslt.htdlLmtPnum }명" readonly="readonly">
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div class="card-body">
+					<input type="text" name="lmtPnum" value="${htdl.lmtPnum }명" readonly="readonly">
+					</div>
+				</c:otherwise>
+			</c:choose>
+				
 			</div>
 			
 			<c:if test="${htdl.stusCd eq 'I' }">
@@ -147,7 +157,27 @@
 
 	let formObj = $("#operForm");
 	
+	
 	$(document).ready(function(){
+		
+		let msg = "<c:out value='${result}'/>";
+		
+		checkAlert(msg);
+		history.replaceState({},null, null);
+		
+		
+		function checkAlert(msg){
+			if(msg === '' || history.state){
+				return;
+			}
+			
+			if(msg.length > 0){
+				alert(msg);
+			}
+			
+		}
+		
+		
 		$("button").on("click", function(e){
 			
 			e.preventDefault();
