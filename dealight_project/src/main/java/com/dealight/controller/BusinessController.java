@@ -60,7 +60,7 @@ public class BusinessController {
 	//메뉴 사진첨부파일 매장평가 사업자테이블에 태그 메뉴 옵션이 들어가야한다.
 	//DTO에 대한이해가 피요하고 많아지는 객체들을 쪼갤수있는 방법을 생각하자.
 	@PostMapping("/register")
-	public String register(StoreVO store, BStoreVO bStore, StoreLocVO loc, StoreEvalVO eval,RedirectAttributes rttr) {
+	public String register(StoreVO store, BStoreVO bStore, StoreLocVO loc, StoreEvalVO eval,Long brSeq,RedirectAttributes rttr) {
 		
 		
 		log.info("store................"+store);
@@ -77,6 +77,7 @@ public class BusinessController {
 		log.info("register: " + store);
 		
 		sService.register(store);
+		bizAuthService.updateStusCdToB(brSeq);
 		
 		//지금 나의 생각 입력한 값들이 잘 저장되나 보고싶다.
 		//결국 저장된 정보를 볼수있는 페이지는 뭐가잇을까??
@@ -87,8 +88,21 @@ public class BusinessController {
 	}
 	
 	@GetMapping("/register")
-	public void register() {
+	public void register(Model model, Long brSeq) {
 		
+		if(brSeq != null) {
+			BUserVO buser = bizAuthService.read(brSeq);
+			log.info("store register get .......................");
+			log.info("buser : "+ buser);
+			
+			String storeName = buser.getStoreNm();
+			String storeTelno = buser.getStoreTelno();
+			
+			model.addAttribute("storeName", storeName);
+			model.addAttribute("storeTelno", storeTelno);
+			model.addAttribute("brSeq", brSeq);
+		}
+	
 	}
 	
 	/*

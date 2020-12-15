@@ -122,5 +122,11 @@
 		from tbl_buser
 		where br_jdg_stus_cd = #{brJdgStusCd} AND user_id = #{userId}
 	</select>
+	
+	<update id="updateBrJdgStusCd">
+		UPDATE tbl_buser
+		SET br_jdg_stus_cd = #{brJdgStusCd}
+		WHERE br_seq = #{brSeq}
+	</update>
 
 </mapper>

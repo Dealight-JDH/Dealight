@@ -20,4 +20,7 @@ public interface BizAuthService {
 	public boolean modify(BUserVO buser);
 	//삭제
 	public boolean delete(long brSeq);
+	
+	// 사업자 심사 상태 코드 'B상태'로 변경
+	public boolean updateStusCdToB(Long brSeq);
 }

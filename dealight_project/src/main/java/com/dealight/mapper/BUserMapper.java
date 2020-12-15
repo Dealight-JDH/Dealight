@@ -42,6 +42,9 @@ public interface BUserMapper {
 	// 현재 심사완료된 사업자 리스트 가져오기
 	public List<BUserVO> findComBrListByUserIdAndStusCd(@Param("userId")String userId, @Param("brJdgStusCd") String brJdgStusCd);
 	
+	// 현재 심사 상태 변경
+	public int updateBrJdgStusCd(@Param("brSeq") Long brSeq, @Param("brJdgStusCd") String brJdgStusCd);
+	
 	
 
 }

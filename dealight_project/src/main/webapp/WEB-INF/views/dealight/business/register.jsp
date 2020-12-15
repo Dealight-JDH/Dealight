@@ -109,9 +109,12 @@
 	<input name="revwTotNum" value='0' hidden>
 	<input name="avgRating" value='0' hidden>
 	===================================================</br></br>
-	<label>스토어 이름</label> <input name="storeNm" required><br>
+	<input name="brSeq" value="${brSeq}" hidden>
+	<c:if test="${storeName != null}">< <label>스토어 이름</label> <input name="storeNm" value="${storeName}" required><br></c:if>
+	<c:if test="${storeName == null}">< <label>스토어 이름</label> <input name="storeNm" required><br></c:if>
 	<label>지점</label> <input name="brch" required><br>
-	<label>전화번호</label> <input name="telno" required><br>
+	<c:if test="${storeTelno != null}"><label>전화번호</label> <input name="telno" value="${storeTelno}" required><br></c:if>
+	<c:if test="${storeTelno == null}"><label>전화번호</label> <input name="telno" required><br></c:if>
 	<label for="openTm">영업 시작 시간</label><select id="openTm" name="openTm"></select>
 	 -  
 	<label for="closeTm">영업 종료 시간</label><select id="closeTm" name="closeTm"></select></br>

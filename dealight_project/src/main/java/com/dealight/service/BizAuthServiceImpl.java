@@ -74,4 +74,10 @@ public class BizAuthServiceImpl implements BizAuthService {
 		return mapper.delete(brSeq) == 1;
 	}
 
+	@Override
+	public boolean updateStusCdToB(Long brSeq) {
+
+		return 1 == mapper.updateBrJdgStusCd(brSeq, "B");
+	}
+
 }
