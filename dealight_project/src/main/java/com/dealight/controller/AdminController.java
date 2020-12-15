@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreEvalVO;
 import com.dealight.domain.StoreImgVO;
 import com.dealight.domain.StoreLocVO;
+import com.dealight.domain.HtdlVO;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserVO;
 import com.dealight.service.AdminService;
@@ -252,6 +254,33 @@ public class AdminController {
 		return "redirect:/dealight/admin/storemanage";
 	}
 	
+	
+	//--------------------------핫딜관리
+	@GetMapping("/htdlmanage/{stusCd}")
+	public String htdlList(@PathVariable String stusCd, Model model) {
+		
+		log.info("get htdl list..... ");
+//		String htdlStusCd = service.getHtdlList(stusCd).get(0).getStusCd();
+		
+		model.addAttribute("stusCd", stusCd);
+		model.addAttribute("lists", service.getHtdlList(stusCd));
+		return "/dealight/admin/htdlmanage/list";
+	}
+	
+
+	@GetMapping({"/htdlmanage/get", "/htdlmanage/modify"})
+	public void getHtdl(String stusCd, Long htdlId, Model model) {
+		log.info("========stusCd: " + stusCd);
+		
+			HtdlVO htdlVO = service.readHtdl(stusCd, htdlId);
+			log.info("=====htdlVO : " + htdlVO);
+			log.info("=======time: " + htdlVO.getStartTm()+"," + htdlVO.getEndTm());
+			log.info("=======price: " + htdlVO.getHtdlDtls().get(0).getMenuPrice());
+			
+			model.addAttribute("htdl", htdlVO);
+			
+		
+	}
 	
 	
 }

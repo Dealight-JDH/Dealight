@@ -8,6 +8,7 @@ import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlRsltVO;
 import com.dealight.domain.HtdlVO;
+import com.dealight.domain.HtdlWithStoreDTO;
 
 /*
  * 
@@ -39,7 +40,14 @@ public interface HtdlMapper {
 	HtdlRsltVO findRsltById(@Param("storeId") Long storeId, @Param("htdlId") Long htdlId);
 	List<HtdlRsltVO> getRsltList(Long storeId);
 	
+	//핫딜+상세+결과
+	HtdlVO getHtdlDtlsRslt(Long htdlId);
+	//핫딜+매장
+	List<HtdlWithStoreDTO> getHtdlWithStoreList(String stusCd);
+	
+	//핫딜+상세
 	HtdlVO findHtdlDtlsById(Long htdlId);
+	
 	//핫딜+상세+매장평가
 	HtdlVO findHtdlById(Long htdlId);
 	List<HtdlVO> getHtdlList();

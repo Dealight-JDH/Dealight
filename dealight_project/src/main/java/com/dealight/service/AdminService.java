@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.dealight.domain.BUserVO;
 import com.dealight.domain.Criteria;
+import com.dealight.domain.HtdlVO;
+import com.dealight.domain.HtdlWithStoreDTO;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserVO;
 
@@ -48,6 +50,18 @@ public interface AdminService {
 	public boolean modifyUser(UserVO user);
 	//삭제
 	public boolean delete(String userId);
+	
+	//----------------------핫딜관리-------------------------------
+	//리스트 불러오기
+	public List<HtdlWithStoreDTO> getHtdlList(String stusCd);
+	//조회
+	public HtdlVO readHtdl(String stusCd, Long htdlId);
+	//등록
+	public void registerHtdl(HtdlVO htdl);
+	//수정
+	public boolean modifyHtdl(HtdlVO htdl);
+	//삭제
+	public boolean deleteHtdl(Long htdlId);
 	//----------------------고객센터------------------------------
 	//리스트불러오기
 	//조회

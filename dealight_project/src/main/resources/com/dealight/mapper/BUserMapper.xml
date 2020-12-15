@@ -99,7 +99,7 @@
 		from
 		    (
 		      select 
-		          rownum rn, br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, rep_name,regdate, updatedate
+		          rownum rn, br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, rep_name, regdate, updatedate
 		      from ( select /*+INDEX_DESC(tbl_buser tbl_buser_pk) */
 		                br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, rep_name, regdate,updatedate
 		             from tbl_buser
