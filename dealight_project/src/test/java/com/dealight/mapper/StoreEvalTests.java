@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.StoreEvalVO;
 
@@ -63,8 +64,50 @@ public class StoreEvalTests {
 	@Test
 	public void findByIdTests1() {
 		
-		
 		assertNotNull(mapper.findByStoreID(storeId));
+	}
+	
+	@Transactional
+	@Test
+	public void addLikeTests1() {
+		
+		Long storeId = 1L;
+		
+		StoreEvalVO eval = mapper.read(storeId);
+		int befLikeTot = eval.getLikeTotNum();
+		
+		int result = mapper.addLike(storeId);
+		assertTrue(result == 1);
+		
+		eval = mapper.read(storeId);
+		
+		
+		log.info("before eval like tot num : " + befLikeTot);
+		log.info("after eval like tot num : "+eval.getLikeTotNum());
+		assertTrue(befLikeTot+1 == eval.getLikeTotNum());
+		
+		
+	}
+	
+	@Transactional
+	@Test
+	public void removeLikeTests1() {
+		
+		Long storeId = 1L;
+		
+		StoreEvalVO eval = mapper.read(storeId);
+		int befLikeTot = eval.getLikeTotNum();
+		
+		int result = mapper.removeLike(storeId);
+		assertTrue(result == 1);
+		
+		eval = mapper.read(storeId);
+		
+		
+		log.info("before eval like tot num : " + befLikeTot);
+		log.info("after eval like tot num : "+eval.getLikeTotNum());
+		assertTrue(befLikeTot-1 == eval.getLikeTotNum());
+		
 	}
 	
 	

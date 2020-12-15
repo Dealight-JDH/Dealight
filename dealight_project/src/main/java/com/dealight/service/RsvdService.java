@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.dealight.domain.Criteria;
+import com.dealight.domain.RsvdAvailVO;
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdTimeDTO;
 import com.dealight.domain.RsvdVO;
@@ -39,9 +40,7 @@ public interface RsvdService {
 	//결제 완료 아닌 경우-> 예약 취소
 	Long getRsvdId();
 	boolean cancel(Long rsvdId);
-	
 
-	
 	//해당 스토어 메뉴 가져오기
 	List<StoreMenuVO> getMenuList(Long storeId);
 	
@@ -64,8 +63,33 @@ public interface RsvdService {
 	
 	//예약 가능 테이블 삭제
 	boolean removeRsvdAvail();
-	
 	//예약 가능 테이블 등록 초기화
+	void initRsvdAvail();
+		
+	List<RsvdAvailVO> getRsvdAvailList();
+	//예약 가능여부 체크
+	RsvdAvailVO getRsvdAvailByStoreId(Long storeId);
+	boolean isRsvdAvailChecked(RsvdAvailVO vo, String time, int pnum);
+	
+	//예약 완료후
+	//예약 가능 여부 차감 || 핫딜이 존재하는 경우 차감
+	boolean completeUpdateAvail(Long storeId, String time, int pnum);
+	boolean completeUpdateHtdl();
+	
+	//핫딜 예약이 있는 경우
+	boolean checkExistHtdl(String userId, Long htdlId);
+	//핫딜 예약이 없는 경우 o
+	
+	RsvdVO readRsvdVO(Long rsvdId);
+	//해당 핫딜의 
+	//예약이 있는 경우
+	//예약 내역을 가져온다
+	//한 회원의 핫딜번호가 존재하는 예약 내역을 가져온다
+	//해당 핫딜번호의 예약은 하나이어야 한다
+	//해당 핫딜번호의 구매는 x
+	
+	
+
 	
 	//테이블 갯수 업데이트
 	//해당 핫딜이 있을 경우 핫딜 예약 인원 업데이트

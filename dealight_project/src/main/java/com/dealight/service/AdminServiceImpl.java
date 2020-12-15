@@ -3,12 +3,17 @@ package com.dealight.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.BUserVO;
 import com.dealight.domain.Criteria;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserVO;
+import com.dealight.mapper.BStoreMapper;
 import com.dealight.mapper.BUserMapper;
+import com.dealight.mapper.StoreEvalMapper;
+import com.dealight.mapper.StoreImgMapper;
+import com.dealight.mapper.StoreLocMapper;
 import com.dealight.mapper.StoreMapper;
 import com.dealight.mapper.UserMapper;
 
@@ -23,6 +28,13 @@ public class AdminServiceImpl implements AdminService {
 	private BUserMapper bMapper;
 	private StoreMapper sMapper;
 	private UserMapper	uMapper;
+	/* 동인 추가 */
+	private StoreLocMapper lMapper;
+	private StoreEvalMapper eMapper;
+	private StoreImgMapper iMapper;
+	private BStoreMapper bsMapper;
+	
+	
 	@Override
 	public List<BUserVO> getBUserList() {
 		log.info("getBUserList........................");
@@ -90,11 +102,21 @@ public class AdminServiceImpl implements AdminService {
 		sMapper.insert(store);
 	}
 
+	@Transactional
 	@Override
 	public boolean modifyStore(StoreVO store) {
 		log.info("modify : " + store);
 		
-		return sMapper.update(store)==1;
+		iMapper.deleteAll(store.getStoreId());
+		if(store.getImgs() != null) {
+			store.getImgs().stream().forEach(img -> {
+				img.setStoreId(store.getStoreId());
+			});
+			iMapper.insertAll(store.getImgs());
+		}
+		
+		return sMapper.update(store) + lMapper.update(store.getLoc()) + eMapper.update(store.getEval()) + 
+					bsMapper.update(store.getBstore()) == 4;
 	}
 
 	@Override

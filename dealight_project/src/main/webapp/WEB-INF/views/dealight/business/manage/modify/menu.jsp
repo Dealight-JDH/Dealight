@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@include file="../../../../includes/mainMenu.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,7 +69,7 @@
 	
 </style>
 <style>
-	img {
+	.file_body img {
 	
 	width : 100px;
 	height : 100px;
@@ -81,7 +82,6 @@
 </style>
 </head>
 <body>
-<%@include file="../../../../includes/mainMenu.jsp" %>
 <main>
 	<h1>Business Menu Page</h1>
 	
@@ -109,11 +109,13 @@
 				</ul>
 			</div> <!-- uploadResult -->
 		</div> 
-		
-		<button type="submit">제출하기</button></br>
+		<div class='bigPictureWrapper'>
+			<div class='bigPicture'>
+			</div>
+		</div>
+		<button id="submit_menuRegForm" type="submit">제출하기</button></br>
 		============================================================
 	</form>
-	<button>메뉴 수정</button>
 	
 	<h2>메뉴 리스트</h2>
 	<c:if test="${empty menus }">
@@ -150,7 +152,25 @@
 		</div>
 	</div>
 
-
+<script>
+	/* 정규식으로 파일 형식을 제한한다. */
+	const regex = new RegExp("(.*>)\.(exe|sh|zip|alz)$");
+	/*최대 파일 크기를 제어한다  */
+	const maxSize = 5242880; /* 5MB */
+	// add category ***페이지마다 변경 필요
+	const category = 'menuImgs';
+	// page type
+	const pageType = "register";
+	// storeId
+	const storeId = null;
+	// isModal
+	const isModal = false;
+	// btn id
+	let btnSubmit = "#submit_menuRegForm";
+	/* form 역할을 하는 엘리먼트를 선택한다. */
+	let formObj = $("#regForm");
+</script>
+<script type="text/javascript" src="/resources/js/singleFileUpload.js?ver=1"></script>
 <script>
 /* 동인  */
 
@@ -223,216 +243,8 @@
 /* 페이지가 로드 되면 실행된다. */
 $(document).ready(function(e){
     
-    /* form 역할을 하는 엘리먼트를 선택한다. */
-	let formObj = $("#regForm");
-    
-    let fileSubmitHandler = function(e){
-    	
-		/* 기존 기능은 제한한다.*/
-		e.preventDefault();
-		
-		console.log("submit clicked");
-		
-		console.log("form"+formObj);
-		
-		let str = "";
-        
-        /* 업로드 결과 화면에 업로드 결과를 작성해준다.*/
-	$(".uploadResult ul li").each(function(i, obj) {
-		
-		console.log("obj : "+obj);
-		
-		if(i !== 0)
-			return;
-		
-			let jobj = $(obj);
-			
-			console.log('jobj path data : '+jobj.data("path"));
-			
-			console.dir(jobj);
-			str += "<input type='hidden' name='imgUrl' value='" + jobj.data("path").replace(new RegExp(/\\/g),"/")+"/"+jobj.data("uuid")+"_"+jobj.data("filename")+"'>";
-			str += "<input type='hidden' name='thumImgUrl' value='" + jobj.data("path").replace(new RegExp(/\\/g),"/")+"/"+"s_"+jobj.data("uuid")+"_"+jobj.data("filename")+"'>";
-			
-		});
-        
-		console.log(str);
-		// upload file을 초기화한다.
-		$(".form_img").html("");
-		
-        /*위에서 작성한 글을 form에 추가하고 제출한다. */
-		formObj.attr("method", "post");
-		formObj.append(str).submit();
-    }
-    
-    /* 정규식으로 파일 형식을 제한한다. */
-    let regex = new RegExp("(.*>)\.(exe|sh|zip|alz)$");
-    
-    /*최대 파일 크기를 제어한다  */
-	let maxSize = 5242880; /* 5MB */
-    
-    /*업로드 결과를 보여준다. */
-	let showUploadResult = function (uploadResultArr) {
-        
-        /**업로드 된게 없으면 그대로 반환 */
-		if(!uploadResultArr || uploadResultArr.length == 0){return; }
-        
-        /*업로드 결과를 보여줄 ul를 선택 */
-		let uploadUL = $(".uploadResult ul");
-		
-		let str = "";
-        
-        /*업로드 결과를 보여준다. */
-		$(uploadResultArr).each(function(i,obj){
-            
-            /* 만일 파일이 이미지 형식이면 */
-            /* data에 path,uuid,filename,type을 각각 저장한다. */
-			if(obj.image) {
-				let fileCallPath = encodeURIComponent(obj.uploadPath+"/s_"+obj.uuid+"_"+obj.fileName);
-				
-				let originPath = obj.uploadPath + "\\" + obj.uuid +"_" + obj.fileName;
-				
-				originPath = originPath.replace(new RegExp(/\\/g),"/");
-				
-				str += "<li data-path='" + obj.uploadPath +"'";
-				str += "data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"'data-type='"+obj.image+"'";
-				str += "><a href=\"javascript:showImage(" + originPath + ")\">" + "<div>";
-				str += "<span>" + obj.fileName +"</span>";
-				str += "<img src='/display?fileName=" + fileCallPath + "'>";
-				str += "</div></a>";
-				str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image' class='btn btn-warning btn-circle'><i class='fa fa-times'></i>삭제</button><br>";
-				str += "</li>";
-                /* 만일 파일이 이미지 형식이 아니면 */
-                /* default img를 보여준다. */
-			} else {
-				let fileCallPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
-				let fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
-
-				str += "<li "
-				str += "data-path='" + obj.uploadPath + "'data-uuid='" + obj.uuid + "'data-filename='" + obj.fileName + "' data-type='" +obj.image+"'><a href='/download?fileName=" + fileCallPath + "'>" + "<div>";
-				str += "<span> " + obj.fileName + "</span>";
-				str += "<img src='/resources/img/attach.png'>";
-				str += "</a></div>";
-				str += "<button type='button' data-file=\'"+fileCallPath+"\'data-type='file' class='btn btn-warning btn-circle'><i class='fa fa-times'></i>삭제</button><br>";
-				str += "</li>";
-			}
-		});
-		uploadUL.append(str);
-	}
-	
-    /*파일 valid check */
-	let checkExtension = function (fileName, fileSize) {
-        
-        /*파일 사이즈를 체크한다. */
-        if(fileSize >= maxSize){
-			alert("파일 사이즈 초과");
-			return false;
-		}
-		/*파일 형식을 체크한다. */
-		if(regex.test(fileName)) {
-			alert("해당 종류의 파일은 업로드 할 수 없습니다.");
-			return false;
-		}
-		return true;
-	}
-    
-    let uploadHandler = function(e){
-    	
-		let cloneObj = $(".form_img").clone();
-		
-		let formData = new FormData();
-		
-		let inputFile = $("input[name='uploadFile']");
-		
-		let files = inputFile[0].files;
-		
-		// add category
-		let category = 'menuImgs';
-		
-		for(let i = 0; i < files.length; i++){
-			
-			if(!checkExtension(files[i].name, files[i].size)) {
-				return false;
-            }
-            /* uploadFile 이라는 변수명에 파일 배열(스프링에서는 MultipartFile[]로 받는다)을 달아서보낸다. */
-			formData.append("uploadFile", files[i]);
-            // add category
-			formData.append("category", category);
-		}
-		
-		$.ajax({
-			url : '/uploadAjaxAction',
-			processData : false,
-            contentType : false, 
-            data: formData,
-            type: 'POST',
-			dataType : 'json',
-			success : function(result) {
-			    console.log(result);
-			    showUploadResult(result); // 업로드 결과 처리 함수
-			    $(".form_img").html(cloneObj.html()); // 첨부파일 개수 초기화
-			}
-			
-			
-		})
-    }
-	
-    let deleteHandler = function(e) {
-    	
-		let targetFile = $(this).data("file");
-		
-		console.log(targetFile);
-		
-		let type = $(this).data("type");
-		
-		console.log(type);
-		
-		let targetLi = $(this).closest("li");
-		
-		console.log(targetLi);
-		
-		$.ajax({
-			url : '/deleteFile',
-			data : {fileName : targetFile, type:type},
-			dataType : 'text',
-			type : 'POST',
-			success : function(result) {
-				alert(result);
-				targetLi.remove();
-			}
-		}); // $.ajax
-    }
-    
-	let showImage = function (fileCallPath) {
-		
-		alert(fileCallPath);
-		
-		$(".bigPictureWrapper").css("display","flex").show();
-		
-		$(".bigPicture")
-		.html("<img src='/display?fileName=" +encodeURI(fileCallPath) + "'>")
-		.animate({width:'100%',height:'100%'},1000);
-		
-		
-	}// end show image
-    
-    let showBigImgHandler = function(e) {
-    	
-        console.log("view image");
-        
-        let liObj = $(this);
-        
-        let path = encodeURIComponent(liObj.data("path")+ "/" + liObj.data("uuid") +"_" +liObj.data("filename"));
-        
-        if(liObj.data("type")){
-            
-            showImage(path.replace(new RegExp(/\\/g), "/"));
-        } else {
-            //download
-            self.location = "/download?fileName=" + path
-        }
-    }
-	
 	let showMenuModalHandler = function(e) {
+		
 			let menuSeq = $(e.target).parent().find(".menuSeq").text(),
 			storeId = $(e.target).parent().find(".storeId").text(),
 			name = $(e.target).parent().find(".name").text(),
@@ -450,7 +262,7 @@ $(document).ready(function(e){
 		
 		let strMenu = "";
 		strMenu += "<h2>메뉴 수정</h2>"
-		strMenu += "<form class='menuForm' action='' method='post'>";
+		strMenu += "<form id='menuForm_modify' action='' method='post'>";
 		strMenu += "매장 번호 : <input type='text' name='storeId' value='"+storeId+"' readonly></br>";
 		strMenu += "메뉴 일련 번호 : <input type='text' name='menuSeq' value='"+menuSeq+"' readonly></br>";
 		strMenu += "메뉴 이름 : <input type='text' name='name' value='"+name+"'></br>";
@@ -460,132 +272,220 @@ $(document).ready(function(e){
 		strMenu += "<div><h2>사진 첨부하기(1개만 가능)</h2></div>";
 		strMenu += "<div class='file_body_modify'>";
 		strMenu += "<div class='form_img_modify'>";
-		strMenu += "<input type='file' name='uploadFile_modify'>";
+		strMenu += "<input type='file' id='js_upload' name='uploadFile'>";
 		strMenu += "</div> ";
-		strMenu += "<div class='uploadResult'>";
+		strMenu += "<div class='uploadResult_modify'>";
 		strMenu += "<ul></ul></div></div> ";
-		strMenu += "<input type='hidden' name='imgUrl' value='" +imgUrl + "'>";
-		strMenu += "<input type='hidden' name='thumImgUrl' value='" + thumImgUrl + "'>";
+		strMenu += "<div class='bigPictureWrapper_modify'><div class='bigPicture_modify'></div></div>";
+		strMenu += "<input hidden name='imgUrl' value='"+imgUrl+"'>";
+		strMenu += "<input hidden name='thumImgUrl' value='"+thumImgUrl+"'>";
 		strMenu += "</form>";
 		strMenu += "<button data-oper='modify' class='btn_modify'>수정</button>";
 		strMenu += "<button data-oper='remove' class='btn_remove'>제거</button>";
 		$(".menu_content").html(strMenu);
 		modal.css("display", "block");
 		
-		let menuForm = $(".menuForm");
+		var btnSubmit_modify = ".btn_modify";
+		var formObj_modify =  $("#menuForm_modify");
 		
-		let uploadHandler_modify = function(e){
-	    	
-			let cloneObj = $(".form_img_modify").clone();
-			
-			let formData = new FormData();
-			
-			let inputFile = $("input[name='uploadFile_modify']");
-			
-			let files = inputFile[0].files;
-			
-			// add category
-			let category = 'menuImgs';
-			
-			for(let i = 0; i < files.length; i++){
-				
-				if(!checkExtension(files[i].name, files[i].size)) {
-					return false;
-	            }
-	            /* uploadFile 이라는 변수명에 파일 배열(스프링에서는 MultipartFile[]로 받는다)을 달아서보낸다. */
-				formData.append("uploadFile", files[i]);
-	            // add category
-				formData.append("category", category);
-			}
-			
-			$.ajax({
-				url : '/uploadAjaxAction',
-				processData : false,
-	            contentType : false, 
-	            data: formData,
-	            type: 'POST',
-				dataType : 'json',
-				success : function(result) {
-				    console.log(result);
-				    showUploadResult(result); // 업로드 결과 처리 함수
-				    $(".form_img_modify").html(cloneObj.html()); // 첨부파일 개수 초기화
-				}
-				
-				
-			})
-	    };
-	    
-	    
-	    
-	    let fileSubmitHandler = function(e){
-	    	
-			/* 기존 기능은 제한한다.*/
-			e.preventDefault();
-			
-			console.log("submit clicked");
-			
-			console.log("form"+menuForm);
+		let showUploadResult_modify = function (uploadResultArr) {
+	        
+	        /**업로드 된게 없으면 그대로 반환 */
+			if(!uploadResultArr || uploadResultArr.length == 0){return; }
+	        
+	        /*업로드 결과를 보여줄 ul를 선택 */
+			let uploadUL_modify = $(".uploadResult_modify ul");
 			
 			let str = "";
 	        
-	        /* 업로드 결과 화면에 업로드 결과를 작성해준다.*/
-		$(".uploadResult ul li").each(function(i, obj) {
+	        /*업로드 결과를 보여준다. */
+			$(uploadResultArr).each(function(i,obj){
 				
-			if(i !== 0)
-				return;
-			
-				let jobj = $(obj);
+	            /* 만일 파일이 이미지 형식이면 */
+	            /* data에 path,uuid,filename,type을 각각 저장한다. */
 				
-				console.dir(jobj);
-				str += "<input type='hidden' name='imgUrl' value='" + jobj.data("path").replace(new RegExp(/\\/g),"/")+"/"+jobj.data("uuid")+"_"+jobj.data("filename")+"'>";
-				str += "<input type='hidden' name='thumImgUrl' value='" + jobj.data("path").replace(new RegExp(/\\/g),"/")+"/"+"s_"+jobj.data("uuid")+"_"+jobj.data("filename")+"'>";
-				
+				if(i === 0) // 파일 1개만 올릴 수 있게
+				if(obj.image) {
+					let fileCallPath = encodeURIComponent(obj.uploadPath+"/s_"+obj.uuid+"_"+obj.fileName);
+					
+					// 
+					let originPath = obj.uploadPath + "\\" + obj.uuid +"_" + obj.fileName;
+					originPath = originPath.replace(new RegExp(/\\/g),"/");
+					
+					str += "<li data-path='" + obj.uploadPath +"'";
+					str += "data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"'data-type='"+obj.image+"'";
+					str += "><div>";
+					str += "<span>" + obj.fileName +"</span>";
+					str += "<img src='/display?fileName=" + fileCallPath + "'>";
+					str += "</div>";
+					str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image'"
+								+" class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+					str += "</li>";
+	                /* 만일 파일이 이미지 형식이 아니면 */
+	                /* default img를 보여준다. */
+				} else {
+					let fileCallPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
+					let fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
+
+					str += "<li "
+					str += "data-path='" + obj.uploadPath + "'data-uuid='" + obj.uuid + "'data-filename='" + obj.fileName + "' data-type='" +obj.image+"'>" + "<div>";
+					str += "<span> " + obj.fileName + "</span>";
+					str += "<img src='/resources/img/attach.png'>";
+					str += "</div>";
+					str += "<button type='button' data-file=\'"+fileCallPath+"\'data-type='file' class='btn btn-warning btn-circle'><i class='fa fa-times'></i>삭제</button><br>";
+					str += "</li>";
+				}
 			});
 	        
-			console.log(str);
-			// upload file을 초기화한다.
-			$(".form_img_modify").html("");
+			uploadUL_modify.html(str);
+		}
+	    
+		var inputHandler_modify = function(e){
+		        
+		        /* 기존 기능은 제한한다.*/
+				e.preventDefault();
+				
+				let str = "";
+		        
+		        /* 업로드 결과 화면에 업로드 결과를 작성해준다.*/
+		        /* jquery의 foreach문 */
+				$(".uploadResult_modify ul li").each(function(i, obj) {
+					
+					let jobj = $(obj);
+					
+					$("#menuForm_modify").find("input[name='imgUrl']").val(jobj.data("path").replace(new RegExp(/\\/g),"/")+"/"+jobj.data("uuid")+"_"+jobj.data("filename"));
+					$("#menuForm_modify").find("input[name='thumImgUrl']").val(jobj.data("path").replace(new RegExp(/\\/g),"/")+"/"+"s_"+jobj.data("uuid")+"_"+jobj.data("filename"));
+					
+				});
+		        	
+		        /*위에서 작성한 글을 form에 추가하고 제출한다. */
+		        formObj_modify.attr("action","/dealight/business/manage/menu/modify");
+		        formObj_modify.attr("method", "post");
+		        formObj_modify.submit();
 			
-	        /*위에서 작성한 글을 form에 추가하고 제출한다. */
-			menuForm.attr("method", "post");
-			menuForm.append(str).submit();
-	    }
+		};
 		
-		$("button[type='submit']").on("click", fileSubmitHandler);
-		$("input[type='file']").change(uploadHandler_modify);
-		$(".uploadResult").on("click", "button", deleteHandler);
-		$("button[data-oper='modify']").on("click", function(e){
+	    
+	    /* change() 해당하는 요소의 value에 변화가 생길 경우 이를 감지하여 등록된 콜백함수를 동작시킨다.  */
+		var uploadHandler_modify = function(e){
 			
-			menuForm.attr("method", "post");
-			menuForm.attr("action", "/dealight/business/manage/menu/modify").submit();
+	    	console.log("change event");
+	    	
+	    	let cloneObj = $(".form_img_modify").clone();
+	        
+	        let formData = new FormData();
+	        
+	        let inputFile = $("#js_upload");
+	        
+	        let files = inputFile[0].files;
+	        
+			formData.append("category", category);
+			
+	            if(!checkExtension(files[0].name, files[0].size)) {
+	                return false;
+	            }
+	            formData.append("uploadFile", files[0]);
+	        
+	        $.ajax({
+	            url : '/uploadAjaxAction',
+	            processData : false,
+	            contentType : false, data:
+	                formData, type: 'POST',
+	                dataType : 'json',
+	                success : function(result) {
+	                	showUploadResult_modify(result); // 업로드 결과 처리 함수
+	               	 	$(".form_img_modify").html(cloneObj.html()); // 첨부파일 개수 초기화
+	               	 	$("#js_upload").change(uploadHandler_modify); // 이벤트 등록 (재귀)
+	                }
+	        })
+	    };
+	
+	    /* 업로드 결과를 누르면 해당 파일을 제거한다.  */
+		var deleteHandler_modify = function(e){
+			
+			console.log("delete file");
+			
+			if(!confirm("Remove this file?"))
+							return;
+			
+			  		let targetFile = $(this).data("file");
+					console.log(targetFile);
+			
+					let type = $(this).data("type");
+					console.log(type);
+			
+					let targetLi = $(this).closest("li");
+					console.log(targetLi);
+			
+			$.ajax({
+					url : '/deleteFile',
+					data : {fileName : targetFile, type:type},
+					dataType : 'text',
+					type : 'POST',
+					success : function(result) {
+						alert(result);
+						targetLi.remove();
+					}
+					}); // $.ajax
+			};
+	
+		var showImage_modify = function (fileCallPath) {
+			
+			alert(fileCallPath);
+			
+			$(".bigPictureWrapper_modify").css("display","flex").show();
+			
+			$(".bigPicture_modify")
+			.html("<img src='/display?fileName=" + fileCallPath + "'>")
+			.animate({width:'100%',height:'100%'},1000);
+			
+			
+		}// end show image
+		
+		var showImageHandler_modify = function(e) {
+	    	
+			if(e.target.type === "button")
+	    		return;
+	    	
+	        let liObj = $(this);
+	        
+	        let path = encodeURIComponent(liObj.data("path")+ "/" + liObj.data("uuid") +"_" +liObj.data("filename"));
+	        
+	        if(liObj.data("type")){
+	            
+	            showImage_modify(path.replace(new RegExp(/\\/g), "/"));
+	        } else {
+	            //download
+	            self.location = "/download?fileName=" + path
+	        }
+		};
+		
+		var bigImgAniHandler_modify = function (e) {
+			$(".bigPicture_modify").animate({width:'0%',height:'0%'},1000);
+			setTimeout(()=>{
+				$(this).hide();
+			}, 1000);
+		}
+		
+		/* submit 타입의 버튼을 제어한다.*/
+		$("#js_upload").change(uploadHandler_modify); 
+		$(".uploadResult_modify").on("click", "button", deleteHandler_modify);
+	    $(".uploadResult_modify").on("click", "li", showImageHandler_modify);
+		$(".bigPictureWrapper_modify").on("click",bigImgAniHandler_modify);
+		$(".btn_modify").on("click", inputHandler_modify);
+		$(".btn_remove").on("click", function(e){
+			if(confirm("정말로 삭제하시겠습니까?")){
+				formObj_modify.attr("method", "post");
+				formObj_modify.attr("action", "/dealight/business/manage/menu/delete").submit();
+			}
 		});
 		
-		$("button[data-oper='remove']").on("click", function(e){
-			
-			menuForm.attr("method", "post");
-			menuForm.attr("action", "/dealight/business/manage/menu/delete").submit();
-			
-		});
-	}
+	} // show menu
 	
-	$(".uploadResult").on("click", "li", showBigImgHandler);
-	
-	$(".bigPictureWrapper").on("click",function(e){
-		$(".bigPicture").animate({width:'0%',height:'0%'},1000);
-		setTimeout(()=>{
-			$(this).hide();
-		}, 1000);
-	});
-	
-    /* change() 해당하는 요소의 value에 변화가 생길 경우 이를 감지하여 등록된 콜백함수를 동작시킨다.  */
-	$("input[type='file']").change(uploadHandler);
-    /* 업로드 결과를 누르면 해당 파일을 제거한다.  */
-	$(".uploadResult").on("click", "button", deleteHandler);
 	$(".menu > *").on("click", showMenuModalHandler);
-    /* submit 타입의 버튼을 제어한다.*/
-	$("button[type='submit']").on("click", fileSubmitHandler);
 	
 }); // ready end
 </script>
+<%@include file="../../../../includes/mainFooter.jsp" %>
 </body>
 </html>

@@ -36,6 +36,23 @@
 		</form>
 	</div>
 	
+	<div class="well">
+		<h2>핫딜 제안</h2>
+		<form action="/dealight/store/rsvd" method="post">
+			예약 인원 : <input type="number" name="pnum"></br>
+			매장 번호 : <input type="number" name="storeId" value="1"></br>
+			핫딜 번호 : <input type="number" name="htdlId"></br>
+			결제 승인 번호 : <input type="number" name="aprvNo" value="1111"></br>
+			총 수량 : <input type="number" name="totQty" value="2"></br>
+			총 가격 : <input type="number" name="totAmt" value="16000"></br>
+			==========================================</br>
+			메뉴 이름 : <input type="text" name="menuNm" value="치킨"></br>
+			메뉴 수량 : <input type="number" name="menuTotQty" value="2"></br>
+			메뉴 가격 : <input type="number" name="menuPrc" value="16000"></br>
+			<button type="submit">예약 등록</button>
+		</form>
+	</div>
+	
     	<div id="myModal" class="modal">
 		<!-- Modal content -->
 		<div class="modal-content">

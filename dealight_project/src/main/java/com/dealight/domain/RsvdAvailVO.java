@@ -41,5 +41,7 @@ public class RsvdAvailVO {
     private Date regdate;        
     private Date updatedate;
     
-	
+    
 }
+	
+	

@@ -13,6 +13,8 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="/resources/css/store.css">
 <link rel="stylesheet" href="/resources/css/tab.css">
+<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 	<div class="container">
@@ -177,7 +179,8 @@
 											<option value="13:30">13:30</option>
 											<option value="14:00">14:00</option>
 											<option value="14:30">14:30</option>
-										</select> <select id="num" required="required">
+										</select> 
+										<select id="num" required="required">
 											<option value="">인원수</option>
 											<option value="1">1</option>
 											<option value="2">2</option>
@@ -198,12 +201,17 @@
 										</select> <input type="button" id="btnAddMenus" value="추가"></input>
 
 									</div>
-									<div id="container"></div>
+									<div id="container"></div><br>
+									<div id="htdl-container"></div>
+									
 									<span id="menusTotAmtSumMsg"></span> <span id="menusTotAmt" name="totAmt" value="0"></span>
 									<button class ="tabWrapperBtn" type="submit">예약하기</button>
 								</form>
 							</div>
+							
+							
 						</li>
+							
 						<li><div class="content__wrapper">
 								<form id="waitingForm" action="/dealight/waiting"
 									method="post">
@@ -225,6 +233,11 @@
 						</li>
 
 					</ul>
+					
+					<form id='reserveFormObj' action="/dealight/reservation/" method="get">
+									<input type='hidden' name='storeId'
+										value='<c:out value="${store.storeId }"/>' />
+					</form>
 				</section>
 				</div>
 		</div>
@@ -232,8 +245,7 @@
 			<h1>footer</h1>
 			</div>
 	</div>
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	
 	<script type="text/javascript" src="/resources/js/revw.js"></script>
 
 	<!--리뷰 -->
@@ -241,6 +253,7 @@
 		$(document)
 				.ready(
 						function() {
+							
 							
 							
 							let storeIdValue = '<c:out value="${store.storeId}"/>';
@@ -354,244 +367,500 @@
 <!--메뉴선택 -->
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script type="text/javascript">
-		function Menus() {
 
-			//json 배열[{menusId:menusId, menusNm:menusNm, amt:amt},{...},{...}]
-			this.arrAllMenus = new Array();//상품 목록
-			this.arrSelMenus = new Array();//선택한 상품 목록
+		
 
-			var p = this;
+	var menus = new Menus();
 
-			//상품 추가 시
-			this.select = function(trgtMenusId) {
+	//jstl로 전체 상품 목록 미리 세팅<select id="menu" onchange="mySelect()" >
 
-				var selectedIndex = -1;
+	<c:forEach items="${store.bstore.menus }" var="menus">
+	menus.arrAllMenus.push({
+		menusId : "${menus.menuSeq}",
+		menusUnprc : "${menus.price}",
+		menusNm : "${menus.name }",
+		cnt : 0
+	});
+	</c:forEach>
+	
+	let paramHtdlId = '<c:out value="${htdlId}"/>' || null;
+	let paramUserId = '<c:out value="${userId}"/>' || null;
+	let storeId = '<c:out value="${store.storeId}"/>';
+	
+	let isHtdlPayHistory = false;//핫딜을 구매했는지 체크
 
-				//전체 목록 배열에서 검색하여 menusId가 없다면 선택 목록에 push후 container안에 그려준다.
+	$(document).ready(function() {
 
-				//선택 목록에서 검색
-				for (var i = 0; i < p.arrSelMenus.length; i++) {
 
-					if (p.arrSelMenus[i].menusId == trgtMenusId) {
-						selectedIndex = i;
-						break;
-					}
-				}
+		console.log("hotdeal htdlId.........."+ paramHtdlId);
 
-				if (selectedIndex < 0) {//선택목록에 없을 경우 추가. 잇을경우 얼럿.
-					//전체목록에서 선택 추가해줌.
-					for (var j = 0; j < p.arrAllMenus.length; j++) {
-
-						if (p.arrAllMenus[j].menusId == trgtMenusId) {
-							p.arrSelMenus.push(p.arrAllMenus[j]);
-							p.arrSelMenus[p.arrSelMenus.length - 1].cnt = 1;//무조건 개수 초기화
-							p.appendChoiceDiv(p.arrAllMenus[j]);
-							break;
-						}
-					}
-				} else {
-					alert("이미 추가한 상품입니다.");
-				}
-				p.afterProc();
-			}
-
-			//상품 제거 시
-			this.deselect = function(trgtMenusId) {
-
-				var selectedIndex = -1;
-
-				//배열에서 검색.
-				for (var i = 0; i < p.arrSelMenus.length; i++) {
-
-					if (p.arrSelMenus[i].menusId == trgtMenusId) {
-						p.removeChoiceDiv(p.arrSelMenus[i]);
-						p.arrSelMenus.splice(i, 1);
-						break;
-					}
-				}
-				p.afterProc();
-			}
-
-			this.appendChoiceDiv = function(prmtObj) {
-
-				var innerHtml = "";
-
-				innerHtml += '<div id="div_'+prmtObj.menusId+'">';
-				innerHtml += '	<span>' + prmtObj.menusNm + '</span>';
-				innerHtml += '	<input  type="text" id="input_sumAmt_'+prmtObj.menusId+'" name="" value="0" readonly ="readonly"/>'
-				innerHtml += '	<br><button type="button" id="" class="add" name="" onclick="menus.minus(\''
-				+ prmtObj.menusId + '\');">-</button>';
-				innerHtml += '	<input style=width:30px; type="text" id="input_cnt_'+prmtObj.menusId+'" name="" value="0" readonly ="readonly"/>'
-				innerHtml += '	<button  type="button" id="" class="remove" name="" onclick="menus.plus(\''
-				+ prmtObj.menusId + '\');">+</button>';
-				innerHtml += '	<button type="button" id="" class="remove" name="" onclick="menus.deselect(\''
-				+ prmtObj.menusId + '\');">X</button>';
-				innerHtml += '</div>';
-				$('#container').append(innerHtml);
-
-				}
-			this.removeChoiceDiv = function(prmtObj) {
-				$("#div_" + prmtObj.menusId).remove();
-			}
-
-			this.plus = function(trgtMenusId) {
-
-				for (var i = 0; i < p.arrSelMenus.length; i++) {
-
-					if (p.arrSelMenus[i].menusId == trgtMenusId) {
-						if(p.arrSelMenus[i].cnt >= 10){
-							alert("최대수량입니다.");
-							break;
-						}
-						
-						p.arrSelMenus[i].cnt++;
-						break;
-					}
-				}
-
-				p.afterProc();
-			}
-
-			this.minus = function(trgtMenusId) {
-
-				for (var i = 0; i < p.arrSelMenus.length; i++) {
-
-					if (p.arrSelMenus[i].menusId == trgtMenusId) {
-						if (p.arrSelMenus[i].cnt == 1){
-							alert("최소수량입니다.");
-							break;
-						}
-						p.arrSelMenus[i].cnt--;
-						break;
-					}
-				}
-
-				p.afterProc();
-			}
-
-			//계산 후처리.
-			this.afterProc = function() {
-
-				for (var i = 0; i < p.arrSelMenus.length; i++) {
-					$('#input_cnt_' + p.arrSelMenus[i].menusId).val(
-							p.arrSelMenus[i].cnt);
-					$('#input_sumAmt_' + p.arrSelMenus[i].menusId).val(
-							p.arrSelMenus[i].cnt * p.arrSelMenus[i].menusUnprc);
-				}
-
-				var menusTotAmt = 0;
-				for (var i = 0; i < p.arrSelMenus.length; i++) {
-					menusTotAmt += p.arrSelMenus[i].cnt
-							* p.arrSelMenus[i].menusUnprc;
-				}
-				if(menusTotAmt == 0){
-					$('#menusTotAmtSumMsg').text("");
-					$('#menusTotAmt').text("");
-					
-				}else{
-					$('#menusTotAmtSumMsg').text("총금액");
-					$('#menusTotAmt').text(menusTotAmt);
+		if(paramHtdlId != null){
+			
+		//핫딜 페이지에서 넘어온 핫딜 ajax
+		getHtdl({htdlId : paramHtdlId},function(result){
+			
+			console.log(result);
+			
+			if(result != null){
+				let menusNm = [];
 				
+				for(let i=0,len=result.htdlDtls.length; i<len; i++){
+					menusNm.push(result.htdlDtls[i].menuName);
+				}
+				let menusNmStr = menusNm.join(",");
+				
+				//선택 메뉴 배열에 담기
+				menus.arrSelMenus.push({
+					htdlId : result.htdlId+"htdl",
+					menusNm : menusNmStr,
+					menusUnprc : result.befPrice - result.ddct,
+					cnt : 1
+				});
+				
+				showHtdlForm(result);
+				//핫딜 상품 삭제
+				$("#htdlRemoveBtn").on("click", function(e){
+					console.log("click");
+					$("#div_htdl"+paramHtdlId).remove();
+					menus.htdlDeSelect(result.htdlId+"htdl");
+				});
+			}
+			
+		  });
+		}
+	});
+	
+	
+	
+	//전달받은 핫딜 폼 그리기
+	function showHtdlForm(htdlVO){
+		
+		if(htdlVO != null){
+			let htdlMenuName = [];
+			let htdlStr = "";
+			let afterPrcie = htdlVO.befPrice - htdlVO.ddct;
+			
+			htdlStr += '<div id="div_htdl'+htdlVO.htdlId+'">';
+			htdlStr += '<span style="color: red">핫딜 상품</span><br>';
+			
+			for(let i=0,len=htdlVO.htdlDtls.length; i<len; i++){
+				htdlMenuName.push(htdlVO.htdlDtls[i].menuName);
+			}
+			
+			let menuNameStr = htdlMenuName.join(",");
+			
+			htdlStr += '<span>'+menuNameStr+'</span><br>';
+			htdlStr += '<input  type="text" style="width:100px" id="htdlPrice" name="" value="'+afterPrcie+'" readonly ="readonly"/>'
+			htdlStr += '<button type="button" id="htdlRemoveBtn" class="remove" name="">X</button>';
+			htdlStr += '</div>';
+			
+			/* menusTotAmt += afterPrcie;
+			$('#menusTotAmtSumMsg').text("총금액");
+			$('#menusTotAmt').text(menusTotAmt); */
+			
+			$("#htdl-container").append(htdlStr);
+			menus.afterProc();
+			
+		}
+	}
+	
+	
+	//핫딜 구매이력 체크
+	function isHtdlPayExistChecked(param, callback, error){
+		
+		let userId = param.userId;
+		let htdlId = param.htdlId;
+		
+		$.getJSON("/dealight/reservation/htdlcheck/"+userId+"/"+htdlId+".json",
+				function(data){
+			if(callback){
+				callback(data);
+			}
+			
+		}).fail(function(xhr, status, err){
+			if(error){
+				error();
+			}
+		});
+		
+	}
+	
+	//전달받은 핫딜번호를 ajax를 통해 vo 가져오기
+	function getHtdl(param, callback, error){
+		
+		let htdlId = param.htdlId;
+		console.log("htdlId: " + htdlId);
+		
+		$.getJSON("/dealight/store/htdl/get/"+htdlId+".json", function(data){
+			if(callback){
+				callback(data);
+			}
+			
+		}).fail(function(xhr,status, err){
+			if(error){
+				error();
+			}
+		});
+	}
+	
+	 //예약 가능여부 체크
+	/* function isRsvdAvailChecked(param, callback, error){
+		
+		let storeId = param.storeId;
+		let time = param.time;
+		let pnum = param.pnum;
+		
+		return new Promise(function(resolve, reject){
+			
+			$.getJSON("/dealight/reservation/rsvdavailcheck/"+storeId+"/"+time+"/"+pnum+".json",
+					function(data){
+						resolve(data);
+				});
+		});
+	}  */
+	
+	//예약 가능여부 체크
+	function isRsvdAvailChecked(param, callback, error){
+		
+		let storeId = param.storeId;
+		let time = param.time;
+		let pnum = param.pnum;
+
+		$.getJSON("/dealight/reservation/rsvdavailcheck/"+storeId+"/"+time+"/"+pnum+".json",
+				function(data){
+					 if(callback){
+						callback(data);
+					}
+					
+			}).fail(function(xhr,status, err){
+				if(error){
+					error();
+				}
+			});
+	}
+	
+	function Menus() {
+
+		//json 배열[{menusId:menusId, menusNm:menusNm, amt:amt},{...},{...}]
+		this.arrAllMenus = new Array();//상품 목록
+		this.arrSelMenus = new Array();//선택한 상품 목록
+
+		var p = this;
+
+		//상품 추가 시
+		this.select = function(trgtMenusId) {
+
+			var selectedIndex = -1;
+
+			//전체 목록 배열에서 검색하여 menusId가 없다면 선택 목록에 push후 container안에 그려준다.
+
+			//선택 목록에서 검색
+			for (var i = 0; i < p.arrSelMenus.length; i++) {
+
+				if (p.arrSelMenus[i].menusId == trgtMenusId) {
+					selectedIndex = i;
+					break;
 				}
 			}
 
+			if (selectedIndex < 0) {//선택목록에 없을 경우 추가. 잇을경우 얼럿.
+				//전체목록에서 선택 추가해줌.
+				for (var j = 0; j < p.arrAllMenus.length; j++) {
+
+					if (p.arrAllMenus[j].menusId == trgtMenusId) {
+						p.arrSelMenus.push(p.arrAllMenus[j]);
+						p.arrSelMenus[p.arrSelMenus.length - 1].cnt = 1;//무조건 개수 초기화
+						p.appendChoiceDiv(p.arrAllMenus[j]);
+						break;
+					}
+				}
+			} else {
+				alert("이미 추가한 상품입니다.");
+			}
+			p.afterProc();
 		}
 
-		var menus = new Menus();
+		//상품 제거 시
+		this.deselect = function(trgtMenusId) {
 
-		//jstl로 전체 상품 목록 미리 세팅<select id="menu" onchange="mySelect()" >
+			var selectedIndex = -1;
 
-		<c:forEach items="${store.bstore.menus }" var="menus">
-		menus.arrAllMenus.push({
-			menusId : "${menus.menuSeq}",
-			menusUnprc : "${menus.price}",
-			menusNm : "${menus.name }",
-			cnt : 0
-		});
-		</c:forEach>
+			//배열에서 검색.
+			for (var i = 0; i < p.arrSelMenus.length; i++) {
 
-		$('#btnAddMenus').on('click', function() {
-			menus.select($('#menu option:selected').val());
-		});
-		const reserveForm =$("#reserveForm");
-		const reserve =$("#reserve");
-		const pnum =$("#pnum");
-		var submitted = false;
-		$("#reserveForm button").on("click", function(e) {
-			  if(submitted == true) { return; }
-			//1.기존 이벤트(페이지 이동)를 막는다
-			e.preventDefault();
-			
-			//2.이벤트 막고 하고 싶은거
-			//2.1 페이지 이동시 다음페이지에 데이터를 넘길 수 있도록 input hidden에 선택된 메뉴 수량 넣음
-			//시간
-			if (menus.arrSelMenus.length === 0) {
-				alert("메뉴가 선택되지않았습니다");
-				return;
+				if (p.arrSelMenus[i].menusId == trgtMenusId) {
+					p.removeChoiceDiv(p.arrSelMenus[i]);
+					p.arrSelMenus.splice(i, 1);
+					break;
+				}
 			}
-			
-			if($("#num option:selected").val() === ""){
-				alert("인원수를 선택해 주세요");
-				return;
-			}
-			if($("#time option:selected").val() === ""){
-				alert("예약시간을 선택해 주세요");
-				return;
-			}
-			
-			const personNum = '<input type="hidden" name=pnum value="'+$("#num option:selected").val()+'">'; 
-			reserveForm.append(personNum);
-			const reserveTime = '<input type="hidden" name=time value="'+$("#time option:selected").val()+'">'; 
-			reserveForm.append(reserveTime);
-			//3. 2에서 하고 싶은 거 실행 후  submit()
-
-			for (let i = 0; i < menus.arrSelMenus.length; i++) {
-				if(menus.arrSelMenus[i].cnt === 0){
-					alert("메뉴 수량을 선택해주세요");
-				return; 
-			}
-				//메뉴이름
-				const menuNm = '<input type="hidden" name=menu['+i+'].name value="'+menus.arrSelMenus[i].menusNm+'">'; 
-				reserveForm.append(menuNm);
-				const menuPrice = '<input type="hidden" name=menu['+i+'].price value="'+menus.arrSelMenus[i].menusUnprc+'">'; 
-				reserveForm.append(menuPrice);
-				const menuQty = '<input type="hidden" name=menu['+i+'].qty value="'+menus.arrSelMenus[i].cnt+'">'; 
-				reserveForm.append(menuQty);
-				
-			}
-
-			submitted =true;
-			reserveForm.submit();
+			p.afterProc();
+		}
 		
-		});
-		
+		//핫딜 상품 제거 시
+		this.htdlDeSelect = function(trgtMenusId) {
+
+			var selectedIndex = -1;
+			//배열에서 검색.
+			for (var i = 0; i < p.arrSelMenus.length; i++) {
+				if (p.arrSelMenus[i].htdlId == trgtMenusId) {
+					p.arrSelMenus.splice(i, 1);
+					break;
+				}
+			}
+			p.afterProc();
+		}
+
+		this.appendChoiceDiv = function(prmtObj) {
+
+			var innerHtml = "";
+
+			innerHtml += '<div id="div_'+prmtObj.menusId+'">';
+			innerHtml += '	<span>' + prmtObj.menusNm + '</span>';
+			innerHtml += '	<input  type="text" id="input_sumAmt_'+prmtObj.menusId+'" name="" value="0" readonly ="readonly"/>'
+			innerHtml += '	<br><button type="button" id="" class="add" name="" onclick="menus.minus(\''
+					+ prmtObj.menusId + '\');">-</button>';
+			innerHtml += '	<input style=width:30px; type="text" id="input_cnt_'+prmtObj.menusId+'" name="" value="0" readonly ="readonly"/>'
+			innerHtml += '	<button  type="button" id="" class="remove" name="" onclick="menus.plus(\''
+					+ prmtObj.menusId + '\');">+</button>';
+			innerHtml += '	<button type="button" id="" class="remove" name="" onclick="menus.deselect(\''
+					+ prmtObj.menusId + '\');">X</button>';
+			innerHtml += '</div>';
+			$('#container').append(innerHtml);
+
+		}
+		this.removeChoiceDiv = function(prmtObj) {
+			$("#div_" + prmtObj.menusId).remove();
+		}
+
+		this.plus = function(trgtMenusId) {
+
+			for (var i = 0; i < p.arrSelMenus.length; i++) {
+
+				if (p.arrSelMenus[i].menusId == trgtMenusId) {
+					if (p.arrSelMenus[i].cnt >= 10) {
+						alert("최대수량입니다.");
+						break;
+					}
+
+					p.arrSelMenus[i].cnt++;
+					break;
+				}
+			}
+
+			p.afterProc();
+		}
+
+		this.minus = function(trgtMenusId) {
+
+			for (var i = 0; i < p.arrSelMenus.length; i++) {
+
+				if (p.arrSelMenus[i].menusId == trgtMenusId) {
+					if (p.arrSelMenus[i].cnt == 1) {
+						alert("최소수량입니다.");
+						break;
+					}
+					p.arrSelMenus[i].cnt--;
+					break;
+				}
+			}
+
+			p.afterProc();
+		}
+
+		//계산 후처리.
+		this.afterProc = function() {
+
+			for (var i = 0; i < p.arrSelMenus.length; i++) {
+				$('#input_cnt_' + p.arrSelMenus[i].menusId).val(
+						p.arrSelMenus[i].cnt);
+				$('#input_sumAmt_' + p.arrSelMenus[i].menusId).val(
+						p.arrSelMenus[i].cnt * p.arrSelMenus[i].menusUnprc);
+			}
+
+			var menusTotAmt = 0;
+			for (var i = 0; i < p.arrSelMenus.length; i++) {
+				menusTotAmt += p.arrSelMenus[i].cnt
+						* p.arrSelMenus[i].menusUnprc;
+			}
+			if (menusTotAmt == 0) {
+				$('#menusTotAmtSumMsg').text("");
+				$('#menusTotAmt').text("");
+
+			} else {
+				$('#menusTotAmtSumMsg').text("총금액");
+				$('#menusTotAmt').text(menusTotAmt);
+
+			}
+		}
+
+	}
+
+	$('#btnAddMenus').on('click', function() {
+		menus.select($('#menu option:selected').val());
+	});
+	const reserveForm = $("#reserveForm");
+	const reserve = $("#reserve");
+	const pnum = $("#pnum");
+	const reserveFormObj = $("#reserveFormObj");
 	
+	$("#reserveForm button")
+			.on("click", function(e) {
+				
+						//1.기존 이벤트(페이지 이동)를 막는다
+						e.preventDefault();
+
+						if(paramUserId === null){
+							alert("로그인 후 서비스를 이용해 주세요.");
+							return;
+						}
+						//시간,인원 수
+						let time = $("#time option:selected").val();
+						let pnum = $("#num option:selected").val();
+
+						let RsvdAvailChecked = false;
+						
+						//예약 가능여부 체크
+						isRsvdAvailChecked({storeId: storeId, time: time, pnum: pnum},
+								function(data){
+							console.log("reserve avail check: " + data);
+							
+							RsvdAvailChecked = data;
+							
+							
+							
+						});
+						
+						
+						//해당 핫딜 구매했는지 체크
+						if(paramHtdlId != null && paramUserId != null){
+							
+							isHtdlPayExistChecked({userId : paramUserId, htdlId: paramHtdlId},
+									function(result){
+								
+								console.log("===========hotdeal pay check: "+ result);
+								isHtdlPayHistory = result;
+								
+								if(!isHtdlPayHistory && paramHtdlId != null){
+									alert('이미 핫딜 상품을 구매하셨습니다. 감사합니다');
+									return;
+								}
+								
+							});
+						}
+						
+						//2.이벤트 막고 하고 싶은거
+						//2.1 페이지 이동시 다음페이지에 데이터를 넘길 수 있도록 input hidden에 선택된 메뉴 수량 넣음
+						//시간
+						
+						if (menus.arrSelMenus.length === 0) {
+							alert("메뉴가 선택되지않았습니다");
+							return;
+						}
+
+						if ($("#num option:selected").val() === "") {
+							alert("인원수를 선택해 주세요");
+							return;
+						}
+						
+						if ($("#time option:selected").val() === "") {
+							alert("예약시간을 선택해 주세요");
+							return;
+						}
+						
+						
+							
+						/* isRsvdAvailChecked({storeId: storeId, time: time, pnum: pnum})
+							.then(function(result){
+								console.log("reserve avlail check: " + result);
+								
+								RsvdAvailChecked = result;
+						});
+						 */
+						
+
+						const personNum = '<input type="hidden" name=pnum value="'
+								+ $("#num option:selected").val() + '">';
+								reserveFormObj.append(personNum);
+						const reserveTime = '<input type="hidden" name=time value="'
+								+ $("#time option:selected").val() + '">';
+								reserveFormObj.append(reserveTime);
+						//3. 2에서 하고 싶은 거 실행 후  submit()
+
+						for (let i = 0; i < menus.arrSelMenus.length; i++) {
+
+							if (menus.arrSelMenus[i].cnt === 0) {
+								alert("메뉴 수량을 선택해주세요");
+								return;
+							}
+							
+							//핫딜번호
+							if(paramHtdlId != null){
+								const htdlIdInput = '<input type="hidden" name="htdlId" value="'+paramHtdlId+'">';
+								reserveFormObj.append(htdlIdInput);
+								
+							}
+							
+							
+							//메뉴이름
+							const menuNm = '<input type="hidden" name=menu['+i+'].name value="'+menus.arrSelMenus[i].menusNm+'">';
+							reserveFormObj.append(menuNm);
+							const menuPrice = '<input type="hidden" name=menu['+i+'].price value="'+menus.arrSelMenus[i].menusUnprc+'">';
+							reserveFormObj.append(menuPrice);
+							const menuQty = '<input type="hidden" name=menu['+i+'].qty value="'+menus.arrSelMenus[i].cnt+'">';
+							reserveFormObj.append(menuQty);
+
+						}
+						
+						setTimeout(()=>{
+							if(RsvdAvailChecked){
+								reserveFormObj.submit();
+							}
+							else{
+								let storeIdTag = $("input[name='storeId']").clone();
+								reserveFormObj.empty();
+								reserveFormObj.append(storeIdTag);
+								alert('선택하신 현재 인원은 예약이 불가합니다. 죄송합니다.');
+								return;
+							}
+						}, 200);
+						
+					});
+
 	const waitingForm = $("#waitingForm");
-	$(document).ready(function() {
-		
- 			$("#waitingForm button").on("click",function(e) {
- 				 if(submitted == true) { return; }
-			//1.기존 이벤트(페이지 이동)를 막는다
-			e.preventDefault();
-			//2.이벤트 막고 하고 싶은거
-			//2.1 페이지 이동시 다음페이지에 데이터를 넘길 수 있도록 input hidden에 선택된 메뉴 수량 넣음
-			//시간
-			if($("#waitingNum option:selected").val() === ""){
-				alert("인원수를 선택해주세요");
-				return;
-			}
-			const watingPersonNum = '<input type="hidden" name=pnum value="'
-					+ $("#waitingNum option:selected").val() + '">';
-			waitingForm.append(watingPersonNum);
+	$(document)
+			.ready(
+					function() {
 
-			submitted=true;
-			waitingForm.submit();
+						$("#waitingForm button")
+								.on("click", function(e) {
+											if (submitted == true) {
+												return;
+											}
+											//1.기존 이벤트(페이지 이동)를 막는다
+											e.preventDefault();
+											//2.이벤트 막고 하고 싶은거
+											//2.1 페이지 이동시 다음페이지에 데이터를 넘길 수 있도록 input hidden에 선택된 메뉴 수량 넣음
+											//시간
+											if ($("#waitingNum option:selected")
+													.val() === "") {
+												alert("인원수를 선택해주세요");
+												return;
+											}
+											const watingPersonNum = '<input type="hidden" name=pnum value="'
+													+ $(
+															"#waitingNum option:selected")
+															.val() + '">';
+											waitingForm.append(watingPersonNum);
 
-			//waitingForm.submit();
-		});
-		
-		});
-	</script>
+											submitted = true;
+											waitingForm.submit();
+
+											//waitingForm.submit();
+										});
+
+					});
+</script>
 	
 	<!-- 예약/웨이팅 탭 -->
 	<script>

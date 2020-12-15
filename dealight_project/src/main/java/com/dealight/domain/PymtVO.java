@@ -1,9 +1,12 @@
 package com.dealight.domain;
 
+import java.util.Date;
+
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
-import javax.validation.constraints.NotBlank;
+import org.springframework.lang.Nullable;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,9 +26,13 @@ public class PymtVO {
     // 예약번호 
 	@NotNull(message = "예약번호는 null일 수 없습니다.")
     private Long rsvdId;
-
-    // 결제수단 
-	@NotBlank
+	
+	// 회원아이디
+	@NotNull
+	private String userId;
+	
+    // 결제수단
+	@Nullable
 	@Length(min = 1, max = 10)
     private String mtd;
 
@@ -38,6 +45,15 @@ public class PymtVO {
     private String stusCd;
 
     // 결제승인번호
+	@Nullable
+    private String aprvNo;
+	
 	@NotNull
-    private int aprvNo;
+	private Date regDate;
+	
+	@NotNull
+	private Date updateDate;
+	@Nullable
+	private Date approvedAt;
+	
 }

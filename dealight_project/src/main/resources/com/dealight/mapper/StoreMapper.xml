@@ -109,6 +109,8 @@
 				<result property="name" column="menu_name" />
 				<result property="recoMenu" column="reco_menu" />
 			</collection>
+			
+			
 			<!-- <collection property="revws" ofType="RevwVO"> <result property="id" 
 				column="id" /> <result property="storeId" column="store_id" /> <result property="rsvdId" 
 				column="rsvd_id" /> <result property="waitId" column="wait_id" /> <result 
@@ -159,6 +161,7 @@
 			<result property="storeId" column="store_id" />
 			<result property="imgSeq" column="img_seq" />
 			<result property="fileName" column="fileName" />
+			<result property="rep" column="rep" />
 		</collection>
 	</resultMap>
 	
@@ -202,6 +205,53 @@
     <collection property="bstore" resultMap="BStoreVO"/>
 </resultMap> -->
 
+<sql id="criteria">
+	<where>
+		<choose>
+			<when test="type == 'I'.toString()">
+				user_id like '%'||#{keyword}||'%'
+			</when>
+			<when test="type == 'S'.toString()">
+				store_nm like '%'||#{keyword}||'%'
+			</when>
+		</choose>
+     </where> 
+     <if test="sortType == 'D'.toString()">
+	 order by store_id
+	 </if>
+</sql>
+
+	<select id="findStoreListWithPaging" resultMap="StoreVO">
+			SELECT
+			    store_id, store_nm, telno, cls_cd, regdate, updatedate
+			FROM
+			(
+			    
+			    SELECT *
+			    FROM
+			    (
+			    SELECT rownum rn, store_id, store_nm, telno, cls_cd, regdate, updatedate
+			    FROM tbl_store
+			    <include refid="criteria"></include>
+			    )
+		<![CDATA[
+			    WHERE store_id > 0
+			    AND rownum <= #{pageNum} * #{amount}
+			)
+			WHERE rn > (#{pageNum} -1) * #{amount}
+		]]>
+	</select>
+	
+	<select id="getTotalCnt" resultType="int">
+		SELECT COUNT(*)
+		FROM
+		(
+		SELECT *
+        FROM tbl_store
+		<include refid="criteria"></include>
+		)
+		WHERE store_id > 0
+	</select>
 
 	<select id="findByUserId" resultType="com.dealight.domain.StoreVO">
 		SELECT
@@ -216,7 +266,7 @@
 		select s.store_id,s.store_nm,
 		n.biz_tm,n.menu,
 		e.like_tot_num,
-		i.img_seq,i.fileName,
+		i.img_seq,i.fileName
 		l.lat, l.lng
 		from tbl_store
 		s,tbl_nstore n, tbl_store_loc l, tbl_store_eval e,
@@ -236,12 +286,12 @@
 		select
 		s.store_id,s.store_nm,s.telno,
 		l.addr,l.lat,l.lng,
-		e.avg_rating,e.revw_tot_num,e.like_tot_num,
+		ROUND(e.avg_rating,2) avg_rating,e.revw_tot_num,e.like_tot_num,
 		i.img_seq,i.fileName,
 		b.buser_id,b.seat_stus_cd,b.open_tm,b.close_tm, b.break_sttm,
 		b.break_entm,b.last_ord_tm,b.n1_seat_no,b.n2_seat_no,b.n4_seat_no,b.store_intro,b.avg_meal_tm,b.hldy,b.acm_pnum,
 		h.htdl_id,h.name,h.dc_rate,h.start_tm,h.end_tm,h.lmt_pnum,h.intro,h.bef_price,h.ddct,h.cur_pnum,h.stus_cd,
-		m.menu_seq,m.name menu_name,m.price,m.img_url, menu_img,m.reco_menu,
+		m.menu_seq,m.name menu_name, m.price,m.img_url menu_img, m.reco_menu,
 		t.tag_nm,
 		w.wait_tot
 		from tbl_store s,tbl_store_loc l,tbl_store_eval e,
@@ -250,21 +300,25 @@
 		select
 		store_id,count(wait_id) wait_tot
 		from tbl_wait
-		where wait_stus_cd='W'
+		where
+		wait_stus_cd='W'
 		GROUP by store_id)w
 		where s.store_id = l.store_id
-		and s.store_id
+		and
+		s.store_id
 		=i.store_id(+)
 		and s.store_id = b.store_id
-		and s.store_id =e.store_id
+		and s.store_id
+		=e.store_id
 		and s.store_id =
 		h.store_id(+)
 		and s.store_id = m.store_id(+)
 		and
 		s.store_id = t.store_id(+)
 		and s.store_id = w.store_id(+)
-		and s.store_id
-		=#{storeId}
+		and
+		s.store_id
+		= #{storeId}
 	</select>
 	
 	
@@ -296,7 +350,7 @@
   			   b.buser_id, b.brch, b.rep_menu, b.rep_img, b.seat_stus_cd,
   			   b.open_tm, b.close_tm, b.break_sttm, b.break_entm, b.last_ord_tm, 
   			   b.n1_seat_no, b.n2_seat_no, b.n4_seat_no, b.store_intro, b.avg_meal_tm, b.hldy, b.acm_pnum, 
-  			   e.avg_rating, e.revw_tot_num, e.like_tot_num
+  			   ROUND(e.avg_rating,2) avg_rating, e.revw_tot_num, e.like_tot_num
   		from tbl_store s , tbl_bstore b, tbl_store_loc l, tbl_store_eval e
   		where s.store_id = #{storeId} 
   		  and s.store_id = b.store_id 
@@ -321,7 +375,7 @@
   			   b.buser_id, b.brch, b.rep_menu, b.rep_img, b.seat_stus_cd, b.open_tm, 
   			   b.close_tm, b.break_sttm, b.break_entm, b.last_ord_tm, b.n1_seat_no, 
   			   b.n2_seat_no, b.n4_seat_no, b.store_intro, b.avg_meal_tm, b.hldy, b.acm_pnum,
-  			   e.avg_rating, e.revw_tot_num, e.like_tot_num
+  			   ROUND(e.avg_rating,2) avg_rating, e.revw_tot_num, e.like_tot_num
   		from tbl_store s , tbl_bstore b, tbl_store_loc l, tbl_store_eval e
   		where s.store_id = b.store_id 
   		  and s.store_id = l.store_id 
@@ -370,5 +424,11 @@
 		AND s.store_id = l.store_id
 		AND s.store_id = #{storeId}
 	</select>
+	
+	<update id="suspendStore">
+		UPDATE tbl_store
+		SET cls_cd = 'I'
+		WHERE store_id = #{storeId}
+	</update>
 
 </mapper>

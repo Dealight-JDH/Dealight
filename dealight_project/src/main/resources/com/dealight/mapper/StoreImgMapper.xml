@@ -8,8 +8,8 @@
 <mapper namespace="com.dealight.mapper.StoreImgMapper">
 
 <insert id="insert">
-insert into tbl_store_img (store_id, img_seq, uuid, uploadpath,image,filename)
-values(#{storeId}, seq_img.nextval ,#{uuid},#{uploadPath},#{image},#{fileName})
+insert into tbl_store_img (store_id, img_seq, uuid, uploadpath,image,filename,rep)
+values(#{storeId}, seq_img.nextval ,#{uuid},#{uploadPath},#{image},#{fileName},#{rep})
 </insert>
 
 <delete id="delete">
@@ -40,7 +40,8 @@ where store_id = #{storeId}
 			uuid,
 			uploadpath,
 			image,
-			filename
+			filename,
+			rep
 			)
 			VALUES
 				(
@@ -49,7 +50,8 @@ where store_id = #{storeId}
 				#{storeImg.uuid},
 				#{storeImg.uploadPath},
 				#{storeImg.image},
-				#{storeImg.fileName}
+				#{storeImg.fileName},
+				#{storeImg.rep}
 				)
 			</foreach>
 			SELECT * FROM dual

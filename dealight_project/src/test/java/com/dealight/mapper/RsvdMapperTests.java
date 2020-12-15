@@ -35,6 +35,15 @@ public class RsvdMapperTests {
 	//TODO 예약 상세 테스트
 	
 	@Test
+	public void testCheckExistHtdl() {
+		String userId = "whddn528";
+		Long htdlId = 13l;
+		int count = mapper.checkExistHtdl(userId, htdlId);
+		
+		log.info("htdl exist count: " + count);
+	}
+	
+	@Test
 	public void updateRsvdAvail() {
 		log.info("update rsvdAvail...");
 		Long storeId = 3l; 
@@ -157,7 +166,7 @@ public class RsvdMapperTests {
 		RsvdVO vo = RsvdVO.builder()
 							.storeId(3l)
 							.userId("whddn528")
-							.aprvNo(202011073583l)
+							.aprvNo("202011073583l")
 							.pnum(2)
 							.time("18:00")
 							.stusCd("C")
@@ -216,7 +225,7 @@ public class RsvdMapperTests {
 	public void testUpdate() {
 		Long id = 4l;
 		Long htdlId = 3l;
-		Long aprvNo = 202011075392l;
+		String aprvNo = "202011075392l";
 		int pnum = 4;
 		String time = "14:00";
 		String stusCd = "C";
@@ -267,7 +276,7 @@ public class RsvdMapperTests {
 		RsvdVO vo = RsvdVO.builder()
 							.storeId(2l)
 							.userId("whddn528")
-							.aprvNo(20201111l)
+							.aprvNo("20201111l")
 							.pnum(4)
 							.time("12:00")
 							.stusCd("L")

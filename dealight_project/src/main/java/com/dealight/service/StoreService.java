@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.dealight.domain.AllStoreVO;
 import com.dealight.domain.BStoreVO;
+import com.dealight.domain.Criteria;
 import com.dealight.domain.MenuVO;
+import com.dealight.domain.StoreEvalVO;
 import com.dealight.domain.StoreImgVO;
 import com.dealight.domain.StoreLocVO;
 import com.dealight.domain.StoreVO;
@@ -82,5 +84,13 @@ public interface StoreService {
 	public StoreVO findStoreWithLocByStoreId(Long storeId);
 	
 	public StoreVO findStoreWithBStoreAndLocByStoreId(Long storeId);
+	
+	boolean suspendStore(Long storeId);
+	
+	List<StoreVO> findStoreListWithPaging(Criteria cri);
+	
+	int getTotalCnt(Criteria cri);
+	
+	StoreEvalVO getEval(Long storeId);
 	
 }

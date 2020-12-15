@@ -57,6 +57,12 @@
 			 WHERE h.htdl_id = d.htdl_id and h.store_id = e.store_id and h.htdl_id = #{htdlId}
 		</select>
 		
+		<select id="findHtdlDtlsById" parameterType="long" resultMap="HtdlDetail">
+			select h.htdl_Id, h.bef_price, h.ddct, d.htdl_seq, d.menu_name
+			from tbl_htdl h, tbl_htdl_dtls d
+			where h.htdl_id = d.htdl_id and h.htdl_id = #{htdlId}
+		</select>
+		
 		<!-- <select id="selectHtdlVoById" parameterType="long" resultMap="HtdlDetail">
 			SELECT h.*, d.*
 		      FROM tbl_htdl h, tbl_htdl_dtls d
@@ -73,7 +79,7 @@
 		</select>
 		
 		<insert id="insertRslt">
-			insert into tbl_htdl_rslt 
+			insert into tbl_htdl_rslt (htdl_id, store_id, last_pnum, htdl_lmt_pnum, rsvd_rate, elap_tm, regdate, updatedate)
 			values( #{htdlId}, #{storeId},#{lastPnum}, #{htdlLmtPnum}, #{rsvdRate}, #{elapTm}, sysdate +9/24, sysdate+9/24)
 		</insert>
 				
@@ -206,6 +212,11 @@
 			delete from tbl_htdl where htdl_id = #{htdlId}
 		</delete>
 		
+		<update id="curPnumUpdate">
+			update tbl_htdl
+			set cur_pnum = #{curPnum}
+			where htdl_id = #{htdlId}
+		</update>
 		<update id="update">
 			update tbl_htdl
 			set name = #{name}, dc_rate = #{dcRate}, start_tm = #{startTm}, end_tm = #{endTm}, lmt_pnum = #{lmtPnum}, intro = #{intro}, ddct = #{ddct}, cur_pnum = #{curPnum}, stus_cd = #{stusCd}, updatedate = sysdate + 9/24
@@ -221,7 +232,7 @@
 			select seq_htdl.nextval from dual
 			</selectKey>
 		
-			insert into tbl_htdl 
+			insert into tbl_htdl (htdl_id,name,store_id,htdl_img,dc_rate,start_tm,end_tm,lmt_pnum,intro,bef_price,ddct,cur_pnum,stus_cd,regdate,updatedate,brch)
 			values(#{htdlId}, #{name}, #{storeId}, #{htdlImg}, #{dcRate}, #{startTm},
 			 #{endTm}, #{lmtPnum}, #{intro}, #{befPrice}, #{ddct}, #{curPnum}, #{stusCd}, sysdate + 9/24 , sysdate + 9/24, #{brch})
 		</insert>

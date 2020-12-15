@@ -7,6 +7,14 @@
 <head>
 <meta charset="UTF-8">
 <title>웨이팅 상세</title>
+<!--  common  -->
+<link rel="stylesheet" href="/resources/css/common.css" type ="text/css" />
+<link rel="stylesheet" href="/resources/css/main_footer.css" type ="text/css" />
+<link rel="stylesheet" href="/resources/css/main_header.css" type ="text/css" />
+<link rel="stylesheet" href="/resources/css/alert_manager.css" type ="text/css" />
+<link rel="shortcut icon" href="/resources/icon/favicon.png" type="image/x-icon">
+<link rel="icon" href="/resources/icon/favicon.png" type="image/x-icon">
+<!--  end common  -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
     <style>
         main {
@@ -154,6 +162,7 @@
         <div class="store_info">
             <h2>매장 정보</h2>
             <div>매장 이름 : ${store.storeNm}</div>
+            <div>매장 사진 : <img src='/display?fileName=${store.bstore.repImg}'></div>
             <div id="store_telno">매장 전화번호 : ${store.telno}</div>
             <div id="store_loc">매장 위치</div>
             <div id="map" style="width:500px;height:200px; border: black 1px solid;"></div>
@@ -164,7 +173,7 @@
 <script type="text/javascript">
 let container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
 let options = { //지도를 생성할 때 필요한 기본 옵션
-	center: new kakao.maps.LatLng(${loc.lat}, ${loc.lng}), //지도의 중심좌표.
+	center: new kakao.maps.LatLng(${store.loc.lat}, ${store.loc.lng}), //지도의 중심좌표.
 	level: 3 //지도의 레벨(확대, 축소 정도)
 };
 
@@ -172,13 +181,13 @@ let map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리
 
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 mapOption = { 
-    center: new kakao.maps.LatLng(${loc.lat}, ${loc.lng}), // 지도의 중심좌표
+    center: new kakao.maps.LatLng(${store.loc.lat}, ${store.loc.lng}), // 지도의 중심좌표
     level: 3 // 지도의 확대 레벨
 };
 
 
 //마커가 표시될 위치입니다 
-var markerPosition  = new kakao.maps.LatLng(${loc.lat}, ${loc.lng}); 
+var markerPosition  = new kakao.maps.LatLng(${store.loc.lat}, ${store.loc.lng}); 
 
 //마커를 생성합니다
 var marker = new kakao.maps.Marker({
@@ -191,5 +200,6 @@ marker.setMap(map);
 //아래 코드는 지도 위의 마커를 제거하는 코드입니다
 //marker.setMap(null);    
 </script>
+<%@include file="../../../../includes/mainFooter.jsp" %>
 </body>
 </html>

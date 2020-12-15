@@ -11,7 +11,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.StoreVO;
 
 import lombok.Setter;
@@ -197,7 +199,86 @@ public class StoreMapperTests {
 		assertNotNull(store);
 		assertNotNull(store.getBstore());
 		assertNotNull(store.getLoc());
+	}
+	
+	@Transactional
+	@Test
+	public void suspendStoreTest1() {
 		
+		storeId = 1L;
+		
+		StoreVO store = mapper.findByIdJoinBStore(storeId);
+		
+		log.info("before store cls cd : " + store.getClsCd());
+		
+		
+		int result = mapper.suspendStore(storeId);
+		
+		assertTrue(result == 1);
+		
+		store = mapper.findByIdJoinBStore(storeId);
+		
+		assertTrue(store.getClsCd().equals("I"));
+		
+		log.info("after store cls cd : " + store.getClsCd());
+		
+	}
+	
+	
+	@Test
+	public void getTotalCntTest1() {
+		
+		int pageNum = 1;
+		int amount = 5;
+		
+		Criteria cri = new Criteria(pageNum,amount);
+		
+		int result = mapper.getTotalCnt(cri);
+		
+		log.info("result : "+result);
+		
+	}
+	
+	@Test
+	public void findStoreListWithPagingTest1() {
+		
+		int pageNum = 1;
+		int amount = 5;
+		
+		Criteria cri = new Criteria(pageNum,amount);
+		
+		List<StoreVO> list = mapper.findStoreListWithPaging(cri);
+		
+		list.stream().forEachOrdered(store -> {
+			
+			log.info("store : "+store);
+			
+		});
+		
+		assertTrue(list.size() == amount);
+		
+	}
+	
+	@Test
+	public void findStoreListWithPagingTest2() {
+		
+		int pageNum = 1;
+		int amount = 5;
+		String type = "S";
+		String keyword = "버거";
+		
+		Criteria cri = new Criteria(pageNum,amount);
+		cri.setType(type);
+		cri.setKeyword(keyword);
+		
+		List<StoreVO> list = mapper.findStoreListWithPaging(cri);
+		
+		list.stream().forEachOrdered(store -> {
+			
+			log.info("store : "+store);
+			assertTrue(store.getStoreNm().contains(keyword));
+			
+		});
 		
 	}
 

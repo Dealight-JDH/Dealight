@@ -48,5 +48,7 @@ public class StoreVO {
 	    private int curRsvdNum;
 	    private int curWaitNum;
 	    
+	    private boolean isLike;
+	    
 	   
 }

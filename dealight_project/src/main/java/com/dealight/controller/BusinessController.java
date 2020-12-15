@@ -172,14 +172,11 @@ public class BusinessController {
 			int waitTime = waitService.calWaitingTime(curStoreWaitiList, wait.getWaitId(), 15);
 			
 			// 해당 매장의 위치정보를 가져온다.
-			StoreLocVO loc = storeService.getStoreLoc(wait.getStoreId());
-			
-			StoreVO store = storeService.getStore(wait.getStoreId());
+			StoreVO store = storeService.findStoreWithBStoreAndLocByStoreId(wait.getStoreId());
 			
 			model.addAttribute("wait",wait);
 			model.addAttribute("order",order);
 			model.addAttribute("waitTime", waitTime);
-			model.addAttribute("loc",loc);
 			model.addAttribute("store",store);
 			
 			return "/dealight/business/manage/waiting/waiting";

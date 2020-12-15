@@ -1,5 +1,8 @@
 package com.dealight.controller;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,11 +13,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.AdminPageDTO;
+import com.dealight.domain.BStoreVO;
 import com.dealight.domain.BUserVO;
 import com.dealight.domain.Criteria;
+import com.dealight.domain.RsvdVO;
+import com.dealight.domain.StoreEvalVO;
+import com.dealight.domain.StoreImgVO;
+import com.dealight.domain.StoreLocVO;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserVO;
 import com.dealight.service.AdminService;
+import com.dealight.service.StoreService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -26,6 +35,8 @@ import lombok.extern.log4j.Log4j;
 public class AdminController {
 
 	private AdminService service;
+	
+	private StoreService storeService;
 
 	@GetMapping("/main")
 	public void adminMain() {
@@ -142,10 +153,23 @@ public class AdminController {
 
 	//-----------------------------매장관리
 	@GetMapping("/storemanage")
-	public String storeList(Model model) {
-		log.info("get store List....................");
+	public String storeList(Model model,Criteria cri) {
 		
-		model.addAttribute("list", service.getStroeList());
+		log.info("store manage view......................");
+		
+		log.info("store manage view...................... cri : " + cri);
+		
+		if(cri == null || cri.getPageNum() < 1)
+			cri = new Criteria(1, 10);
+		
+		List<StoreVO> storeList = storeService.findStoreListWithPaging(cri);
+		int total = storeService.getTotalCnt(cri);
+		
+		log.info(cri);
+		log.info("total : " + total);
+		
+		model.addAttribute("storeList", storeList);
+		model.addAttribute("pageMaker", new AdminPageDTO(cri, total));
 		
 		return "/dealight/admin/storemanage/list";
 	}
@@ -154,7 +178,7 @@ public class AdminController {
 	public String registerStore(StoreVO store, RedirectAttributes rttr) {
 		log.info("register : " + store);
 		
-		service.registerStore(store);
+		storeService.register(store);
 		
 		return "redirect:/dealight/admin/storemanage";
 	}
@@ -169,7 +193,16 @@ public class AdminController {
 		log.info("get by storeId : " + storeId);
 		
 		if(clsCd.equals("B")) {
-			model.addAttribute("store", service.readStore(storeId));
+			
+			List<StoreImgVO> imgs = storeService.getStoreImageList(storeId);
+			
+			log.info("imgs : "+imgs);
+			
+			StoreVO store = service.readStore(storeId);
+			
+			store.setImgs(imgs);
+			
+			model.addAttribute("store", store);
 			return "dealight/admin/storemanage/getbstore";
 		}
 		
@@ -182,7 +215,9 @@ public class AdminController {
 		log.info("get by storeId : " + storeId);
 		
 		if(clsCd.equals("B")) {
-			model.addAttribute("store", service.readStore(storeId));
+			StoreVO store = service.readStore(storeId);
+			store.setImgs(storeService.getStoreImageList(storeId));
+			model.addAttribute("store", store);
 			return "dealight/admin/storemanage/modifybstore";
 		}
 		
@@ -198,15 +233,21 @@ public class AdminController {
 		if(service.modifyStore(store))
 			rttr.addFlashAttribute("result", "success");
 		
-		return "redirect:/dealight/admin/storemanage";
+		
+		rttr.addFlashAttribute("storeId",store.getStoreId());
+		rttr.addFlashAttribute("clsCd",store.getClsCd());
+		return "redirect:/dealight/admin/storemanage/get?storeId=" + store.getStoreId() + "&clsCd=" +store.getClsCd();
 	}
 	
-	@PostMapping("/storemanage/delete")
+	@PostMapping("/storemanage/suspend")
 	public String deleteStore(@RequestParam("storeId") long storeId, RedirectAttributes rttr) {
 		log.info("delete store : " + storeId);
 		
-		if(service.deleteStore(storeId))
-			rttr.addFlashAttribute("result", "success");
+		if(storeService.suspendStore(storeId)) {
+			rttr.addFlashAttribute("msg", "변경이 성공하였습니다.");
+		} else {
+			rttr.addFlashAttribute("msg","변경이 실패하였습니다.");
+		}
 		
 		return "redirect:/dealight/admin/storemanage";
 	}

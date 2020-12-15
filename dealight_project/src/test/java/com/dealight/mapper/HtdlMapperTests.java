@@ -35,6 +35,14 @@ public class HtdlMapperTests {
 	private HtdlMapper mapper;
 	
 	@Test
+	public void testfindHtdlDtlsById() {
+		Long htdlId = 185l;
+		
+		HtdlVO vo = mapper.findHtdlDtlsById(htdlId);
+		
+		log.info("============="+ vo);
+	}
+	@Test
 	public void testSearch() {
 		
 		HtdlCriteria hCri = new HtdlCriteria(1,30);

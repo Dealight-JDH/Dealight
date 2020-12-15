@@ -9,7 +9,7 @@ import com.dealight.domain.LikeVO;
 
 public interface LikeMapper {
 	
-	void insert(LikeVO like);
+	void insert(@Param("userId") String userId,@Param("storeId") Long storeId);
 	
 	int delete(@Param("userId") String userId,@Param("storeId") Long storeId);
 	

@@ -29,6 +29,7 @@ public class RevwImgVO {
 	String uuid;
 	String uploadPath;
 	boolean image;
+	private String rep;
 	
     private String regdate;
     private String updatedate;
