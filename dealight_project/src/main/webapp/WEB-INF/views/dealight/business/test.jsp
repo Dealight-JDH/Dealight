@@ -21,13 +21,14 @@
 	
 	<div class="well">
 		<h2>예약 등록</h2>
-		<form action="/dealight/store/rsvd" method="post">
+		<form action="/dealight/business/test/rsvd" method="post">
 			예약 인원 : <input type="number" name="pnum"></br>
 			매장 번호 : <input type="number" name="storeId" value="1"></br>
 			핫딜 번호 : <input type="number" name="htdlId"></br>
 			결제 승인 번호 : <input type="number" name="aprvNo" value="1111"></br>
 			총 수량 : <input type="number" name="totQty" value="2"></br>
 			총 가격 : <input type="number" name="totAmt" value="16000"></br>
+			시간 : <input name="time" value="13:00">
 			==========================================</br>
 			메뉴 이름 : <input type="text" name="menuNm" value="치킨"></br>
 			메뉴 수량 : <input type="number" name="menuTotQty" value="2"></br>
@@ -38,18 +39,13 @@
 	
 	<div class="well">
 		<h2>핫딜 제안</h2>
-		<form action="/dealight/store/rsvd" method="post">
-			예약 인원 : <input type="number" name="pnum"></br>
+		<form action="/dealight/business/test/htdl" method="post">
+			핫딜 이름 : <input type="text" name="name"></br>
 			매장 번호 : <input type="number" name="storeId" value="1"></br>
-			핫딜 번호 : <input type="number" name="htdlId"></br>
-			결제 승인 번호 : <input type="number" name="aprvNo" value="1111"></br>
-			총 수량 : <input type="number" name="totQty" value="2"></br>
-			총 가격 : <input type="number" name="totAmt" value="16000"></br>
-			==========================================</br>
-			메뉴 이름 : <input type="text" name="menuNm" value="치킨"></br>
-			메뉴 수량 : <input type="number" name="menuTotQty" value="2"></br>
-			메뉴 가격 : <input type="number" name="menuPrc" value="16000"></br>
-			<button type="submit">예약 등록</button>
+			할인률 : <input type="number" name="dcRate" value="10"></br>
+			시작 시간 : <input type="text" name="startTm" value="13:00"></br>
+			종료 시간 : <input type="text" name="endTm" value="14:00"></br>
+			<button type="submit">핫딜 제안하기</button>
 		</form>
 	</div>
 	

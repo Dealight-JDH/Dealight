@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
+<script src="/resources/js/Rater.js"></script>
 </head>
 <body>
     <main class="mypage_wrapper">
@@ -242,11 +243,22 @@ window.onload = function () {
     		strRevw += "<h5>평점 : "+revw.rating+"</h5>";
     		strRevw += "<h5>답글 내용 : "+revw.replyCnts+"</h5>";
     		strRevw += "<h5>답글 등록 날짜 : "+revw.replyRegDt+"</h5>";
+    		strRevw += "<div class='rating' data-rate-value='"+revw.rating+"'></div>";
     		strRevw += "<h5>리뷰 사진</h5>";
     		for(let i = 0; i < revw.imgs.length; i++)
     			if(revw.imgs[i].fileName !== null) strRevw += "<img src='/display?fileName="+encodeURIComponent(revw.imgs[i].uploadPath+"/s_"+revw.imgs[i].uuid+"_"+revw.imgs[i].fileName)+"'>";
     		
     		revwInfoUL.html(strRevw);
+    		
+    		/* Rater.js 로직*/
+	        $(".rating").rate({
+	            max_value: 5,
+	            step_size: 0.5,
+	            initial_value: 3,
+	            selected_symbol_type: 'utf8_star', // Must be a key from symbols
+	            cursor: 'default',
+	            readonly: true,
+	        });
     	});
     };
        
@@ -285,6 +297,8 @@ window.onload = function () {
     		strStoreInfo += "<li>매장 좋아요 수 : "+store.eval.likeTotNum+"</l1>";
     		strStoreInfo += "<li>매장 리뷰 수 : "+store.eval.revwTotNum+"</l1>";
     		strStoreInfo += "<li>매장 평균 평점 : "+store.eval.avgRating+"</l1>";
+    		strStoreInfo += "<div class='rating' data-rate-value='"+store.eval.avgRating+"'></div>";
+    		
        		strStoreInfo += "<li>매장 주소 : "+store.loc.addr+"</l1>";
        		
        		modal.find("#map").css("display", "block");
@@ -307,6 +321,17 @@ window.onload = function () {
        		marker.setMap(map);
        		
        		storeInfoUL.html(strStoreInfo);
+       		
+       		/* Rater.js 로직*/
+	        $(".rating").rate({
+	            max_value: 5,
+	            step_size: 0.5,
+	            initial_value: 3,
+	            selected_symbol_type: 'utf8_star', // Must be a key from symbols
+	            cursor: 'default',
+	            readonly: true,
+	        });
+       		
     	    $(".btn_like_pick").on("click",likeAddHandler);
     	    $(".btn_like_cancel").on("click",likeRemoveHandler);
        		
@@ -334,7 +359,9 @@ window.onload = function () {
 	       	strRevwRegForm += "웨이팅 번호 : <input name='waitId' value='"+waitId+"' readonly></br>";
 	       	strRevwRegForm += "회원 아이디 : <input name='userId' value='"+userId+"' readonly></br>";
 	       	strRevwRegForm += "리뷰 내용 : <input type='textarea' name='cnts' id=''></br>";
-	       	strRevwRegForm += "평점 : <input type='number' name='rating' id=''></br>";
+	       	strRevwRegForm += "평점 주기"
+		    strRevwRegForm += "<div class='rating' data-rate-value=3></div>";
+		    strRevwRegForm += "<input name='rating' id='rate_input' hidden>";
 	       	strRevwRegForm += "파일첨부 : <div class='file_body'>"; 
 	       	strRevwRegForm += "<div class='form_img'><input id='js_upload' type='file' name='uploadFile' multiple></div>";
 	       	strRevwRegForm += "<div class='uploadResult'><ul></ul></div></div>";
@@ -344,6 +371,17 @@ window.onload = function () {
 	       	strRevwRegForm += "<button id='submit_revwRegForm'>제출하기</button>";
 	       	
 	       	revwRegFormUL.html(strRevwRegForm);
+	       	
+	       	/* Rater.js 로직*/
+	        $(".rating").rate({
+	            max_value: 5,
+	            step_size: 0.5,
+	            initial_value: 3,
+	            selected_symbol_type: 'utf8_star', // Must be a key from symbols
+	            cursor: 'default',
+	            readonly: false,
+	            update_input_field_name: $("#rate_input")
+	        });
 	       	
 	       	// 리뷰
 	    	// btn id

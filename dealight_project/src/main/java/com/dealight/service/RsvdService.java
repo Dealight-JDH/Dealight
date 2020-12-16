@@ -174,4 +174,5 @@ public interface RsvdService {
 	
 	int getRsvdCompleteCount(String userId, Criteria cri);
 	
+	HashMap<String, String> getTodayRsvdStusByTime(Long storeId);
 }

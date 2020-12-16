@@ -320,6 +320,9 @@
 		  <strong class="alert_tit">핫딜</strong>
 		  <span class="alert_senduser"></span>
 		  <span class="alert_msg">핫딜 관련 notification 입니다.</span>
+		  <span class="alert_dto"></span>
+		  <button class='btnAcceptHtdl'>핫딜 등록</button>
+		  <button class="alert_closebtn">거절</button>
 		</div>
 	
 	<script>

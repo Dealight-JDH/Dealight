@@ -13,3 +13,14 @@ a {
             margin: 0 auto;
             box-shadow: 0 4px 11px rgba(0,0,0,0.1);
         }
+        .rate-base-layer {
+            color: #aaa;
+        }
+        .rating{
+            color: orange;
+            width: 32px;
+            height: 32px;
+        }
+        .rate-hover-layer{
+            opacity: 0.8;
+        }

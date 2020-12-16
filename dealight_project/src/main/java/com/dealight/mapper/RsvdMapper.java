@@ -113,4 +113,7 @@ public interface RsvdMapper {
 	
 	public int getRsvdCount(@Param("userId") String userId, @Param("cri") Criteria cri, @Param("stusCd") String stusCd);
 	
+	HashMap<String, List<Long>> getTodayAvailRsvdMap();
+	
+	
 }

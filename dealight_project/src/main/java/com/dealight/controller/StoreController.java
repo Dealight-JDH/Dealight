@@ -97,62 +97,6 @@ public class StoreController {
 	}
 
 	
-	@PostMapping("/store/rsvd")
-	public String regRsvd(Model model, HttpSession session, RsvdVO rsvd) {
-		
-		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		session.setAttribute("userId", "kjuioq");
-		String userId = (String) session.getAttribute("userId");
-		
-		log.info("register rsvd......................");
-		
-		UserVO user = userService.get(userId);
-		
-		log.info("register rsvd...................... user : " + user);
-		
-		SimpleDateFormat fomater = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		
-		List<RsvdDtlsVO> rsvdDtlsList = new ArrayList<>();
-		
-		RsvdDtlsVO dtls = new RsvdDtlsVO();
-		dtls.setMenuNm("돈까스");
-		dtls.setMenuPrc(7000);
-		dtls.setMenuTotQty(3);
-		
-		rsvdDtlsList.add(dtls);
-		
-		rsvd.setUserId(userId);
-		rsvd.setRevwStus(0);
-		rsvd.setTime(fomater.format(new Date()));
-		rsvd.setStusCd("C");
-		rsvd.setRsvdDtlsList(rsvdDtlsList);
-		
-		log.info("before rsvd.........................."+rsvd);
-		
-		rsvdService.register(rsvd, rsvd.getRsvdDtlsList());
-		
-		log.info("after rsvd.........................."+rsvd);
-		
-		Long storeId = rsvd.getStoreId();
-		Long rsvdId = rsvd.getRsvdId();
-		
-    	ManageSocketHandler handler = ManageSocketHandler.getInstance();
-    	Map<String, WebSocketSession> map = handler.getUserSessions();
-    	WebSocketSession ws = map.get("kjuioq");
-    	if(ws != null) {
-    		TextMessage message = new TextMessage("{\"sendUser\":\""+userId+"\",\"rsvdId\":\""+rsvdId+"\",\"cmd\":\"rsvd\",\"storeId\":\""+storeId+"\"}");
-    		try {
-				handler.handleMessage(ws, message);
-			} catch (Exception e) {
-				
-				log.warn("web socket error...............");
-				e.printStackTrace();
-			}
-    	}
-		
-		return "redirect:/dealight/business/test";
-	}
-	
 	@PostMapping("/store/wait")
 	public String regWait(Model model, HttpSession session,int pnum, Long storeId) {
 		

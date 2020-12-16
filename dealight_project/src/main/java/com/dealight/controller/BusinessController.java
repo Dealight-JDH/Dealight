@@ -1,6 +1,8 @@
 package com.dealight.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,14 +14,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 import com.dealight.domain.BStoreVO;
 import com.dealight.domain.BUserVO;
+import com.dealight.domain.HtdlDtlsVO;
+import com.dealight.domain.HtdlMenuDTO;
+import com.dealight.domain.HtdlRequestDTO;
+import com.dealight.domain.HtdlVO;
+import com.dealight.domain.RsvdDtlsVO;
+import com.dealight.domain.RsvdRequestDTO;
+import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreEvalVO;
 import com.dealight.domain.StoreLocVO;
 import com.dealight.domain.StoreVO;
+import com.dealight.domain.UserVO;
 import com.dealight.domain.UserWithRsvdDTO;
 import com.dealight.domain.WaitVO;
+import com.dealight.handler.ManageSocketHandler;
 import com.dealight.service.BizAuthService;
 import com.dealight.service.CallService;
 import com.dealight.service.HtdlService;
@@ -218,5 +231,93 @@ public class BusinessController {
 			
 			
 			return "/dealight/business/test";
+		}
+		
+		@PostMapping("/test/rsvd")
+		public String test(HttpSession session,RsvdRequestDTO dto) {
+			
+			// 임시로 'kjuioq'의 아이디를 로그인한다.
+			session.setAttribute("userId", "kjuioq");
+			String userId = (String) session.getAttribute("userId");
+			
+			log.info("register rsvd......................");
+			
+			UserVO user = userService.get(userId);
+			
+			log.info("register rsvd...................... user : " + user);
+			
+			List<RsvdDtlsVO> rsvdDtlsList = new ArrayList<>();
+			
+			RsvdVO rsvd = dto.toEntity();
+			
+			RsvdDtlsVO dtls = new RsvdDtlsVO();
+			dtls.setMenuNm("돈까스");
+			dtls.setMenuPrc(7000);
+			dtls.setMenuTotQty(3);
+			
+			rsvdDtlsList.add(dtls);
+			
+			rsvd.setUserId(userId);
+			rsvd.setRevwStus(0);
+			rsvd.setStusCd("C");
+			rsvd.setRsvdDtlsList(rsvdDtlsList);
+			
+			log.info("before rsvd.........................."+rsvd);
+			
+			// rsvd 예약 가능한지 체크
+			
+			rsvdService.register(rsvd, rsvd.getRsvdDtlsList());
+			boolean resultComplete = rsvdService.complete(rsvd.getRsvdId());
+			boolean resultAvail = rsvdService.completeUpdateAvail(rsvd.getStoreId(), dto.getTime(), rsvd.getPnum());
+			
+			log.info("resultComplete : " + resultComplete);
+			log.info("resultAvail : " + resultAvail);
+			
+			log.info("after rsvd.........................."+rsvd);
+			
+			Long storeId = rsvd.getStoreId();
+			Long rsvdId = rsvd.getRsvdId();
+			
+	    	ManageSocketHandler handler = ManageSocketHandler.getInstance();
+	    	Map<String, WebSocketSession> map = handler.getUserSessions();
+	    	WebSocketSession ws = map.get("kjuioq");
+	    	if(ws != null) {
+	    		TextMessage message = new TextMessage("{\"sendUser\":\""+userId+"\",\"rsvdId\":\""+rsvdId+"\",\"cmd\":\"rsvd\",\"storeId\":\""+storeId+"\"}");
+	    		try {
+					handler.handleMessage(ws, message);
+				} catch (Exception e) {
+					
+					log.warn("web socket error...............");
+					e.printStackTrace();
+				}
+	    	}
+			
+			
+			return "redirect:/dealight/business/test";
+		}
+		
+		@PostMapping("/test/htdl")
+		public String regHtdl(HttpSession session,Long storeId, String startTm, String endTm, String htdlName) {
+			
+			log.info("htdl socket.......................................");
+			
+			String userId = (String) session.getAttribute("userId");
+			
+			ManageSocketHandler handler = ManageSocketHandler.getInstance();
+	    	Map<String, WebSocketSession> map = handler.getUserSessions();
+	    	WebSocketSession ws = map.get(userId);
+	    	if(ws != null) {
+	    		TextMessage message = new TextMessage("{\"sendUser\":\""+"dealight"+"\",\"htdlId\":\""+"0"+"\",\"cmd\":\"htdl\",\"storeId\":\""+storeId+"\"}");
+	    		try {
+					handler.handleMessage(ws, message);
+				} catch (Exception e) {
+					
+					log.warn("web socket error...............");
+					e.printStackTrace();
+				}
+	    	}
+			
+			
+			return "redirect:/dealight/business/test";
 		}
 }

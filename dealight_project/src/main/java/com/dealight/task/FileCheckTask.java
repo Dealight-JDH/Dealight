@@ -78,30 +78,6 @@ public class FileCheckTask {
 		
 	}
 	
-	// 새벽 2시가 되면 하루 전(sysdate -1)의 웨이팅을'W' -> 'E'로 변경한다.
-	//@Scheduled(cron="0 10 * * * *")
-	public void waitInit() throws Exception {
-		
-		log.warn("Daily Wait Initialization Task run .....................");
-		
-		int upNum = waitService.waitInit();
-		
-		log.warn("=========================================초기화 웨이팅 : " + upNum);
-		
-	}
-	
-	// 새벽 2시가 되면 일주일 전(sysdate - 7)의 패널티 상태를'Y' -> 'N'로 변경한다.
-	//@Scheduled(cron="0 10 * * * *")
-	public void checkPanaltyDuration() throws Exception {
-		
-		log.warn("Daily Check Panalty Duration Task run .....................");
-		
-		int upNum = userService.checkPanaltyDuration();
-		
-		log.warn("=========================================초기화 웨이팅 : " + upNum);
-		
-	}
-
 	// 새벽 2시가 되면 하루 전(sysdate-1)의 DB의 파일을 체크한다.
 	//@Scheduled(cron="0 0 2 * * *")
 	public void checkFiles() throws Exception{
