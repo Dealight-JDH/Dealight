@@ -103,6 +103,7 @@ a:hover { color: black; text-decoration: none;}
 	<div id="map" style="width:750px;height:700px;" ></div>
 	 <button onclick="moveToUser()">내위치보기</button> 
 	 <button onclick="searchMap()">현재위치애서 검색하기</button>
+	 <c:out value='${userId}'/>
 	MAP API
 	
 	
@@ -131,7 +132,7 @@ a:hover { color: black; text-decoration: none;}
 	function getList(callback,error){
 		$.ajax({
 			type : 'get',
-			url : '/list/',
+			url : '/dealight/getlist',
 			contentType : "application/json; charset=utf-8",
 			data : getObjToForm(actionForm),
 			success : function(result, status, xhr){
@@ -313,7 +314,8 @@ a:hover { color: black; text-decoration: none;}
 			str += "<div>위치 : " + storeList[i].lng + "</div>";
 			str += "<div>위치 : " + storeList[i].lat + "</div>"; */
 			str += "-----------------------------------------------------";
-			str += "<a href='/dealight/store?clsCd=B&storeId="+storeList[i].storeId+" '>"
+			str += "<button id='like' data-storeId='"+storeList[i].storeId+"'  onclick='like()' >좋아요</button>"
+			str += "<a href='/dealight/store/"+storeList[i].storeId+" '>"
 			str += "<div>매장사진 : " + storeList[i].repImg + "</div>";
 			str += "<div>매장이름 : " + storeList[i].storeNm + "</div></a>";
 			str += "<div>좋아요 : " + storeList[i].likeTotNum + "</div>";
@@ -339,6 +341,22 @@ a:hover { color: black; text-decoration: none;}
 		list.innerHTML = str;
 		//페이징처리
 		showPaging(pageDTO)
+	}
+	function isLogin(){
+		let userId = "<c:out value='${userId}'/>"
+		if(userId ==='' || userId === null){
+			return false
+		}
+		return true;
+	}
+	function like(){
+		let storeId = $(this).data("storeId");
+		if(!isLogin()){
+			alert("로그인을 해주세요");
+			return;
+		}
+		
+		
 	}
 	
 	//페이징 처리를 하는 함수.

@@ -241,25 +241,7 @@ public class MypageController {
 		return  new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/like/add/{userId}/{storeId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
-	public ResponseEntity<Boolean> pickLike(@PathVariable("userId")String userId, @PathVariable("storeId") Long storeId){
-
-		log.info("like add.........................");
-		log.info("user id : " + userId);
-		log.info("store id : " + storeId);
-		
-		likeService.pick(userId,storeId);
-		
-		return new ResponseEntity<>(true, HttpStatus.OK);
-	}
 	
-	@DeleteMapping(value = "/like/remove/{userId}/{storeId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
-	public ResponseEntity<Boolean> removeLike(@PathVariable("userId")String userId, @PathVariable("storeId") Long storeId){
-
-		return  new ResponseEntity<>(likeService.cancel(userId, storeId), HttpStatus.OK);
-	}
 
 //	@GetMapping("/modify")
 	public String modify(Model model, HttpSession session) {
