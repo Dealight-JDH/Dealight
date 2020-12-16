@@ -36,11 +36,30 @@
 				<div class="card-header">핫딜이름</div>
 				<input type="text" class="card-body" name="name" value="${htdl.name }" >
 			</div>
+			
+			<div class="card mb-4">
+				<div class="card-header">메뉴 수정</div>
+				
+				<c:if test="${htdl.stusCd eq 'P' }">
+					<div class="card-body">
+					
+					<div>
+					<c:forEach items="${menuLists }" var="menu" varStatus="status">
+						<input type="checkbox" id="menu<c:out value="${status.count}"/>"
+							class="js-menu" value="${menu.price }">
+							<label for="menu<c:out value="${status.count}"/>">${menu.name }</label>
+					</c:forEach>					
+				
+					</div>
+					</div>
+				</c:if>
+			</div>
 			<div class="card mb-4">
 				<div class="card-header">할인율</div>
 				
 				<c:if test="${htdl.stusCd eq 'P' }">
 					<div class="card-body">
+					
 					<select id="dcRate" name="dcRate">
 						<option value="">--</option>
 						<option value="10">10%</option>
@@ -135,12 +154,12 @@
 				<input type="text" class="card-body" name="intro" value="${htdl.intro }">
 			</div>
 			<div class="card mb-4">
-				<div class="card-header">핫딜 메뉴</div>
+				<div class="card-header" id="curMenu">핫딜 메뉴</div>
 				
 				<c:forEach items="${htdl.htdlDtls }" var="htdlDtls" varStatus="status">
 					<input type="hidden" name="htdlDtls[${status.index}].htdlSeq" value="${htdlDtls.htdlSeq }">
-					<input type="text" class="card-body" name="htdlDtls[${status.index}].menuName" value="${htdlDtls.menuName }" readonly="readonly">
-					<input type="text" class="card-body" id="menuPrice[${status.index }]" name="htdlDtls[${status.index}].menuPrice" value="${htdlDtls.menuPrice }" readonly="readonly">
+					<input type="text" class="card-body" id="menuName${status.index }" name="htdlDtls[${status.index}].menuName" value="${htdlDtls.menuName }" readonly="readonly">
+					<input type="text" class="card-body" id="menuPrice${status.index }" name="htdlDtls[${status.index}].menuPrice" value="${htdlDtls.menuPrice }" readonly="readonly">
 				</c:forEach>
 			</div>
 			
@@ -194,9 +213,43 @@
 let formObj = $("#postForm");
 let stusCd = "<c:out value='${htdl.stusCd}'/>";
 let size = '<c:out value="${fn:length(htdl.htdlDtls)}"/>';
+let menuLists = $(".js-menu");
 //할인 적용 전/후 가격
 let befPrice = $("#befPrice").val();
+let total = 0;
+let rate = 0;
 $(document).ready(function(){
+	
+	
+	if(stusCd === 'P'){
+		$("#curMenu").html("현재 핫딜 메뉴");
+		
+		let checkedArr = initCheckArr();
+		console.log("checkedArr : " + checkedArr);
+		//메뉴에 따른 가격 선택
+		for (let i = 0; i < menuLists.length; i++) {
+			
+			$(".js-menu").eq(i).click(function() {
+				
+				$("#befPrice").val("");
+				$("#ddct").val("");
+				$("#afterPrice").val("");
+				console.log($(this).val());
+				menuCheck($(this).val(), i, checkedArr);
+				
+				//하나도 선택되지 않았을 때 초기화
+				let result = notAllSelectCheck(checkedArr);
+				
+				if(result){
+					console.log("not all select");
+					total = 0;
+				}
+			});
+			
+			
+		}
+	}
+	
 	
 	//버튼 클릭시
 	$("button").on("click", function(e){
@@ -257,30 +310,28 @@ $(document).ready(function(){
 		}else if(operation === 'modify'){
 			
 			if(stusCd != 'P'){			
-				let dcRate = $("input[name='dcRate']");
-				let dcRateValue = dcRate.val();
-				console.log(typeof dcRateValue);
-				dcRateValue = dcRateValue.substring(0, dcRateValue.length-1);
-				dcRateValue /= 100;
-				dcRate.val(dcRateValue);
-				console.log(dcRateValue);
-			}
-				
-				//할인율, 핫딜전가격,차감,현재인원,마감인원 문자열 자르기
-				let befPrice = $("input[name='befPrice']");
-				let befValue = befPrice.val();
-				befValue = befValue.substring(0, befValue.length-1);
-				befPrice.val(befValue);
-				console.log(befValue);
-				
-				let ddct = $("input[name='ddct']");
-				let ddctValue = ddct.val();
-				ddctValue = ddctValue.substring(0, ddctValue.length-1);
-				ddct.val(ddctValue);
-				console.log(ddctValue);
-
-			
+				inputParsing();
 				formObj.submit();
+			}
+			//inputParsing();
+			//기존 핫딜메뉴 제거
+			for(let i=0; i<size; i++){
+				$("#menuName"+i).remove();
+				$("#menuPrice"+i).remove();
+			}
+			
+			for(let i =0; i< $(".js-menu").length; i++){
+				//체크된 라벨 input 추가
+				if($(".js-menu").eq(i).is(":checked")){		
+					console.log(i+"================");
+					 formObj.append("<input type='hidden' name='htdlDtls["+i+"].menuName' value='"+ $("label[for='menu"+(i+1)+"']").text()+"'>");
+					 formObj.append("<input type='hidden' name='htdlDtls["+i+"].menuPrice' value='"+ $("#menu"+(i+1)).val()+"'>");
+						
+				}
+			}
+			
+			formObj.submit();
+				
 		}
 		
 		/* for(let i=0; i<size; i++){
@@ -310,6 +361,77 @@ $(document).ready(function(){
 	
 });
 
+//input value파싱
+function inputParsing(){
+	
+	let dcRate = $("input[name='dcRate']");
+	let dcRateValue = dcRate.val();
+	console.log(typeof dcRateValue);
+	dcRateValue = dcRateValue.substring(0, dcRateValue.length-1);
+	dcRateValue /= 100;
+	dcRate.val(dcRateValue);
+	console.log(dcRateValue);
+	
+	//할인율, 핫딜전가격,차감,현재인원,마감인원 문자열 자르기
+	let befPrice = $("input[name='befPrice']");
+	let befValue = befPrice.val();
+	befValue = befValue.substring(0, befValue.length-1);
+	befPrice.val(befValue);
+	console.log(befValue);
+	
+	let ddct = $("input[name='ddct']");
+	let ddctValue = ddct.val();
+	ddctValue = ddctValue.substring(0, ddctValue.length-1);
+	ddct.val(ddctValue);
+	console.log(ddctValue);
+	
+}
+//체크박스 not allSelect 확인
+function notAllSelectCheck(checkedArr){
+	let count = 0;
+	
+	//확인
+	for (let i = 0; i < menuLists.length; i++) {
+		
+		if(checkedArr[i] === false){
+			count++;
+			console.log(checkedArr[i]);
+			console.log("count : " + count);			
+		}
+		if(count === checkedArr.length)
+			return true;	
+	}
+	return false;
+}
+//체크박스 확인 초기화
+function initCheckArr(){
+	let checkedArr = [];
+	
+	//체크되지 않으면 배열에 저장
+	for (let i = 0; i < menuLists.length; i++) {
+		if(!menuLists.eq(i).is(":checked")){
+			checkedArr.push(false);
+		}
+	}
+	return checkedArr;
+}
+//메뉴 체크
+function menuCheck(price, idx, checkedArr) {
+
+	if (menuLists.eq(idx).is(":checked")){		
+		total += Number(price);
+		checkedArr[idx] = true;
+	}
+	else{
+		total -= Number(price);
+		checkedArr[idx] = false;
+	}
+	
+	$("#befPrice").val(total);
+	getAfterPrice(total, rate);
+}
+
+
 //할인 적용한 가격 계산
 function getAfterPrice(total, rate) {
 	
@@ -318,8 +440,8 @@ function getAfterPrice(total, rate) {
 	console.log("ddct: " + ddct);
 	console.log("price: " + price);
 	
-	$("#ddct").val(ddct+"원");
-	$("#afterPrice").val(price+"원");
+	$("#ddct").val(ddct);
+	$("#afterPrice").val(price);
 }
 
 </script>

@@ -1,5 +1,6 @@
 package com.dealight.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -199,14 +200,31 @@ public class AdminServiceImpl implements AdminService {
 		// TODO Auto-generated method stub
 		
 		log.info("htdl modify....");
-		List<HtdlDtlsVO> dtlsList = htdl.getHtdlDtls();
+		
 		
 		//핫딜vo수정
 		hMapper.updateHtdl(htdl);
 		
-		//핫딜 상세 수정
-		for(HtdlDtlsVO vo : dtlsList) {
-			return hMapper.updateDtls(vo) == dtlsList.size();			
+		if(htdl.getStusCd().equalsIgnoreCase("p")) {			
+			List<HtdlDtlsVO> requestDtls = htdl.getHtdlDtls();
+			List<HtdlDtlsVO> insertList = new ArrayList<>();
+			
+			//핫딜 상세 삭제 후 생성
+			hMapper.deleteDtls(htdl.getHtdlId());
+						
+			log.info("========requestDtls: " + requestDtls);
+
+			/*-------------일단 보류--------------*/
+//			//요청 리스트 생성
+//			for(HtdlDtlsVO vo : requestDtls) {
+//				vo.setHtdlId(htdl.getHtdlId());
+//				System.out.println(vo.getMenuName());
+//				System.out.println(vo.get);
+//				insertList.add(vo);
+//			}
+//			
+//			hMapper.insertDtlsList(insertList);
+//			return true;
 		}
 		
 		return false;

@@ -253,8 +253,6 @@ public class AdminController {
 	
 	
 	//--------------------------핫딜관리
-	
-	
 	@PostMapping("/htdlmanage/end")
 	public String endHtdl(Long htdlId, String stusCd, RedirectAttributes rttr) {
 		log.info("end htdl....");
@@ -318,7 +316,7 @@ public class AdminController {
 		
 			HtdlVO htdlVO = service.readHtdl(stusCd, htdlId);
 			if(htdlVO.getStusCd().equalsIgnoreCase("P")) {
-				model.addAttribute("menuList", service.readMenu(htdlVO.getStoreId())); 
+				model.addAttribute("menuLists", service.readMenu(htdlVO.getStoreId())); 
 			}
 			log.info("=====htdlVO : " + htdlVO);
 			log.info("=======time: " + htdlVO.getStartTm()+"," + htdlVO.getEndTm());
