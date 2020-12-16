@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -37,7 +40,6 @@ import com.dealight.service.WaitService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-//다울
 @Controller
 @Log4j
 @RequestMapping("/dealight/*")
@@ -64,17 +66,20 @@ public class StoreController {
 		return new ResponseEntity<>(dealVO, HttpStatus.OK);
 	}
 	
+//	@GetMapping("/store/{storeId}")
+//	public String storeGet(@PathVariable("storeId") long storeId, Model model) {
+//		
+//		
+//		return "/dealight/store/bstore";
+//	}
 	
-	@GetMapping("/store")
-	public String store(HttpSession session, Long storeId, Long htdlId, Criteria cri,String clsCd, Model model) {
+	@GetMapping("/store/{storeId}")
+	public String store(HttpSession session, @PathVariable("storeId") long storeId, Long htdlId, Model model) {
 		// store타입을 체크 한다 n일경우 n 스토어를 보여줌 b일 경우 b를 보여줌
 		
-		//다울 nstore check
-		if (clsCd.equalsIgnoreCase("B")) {
-			log.info("bstore: " + storeId);
 			
 			model.addAttribute("store", service.bstore(storeId));
-			//model.addAttribute("revws", service.revws(storeId,cri));
+//			model.addAttribute("revws", service.revws(storeId,cri));
 			log.info("=========================htdlId: " + htdlId);
 			if(htdlId != null) {
 //				HtdlVO dealVO = htdlService.readHtdlDtls(htdlId);
@@ -88,11 +93,6 @@ public class StoreController {
 				model.addAttribute("userId", userId);
 			
 			return "/dealight/store/bstore";
-		} else {
-			log.info("nstore: " + storeId);
-			model.addAttribute("store", service.nstore(storeId));
-			return "/dealight/store/nstore";
-		}
 
 	}
 
@@ -154,10 +154,8 @@ public class StoreController {
 	}
 	
 	@PostMapping("/store/wait")
-	public String regWait(Model model, HttpSession session,int pnum, Long storeId) {
+	public String regWait(HttpSession session,int pnum, Long storeId, RedirectAttributes rttr) {
 		
-		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		session.setAttribute("userId", "kjuioq");
 		String userId = (String) session.getAttribute("userId");
 		
 		log.info("register wait......................");
@@ -183,6 +181,12 @@ public class StoreController {
 		
 		log.info("register wait...................... after wait : " + wait);
 		log.info("register wait...................... after wait id: " + waitId);
+		if(waitId == -1) {
+			rttr.addFlashAttribute("result", "fail");
+			
+			return "redirect:/dealight/store/"+storeId;
+		}
+		
 
     	ManageSocketHandler handler = ManageSocketHandler.getInstance();
     	Map<String, WebSocketSession> map = handler.getUserSessions();
@@ -198,7 +202,9 @@ public class StoreController {
 			}
     	}
     	
-    	return "redirect:/dealight/business/test";
+    	rttr.addFlashAttribute("result", "success");
+    	
+    	return "redirect:/dealight/store/"+storeId;
 	}
 
 }
