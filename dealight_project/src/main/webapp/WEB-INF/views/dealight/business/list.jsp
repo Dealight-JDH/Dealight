@@ -313,9 +313,9 @@
 </main>
  -->
 <main class="store_box">
+        <div class="store_box_tit">${userId}님의 매장 관리 화면 페이지</div>
 	<c:if test="${not empty buserList}">
 		<c:forEach items="${buserList}" var="buser">
-        <div class="store_box_tit">${userId}님의 매장 관리 화면 페이지</div>
         <div class="store_card">
             <div class="brno_content_wrapper">
                 <span>사업자 등록 번호 : ${buser.brno}</span><br>
