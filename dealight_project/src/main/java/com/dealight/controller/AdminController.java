@@ -3,6 +3,7 @@ package com.dealight.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,14 +14,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 import com.dealight.domain.AdminPageDTO;
 import com.dealight.domain.BUserVO;
 import com.dealight.domain.Criteria;
 import com.dealight.domain.HtdlVO;
+import com.dealight.domain.StoreDTO;
 import com.dealight.domain.StoreImgVO;
 import com.dealight.domain.StoreVO;
+import com.dealight.domain.SugRequestDTO;
 import com.dealight.domain.UserVO;
+import com.dealight.handler.ManageSocketHandler;
 import com.dealight.service.AdminService;
 import com.dealight.service.StoreService;
 
@@ -252,6 +258,7 @@ public class AdminController {
 	}
 	
 	
+	
 	//--------------------------핫딜관리
 	@PostMapping("/htdlmanage/end")
 	public String endHtdl(Long htdlId, String stusCd, RedirectAttributes rttr) {
@@ -326,6 +333,38 @@ public class AdminController {
 			
 		
 	}
+	//--------------------------핫딜제안
 	
+	@GetMapping("/htdlmanage/suggest")
+	public void suggestHtdl(Model model) {		
+		log.info("==========suggestHtdl: " +  service.getSuggestHtdlList());
+		
+		model.addAttribute("lists", service.getSuggestHtdlList());
+	}
+	
+	@GetMapping("/htdlmanage/sugregister")
+	public void sugRegister(Long storeId, Model model){
+		
+		StoreDTO suggestStore = service.suggestStore(storeId);
+		log.info("suggest store: " + suggestStore);
+		
+		model.addAttribute("suggestStore", suggestStore);
+	}
+	
+	@PostMapping("/htdlmanage/sugregister")
+	public String sendSuggest(SugRequestDTO dto, RedirectAttributes rttr) throws Exception {
+		
+		log.info("=========="+ dto);
+		/* 웹 소켓*/
+    	ManageSocketHandler handler = ManageSocketHandler.getInstance();
+    	Map<String, WebSocketSession> map = handler.getUserSessions();
+    	
+    	WebSocketSession session = map.get(dto.getBuserId());
+    	TextMessage message = new TextMessage("{\"sendUser\":\"-1\",\"rsvdId\":\"-1\",\"cmd\":\"htdl\",\"storeId\":\""+dto.getStoreId()+"\"htdlDto\":{\"htdlName\":\""+dto.getHtdlName()+"\",\"startTm\":\""+dto.getStartTm()+"\",\"endTm\":\""+dto.getEndTm()+"\",\"lmtPnum\":\""+dto.getLmtPnum()+"\"}}");
+    	//handler.handleMessage(session, message);
+		
+    	rttr.addFlashAttribute("result", "success");
+		return "redirect:/dealight/admin/htdlmanage/suggest";
+	}
 	
 }

@@ -22,6 +22,7 @@ import com.dealight.domain.RsvdAvailVO;
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdTimeDTO;
 import com.dealight.domain.RsvdVO;
+import com.dealight.domain.RsvdWithStoreDTO;
 import com.dealight.domain.UserWithRsvdDTO;
 
 import lombok.extern.log4j.Log4j;
@@ -32,7 +33,18 @@ import lombok.extern.log4j.Log4j;
 public class RsvdMapperTests {
 	@Autowired
 	private RsvdMapper mapper;
+	
+	@Autowired
+	private BStoreMapper bMapper;
 	//TODO 예약 상세 테스트
+	
+	@Test
+	public void testFindLastWeekRsvdRateListByStoreId() {
+		
+		//List<RsvdWithStoreDTO> vo = bMapper.findLastWeekRsvdRateListByStoreId();
+		List<RsvdWithStoreDTO> vo = bMapper.findLastWeekRsvdPnum(7);
+		vo.forEach(a -> log.info(a));
+	}
 	
 	@Test
 	public void testCheckExistHtdl() {

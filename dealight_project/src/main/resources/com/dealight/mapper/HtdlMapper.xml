@@ -7,6 +7,14 @@
 		<!-- 동인 -->
 <!-- jongwoo -->
 
+
+	<!--오늘 날짜 핫딜 체크-->
+	<select id="sysdateCheckHtdl">
+		select count(*)
+		from tbl_htdl
+		where to_char(regdate, 'yyyy/MM/dd') = to_char(sysdate, 'yyyy/MM/dd') and store_id = #{storeId}
+	</select>
+	
 	<!-- 핫딜+매장 조인 -->
 		<resultMap type="com.dealight.domain.HtdlWithStoreDTO" id="HtdlWithStoreDTO">
 			<result column="htdl_id" property="htdlId"/>
@@ -25,6 +33,11 @@
 			order by h.htdl_id asc
 		</select>
 		
+		<select id="getSuggestHtdlList" resultMap="HtdlWithStoreDTO">
+			select h.htdl_id, s.store_id, s.store_nm, h.regdate
+			from tbl_htdl h, tbl_store s
+			where  h.store_id(+) = s.store_id and to_char(h.regdate,'yyyy/MM/dd') = to_char(sysdate+9/24, 'yyyy/MM/dd')
+		</select>
 		
 		<!-- 핫딜+상세+매장평가 조인 -->
 		<resultMap type="com.dealight.domain.HtdlVO" id="HtdlDetail">

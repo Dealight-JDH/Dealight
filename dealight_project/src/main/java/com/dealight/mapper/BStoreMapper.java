@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.dealight.domain.BStoreVO;
+import com.dealight.domain.RsvdWithStoreDTO;
 
 /*
  * 
@@ -46,4 +47,7 @@ public interface BStoreMapper {
 	// changeSeatStus
 	public int changeSeatStus(@Param("storeId") long storeId, @Param("seatStusCd") String seatStusCd);
 
+	//jongwoo
+	public List<RsvdWithStoreDTO> findLastWeekRsvdRateListByStoreId();
+	public List<RsvdWithStoreDTO> findLastWeekRsvdPnum(int day); 
 }

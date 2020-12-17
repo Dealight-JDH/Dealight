@@ -22,8 +22,8 @@ import com.dealight.domain.Criteria;
 import com.dealight.domain.RsvdAvailVO;
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdVO;
+import com.dealight.domain.RsvdWithStoreDTO;
 import com.dealight.domain.TimeDTO;
-import com.dealight.mapper.RsvdMapper;
 
 import lombok.extern.log4j.Log4j;
 
@@ -44,6 +44,7 @@ public class RsvdServiceTests {
 		assertTrue(rsvdService.checkExistHtdl(userId, htdlId));
 	}
 	
+
 	@Test
 	public void testCompleteUpdateAvail() {
 		

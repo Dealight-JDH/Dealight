@@ -1,6 +1,8 @@
 package com.dealight.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import com.dealight.domain.Criteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlVO;
 import com.dealight.domain.HtdlWithStoreDTO;
+import com.dealight.domain.StoreDTO;
 import com.dealight.domain.StoreMenuVO;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserVO;
@@ -32,6 +35,7 @@ import lombok.extern.log4j.Log4j;
 @AllArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
+	private static List<StoreDTO> suggestList = new ArrayList<>();
 	private BUserMapper bMapper;
 	private StoreMapper sMapper;
 	private UserMapper	uMapper;
@@ -251,6 +255,56 @@ public class AdminServiceImpl implements AdminService {
 		// TODO Auto-generated method stub
 		log.info("find menu list.....");
 		return mnMapper.findById(storeId);
+	}
+
+	@Override
+	public boolean todayCheckHtdl(Long storeId) {
+		// TODO Auto-generated method stub
+		
+		log.info("today htdl check...");
+		return hMapper.sysdateCheckHtdl(storeId) > 0;
+	}
+
+	@Override
+	public List<StoreDTO> getSuggestHtdlList() {
+		// TODO Auto-generated method stub
+		log.info("get suggest htdl list");
+		
+		List<StoreDTO> storeList = sMapper.storeList();
+		List<StoreDTO> suggestList = suggestCheck(hMapper.getSuggestHtdlList(), storeList);
+		log.info("suggest list : " + suggestList);
+		log.info("storeList: "+ storeList);
+		return suggestList;
+	}
+	
+	private List<StoreDTO> suggestCheck(List<HtdlWithStoreDTO> list, List<StoreDTO> storeList){
+		
+		suggestList.clear();
+
+		outer:
+		for(StoreDTO dto : storeList) {
+			
+			for(HtdlWithStoreDTO htdlDto : list) {
+				if(dto.getStoreId() == htdlDto.getStoreId()) {
+					
+					dto.setSuggestChecked(false);
+					suggestList.add(dto);
+					continue outer;
+				}
+				
+			}
+			suggestList.add(dto);		
+		}
+		
+		return suggestList;
+		
+	}
+
+	@Override
+	public StoreDTO suggestStore(Long storeId) {
+		// TODO Auto-generated method stub
+		log.info("read store .....");
+		return sMapper.findByStoreId(storeId);
 	}
 
 }

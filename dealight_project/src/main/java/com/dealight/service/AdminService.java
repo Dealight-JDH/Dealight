@@ -6,6 +6,7 @@ import com.dealight.domain.BUserVO;
 import com.dealight.domain.Criteria;
 import com.dealight.domain.HtdlVO;
 import com.dealight.domain.HtdlWithStoreDTO;
+import com.dealight.domain.StoreDTO;
 import com.dealight.domain.StoreMenuVO;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.UserVO;
@@ -67,6 +68,12 @@ public interface AdminService {
 	public boolean removeHtdl(Long htdlId);
 	
 	public boolean endHtdl(Long htdlId, String stusCd);
+	
+	public boolean todayCheckHtdl(Long storeId);
+	
+	public List<StoreDTO> getSuggestHtdlList();
+	
+	public StoreDTO suggestStore(Long storeId);
 	//----------------------고객센터------------------------------
 	//리스트불러오기
 	//조회

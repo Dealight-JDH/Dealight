@@ -31,6 +31,11 @@ public interface HtdlMapper {
 	
 	Long getSeqHtdl();
 	
+	//오늘 날짜 해당 핫딜 by storeId
+	int sysdateCheckHtdl(Long storeId);
+	
+	List<HtdlWithStoreDTO> getSuggestHtdlList();
+	
 	//핫딜 상세 mapper
 	void insertDtls(HtdlDtlsVO vo);
 	void insertDtlsList(List<HtdlDtlsVO> dtlsList);

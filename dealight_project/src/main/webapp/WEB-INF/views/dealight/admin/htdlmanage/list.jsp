@@ -7,7 +7,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-	<h1 class="h3 mb-2 text-gray-800">매장관리페이지</h1>
+	<h1 class="h3 mb-2 text-gray-800">핫딜관리페이지</h1>
 	<p class="mb-4">
 	</p>
 
