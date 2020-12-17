@@ -10,6 +10,7 @@ import com.dealight.domain.RsvdAvailVO;
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdTimeDTO;
 import com.dealight.domain.RsvdVO;
+import com.dealight.domain.RsvdWithStoreDTO;
 import com.dealight.domain.UserWithRsvdDTO;
 
 /*
@@ -100,8 +101,6 @@ public interface RsvdMapper {
 
 	// update
 	public int update(RsvdVO rsvd);
-	
-	
 	
 	public List<RsvdVO> findLastWeekRsvdListByStoreId(long storeId);
 	

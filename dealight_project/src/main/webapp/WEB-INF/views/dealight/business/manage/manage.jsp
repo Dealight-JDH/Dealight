@@ -1643,7 +1643,7 @@ let curHour = curToday.getHours(),
 	   		// 다른 페이지 어디서든 소켓을 불러올 수 있어야 하기 때문이다.
 	   		
 	   	 	// 소켓을 ws로 연다.
-	   	 	var ws = new WebSocket("ws://localhost:8080/manageSocket");
+	   	 	var ws = new WebSocket("ws://localhost:8181/manageSocket");
 	   	 	socket = ws;
 	
 	   	 	// 커넥션이 연결되었는지 확인한다.
@@ -1669,14 +1669,14 @@ let curHour = curToday.getHours(),
 	   	 	    console.log("cmd : "+data.cmd);
 	   	 		console.log("sendUser : "+data.sendUser);
 	   	 	    console.log("storeId : "+data.storeId);
-	   	 	    //consol.log("dto : " + data.dto);
+	   	 	    console.log("dto : " + data.htdlDto);
 	   	 	    
 				let curNotiCnt = $(".show").length;
 	 	    
 	 	    	console.log("curNotiCnt : "+curNotiCnt);
 	 	    	
 	 	    	//let dtoSpan = "<span class='manage_htdl_dto' data-name='"+dto.name+"' data-startNm='"+dto.startNm+"' data-endTm='"+dto.endTm+"' data-lmtPnum='"+dto.lmtPnum+"' ></span>"
-	 	    	let dtoSpan = "<span class='manage_htdl_dto' data-name='"+"핫딜이름테스트"+"' data-startTm='"+"13:00"+"' data-endTm='"+"14:00"+"' data-lmtPnum='"+"40"+"' ></span>"
+	 	    	let dtoSpan = "<span class='manage_htdl_dto' data-name='"+data.htdlDto.name+"' data-startTm='"+data.htdlDto.startTm+"' data-endTm='"+data.htdlDto.endTm+"' data-lmtPnum='"+data.htdlDto.lmtPnum+"' ></span>"
 	   	 	    
 				if(data.cmd === 'rsvd'){
 		   	 		showRsvdList(storeId);

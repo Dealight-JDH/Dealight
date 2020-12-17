@@ -57,7 +57,7 @@ public class UserWithRsvdDTO {
 
 	    private Long htdlId;
 
-	    private int aprvNo;
+	    private String aprvNo;
 
 	    @NonNull
 	    private int pnum;

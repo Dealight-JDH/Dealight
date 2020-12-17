@@ -2,6 +2,7 @@ package com.dealight.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 import com.dealight.domain.HtdlVO;
 import com.dealight.domain.KakaoPayApprovalVO;
@@ -30,6 +33,7 @@ import com.dealight.domain.RsvdMenuDTOList;
 import com.dealight.domain.RsvdRequestDTO;
 import com.dealight.domain.RsvdRequestInfoDTO;
 import com.dealight.domain.RsvdVO;
+import com.dealight.handler.ManageSocketHandler;
 import com.dealight.service.HtdlService;
 import com.dealight.service.KakaoService;
 import com.dealight.service.PymtService;
@@ -226,6 +230,28 @@ public class RsvdController {
         
         pymtService.modify(successVO);
         
+        /* web socket 추가*/
+        log.info("web socket rsvd handle");
+    	ManageSocketHandler handler = ManageSocketHandler.getInstance();
+    	Map<String, WebSocketSession> map = handler.getUserSessions();
+    	log.info("socket map................ : " + map);
+    	
+    	WebSocketSession ws = map.get(requestDto.getUserId());
+    	log.info("socket user id ................ : " + requestDto.getUserId());
+    	log.info("socket ws................ : " + ws);
+    	if(ws != null) {
+    		log.info("sucess web socket...........");
+    		TextMessage message = new TextMessage("{\"sendUser\":\""+requestDto.getUserId()+"\",\"rsvdId\":\""+rsvdId+"\",\"cmd\":\"rsvd\",\"storeId\":\""+requestDto.getStoreId()+"\"}");
+    		try {
+				handler.handleMessage(ws, message);
+			} catch (Exception e) {
+				
+				log.warn("web socket error...............");
+				e.printStackTrace();
+			}
+    	}
+        
+        /* */
         model.addAttribute("kakaoPayInfo", kakaoPayApprovalVO);
         model.addAttribute("rsvdId", rsvdId);
         model.addAttribute("userId", requestDto.getUserId());

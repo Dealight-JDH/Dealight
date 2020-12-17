@@ -2,9 +2,8 @@ package com.dealight.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.dealight.domain.Criteria;
+import com.dealight.domain.StoreDTO;
 import com.dealight.domain.StoreVO;
 
 /*
@@ -14,6 +13,10 @@ import com.dealight.domain.StoreVO;
  */
 
 public interface StoreMapper {
+	
+	//종우
+	List<StoreDTO> storeList();
+	StoreDTO findByStoreId(Long storeId);
 	
 	List<StoreVO> findStoreListWithPaging(Criteria cri);
 	

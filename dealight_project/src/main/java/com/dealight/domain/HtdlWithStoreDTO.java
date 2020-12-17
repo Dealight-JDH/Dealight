@@ -23,4 +23,6 @@ public class HtdlWithStoreDTO {
 	private String stusCd;
 	private Date regDate;
 	
+	private boolean suggestChecked;
+	
 }

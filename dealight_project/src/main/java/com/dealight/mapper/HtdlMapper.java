@@ -18,15 +18,23 @@ import com.dealight.domain.HtdlWithStoreDTO;
 //jongwoo
 
 public interface HtdlMapper {
-
+	//핫딜
 	HtdlVO findById(Long htdlId);
+	int updateHtdl(HtdlVO vo);
+	int updateEndHtdl(@Param("htdlId") Long htdlId, @Param("stusCd") String stusCd);
 	List<HtdlVO> getList();
 	List<HtdlVO> getListWithPaging(@Param("stusCd") String stusCd, @Param("hCri") HtdlCriteria hCri);
 	int delete(Long htdlId);
+	
 	int getTotalCount(@Param("stusCd") String stusCd, @Param("hCri") HtdlCriteria hCri);
 	int curPnumUpdate(HtdlVO vo);
 	
 	Long getSeqHtdl();
+	
+	//오늘 날짜 해당 핫딜 by storeId
+	int sysdateCheckHtdl(Long storeId);
+	
+	List<HtdlWithStoreDTO> getSuggestHtdlList();
 	
 	//핫딜 상세 mapper
 	void insertDtls(HtdlDtlsVO vo);

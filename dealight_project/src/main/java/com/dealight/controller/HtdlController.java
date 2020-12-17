@@ -106,7 +106,7 @@ public class HtdlController {
 		log.info("register...");
 		
 		model.addAttribute("stordId", storeId);
-		model.addAttribute("menuLists", service.findById(storeId));
+		model.addAttribute("menuLists", service.findMenuById(storeId));
 		
 	}
 	

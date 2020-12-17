@@ -1,263 +1,341 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>	
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 </head>
 <body>
 
-	<div class="right">
+<div class="right">
 			<div class="sticky">
-				<h1>예약</h1>
-				<form id="reserveForm" action="/controller/dealight/reservation" method="post">
-					<input type='hidden' name='storeId' value='<c:out value="${store.storeId }"/>' />
-					
-					<!-- <input type="hidden" id="selMenu" name="selMenu"> -->
-					<div class="row">
-						<select id="time" required="required">
-							<option value="">시간</option>
-							<option value="13:30">13:30</option>
-							<option value="14:00">14:00</option>
-							<option value="14:30">14:30</option>
-						</select> <select id="num" required="required">
-							<option value="">인원수</option>
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-						</select>
-					</div>
-					<div class="row">
-						<select id="menu">
-							<option value="">메뉴</option>
-							<c:forEach items="${store.bstore.menus }" var="menus">
-								<option value="${menus.menuSeq}">${menus.name }</option>
-							</c:forEach>
-						</select>
-						<input type="button" id="btnAddGoods" value="추가"></input>
+			<c:if test="${store.bstore.htdl.htdlId ne null}"> <%-- ${store.bstore.htdl.stusCd!=null } --%>
+				<c:if test=" ${store.bstore.htdl.stusCd eq P }">
+				<div class="htdlBtnCon">
+				<button id='htdlBtn'>지금 진행중인 핫딜!</button>
+				</div>	
+				<div class="htdlCon">
+					<P id='htdl'>핫딜상세</p>
+				</div>
+				</c:if>
+			</c:if>
+			<section class="tabWrapper">
+					<ul class="tabs">
+						<li class="active">예약</li>
+						<li>줄서기</li>
+					</ul>
 
-					</div>
-					<div id="container"></div>
+					<ul class="tab__content">
 
-					총금액&emsp; <input id="goodsTotAmt" name="totAmt" value=0>
-					<button type="submit">예약하기</button>
+						<li class="active">
+							<div class="content__wrapper">
+								<form id="reserveForm" action="/dealight/reservation/"
+									method="get">
+									<input type='hidden' name='storeId'
+										value='<c:out value="${storeId }"/>' />
 
-				</form>
-			</div>
+									<!-- <input type="hidden" id="selMenu" name="selMenu"> -->
+									<div class="row">
+										<select id="time" required="required">
+											<option value="">시간</option>
+											<option value="13:30">13:30</option>
+											<option value="14:00">14:00</option>
+											<option value="14:30">14:30</option>
+										</select> <select id="num" required="required">
+											<option value="">인원수</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+										</select>
+									</div>
+									<div class="row">
+										<select id="menu">
+											<option value="">메뉴</option>
+											<c:if test="${store.bstore.htdl.htdlId ne null}">
+												<%-- <c:if test=" ${store.bstore.htdl.stusCd eq P }"> --%>
+												<%-- </c:if> --%>
+											</c:if>
+											<c:forEach items="${menus }" var="menus">
+												<option value="${menus.menuSeq}">${menus.name }</option>
+											</c:forEach>
+										</select> <input type="button" id="btnAddMenus" value="추가"></input>
+
+									</div>
+									<div id="container"></div>
+									<span id="menusTotAmtSumMsg"></span> <span id="menusTotAmt" name="totAmt" value="0"></span>
+									<button class ="tabWrapperBtn" type="submit">예약하기</button>
+								</form>
+							</div>
+						</li>
+						<li><div class="content__wrapper">
+								<form id="waitingForm" action="/dealight/waiting"
+									method="post">
+									<input type='hidden' name='storeId' value='<c:out value="${storeId }"/>' />
+
+									<!-- <input type="hidden" id="selMenu" name="selMenu"> -->
+									<div class="row">
+										 <select id="waitingNum" required="required">
+											<option value="">인원수</option>
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+										</select>
+									</div>
+									<button class ="tabWrapperBtn" type="submit">줄서기</button>
+								</form>
+							</div>
+						</li>
+
+					</ul>
+				</section>
+				</div>
 		</div>
-	</div>
+
+<script type="text/javascript">
+		function Menus() {
+
+			//json 배열[{menusId:menusId, menusNm:menusNm, amt:amt},{...},{...}]
+			this.arrAllMenus = new Array();//상품 목록
+			this.arrSelMenus = new Array();//선택한 상품 목록
+
+			var p = this;
+
+			//상품 추가 시
+			this.select = function(trgtMenusId) {
+
+				var selectedIndex = -1;
+
+				//전체 목록 배열에서 검색하여 menusId가 없다면 선택 목록에 push후 container안에 그려준다.
+
+				//선택 목록에서 검색
+				for (var i = 0; i < p.arrSelMenus.length; i++) {
+
+					if (p.arrSelMenus[i].menusId == trgtMenusId) {
+						selectedIndex = i;
+						break;
+					}
+				}
+
+				if (selectedIndex < 0) {//선택목록에 없을 경우 추가. 잇을경우 얼럿.
+					//전체목록에서 선택 추가해줌.
+					for (var j = 0; j < p.arrAllMenus.length; j++) {
+
+						if (p.arrAllMenus[j].menusId == trgtMenusId) {
+							p.arrSelMenus.push(p.arrAllMenus[j]);
+							p.arrSelMenus[p.arrSelMenus.length - 1].cnt = 1;//무조건 개수 초기화
+							p.appendChoiceDiv(p.arrAllMenus[j]);
+							break;
+						}
+					}
+				} else {
+					alert("이미 추가한 상품입니다.");
+				}
+				p.afterProc();
+			}
+
+			//상품 제거 시
+			this.deselect = function(trgtMenusId) {
+
+				var selectedIndex = -1;
+
+				//배열에서 검색.
+				for (var i = 0; i < p.arrSelMenus.length; i++) {
+
+					if (p.arrSelMenus[i].menusId == trgtMenusId) {
+						p.removeChoiceDiv(p.arrSelMenus[i]);
+						p.arrSelMenus.splice(i, 1);
+						break;
+					}
+				}
+				p.afterProc();
+			}
+
+			this.appendChoiceDiv = function(prmtObj) {
+
+				var innerHtml = "";
+
+				innerHtml += '<div id="div_'+prmtObj.menusId+'">';
+				innerHtml += '	<span>' + prmtObj.menusNm + '</span>';
+				innerHtml += '	<input  type="text" id="input_sumAmt_'+prmtObj.menusId+'" name="" value="0" readonly ="readonly"/>'
+				innerHtml += '	<br><button type="button" id="" class="add" name="" onclick="menus.minus(\''
+				+ prmtObj.menusId + '\');">-</button>';
+				innerHtml += '	<input style=width:30px; type="text" id="input_cnt_'+prmtObj.menusId+'" name="" value="0" readonly ="readonly"/>'
+				innerHtml += '	<button  type="button" id="" class="remove" name="" onclick="menus.plus(\''
+				+ prmtObj.menusId + '\');">+</button>';
+				innerHtml += '	<button type="button" id="" class="remove" name="" onclick="menus.deselect(\''
+				+ prmtObj.menusId + '\');">X</button>';
+				innerHtml += '</div>';
+				$('#container').append(innerHtml);
+
+				}
+			this.removeChoiceDiv = function(prmtObj) {
+				$("#div_" + prmtObj.menusId).remove();
+			}
+
+			this.plus = function(trgtMenusId) {
+
+				for (var i = 0; i < p.arrSelMenus.length; i++) {
+
+					if (p.arrSelMenus[i].menusId == trgtMenusId) {
+						if(p.arrSelMenus[i].cnt >= 10){
+							alert("최대수량입니다.");
+							break;
+						}
+						
+						p.arrSelMenus[i].cnt++;
+						break;
+					}
+				}
+
+				p.afterProc();
+			}
+
+			this.minus = function(trgtMenusId) {
+
+				for (var i = 0; i < p.arrSelMenus.length; i++) {
+
+					if (p.arrSelMenus[i].menusId == trgtMenusId) {
+						if (p.arrSelMenus[i].cnt == 1){
+							alert("최소수량입니다.");
+							break;
+						}
+						p.arrSelMenus[i].cnt--;
+						break;
+					}
+				}
+
+				p.afterProc();
+			}
+
+			//계산 후처리.
+			this.afterProc = function() {
+
+				for (var i = 0; i < p.arrSelMenus.length; i++) {
+					$('#input_cnt_' + p.arrSelMenus[i].menusId).val(
+							p.arrSelMenus[i].cnt);
+					$('#input_sumAmt_' + p.arrSelMenus[i].menusId).val(
+							p.arrSelMenus[i].cnt * p.arrSelMenus[i].menusUnprc);
+				}
+
+				var menusTotAmt = 0;
+				for (var i = 0; i < p.arrSelMenus.length; i++) {
+					menusTotAmt += p.arrSelMenus[i].cnt
+							* p.arrSelMenus[i].menusUnprc;
+				}
+				if(menusTotAmt == 0){
+					$('#menusTotAmtSumMsg').text("");
+					$('#menusTotAmt').text("");
+					
+				}else{
+					$('#menusTotAmtSumMsg').text("총금액");
+					$('#menusTotAmt').text(menusTotAmt);
+				
+				}
+			}
+
+		}
+
+		var menus = new Menus();
+
+		//jstl로 전체 상품 목록 미리 세팅<select id="menu" onchange="mySelect()" >
+
+		<c:forEach items="${menus }" var="menus">
+		menus.arrAllMenus.push({
+			menusId : "${menus.menuSeq}",
+			menusUnprc : "${menus.price}",
+			menusNm : "${menus.name }",
+			cnt : 0
+		});
+		</c:forEach>
+
+		$('#btnAddMenus').on('click', function() {
+			menus.select($('#menu option:selected').val());
+		});
+		const reserveForm =$("#reserveForm");
+		const reserve =$("#reserve");
+		const pnum =$("#pnum");
+		var submitted = false;
+		$("#reserveForm button").on("click", function(e) {
+			  if(submitted == true) { return; }
+			//1.기존 이벤트(페이지 이동)를 막는다
+			e.preventDefault();
+			
+			//2.이벤트 막고 하고 싶은거
+			//2.1 페이지 이동시 다음페이지에 데이터를 넘길 수 있도록 input hidden에 선택된 메뉴 수량 넣음
+			//시간
+			if (menus.arrSelMenus.length === 0) {
+				alert("메뉴가 선택되지않았습니다");
+				return;
+			}
+			
+			if($("#num option:selected").val() === ""){
+				alert("인원수를 선택해 주세요");
+				return;
+			}
+			if($("#time option:selected").val() === ""){
+				alert("예약시간을 선택해 주세요");
+				return;
+			}
+			
+			const personNum = '<input type="hidden" name=pnum value="'+$("#num option:selected").val()+'">'; 
+			reserveForm.append(personNum);
+			const reserveTime = '<input type="hidden" name=time value="'+$("#time option:selected").val()+'">'; 
+			reserveForm.append(reserveTime);
+			//3. 2에서 하고 싶은 거 실행 후  submit()
+
+			for (let i = 0; i < menus.arrSelMenus.length; i++) {
+				if(menus.arrSelMenus[i].cnt === 0){
+					alert("메뉴 수량을 선택해주세요");
+				return; 
+			}
+				//메뉴이름
+				const menuNm = '<input type="hidden" name=menu['+i+'].name value="'+menus.arrSelMenus[i].menusNm+'">'; 
+				reserveForm.append(menuNm);
+				const menuPrice = '<input type="hidden" name=menu['+i+'].price value="'+menus.arrSelMenus[i].menusUnprc+'">'; 
+				reserveForm.append(menuPrice);
+				const menuQty = '<input type="hidden" name=menu['+i+'].qty value="'+menus.arrSelMenus[i].cnt+'">'; 
+				reserveForm.append(menuQty);
+				
+			}
+
+			submitted =true;
+			reserveForm.submit();
+		
+		});
+		
+	
+	const waitingForm = $("#waitingForm");
+	$(document).ready(function() {
+		
+ 			$("#waitingForm button").on("click",function(e) {
+ 				 if(submitted == true) { return; }
+			//1.기존 이벤트(페이지 이동)를 막는다
+			e.preventDefault();
+			//2.이벤트 막고 하고 싶은거
+			//2.1 페이지 이동시 다음페이지에 데이터를 넘길 수 있도록 input hidden에 선택된 메뉴 수량 넣음
+			//시간
+			if($("#waitingNum option:selected").val() === ""){
+				alert("인원수를 선택해주세요");
+				return;
+			}
+			const watingPersonNum = '<input type="hidden" name=pnum value="'
+					+ $("#waitingNum option:selected").val() + '">';
+			waitingForm.append(watingPersonNum);
+
+			submitted=true;
+			waitingForm.submit();
+
+			//waitingForm.submit();
+		});
+		
+		});
+	</script>
 </body>
 </html>
 
-<script>
-	//메뉴를 선택한다 
-	//demo에 선택한 메뉴와 가격 수량버튼이 나온다
-	//수량이 변경됨에 따라 가격부분이 가격 *수량 값이변경되도록한다.
-	const storeId = '<c:out value="${storeId}"/>';
-	let optionsIndex = [];
-	const target = document.getElementById("menu");
-	const form = document.getElementById("selection");
-	const targetP = document.getElementById("num");
-	const targetT = document.getElementById("time");
-	let menuCntMap = new Map();
-	let menuPriceSum = 0;
-	const pForMenuSum = document.createElement("p");
-	const element = document.getElementById("demo");
-	const element2 = document.getElementById("menuSum");
-	function mySelect() {
-		//변경사항
-		//selectedindex를 배열 optionsIndex에 담는다			
-		//배열의 length만큼 index.text/index.value가져와서 Object obj에 담아 options담아줌 이걸 foreach			
-		if (target.options[target.selectedIndex].text === "메뉴") {
-			return;
-		}
-		for (let i = 0; i < optionsIndex.length; i++) {
-			if (optionsIndex[i] === target.options[target.selectedIndex]) {
-				alert("이미 선택된 옵션입니다");
-				return;
-			}
-		}
-		//
-		//첫번째 선택된거 배열에 담고 다시 이벤트 발생하면 중복으로 담음
-		optionsIndex.push(target.options[target.selectedIndex]);
-		//
-
-		let key = target.options[target.selectedIndex].text;
-		let val = target.options[target.selectedIndex].value;
-		const pForKey = document.createElement("p");
-		pForKey.innerHTML = key;
-		element.appendChild(pForKey);
-		const p = document.createElement("p");
-		p.innerHTML = val;
-		element.appendChild(p);
-		menuCntMap.set(key, 1);
-		//총합계 메뉴가 선택되면 선택된 메뉴의 가격(단가*수량)의 합계를 보여준다.
-		//클릭할때마다 바껴야한다.
-		//클릭될때 마다 생성X 한번만 생겨야한다
-		//한 메뉴에 대한 sum이아니라 모든 것에 대한 sum이여야한다
-
-		menuPriceSum += Number(val);
-		pForMenuSum.innerHTML = menuPriceSum;
-		element2.appendChild(pForMenuSum);
-
-		const inputDown = document.createElement("input");
-		inputDown.type = "button";
-		inputDown.value = "-";
-		inputDown.id = "down" + key;
-		element.appendChild(inputDown);
-		const input = document.createElement("input");
-		input.type = "text";
-		input.id = "menuCnt" + key;
-		input.value = "1";
-		input.size = "2";
-		element.appendChild(input);
-		const inputUp = document.createElement("input");
-		inputUp.type = "button";
-		inputUp.value = "+";
-		inputUp.id = "up" + key;
-		element.appendChild(inputUp);
-		let count = 1;
-		let menuCnt = document.getElementById("menuCnt" + key);
-		let sum = val;
-		const inputX = document.createElement("input");
-		inputX.type = "button";
-		inputX.id = "x" + key;
-		inputX.value = "X"
-		element.appendChild(inputX);
-		//-를 누르면 수량 감소 
-		document.addEventListener('click', function(e) {
-			if (e.target && e.target.id == 'down' + key) {
-				if (menuCnt.value > 1) {
-					count--;
-					menuCnt.value = count;
-					sum = count * Number(val);
-					p.innerHTML = sum;
-					menuCntMap.set(key, count);
-					menuPriceSum -= Number(val);
-					pForMenuSum.innerHTML = menuPriceSum;
-				} else {
-					alert("최소수량 입니다");
-				}
-			}
-		});
-		//+누르면 수량 증가
-		document.addEventListener('click', function(e) {
-			if (e.target && e.target.id == 'up' + key) {
-				count++;
-				menuCnt.value = count;
-				sum = count * Number(val);
-				p.innerHTML = sum;
-				menuCntMap.set(key, count);
-				menuPriceSum += Number(val);
-				pForMenuSum.innerHTML = menuPriceSum;
-			}
-		});
-		//X버튼 누르면 해당메뉴관련 정보 사라지고 다시 선택가능한 상태로 만들어야함  
-		document.addEventListener('click', function(e) {
-			if (e.target && e.target.id == "x" + key) {
-				//메뉴이름 삭제 
-				element.removeChild(pForKey);
-				//해당메뉴 총가격 삭제
-				element.removeChild(p);
-				//버튼 삭제
-				element.removeChild(inputDown);
-				element.removeChild(input);
-				element.removeChild(inputUp);
-				element.removeChild(inputX);
-				//총합계에서 해당 메뉴의 sum 빼주기
-				menuCntMap.set(key, 0);
-				menuPriceSum -= sum;
-				pForMenuSum.innerHTML = menuPriceSum;
-				if (menuPriceSum == 0) {
-					element2.removeChild(pForMenuSum);
-				}
-				//optionsIndex에서  빼줌
-				for (let i = 0; i < optionsIndex.length; i++) {
-					//lenth 동안 optionsIndex[i] == key 일때 그 index 삭제
-					if (optionsIndex[i].text == key) {
-						optionsIndex.splice(i, 1);
-					}
-				}
-			}
-		});
-	}
-	function myStop() {
-		//1.기존 이벤트(페이지 이동)를 막는다
-		event.preventDefault();
-		//2.이벤트 막고 하고 싶은거
-		//2.1 페이지 이동시 다음페이지에 데이터를 넘길 수 있도록 input hidden에 선택된 메뉴 수량 넣음
-		//시간
-		//인원수
-		const input = document.createElement("input");
-		input.type = "hidden";
-		input.name = "pnum";
-		input.value = targetP.value;
-		form.appendChild(input);
-		const input1 = document.createElement("input");
-		input1.type = "hidden";
-		input1.name = "time";
-		input1.value = targetT.value;
-		form.appendChild(input1);
-		
-		let totQty = 0;
-		let totAmt = 0;
-		//메뉴 이름 가격 수량 넘기기
-		for (let i = 0; i < optionsIndex.length; i++) {
-			let key = optionsIndex[i].text;
-			const input = document.createElement("input");
-			input.type = "hidden"
-			input.name = "menu[" + i + "].name";
-			input.value = optionsIndex[i].text;
-			form.appendChild(input);
-			const input2 = document.createElement("input");
-			input2.type = "hidden";
-			input2.name = "menu[" + i + "].price";
-			input2.value = optionsIndex[i].value;
-			form.appendChild(input2);
-			const input3 = document.createElement("input");
-			input3.type = "hidden";
-			input3.name = "menu[" + i + "].qty";
-			input3.value = menuCntMap.get(key);
-			totQty += menuCntMap.get(key);
-			totAmt += (optionsIndex[i].value * menuCntMap.get(key));
-			form.appendChild(input3);
-		}
-		
-		console.log("==="+totQty);
-		console.log("---"+totAmt);
-		
-		
-		/* const input4 = document.createElement("input");
-		input4.type = "hidden"
-		input4.name = "totAmt";
-		input4.value = totAmt;
-		
-		const input5 = document.createElement("input");
-		input5.type = "hidden"
-		input5.name = "totQty";
-		input5.value = totQty;
-		
-		form.appendChild(input4);
-		form.appendChild(input5); */
-		
-		const totAmt = "<input type='hidden' name='totAmt' value='totAmt'>"; 
-		reserveForm.append(totAmt);
-		
-		const totQty = "<input type='hidden' name='totQty' value='totQty'>"; 
-		reserveForm.append(totQty);
-		
-		const input6 = document.createElement("input");
-		input5.type = "hidden"
-		input5.name = "storeId";
-		input5.value = storeId;
-		
-		form.appendChild(input6);
-		
-		//3. 2에서 하고 싶은 거 실행 후  submit()
-		form.submit();
-	}
-</script>

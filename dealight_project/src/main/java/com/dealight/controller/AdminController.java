@@ -1,8 +1,10 @@
 package com.dealight.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,18 +14,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 import com.dealight.domain.AdminPageDTO;
-import com.dealight.domain.BStoreVO;
 import com.dealight.domain.BUserVO;
 import com.dealight.domain.Criteria;
-import com.dealight.domain.RsvdVO;
-import com.dealight.domain.StoreEvalVO;
-import com.dealight.domain.StoreImgVO;
-import com.dealight.domain.StoreLocVO;
 import com.dealight.domain.HtdlVO;
+import com.dealight.domain.StoreDTO;
+import com.dealight.domain.StoreImgVO;
 import com.dealight.domain.StoreVO;
+import com.dealight.domain.SugRequestDTO;
 import com.dealight.domain.UserVO;
+import com.dealight.handler.ManageSocketHandler;
 import com.dealight.service.AdminService;
 import com.dealight.service.StoreService;
 
@@ -255,7 +258,53 @@ public class AdminController {
 	}
 	
 	
+	
 	//--------------------------핫딜관리
+	@PostMapping("/htdlmanage/end")
+	public String endHtdl(Long htdlId, String stusCd, RedirectAttributes rttr) {
+		log.info("end htdl....");
+		
+		service.endHtdl(htdlId, "I");
+		
+		return "redirect:/dealight/admin/htdlmanage/"+stusCd;
+	}
+	@PostMapping("/htdlmanage/remove")
+	public String removeHtdl(Long htdlId, String stusCd, RedirectAttributes rttr){
+		
+		log.info("remove htdl...");
+		
+		log.info("======================htdlId: " + htdlId );
+		log.info("======================stusCd: " + stusCd );
+		
+		service.removeHtdl(htdlId);
+		rttr.addFlashAttribute("result", "핫딜이 삭제되었습니다.");
+		return "redirect:/dealight/admin/htdlmanage/"+stusCd;
+		
+	}
+	
+	@PostMapping("/htdlmanage/modify")
+	public String modifyHtdl(HtdlVO vo, RedirectAttributes rttr) {
+		
+		log.info("modify.......");
+		log.info("==========request: " + vo);
+		
+		if(vo.getStusCd().equalsIgnoreCase("p")) {
+			//현재 날짜
+			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+			Date date = new Date();
+			String sysdate = format.format(date);
+			vo.setStartTm(sysdate+" " + vo.getStartTm());
+			vo.setEndTm(sysdate+" " + vo.getEndTm());
+			vo.setDcRate(vo.getDcRate()/100.0);
+		}
+		
+		service.modifyHtdl(vo);
+		rttr.addFlashAttribute("result", "success");
+		
+		return "redirect:/dealight/admin/htdlmanage/get?htdlId="+vo.getHtdlId()+"&stusCd="+vo.getStusCd();
+		
+	}
+	
 	@GetMapping("/htdlmanage/{stusCd}")
 	public String htdlList(@PathVariable String stusCd, Model model) {
 		
@@ -273,6 +322,9 @@ public class AdminController {
 		log.info("========stusCd: " + stusCd);
 		
 			HtdlVO htdlVO = service.readHtdl(stusCd, htdlId);
+			if(htdlVO.getStusCd().equalsIgnoreCase("P")) {
+				model.addAttribute("menuLists", service.readMenu(htdlVO.getStoreId())); 
+			}
 			log.info("=====htdlVO : " + htdlVO);
 			log.info("=======time: " + htdlVO.getStartTm()+"," + htdlVO.getEndTm());
 			log.info("=======price: " + htdlVO.getHtdlDtls().get(0).getMenuPrice());
@@ -281,6 +333,38 @@ public class AdminController {
 			
 		
 	}
+	//--------------------------핫딜제안
 	
+	@GetMapping("/htdlmanage/suggest")
+	public void suggestHtdl(Model model) {		
+		log.info("==========suggestHtdl: " +  service.getSuggestHtdlList());
+		
+		model.addAttribute("lists", service.getSuggestHtdlList());
+	}
+	
+	@GetMapping("/htdlmanage/sugregister")
+	public void sugRegister(Long storeId, Model model){
+		
+		StoreDTO suggestStore = service.suggestStore(storeId);
+		log.info("suggest store: " + suggestStore);
+		
+		model.addAttribute("suggestStore", suggestStore);
+	}
+	
+	@PostMapping("/htdlmanage/sugregister")
+	public String sendSuggest(SugRequestDTO dto, RedirectAttributes rttr) throws Exception {
+		
+		log.info("=========="+ dto);
+		/* 웹 소켓*/
+    	ManageSocketHandler handler = ManageSocketHandler.getInstance();
+    	Map<String, WebSocketSession> map = handler.getUserSessions();
+    	
+    	WebSocketSession session = map.get(dto.getBuserId());
+    	TextMessage message = new TextMessage("{\"sendUser\":\"-1\",\"htdlId\":\"-1\",\"cmd\":\"htdl\",\"storeId\":\""+dto.getStoreId()+"\",\"htdlDto\":{\"htdlName\":\""+dto.getHtdlName()+"\",\"startTm\":\""+dto.getStartTm()+"\",\"endTm\":\""+dto.getEndTm()+"\",\"lmtPnum\":\""+dto.getLmtPnum()+"\"}}");
+    	handler.handleMessage(session, message);
+		
+    	rttr.addFlashAttribute("result", "success");
+		return "redirect:/dealight/admin/htdlmanage/suggest";
+	}
 	
 }

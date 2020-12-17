@@ -1,6 +1,5 @@
 package com.dealight.mapper;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -14,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.Criteria;
+import com.dealight.domain.StoreDTO;
 import com.dealight.domain.StoreVO;
 
 import lombok.Setter;
@@ -27,6 +27,12 @@ public class StoreMapperTests {
 	@Setter(onMethod_ = @Autowired)
 	private StoreMapper mapper;
 	
+	
+	@Test
+	public void testGetStore() {
+		StoreDTO dto = mapper.findByStoreId(3l);
+		log.info("======="+ dto);
+	}
 	
 	public void testGetList() {
 		mapper.getList().forEach(store -> log.info(store));

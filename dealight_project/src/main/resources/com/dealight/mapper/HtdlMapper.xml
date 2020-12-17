@@ -7,6 +7,14 @@
 		<!-- 동인 -->
 <!-- jongwoo -->
 
+
+	<!--오늘 날짜 핫딜 체크-->
+	<select id="sysdateCheckHtdl">
+		select count(*)
+		from tbl_htdl
+		where to_char(regdate, 'yyyy/MM/dd') = to_char(sysdate, 'yyyy/MM/dd') and store_id = #{storeId}
+	</select>
+	
 	<!-- 핫딜+매장 조인 -->
 		<resultMap type="com.dealight.domain.HtdlWithStoreDTO" id="HtdlWithStoreDTO">
 			<result column="htdl_id" property="htdlId"/>
@@ -25,6 +33,11 @@
 			order by h.htdl_id asc
 		</select>
 		
+		<select id="getSuggestHtdlList" resultMap="HtdlWithStoreDTO">
+			select h.htdl_id, s.store_id, s.store_nm, h.regdate
+			from tbl_htdl h, tbl_store s
+			where  h.store_id(+) = s.store_id and to_char(h.regdate,'yyyy/MM/dd') = to_char(sysdate+9/24, 'yyyy/MM/dd')
+		</select>
 		
 		<!-- 핫딜+상세+매장평가 조인 -->
 		<resultMap type="com.dealight.domain.HtdlVO" id="HtdlDetail">
@@ -100,13 +113,13 @@
 		 	select h.htdl_id, h.name, h.dc_rate, h.start_tm, h.end_tm, h.bef_price, h.ddct, h.stus_cd,
 		 	d.htdl_seq, d.menu_name, d.menu_price, r.last_pnum, r.htdl_lmt_pnum, r.rsvd_rate, r.elap_tm, r.regdate
 		 	from tbl_htdl h, tbl_htdl_dtls d, tbl_htdl_rslt r
-		 	where h.htdl_id = #{htdlId} and h.htdl_id = d.htdl_id and h.htdl_id = r.htdl_id
+		 	where h.htdl_id = #{htdlId} and h.htdl_id = d.htdl_id and h.htdl_id = r.htdl_id(+)
 		 	
 		 </select>
 		 
 		 <!-- 핫딜+상세 -->
 		<select id="findHtdlDtlsById" parameterType="long" resultMap="HtdlDetail">
-			SELECT h.htdl_id, h.name, h.dc_rate,h.start_tm,h.end_tm,h.lmt_pnum,h.intro,h.bef_price, h.ddct,
+			SELECT h.htdl_id, h.name, h.store_id, h.dc_rate, h.start_tm, h.end_tm, h.lmt_pnum, h.intro, h.bef_price, h.ddct,
 			h.cur_pnum,h.stus_cd, d.htdl_seq, d.menu_name, d.menu_price
 		      FROM tbl_htdl h, tbl_htdl_dtls d
 			 WHERE h.htdl_id = #{htdlId} and h.htdl_id = d.htdl_id 
@@ -133,8 +146,8 @@
 		<!-- 고민쓰... -->
 		<update id = "updateDtls">
 			update tbl_htdl_dtls
-			set menuName = #{menuName}, menuPrice = #{menuPrice}
-			where htdlId = #{htdlId} and htdlSeq = #{htdlSeq}
+			set menu_Name = #{menuName}, menu_Price = #{menuPrice}, updatedate = sysdate +9/24
+			where htdl_Id = #{htdlId} and htdl_Seq = #{htdlSeq}
 		</update>
 		
 		<select id = "findDtlsById" resultType="com.dealight.domain.HtdlDtlsVO">
@@ -245,6 +258,19 @@
 			select seq_htdl.currval from dual
 		</select>
 		
+		<update id="updateEndHtdl">
+			update tbl_htdl
+			set stus_cd = #{stusCd}
+			where htdl_id = #{htdlId}
+		</update>
+		
+		<update id="updateHtdl">
+			update tbl_htdl
+			set name = #{name}, dc_rate = #{dcRate}, start_tm = #{startTm}, end_tm = #{endTm}, lmt_pnum = #{lmtPnum},
+			 bef_price = #{befPrice}, ddct = #{ddct}, intro = #{intro}, stus_Cd = #{stusCd}, updatedate = sysdate +9/24
+			where htdl_id = #{htdlId}
+		</update>
+		
 		<select id="getList" resultType="com.dealight.domain.HtdlVO">
 		<![CDATA[
 	 		select * from tbl_htdl where htdl_Id > 0 and stus_cd != 'I'
@@ -262,7 +288,8 @@
 		</update>
 		<update id="update">
 			update tbl_htdl
-			set name = #{name}, dc_rate = #{dcRate}, start_tm = #{startTm}, end_tm = #{endTm}, lmt_pnum = #{lmtPnum}, intro = #{intro}, ddct = #{ddct}, cur_pnum = #{curPnum}, stus_cd = #{stusCd}, updatedate = sysdate + 9/24
+			set name = #{name}, dc_rate = #{dcRate}, start_tm = #{startTm}, end_tm = #{endTm}, lmt_pnum = #{lmtPnum}, intro = #{intro},
+			 ddct = #{ddct}, cur_pnum = #{curPnum}, stus_cd = #{stusCd}, updatedate = sysdate + 9/24
 			where htdl_id = #{htdlId} 
 		</update>
 		

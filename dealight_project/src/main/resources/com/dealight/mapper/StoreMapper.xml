@@ -3,9 +3,31 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
+  
+  
+  
   <!-- 동인 -->
   <!-- 다울 -->
 <mapper namespace="com.dealight.mapper.StoreMapper">
+
+	<resultMap type="com.dealight.domain.StoreDTO" id="StoreDTO">
+		<result column="store_id" property="storeId"/>
+  		<result column="store_nm" property="name"/>
+  		<result column="buser_id" property="buserId"/>
+	</resultMap>
+	
+	<!-- 종우 -->
+	<select id="storeList" resultMap="StoreDTO">
+	  	select s.store_id, s.store_nm, b.buser_id
+	  	from tbl_store s, tbl_bstore b
+	  	where s.store_id = b.store_id
+	 </select>
+	 
+	 <select id="findByStoreId" parameterType="Long" resultMap="StoreDTO">
+	 	select s.store_id, s.store_nm, b.buser_id
+	  	from tbl_store s, tbl_bstore b
+	  	where s.store_id = #{storeId} and s.store_id = b.store_id
+	 </select>
 
 	<!-- <resultMap type="com.dealight.domain.StoreVO" id="StoreVO">
   		<result column="store_id" property="storeId"/>
