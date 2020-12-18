@@ -4,7 +4,6 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <!-- 동인 -->
-  
 <mapper namespace="com.dealight.mapper.BStoreMapper">
 	<select id="getList" resultType="com.dealight.domain.BStoreVO">
 		
@@ -14,6 +13,12 @@
 		
 		]]>
 		
+	</select>
+	
+	<select id="selectIdWithAcmPnum" resultType="com.dealight.domain.BStoreVO">
+		select store_id, acm_pnum, break_sttm, break_entm
+		from tbl_bstore
+		order by 1 asc
 	</select>
 	
 	<insert id="insert">
@@ -27,8 +32,8 @@
 								acm_pnum,
 								store_id, buser_id, open_tm,
 								brch, rep_menu, rep_img, 
-								close_tm, break_sttm, last_ord_tm )
-		values ( 
+								close_tm, break_sttm, break_entm, last_ord_tm )
+		values (
 				#{n1SeatNo},
 				#{n2SeatNo}, 
 				#{n4SeatNo},
@@ -38,7 +43,7 @@
 				#{acmPnum},
 				#{storeId}, #{buserId}, #{openTm},
 				#{brch}, #{repMenu}, #{repImg}, 
-				#{closeTm}, #{breakSttm}, #{lastOrdTm})
+				#{closeTm}, #{breakSttm}, #{breakEntm}, #{lastOrdTm})
 	</insert>
   
   	<select id="read" resultType="com.dealight.domain.BStoreVO">

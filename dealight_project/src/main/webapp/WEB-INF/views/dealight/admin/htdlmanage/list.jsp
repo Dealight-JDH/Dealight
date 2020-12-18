@@ -7,7 +7,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-	<h1 class="h3 mb-2 text-gray-800">매장관리페이지</h1>
+	<h1 class="h3 mb-2 text-gray-800">핫딜관리페이지</h1>
 	<p class="mb-4">
 	</p>
 
@@ -57,6 +57,23 @@
 	let stusCd = '<c:out value="${stusCd}"/>';
 	let formObj = $("#actionForm");
 	$(document).ready(function(){
+	
+		let msg = "<c:out value='${result}'/>";
+		
+		checkAlert(msg);
+		history.replaceState({},null, null);
+		
+		
+		function checkAlert(msg){
+			if(msg === '' || history.state){
+				return;
+			}
+			
+			if(msg.length > 0){
+				alert(msg);
+			}
+			
+		}
 		
 		//핫딜 상태 버튼 클릭
 		$("button").on("click",function(e){

@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@include file="/WEB-INF/views/includes/adminHeader.jsp"%>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
-
+<script src="/resources/js/Rater.js"></script>
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -86,6 +86,7 @@
 			<div class="card mb-4">
 				<div class="card-header">평점</div>
 				<input type="text" class="card-body" name="storeIntro" value="${store.eval.avgRating }" readonly>
+				<div class='rating' data-rate-value='${store.eval.avgRating }'></div>
 			</div>
 			<div class="card mb-4">
 				<div class="card-header">리뷰수</div>
@@ -153,6 +154,15 @@
 </script>
 <script type="text/javascript" src="/resources/js/reg_file.js?ver=1"></script>
 <script>
+	/* Rater.js 로직*/
+	$(".rating").rate({
+	    max_value: 5,
+	    step_size: 0.5,
+	    initial_value: 3,
+	    selected_symbol_type: 'utf8_star', // Must be a key from symbols
+	    cursor: 'default',
+	    readonly: true,
+	});
 	window.onload = function() {
 
 		const operForm = $("#operForm");
@@ -185,7 +195,6 @@
 
 		//아래 코드는 지도 위의 마커를 제거하는 코드입니다
 		//marker.setMap(null);    
-		
 		
 		//버튼 클릭 이벤트----
 		$("button[data-oper='modify']").on("click", function(e){

@@ -8,7 +8,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Test;
@@ -22,8 +24,9 @@ import com.dealight.domain.Criteria;
 import com.dealight.domain.RsvdAvailVO;
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdVO;
+import com.dealight.domain.StoreVO;
+import com.dealight.domain.RsvdWithStoreDTO;
 import com.dealight.domain.TimeDTO;
-import com.dealight.mapper.RsvdMapper;
 
 import lombok.extern.log4j.Log4j;
 
@@ -34,6 +37,9 @@ public class RsvdServiceTests {
 	
 	@Autowired
 	private RsvdService rsvdService;
+	
+	@Autowired
+	private StoreService storeService;
 
 	@Test
 	public void testCheckExistHtdl() {
@@ -44,6 +50,7 @@ public class RsvdServiceTests {
 		assertTrue(rsvdService.checkExistHtdl(userId, htdlId));
 	}
 	
+
 	@Test
 	public void testCompleteUpdateAvail() {
 		
@@ -280,4 +287,149 @@ public class RsvdServiceTests {
 		log.info("total....................."+total);
 		
 	}
+	
+	@Test
+	public void getRsvdAvailByStoreIdTest1() {
+		
+		RsvdAvailVO rsvdAvail = rsvdService.getRsvdAvailByStoreId(1L);
+		
+		log.info("rsvd avail : "+rsvdAvail);
+		
+	}
+	
+	@Test
+	public void getTimeValueTest1() {
+		
+		
+		String time = "13:00";
+		
+		Long storeId = 1L;
+		
+		int pnum = 6;
+		
+		StoreVO store = storeService.findByStoreIdWithBStore(storeId);
+		
+		RsvdAvailVO rsvdAvail = rsvdService.getRsvdAvailByStoreId(storeId);
+		
+		boolean result = rsvdService.isRsvdAvailChecked(rsvdAvail, time, pnum);
+		
+		log.info(".........................................result : " + result);
+	}
+	
+	@Test
+	public void getTimeValueTest2() {
+		
+		Long storeId = 1L;
+		
+		String[] timeArr = {"","09:00","09:30","10:00","10:30","11:00","11:30","12:00"
+		    		       	,"12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00",
+		    		       	"16:30","17:00","17:30","18:00","18:30","19:00","19:30"};
+		
+		log.info("time arr length : "+timeArr.length);
+		
+		String[] stusArr = new String[timeArr.length];
+		
+		log.info("stus arr length : "+timeArr.length);
+		
+		int[] curNumArr = new int[timeArr.length];
+		
+		RsvdAvailVO rsvdAvail = rsvdService.getRsvdAvailByStoreId(storeId);
+		
+		StoreVO store = storeService.findByStoreIdWithBStore(storeId);
+		
+		int acm = store.getBstore().getAcmPnum();
+		
+		log.info("acm : " + acm);
+		
+		for(int i = 1; i < timeArr.length; i++) {
+			
+			log.info("=================================");
+			
+			TimeDTO dto = getTimeValue(timeArr[i]);
+			
+			log.info(" "+i+"번째 get time value : " + dto);
+			try {
+				Class<?> availClass = rsvdAvail.getClass();
+				
+				log.info("avail class : " + availClass);
+				
+				Field[] fields = availClass.getDeclaredFields();
+				
+				log.info("fields : " + fields);
+				
+				for(Field field : fields) {
+					
+					log.info("field : " + field);
+					
+					if(field.getName().equalsIgnoreCase(dto.toString())) {
+						log.info("=================equals===============");
+						field.setAccessible(true);
+						
+						int curPnum = field.getInt(rsvdAvail);
+
+						log.info("cur pnum : " + curPnum);
+						
+						curNumArr[i] = curPnum;
+						
+						int availPnum = acm-curPnum;
+						
+						log.info("availPnum : " + availPnum);
+						
+						if(availPnum >= (acm))
+							stusArr[i] = "R";
+						else if(acm > availPnum && availPnum >= (acm*0.6))
+							stusArr[i] = "Y";
+						else
+							stusArr[i] = "G";
+							
+					}
+				}
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		log.info("======================red===================");
+		log.info("red : " + acm);
+		log.info("======================yellow===================");
+		log.info("cur num이  : " + (acm - acm*0.6) +"보다 크면 yellow");
+		log.info("available num이  : " + acm*0.6 +"보다 크면 yellow");
+		log.info("======================green===================");
+		log.info("acm 0 : " + 0);
+		log.info("cur stus arr : " + Arrays.toString(stusArr));
+		log.info("curNumArr : " + Arrays.toString(curNumArr));
+		
+		HashMap<String,String> map = new HashMap<>();
+		
+		for(int i = 1; i < timeArr.length; i++)
+			map.put(timeArr[i], stusArr[i]);
+		
+		
+		log.info("map : " + map);
+		
+	}
+	
+	private TimeDTO getTimeValue(String time) {
+		
+		
+		LocalDateTime rsvdTime = formatDate(time);
+		for(TimeDTO timeValue : TimeDTO.values()) {
+			
+			if(timeValue.getTime().isEqual(rsvdTime)){
+				return timeValue;
+			}
+		}
+		return null;
+	}
+	
+	//날짜 변환 메서드
+	private LocalDateTime formatDate(String time) {
+		
+		LocalDate sysdate = LocalDate.now();
+		String strTime = sysdate.getYear()+"-"+sysdate.getMonthValue()+"-"+sysdate.getDayOfMonth()+"T"+time;
+		LocalDateTime formatTime = LocalDateTime.parse(strTime);
+		return formatTime;
+	}
+
 }

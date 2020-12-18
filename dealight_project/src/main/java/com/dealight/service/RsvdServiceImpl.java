@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +26,7 @@ import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdTimeDTO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreMenuVO;
+import com.dealight.domain.StoreVO;
 import com.dealight.domain.TimeDTO;
 import com.dealight.domain.UserWithRsvdDTO;
 import com.dealight.mapper.BStoreMapper;
@@ -177,15 +179,26 @@ public class RsvdServiceImpl implements RsvdService{
 	//예약 가능여부 체크
 	@Override
 	public boolean isRsvdAvailChecked(RsvdAvailVO vo, String time, int pnum) {
+	
+		log.info("===============isRsvdAvailChecked==================");
+		
 		TimeDTO timeValue = getTimeValue(time);
+		
+		log.info("time value : " + timeValue);
 		
 		//해당 시간에 맞는 vo 필드 뽑아내기
 		try {
 			Class<?> availClass = vo.getClass();
 			
+			log.info("availClass : " + availClass);
+			
 			Field[] fields = availClass.getDeclaredFields();
 			
+			log.info("fileds : " + fields);
+			
 			for(Field field : fields) {
+				
+				log.info("filed : " + field);
 				
 				if(field.getName().equalsIgnoreCase(timeValue.toString())) {
 					field.setAccessible(true);
@@ -731,6 +744,99 @@ public class RsvdServiceImpl implements RsvdService{
 	public int getRsvdCompleteCount(String userId, Criteria cri) {
 		
 		return rsvdMapper.getRsvdCount(userId, cri, "C");
+	}
+
+
+	@Override
+	public HashMap<String, String> getTodayRsvdStusByTime(Long storeId) {
+		
+		String[] timeArr = {"","09:00","09:30","10:00","10:30","11:00","11:30","12:00"
+		       	,"12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00",
+		       	"16:30","17:00","17:30","18:00","18:30","19:00","19:30"};
+
+		//log.info("time arr length : "+timeArr.length);
+		
+		String[] stusArr = new String[timeArr.length];
+		
+		//log.info("stus arr length : "+timeArr.length);
+		
+		//int[] curNumArr = new int[timeArr.length];
+		
+		RsvdAvailVO rsvdAvail = getRsvdAvailByStoreId(storeId);
+		
+		BStoreVO bstore = bstoreMapper.findByStoreId(storeId);
+		
+		int acm = bstore.getAcmPnum();
+		
+		//log.info("acm : " + acm);
+		
+		for(int i = 1; i < timeArr.length; i++) {
+		
+		//log.info("=================================");
+		
+		TimeDTO dto = getTimeValue(timeArr[i]);
+		
+		//log.info(" "+i+"번째 get time value : " + dto);
+		try {
+			Class<?> availClass = rsvdAvail.getClass();
+			
+			//log.info("avail class : " + availClass);
+			
+			Field[] fields = availClass.getDeclaredFields();
+			
+			//log.info("fields : " + fields);
+			
+			for(Field field : fields) {
+				
+				//log.info("field : " + field);
+				
+				if(field.getName().equalsIgnoreCase(dto.toString())) {
+					//log.info("=================equals===============");
+					field.setAccessible(true);
+					
+					int curPnum = field.getInt(rsvdAvail);
+		
+					//log.info("cur pnum : " + curPnum);
+					
+					//curNumArr[i] = curPnum;
+					
+					int rsvdPnum = acm-curPnum;
+					
+					//log.info("availPnum : " + availPnum);
+					
+					if(rsvdPnum == (acm))
+						stusArr[i] = "R";
+					else if(acm > rsvdPnum && rsvdPnum >= (acm*0.6))
+						stusArr[i] = "Y";
+					else if ((acm*0.6) > rsvdPnum && rsvdPnum >= 0)
+						stusArr[i] = "G";
+					else if (rsvdPnum > acm)
+						stusArr[i] = "B";
+						
+				}
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		}
+		//log.info("======================red===================");
+		//log.info("red : " + acm);
+		//log.info("======================yellow===================");
+		//log.info("cur num이  : " + (acm - acm*0.6) +"보다 크면 yellow");
+		//log.info("available num이  : " + acm*0.6 +"보다 크면 yellow");
+		//log.info("======================green===================");
+		//log.info("acm 0 : " + 0);
+		//log.info("cur stus arr : " + Arrays.toString(stusArr));
+		//log.info("curNumArr : " + Arrays.toString(curNumArr));
+		
+		HashMap<String,String> map = new HashMap<>();
+		
+		for(int i = 1; i < timeArr.length; i++)
+			map.put(timeArr[i], stusArr[i]);
+
+		return map;
 	}
 
 	

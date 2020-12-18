@@ -17,12 +17,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.dealight.domain.SugRequestDTO;
 import com.dealight.handler.RestTemplateResponseErrorHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 
 import lombok.extern.log4j.Log4j;
 
@@ -294,5 +297,34 @@ public class JSONTest {
 		
 		log.info(result);
 		
+	}
+	
+	@Test
+	public void depthJsonReceivceTest1() {
+		
+		SugRequestDTO dto = new SugRequestDTO();
+		
+		dto.setStoreId(1L);
+		dto.setLmtPnum(30);
+		dto.setStartTm("13:00");
+		dto.setEndTm("14:00");
+		dto.setHtdlName("안녕?");
+		
+		TextMessage message = new TextMessage("{\"sendUser\":\"-1\",\"htdlId\":\"-1\",\"cmd\":\"htdl\",\"storeId\":\""+dto.getStoreId()+"\",\"htdlDto\":{\"htdlName\":\""+dto.getHtdlName()+"\",\"startTm\":\""+dto.getStartTm()+"\",\"endTm\":\""+dto.getEndTm()+"\",\"lmtPnum\":\""+dto.getLmtPnum()+"\"}}");
+		
+		String jsonStr = message.getPayload();
+		
+		log.info("json str : "+ jsonStr);
+		
+		Gson gson = new Gson();
+		
+		HashMap<String,Object> map = gson.fromJson(jsonStr, HashMap.class);
+		
+		log.info("map : "+map);
+		
+		log.info("dto type : "+map.get("htdlDto").getClass());
+		Map<String,String> dtoMap = (LinkedTreeMap<String, String>) map.get("htdlDto");
+				
+		log.info("htdl name id : "+dtoMap.get("htdlName"));
 	}
 }

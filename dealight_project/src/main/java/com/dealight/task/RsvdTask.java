@@ -42,7 +42,7 @@ public class RsvdTask {
 	}
 	
 	//매일 9-20시까지 30분 마다 실행하여 상태 체크 및 변경
-	@Scheduled(cron = "0 0/30 9,20 * * *")
+	//@Scheduled(cron = "0 0/30 9,20 * * *")
 	public void checkRsvdStus() {
 		
 		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm");

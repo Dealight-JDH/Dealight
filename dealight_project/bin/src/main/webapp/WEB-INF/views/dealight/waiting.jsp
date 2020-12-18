@@ -6,6 +6,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script>
+// 로그인이 안된 상태면 메인페이지로 넘어가게
+let msg = '${msg}';
+	if(msg != ""){
+        alert(msg);
+        location.href = '/dealight/store?clsCd=B&storeId='+${storeId};
+     }
+	
+	
+</script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="/resources/css/store.css">
@@ -13,7 +23,6 @@
 <body>
 
 	<div class="container">
-		<div class="nav"></div>
 		<div class="left">
 			<div class="column">
 				<%-- <input type="button" value="<" onClick="history.go(-1)"> --%>

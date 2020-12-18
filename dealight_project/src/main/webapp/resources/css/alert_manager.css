@@ -1,7 +1,7 @@
 
 
 .alert {
-	
+  max-height: 40px;
   position : fixed;
   padding: 20px 40px;
   min-width : 200px;

@@ -5,16 +5,12 @@
     <%@include file="../includes/loginmodalHeader.jsp" %>
     <%@include file="../includes/mainMenu.jsp" %>
     <%@include file="../includes/loginModal.jsp" %>
-    
-    <!-- 현수현수현수 --> <!-- 수빈수빈수빈 -->
-    
 <body>
-
- <div class="middleDiv">
+<div class="middleDiv">
             <div class="imgContainer">
                 <img src="../../../../../resources/img/main.jpg">
 
-                <form action="/search/" class="searchBarDiv" method="get">
+                <form action="search" class="searchBarDiv" method="get">
                     <div class="topRow">
                         <input type="text" class="topRowBar" name="pNum" placeholder="인원">
                         <input type="text" class="topRowBar" name="region" placeholder="지역">
@@ -76,6 +72,6 @@
         </div>
 
         <div class="footer"></div>
-
+<%@include file="../includes/mainFooter.jsp" %>
 </body>
 </html>

@@ -12,7 +12,7 @@
                 }
             }
             %>
-<!-- 현수현수현수 -->
+<!-- jongwoo -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,26 +33,28 @@
          <div class="form-group">
            <label>아이디</label> 
            <input class="form-control" name='userId' value="<%=cookieVal !="" ? cookieVal : "" %>">
-         </div>      
+         </div>
+         
          <div class="form-group">
            <label>비밀번호</label> 
            <input type = 'password' class="form-control" name='pwd'>
            <p>${msg }</p>
          </div>
-          <p class="saveId"> id저장<input type="checkbox" name="saveId"  <%=cookieVal!=""?"checked" : ""%> ></p>
-         <div class="form-group">
-        <p class="find">   <a href="/dealight/findid">아이디 찾기</a>
+         
+         <p class="saveId"> id저장<input type="checkbox" name="saveId"  <%=cookieVal!=""?"checked" : ""%> ></p>
+        <div class="form-group">
+        
+         <p class="find">   <a href="/dealight/findid">아이디 찾기</a>
            <a href="/dealight/findpwd">비밀번호 찾기</a> </p>
          </div>
  
        </div>
     <div class="modal-footer">
      <button id='loginbtn' type="submit" class="btn btn-warning">Login</button>
-    <button id='registerbtn' type="button" class="btn btn-danger" onclick="location.href='/dealight/prove/authemail'">Register</button>
+    <button id='registerbtn' type="button" class="btn btn-danger" onclick="location.href='/dealight/policies'">Register</button> 
 </div>
  </form> 
 <div>
-	<%--  <input type="hidden" id="msg" value='<c:out value="${msg}"/>'>  --%>
    <!--  <a href="#google"><img id = "googlelogo" src="/resources/img/googlelogo.JPG"></a> -->
 
 </div>

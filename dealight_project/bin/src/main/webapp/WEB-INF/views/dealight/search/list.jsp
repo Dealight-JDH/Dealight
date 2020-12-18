@@ -45,6 +45,9 @@ datalist option {
         -ms-flex-preferred-size: 0;
             flex-basis: 0;
 }
+a:link { color: black; text-decoration: none;}
+a:visited { color: black; text-decoration: none;}
+a:hover { color: black; text-decoration: none;}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -86,12 +89,12 @@ datalist option {
             </datalist>
 		</div>
 		<!-- 데이터중복 없에는 방향을 생각해보자....... -->
-		<input id="searchButton" type="submit" value="search">
+		<button onclick="search()" type="button">필터 적용하기</button>
 	</form>
 	<div class="list"style="width:750px;height:700px;overflow: scroll;">
 	</div>
 	<!-- 페이징처리 -->
-	<div class="pagination">
+	<div id="pagination">
 	
 	</div>
 	
@@ -126,60 +129,45 @@ datalist option {
 <script type="text/javascript">
 	//페이지가 시작된다.
 let searchButton = document.getElementById("#searchButton");
+let searchFilter = document.forms["searchFilter"];
 const actionForm = document.forms["actionForm"];
+window.onload = function(){
 	
-$(document).ready(function(){
 	//메인에서 넘어오는 정보들 날짜, 인원, 검색어, 해시태그
 	//검색정보를 받아온다. ( 인원, 시간, 지역, 해시태그)
 	//매장메인을 보여준다.
 	showMain();
 	
-	//지도화면에서 정하는것들 - 정렬조건(기본 거리순), 필터(예약가능, 줄서기가능, 옵션, 핫딜중)
-	//지도화면에서는 버튼을 눌러야 적용
-	
-	//searchButton.onclick()
-	//search button 이벤트 등록
-	$("#searchButton").on("click", function(e){
-		e.preventDefault();
-		console.log("click");
-		
-		let searchFilter = document.forms["searchFilter"];
-		//actinoForm에 검색사항을 변경한다.
-		//오픈매장 보기 변경
-		actionForm.elements["openStore"].value = searchFilter["openStore"].checked;
-		//우선순위 변경
-		actionForm.elements["sortPriority"].value = searchFilter["sortPriority"].value;
-		//검색반경 변경
-		let distance = searchFilter["distance"];
-		actionForm.elements["distance"].value = distance.list.options[distance.value].value;
-		//page를 1로 변경
-		actionForm.elements["pageNum"].value = 1;
-		//sortType을 설정한 값으로 변경
-		actionForm.elements["sortType"].value = searchFilter["sortType"].value
-		//main페이지 다시출력
-		showMain();
-	});
-})
+}
+
 //searchButton에 click이벤트를 등록한다.
-function addEventHandlerToSearchButton(){
-	searchButton.onclick = function(e){
+function search(){
 		console.log("searchBtn Click");
+		let distance = searchFilter["distance"];
 		//button의 submit을 막는다.
-		e.preventDefault();
+		//e.preventDefault();
 		//searchFilter의 내용을 actionForm에 적용시킨다.
 		//정렬조건 적용
+		actionForm.elements["sortType"].value = searchFilter["sortType"].value
 		//우선순위 적용
+		actionForm.elements["sortPriority"].value = searchFilter["sortPriority"].value;
 		//검색반경 적용
+		actionForm.elements["distance"].value = distance.list.options[distance.value].value;
 		//오픈매장보기 적용
+		actionForm.elements["openStore"].value = searchFilter["openStore"].checked;
 		//paging의 pageNum을 1로 변경
+		actionForm.elements["pageNum"].value = 1;
+
 		//showMain(); 호출
+		showMain();
 		
-	}
+	
 }
 	
 
 //mainPage를 불러오는 함수
 function showMain(){
+	
 		//ajax통신을 한다.
 		getList(function(pageDTO){
 			//페이지 목록을 출력한다.
@@ -193,7 +181,7 @@ function showMain(){
 			//searchFilter를 업데이트한다.
 			searchFilterUpdate(pageDTO.cri);
 			//-------------------------스크롤을 맨위로 올려주는 함수필요!!!!!!!!!!!!!!!
-			var scroll = document.getElementsByClassName("list");
+			let scroll = document.getElementsByClassName("list");
 			scroll[0].scrollTop = 0;
 		})
 }
@@ -240,6 +228,7 @@ function showList(storeList){
 	}
 		console.log(storeList)
 	for( let i=0, len=storeList.length||0; i<len; i++){
+		
 		str += "<div class='"+storeList[i].storeId+"'>--------------";
 		str += "<h5>매장번호 : " + storeList[i].storeId + "</h5>";
 		str += "<div>매장거리 : " + storeList[i].dist + "</div>";
@@ -247,10 +236,11 @@ function showList(storeList){
 		str += "<div>위치 : " + storeList[i].lng + "</div>";
 		str += "<div>위치 : " + storeList[i].lat + "</div>";
 		str += "-----------------------------------------------------";
+		str += "<a href='/dealight/store?clsCd=B&storeId="+storeList[i].storeId+" '>"
 		str += "<div>매장사진 : " + storeList[i].repImg + "</div>";
+		str += "<div>매장이름 : " + storeList[i].storeNm + "</div></a>";
 		str += "<div>좋아요 : " + storeList[i].likeTotNum + "</div>";
 		str += "<div>매장평점 : " + storeList[i].avgRating +"(" +storeList[i].revwTotNum + ")</div>";
-		str += "<div>매장이름 : " + storeList[i].storeNm + "</div>";
 		str += "<div>매장 영업시간 : " + storeList[i].openTm + "-" + storeList[i].closeTm +"</div>";
 		str += "<div>대표메뉴 : " + storeList[i].repMenu + "</div>";
 		str += "<div>대기중인 인원 : </div>";
@@ -263,7 +253,7 @@ function showList(storeList){
 			str += "<button style='background-color:blue;'>핫딜 여부</button>"; 
 		}
 		if(storeList[i].seatStusCd == "R"){
-			str += "<button style='background-color:green;'>줄서기</button>"; 
+			str += "<button style='background-color:green;' onclick='showHtdl()'>줄서기</button>"; 
 		}
 		str += "<button>예약하기</button>";
 		str += "<div>핫딜 상세 정보</div>";
@@ -276,27 +266,23 @@ function showList(storeList){
 function showPaging(pageDTO){
 	
 	let str = "";
-	const paging = $(".pagination");
+	const paging = document.getElementById("pagination");
 	
 	if(pageDTO.prev){
 		str += "<a href='"+(pageDTO.startPage -1)+"'>Previous </a>"
 	}
-	
-	for(var i = pageDTO.startPage;i<pageDTO.endPage+1;i++){
-		//console.log(i)
-		//console.log(pageDTO.cri.pageNum)
+	for(let i = pageDTO.startPage;i<pageDTO.endPage+1;i++){
 		str += (pageDTO.cri.pageNum == i ?"<":"");
 		str += "<a href='"+ i +"' >"+i+" </a> ";
 		str += (pageDTO.cri.pageNum == i ?">":"");
 	}
-	
 	if(pageDTO.next){
 		str += "<a href='"+(pageDTO.endPage + 1)+"'>Next </a>";
 	}
 	
-	paging.html(str);
+	paging.innerHTML = str;
 	//a태그 관련 이벤트는 a태그가 생성될때 등록해준다.
-	$(".pagination a").on("click", addPageEventHandler);
+	$("#pagination a").on("click", addPageEventHandler);
 	
 }
 
@@ -307,7 +293,7 @@ function actionFormUpdate(cri){
 		actionForm.elements[i].value = cri[actionForm.elements[i].name];
 	}
 }
-let searchFilter = document.forms["searchFilter"];
+//let searchFilter = document.forms["searchFilter"];
 //search filter를 업데이트 하는 함수
 function searchFilterUpdate(cri){
 	
@@ -340,11 +326,11 @@ function searchFilterUpdate(cri){
 function addPageEventHandler(e){
 	
 	e.preventDefault();
-	//console.log('click');
+	console.log('click');
 	
 	//actionForm에 내용을 업데이트한다.
-	actionForm.find("input[name='pageNum']").val($(this).attr("href"));
-	
+	//actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+	actionForm.elements["pageNum"].value = this.attributes["href"].value;
 	//해당페이지에 해당하는 ajax통신을 요청한다.
 	showMain();	
 
@@ -371,8 +357,7 @@ function addPageEventHandler(e){
 		    showMain();
 		}
 		//마커들을 가지고있는 배열
-		var markers=[];
-		var selectedMaker = null;
+		let markers=[];
 		function showMap(storeList){
 			//기존마커 삭제
 			for(let i =0; i<markers.length; i++){
@@ -403,21 +388,16 @@ function addPageEventHandler(e){
 			    });
 			    
 				addMarkerEvent(marker,infoStore,i);
-			    
 			    markers.push(marker);
-				
-				
 				bounds.extend(storeLatLng);
 			}
-			
 			map.setBounds(bounds);
-			
 		}
 		
 		
 		function addMarkerEvent(marker,infoStore,i){
 			//console.log(i);
-	            var store = document.getElementsByClassName("list")[0];
+	        let store = document.getElementsByClassName("list")[0];
 			
 			kakao.maps.event.addListener(marker, 'mouseover', function() {
 
@@ -425,6 +405,7 @@ function addPageEventHandler(e){
 	            store.childNodes[i].style.backgroundColor="white";
 		        
 		    });
+			
 			kakao.maps.event.addListener(marker, 'mouseout', function() {
 
 	            store.childNodes[i].style.backgroundColor="#bbb";
@@ -434,10 +415,10 @@ function addPageEventHandler(e){
 			
 			kakao.maps.event.addListener(marker, 'click', function() {
 				
-				var scroll = document.getElementsByClassName("list")[0];
+				let scroll = document.getElementsByClassName("list")[0];
 				console.log(marker.Fb)
-		        var storeId = marker.Fb
-				var target = document.getElementsByClassName(storeId)[0]
+		        let storeId = marker.Fb
+				let target = document.getElementsByClassName(storeId)[0]
 				scroll.scrollTop = target.offsetTop - 300;
 				
 

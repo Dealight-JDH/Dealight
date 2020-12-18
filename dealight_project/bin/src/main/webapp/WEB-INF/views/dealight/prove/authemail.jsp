@@ -23,7 +23,7 @@
 	<input type="hidden" id='num' value='<c:out value="${num}"/>'>
 	<input type="hidden" id='authNum' value='<c:out value="${authNum}"/>'>
 	</form>
-	</div>
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 //인증번호와 내가입력한 번호가 일치하지 않는다면 경고창
@@ -39,18 +39,18 @@ let authNum = document.getElementById("authNum");
 	//이메일 유효성검사
 	let jEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; // 이메일
 	
-	if($("#email").val() == ""){
-		alert('이메일을 입력하여 주세요');
-		$("#email").focus();
-		return false;
-	}
+		if($("#email").val() == ""){
+			alert('이메일을 입력하여 주세요');
+			$("#email").focus();
+			return false;
+		}
 	
-	if(!jEmail.test($("#email").val())){
-		alert('이메일 형식에 맞지 않습니다');
-		$("#email").val("");
-		$("#email").focus();
-		return false;
-	} 
+		if(!jEmail.test($("#email").val())){
+			alert('이메일 형식에 맞지 않습니다');
+			$("#email").val("");
+			$("#email").focus();
+			return false;
+		} 
 	}
 </script>
 

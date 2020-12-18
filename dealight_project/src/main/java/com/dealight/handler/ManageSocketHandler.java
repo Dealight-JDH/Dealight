@@ -6,16 +6,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import com.dealight.domain.SugRequestDTO;
 import com.dealight.domain.UserVO;
 import com.dealight.service.StoreService;
 import com.dealight.service.UserService;
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 
 import lombok.extern.log4j.Log4j;
 
@@ -87,26 +88,38 @@ public class ManageSocketHandler extends TextWebSocketHandler {
 		if(map != null) {
 			log.info("map.............." + map);
 			// out of index 예외 처리, 
-			if(map != null && map.size() == 4) {
+			if(map != null && map.size() >= 4) {
 				String cmd = (String) map.get("cmd");
 				String sendUser = (String) map.get("sendUser");
 				Long storeId = Long.parseLong((String) map.get("storeId"));
 				String waitIdStr = (String) map.get("waitId");
 				String rsvdIdStr = (String) map.get("rsvdId");
+				String htdlIdStr = (String) map.get("htdlId");
+				Map<String,String> dtoMap = (LinkedTreeMap<String, String>) map.get("htdlDto");
+				
+				// 핫딜 제안 dto 로직 추가
+				//String htdlDto = (String) map.get("dto");
+				
 				String msg = "";
 				
 				Long waitId = null;
 				Long rsvdId = null;
+				Long htdlId = null;
 				
 				if(waitIdStr != null) {
 					waitId = Long.parseLong(waitIdStr);
 					msg = sendUser + "님의 " + 
-							"<a href='/dealight/business/waiting/" + waitId + "'>" +waitId+ "번</a> 웨이팅이 등록되었습니다!";
+							"<a href='/dealight/business/waiting/" + waitId + "' target='_blank'>" +waitId+ "번</a> 웨이팅이 등록되었습니다!";
 				}
 				else if(rsvdIdStr != null) {
 					rsvdId = Long.parseLong(rsvdIdStr);
 					msg = sendUser + "님의 " + 
 							rsvdId + "번 예약이 등록되었습니다!";
+				}
+				else if(htdlIdStr != null) {
+					htdlId = Long.parseLong(htdlIdStr);
+					msg = sendUser + "의 " +
+							"새로운 핫딜 제안이 도착했습니다.";
 				}
 				
 				log.info("strs exception ========================");
@@ -137,6 +150,16 @@ public class ManageSocketHandler extends TextWebSocketHandler {
 							+ "\"storeId\" : \""+storeId+"\", \"cmd\":\""+cmd+"\", \"rsvdId\":\""+rsvdId+"\"}");
 						log.info("send message ========================");
 						log.info("tmpMsg : " + tmpMsg);
+						
+						storeUserSession.sendMessage(tmpMsg);
+				} else if ("htdl".equals(cmd) && storeUserSession != null) {
+					TextMessage tmpMsg = new TextMessage("{\"sendUser\" : \""+sendUser+"\", \"msg\":\""+msg+"\","
+							+ "\"storeId\" : \""+storeId+"\", \"cmd\":\""+cmd+"\", \"htdlId\":\""+htdlId+"\","
+							+ "\"htdlDto\":{\"name\":\""+dtoMap.get("htdlName")+"\",\"startTm\":\""+dtoMap.get("startTm")+"\",\"endTm\":\""+dtoMap.get("endTm")+"\",\"lmtPnum\":\""+dtoMap.get("lmtPnum")+"\"}}");
+					
+						log.info("send message ========================");
+						log.info("tmpMsg : " + tmpMsg);
+						log.info("dto : " + dtoMap);
 						
 						storeUserSession.sendMessage(tmpMsg);
 				}

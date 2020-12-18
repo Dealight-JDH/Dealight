@@ -27,7 +27,7 @@ let msg = '${msg}';
 		
 		매장번호: ${wait.store.storeId } <br />
 		웨이팅번호: ${wait.waitId } <br />
-		매장사진: ${wait.store.repImg } <br />
+		매장사진: ${wait.bstore.repImg } <br />
 		매장명: ${wait.store.storeNm } <br />
 		웨이팅접수시간: <fmt:formatDate pattern="yyyy-MM-dd" value="${wait.waitRegTm }" /> <br /> <br />
 		

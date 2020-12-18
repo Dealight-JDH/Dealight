@@ -72,7 +72,7 @@ public class WaitServiceImpl implements WaitService {
 	@Override
 	public boolean isCurPanaltyUser(String userId) {
 		
-		return userMapper.findById(userId).getPmStus().equals("P");
+		return userMapper.findById(userId).getPmStus().equalsIgnoreCase("P");
 	}
 
 	@Override

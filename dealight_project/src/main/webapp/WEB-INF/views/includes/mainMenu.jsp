@@ -320,6 +320,9 @@
 		  <strong class="alert_tit">핫딜</strong>
 		  <span class="alert_senduser"></span>
 		  <span class="alert_msg">핫딜 관련 notification 입니다.</span>
+		  <span class="alert_dto"></span>
+		  <button class='btnAcceptHtdl'>핫딜 등록</button>
+		  <button class="alert_closebtn">거절</button>
 		</div>
 	
 	<script>
@@ -373,7 +376,7 @@ function goMypage(){
 		// 다른 페이지 어디서든 소켓을 불러올 수 있어야 하기 때문이다.
 		
 	 	// 소켓을 ws로 연다.
-	 	var ws = new WebSocket("ws://localhost:8080/manageSocket");
+	 	var ws = new WebSocket("ws://localhost:8181/manageSocket");
 	 	socket = ws;
 
 	 	// 커넥션이 연결되었는지 확인한다.
