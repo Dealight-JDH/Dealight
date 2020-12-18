@@ -351,7 +351,9 @@
                     <div class="store_info_i">
                         <div class="store_info_i left">
                             <div class="store_open_tit">영업시간</div>
-                            <div class="store_open_tm">${store.bstore.openTm} - ${store.bstore.closeTm}</div>
+                            <div class="store_open_tm" data-openTm="${store.bstore.openTm}" data-closeTm="${store.bstore.closeTm}">
+                            	${store.bstore.openTm} - ${store.bstore.closeTm}
+                            </div>
                         </div>
                         <div class="store_info_i right">
                             <div class="store_cur_rsvd">오늘 예약 수 : ${store.curRsvdNum}</div>
@@ -372,6 +374,32 @@
    </main>
 <script type="text/javascript">
 $(document).ready(function() {
+	
+	let date = new Date();
+	
+	let curMil = date.getHours()*60 + date.getMinutes();
+	
+	for(let i = 0; document.getElementsByClassName("store_open_tm").length;i++){
+		
+		console.log(i+"번째 작업"+i);
+		let openTm = document.getElementsByClassName("store_open_tm")[i].dataset.opentm;
+		let closeTm = document.getElementsByClassName("store_open_tm")[i].dataset.closetm;
+		
+		console.log("openTm : "+openTm);
+		console.log("closeTm : "+closeTm);
+		
+		let open = parseInt(openTm.split(":")[0]*60) + parseInt(openTm.split(":")[1]);
+		let close = parseInt(closeTm.split(":")[0]*60) + parseInt(closeTm.split(":")[1]);
+		
+		console.log("open : "+open);
+		console.log("close : "+close);
+		
+		if(open <= curMil && curMil <= close) document.getElementsByClassName("store_stus")[i].innerText = "영업중"; 
+		else {
+			document.getElementsByClassName("store_stus")[i].innerText = "마감 완료";
+			document.getElementsByClassName("store_stus")[i].style.backgroundColor ="gray";
+		}
+	}
     
     $(".uploadResult").on("click", "li", function(e){
         

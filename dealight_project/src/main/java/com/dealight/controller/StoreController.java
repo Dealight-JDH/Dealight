@@ -51,6 +51,7 @@ public class StoreController {
 	private WaitService waitService;
 	private HtdlService htdlService;
 	private RsvdService rsvdService;
+	private StoreService storeService;
 
 	
 	//핫딜 상세(스토어)
@@ -100,8 +101,6 @@ public class StoreController {
 	@PostMapping("/store/wait")
 	public String regWait(Model model, HttpSession session,int pnum, Long storeId) {
 		
-		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		session.setAttribute("userId", "kjuioq");
 		String userId = (String) session.getAttribute("userId");
 		
 		log.info("register wait......................");
@@ -130,7 +129,8 @@ public class StoreController {
 
     	ManageSocketHandler handler = ManageSocketHandler.getInstance();
     	Map<String, WebSocketSession> map = handler.getUserSessions();
-    	WebSocketSession ws = map.get("kjuioq");
+    	// 매장의 소켓으로 메시지를 보낸다.
+    	WebSocketSession ws = map.get(storeService.getBStore(storeId).getBuserId());
     	if(ws != null) {
     		TextMessage message = new TextMessage("{\"sendUser\":\""+userId+"\",\"waitId\":\""+waitId+"\",\"cmd\":\"wait\",\"storeId\":\""+storeId+"\"}");
     		try {

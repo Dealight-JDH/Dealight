@@ -219,15 +219,16 @@ public class BusinessController {
 		}
 		
 		@GetMapping("/test")
-		public String test(HttpServletRequest request,Model model) {
-			
-			HttpSession session = request.getSession();
-			
-			session.setAttribute("userId", "kjuioq");
+		public String test(HttpSession session,Model model) {
 			
 			String userId = (String) session.getAttribute("userId");
 			
 			model.addAttribute("userId", userId);
+			
+			ManageSocketHandler handler = ManageSocketHandler.getInstance();
+	    	Map<String, WebSocketSession> map = handler.getUserSessions();
+	    	
+	    	model.addAttribute("map",map);
 			
 			
 			return "/dealight/business/test";
@@ -237,7 +238,6 @@ public class BusinessController {
 		public String test(HttpSession session,RsvdRequestDTO dto) {
 			
 			// 임시로 'kjuioq'의 아이디를 로그인한다.
-			session.setAttribute("userId", "kjuioq");
 			String userId = (String) session.getAttribute("userId");
 			
 			log.info("register rsvd......................");
@@ -280,7 +280,7 @@ public class BusinessController {
 			
 	    	ManageSocketHandler handler = ManageSocketHandler.getInstance();
 	    	Map<String, WebSocketSession> map = handler.getUserSessions();
-	    	WebSocketSession ws = map.get("kjuioq");
+	    	WebSocketSession ws = map.get(storeService.getBStore(storeId).getBuserId());
 	    	if(ws != null) {
 	    		TextMessage message = new TextMessage("{\"sendUser\":\""+userId+"\",\"rsvdId\":\""+rsvdId+"\",\"cmd\":\"rsvd\",\"storeId\":\""+storeId+"\"}");
 	    		try {

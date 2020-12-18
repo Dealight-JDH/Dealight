@@ -1675,8 +1675,9 @@ let curHour = curToday.getHours(),
 	 	    
 	 	    	console.log("curNotiCnt : "+curNotiCnt);
 	 	    	
+	 	    	let dtoSpan ="";
 	 	    	//let dtoSpan = "<span class='manage_htdl_dto' data-name='"+dto.name+"' data-startNm='"+dto.startNm+"' data-endTm='"+dto.endTm+"' data-lmtPnum='"+dto.lmtPnum+"' ></span>"
-	 	    	let dtoSpan = "<span class='manage_htdl_dto' data-name='"+data.htdlDto.name+"' data-startTm='"+data.htdlDto.startTm+"' data-endTm='"+data.htdlDto.endTm+"' data-lmtPnum='"+data.htdlDto.lmtPnum+"' ></span>"
+	 	    	if(data.htdlDto) dtoSpan = "<span class='manage_htdl_dto' data-name='"+data.htdlDto.name+"' data-startTm='"+data.htdlDto.startTm+"' data-endTm='"+data.htdlDto.endTm+"' data-lmtPnum='"+data.htdlDto.lmtPnum+"' ></span>"
 	   	 	    
 				if(data.cmd === 'rsvd'){
 		   	 		showRsvdList(storeId);

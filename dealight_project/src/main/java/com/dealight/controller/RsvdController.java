@@ -56,6 +56,7 @@ public class RsvdController {
 	private final PymtService pymtService;
 	private final HtdlService htdlService;
 	private final StoreService service;
+	
 		
 
 	
@@ -235,8 +236,10 @@ public class RsvdController {
     	ManageSocketHandler handler = ManageSocketHandler.getInstance();
     	Map<String, WebSocketSession> map = handler.getUserSessions();
     	log.info("socket map................ : " + map);
+    	log.info("request dto : "+requestDto);
     	
-    	WebSocketSession ws = map.get(requestDto.getUserId());
+    	WebSocketSession ws = map.get(service.getBStore(requestDto.getStoreId()).getBuserId());
+    	// 'aaaa' -> 'aaaa' 
     	log.info("socket user id ................ : " + requestDto.getUserId());
     	log.info("socket ws................ : " + ws);
     	if(ws != null) {

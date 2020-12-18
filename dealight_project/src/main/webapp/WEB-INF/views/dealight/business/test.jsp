@@ -60,6 +60,10 @@
 	</div>
 	
 	<div id="socketAlert" class="alert alert-success" role="alert" style="display:none;"></div>
+	<div>
+		<h2>메시지 로그인 상태</h2>
+		${map}
+	</div>
     <script>
     /* Web Socket */
     
@@ -84,7 +88,7 @@
 		connectWS();
 });
 
- const userId = ${userId};
+ const userId = '${userId}';
     
 	// 모달 선택
 	const modal = $("#myModal"),
@@ -98,54 +102,7 @@
 	});
  
     
- let socket = null;
- 
- function connectWS() {
-	// 전역변수 socket을 선언한다.
-	// 다른 페이지 어디서든 소켓을 불러올 수 있어야 하기 때문이다.
-	
- 	// 소켓을 ws로 연다.
- 	let ws = new WebSocket("ws://localhost:8181/manageSocket");
- 	socket = ws;
 
- 	// 커넥션이 연결되었는지 확인한다.
- 	ws.onopen = function () {
- 	    console.log('Info: connection opened.');
- 	};
-
- 	
- 	// 받은 메시지를 출력한다.
- 	// 메시지를 수신한 이벤트 핸들러와 같다.
- 	ws.onmessage = function (event) {
- 	    console.log("ReceiveMessage : ", event.data+'\n');
- 	    
- 	    // 추후에 message 형식을 JSON으로 변환해서 message type을 지정해줘야 한다.
- 	    //if()
- 	    
- 	    
- 	    let socketAlert = $('#socektAlert');
- 	    socketAlert.html(event.data);
- 	    socketAlert.css('display','block');
- 	   	showWaitList(storeId);
- 	    
- 	    // 메시지가 3초 있다가 자동으로 사라지게
- 	    /*
- 	    setTimeout( function(){
- 	    	
- 	    	$socketAlert.css('display','none');
- 	    },3000);
- 	    */
- 	};
-
-
- 	// connection을 닫는다.
- 	ws.onclose = function (event) {
- 		console.log('Info: connection closed.');
- 		//setTimeout( function(){ connect(); }, 1000); // retry connection!!
- 	};
- 	ws.onerror = function (event) { console.log('Error'); };
- 	
- }
  
  function regWait(wait, callback,error) {
 	    
