@@ -50,6 +50,9 @@ a:visited { color: black; text-decoration: none;}
 a:hover { color: black; text-decoration: none;}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="row">
@@ -306,7 +309,6 @@ a:hover { color: black; text-decoration: none;}
 		}
 		//console.log(storeList)
 		for( let i=0, len=storeList.length||0; i<len; i++){
-			
 			/* str += "<div class='"+storeList[i].storeId+"'>--------------";
 			str += "<h5>매장번호 : " + storeList[i].storeId + "</h5>";
 			str += "<div>매장거리 : " + storeList[i].dist + "</div>";
@@ -314,7 +316,7 @@ a:hover { color: black; text-decoration: none;}
 			str += "<div>위치 : " + storeList[i].lng + "</div>";
 			str += "<div>위치 : " + storeList[i].lat + "</div>"; */
 			str += "-----------------------------------------------------";
-			str += "<button id='like' data-storeId='"+storeList[i].storeId+"'  onclick='like()' >좋아요</button>"
+			str += "<div  class='like' data-storeid='"+storeList[i].storeId+"' data-like='false' ><i class='far fa-heart fa-lg' style='color:red;'/></i></div>"
 			str += "<a href='/dealight/store/"+storeList[i].storeId+" '>"
 			str += "<div>매장사진 : " + storeList[i].repImg + "</div>";
 			str += "<div>매장이름 : " + storeList[i].storeNm + "</div></a>";
@@ -339,6 +341,32 @@ a:hover { color: black; text-decoration: none;}
 			str += "</div>";
 		}
 		list.innerHTML = str;
+		
+		$(".like").on("click", function(e){
+			let storeId = $(this).data("storeid");
+			let like = $(this).data("like");
+			console.log(like);
+			console.log(storeId)
+			if(!isLogin()){
+				alert("로그인을 해주세요");
+				return;
+			}
+			
+			if(like === true){
+				let str="<i class='far fa-heart fa-lg' style='color:red;'/></i>";
+				$(this).empty().append(str);
+				$(this).data("like", false);
+				removeLike({userId:"<c:out value='${userId}'/>",storeId:storeId});
+			}
+			if(like === false){
+				let str="<i class='fas fa-heart fa-lg' style='color:red;'/></i>";
+				$(this).empty().append(str);
+				$(this).data("like", true)
+				addLike({userId:"<c:out value='${userId}'/>",storeId:storeId});
+				alert("찜목록에 추가했습니다.")
+			}
+			
+		})
 		//페이징처리
 		showPaging(pageDTO)
 	}
@@ -349,15 +377,53 @@ a:hover { color: black; text-decoration: none;}
 		}
 		return true;
 	}
-	function like(){
-		let storeId = $(this).data("storeId");
-		if(!isLogin()){
-			alert("로그인을 해주세요");
-			return;
-		}
-		
+	
+	
+	
+	function addLike(params,callback,error){
+    	let storeId = params.storeId,
+    		userId = params.userId;
+        $.ajax({
+            type:'post',
+            url:'/dealight/mypage/like/add/'+userId+'/'+storeId,
+            contentType : "application/json",
+            success : function(result, status, xhr) {
+                if(callback) {
+                    callback(result);
+                }
+            },
+            error : function(xhr, status, er) {
+                if(error) {
+                    error(er);
+                }               
+            }
+        });
 		
 	}
+	
+	function removeLike(params,callback,error) {
+    	
+    	let storeId = params.storeId,
+    		userId = params.userId;
+    	
+        $.ajax({
+            type:'delete',
+            url:'/dealight/mypage/like/remove/'+userId+'/'+storeId,
+            data : {'userId' : userId, 'storeId':storeId},
+            contentType : "application/json",
+            success : function(result, status, xhr) {
+                if(callback) {
+                    callback(result);
+                }
+            },
+            error : function(xhr, status, er) {
+                if(error) {
+                    error(er);
+                }               
+            }
+        });
+        
+    }
 	
 	//페이징 처리를 하는 함수.
 	function showPaging(pageDTO){
