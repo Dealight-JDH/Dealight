@@ -75,4 +75,14 @@ public class Criteria {
 				
 		return builder.toUriString();
 	}
+	
+	public String getFilterTypeLink() {
+		UriComponentsBuilder builder = UriComponentsBuilder.fromPath("")
+				.queryParam("page", this.pageNum)
+				.queryParam("amount", this.getAmount())
+				.queryParam("filterType", this.getFilterType())
+				.queryParam("keyword", this.getKeyword());
+				
+		return builder.toUriString();
+	}
 }

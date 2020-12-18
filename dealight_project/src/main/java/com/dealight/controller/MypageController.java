@@ -222,44 +222,9 @@ public class MypageController {
 		return "/dealight/mypage/like";
 	}
 
-	@GetMapping(value = "/like/{pageNum}/{amount}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
-	public ResponseEntity<LikeListDTO> getLikeList(HttpSession session,@PathVariable("pageNum") int pageNum, @PathVariable("amount") int amount){
-
-		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		//session.setAttribute("userId", "kjuioq");
-		String userId = (String) session.getAttribute("userId");
-
-		LikeListDTO dto = new LikeListDTO();
-		Criteria cri = new Criteria(pageNum, amount);
-		int total = likeService.getLikeTotalByUserId(userId, cri);
-
-		dto.setLikeList(likeService.findListWithPagingByUserId(userId, cri));
-		dto.setTotal(total);
-		dto.setPageMaker(new PageDTO(cri,total));
-
-		return  new ResponseEntity<>(dto, HttpStatus.OK);
-	}
 	
-	@PostMapping(value = "/like/add/{userId}/{storeId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
-	public ResponseEntity<Boolean> pickLike(@PathVariable("userId")String userId, @PathVariable("storeId") Long storeId){
-
-		log.info("like add.........................");
-		log.info("user id : " + userId);
-		log.info("store id : " + storeId);
-		
-		likeService.pick(userId,storeId);
-		
-		return new ResponseEntity<>(true, HttpStatus.OK);
-	}
 	
-	@DeleteMapping(value = "/like/remove/{userId}/{storeId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
-	public ResponseEntity<Boolean> removeLike(@PathVariable("userId")String userId, @PathVariable("storeId") Long storeId){
-
-		return  new ResponseEntity<>(likeService.cancel(userId, storeId), HttpStatus.OK);
-	}
+	
 
 //	@GetMapping("/modify")
 	public String modify(Model model, HttpSession session) {

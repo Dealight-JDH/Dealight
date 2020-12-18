@@ -46,5 +46,4 @@ public interface BUserMapper {
 	public int updateBrJdgStusCd(@Param("brSeq") Long brSeq, @Param("brJdgStusCd") String brJdgStusCd);
 	
 	
-
 }
