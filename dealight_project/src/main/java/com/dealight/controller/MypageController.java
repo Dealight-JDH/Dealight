@@ -222,24 +222,7 @@ public class MypageController {
 		return "/dealight/mypage/like";
 	}
 
-	@GetMapping(value = "/like/{pageNum}/{amount}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
-	public ResponseEntity<LikeListDTO> getLikeList(HttpSession session,@PathVariable("pageNum") int pageNum, @PathVariable("amount") int amount){
-
-		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		//session.setAttribute("userId", "kjuioq");
-		String userId = (String) session.getAttribute("userId");
-
-		LikeListDTO dto = new LikeListDTO();
-		Criteria cri = new Criteria(pageNum, amount);
-		int total = likeService.getLikeTotalByUserId(userId, cri);
-
-		dto.setLikeList(likeService.findListWithPagingByUserId(userId, cri));
-		dto.setTotal(total);
-		dto.setPageMaker(new PageDTO(cri,total));
-
-		return  new ResponseEntity<>(dto, HttpStatus.OK);
-	}
+	
 	
 	
 

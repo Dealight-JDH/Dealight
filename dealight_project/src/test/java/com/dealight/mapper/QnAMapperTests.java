@@ -91,12 +91,6 @@ public class QnAMapperTests {
 		
 	}
 	
-	@Test
-	public void testDelete() {
-		log.info("delete...................");
-		
-		log.info(".............." + (mapper.delete(6L)==1));
-	}
 	
 	@Test
 	public void testGetTotalCount() {

@@ -1,5 +1,7 @@
 package com.dealight.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dealight.domain.Criteria;
+import com.dealight.domain.LikeListDTO;
 import com.dealight.domain.PageDTO;
 import com.dealight.service.LikeService;
 import com.dealight.service.SearchService;
@@ -43,6 +46,25 @@ public class AjaxController {
 		}
 		
 		return new ResponseEntity<PageDTO>(sService.getListstore(cri), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/mypage/like/{pageNum}/{amount}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<LikeListDTO> getLikeList(HttpSession session,@PathVariable("pageNum") int pageNum, @PathVariable("amount") int amount){
+
+		// 임시로 'kjuioq'의 아이디를 로그인한다.
+		//session.setAttribute("userId", "kjuioq");
+		String userId = (String) session.getAttribute("userId");
+
+		LikeListDTO dto = new LikeListDTO();
+		Criteria cri = new Criteria(pageNum, amount);
+		int total = likeService.getLikeTotalByUserId(userId, cri);
+
+		dto.setLikeList(likeService.findListWithPagingByUserId(userId, cri));
+		dto.setTotal(total);
+		dto.setPageMaker(new PageDTO(cri,total));
+
+		return  new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/mypage/like/add/{userId}/{storeId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
