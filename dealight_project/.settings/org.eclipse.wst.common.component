@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-                                        
+                                            
+    
     
     
     
@@ -9,7 +10,8 @@
     
     
     <wb-module deploy-name="app-1.0.0-BUILD-SNAPSHOT">
-                                                                                
+                                                                                        
+        
         
         
         
@@ -19,7 +21,8 @@
         
         
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
-                                                                                
+                                                                                        
+        
         
         
         
@@ -29,11 +32,19 @@
         
         
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+                
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+                
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+                
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
+                
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources"/>
-                                                                                
+        <dependent-module archiveName="ojdbc8.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/kjuio/Desktop/java/Oracle/sqldeveloper-19.2.1.247.2212-x64/sqldeveloper/jdbc/lib/ojdbc8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+                                                                                        
+        
         
         
         
@@ -43,7 +54,8 @@
         
         
         <property name="context-root" value="app"/>
-                                                                                
+                                                                                        
+        
         
         
         
@@ -53,7 +65,8 @@
         
         
         <property name="java-output-path" value="/dealight_project/target/classes"/>
-                                                                            
+                                                                                    
+    
     
     
     
@@ -63,7 +76,8 @@
     
     
     </wb-module>
-                                    
+                                        
+
 
 
 

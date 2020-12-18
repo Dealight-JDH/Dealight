@@ -10,92 +10,869 @@
 <head>
 <meta charset="UTF-8">
 <title>매장 관리</title>
-<link rel="stylesheet" href="/resources/css/manage.css" type ="text/css" />
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/0f892675ba.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="/resources/js/Chart.js"></script>
+    <style>
+        *{
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+        .store_board{
+            width: 95%;
+            height: auto;
+            /*border: 1px solid black;*/
+            /*margin: 50px 30px;*/
+            margin-top: 20px;
+            border-radius: 20px;
+            padding: 5px 15px;
+            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);
+        }
+        .main_box{
+            margin: 20px;
+            /*border: 1px black solid;*/
+            
+        }
+        .board{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            /*border: 1px black solid;*/
+        }
+        .board_wrapper{
+            display: flex;
+            width: 80%;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /*border: 1px black solid;*/
+        }
+        .tab_nav{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: flex-end;
+            /*border: 1px solid black;*/
+            padding: 5px 0;
+            height: 30px;
+            width: 90%;
+            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);
+            margin-bottom: 20px;
+        }
+        .tab_items{
+            /*border: 1px solid black;*/
+            padding: auto auto;
+            margin: auto 15px 0 15px;
+            cursor: pointer;
+        }
+        .tab_items:hover{
+            opacity: 0.7;
+            box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.274);
+        }
+        .tab_items a{
+            padding: 5px 5px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .curTab{
+            color: white;
+            background-color:  #d32323b6;
+            padding: 0px 8px;
+            border-radius: 20px;
+        }
+
+
+        .board_top_box{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            /*border: 1px black solid;*/
+            width: 90%;
+            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);
+            margin-bottom: 20px;
+        }
+        .top_box_items{
+            width: 50%;
+            /*border: 1px solid black;*/
+        }
+        .clock{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .cur_date{
+            font-size: 24px;
+            font-weight: bold;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            /*border: 1px solid black;*/
+        }
+        .cur_date > span {
+            padding-right: 10px;
+        }
+        .cur_time{
+            font-size: 24px;
+            font-weight: bold;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            /*border: 1px solid black;*/
+        }
+        .cur_time > span{
+            padding-right: 10px;
+        }
+        .time{
+            color: rgba(0, 0, 0, 0.794);
+        }
+        .btn_seat_stus{
+            cursor: pointer;
+            outline: none;
+            border: 0; 
+            padding: 0; 
+            background-color: transparent !important; 
+            font-size: 32px;
+            padding: 0 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.274);
+            opacity: 0.5;
+        }
+        .btn_seat_stus:hover{
+            opacity: 1.0;
+        }
+        .btn_seat_stus.green{color: green;}
+        .btn_seat_stus.yellow{color: yellow;}
+        .btn_seat_stus.red{color: red;}
+        .top_box_items{
+            padding: 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+        .top_box_items.light{
+            /*border: 1px solid black;*/
+        }
+        .top_box_items.light > *{
+            /*border: 1px black solid;*/
+
+        }
+        .top_box_items.light > span{
+            font-weight: bold;
+            font-size: 24px;
+            padding-right: 10px;
+        }
+        .curStus {
+            opacity: 1.0;
+            
+        }
+
+        /* board */
+        #board{
+            /*border: 1px black solid;*/
+            width: 90%;
+            height: 600px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);
+        }
+        .board_left_box{
+            width: 45%;
+            height:90%;
+            /*border: 1px black solid;*/
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .board_right_box{
+            width: 45%;
+            height: 90%;
+            /*border: 1px black solid;*/
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .next_wrapper{
+            /*border: 1px solid black;*/
+            padding-right: 100px;
+            width: 70%;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+            
+        }
+        .next_wait{
+            position: relative;
+            /*border: 1px solid black;*/
+            height: 40%;
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .next_wait:before{
+            content: "입장";
+            position: absolute;
+            left: 100%;
+            top: 10%;
+            width: 60px;
+            text-align: center;
+            border-radius: 0 10px 10px 0;
+            background-color: gray;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 4px 7px;
+            cursor: pointer;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+        }
+        .next_wait:before:hover{
+            opacity: 0.7;
+        }
+        .next_wait:after{
+            content: "노쇼";
+            position: absolute;
+            left: 100%;
+            top: 40%;
+            width: 60px;
+            text-align: center;
+            border-radius: 0 10px 10px 0;
+            background-color: gray;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 4px 7px;
+            cursor: pointer;
+           
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+        }
+        .next_wait:after:hover{
+            opacity: 0.7;
+        }
+        .next_rsvd{
+            position: relative;
+            /*border: 1px solid black;*/
+            height: 40%;
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .next_tit{
+            position: absolute;
+            border-radius: 10px;
+            left: 20px;
+            top: 10px;
+            padding: 5px 10px;
+            background-color: #d32323b6;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        .next_info{
+            margin-top: 20px;
+            margin-left: 20px;
+            /*border: 1px black solid;*/
+            width: 90%;
+            height: 70%;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .next_info_top{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-end;
+            /*border: 1px solid black;*/
+            width: 100%;
+            height: 30%;
+        }
+        .next_info_top > span{
+            
+            padding-bottom: 3px;
+        }
+        .next_info_bot{
+            /*border: 1px solid black;*/
+            width: 100%;
+            height: 70%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .wait_name{
+            letter-spacing: 2px;
+            font-weight: bold;
+            font-size: 14px;
+            border-radius: 20px;
+            color: white;
+            padding: 4px 7px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            background-color: rgba(106, 153, 255, 0.87);
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+        }
+        .wait_telno{
+            align-self: flex-end;
+            letter-spacing: 2px;
+            font-weight: bold;
+            font-size: 9px;
+            border-radius: 20px;
+            color: white;
+            padding: 4px 7px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            background-color: rgba(106, 153, 255, 0.87);
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+        }
+        .next_wait_pnum{
+            font-weight: bold;
+            font-size: 42px;
+            color:rgba(0, 0, 0, 0.548);
+            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.13);
+        }
+        .next_wait_regtm{
+            font-weight: bold;
+            font-size: 42px;
+            color:rgba(0, 0, 0, 0.548);
+            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.13);
+        }
+        .next_rsvd_name{
+            letter-spacing: 2px;
+            font-weight: bold;
+            font-size: 14px;
+            border-radius: 20px;
+            color: white;
+            padding: 4px 7px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            background-color: rgba(106, 153, 255, 0.87);
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+        }
+        .next_rsvd_telno{
+            align-self: flex-end;
+            letter-spacing: 2px;
+            font-weight: bold;
+            font-size: 9px;
+            border-radius: 20px;
+            color: white;
+            padding: 4px 7px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            background-color: rgba(106, 153, 255, 0.87);
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+        }
+        .next_rsvd_pnum{
+            font-weight: bold;
+            font-size: 42px;
+            color:rgba(0, 0, 0, 0.548);
+            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.13);
+        }
+        .next_rsvd_tm{
+            font-weight: bold;
+            font-size: 42px;
+            color:rgba(0, 0, 0, 0.548);
+            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.13);
+        }
+        .list_wrapper{
+            /*border: 1px black solid;*/
+            width: 90%;
+            height: 80%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .wait_list_wrapper{
+            /*border: 1px black solid;*/
+            width: 50%;
+            height: 100%;
+            margin-left: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            overflow:scroll;
+            box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.274);
+        }
+        .wait_list_wrapper::-webkit-scrollbar{
+            display: none;
+        }
+        .rsvd_list_wrapper{
+            /*border: 1px black solid;*/
+            width: 50%;
+            height: 100%;
+            margin-left: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            overflow:scroll;
+            box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.274);
+        }
+        .rsvd_list_wrapper::-webkit-scrollbar{
+            display: none;
+        }
+        .wait_list_tit{
+            position: absolute;
+            border-radius: 10px;
+            left: 20px;
+            top: 10px;
+            padding: 5px 10px;
+            background-color: #d32323b6;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        .rsvd_list_tit{
+            position: absolute;
+            border-radius: 10px;
+            left: 20px;
+            top: 10px;
+            padding: 5px 10px;
+            background-color: #d32323b6;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        .wait{
+            /*border: 1px solid black;*/
+            height: 25%;
+            min-height: 20%;
+            width: 90%;
+            margin: 5px;
+            border-radius: 10px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.404);
+        }
+        .wait > button{
+            position: absolute;
+            right: 15px;
+            bottom: 10px;
+        }
+        .list_blank{
+            /*border: 1px solid black;*/
+            min-height: 15%;
+            height: 15%;
+            width: 90%;
+        }
+        .list_info_top{
+            /*border: 1px black solid;*/
+            width: 100%;
+            height: 50%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .list_info_bot{
+            /*border: 1px black solid;*/
+            width: 100%;
+            height: 50%;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .wait_name.wait_list{
+            align-items: center;
+        }
+        .wait_telno.wait_list{
+            align-self: center;
+        }
+        .list_wait_pnum{
+            /*border: 1px black solid;*/
+            font-weight: bold;
+            font-size: 24px;
+            color:rgba(0, 0, 0, 0.548);
+            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.13);
+        }
+        .list_wait_regtm{
+            /*border: 1px black solid;*/
+            font-weight: bold;
+            font-size: 24px;
+            color:rgba(0, 0, 0, 0.548);
+            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.13);
+        }
+        .list_info_bot >span{
+            margin-left: 20px;
+            margin-right: 10px;
+        }
+        .list_info_bot.rsvd_list{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+        .rsvd{
+            /*border: 1px solid black;*/
+            height: 25%;
+            min-height: 20%;
+            width: 90%;
+            margin: 5px;
+            border-radius: 10px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.404);
+        }
+        .rsvd_name.rsvd_list{
+            align-items: center;
+        }
+        .rsvd_telno.rsvd_list{
+            align-self: center;
+        }
+        .list_rsvd_pnum{
+            /*border: 1px black solid;*/
+            font-weight: bold;
+            font-size: 24px;
+            color:rgba(0, 0, 0, 0.548);
+            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.13);
+        }
+        .list_rsvd_regtm{
+            /*border: 1px black solid;*/
+            font-weight: bold;
+            font-size: 24px;
+            color:rgba(0, 0, 0, 0.548);
+            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.13);
+        }
+        .rsvd_name{
+            letter-spacing: 2px;
+            font-weight: bold;
+            font-size: 14px;
+            border-radius: 20px;
+            color: white;
+            padding: 4px 7px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            background-color: rgba(106, 153, 255, 0.87);
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+        }
+        .rsvd_telno{
+            align-self: flex-end;
+            letter-spacing: 2px;
+            font-weight: bold;
+            font-size: 9px;
+            border-radius: 20px;
+            color: white;
+            padding: 4px 7px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            background-color: rgba(106, 153, 255, 0.87);
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+        }
+        
+        /* 타임 바*/
+        .rsvd_time_bar{
+            /*border: solid 1px black;*/
+            position: relative;
+            margin : 0 auto;
+            margin-top : 50px;
+            margin-bottom: 50px;
+            border-radius: 10px;
+            width: 80%;
+            height: 100px;
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            font-family: 'Montserrat', sans-serif;
+        }
+        .rsvd_time {
+            width: 150px;
+    		flex-shrink: 0;
+    		height: 100%;
+        }
+        .time_table{
+            border :rgba(255, 255, 255, 0.575) solid 1px;
+            border-radius: 5px;
+       		width: 150px;
+        	height: 50px;
+            /* green 예약 없을 때 */
+            background-color: rgba(125, 255, 164, 0.698);
+            /* green 예약 있을 때*/
+            /*background-color: rgba(37, 201, 89, 0.911);*/
+            /* yellow */
+            /*background-color: rgba(248, 236, 73, 0.781);*/
+            /* red */
+            /*background-color: #d32323b6;*/
+            /* gray*/
+            /*background-color: #29242460;*/
+        }
+        .time_text_box{
+            display: flex;
+            justify-content: center;
+            flex-direction: row;
+            align-items: center;
+        }
+        .time_text{
+            text-align: center;
+            font-weight: bolder;
+            font-size: 16px;
+            padding: 3px;
+            margin: 3px;
+        }
+        .cur_time_mark{
+            display: inline;
+            position: absolute;
+            top: 12px;
+            left: 180px;
+            border: 8px solid;
+            border-color: #d32323b6 transparent transparent transparent;
+            pointer-events: none;
+        }
+        /* manage side menu*/
+        .manage_side_menu{
+            width: 20%;
+            height: 736px;
+            /*border: 1px black solid;*/
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: column;
+            box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.274);
+        }
+        .manage_side_menu a{text-decoration: none; color: white;}
+        .manage_side_menu a:visited { text-decoration: none; color: white;} 
+        .manage_side_menu a:hover { text-decoration: none; color: white;} 
+        .manage_side_menu a:active { text-decoration: none; color: white;}
+        .manage_side_menu > div{
+            cursor: pointer;
+            width: 70%;
+            height: 10%;
+            margin: 50px 0 0 0;
+            padding: 20px;
+            /*border: 1px solid black;*/
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            background-color: #d32323b6;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.527);
+        }
+        
+        .btn_wait_register{
+            text-align: center;
+            line-height: 40px;
+        }
+        #side_menu_tit{
+            cursor: unset;
+            width: 100%;
+            padding: 0;
+            border-radius: 0;
+            align-self: start;
+            margin-top: 0;
+            margin-bottom: 50px;
+        }
+        .info_box{
+            width: 95%;
+            height: auto;
+            /*border: 1px solid black;*/
+            margin: 50px 30px;
+            border-radius: 20px;
+            padding: 5px 15px;
+            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);
+        }
+        #store_board_main{
+        	width:95%;
+        	max-width:95%;
+        }
+        #switch_manage{
+        	color:white;
+        }
+        /* The Modal (background) */
+        .modal {
+	        display: none; /* Hidden by default */
+	        position: fixed; /* Stay in place */
+	        z-index: 1; /* Sit on top */
+	        left: 0;
+	        top: 0;
+	        width: 100%; /* Full width */
+	        height: 100%; /* Full height */
+	        overflow: auto; /* Enable scroll if needed */
+	        background-color: rgb(0,0,0); /* Fallback color */
+	        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	        animation: fadeEffect 0.3s;
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+	        background-color: #fefefe;
+	        margin: 10% auto; /* 15% from the top and centered */
+	        padding: 20px;
+	        border: 1px solid #888;
+	        width: 60%; /* Could be more or less, depending on screen size */
+	        animation: fadeEffect 0.3s;
+        }
+        
+         .modal-content ul{
+         	margin : 0 0;
+         	display : inline-block;
+        }
+
+        /* The Close Button */
+        .close_modal {
+        position : absolute;
+        right : 20px;
+        top : 5px;
+        display : inline-block;
+        margin : 0 0;
+        color: #aaa;
+        font-size: 50px;
+        font-weight: bold;
+        }
+
+        .close_modal:hover,
+        .close_modal:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-	
-    <div class="main_box"><!-- main box -->
-        <h2>Business Manage Main Page</h2>
-        <div class="board"> <!-- board -->
-        	<nav class="tab_nav">
-                    <a class="switch switch_rsvd_rslt">현황판</a>
-                    <a class="switch switch_board">매장관리</a>
-        	</nav>
-            <div class="board_top_box"> <!-- top box -->
-
-                <div class="cur_time"> <!-- cur time -->
-                
-                <div class="js-clock clock">
-                        <h6>현재 날짜🗓</h6>
-                        <h3 class="date"></h3>
-                        <h6>현재 시간⏰</h6>
-                        <h3 class="time" style="color : blue">00:00</h3>
+    <main class="store_board" id="store_board_main">
+        <div class="main_box"><!-- main box -->
+            <div class="board"> <!-- board -->
+                <div class="manage_side_menu">
+                    <div id="side_menu_tit">
+                        매장 관리 화면
+                    </div>
+                    <div class="btn_wait_register">
+                        오프라인 웨이팅<br>
+                        등록
+                    </div>
+                    <div>
+                        <a href="/dealight/business/manage/dealhistory?storeId=${storeId}">핫딜 히스토리</a>
+                    </div>
+                    <div>
+                        <a href="/dealight/business/manage/modify?storeId=${storeId}">매장 정보 수정</a>
+                    </div>
                 </div>
-
-                </div> <!-- end time -->
-                <div class="light"> <!-- light -->
-                    <h4>현재 착석 상태💺</h4>
-                    <ul class="storeSeatStus"></ul>
-                    <form id="seatStusForm" action="/dealight/business/manage/board/seat"
-                            method="put">
-                            <input name="seatStusColor" id="color_value" value="" hidden>
-                            <input name="storeId" value="${storeId}" hidden>
-                            <button class="btn_seat_stus">Green</button>
-                            <button class="btn_seat_stus">Yellow</button>
-                            <button class="btn_seat_stus">Red</button>
-                            </br>
-                    </form>
-                </div> <!-- end light -->
-                <div class="top_box_blank"></div>
-         </div> <!-- end top box -->
-
-         <div id="rsvd_rslt_baord" style="display : none">
-            <h1>최근 7일 Trend📈</h1>
-            <canvas id="rsvd_chart"></canvas>
-            <h1>당일 예약 결과💵</h1>
-            <ul class="rsvdRslt"></ul>
-            <h1>최근 7일 예약 현황</h1>            
-            <ul class="last_week_rsvd"></ul>
-        </div>
-
-        <div id="board">
-
-            <div class="next_wait"> <!-- next wait -->
-                <h4>다음 웨이팅 정보👉</h4>
-	            <ul class="nextWait"></ul>
-                <div class="btn_wait_wrapper">
-                    <button class="btn_wait_stus btn_enter_wait">입장</button>
-                    <button class="btn_wait_stus btn_noshow_wait">노쇼</button>
+                <div class="board_wrapper"> <!-- board wrapper -->
+                    <nav class="tab_nav">
+                            <div class="tab_items curTab"><a class="switch switch_board" id="switch_manage">매장관리</a></div>
+                            <div class="tab_items"><a class="switch switch_rsvd_rslt">현황판</a></div>
+                    </nav>
+                    <div class="board_top_box"> <!-- top box -->
+                        <div class="top_box_items date_box"> <!-- cur time -->
+                            <div class="js-clock clock">
+                                    <div class="cur_date">
+                                        <span><i class="far fa-calendar-alt"></i></span>
+                                        <span class="date">2020-12-18</span>
+                                    </div>
+                                    <div class="cur_time">
+                                        <span><i class="far fa-clock"></i></span>
+                                        <span class="time">00:00</span>
+                                    </div>
+                            </div>
+                        </div> <!-- end time -->
+                        <div class="top_box_items light"> <!-- light -->
+                            <span>현재 착석 상태</span>
+                            <form id="seatStusForm" action="/dealight/business/manage/board/seat"
+                                    method="put">
+                                    <input name="seatStusColor" id="color_value" value="" hidden>
+                                    <input name="storeId" value="${storeId}" hidden>
+                                    <button class="btn_seat_stus green" data-color="Green"><i class="fas fa-circle"></i></button>
+                                    <button class="btn_seat_stus yellow" data-color="Yellow"><i class="fas fa-circle"></i></button>
+                                    <button class="btn_seat_stus red" data-color="Red"><i class="fas fa-circle"></i></button>
+                            </form>
+                        </div> <!-- end light -->
+                </div> <!-- end top box -->
+        
+                <div id="rsvd_rslt_baord" style="display : none">
+                    <h1>최근 7일 Trend📈</h1>
+                    <canvas id="rsvd_chart"></canvas>
+                    <h1>당일 예약 결과💵</h1>
+                    <ul class="rsvdRslt"></ul>
+                    <h1>최근 7일 예약 현황</h1>            
+                    <ul class="last_week_rsvd"></ul>
                 </div>
-            </div> <!-- end next wait -->
-            <div class="next_rsvd"> <!-- next rsvd -->
-                <h4>다음 예약자 정보👉</h4>
-                <ul class="nextRsvd"></ul>
-            </div> <!-- end next rsvd -->
-            <div class="wait_board"> <!-- wait board -->
-            <div class="rsvd_wrapper">
-                    <div class="rsvd"> <!-- wait  -->
-                        <h1>예약 리스트🗒</h1>
-                        <ul class="rsvdList"></ul>
-                    </div> <!-- end wait -->
-            </div>
-            <div class="wait_wrapper" id="rolling_wait">
-                <h1>웨이팅 리스트🗒</h1>
-	            <ul class="waitList">
-	            </ul>
-            </div>
-                <di class="wait_register_wrapper">
-                    <button class="btn_wait_register">오프라인 웨이팅 등록</button>
-                </div><!-- end wait board -->
-                <p id="dealhistory"><a href="/dealight/business/manage/dealhistory?storeId=${storeId}">핫딜 히스토리</a></p>
-                <p id="modify"><a href="/dealight/business/manage/modify?storeId=${storeId}">매장 정보 수정</a></p>
+        
+                <div id="board">
+                    <div class="board_left_box">
+                        <div class="next_wrapper">
+                            <div class="next_wait">
+                                <span class="next_tit">NEXT 웨이팅</span>
+                                <div class="next_info nextWait">
+
+                                </div>
+                            </div>
+                            <div class="next_rsvd">
+                                <span class="next_tit">NEXT 예약</span>
+                                <div class="next_info nextRsvd">
+                                    <div class="next_info_top">
+                                        <span class="next_rsvd_name">임종우</span>
+                                        <span class="next_rsvd_telno">010-2723-4124</span>
+                                    </div>
+                                    <div class="next_info_bot">
+                                        <span class="next_rsvd_pnum">4명</span>
+                                        <span class="next_rsvd_tm">13:00 </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- end left box -->
+                    <div class="board_right_box">
+                        <div class="list_wrapper">
+                            <div class="wait_list_wrapper waitList">
+                            </div>
+                            <div class="rsvd_list_wrapper rsvdList">
+                            </div>
+                        </div>
+                    </div> <!-- end right box -->
+                </div> <!-- end board wrapper -->
             </div> <!-- end board -->
-        </div>
-            <div class="rsvd_time_bar"><!-- rsvd time bar -->
-      		</div> <!-- end rsvd time bar -->
-        </div> <!-- end main box -->
+            </div>
+                <div class="rsvd_time_bar"><!-- rsvd time bar -->
+                    
+                </div> <!-- end rsvd time bar -->
+            </div> <!-- end main box -->
+        </main>
+
+
         <div class="info_box"> <!--  info box -->
         
                     <h1>매장 정보🏪</h1>
@@ -161,36 +938,37 @@ const storeId = ${storeId};
 
 /*시간바 만들기*/
 /*현재시간으로 스크롤 고정*/
-writeTimeBar = function (curTime) {
-    timeArr = ['','09:00','09:30','10:00','10:30','11:00','11:30','12:00'
-    	,'12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00',
-    	'16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30','22:00'];
-    let strTime = "";
-    let curPos = 0; 
-    for(let i = 1; i <= 27; i++){
-    	if(curTime === timeArr[i])
-    		curPos = i - 1;
-        strTime += "<div class='rsvd_time dealight_tooltip' id='slide-"+i+"'><h6>"+timeArr[i]+"</h6><div class='time_table'></div></div>";
-    }
-	document.querySelector(".rsvd_time_bar").innerHTML = strTime;
-    // 예약 상태바 초기 스크롤 고정
-    document.querySelector(".rsvd_time_bar").scrollLeft = ((parseInt(curPos)*150) - 150);
-	}
-	
-/* 시간 파싱 */
-let curToday = new Date();
-let curHour = curToday.getHours(),
-	curMinutes = curToday.getMinutes();
-	
-	if(curMinutes >= 30)
-		curMinutes = '30';
-	else
-		curMinutes = '00';
-	
-	let curTime = curHour + ":" + curMinutes;
+let writeTimeBar = function (curTime) {
+        timeArr = ['','09:00','09:30','10:00','10:30','11:00','11:30','12:00'
+            ,'12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00',
+            '16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30','22:00'];
+        let strTime = "";
+        let curPos = 0; 
+        strTime += "<div class='cur_time_mark'></div>";
+        for(let i = 1; i <= 27; i++){
+            if(curTime === timeArr[i])
+                curPos = i - 1;
+            strTime += "<div class='rsvd_time dealight_tooltip' id='slide-"+i+"'><div class='time_text_box'><span class='time_text'>"+timeArr[i]+"</span></div><div class='time_table'></div></div>";
+        }
+        document.querySelector(".rsvd_time_bar").innerHTML = strTime;
+        // 예약 상태바 초기 스크롤 고정
+        document.querySelector(".rsvd_time_bar").scrollLeft = ((parseInt(curPos)*150) - 150);
+        document.getElementsByClassName("cur_time_mark")[0].style.left= ((parseInt(curPos)*150) + 30).toString() +'px';
+        }
 
-	// TimeBar 작성
-	writeTimeBar(curTime);
+    let curToday = new Date();
+    let curHour = curToday.getHours(),
+        curMinutes = curToday.getMinutes();
+        
+        if(curMinutes >= 30)
+            curMinutes = '30';
+        else
+            curMinutes = '00';
+        
+        let curTime = curHour + ":" + curMinutes;
+
+        // TimeBar 작성
+        writeTimeBar(curTime);
 	
 	// 모달 선택
 	const modal = $("#myModal"),
@@ -637,10 +1415,10 @@ let curHour = curToday.getHours(),
         const seatStusForm = $("#seatStusForm"),
 	        colorVal = $("#color_value"),
 	        storeUL = $(".store"),
-	        rsvdListUL = $(".rsvdList"),
-	        waitListUL = $(".waitList"),
-	        nextWaitUL = $(".nextWait"),
-	        nextRsvdUL = $(".nextRsvd"),
+	        rsvdListDiv = $(".rsvdList"),
+	        waitListDiv = $(".waitList"),
+	        nextWaitDiv = $(".nextWait"),
+	        nextRsvdDiv = $(".nextRsvd"),
 	        rsvdMapUL = $(".rsvdMap"),
 	        storeSeatUL = $(".storeSeatStus"),
 	        rsvdRsltUL = $(".rsvdRslt"),
@@ -716,40 +1494,45 @@ let curHour = curToday.getHours(),
                     waitList.html("");
                     return;
                 }
-                
+                strWaitList += "<span class='wait_list_tit'>웨이팅 리스트</span>";
+                strWaitList += "<div class='list_blank'></div>";
                 waitList.forEach(wait => {
                 	strWaitList += "<div class='wait'>";
-                    strWaitList += "<ul>" + "<a href='/dealight/business/waiting/"+wait.waitId+"'><h3>웨이팅 번호 : "+wait.waitId+"</h3></a>";
-                        strWaitList += "<li>웨이팅 회원 아이디 : "+ wait.userId + "</li>";
-                        strWaitList += "<li>웨이팅 매장 번호 : "+ wait.storeId + "</li>";
-                        strWaitList += "<li>웨이팅 인원 : "+ wait.waitPnum + "</li>";
-                        strWaitList += "<li>웨이팅 등록 시간 : "+ wait.waitRegTm.toString() + "</li>";
-                        strWaitList += "<li>웨이팅 상태 : "+ wait.waitStusCd + "</li>";
-                        strWaitList += "<li>웨이팅 회원 이름 : "+ wait.custNm + "</li>";
-                        strWaitList += "<li>웨이팅 회원 번호 : "+ wait.custTelno + "</li>";
-                    strWaitList += "</ul>"
-                    strWaitList += "<button class='btn_wait_call'><a href='/oauth?storeId="+wait.storeId+"&waitId="+wait.waitId+"'>호출</a></button>";
-                    strWaitList += "</div>";
+                    strWaitList += "<a target='_blank' href='/dealight/business/waiting/"+wait.waitId+"'>";
+                        strWaitList += "<div class='list_info_top'>";
+                        strWaitList += "<span class='wait_name wait_list'>"+wait.custNm+"</span>";
+                        strWaitList += "<span class='wait_telno wait_list'>"+wait.custTelno+"</span>";
+                        strWaitList += "</div>";
+                        strWaitList += "<div class='list_info_bot'>";
+                        strWaitList += "<span class='list_wait_pnum'>"+wait.waitPnum+"</span>";
+                        strWaitList += "<span class='list_wait_regtm'>"+wait.waitRegTm.toString()+"</span>";
+                        strWaitList += "</div>";
+                    	strWaitList += "<button class='btn_wait_call'><a href='/oauth?storeId="+wait.storeId+"&waitId="+wait.waitId+"'>호출</a></button>";
+                    	strWaitList += "</a></div>";
                 });
     
-              waitListUL.html(strWaitList);   
+              waitListDiv.html(strWaitList);   
               
               let nextWait = boardService.getNextWait(waitList);
               
               let strNextWait = "";
               
               if(nextWait){
-              
-              strNextWait += "<li> 대기자 이름 : "+nextWait.custNm+"</li>";
-              strNextWait += "<li> 대기자 연락처 : "+nextWait.custTelno+"</li>";
-              strNextWait += "<li> 웨이팅 번호 :"+nextWait.waitId+"</li>";
-              strNextWait += "<li> 매장 번호 : "+nextWait.storeId+"</li>";
-              strNextWait += "<li> 회원 아이디 : "+nextWait.userId+"</li>";
-              strNextWait += "<li> 웨이팅 인원 : "+nextWait.waitPnum+"</li>";
-              strNextWait += "<li> 웨이팅 등록 시간 : "+nextWait.waitRegTm+"</li>";
-              strNextWait += "<li> 웨이팅 상태 : "+nextWait.waitStusCd+"</li>";
+	              strNextWait += "<div class='next_info_top'>";
+	              strNextWait += "<span class='wait_name' data-id='"+nextWait.waitId+"'>"+nextWait.custNm+"</span>"
+	              strNextWait += "<span class='wait_telno'>"+nextWait.custTelno+"</span>";
+	              strNextWait += "</div>";
+	              strNextWait += "<div class='next_info_bot'>";
+	              strNextWait += "<span class='next_wait_pnum'>"+nextWait.waitPnum+"</span>";
+	              strNextWait += "<span class='next_wait_regtm'>"+nextWait.waitRegTm+"</span>";
+	              strNextWait += "<button class='btn_enter_wait'>입장</button>";
+	              strNextWait += "<button class='btn_noshow_wait'>노쇼</button>";
+	              strNextWait += "</div>";
               }
-              nextWaitUL.html(strNextWait);
+              nextWaitDiv.html(strNextWait);
+              
+              $(".btn_enter_wait").on("click", waitEnterHandler);
+              $(".btn_noshow_wait").on("click", waitNoshowHandler);
     
             }); 
         }
@@ -764,27 +1547,24 @@ let curHour = curToday.getHours(),
                     rsvdList.html("");
                     return;
                 }
+                console.log("===============================");
+                strRsvdList += "<span class='rsvd_list_tit'>예약 리스트</span>";
+                strRsvdList += "<div class='list_blank'></div>";
+                
                 rsvdList.forEach(rsvd => {
-                	if(rsvd.htdlId == null) strRsvdList += "<div class='rsvd rsvd_i'>" ;
-                	else strRsvdList += "<div class='rsvd rsvd_i cur_htdl'>" ;
-                    strRsvdList += "<ul class='btnRsvd'>" + "<h3>예약 번호 : "+rsvd.rsvdId+"</h3>"; 
-                        strRsvdList += "<li hidden class='btnStoreId'>"+rsvd.storeId+"</li>";
-                        strRsvdList += "<li hidden class='btnUserId'>"+rsvd.userId+"</li>";
-                        strRsvdList += "<li>매장번호 : "+ rsvd.storeId + "</li>";
-                        strRsvdList += "<li>회원 아이디 : "+ rsvd.userId + "</li>";
-                        strRsvdList += "<li>핫딜 번호 :"+ rsvd.htdlId + "</li>";
-                        strRsvdList += "<li>승인 번호 : "+ rsvd.aprvNo + "</li>";
-                        strRsvdList += "<li>예약 인원 : "+ rsvd.pnum + "</li>";
-                        strRsvdList += "<li>예약 시간 : "+ rsvd.time + "</li>";
-                        strRsvdList += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
-                        strRsvdList += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
-                        strRsvdList += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-                        strRsvdList += "<li>예약 등록 날짜 : "+ rsvd.regdate + "</li>";
-                    strRsvdList += "</ul>" 
-                    strRsvdList += "</div>" ;
+                	if(rsvd.htdlId == null) strRsvdList += "<div class='rsvd rsvd_i btnRsvd'>" ;
+                	else strRsvdList += "<div class='rsvd rsvd_i cur_htdl btnRsvd'>" ;
+                		strRsvdList += "<div class='list_info_top'>";
+                		strRsvdList += "<span class='rsvd_name rsvd_list'>"+rsvd.userId+"</span>";
+                		strRsvdList += "<span class='rsvd_telno rsvd_list'>"+rsvd.totQty+"</span>";
+                		strRsvdList += "</div>";
+                		strRsvdList += "<div class='list_info_bot rsvd_list'>";
+                		strRsvdList += "<span class='list_rsvd_pnum'>"+rsvd.pnum+"</span>";
+                		strRsvdList += "<span class='list_rsvd_regtm'>"+rsvd.time+"</span>";
+                		strRsvdList += "</div></div>";
                 });
     
-              rsvdListUL.html(strRsvdList);
+              rsvdListDiv.html(strRsvdList);
               
             }); 
         }
@@ -805,9 +1585,9 @@ let curHour = curToday.getHours(),
             		strRsvdMap += "<li class='dealight_tooltip'>"+key + " : 예약번호[" + value+"] <span class='dealight_tooltiptext'>"+value+"번호 상세보기</span></li></br>";
             		for(let i = 1; i < 28; i ++){
             			// debug
-            			console.log(key+' : '+i+ ' : '+document.querySelector('#slide-'+i+' h6').textContent);
-            			console.log(key === document.querySelector('#slide-'+i+' h6').textContent);
-            			if(key === document.querySelector('#slide-'+i+' h6').textContent){
+            			console.log(key+' : '+i+ ' : '+document.querySelector("'#slide-"+i+"'").textContent);
+            			console.log(key === document.querySelector("'#slide-"+i+"'").textContent);
+            			if(key === document.querySelector("'#slide-"+i+"'").textContent){
             				let strHtml = "";
             				let strVal = value.toString();
             				
@@ -832,17 +1612,17 @@ let curHour = curToday.getHours(),
             		Object.entries(map).forEach(([key,value]) => {
                 		console.log("key : "+key+", value : " + value);
                 		for(let i = 1; i < 28; i ++){
-                			if(key === document.querySelector('#slide-'+i+' h6').textContent){
+                			if(key === document.querySelector("#slide-"+i).textContent){
                 				if(value === 'R')
-                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'red';
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = '#d32323b6';
                 				else if(value === 'Y')
-                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'yellow';
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(248, 236, 73, 0.781)';
                 				else if(value === 'G')
-                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'green';
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(37, 201, 89, 0.911)';
                 				else if(value === 'B')
-                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'black';
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = '#29242460';
                 				else
-                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'orange';
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(125, 255, 164, 0.698)';
                 			}
                 		}
                 	});
@@ -876,19 +1656,19 @@ let curHour = curToday.getHours(),
         		let strNextRsvd = "";
         		if(!rsvd)
         			return;
-                strNextRsvd += "<li>예약 번호 : "+rsvd.rsvdId+"</li>"; 
-                strNextRsvd += "<li>매장번호 : "+ rsvd.storeId + "</li>";
-                strNextRsvd += "<li>회원 아이디 : "+ rsvd.userId + "</li>";
-                strNextRsvd += "<li>핫딜 번호 :"+ rsvd.htdlId + "</li>";
-                strNextRsvd += "<li>승인 번호 : "+ rsvd.aprvNo + "</li>";
-                strNextRsvd += "<li>예약 인원 : "+ rsvd.pnum + "</li>";
-                strNextRsvd += "<li>예약 시간 : "+ rsvd.time + "</li>";
-                strNextRsvd += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
-                strNextRsvd += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
-                strNextRsvd += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-                strNextRsvd += "<li>예약 등록 날짜 : "+ rsvd.regdate + "</li>";
+        		strNextRsvd += "<span class='next_tit'>NEXT 예약</span>";
+        		strNextRsvd += "<div class='next_info'>";
+        		strNextRsvd += "<div class='next_info_top'>";
+        		strNextRsvd += "<span class='next_rsvd_name'>"+rsvd.userId+"</span>";
+        		strNextRsvd += "<span class='next_rsvd_telno'>"+rsvd.totQty+"</span>";
+        		strNextRsvd += "<span class='store_htdl'>"+rsvd.htdlId+"</span>";
+        		strNextRsvd += "</div>";
+        		strNextRsvd += "<div class='next_info_bot'>";
+        		strNextRsvd += "<span class='next_rsvd_pnum'>"+rsvd.pnum+"</span>";
+        		strNextRsvd += "<span class='next_rsvd_tm'>"+rsvd.time+"</span>";
+        		strNextRsvd += "</div>";
                 
-                nextRsvdUL.html(strNextRsvd);
+                nextRsvdDiv.html(strNextRsvd);
         	});
         	
         }
@@ -1595,7 +2375,8 @@ let curHour = curToday.getHours(),
 
             let param = {};
             param.storeId = storeId;
-            param.seatStusCd = e.target.innerHTML[0];
+            param.seatStusCd = e.target.dataset.color.toString()[0];
+            e.target.className += " curStus";
             
             
         	boardService.putChangeStatusCd(param, function(result){
@@ -1608,7 +2389,7 @@ let curHour = curToday.getHours(),
         let waitEnterHandler = function(e) {
         	
         	/*dom 코드는 변경될 가능성 있음*/
-        	waitId = parseInt($(".nextWait li:eq(2)").text().split(":")[1]);
+        	let waitId = parseInt(document.querySelector(".nextWait .wait_name").dataset.id);
 
         	boardService.putEnterWaiting(waitId, function(result){
         		//alert(result);
@@ -1618,11 +2399,10 @@ let curHour = curToday.getHours(),
 
         /*웨이팅 입장 처리*/
         $(".btn_enter_wait").on("click", waitEnterHandler);
-        
         let waitNoshowHandler = function(e){
         	
         	/*dom 코드는 변경될 가능성 있음*/
-        	waitId = parseInt($(".nextWait li:eq(2)").text().split(":")[1]);
+        	let waitId = parseInt(document.querySelector(".nextWait .wait_name").dataset.id);
 
         	boardService.putNoshowWaiting(waitId, function(result){
         		//alert(result);
