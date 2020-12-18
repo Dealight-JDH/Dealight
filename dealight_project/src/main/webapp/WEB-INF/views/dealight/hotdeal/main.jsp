@@ -99,8 +99,6 @@ h4{
 <body>
 <h1>핫딜</h1>
 
-
-
 	<div class="topnav">
 		<form action = "/dealight/hotdeal/register">
 			<input type="number" min = "0" name = "storeId" placeholder="매장번호를 선택해주세요">
@@ -170,7 +168,7 @@ h4{
 	    <div class="modal-header">
 	    	선착순: <h4 class="modal-lmtPnum" id="lmtPnum"></h4><label>명</label><br>
 	    	<h4 class="modal-name" id="htdlName"></h4><br>
-	    	<input type="hidden" id="mhtdlId" name = "htdlId">
+	    	<!-- <input type="hidden" id="mhtdlId" name = "htdlId"> -->
 	    </div>
 
 	    <div class="modal-body">
@@ -212,13 +210,8 @@ h4{
 	    </div>
 	  </div>
 	</div>
-<<<<<<< HEAD
+
 	<script>
-=======
-	
-<script>
->>>>>>> dev_hotdeal
-	
 	let htdlUL = $(".hotdeal"); //핫딜
 	let size = '<c:out value="${fn:length(lists)}"/>'; //진행중인 핫딜 갯수
 
@@ -246,9 +239,12 @@ h4{
 	
 	let storeId = 0; //매장번호
 	let paramStusCd = "A"; //핫딜 상태코드
+	let htdlId = 0; //핫딜번호
+	const userId= "<c:out value="${userId}"/>" || null;
+	let ishtdlPayHistory = false;
 	
 	$(document).ready(function() {
-
+		
 		console.log("==="+size);
 		//showList(paramStusCd);
 		showListStart(paramStusCd, pageNum); //1초마다 핫딜 리스트를 그린다
@@ -314,21 +310,23 @@ h4{
 			e.preventDefault();
 			let body = $("body");
 			
+			console.log("================htdlId: " + htdlId);
 			//해당 핫딜번호,메뉴,가격 
-			let htdlId = $("#mhtdlId").val();
+			/* let htdlId = $("#mhtdlId").val(); */
 			let htdlMenu = $("#menuName").text();
 			let afterPrice = $("#afterPrice").text().substr(1);
+			
 			//폼 만들기
 			let form = $("<form></form>");
 			form.attr("action", "/dealight/store");
 			form.attr("method", "get");
 			//요청 폼 입력
 			let storeIdInput = $("<input type='hidden' value='"+ storeId +"' name='storeId'>");
-			let htdlIdInput = $("<input type='hidden' value=''"+ htdlId +"' name='htdlId'>");
+			let htdlIdInput = $("<input type='hidden' value='"+ htdlId +"' name='htdlId'>");
 			let clsCdInput = $("<input type='hidden' value='B' name='clsCd'>");
 		    form.append(storeIdInput);
+		    form.append(htdlIdInput);
 		    form.append(clsCdInput);
-		    /* form.append(htdlIdInput); */
 		    form.appendTo(body);
 		    //전송
 		    form.submit();
@@ -435,8 +433,8 @@ h4{
 		
 		getList({stusCd: param, page: page || 1},
 			function(data){
-			console.log("list: " + JSON.stringify(data.lists));
-			console.log("data: " + JSON.stringify(data));
+			//console.log("list: " + JSON.stringify(data.lists));
+			//console.log("data: " + JSON.stringify(data));
 			//console.log("listDtls: " + JSON.stringify(data.lists[0].htdlDtls));
 	
 			//ajax 요청 list가 널이거나 0이면 ""
@@ -516,14 +514,14 @@ h4{
 			
 			let fileCallPath = null;
 			let srcObj = null;
-			console.log("hotdeal : " + JSON.stringify(list[i]));
-			console.log("hotdeal image: " + list[i].htdlImg);
+			//console.log("hotdeal : " + JSON.stringify(list[i]));
+			//console.log("hotdeal image: " + list[i].htdlImg);
 			if(list[i].htdlImg != null){
 				let htdlPhotoSrc = list[i].htdlImg;
 				srcObj = subSrc(htdlPhotoSrc);
 				fileCallPath = encodeURIComponent("/"+ srcObj["uploadPath"] +"/s_"+ srcObj["fileName"]);
 				
-				console.log("================핫딜 이미지: " + htdlPhotoSrc);
+				//console.log("================핫딜 이미지: " + htdlPhotoSrc);
 			}
 			
 			str += "<div class='css-hotdeal js-htdl"+i+"'>";
@@ -550,17 +548,17 @@ h4{
 			str += "핫딜 종료 시간: "+ "<span class= 'js-end'>"+list[i].endTm+"</span>"+"<br>"
 			
 			str += "메뉴: ";
-			console.log("======="+ list[i].htdlDtls);
-			console.log(list[i].htdlDtls);
+			//console.log("======="+ list[i].htdlDtls);
+			//console.log(list[i].htdlDtls);
 		
 		//핫딜 메뉴 리스트 생성
 		for(let j=0, dtlsLen = list[i].htdlDtls.length || 0; j<dtlsLen; j++){
 			str += list[i].htdlDtls[j].menuName+" ";
-			console.log(list[i].htdlDtls[j].menuName);
+			//console.log(list[i].htdlDtls[j].menuName);
 		}
 			str +="<br>";
-			console.log("========="+list[i].befPrice);
-			console.log("========="+list[i].ddct);
+			//console.log("========="+list[i].befPrice);
+			//console.log("========="+list[i].ddct);
 			str += "핫딜 할인 전 가격: <span style='text-decoration:line-through; color:#999999;'>"+ list[i].befPrice+"</span><br>";
 			str += "핫딜 할인 후 가격: "+ (list[i].befPrice - list[i].ddct)+"<br>";
 			str += "핫딜 소개: "+ list[i].intro+"<br>";
@@ -578,7 +576,7 @@ h4{
 		let srcObj = {};
 	
 		let index = PhotoSrc.lastIndexOf("/");
-		console.log("photo index ============" + index);			
+		//console.log("photo index ============" + index);			
 		
 		srcObj["uploadPath"] = PhotoSrc.substring(0,index);
 		console.log("photoSrc: " + PhotoSrc.substring(0,index));
@@ -591,7 +589,7 @@ h4{
 	function getHtdl(param, callback, error){
 		let htdlId = param.htdlId;
 		
-		console.log("htdlId: "+ htdlId);
+		//console.log("htdlId: "+ htdlId);
 		
 		$.get("/dealight/hotdeal/get/"+htdlId+".json", function(result){
 			if(callback){
@@ -606,10 +604,14 @@ h4{
 	
 	
 	//모달 띄우기
-	 function showModal(htdl){
+	 function showModal(htdl, ishtdlPayHistory){
 		 let size = htdl.htdlDtls.length;		
 		 let str = [];
 		 
+		 //비로그인 상태 
+		 if(userId == null)
+			ishtdlPayHistory = true;
+
 		 if(htdl.stusCd === 'A'){
 			showElapTimeStart(htdl.endTm);			 
 		 }
@@ -620,11 +622,11 @@ h4{
 		
 		 //핫딜 이미지(uuid+fileName)
 		 let filePath = htdl.htdlImg;
-		 console.log(filePath+"modal filePath==============")
+		 //console.log(filePath+"modal filePath==============")
 		 
 		 //원본 이미지 파일 경로
 		 let fileCallPath = encodeURIComponent("/"+ filePath);
-		 console.log("========fileCallPath1: " + fileCallPath);
+		 //console.log("========fileCallPath1: " + fileCallPath);
 		 //섬네일 파일 경로
 		 /* let srcObj = subSrc(filePath);
 		 let thumnailfileCallPath = encodeURIComponent("/"+ srcObj["uploadPath"] +"/s_"+ srcObj["fileName"]);
@@ -634,7 +636,8 @@ h4{
 
 		//핫딜 번호
 		let htdlNum = htdl.htdlId;
-		 
+		htdlId = htdlNum;
+		//console.log("========htdlNUm : " + htdlNum);
 		htdlImg.html("<img src='/display?fileName="+ fileCallPath+ "'>");
 		storeId = htdl.storeId;
 		console.log("============storeId: "+storeId);
@@ -666,15 +669,44 @@ h4{
 		
 		intro.text(htdl.intro); 
 		const dealBtn = $(".js-dealBtn");
-		if(htdl.stusCd !== 'A'){
+		
+		if(!ishtdlPayHistory){
+			dealBtn.text("🔥이미 구매하신 상품입니다.");
+			dealBtn.css("background", "black");
+			dealBtn.prop("disabled", true);
+		}else if(htdl.stusCd !== 'A'){
 			dealBtn.text("🔥오픈 예정입니다.");
+			dealBtn.css("background", "orange");
 			dealBtn.prop("disabled", true);
 		}else{
 			dealBtn.text("🔥딜 하기");
+			dealBtn.css("background", "red");
 			dealBtn.prop("disabled", false);
 		}
 		
+		
+		
 		modal.show();
+	}
+	
+	
+	//핫딜 구매이력 체크
+	 function isHtdlPayExistChecked(param, callback, error){
+			let userId = param.userId;
+			let htdlId = param.htdlId;
+			console.log("======userId : " + userId);
+			console.log("======htdlId : " + htdlId);
+			
+			$.getJSON("/dealight/reservation/htdlcheck/"+userId+"/"+htdlId+".json",
+					function(data){
+				if(callback){
+					callback(data);
+				}
+			}).fail(function(xhr, status, err){
+				if(error){
+					error();
+				}
+			});
 	}
 	
 	 //핫딜 클릭(상세) 이벤트 등록
@@ -688,13 +720,21 @@ h4{
 			 //핫딜번호를 가져온다
 			 let param = $(this).find(".js-htdlId").text();
 			 console.log($(this).find(".js-htdlId").text());
-			 
+
+			 if(userId != null){				 
+				 isHtdlPayExistChecked({htdlId: param, userId: userId}, function(result){
+					 console.log("===========hotdeal pay check: "+ result);
+					 ishtdlPayHistory = result;
+				 });
+			 }
+
 			 getHtdl({htdlId: param}, function(result){
-				 console.log("핫딜 get.."+ JSON.stringify(result));
 				 
+				 console.log("핫딜 get.."+ JSON.stringify(result));
 				 //모달에 값 전달하기
-				 showModal(result);
-			 });
+				 showModal(result, ishtdlPayHistory);
+			 }); 
+			 
 		 });
 		}
 	}
@@ -721,7 +761,4 @@ h4{
 </script>
 </body>
 </html>
-<<<<<<< HEAD
 
-=======
->>>>>>> dev_hotdeal

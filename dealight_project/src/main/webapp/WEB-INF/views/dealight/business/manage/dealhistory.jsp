@@ -4,6 +4,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@include file="../../../includes/mainMenu.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +19,6 @@
 	</style>
 </head>
 <body>
-<%@include file="../../../includes/mainMenu.jsp" %>
 <main>
 	<h1>Business Hotdeal History Page</h1>
 	
@@ -75,5 +75,6 @@
 	</c:forEach>
 	</c:if>
 </main>
+<%@include file="../../../includes/mainFooter.jsp" %>
 </body>
 </html>

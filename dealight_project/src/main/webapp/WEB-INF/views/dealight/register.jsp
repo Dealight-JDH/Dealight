@@ -305,7 +305,7 @@
 				data : send,
 				url : "/dealight/overlapCheck",
 				success : function(data){
-					
+					console.log("=========data 1 : " + data);
 					if(userId != ""){
 						if(data > 0){
 							   document.getElementById("idmsg").innerHTML = "중복된 아이디가 존재합니다.";
@@ -322,6 +322,9 @@
 					}
 					
 			}});
+			
+			
+			
 	})
 	})
    	//비밀번호와 비밀번호 확인이 일치하는지 확인

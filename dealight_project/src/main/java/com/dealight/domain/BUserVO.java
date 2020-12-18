@@ -35,7 +35,7 @@ public class BUserVO {
     //사업자등록증사본사진
     private String brPhotoSrc;
     //사업자등록심사상태코드
-    private String brJdgStusCd="W";
+    private String brJdgStusCd="P";
     //매장명
     private String storeNm;
     //매장전화번호
@@ -44,6 +44,8 @@ public class BUserVO {
     private String storeTelno;
     //대표자명
     private String repName;
+    //탈락사유
+    private String reason;
     
     
  	private Date regdate;

@@ -2,6 +2,8 @@ package com.dealight.mapper;
 
 import java.util.List;
 
+import com.dealight.domain.Criteria;
+import com.dealight.domain.StoreDTO;
 import com.dealight.domain.StoreVO;
 
 /*
@@ -11,6 +13,14 @@ import com.dealight.domain.StoreVO;
  */
 
 public interface StoreMapper {
+	
+	//종우
+	List<StoreDTO> storeList();
+	StoreDTO findByStoreId(Long storeId);
+	
+	List<StoreVO> findStoreListWithPaging(Criteria cri);
+	
+	int getTotalCnt(Criteria cri);
 	
 //	매장리스트를 읽어온다.
 	public List<StoreVO> getList();
@@ -29,7 +39,6 @@ public interface StoreMapper {
 //	매장위치를 읽어온다.(불필요)
 	
 	public List<StoreVO> findByUserIdJoinBStore(String userId);
-
 	
 	public StoreVO getBstore(Long storeId);
 	
@@ -52,5 +61,7 @@ public interface StoreMapper {
 	public StoreVO findStoreWithLocByStoreId(Long storeId);
 	
 	public StoreVO findStoreWithBstoreAndLocByStoreId(Long storeId);
+	
+	int suspendStore(Long storeId);
 	
 }

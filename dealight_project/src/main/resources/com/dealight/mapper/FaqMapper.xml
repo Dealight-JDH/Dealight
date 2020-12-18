@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 현중 -->
+
+<mapper namespace="com.dealight.mapper.FaqMapper">
+
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="faqId" order="BEFORE" resultType="long">
+			select seq_faq.nextval from dual
+		</selectKey>
+		
+		insert into tbl_faq(faq_id, faq_title, q_cls_cd, faq_cnts, admin_id)
+		values (#{faqId}, #{faqTitle}, #{qClsCd}, #{faqCnts}, #{adminId})
+	</insert>
+
+	<select id="read" resultType="com.dealight.domain.FaqVO">
+		select * from tbl_faq
+		where faq_id = #{faqId}
+	</select>
+	
+	<sql id="criteria">
+		<trim suffix="and">
+		<if test='(filterType != null) and (filterType != "") and !(filterType eq "A".toString())'>
+			q_cls_cd = #{filterType}
+		</if>
+		</trim>
+  		<trim suffix="and">
+  			<if test="(keyword != null) and (keyword != '')">
+  			faq_title like '%'||#{keyword}||'%'
+  			</if>
+  		</trim>
+	</sql>
+	
+	
+	<select id="getListWithPaging" resultType="com.dealight.domain.FaqVO">
+		select * 
+		from (select rownum rn, faq_id, faq_title, q_cls_cd, 
+					 faq_cnts, admin_id, regdate, updatedate
+			  from tbl_faq
+			  where
+			  		<include refid="criteria"/>
+		<![CDATA[
+			  		rownum <= #{pageNum} * #{amount}
+			  )
+		where rn >(#{pageNum} - 1) * #{amount}
+		]]>
+	</select>
+	
+	
+	<update id="update">
+		update tbl_faq
+		set faq_title = #{faqTitle},
+			q_cls_cd = #{qClsCd},
+			faq_cnts = #{faqCnts},
+			admin_id = #{adminId},
+			updatedate = sysdate
+		where faq_id = #{faqId}
+	</update>
+	
+	<delete id="delete">
+		delete from tbl_faq where faq_id = #{faqId}
+	</delete>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from tbl_faq
+		where
+		  	  <include refid="criteria"/>
+		<![CDATA[
+			  faq_id > 0
+		]]>
+	</select>
+	
+	
+</mapper>

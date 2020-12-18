@@ -1,5 +1,7 @@
 package com.dealight.domain;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class FaqVO {
 
 	// FAQ번호 
-    private int faqId;
+    private long faqId;
 
     // FAQ제목 
     private String faqTitle;
@@ -24,4 +26,7 @@ public class FaqVO {
     // 작성자ID 
     private String adminId;
 
+    private Date regdate;
+    
+    private Date updatedate;
 }

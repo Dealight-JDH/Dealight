@@ -13,7 +13,7 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
 </head>
 <body>
-<main class="mypage_wrapper">
+	<main>
         <%@include file="/WEB-INF/views/includes/mypageSidebar.jsp" %>
         <div class="mypage_content">
             <div class="content_head">
@@ -83,6 +83,8 @@
 			<div id="map" style="width:500px;height:400px;"></div>
 		</div>
 	</div>
+	
+	
 <script type="text/javascript" src="/resources/js/modal.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -99,11 +101,12 @@ $(document).ready(function() {
 	    
     let container,options,map,mapContainer,mapOption,markerPosition,marker;
 
-    function getStoreInfo(param,callback,error){
+    function getStoreInfo(params,callback,error){
        	
-       	let storeId = param.storeId;
+    	let storeId = params.storeId,
+		userId = params.userId;
        	
-       	$.getJSON("/dealight/mypage/reservation/store/"+ storeId +".json",
+       	$.getJSON("/dealight/mypage/reservation/store/"+userId+"/"+ storeId +".json",
                    function(data){
                        if(callback){
                            callback(data);
@@ -116,9 +119,9 @@ $(document).ready(function() {
        };
 	
     /* 출력 로직*/
-    function showStoreInfo(storeId) {
+    function showStoreInfo(userId,storeId) {
     	
-    	getStoreInfo({storeId : storeId}, store => {
+    	getStoreInfo({userId:userId,storeId : storeId}, store => {
     		
     		let strStoreInfo = "";
     		if(!store)
@@ -126,7 +129,7 @@ $(document).ready(function() {
     		
     		strStoreInfo += "<h1>매장 정보</h1>";
     		strStoreInfo += "<img src='/display?fileName="+store.bstore.repImg+"'>";
-    		strStoreInfo += "<li>매장 번호 : "+store.storeId+"</l1>";
+    		strStoreInfo += "<li>매장 번호 : <span class='store_info_id'>"+store.storeId+"</span></l1>";
     		strStoreInfo += "<li>매장 이름 : "+store.storeNm+"</l1>";
     		strStoreInfo += "<li>매장 번호 : "+store.telno+"</l1>";
     		strStoreInfo += "<li>매장 상태 : "+store.clsCd+"</l1>";
@@ -146,7 +149,10 @@ $(document).ready(function() {
     		strStoreInfo += "<li>매장 평균 식사 시간 : "+store.bstore.avgMealTm+"</l1>";
     		strStoreInfo += "<li>매장 휴무일 : "+store.bstore.hldy+"</l1>";
     		strStoreInfo += "<li>매장 수용 가능 인원 : "+store.bstore.acmPnum+"</l1>";
-    		strStoreInfo += "<li>매장 주소 : "+store.loc.addr+"</l1>";
+    		strStoreInfo += "<li>매장 좋아요 수 : "+store.eval.likeTotNum+"</l1>";
+    		strStoreInfo += "<li>매장 리뷰 수 : "+store.eval.revwTotNum+"</l1>";
+    		strStoreInfo += "<li>매장 평균 평점 : "+store.eval.avgRating+"</l1>";
+    		strStoreInfo += "<li>매장 주소 : "+store.loc.addr+"</l1><br>";
     		
     		modal.find("#map").css("display", "block");
     		
@@ -168,6 +174,8 @@ $(document).ready(function() {
     		marker.setMap(map);
     		
     		storeInfoUL.html(strStoreInfo);
+    	    $(".btn_like_pick").on("click",likeAddHandler);
+    	    $(".btn_like_cancel").on("click",likeRemoveHandler);
     		
     	});
     	
@@ -293,9 +301,10 @@ $(document).ready(function() {
 	}
     
     let storeInfoHandler = function (e) {
-    	let storeId = $(e.target).parent().find(".store_id").text()
+    	let storeId = $(e.target).parent().find(".store_id").text(),
+    		userId = '${userId}';
     	
-    	showStoreInfo(storeId);
+    	showStoreInfo(userId, storeId);
     	modal.css("display","block");
     };
     
@@ -324,5 +333,6 @@ $(document).ready(function() {
 }); /* document ready end*/
 
 </script>
+<%@include file="../../includes/mainFooter.jsp" %>
 </body>
 </html>

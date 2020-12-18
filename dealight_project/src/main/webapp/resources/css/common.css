@@ -1,0 +1,30 @@
+img{
+      cursor: pointer;
+}
+a {
+		color:black;
+       text-decoration: none;
+}
+a:link{
+		color:black;
+}
+/* main */
+        main{
+            height: auto;
+            width: 100%;
+            /*border:  1px black solid;*/
+            max-width: 1050px;
+            margin: 0 auto;
+            box-shadow: 0 4px 11px rgba(0,0,0,0.1);
+        }
+        .rate-base-layer {
+            color: #aaa;
+        }
+        .rating{
+            color: orange;
+            width: 32px;
+            height: 32px;
+        }
+        .rate-hover-layer{
+            opacity: 0.8;
+        }

@@ -199,6 +199,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public int checkPanaltyDuration() {
 		
+		// 7일 이전의 'Y' 상태의 패널티 상태를 'N'로 바꿔준다.
 		return userMapper.checkPanaltyDuration();
 	}
 

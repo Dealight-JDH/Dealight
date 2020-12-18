@@ -106,7 +106,7 @@ public class HtdlController {
 		log.info("register...");
 		
 		model.addAttribute("stordId", storeId);
-		model.addAttribute("menuLists", service.findById(storeId));
+		model.addAttribute("menuLists", service.findMenuById(storeId));
 		
 	}
 	
@@ -121,7 +121,7 @@ public class HtdlController {
 
 	//핫딜 메인 페이지
 	@GetMapping("/main")
-	public void getList(Principal principal, HtdlCriteria hCri, Model model) {
+	public void getList(Authentication auth, HtdlCriteria hCri, Model model) {
 	
 		log.info("hotdeal getList...");
 		List<HtdlVO> lists = service.getList();
@@ -141,6 +141,14 @@ public class HtdlController {
 //		model.addAttribute("lists", lists.stream()
 //					.filter(htdl -> htdl.getStusCd().equals("A"))
 //					.collect(Collectors.toList()));
+		if(auth != null) {			
+			String userId = auth.getName();
+			
+			if(userId != null) {
+				model.addAttribute("userId", userId);
+			}
+			
+		}
 		
 		model.addAttribute("lists", service.getList("A", hCri));
 //		model.addAttribute("pageMaker", new HtdlPageDTO(hCri, 123));

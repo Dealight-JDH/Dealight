@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.AllStoreVO;
 import com.dealight.domain.BStoreVO;
+import com.dealight.domain.BUserVO;
+import com.dealight.domain.Criteria;
 import com.dealight.domain.MenuVO;
 import com.dealight.domain.RevwVO;
 import com.dealight.domain.StoreEvalVO;
@@ -17,6 +19,7 @@ import com.dealight.domain.StoreOptionVO;
 import com.dealight.domain.StoreVO;
 import com.dealight.mapper.AllStoreMapper;
 import com.dealight.mapper.BStoreMapper;
+import com.dealight.mapper.BUserMapper;
 import com.dealight.mapper.MenuMapper;
 import com.dealight.mapper.NStoreMapper;
 import com.dealight.mapper.RevwMapper;
@@ -53,6 +56,7 @@ public class StoreServiceImpl implements StoreService {
 	private MenuMapper menuMapper;
 	private StoreEvalMapper evalMapper;
 	private StoreOptionMapper optMapper;
+	private BUserMapper buserMapper;
 	
 	private StoreVO setId(StoreVO store) {
 		
@@ -92,9 +96,11 @@ public class StoreServiceImpl implements StoreService {
 		lMapper.insert(store.getLoc());
 		eMapper.insert(store.getEval());
 		bMapper.insert(store.getBstore());
-		for(StoreImgVO img : store.getImgs()) {
-			img.setStoreId(store.getStoreId());
-		}
+		
+		if(store.getImgs() != null)
+			for(StoreImgVO img : store.getImgs()) 
+				img.setStoreId(store.getStoreId());
+		
 		imgMapper.insertAll(store.getImgs());
 		
 		
@@ -274,20 +280,21 @@ public class StoreServiceImpl implements StoreService {
 		int result2 = bStoreMapper.update(bstore);
 		
 		List<StoreImgVO> imgs = store.getImgs();
-		imgs.stream().forEach(img -> {
-			img.setStoreId(store.getStoreId());
-		});
+		if(imgs != null) {
+			imgs.stream().forEach(img -> {
+				img.setStoreId(store.getStoreId());
+			});
+			log.info("store : "+store);
+			log.info("imgs : "+imgs);
+			storeImgMapper.deleteAll(store.getStoreId());
+			storeImgMapper.insertAll(imgs);
+		}
 		StoreLocVO loc = new StoreLocVO();
 		StoreEvalVO eval = new StoreEvalVO();
 		StoreOptionVO opt = new StoreOptionVO();
 		
-		
-		storeImgMapper.deleteAll(store.getStoreId());
-		storeImgMapper.insertAll(imgs);
-		
-		
-		
 
+		
 		return result == 1 && result2 == 1;
 	}
 
@@ -455,6 +462,38 @@ public class StoreServiceImpl implements StoreService {
 		
 		return sMapper.findStoreWithBstoreAndLocByStoreId(storeId);
 	}
+
+	@Override
+	public boolean suspendStore(Long storeId) {
+		
+		return sMapper.suspendStore(storeId) == 1;
+	}
+
+	@Override
+	public List<StoreVO> findStoreListWithPaging(Criteria cri) {
+		
+		return sMapper.findStoreListWithPaging(cri);
+	}
+
+	@Override
+	public int getTotalCnt(Criteria cri) {
+		
+		return sMapper.getTotalCnt(cri);
+	}
+
+	@Override
+	public StoreEvalVO getEval(Long storeId) {
+		
+		return eMapper.findByStoreID(storeId);
+	}
+
+	@Override
+	public List<BUserVO> comBrListByUserId(String userId) {
+		
+		return buserMapper.findComBrListByUserIdAndStusCd(userId, "C");
+	}
+	
+	
 
 
 //	

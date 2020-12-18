@@ -82,7 +82,7 @@ public class LikeMapperTests {
 				.userId(userId)
 				.build();
 		
-		mapper.insert(like);
+		mapper.insert(userId,storeId);
 		
 		LikeVO insertLike = mapper.findByUserIdAndStoreId(userId, storeId);
 		

@@ -1,6 +1,7 @@
 package com.dealight.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,8 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,12 +21,19 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dealight.domain.HtdlDtlsVO;
+import com.dealight.domain.HtdlMenuDTO;
+import com.dealight.domain.HtdlRequestDTO;
+import com.dealight.domain.HtdlVO;
+import com.dealight.domain.MenuVO;
 import com.dealight.domain.RsvdRsltDTO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.WaitVO;
 import com.dealight.service.HtdlService;
+import com.dealight.service.HtdlTimeCheckService;
 import com.dealight.service.RsvdService;
 import com.dealight.service.StoreService;
 import com.dealight.service.UserService;
@@ -53,6 +63,9 @@ public class BoardController {
 	private WaitService waitService;
 
 	private UserService userService;
+	
+	private HtdlTimeCheckService htdlChckService;
+	
 
 	// storeId로 store with bstore 객체를 가져온다.
 	@GetMapping(value = "/board/store/{storeId}", produces = {
@@ -116,6 +129,18 @@ public class BoardController {
 		log.info("get today rsvd map...................................." + map);
 
 		return new ResponseEntity<>(map, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/board/reservation/stusmap/{storeId}", 
+			produces = {
+					MediaType.APPLICATION_JSON_UTF8_VALUE,
+					MediaType.APPLICATION_XML_VALUE
+	})
+	public ResponseEntity<HashMap<String,String>> getTodayRsvdStus(@PathVariable("storeId") Long storeId) {
+		
+		HashMap<String,String> map = rsvdService.getTodayRsvdStusByTime(storeId);
+		
+		return new ResponseEntity<>(map,HttpStatus.OK);
 	}
 
 	// storeId로 바로 다음 예약 리스트를 가져온다.
@@ -185,7 +210,7 @@ public class BoardController {
 	@PostMapping(value="/board/waiting/new",
 			consumes = "application/json",
 			produces = { MediaType.TEXT_PLAIN_VALUE})
-	public ResponseEntity<String> registerOffWait(@RequestBody WaitVO wait) {
+	public ResponseEntity<String> registerOffWait(@Valid @RequestBody WaitVO wait) {
 
 		log.info("register wait.............");
 
@@ -319,6 +344,84 @@ public class BoardController {
 		//return new ResponseEntity<>(userService.getRsvdListStoreUser(storeId, userId), HttpStatus.OK);
 	}	
 	
+	// 해당 매장의 메뉴 리스트를 보여준다. 
+	@GetMapping(value = "/board/menus/{storeId}", 
+			produces = {
+					MediaType.APPLICATION_JSON_UTF8_VALUE,
+					MediaType.APPLICATION_XML_VALUE
+	})
+	public ResponseEntity<List<MenuVO>> getMenuList(@PathVariable("storeId") Long storeId) {
+		
+		log.info("get store menu list....................");		
+		
+		List<MenuVO> menuList = storeService.findMenuByStoreId(storeId);
+		
+		return new ResponseEntity<>(menuList, HttpStatus.OK);
+		//return new ResponseEntity<>(userService.getRsvdListStoreUser(storeId, userId), HttpStatus.OK);
+	}
+	
+	
+	// waitId로 오프라인 웨이팅을 등록한다.
+	@PostMapping(value="/board/htdl/new",
+			produces = { MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> registerOffWait(Long storeId, @Valid HtdlRequestDTO requestDto,
+			BindingResult bindingResult, RedirectAttributes rttr) {
+		
+	if(bindingResult.hasErrors()) {
+		//유효성 검사
+		List<ObjectError> errorList = bindingResult.getAllErrors();
+        for (ObjectError error : errorList)
+            log.info("=====error: " + error.getDefaultMessage());
+        
+        rttr.addFlashAttribute("msg", "필수 항목을 입력해 주세요");
+        
+        //return "redirect:/dealight/hotdeal/register?storeId="+storeId;
+	}
+	
+	//핫딜 상세vo list
+	List<HtdlDtlsVO> dtlsList = new ArrayList<>();
+	
+
+	HtdlVO vo = requestDto.toEntity();
+	vo.setStoreId(storeId);
+	log.info("=====================HtdlVO: " + vo);
+	
+	//String[] menu = requestDto.getMenu();
+	List<HtdlMenuDTO> menuList = requestDto.getMenu();
+	log.info("=================menuDTO "+ menuList);
+	//log.info("=============================vo: " + vo);
+	//요청 리스트 생성
+	for(int i=0; i< menuList.size(); i++) {
+		//log.info("======================menu: "+ Arrays.toString(menu));
+//		MenuDTO menuDto = service.findPriceByName(storeId, menu[i].trim());
+		
+		//log.info("======================menuDto: "+ menuDto);
+//		HtdlDtlsVO dtlsVO = HtdlDtlsVO.builder()
+//								.menuName(menuDto.getName())
+//								.menuPrice(menuDto.getPrice()).build();
+		HtdlMenuDTO menuDto = menuList.get(i);
+		
+		if(menuDto.getName() != null && menuDto.getPrice() != null) {				
+			HtdlDtlsVO dtlsVO = HtdlDtlsVO.builder()
+					.menuName(menuDto.getName().trim())
+					.menuPrice(menuDto.getPrice()).build();
+			
+			log.info("===================dtlsVO: " + dtlsVO);
+			dtlsList.add(dtlsVO);
+		}
+	}
+	
+	htdlService.register(vo, dtlsList);
+	htdlChckService.addHtdl(vo);
+	
+	//rttr.addFlashAttribute("result", vo.getHtdlId());
+	
+		return vo.getHtdlId()> 0
+				? new ResponseEntity<>("success", HttpStatus.OK)
+						: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+	}
+		
 	// 메시지를 보낸다.
 //	@PostMapping(value = "/board/message/send/ 
 //			produces = {

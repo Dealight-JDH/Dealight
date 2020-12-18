@@ -8,21 +8,31 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.dealight.domain.Criteria;
+import com.dealight.domain.HtdlVO;
 import com.dealight.domain.RsvdDtlsVO;
-import com.dealight.domain.RsvdMenuDTOList;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.UserVO;
 import com.dealight.domain.WaitVO;
 import com.dealight.handler.ManageSocketHandler;
+import com.dealight.service.HtdlService;
 import com.dealight.service.RsvdService;
 import com.dealight.service.StoreService;
 import com.dealight.service.UserService;
@@ -30,7 +40,6 @@ import com.dealight.service.WaitService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-//다울
 @Controller
 @Log4j
 @RequestMapping("/dealight/*")
@@ -42,89 +51,56 @@ public class StoreController {
 	private UserService userService;
 	
 	private WaitService waitService;
-	
+	private HtdlService htdlService;
 	private RsvdService rsvdService;
+	private StoreService storeService;
 
-	@GetMapping("/store")
-	public String store(Long storeId,Criteria cri,Model model,String clsCd) {
+	
+	//핫딜 상세(스토어)
+	@GetMapping(value = "/store/htdl/get/{htdlId}", produces = {
+			MediaType.APPLICATION_JSON_UTF8_VALUE,
+			MediaType.APPLICATION_XML_VALUE
+	})
+	public ResponseEntity<HtdlVO> getStoreHtdl(@PathVariable Long htdlId) {
+		log.info("get...");
+		HtdlVO dealVO = htdlService.readHtdlDtls(htdlId);
+		return new ResponseEntity<>(dealVO, HttpStatus.OK);
+	}
+	
+//	@GetMapping("/store/{storeId}")
+//	public String storeGet(@PathVariable("storeId") long storeId, Model model) {
+//		
+//		
+//		return "/dealight/store/bstore";
+//	}
+	
+	@GetMapping("/store/{storeId}")
+	public String store(HttpSession session, @PathVariable("storeId") long storeId, Long htdlId, Model model) {
 		// store타입을 체크 한다 n일경우 n 스토어를 보여줌 b일 경우 b를 보여줌
 		
-		//다울 nstore check
-		if (clsCd.equalsIgnoreCase("B")) {
-			log.info("bstore: " + storeId);
+			
 			model.addAttribute("store", service.bstore(storeId));
-			//model.addAttribute("revws", service.revws(storeId,cri));
-			return "/dealight/store/bstore";
-		} else {
-			log.info("nstore: " + storeId);
-			model.addAttribute("store", service.nstore(storeId));
-			return "/dealight/store/nstore";
-		}
-
-	}
-
-	
-	@PostMapping("/store/rsvd")
-	public String regRsvd(Model model, HttpSession session, RsvdVO rsvd) {
-		
-		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		session.setAttribute("userId", "kjuioq");
-		String userId = (String) session.getAttribute("userId");
-		
-		log.info("register rsvd......................");
-		
-		UserVO user = userService.get(userId);
-		
-		log.info("register rsvd...................... user : " + user);
-		
-		SimpleDateFormat fomater = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		
-		List<RsvdDtlsVO> rsvdDtlsList = new ArrayList<>();
-		
-		RsvdDtlsVO dtls = new RsvdDtlsVO();
-		dtls.setMenuNm("돈까스");
-		dtls.setMenuPrc(7000);
-		dtls.setMenuTotQty(3);
-		
-		rsvdDtlsList.add(dtls);
-		
-		rsvd.setUserId(userId);
-		rsvd.setRevwStus(0);
-		rsvd.setTime(fomater.format(new Date()));
-		rsvd.setStusCd("C");
-		rsvd.setRsvdDtlsList(rsvdDtlsList);
-		
-		log.info("before rsvd.........................."+rsvd);
-		
-		rsvdService.register(rsvd, rsvd.getRsvdDtlsList());
-		
-		log.info("after rsvd.........................."+rsvd);
-		
-		Long storeId = rsvd.getStoreId();
-		Long rsvdId = rsvd.getRsvdId();
-		
-    	ManageSocketHandler handler = ManageSocketHandler.getInstance();
-    	Map<String, WebSocketSession> map = handler.getUserSessions();
-    	WebSocketSession ws = map.get("kjuioq");
-    	if(ws != null) {
-    		TextMessage message = new TextMessage("{\"sendUser\":\""+userId+"\",\"rsvdId\":\""+rsvdId+"\",\"cmd\":\"rsvd\",\"storeId\":\""+storeId+"\"}");
-    		try {
-				handler.handleMessage(ws, message);
-			} catch (Exception e) {
-				
-				log.warn("web socket error...............");
-				e.printStackTrace();
+//			model.addAttribute("revws", service.revws(storeId,cri));
+			log.info("=========================htdlId: " + htdlId);
+			if(htdlId != null) {
+//				HtdlVO dealVO = htdlService.readHtdlDtls(htdlId);
+//				log.info("==============request htdlId : " + dealVO);
+				model.addAttribute("htdlId", htdlId);
 			}
-    	}
-		
-		return "redirect:/dealight/business/test";
+			
+			String userId = (String)session.getAttribute("userId");
+			
+			if(userId != null)
+				model.addAttribute("userId", userId);
+			
+			return "/dealight/store/bstore";
+
 	}
+
 	
 	@PostMapping("/store/wait")
-	public String regWait(Model model, HttpSession session,int pnum, Long storeId) {
+	public String regWait(HttpSession session,int pnum, Long storeId, RedirectAttributes rttr) {
 		
-		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		session.setAttribute("userId", "kjuioq");
 		String userId = (String) session.getAttribute("userId");
 		
 		log.info("register wait......................");
@@ -150,10 +126,17 @@ public class StoreController {
 		
 		log.info("register wait...................... after wait : " + wait);
 		log.info("register wait...................... after wait id: " + waitId);
+		if(waitId == -1) {
+			rttr.addFlashAttribute("result", "fail");
+			
+			return "redirect:/dealight/store/"+storeId;
+		}
+		
 
     	ManageSocketHandler handler = ManageSocketHandler.getInstance();
     	Map<String, WebSocketSession> map = handler.getUserSessions();
-    	WebSocketSession ws = map.get("kjuioq");
+    	// 매장의 소켓으로 메시지를 보낸다.
+    	WebSocketSession ws = map.get(storeService.getBStore(storeId).getBuserId());
     	if(ws != null) {
     		TextMessage message = new TextMessage("{\"sendUser\":\""+userId+"\",\"waitId\":\""+waitId+"\",\"cmd\":\"wait\",\"storeId\":\""+storeId+"\"}");
     		try {
@@ -165,7 +148,9 @@ public class StoreController {
 			}
     	}
     	
-    	return "redirect:/dealight/business/test";
+    	rttr.addFlashAttribute("result", "success");
+    	
+    	return "redirect:/dealight/store/"+storeId;
 	}
 
 }

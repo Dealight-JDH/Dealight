@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class LikeListDTO {
 
-	List<LikeVO> likeList;
-	int total;
-	PageDTO pageMaker;
+	private List<LikeVO> likeList;
+	private int total;
+	private PageDTO pageMaker;
 }

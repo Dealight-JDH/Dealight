@@ -6,6 +6,39 @@
 		
 		<!-- 동인 -->
 <!-- jongwoo -->
+
+
+	<!--오늘 날짜 핫딜 체크-->
+	<select id="sysdateCheckHtdl">
+		select count(*)
+		from tbl_htdl
+		where to_char(regdate, 'yyyy/MM/dd') = to_char(sysdate, 'yyyy/MM/dd') and store_id = #{storeId}
+	</select>
+	
+	<!-- 핫딜+매장 조인 -->
+		<resultMap type="com.dealight.domain.HtdlWithStoreDTO" id="HtdlWithStoreDTO">
+			<result column="htdl_id" property="htdlId"/>
+			<result column="name" property="htdlName"/>
+			<result column="store_id" property="storeId"/>
+			<result column="store_nm" property="name"/>
+			<result column="time" property="time"/>
+			<result column="stus_cd" property="stusCd"/>
+			<result column="regdate" property="regDate"/>
+		</resultMap>
+		
+		<select id="getHtdlWithStoreList" resultMap="HtdlWithStoreDTO">
+			select h.htdl_id, h.name, s.store_id, s.store_nm, h.start_tm || '-' || substr(h.end_tm, instr(h.end_tm,' ')+1, length(h.end_tm)) time,h.stus_cd, h.regdate
+			from tbl_htdl h, tbl_store s
+			where h.stus_cd = #{stusCd} and h.store_id = s.store_id
+			order by h.htdl_id asc
+		</select>
+		
+		<select id="getSuggestHtdlList" resultMap="HtdlWithStoreDTO">
+			select h.htdl_id, s.store_id, s.store_nm, h.regdate
+			from tbl_htdl h, tbl_store s
+			where  h.store_id(+) = s.store_id and to_char(h.regdate,'yyyy/MM/dd') = to_char(sysdate+9/24, 'yyyy/MM/dd')
+		</select>
+		
 		<!-- 핫딜+상세+매장평가 조인 -->
 		<resultMap type="com.dealight.domain.HtdlVO" id="HtdlDetail">
 			<id column="htdl_id" property="htdlId"/> 
@@ -34,16 +67,28 @@
 				<result column="updatedate" property="updateDate"/>
 			</association>
 			
-			<collection property="htdlDtls" column="htdl_id" ofType="com.dealight.domain.HtdlDtlsVO">
+			<association property="htdlRslt" javaType="com.dealight.domain.HtdlRsltVO">
+				<id column="htdl_id" property="htdlId"/>
+				<id column="store_id" property="storeId"/>
+				<result column="last_pnum" property="lastPnum"/> 
+				<result column="htdl_lmt_pnum" property="htdlLmtPnum"/>
+				<result column="rsvd_rate" property="rsvdRate"/>
+				<result column="elap_tm" property="elapTm"/>
+				<result column="regdate" property="regDate"/>
+				<result column="updatedate" property="updateDate"/>
+			</association>
+			
+			<collection property="htdlDtls" ofType="com.dealight.domain.HtdlDtlsVO">
 				<id column="htdl_id" property="htdlId"/>
 				<id column="htdl_seq" property="htdlSeq"/> 
 				<result column="menu_name" property="menuName"/>
-				<result column="menu_prcie" property="menuPrice"/>
+				<result column="menu_price" property="menuPrice"/>
 				<result column="regdate" property="regDate"/>
 				<result column="updatedate" property="updateDate"/>
 			</collection>
 			
-		</resultMap>
+			
+			</resultMap>
 		
 		<select id="getHtdlList" resultMap="HtdlDetail">
 			SELECT h.*, d.*, e.*
@@ -63,6 +108,23 @@
 			 WHERE h.htdl_id = d.htdl_id and h.htdl_id = #{htdlId}
 		</select>
 		 -->
+		 <!-- 핫딜+상세+결과 -->
+		 <select id="getHtdlDtlsRslt" parameterType="long" resultMap="HtdlDetail">
+		 	select h.htdl_id, h.name, h.dc_rate, h.start_tm, h.end_tm, h.bef_price, h.ddct, h.stus_cd,
+		 	d.htdl_seq, d.menu_name, d.menu_price, r.last_pnum, r.htdl_lmt_pnum, r.rsvd_rate, r.elap_tm, r.regdate
+		 	from tbl_htdl h, tbl_htdl_dtls d, tbl_htdl_rslt r
+		 	where h.htdl_id = #{htdlId} and h.htdl_id = d.htdl_id and h.htdl_id = r.htdl_id(+)
+		 	
+		 </select>
+		 
+		 <!-- 핫딜+상세 -->
+		<select id="findHtdlDtlsById" parameterType="long" resultMap="HtdlDetail">
+			SELECT h.htdl_id, h.name, h.store_id, h.dc_rate, h.start_tm, h.end_tm, h.lmt_pnum, h.intro, h.bef_price, h.ddct,
+			h.cur_pnum,h.stus_cd, d.htdl_seq, d.menu_name, d.menu_price
+		      FROM tbl_htdl h, tbl_htdl_dtls d
+			 WHERE h.htdl_id = #{htdlId} and h.htdl_id = d.htdl_id 
+		</select>
+		
 		<!-- 핫딜 결과 mapper -->
 		<select id="findRsltById" resultType="com.dealight.domain.HtdlRsltVO">
 			select * from tbl_htdl_rslt where store_id = #{storeId} and htdl_id = #{htdlId}
@@ -73,7 +135,7 @@
 		</select>
 		
 		<insert id="insertRslt">
-			insert into tbl_htdl_rslt 
+			insert into tbl_htdl_rslt (htdl_id, store_id, last_pnum, htdl_lmt_pnum, rsvd_rate, elap_tm, regdate, updatedate)
 			values( #{htdlId}, #{storeId},#{lastPnum}, #{htdlLmtPnum}, #{rsvdRate}, #{elapTm}, sysdate +9/24, sysdate+9/24)
 		</insert>
 				
@@ -84,8 +146,8 @@
 		<!-- 고민쓰... -->
 		<update id = "updateDtls">
 			update tbl_htdl_dtls
-			set menuName = #{menuName}, menuPrice = #{menuPrice}
-			where htdlId = #{htdlId} and htdlSeq = #{htdlSeq}
+			set menu_Name = #{menuName}, menu_Price = #{menuPrice}, updatedate = sysdate +9/24
+			where htdl_Id = #{htdlId} and htdl_Seq = #{htdlSeq}
 		</update>
 		
 		<select id = "findDtlsById" resultType="com.dealight.domain.HtdlDtlsVO">
@@ -196,6 +258,19 @@
 			select seq_htdl.currval from dual
 		</select>
 		
+		<update id="updateEndHtdl">
+			update tbl_htdl
+			set stus_cd = #{stusCd}
+			where htdl_id = #{htdlId}
+		</update>
+		
+		<update id="updateHtdl">
+			update tbl_htdl
+			set name = #{name}, dc_rate = #{dcRate}, start_tm = #{startTm}, end_tm = #{endTm}, lmt_pnum = #{lmtPnum},
+			 bef_price = #{befPrice}, ddct = #{ddct}, intro = #{intro}, stus_Cd = #{stusCd}, updatedate = sysdate +9/24
+			where htdl_id = #{htdlId}
+		</update>
+		
 		<select id="getList" resultType="com.dealight.domain.HtdlVO">
 		<![CDATA[
 	 		select * from tbl_htdl where htdl_Id > 0 and stus_cd != 'I'
@@ -206,9 +281,15 @@
 			delete from tbl_htdl where htdl_id = #{htdlId}
 		</delete>
 		
+		<update id="curPnumUpdate">
+			update tbl_htdl
+			set cur_pnum = #{curPnum}
+			where htdl_id = #{htdlId}
+		</update>
 		<update id="update">
 			update tbl_htdl
-			set name = #{name}, dc_rate = #{dcRate}, start_tm = #{startTm}, end_tm = #{endTm}, lmt_pnum = #{lmtPnum}, intro = #{intro}, ddct = #{ddct}, cur_pnum = #{curPnum}, stus_cd = #{stusCd}, updatedate = sysdate + 9/24
+			set name = #{name}, dc_rate = #{dcRate}, start_tm = #{startTm}, end_tm = #{endTm}, lmt_pnum = #{lmtPnum}, intro = #{intro},
+			 ddct = #{ddct}, cur_pnum = #{curPnum}, stus_cd = #{stusCd}, updatedate = sysdate + 9/24
 			where htdl_id = #{htdlId} 
 		</update>
 		
@@ -221,13 +302,13 @@
 			select seq_htdl.nextval from dual
 			</selectKey>
 		
-			insert into tbl_htdl 
+			insert into tbl_htdl (htdl_id,name,store_id,htdl_img,dc_rate,start_tm,end_tm,lmt_pnum,intro,bef_price,ddct,cur_pnum,stus_cd,regdate,updatedate,brch)
 			values(#{htdlId}, #{name}, #{storeId}, #{htdlImg}, #{dcRate}, #{startTm},
 			 #{endTm}, #{lmtPnum}, #{intro}, #{befPrice}, #{ddct}, #{curPnum}, #{stusCd}, sysdate + 9/24 , sysdate + 9/24, #{brch})
 		</insert>
 		
 		<insert id="insert">
-			insert into tbl_htdl 
+			insert into 
 			values(seq_htdl.nextval, #{name}, #{storeId}, #{htdlImg}, #{dcRate}, #{startTm},
 			 #{endTm}, #{lmtPnum}, #{intro}, #{befPrice}, #{ddct}, #{curPnum}, #{stusCd}, sysdate + 9/24, sysdate + 9/24, #{brch})
 		</insert>

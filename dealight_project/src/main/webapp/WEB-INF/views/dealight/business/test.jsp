@@ -21,18 +21,31 @@
 	
 	<div class="well">
 		<h2>예약 등록</h2>
-		<form action="/dealight/store/rsvd" method="post">
+		<form action="/dealight/business/test/rsvd" method="post">
 			예약 인원 : <input type="number" name="pnum"></br>
 			매장 번호 : <input type="number" name="storeId" value="1"></br>
 			핫딜 번호 : <input type="number" name="htdlId"></br>
 			결제 승인 번호 : <input type="number" name="aprvNo" value="1111"></br>
 			총 수량 : <input type="number" name="totQty" value="2"></br>
 			총 가격 : <input type="number" name="totAmt" value="16000"></br>
+			시간 : <input name="time" value="13:00">
 			==========================================</br>
 			메뉴 이름 : <input type="text" name="menuNm" value="치킨"></br>
 			메뉴 수량 : <input type="number" name="menuTotQty" value="2"></br>
 			메뉴 가격 : <input type="number" name="menuPrc" value="16000"></br>
 			<button type="submit">예약 등록</button>
+		</form>
+	</div>
+	
+	<div class="well">
+		<h2>핫딜 제안</h2>
+		<form action="/dealight/business/test/htdl" method="post">
+			핫딜 이름 : <input type="text" name="name"></br>
+			매장 번호 : <input type="number" name="storeId" value="1"></br>
+			할인률 : <input type="number" name="dcRate" value="10"></br>
+			시작 시간 : <input type="text" name="startTm" value="13:00"></br>
+			종료 시간 : <input type="text" name="endTm" value="14:00"></br>
+			<button type="submit">핫딜 제안하기</button>
 		</form>
 	</div>
 	
@@ -47,6 +60,10 @@
 	</div>
 	
 	<div id="socketAlert" class="alert alert-success" role="alert" style="display:none;"></div>
+	<div>
+		<h2>메시지 로그인 상태</h2>
+		${map}
+	</div>
     <script>
     /* Web Socket */
     
@@ -71,7 +88,7 @@
 		connectWS();
 });
 
- const userId = ${userId};
+ const userId = '${userId}';
     
 	// 모달 선택
 	const modal = $("#myModal"),
@@ -85,54 +102,7 @@
 	});
  
     
- let socket = null;
- 
- function connectWS() {
-	// 전역변수 socket을 선언한다.
-	// 다른 페이지 어디서든 소켓을 불러올 수 있어야 하기 때문이다.
-	
- 	// 소켓을 ws로 연다.
- 	let ws = new WebSocket("ws://localhost:8080/manageSocket");
- 	socket = ws;
 
- 	// 커넥션이 연결되었는지 확인한다.
- 	ws.onopen = function () {
- 	    console.log('Info: connection opened.');
- 	};
-
- 	
- 	// 받은 메시지를 출력한다.
- 	// 메시지를 수신한 이벤트 핸들러와 같다.
- 	ws.onmessage = function (event) {
- 	    console.log("ReceiveMessage : ", event.data+'\n');
- 	    
- 	    // 추후에 message 형식을 JSON으로 변환해서 message type을 지정해줘야 한다.
- 	    //if()
- 	    
- 	    
- 	    let socketAlert = $('#socektAlert');
- 	    socketAlert.html(event.data);
- 	    socketAlert.css('display','block');
- 	   	showWaitList(storeId);
- 	    
- 	    // 메시지가 3초 있다가 자동으로 사라지게
- 	    /*
- 	    setTimeout( function(){
- 	    	
- 	    	$socketAlert.css('display','none');
- 	    },3000);
- 	    */
- 	};
-
-
- 	// connection을 닫는다.
- 	ws.onclose = function (event) {
- 		console.log('Info: connection closed.');
- 		//setTimeout( function(){ connect(); }, 1000); // retry connection!!
- 	};
- 	ws.onerror = function (event) { console.log('Error'); };
- 	
- }
  
  function regWait(wait, callback,error) {
 	    

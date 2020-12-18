@@ -2,6 +2,8 @@ package com.dealight.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.dealight.domain.BUserVO;
 import com.dealight.domain.Criteria;
 
@@ -37,6 +39,11 @@ public interface BUserMapper {
 	//유저로 모록가져오기
 	public List<BUserVO> findAllByUserId(String userId);
 	
+	// 현재 심사완료된 사업자 리스트 가져오기
+	public List<BUserVO> findComBrListByUserIdAndStusCd(@Param("userId")String userId, @Param("brJdgStusCd") String brJdgStusCd);
 	
-
+	// 현재 심사 상태 변경
+	public int updateBrJdgStusCd(@Param("brSeq") Long brSeq, @Param("brJdgStusCd") String brJdgStusCd);
+	
+	
 }

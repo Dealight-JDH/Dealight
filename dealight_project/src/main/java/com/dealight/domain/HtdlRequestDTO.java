@@ -32,6 +32,7 @@ public class HtdlRequestDTO {
 	private List<HtdlMenuDTO> menu;
 	
 	private String htdlPhotoSrc;
+	
 	@NotNull
 	private double dcRate;
 	
@@ -69,6 +70,8 @@ public class HtdlRequestDTO {
 				.ddct((int)(befPrice * (dcRate / 100)))
 				.curPnum(0).stusCd("P").build();
 	}
+	
+	
 	
 	
 }

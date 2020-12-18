@@ -26,6 +26,7 @@ public class StoreImgVO {
 	private String uploadPath;
 	private String uuid;
 	private boolean image;
+	private String rep;
 
     // 매장사진주소 
     private String imgUrl;

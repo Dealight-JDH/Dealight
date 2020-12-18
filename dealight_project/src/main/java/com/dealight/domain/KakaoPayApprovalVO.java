@@ -21,7 +21,7 @@ public class KakaoPayApprovalVO {
     private AmountVO amount;
     //결제 상세 정보 카드일 경우
     private CardVO card_info;
-    //상품 이름, 상품 코드, 결제 승인 요청에 대해 저장한
+    //상품 이름, 상품 코드, 결제 승인 요청에 대해 저장
     private String item_name, item_code, payload;
     //상품 수량, 상품 비과세 금액, 상품 부과세 금액
     private Integer quantity, tax_free_amount, vat_amount;

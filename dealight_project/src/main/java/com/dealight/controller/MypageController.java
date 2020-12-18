@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -114,11 +115,21 @@ public class MypageController {
 
 	// 3. store with store loc를 모달로 보여준다.
 	// rest 방식으로 json으로 모달로 보여주자.
-	@GetMapping(value = "/reservation/store/{storeId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value = "/reservation/store/{userId}/{storeId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public ResponseEntity<StoreVO> storeWithLoc(@PathVariable("storeId") Long storeId){
+	public ResponseEntity<StoreVO> storeWithLoc(@PathVariable("userId") String userId, @PathVariable("storeId") Long storeId){
+		
+		StoreVO store = storeService.findStoreWithBStoreAndLocByStoreId(storeId);
+		
+		store.setEval(storeService.getEval(storeId));
+		
+		LikeVO like = likeService.findByUserIdAndStoreId(userId, storeId);
+		
+		if(like != null)
+			store.setLike(true);
+		store.isLike();
 
-		return  new ResponseEntity<>(storeService.findStoreWithBStoreAndLocByStoreId(storeId), HttpStatus.OK);
+		return  new ResponseEntity<>(store, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/reservation/review", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -128,12 +139,6 @@ public class MypageController {
 		return  new ResponseEntity<>(storeService.findStoreWithLocByStoreId(storeId), HttpStatus.OK);
 	}
 
-	@PostMapping("/reservation/review")
-	public String regRevw(RedirectAttributes rttr) {
-
-		return "redirect:/dealight/mypage/reservation";
-	}
-	
 	@GetMapping(value = "/review/rsvd/{rsvdId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ResponseEntity<RevwVO> getRevwByRsvdId(HttpSession session,@PathVariable("rsvdId") Long rsvdId){
@@ -217,31 +222,9 @@ public class MypageController {
 		return "/dealight/mypage/like";
 	}
 
-	@GetMapping(value = "/like/{pageNum}/{amount}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
-	public ResponseEntity<LikeListDTO> getLikeList(HttpSession session,@PathVariable("pageNum") int pageNum, @PathVariable("amount") int amount){
-
-		// 임시로 'kjuioq'의 아이디를 로그인한다.
-		//session.setAttribute("userId", "kjuioq");
-		String userId = (String) session.getAttribute("userId");
-
-		LikeListDTO dto = new LikeListDTO();
-		Criteria cri = new Criteria(pageNum, amount);
-		int total = likeService.getLikeTotalByUserId(userId, cri);
-
-		dto.setLikeList(likeService.findListWithPagingByUserId(userId, cri));
-		dto.setTotal(total);
-		dto.setPageMaker(new PageDTO(cri,total));
-
-		return  new ResponseEntity<>(dto, HttpStatus.OK);
-	}
 	
-	@DeleteMapping(value = "/like/remove/{userId}/{storeId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
-	public ResponseEntity<Boolean> removeLike(@PathVariable("userId")String userId, @PathVariable("storeId") Long storeId){
-
-		return  new ResponseEntity<>(likeService.cancel(userId, storeId), HttpStatus.OK);
-	}
+	
+	
 
 //	@GetMapping("/modify")
 	public String modify(Model model, HttpSession session) {

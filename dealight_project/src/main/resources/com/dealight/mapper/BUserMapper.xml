@@ -25,9 +25,9 @@
 	<insert id="insert">
 		INSERT
 		INTO
-		tbl_buser(br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, rep_name)
+		tbl_buser(br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, rep_name, reason)
 		VALUES
-		(seq_buser.nextval, #{userId}, #{storeId}, #{brno}, #{brPhotoSrc}, #{brJdgStusCd}, #{storeNm}, #{telno}, #{storeTelno}, #{repName})
+		(seq_buser.nextval, #{userId}, #{storeId}, #{brno}, #{brPhotoSrc}, #{brJdgStusCd}, #{storeNm}, #{telno}, #{storeTelno}, #{repName}, #{reason})
 	</insert>
 
 	<insert id="insertSelectKey">
@@ -38,9 +38,9 @@
 
 		INSERT
 		INTO
-		tbl_buser(br_seq,user_id,store_id,brno,br_photo_src,br_jdg_stus_cd, store_nm, telno, store_telno, rep_name)
+		tbl_buser(br_seq,user_id,store_id,brno,br_photo_src,br_jdg_stus_cd, store_nm, telno, store_telno, rep_name, reason)
 		VALUES
-		(#{brSeq},#{userId},#{storeId},#{brno},#{brPhotoSrc},#{brJdgStusCd}, #{storeNm}, #{telno}, #{storeTelno}, #{repName})
+		(#{brSeq},#{userId},#{storeId},#{brno},#{brPhotoSrc},#{brJdgStusCd}, #{storeNm}, #{telno}, #{storeTelno}, #{repName}, #{reason})
 	</insert>
 
 
@@ -57,6 +57,7 @@
 		telno = #{telno},
 		store_telno = #{storeTelno},
 		rep_name = #{repName},
+		reason = #{reason},
 		updatedate = sysdate + 9/24
 		where br_seq = #{brSeq}
 	</update>
@@ -75,23 +76,23 @@
 	</select>
 	
 	<sql id="criteria">
-	<where>
-		<choose>
-			<when test="type == 'I'.toString()">
-				user_id like '%'||#{keyword}||'%'
-			</when>
-			<when test="type == 'S'.toString()">
-				store_nm like '%'||#{keyword}||'%'
-			</when>
-			<when test="type == 'R'.toString()">
-				rep_name like '%'||#{keyword}||'%'
-			</when>
-		</choose>
-     </where> 
-
-     <if test="sortType == 'D'.toString()">
-	 order by br_seq 
-	 </if>
+		<where>
+			<choose>
+				<when test="type == 'I'.toString()">
+					user_id like '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'S'.toString()">
+					store_nm like '%'||#{keyword}||'%'
+				</when>
+				<when test="type == 'R'.toString()">
+					rep_name like '%'||#{keyword}||'%'
+				</when>
+			</choose>
+	     </where> 
+	
+	     <if test="sortType == 'D'.toString()">
+		 order by br_seq 
+		 </if>
 	</sql>
 	<select id="getListWithPaging" resultType="com.dealight.domain.BUserVO">
 		select
@@ -99,9 +100,9 @@
 		from
 		    (
 		      select 
-		          rownum rn, br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, rep_name,regdate, updatedate
+		          rownum rn, br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, rep_name, reason, regdate, updatedate
 		      from ( select /*+INDEX_DESC(tbl_buser tbl_buser_pk) */
-		                br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, rep_name, regdate,updatedate
+		                br_seq, user_id, store_id, brno, br_photo_src, br_jdg_stus_cd, store_nm, telno, store_telno, rep_name, reason, regdate,updatedate
 		             from tbl_buser
 					<include refid="criteria"></include>
 		            )
@@ -116,5 +117,17 @@
 		select count(*) from tbl_buser
 		<include refid="criteria"></include>
 	</select>
+	
+	<select id="findComBrListByUserIdAndStusCd" resultType="com.dealight.domain.BUserVO">
+		select *
+		from tbl_buser
+		where br_jdg_stus_cd = #{brJdgStusCd} AND user_id = #{userId}
+	</select>
+	
+	<update id="updateBrJdgStusCd">
+		UPDATE tbl_buser
+		SET br_jdg_stus_cd = #{brJdgStusCd}
+		WHERE br_seq = #{brSeq}
+	</update>
 
 </mapper>

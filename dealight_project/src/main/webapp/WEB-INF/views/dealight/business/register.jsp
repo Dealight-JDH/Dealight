@@ -4,68 +4,382 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@include file="../../includes/mainMenu.jsp" %>
 <!-- 현중 -->
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-
-<title>Insert title here</title>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+<title>매장 등록 하기</title>
 	<style>
-	.uploadResult {
-	
-		width : 100%;
-		background-color : gray;
-	}
-	
-	.uploadResult ul {
-		display : flex;
-		flex-flow : row;
-		justify-content : center;
-		align-items : center;
-	}
-	
-	.uploadResult ul li {
-		list-style : none;
-		padding:10px;
-		aligin-content : center;
-		text-align : center;
-	}
-	
-	.uploadResult ul li img {
-		width : 100px;
-	}
-	
-	.uploadResult ul li img {
-		color:white;
-	}
-	
-	.bigPictureWrapper {
-		position : absolute;
-		display : none;
-		justify-content : center;
-		align-items : center;
-		top : 0%;
-		width : 100%;
-		height : 100%;
-		background-color : gray;
-		z-index : 100;
-		background : rgba(255,255,255,0.5);
-	}
-	
-	.bigPicture {
-		position : relative;
-		display : flex;
-		justify-content : center;
-		align-items : center;
-	}
-	
-	.bigPicture img {
-		width : 600px;
-	}
-	#map {
-		display : hidden;
-	}
+	        *{
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+        .store_box{
+            
+            width:80%;
+            min-width:1050px;
+            height: auto;
+            
+            min-width: 1025px;
+            min-height: 800px;
+
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            background-color: #f4f5f7;
+            padding-bottom : 25px;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            
+        }
+        .register_tit{
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #D32323;
+            text-align: center;
+            width: 80%;
+        }
+        #regForm{
+            margin-top: 50px;
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            
+        }
+        #regForm input{
+            display: inline-block;
+            border-radius: 10px;
+            padding: 5px ;
+            padding-left: 20px;
+            margin: 5px;
+            height: 40px;
+        }
+        .reg_form div{
+            padding: 30px;
+            background-color: #f4f5f7;;
+        }
+        .reg_form > div{
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            background-color: white;
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
+        }
+
+        .fixed_info_wrapper{ 
+            padding: 5px;
+            width: 80%; 
+            height: 20%;
+            /*border: 1px solid black;*/
+            }
+        .bstore_info_wrapper{
+            padding: 5px;
+            width: 80%;
+            height: 50%;
+            /*border: 1px solid black;*/
+        }
+        .location_wrapper{
+            padding: 5px;
+            width: 80%;
+            height: 20%;
+            /*border: 1px solid black;*/
+        }
+        .upload_wrapper{
+            padding: 5px;
+            width: 80%;
+            height: 20%;
+            /*border: 1px solid black;*/
+        }
+        .label_input{
+            display: flex;
+            flex-direction: row;
+            justify-content: start;
+            align-items: center;
+            /*border: 1px solid black;*/
+        }
+        .label_input label{
+            padding: 5px;
+            margin: 5px;
+            width: 200px;
+            color: rgba(46, 45, 45, 0.767);
+            margin-right: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+        .label_input input{
+            padding: 3px;
+            width: 60%;
+            outline: none;
+            border: 1px solid #d5dbd9;
+        }
+        .label_input .input_textarea{
+            padding: 3px;
+            width: 60%;
+            outline: none;
+            border: 1px solid #d5dbd9;
+            transition: all 0.2s ease;
+            resize: none;
+            height: 125px;
+            border-radius: 20px;
+            padding: 15px;
+        }
+        .label_input input:focus,
+        .label_input .input_textarea:focus
+        {
+            
+            box-shadow: 2px 2px 6px rgba(76, 109, 255, 0.157);
+        }
+        .label_input .custom_select:focus{
+            border: blue 1px solid;
+            box-shadow: 2px 2px 6px rgba(76, 109, 255, 0.157);
+        }
+        .label_input .custom_select {
+            position: relative;
+            width: 30%;
+            height: 37px;
+            padding: 0 0 5px 0;
+            border-radius: 20px;
+            padding-left: 10px 10px 0 0;
+        }
+        .label_input .custom_select select{
+            cursor: pointer;
+            padding: 5px;
+            margin: 5px;
+            -webkit-appearance: none;
+            -moz-appearance:   none;
+            appearance:        none;
+            outline: none;
+            width: 60%;
+            height: 100%;
+            border: 0px;
+            padding: 8px 10px;
+            font-size: 15px;
+            border: 1px solid #d5dbd9;
+            border-radius: 3px;
+        }
+        .label_input .custom_select:before{
+            content: "";
+            position: absolute;
+            top: 42%;
+            right: 41%;
+            border: 8px solid;
+            border-color: #d5dbd9 transparent transparent transparent;
+            pointer-events: none;
+        }
+        .form_label{
+            
+            text-align: center;
+            width: 20%;
+            /*border: 1px solid black;*/
+        }
+        .form_input_items{
+            margin: auto auto;
+            width: 80%;
+            /*border: 1px solid black;*/
+        }
+        .label_input.terms span{
+            font-size: 14px;
+            color: #757575;
+        }
+        .checkbox_wrapper{
+            padding: 5px;
+            width: 80%; 
+            height: 20%;
+            /*border: 1px solid black;*/
+        }
+        .label_input.terms .form_check{
+            width: 15px;
+            height: 15px;
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .label_input.terms input[type="checkbox"] {
+            position: absolute;
+            top:0;
+            left:0;
+            opacity: 0;
+        }
+        .label_input.terms .checkmark{
+            width: 15px;
+            height: 15px;
+            border: 1px solid gray;
+            display: block;
+            position: relative;
+            
+        }
+        .label_input.terms .checkmark:before{
+            content: "";
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 5px;
+            height: 2px;
+            border: 2px solid;
+            border-color: transparent transparent #fff #fff; 
+            transform: rotate(-45deg);
+            display: none;
+        }
+        .label_input.terms .checkmark:hover{
+            background-color: gray;
+            opacity: 0.7;
+        }
+        
+        .label_input.terms input[type="checkbox"]:checked ~ .checkmark{
+            background-color: gray;
+        }
+        .label_input.terms input[type="checkbox"]:checked ~ .checkmark:before{
+            display: block;
+        }
+        #btnSubmit{
+            width: 60%;
+            height: 80px;
+            border: 0;
+            border-radius: 20px;
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            background-color: #d323239d;
+            box-shadow: 4px 4px 8px rgba(0,0,0,0.3);
+            cursor: pointer;
+            border-radius: 40px;
+        }
+        #btnSubmit:hover{
+            opacity: 0.7;
+        }
+        #store_basic_info{
+        	padding-top:20px;
+        	padding-left:10px;
+        	padding-bottom:10px;
+            border-top: 32px #d323239d solid;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #f4f5f788; 
+        }
+        #basic_info_tit{
+            letter-spacing: 2px;
+            font-size: 24px;
+        }
+        #store_bstore_info {
+        	padding-top:20px;
+        	padding-left:10px;
+        	padding-bottom:10px;
+            border-top: 32px #d323239d solid;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #f4f5f788;
+        }
+        #bstore_info_tit{
+            letter-spacing: 2px;
+            font-size: 24px;
+        }
+        #store_loc_find{
+        	padding-top:20px;
+        	padding-left:10px;
+        	padding-bottom:10px;
+            border-top: 32px #d323239d solid;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #f4f5f788;
+        }
+        #loc_find_tit{
+        	
+            letter-spacing: 2px;
+            font-size: 24px;
+        }
+        .uploadResult {
+            width : 100%;
+            background-color : gray;
+        }
+
+        .uploadResult ul {
+            display : flex;
+            flex-flow : row;
+            justify-content : center;
+            align-items : center;
+        }
+
+        .uploadResult ul li {
+            list-style : none;
+            padding:10px;
+            align-content : center;
+            text-align : center;
+        }
+
+        .uploadResult ul li img {
+            width : 100px;
+        }
+
+        .uploadResult ul li img {
+            color:white;
+        }
+
+        .bigPictureWrapper {
+            position : absolute;
+            display : none;
+            justify-content : center;
+            align-items : center;
+            top : 0%;
+            width : 100%;
+            height : 100%;
+            background-color : gray;
+            z-index : 100;
+            background : rgba(255,255,255,0.5);
+        }
+
+        .bigPicture {
+            position : relative;
+            display : flex;
+            justify-content : center;
+            align-items : center;
+        }
+
+        .bigPicture img {
+            width : 600px;
+        }
+        #map {
+        	margin : auto auto;
+            display : hidden;
+        }
+        #rep_img_box{
+            border:1px solid black;
+            width:200px;
+            height:200px;
+        }
+        .selected_img{
+            border : 4px red solid;
+        }
+        .label_input.select_box{
+            /*border: 1px solid black;*/
+        }
+        #openTm{
+        	
+            width: 60%;
+        }
+        #breakSttm{
+        	
+        }
+        #openTm_tit{
+        	margin-right:40px;
+        }
+        #breakSttm_tit{
+        	margin-right:40px;
+        }
+        #btn_find_loc{
+        	width:10%;
+        	padding: 0 0;
+        	padding-left:0;
+        }
 	</style>
 	<style>
 	main{
@@ -73,66 +387,194 @@
 		width:1050px;
 	}
 </style>
+        <script>
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+     
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+     
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+        </script>
 </head>
 <body>
-<%@include file="../../includes/mainMenu.jsp" %>
-<main>
-	<form action="/dealight/business/register" method="post" id='regForm' name="form">
-	===================================================</br></br>
-	<label>유저아이디</label> <input name="buserId" value="${userId }" readonly><br>
-	<label>매장코드</label> <input name="clsCd" value="B" readonly><br>
-	<label>좌석 상태</label> <input name="seatStusCd" value="B" hidden><br>
-	<input name="likeTotNum" value='0' hidden>
-	<input name="revwTotNum" value='0' hidden>
-	<input name="avgRating" value='0' hidden>
-	===================================================</br></br>
-	<label>스토어 이름</label> <input name="storeNm" required><br>
-	<label>지점</label> <input name="brch" required><br>
-	<label>전화번호</label> <input name="telno" required><br>
-	<label for="openTm">영업 시작 시간</label><select id="openTm" name="openTm"></select>
-	 -  
-	<label for="closeTm">영업 종료 시간</label><select id="closeTm" name="closeTm"></select></br>
-	<label for="breakSttm">브레이크 시작 시간</label><select id="breakSttm" name="breakSttm"></select>
-	 - 
-	<label for="breakEntm">브레이크 종료 시간</label><select id="breakEntm" name="breakEntm"></select></br>
-	<label>라스트 오더</label> <select id="lastOrdTm" name="lastOrdTm"></select></br>
-	<label>가게휴무일</label> <input name="hldy" value="연중무휴"><br>
-	<label>가게 소개</label> <textarea rows="3" name="storeIntro" >존맛탱</textarea><br>
-	<label>대표메뉴</label> <input name="repMenu" value="맛난거"><br>
-	<label>가게 평균 식사 시간</label> <input name="avgMealTm" value="30"><br>
-	<label>1인석 테이블 개수</label> <input name="n1SeatNo" value="0" type="number"><br>
-	<label>2인석 테이블 개수</label> <input name="n2SeatNo" value="0" type="number"><br>
-	<label>4인석 테이블 개수</label> <input name="n4SeatNo" value="0" type="number"><br>
-	<label>수용인원</label> <input name="acmPnum" value="0" type="number"><br>
-	===================================================</br></br>
-	<label>주소</label><input type="text"  style="width:500px;" id="addr"  name="addr" />
-	<input type="button" onClick="goPopup();" value="주소찾기"/><br>
-	<label>상세주소</label><input type="text"  style="width:500px;" id="addrDetail"  name="addrDetail" /><br>
-	<label>시도명</label><input type="text"  style="width:500px;" id="siNm"  name="siNm" /><br>
-	<label>시군구명</label><input type="text"  style="width:500px;" id="sggNm"  name="sggNm" /><br>
-	<label>읍면동명</label><input type="text"  style="width:500px;" id="emdNm"  name="emdNm" /><br>
-	<label>위도</label><input type="text"  style="width:500px;" id="lat"  name="lat" /><br>
-	<label>경도</label><input type="text"  style="width:500px;" id="lng"  name="lng" /><br>
-	<div id="map"></div></br>
-	===================================================<br>
-	<div class=""><h2>사진 첨부하기</h2></div>
-	<div class="file_body">
-		<div class="form_img">
-			<input type="file" name='uploadFile' multiple>
-		</div> 
-		<div class='uploadResult'>
-			<ul></ul>
-		</div> <!-- uploadResult -->
-	</div>
-	<div class='bigPictureWrapper'>
-	    <div class='bigPicture'>
-	    </div>
-	</div>
-	===================================================</br></br>
-	<button type="submit">등록하기</button><br>
-	</form>
-
-</main>
+    <main class="store_box">
+        <form action="/dealight/business/register" method="post" id='regForm' name="form">
+                <div class="register_tit">
+                    <span>매장 등록 신청서</span>
+                </div>
+                <div class="fixed_info_wrapper">
+                    <div id="store_basic_info">
+                        <span id="basic_info_tit">매장 기본 정보 (변경 불가)</span>
+                    </div>
+                    <div class="label_input">
+                        <label>유저아이디</label>
+                        <input name="buserId" value="${userId }" readonly>
+                    </div>
+                    <div class="label_input">
+                        <label>매장코드</label>
+                        <input name="clsCd" value="B" readonly>
+                    </div>
+                    <input name="seatStusCd" value="B" type='hidden'>
+                    <input name="likeTotNum" value='0' type='hidden'>
+                    <input name="revwTotNum" value='0' type='hidden'>
+                    <input name="avgRating" value='0' type='hidden'>
+                </div><!-- end fixed info -->
+                <div class="bstore_info_wrapper">
+                    <input name="brSeq" value="${brSeq}" type='hidden'>
+                    <div id="store_bstore_info">
+                        <span id="bstore_info_tit">사업자 매장 정보</span>
+                    </div>
+                    <div class="label_input">
+                        <label>지점</label>
+                        <input name="brch" required>
+                    </div>
+                    <div class="label_input">
+                            <label>스토어 이름</label>
+                            <input name="storeNm" value="${storeName}" required>
+                    </div>
+                    <div class="label_input">
+                        <label>전화번호</label>
+                        <input name="telno" value="${storeTelno}" required><br>
+                    </div>
+                    <div class="label_input select_box">
+                        <label for="openTm" id="openTm_tit">영업 시작</label>
+                        <div class='custom_select'>
+                            <select id="openTm" name="openTm">
+                                <option value="09:00">09:00</option>
+                                <option value="10:30">09:30</option>
+                            </select>
+                        </div>
+                        <label for="closeTm">영업 마감</label>
+                        <div class='custom_select'>
+                            <select id="closeTm" name="closeTm">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="label_input select_box">
+                        <label for="breakSttm" id="breakSttm_tit">브레이크 타임 시작</label>
+                        <div class='custom_select'>
+                            <select id="breakSttm" name="breakSttm">
+                                <option value=""></option>
+                            </select>
+                         </div>
+                        <label for="breakEntm">브레이크 타임 종료</label>
+                        <div class='custom_select'>
+                            <select id="breakEntm" name="breakEntm">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="label_input">
+                        <label>라스트 오더</label>
+                        <div class='custom_select'>
+                            <select id="lastOrdTm" name="lastOrdTm">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="label_input">
+                        <label>가게휴무일</label>
+                        <input name="hldy" value="연중무휴">
+                    </div>
+                    <div class="label_input">
+                        <label>가게 소개</label>
+                        <textarea class="input_textarea" rows="3" name="storeIntro" >존맛탱</textarea>
+                    </div>
+                    <div class="label_input">
+                        <label>대표 메뉴</label>
+                        <input name="repMenu" value="맛난거">
+                    </div>
+                    <div class="label_input">
+                        <label>가게 평균 식사 시간</label>
+                        <input name="avgMealTm" value="30">
+                    </div>
+                    <div class="label_input">
+                        <label>1인석 테이블 개수</label>
+                        <input name="n1SeatNo" value="0" type="number">
+                    </div>
+                    <div class="label_input">
+                        <label>2인석 테이블 개수</label>
+                        <input name="n2SeatNo" value="0" type="number">
+                    </div>
+                    <div class="label_input">
+                        <label>4인석 테이블 개수</label>
+                        <input name="n4SeatNo" value="0" type="number">
+                    </div>
+                    <div class="label_input">
+                        <label>수용인원</label>
+                        <input name="acmPnum" value="0" type="number">
+                    </div>
+                </div><!-- end bstore info -->
+                <div class="location_wrapper">
+                    <div id="store_loc_find">
+                        <span id="loc_find_tit">주소 찾기</span>
+                    </div>
+                    <div class="label_input">
+                        <label>주소</label>
+                        <input type="text"  style="width:500px;" id="addr"  name="addr" />
+                        <input type="button" onClick="goPopup();" id="btn_find_loc" style="padding-left:0; padding:0 0;" value="주소찾기"/>
+                    </div>
+                    <div class="label_input">
+                        <label>상세주소</label>
+                        <input type="text"  style="width:500px;" id="addrDetail"  name="addrDetail" />
+                    </div>
+                    <div class="label_input">
+                        <label>시도명</label>
+                        <input type="text"  style="width:500px;" id="siNm"  name="siNm" />
+                    </div>
+                    <div class="label_input">
+                        <label>시군구명</label>
+                        <input type="text"  style="width:500px;" id="sggNm"  name="sggNm" />
+                    </div>
+                    <div class="label_input">
+                        <label>읍면동명</label>
+                        <input type="text"  style="width:500px;" id="emdNm"  name="emdNm" />
+                    </div>
+                    <div class="label_input">
+                        <label>위도</label>
+                        <input type="text"  style="width:500px;" id="lat"  name="lat" />
+                    </div>
+                    <div class="label_input">
+                        <label>경도</label>
+                        <input type="text"  style="width:500px;" id="lng"  name="lng" />
+                    </div>
+                    <div id="map"></div>
+                </div> <!-- end location_wrapper -->
+                <div class="upload_wrapper">
+                    <div class=""><h2>사진 첨부하기</h2></div>
+                    <div class="file_body">
+                        <div class="form_img">
+                            <input type="file" name='uploadFile' multiple>
+                        </div> 
+                        <div class='uploadResult'>
+                            <ul></ul>
+                        </div> <!-- uploadResult -->
+                    </div>
+                    <div class='bigPictureWrapper'>
+                        <div class='bigPicture'>
+                        </div>
+                    </div>
+                </div> <!-- end upload_wrapper -->
+                <div class="checkbox_wrapper">
+                    <div class="label_input terms">
+                        <label class="form_check">
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                        </label>
+                        <span>딜라이트 이용약관, 개인정보 수집 및 이용, 위치정보 이용약관(선택), 프로모션 정보 수신(선택)에 모두 동의합니다.</span>
+                    </div>
+                </div>
+            <button type="submit" id="btnSubmit">등록하기</button><br>
+        </form>
+    </main>
 <!-- 카카오 지도  -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -205,236 +647,23 @@ function jusoCallBack(roadAddrPart1,addrDetail,siNm,sggNm,emdNm){
 }
 </script>
 <script>
-/* 페이지가 로드 되면 실행된다. */
-$(document).ready(function(e){
-    
     /* form 역할을 하는 엘리먼트를 선택한다. */
-	let formObj = $("#regForm");
-    
-    /* submit 타입의 버튼을 제어한다.*/
-    
-	$("button[type='submit']").on("click", function(e){
-        
-        /* 기존 기능은 제한한다.*/
-		e.preventDefault();
-		
-		console.log("submit clicked");
-		
-		console.log("form"+formObj);
-		
-		$("#repImg")
-		
-		let str = "";
-        
-        /* 업로드 결과 화면에 업로드 결과를 작성해준다.*/
-        /* jquery의 foreach문 */
-		$(".uploadResult ul li").each(function(i, obj) {
-			
-			let jobj = $(obj);
-			
-			str += "<input type='hidden' name='imgs["+i+"].fileName' value='" + jobj.data("filename")+"'>";
-			str += "<input type='hidden' name='imgs["+i+"].uuid' value='" + jobj.data("uuid")+"'>";
-			str += "<input type='hidden' name='imgs["+i+"].uploadPath' value='" + jobj.data("path")+"'>";
-			str += "<input type='hidden' name='imgs["+i+"].image' value='" + jobj.data("type")+"'>";
-			if(i === 0){
-			str += "<input type='hidden' name='repImg' value='" + jobj.data("path").replace(new RegExp(/\\/g),"/") +"/"+ "s_"+ jobj.data("uuid") +"_"+ jobj.data("filename")+"'>";
-				
-			}
-			
-		});
-        	
-		
-        /*위에서 작성한 글을 form에 추가하고 제출한다. */
-		formObj.attr("method", "post");
-		formObj.append(str).submit();
-		
-	});
-    
+	const formObj = $("#regForm");
     /* 정규식으로 파일 형식을 제한한다. */
-    let regex = new RegExp("(.*>)\.(exe|sh|zip|alz)$");
-    
+    const regex = new RegExp("(.*>)\.(exe|sh|zip|alz)$");
     /*최대 파일 크기를 제어한다  */
-	let maxSize = 5242880; /* 5MB */
-    
-    /*업로드 결과를 보여준다. */
-	function showUploadResult(uploadResultArr) {
-        
-        /**업로드 된게 없으면 그대로 반환 */
-		if(!uploadResultArr || uploadResultArr.length == 0){return; }
-        
-        /*업로드 결과를 보여줄 ul를 선택 */
-		let uploadUL = $(".uploadResult ul");
-		
-		let str = "";
-        
-        /*업로드 결과를 보여준다. */
-		$(uploadResultArr).each(function(i,obj){
-            
-            /* 만일 파일이 이미지 형식이면 */
-            /* data에 path,uuid,filename,type을 각각 저장한다. */
-			if(obj.image) {
-				let fileCallPath = encodeURIComponent(obj.uploadPath+"/s_"+obj.uuid+"_"+obj.fileName);
-				
-				let originPath = obj.uploadPath + "\\" + obj.uuid +"_" + obj.fileName;
-				
-				originPath = originPath.replace(new RegExp(/\\/g),"/");
-				
-				str += "<li data-path='" + obj.uploadPath +"'";
-				str += "data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"'data-type='"+obj.image+"'";
-				str += "><a href=\"javascript:showImage(" + originPath + ")\">" + "<div>";
-				str += "<span>" + obj.fileName +"</span>";
-				str += "<img src='/display?fileName=" + fileCallPath + "'>";
-				str += "</div></a>";
-				str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image' class='btn btn-warning btn-circle'><i class='fa fa-times'></i>삭제</button><br>";
-				str += "</li>";
-                /* 만일 파일이 이미지 형식이 아니면 */
-                /* default img를 보여준다. */
-			} else {
-				let fileCallPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
-				let fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
-
-				str += "<li "
-				str += "data-path='" + obj.uploadPath + "'data-uuid='" + obj.uuid + "'data-filename='" + obj.fileName + "' data-type='" +obj.image+"'><a href='/download?fileName=" + fileCallPath + "'>" + "<div>";
-				str += "<span> " + obj.fileName + "</span>";
-				str += "<img src='/resources/img/attach.png'>";
-				str += "</a></div>";
-				str += "<button type='button' data-file=\'"+fileCallPath+"\'data-type='file' class='btn btn-warning btn-circle'><i class='fa fa-times'></i>삭제</button><br>";
-				str += "</li>";
-			}
-		});
-        
-		uploadUL.append(str);
-	}
-    
-    /*파일 valid check */
-	function checkExtension(fileName, fileSize) {
-        
-        /*파일 사이즈를 체크한다. */
-        if(fileSize >= maxSize){
-			alert("파일 사이즈 초과");
-			return false;
-		}
-		/*파일 형식을 체크한다. */
-		if(regex.test(fileName)) {
-			alert("해당 종류의 파일은 업로드 할 수 없습니다.");
-			return false;
-		}
-		return true;
-	}
-	
-	
-    
-    /* change() 해당하는 요소의 value에 변화가 생길 경우 이를 감지하여 등록된 콜백함수를 동작시킨다.  */
-	$("input[type='file']").change(function(e){
-		
-		let cloneObj = $(".form_img").clone();
-		
-		let formData = new FormData();
-		
-		let inputFile = $("input[name='uploadFile']");
-		
-		console.log("input file[name uploadFile] : "+inputFile);
-		
-		let files = inputFile[0].files;
-		
-		console.log("files : "+files);
-		
-		// add category
-		let category = 'storeImgs';
-		
-		for(let i = 0; i < files.length; i++){
-			
-			if(!checkExtension(files[i].name, files[i].size)) {
-				return false;
-            }
-            /* uploadFile 이라는 변수명에 파일 배열(스프링에서는 MultipartFile[]로 받는다)을 달아서보낸다. */
-			formData.append("uploadFile", files[i]);
-            // add category
-			formData.append("category", category);
-		}
-		
-		$.ajax({
-			url : '/uploadAjaxAction',
-			processData : false,
-            contentType : false, 
-            data: formData,
-            type: 'POST',
-			dataType : 'json',
-			success : function(result) {
-			    console.log(result);
-			    showUploadResult(result); // 업로드 결과 처리 함수
-			    $(".form_img").html(cloneObj.html()); // 첨부파일 개수 초기화
-			}
-			
-			
-		})
-		
-	});
-    
-    /* 업로드 결과를 누르면 해당 파일을 제거한다.  */
-	$(".uploadResult").on("click", "button", function(e) {
-		
-		let targetFile = $(this).data("file");
-		
-		console.log(targetFile);
-		
-		let type = $(this).data("type");
-		
-		console.log(type);
-		
-		let targetLi = $(this).closest("li");
-		
-		console.log(targetLi);
-		
-		$.ajax({
-			url : '/deleteFile',
-			data : {fileName : targetFile, type:type},
-			dataType : 'text',
-			type : 'POST',
-			success : function(result) {
-				alert(result);
-				targetLi.remove();
-			}
-		}); // $.ajax
-	});
-    
-    
-    $(".uploadResult").on("click", "li", function(e){
-        
-        let liObj = $(this);
-        
-        let path = encodeURIComponent(liObj.data("path")+ "/" + liObj.data("uuid") +"_" +liObj.data("filename"));
-        
-        if(liObj.data("type")){
-            
-            showImage(path.replace(new RegExp(/\\/g), "/"));
-        } else {
-            //download
-            self.location = "/download?fileName=" + path
-        }
-    });
-	
-	function showImage(fileCallPath) {
-		
-		alert(fileCallPath);
-		
-		$(".bigPictureWrapper").css("display","flex").show();
-		
-		$(".bigPicture")
-		.html("<img src='/display?fileName=" +encodeURI(fileCallPath) + "'>")
-		.animate({width:'100%',height:'100%'},1000);
-		
-		
-	}// end show image
-	
-	$(".bigPictureWrapper").on("click",function(e){
-		$(".bigPicture").animate({width:'0%',height:'0%'},1000);
-		setTimeout(()=>{
-			$(this).hide();
-		}, 1000);
-	});
-}); // ready end
-
+	const maxSize = 5242880; /* 5MB */
+	// add category ***페이지마다 변경 필요
+	const category = 'storeImgs';
+	// page type
+	const pageType = "register";
+	// btn id
+	const btnSubmit = "#btnSubmit";
+	// isModal
+	const isModal = false;
+	let storeId = null;
 </script>
+<script type="text/javascript" src="/resources/js/reg_file.js?ver=1"></script>
+<%@include file="../../includes/mainFooter.jsp" %>
 </body>
 </html>

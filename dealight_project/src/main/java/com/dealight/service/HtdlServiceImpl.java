@@ -45,6 +45,34 @@ public class HtdlServiceImpl implements HtdlService {
 	private HtdlDtlsMapper htdlDtlsMapper;
 	private HtdlRsltMapper htdlRsltMapper;
 	
+	
+	@Override
+	public HtdlVO readHtdlDtls(Long htdlId) {
+		// TODO Auto-generated method stub
+		
+		log.info("htdl read dtls...");
+		return htdlMapper.findHtdlDtlsById(htdlId);
+	}
+	
+	@Override
+	public boolean curPnumModify(HtdlVO vo) {
+		// TODO Auto-generated method stub
+		
+		log.info("hotdeal curPnum update...");
+		return htdlMapper.curPnumUpdate(vo) == 1;
+	}
+
+	
+	@Override
+	public HtdlVO readHtdl(Long htdlId) {
+		// TODO Auto-generated method stub
+		
+		log.info("hotdeal find read....");
+		return htdlMapper.findById(htdlId);
+	}
+
+	
+	
 	@Override
 	public List<HtdlVO> findAll() {
 		// TODO Auto-generated method stub
@@ -158,7 +186,7 @@ public class HtdlServiceImpl implements HtdlService {
 //	}
 
 	@Override
-	public List<StoreMenuVO> findById(Long storeId) {
+	public List<StoreMenuVO> findMenuById(Long storeId) {
 		// TODO Auto-generated method stub
 		log.info("find menus....");
 		return menuMapper.findById(storeId);
@@ -226,6 +254,13 @@ public class HtdlServiceImpl implements HtdlService {
 		return htdlMapper.findByStoreIdStusCd(storeId, "A");
 	}
 
+
+	
+
+
+
+	
+	
 	
 
 

@@ -1,5 +1,6 @@
 package com.dealight.mapper;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -11,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.BUserVO;
 import com.dealight.domain.Criteria;
@@ -131,5 +133,45 @@ public class BUserMapperTests {
     	List<BUserVO> list = mapper.getListWithPaging(cri);
     	list.forEach(buser -> log.info(buser));
     	
+    }
+    
+    @Test
+    public void findComBrListByUserIdAndStusCdTest1() {
+    	
+    	String userId = "aaaa";
+    	String brJdgStusCd = "C";
+    	
+    	List<BUserVO> list = mapper.findComBrListByUserIdAndStusCd(userId, brJdgStusCd);
+    	
+    	list.stream().forEachOrdered(buser -> {
+    		buser.getUserId().equals(userId);
+    		buser.getBrJdgStusCd().equals(brJdgStusCd);
+    		log.info("buser : " + buser);
+    	});
+    	
+    	log.info(list);
+    	
+    }
+    
+    @Transactional
+    @Test
+    public void updateBrJdgStusCdTest1() {
+    	
+    	Long brSeq = 2L;
+    	String brJdgStusCd = "B";
+    	
+    	BUserVO buser = mapper.findBySeq(brSeq);
+    	
+    	String bfStusCd = buser.getBrJdgStusCd();
+    	
+    	int result = mapper.updateBrJdgStusCd(brSeq, brJdgStusCd);
+    	
+    	buser = mapper.findBySeq(brSeq);
+    	
+    	assertTrue(result==1);
+    	assertFalse(bfStusCd.equals(buser.getBrJdgStusCd()));
+    	
+    	log.info("before  : "+bfStusCd);
+    	log.info("after  : "+buser.getBrJdgStusCd());
     }
 }

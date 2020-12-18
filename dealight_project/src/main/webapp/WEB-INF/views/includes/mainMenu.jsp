@@ -1,55 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="com.dealight.domain.UserVO"%>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
+<!--  common  -->
+<link rel="stylesheet" href="/resources/css/common.css" type ="text/css" />
+<link rel="stylesheet" href="/resources/css/main_footer.css" type ="text/css" />
+<link rel="stylesheet" href="/resources/css/main_header.css" type ="text/css" />
+<link rel="stylesheet" href="/resources/css/alert_manager.css" type ="text/css" />
+<link rel="shortcut icon" href="/resources/icon/favicon.png" type="image/x-icon">
+<link rel="icon" href="/resources/icon/favicon.png" type="image/x-icon">
+<!--  end common  -->
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 
 <!-- Add icon library -->
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
-</script>
- 
-<%-- <%
-	UserVO user = (UserVO) session.getAttribute("user");
-String loginState = "";
-String display = ""; //로그인 전에 로그아웃 메뉴 숨기기
-//세션에 로그인 정보가 담겼다면 로그인 모달창 비활성화
-if (user != null) {
-	loginState = "onclick=\"goMypage()\"";
-} else {
-	loginState = "onclick=\"openModal()\"";
-	display = "none";
-}
-%>
- --%>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
-* {
-	box-sizing: border-box;
-}
 
-body {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-family: Arial, Helvetica, sans-serif;
-}
-/* .topDiv {
-   border: 1px solid black;
-   width: 100%;
-   height: 100px;
-   display: flex;
-   /* 자식에 영향 주기 위한 설정 */
-/* 자식인 inline-block들을 가운데정렬
-            justify-content: center; */
-}
-* /
 .top {
 	overflow: hidden;
 	flex: 1;
@@ -275,83 +248,83 @@ body {
 	z-index: 1;
 	cursor: pointer;
 }
+
+/* add style */
+
+
+
+/* end added style*/
+
+
 </style>
 </head>
-
 <body>
-
-	<!-- <div class="top-container"> -->
-		<div class="topDiv" id="topDiv">
-			<div class="top" style="height: 35px"> <!-- 임시로 높이 지정해둠 -->
-				<div class="dropdown">
-					<button class="dropbtn">
-						<i class="fas fa-bars" color="black"></i>
-						<div class="dropdown-content">
-							<a href="/dealight/hotdeal/main">핫딜 찾기</a> <a href="#">매장 찾기</a>
-						</div>
-					</button>
-				</div>
-				<!--end dropdown-->
-
-				<div class="logo">
-					<div class="logo-content">
-						<a href="/dealight/dealight" style="text-decoration: none"> <i
-							class="fas fa-circle" color="red" style="font-size: 20px"></i> <i
-							class="fas fa-circle" color="yellow" style="font-size: 20px"></i>
-							<i class="fas fa-circle" color="green" style="font-size: 20px"></i>
-						</a>
-					</div>
-					<div class="logo-content">
-						<a href="/dealight/dealight" class="dealight" color="black"
-							style="text-decoration: none">Dealight</a>
-					</div>
-				</div>
-				<!--end logo-->
-				<!--이 icon들은 굳이 div로 안 나눠도 될듯?-->
-				<div class="rightIcon">
-					<a href="#"><i class="fas fa-question-circle" color="black"></i></a>
-					<span>아이디 : ${userId }</span>
-				</div>
-				<div class="rightIcon">
-					<a href="#"><i class="fas fa-bell" color="black"></i></a>
-				</div>
-
-				
-				<div class="rightIcon">
-					<div class="mydropdown">
-						<%-- <<button class="mydropbtn" id="openModal" type="button" <%=loginState%>"> 사람이모지~~</button> --%>
-						<a class="mydropbtn" id="openModal"><i
-							class="fas fa-user" color="black"></i></a>
+<header class="main_nav">
+        <nav class="main_nav_left">
+        	<img class='menu_img' src="/resources/icon/menu.png" alt="">
+	        	<div class='menu-dropdown-content'>
+	        		<div class="menu_cnts"><p>핫딜 찾기</p></div>
+	        		<div class="menu_cnts"><p>매장 찾기</p></div>
+	        	</div>
+        </nav>
+        <div class="main_nav_logo"><img id="logo" src="/resources/icon/logo.png" alt=""></div>
+        <nav class="main_nav_right">
+            <div><c:if test="${userId != null}"> <span id="nav_user_id">${userId }님</span></c:if></div>
+            <div class="bell_btn">
+            	<span class='alert_badge'>3</span>
+            	<img src="/resources/icon/bell.png" alt="">
+            </div>
+            <div class="account_btn">
+            	<img src="/resources/icon/account.png">
+            		<div class="account-dropdown-content">
 						<sec:authorize access="isAnonymous()">
-							<a href="/dealight/login">로그인</a>
-							<a href="/dealight/policies">회원가입</a>
+								<div class="account_cnts"><a href="/dealight/login">로그인</a></div>
+								<div class="account_cnts"><a href="/dealight/policies">회원가입</a></div>
 						</sec:authorize>
 						<sec:authorize access="isAuthenticated()">
 							<sec:authorize access="hasRole('ROLE_USER')">
-							<a href="/dealight/mypage/reservation">예약내역</a> 
-							<a href="/dealight/mypage/wait">웨이팅</a>
-							<a href="/dealight/mypage/review/">나의리뷰</a>
-							<a href="/dealight/mypage/like">찜 목록</a> 
+								<div class="account_cnts"><a href="/dealight/mypage/reservation">예약내역</a></div> 
+								<div class="account_cnts"><a href="/dealight/mypage/wait">웨이팅</a></div>
+								<div class="account_cnts"><a href="/dealight/mypage/review/">나의리뷰</a></div>
+								<div class="account_cnts"><a href="/dealight/mypage/like">찜 목록</a> </div>
 							</sec:authorize>
 							<sec:authorize access="hasRole('ROLE_MEMBER')">								
-								<a href="/dealight/business/">매장 관리</a>
+								<div class="account_cnts"><a href="/dealight/business/">매장 관리</a></div>
 							</sec:authorize>
-							
 							<sec:authorize access="hasRole('ROLE_ADMIN')">								
-								<a href="/dealight/mypage/business/">서비스 관리</a>
+								<div class="account_cnts"><a href="/dealight/mypage/business/">서비스 관리</a></div>
 							</sec:authorize>
-							<a href="/dealight/mypage/modify">회원정보수정</a>
-							<a href="dealight/logout" onclick="submit(event)">로그아웃</a>
+								<div class="account_cnts"><a href="/dealight/mypage/modify">회원정보수정</a></div>
+								<div class="account_cnts"><a href="dealight/logout" onclick="submit(event)">로그아웃</a></div>
 						</sec:authorize>
-						
-						</div>
 					</div>
-
-				</div>
-
-			</div>
+            </div>
+        </nav>
+    </header>
+   		<div class="alert manage_rsvd hide">
+		  <span class="alert_closebtn">&times;</span>  
+		  <strong class="alert_tit">예약</strong>
+		  <span class="alert_senduser"></span>
+		  <span class="alert_msg">예약 관련 notification 입니다.</span>
 		</div>
-	<!-- </div> -->
+		
+		<div class="alert manage_wait hide">
+		  <span class="alert_closebtn">&times;</span>  
+		  <strong class="alert_tit">웨이팅</strong>
+		  <span class="alert_senduser"></span>
+		  <span class="alert_msg">웨이팅 관련 notification 입니다.</span>
+		</div>
+		
+		<div class="alert manage_htdl hide">
+		  <span class="alert_closebtn">&times;</span>  
+		  <strong class="alert_tit">핫딜</strong>
+		  <span class="alert_senduser"></span>
+		  <span class="alert_msg">핫딜 관련 notification 입니다.</span>
+		  <span class="alert_dto"></span>
+		  <button class='btnAcceptHtdl'>핫딜 등록</button>
+		  <button class="alert_closebtn">거절</button>
+		</div>
+	
 	<script>
 
 	//로그아웃 폼 제출
@@ -368,6 +341,12 @@ body {
 		form.submit();
 		
 	}
+	
+	$("#logo").on("click",function(e){
+		
+		self.location.href="/dealight/dealight";
+	});
+	
 	
  //1. 버튼을 누르면 모달창이 띄어지고, 배경 회색으로 변경
    function openModal(){
@@ -387,4 +366,122 @@ function goMypage(){
 	 location.href="/dealight/mypage/reservation";
 
 }
+
+/* web socket!!!!!!!!!!!!!!!!!!!!*/
+/* 	<div id="socketAlert" class="alert alert-success" role="alert"">알림!!!</div> */
+	let socket = null;
+
+	 function connectWS() {
+		// 전역변수 socket을 선언한다.
+		// 다른 페이지 어디서든 소켓을 불러올 수 있어야 하기 때문이다.
+		
+	 	// 소켓을 ws로 연다.
+	 	var ws = new WebSocket("ws://localhost:8181/manageSocket");
+	 	socket = ws;
+
+	 	// 커넥션이 연결되었는지 확인한다.
+	 	ws.onopen = function () {
+	 	    console.log('Info: connection opened.');
+	 	};
+
+	 	
+	 	// 받은 메시지를 출력한다.
+	 	// 메시지를 수신한 이벤트 핸들러와 같다.
+	 	ws.onmessage = function (event) {
+	 	    console.log("ReceiveMessage : ", event.data+'\n');
+	 	    
+	 	    // 추후에 message 형식을 JSON으로 변환해서 message type을 지정해줘야 한다.
+	 	    //if()
+	 	    	
+	 	   	//alert(event.data);
+	 	    console.log(typeof event.data);
+	 	    
+	 	    let data = JSON.parse(event.data);
+	 	    
+	 	    console.log(typeof data);
+	 	    console.log("cmd : "+data.cmd);
+	 		console.log("sendUser : "+data.sendUser);
+	 	    console.log("storeId : "+data.storeId);
+	 	    
+	 	    let curNotiCnt = 0;
+	 	    
+	 	    for(let i = 0; i < document.getElementsByClassName("alert").length; i++){
+	 	    	if(document.getElementsByClassName("alert")[i].style.display === 'show')
+	 	    		curNotiCnt += 1;
+	 	    }
+	 	    
+	 	    console.log("curNotiCnt : "+curNotiCnt);
+	 	    
+		if(data.cmd === 'rsvd'){
+   	 		showRsvdList(storeId);
+   	 		showRsvdMap(storeId);
+   	 		$('.alert.manage_rsvd .alert_tit').html('예약 알림');
+   	 		$('.alert.manage_rsvd .alert_senduser').html(data.sendUser);
+   	 		$('.alert.manage_rsvd .alert_msg').html(data.msg);
+   	 		document.getElementsByClassName("manage_rsvd")[0].style.bottom = 15 + curNotiCnt*100;
+   	 		$('.alert.manage_rsvd').removeClass("hide");
+   	 		$('.alert.manage_rsvd').addClass("show");
+   	 		$('.alert.manage_rsvd').addClass("showAlert");
+   	 		console.log(data.msg);
+		} else if (data.cmd === 'wait'){
+   	 		showWaitList(storeId);
+   	 		$('.alert.manage_wait .alert_tit').html('웨이팅 알림');
+   	 		$('.alert.manage_wait .alert_senduser').html(data.sendUser);
+   			$('.alert.manage_wait .alert_msg').html(data.msg);
+   			document.getElementsByClassName("manage_wait")[0].style.bottom = 15 + curNotiCnt*100;
+   			$('.alert.manage_wait').removeClass("hide");
+   	 		$('.alert.manage_wait').addClass("show");
+   	 		$('.alert.manage_wait').addClass("showAlert");
+		} else if (data.cmd === 'htdl') {
+			
+		}
+	 	    
+	 	    //let socketAlert = $('#socektAlert');
+	 		//socketAlert.html(event.data);
+	 	    //socketAlert.css('display','block');
+	    
+	    // 메시지가 3초 있다가 자동으로 사라지게
+	    /*
+	    setTimeout( function(){
+	    	
+	    	$socketAlert.css('display','none');
+	    },3000);
+	 	    */
+	    
+	    /*
+	 	    let socketAlert = $('#socektAlert');
+	 		socketAlert.innerHTML = event.data;
+	 	    socketAlert.style.display = "block";
+	 	   	showWaitList(storeId);
+	 	    */
+	 	   	
+	 	    // 메시지가 3초 있다가 자동으로 사라지게
+	 	    /*
+	 	    setTimeout( function(){
+	 	    	
+	 	    	$socketAlert.css('display','none');
+	 	    },3000);
+	 	    */
+	 	};
+
+
+	 	// connection을 닫는다.
+	 	ws.onclose = function (event) {
+	 		console.log('Info: connection closed.');
+	 		//setTimeout( function(){ connect(); }, 1000); // retry connection!!
+	 	};
+	 	ws.onerror = function (event) { console.log('Error'); };
+	 	 
+	 }
+	 
+		
+		// input 내용을 socket에 send
+		$('#btnSend').on('click', function(evt) {
+			  evt.preventDefault();
+			if (socket.readyState !== 1) return;
+				  let msg = $('input#msg').val();
+				  socket.send(msg);
+			});
+		
+		//connectWS();
    </script>

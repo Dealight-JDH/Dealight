@@ -8,6 +8,7 @@ import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlRsltVO;
 import com.dealight.domain.HtdlVO;
+import com.dealight.domain.HtdlWithStoreDTO;
 
 /*
  * 
@@ -17,14 +18,23 @@ import com.dealight.domain.HtdlVO;
 //jongwoo
 
 public interface HtdlMapper {
-
+	//핫딜
 	HtdlVO findById(Long htdlId);
+	int updateHtdl(HtdlVO vo);
+	int updateEndHtdl(@Param("htdlId") Long htdlId, @Param("stusCd") String stusCd);
 	List<HtdlVO> getList();
 	List<HtdlVO> getListWithPaging(@Param("stusCd") String stusCd, @Param("hCri") HtdlCriteria hCri);
 	int delete(Long htdlId);
+	
 	int getTotalCount(@Param("stusCd") String stusCd, @Param("hCri") HtdlCriteria hCri);
+	int curPnumUpdate(HtdlVO vo);
 	
 	Long getSeqHtdl();
+	
+	//오늘 날짜 해당 핫딜 by storeId
+	int sysdateCheckHtdl(Long storeId);
+	
+	List<HtdlWithStoreDTO> getSuggestHtdlList();
 	
 	//핫딜 상세 mapper
 	void insertDtls(HtdlDtlsVO vo);
@@ -37,6 +47,14 @@ public interface HtdlMapper {
 	void insertRslt(HtdlRsltVO vo);
 	HtdlRsltVO findRsltById(@Param("storeId") Long storeId, @Param("htdlId") Long htdlId);
 	List<HtdlRsltVO> getRsltList(Long storeId);
+	
+	//핫딜+상세+결과
+	HtdlVO getHtdlDtlsRslt(Long htdlId);
+	//핫딜+매장
+	List<HtdlWithStoreDTO> getHtdlWithStoreList(String stusCd);
+	
+	//핫딜+상세
+	HtdlVO findHtdlDtlsById(Long htdlId);
 	
 	//핫딜+상세+매장평가
 	HtdlVO findHtdlById(Long htdlId);

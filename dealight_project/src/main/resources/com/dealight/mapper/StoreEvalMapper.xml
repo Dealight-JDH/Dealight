@@ -16,7 +16,8 @@
 
 	<select id="read" resultType="com.dealight.domain.StoreEvalVO">
 		
-		select * from tbl_store_eval where store_id = #{storeId}
+		select store_id, ROUND(avg_rating,2) avgRating, revw_tot_num, like_tot_num, regdate, updatedate 
+		from tbl_store_eval where store_id = #{storeId}
 		
 	</select> 
 	
@@ -29,8 +30,7 @@
 	<update id="update">
 	
 		update tbl_store_eval
-		set store_id = #{storeId},
-			avg_rating = #{avgRating},
+		set avg_rating = #{avgRating},
 			revw_tot_num = #{revwTotNum},
 			like_tot_num = #{likeTotNum}
 		where store_id = #{storeId}
@@ -42,5 +42,23 @@ select *
 from tbl_store_eval
 where store_id = #{storeId}
 </select>
+
+<update id="addRevwRating">
+	UPDATE tbl_store_eval
+	SET avg_rating = ((avg_rating*revw_tot_num)+#{rating})/(revw_tot_num+1),
+	    revw_tot_num = revw_tot_num+1
+	WHERE store_id = #{storeId}
+</update>
+
+<update id="addLike">
+	UPDATE tbl_store_eval
+	SET like_tot_num = like_tot_num + 1
+	WHERE store_id = #{storeId}
+</update>
+<update id="removeLike">
+	UPDATE tbl_store_eval
+	SET like_tot_num = like_tot_num - 1
+	WHERE store_id = #{storeId}
+</update>
 
 </mapper>

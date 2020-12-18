@@ -52,6 +52,7 @@ public class HtdlRestController {
 		return new ResponseEntity(service.getListPage(stusCd, hCri), HttpStatus.OK);
 	}
 	
+	
 
 	
 	//핫딜 상세

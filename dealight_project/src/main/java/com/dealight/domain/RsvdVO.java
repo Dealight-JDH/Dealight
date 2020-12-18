@@ -50,7 +50,7 @@ public class RsvdVO {
 
     // 결제승인번호
     @Nullable
-    private Long aprvNo;
+    private String aprvNo;
 
     // 예약인원
     @NotNull

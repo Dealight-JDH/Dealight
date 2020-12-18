@@ -61,9 +61,6 @@
 									<c:when test="${buser.brJdgStusCd eq 'C'}">
 										<td>심사완료</td>
 									</c:when>
-									<c:when test="${buser.brJdgStusCd eq 'W'}">
-										<td>심사대기중</td>
-									</c:when>
 									<c:when test="${buser.brJdgStusCd eq 'P'}">
 										<td>심사진행중</td>
 									</c:when>

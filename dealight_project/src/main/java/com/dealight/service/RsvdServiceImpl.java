@@ -1,9 +1,12 @@
 package com.dealight.service;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -16,12 +19,17 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.BStoreVO;
 import com.dealight.domain.Criteria;
+import com.dealight.domain.RsvdAvailVO;
 import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdTimeDTO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreMenuVO;
+import com.dealight.domain.StoreVO;
+import com.dealight.domain.TimeDTO;
 import com.dealight.domain.UserWithRsvdDTO;
+import com.dealight.mapper.BStoreMapper;
 import com.dealight.mapper.RsvdDtlsMapper;
 import com.dealight.mapper.RsvdMapper;
 import com.dealight.mapper.StoreMenuMapper;
@@ -43,8 +51,270 @@ public class RsvdServiceImpl implements RsvdService{
 
 	private final RsvdMapper rsvdMapper;
 	private final StoreMenuMapper menuMapper;
+	private final BStoreMapper bstoreMapper;
 	
+	
+//	SimpleDateFormat format = new SimpleDateFormat("yyyy/mm/dd hh:mm");
+//	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/mm/dd hh:mm");
+	
+	@Override
+	public RsvdVO readRsvdVO(Long rsvdId) {
+		// TODO Auto-generated method stub
+		log.info("rsvd find vo..");
+		return rsvdMapper.findRsvdById(rsvdId);
+	}
+	
+	
+	@Override
+	public boolean checkExistHtdl(String userId, Long htdlId) {
+		// TODO Auto-generated method stub
+		log.info("hotdeal rsvd check...");
+		
+		return rsvdMapper.checkExistHtdl(userId, htdlId) > 0;
+	}
+	
+	@Override
+	public RsvdAvailVO getRsvdAvailByStoreId(Long storeId) {
+		// TODO Auto-generated method stub
+		log.info("get Rsvd availVO....");
+		return rsvdMapper.findRsvdAvailByStoreId(storeId);
+	}
 
+	@Transactional
+	@Override
+	public boolean completeUpdateAvail(Long storeId, String time, int pnum) {
+		// TODO Auto-generated method stub
+
+		//해당 매장의 예약 가능 row가져오기
+		RsvdAvailVO findRsvdAvailVO = rsvdMapper.findRsvdAvailByStoreId(storeId);
+		
+		//해당 예약시간의 값 가져오기
+		TimeDTO updateTimeField = getTimeValue(time);
+		
+		//예약 vo reflect
+		log.info("=========Time DTO: " + updateTimeField);
+		try {			
+			Class<?> availClass = findRsvdAvailVO.getClass();
+			
+			Field[] fields = availClass.getDeclaredFields();
+			
+			for(Field field : fields) {
+				if(field.getName().equalsIgnoreCase(updateTimeField.toString())) {
+					field.setAccessible(true);
+					
+					int acmPnum = (int)field.get(findRsvdAvailVO);					
+					acmPnum -= pnum;
+					log.warn("============update acmPnum: " + acmPnum);
+					
+					field.set(findRsvdAvailVO, acmPnum);
+					return rsvdMapper.completeUpdateAvail(findRsvdAvailVO) == 1;
+					
+				}
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean completeUpdateHtdl() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<RsvdAvailVO> getRsvdAvailList() {
+		// TODO Auto-generated method stub
+		log.info("get Rsvd Avail list.....");
+		
+		List<RsvdAvailVO> list = rsvdMapper.getRsvdAvailList();
+		list.forEach(availVO -> log.info(availVO));
+		
+		return list;
+	}
+	
+	
+	@Transactional
+	@Override
+	public void initRsvdAvail() {
+		// TODO Auto-generated method stub
+		
+		//등록된 매장번호 get(매장번호, 수용인원, 브레이크 시작,종료 타임)
+		List<BStoreVO> list = bstoreMapper.selectIdWithAcmPnum();
+		list.forEach(vo -> log.info(".............." + vo));
+
+		//각 매장별 수용인원으로 예약가능 여부 채우기
+		//브레이크 타임 시간 고려
+		//보통 12 - 16 사이
+		//리스트를 조회한다
+		//시작,종료 타임이 있으면
+		//범위에 맞는 변수에 -1 객체에 어떻게 담아야 할까....
+		//아니면 수용인원
+		list.forEach(vo -> {
+
+			RsvdAvailVO rsvdAvail = RsvdAvailVO.builder()
+					.storeId(vo.getStoreId()).nine(vo.getAcmPnum()).nineHalf(vo.getAcmPnum()).ten(vo.getAcmPnum()).tenHalf(vo.getAcmPnum()).eleven(vo.getAcmPnum()).elevenHalf(vo.getAcmPnum())
+					.twelve(vo.getAcmPnum()).twelveHalf(vo.getAcmPnum()).thirteen(vo.getAcmPnum()).thirteenHalf(vo.getAcmPnum()).fourteen(vo.getAcmPnum()).fourteenHalf(vo.getAcmPnum())
+					.fifteen(vo.getAcmPnum()).fifteenHalf(vo.getAcmPnum()).sixteen(vo.getAcmPnum()).sixteenHalf(vo.getAcmPnum()).seventeen(vo.getAcmPnum()).seventeenHalf(vo.getAcmPnum())
+					.eighteen(vo.getAcmPnum()).eighteenHalf(vo.getAcmPnum()).nineteen(vo.getAcmPnum()).nineteenHalf(vo.getAcmPnum())
+					.build();
+			
+			//브레이크 타임이 있는 경우
+			if(isBreakTime(vo.getBreakSttm(), vo.getBreakEntm())) {
+				
+				RsvdAvailVO breakVO = setBreakTimeAvail(rsvdAvail, vo.getBreakSttm(), vo.getBreakEntm());
+				rsvdMapper.insertRsvdAvail(breakVO);
+				return;
+			}
+			
+			rsvdMapper.insertRsvdAvail(rsvdAvail);
+			
+		});
+		
+	}
+	
+	//예약 가능여부 체크
+	@Override
+	public boolean isRsvdAvailChecked(RsvdAvailVO vo, String time, int pnum) {
+	
+		log.info("===============isRsvdAvailChecked==================");
+		
+		TimeDTO timeValue = getTimeValue(time);
+		
+		log.info("time value : " + timeValue);
+		
+		//해당 시간에 맞는 vo 필드 뽑아내기
+		try {
+			Class<?> availClass = vo.getClass();
+			
+			log.info("availClass : " + availClass);
+			
+			Field[] fields = availClass.getDeclaredFields();
+			
+			log.info("fileds : " + fields);
+			
+			for(Field field : fields) {
+				
+				log.info("filed : " + field);
+				
+				if(field.getName().equalsIgnoreCase(timeValue.toString())) {
+					field.setAccessible(true);
+					int curPnum = field.getInt(vo);
+					return curPnum - pnum >= 0;
+				}
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	//해당 예약시간의 시간상수 반환
+	private TimeDTO getTimeValue(String time) {
+		
+//		String strRsvdTime = sysdate.getYear()+"-"+sysdate.getMonthValue()+"-"+sysdate.getDayOfMonth()+"T"+time;
+//		LocalDateTime rsvdTime = LocalDateTime.parse(strRsvdTime);
+		
+		LocalDateTime rsvdTime = formatDate(time);
+		for(TimeDTO timeValue : TimeDTO.values()) {
+			
+			if(timeValue.getTime().isEqual(rsvdTime)){
+				return timeValue;
+			}
+		}
+		return null;
+	}
+	
+	//날짜 변환 메서드
+	private LocalDateTime formatDate(String time) {
+		
+		LocalDate sysdate = LocalDate.now();
+		String strTime = sysdate.getYear()+"-"+sysdate.getMonthValue()+"-"+sysdate.getDayOfMonth()+"T"+time;
+		LocalDateTime formatTime = LocalDateTime.parse(strTime);
+		return formatTime;
+	}
+	
+	//브레이크 타임 확인
+	private boolean isBreakTime(String startTm, String endTm) {	
+		return (startTm != null && !startTm.isEmpty()) && (endTm != null && !endTm.isEmpty());
+	}
+	
+	//예약 가능 시간대 브레이크 타임 범위 필드 추출 메서드
+	private RsvdAvailVO setBreakTimeAvail(RsvdAvailVO vo , String startTm, String endTm) {
+		
+//		String strStartTime = sysdate.getYear()+"-"+sysdate.getMonthValue()+"-"+sysdate.getDayOfMonth()+"T"+startTm;
+//		String strEndTime = sysdate.getYear()+"-"+sysdate.getMonthValue()+"-"+sysdate.getDayOfMonth()+"T"+endTm;
+//		LocalDateTime startTime = LocalDateTime.parse(strStartTime);
+//		LocalDateTime endTime = LocalDateTime.parse(strEndTime);
+		
+		LocalDateTime startTime = formatDate(startTm);
+		LocalDateTime endTime = formatDate(endTm);
+
+		log.info("startTime : " + startTime);
+		log.info("endTime : " + endTime);
+		
+		//List<TimeDTO> breakTimeList = new ArrayList<>();
+		
+		try {
+			
+			for(TimeDTO timeValue : TimeDTO.values()) {
+				log.info("==========time value: " + timeValue+", "+ timeValue.getTime());
+				if(
+					(timeValue.getTime().isEqual(startTime) || timeValue.getTime().isAfter(startTime)) && 
+					(timeValue.getTime().isBefore(endTime)) || (timeValue.getTime().equals(endTime))
+				){
+					log.info("브레이크 범위에 해당하는 브레이크 시간: " + timeValue.getTime());
+					//breakTimeList.add(timeValue);
+					
+					//예약 가능 VO클래스
+					Class<?> availClass = vo.getClass();
+					
+					//VO클래스 에 대한 필드 추출(private까지)
+					Field fields[] = availClass.getDeclaredFields();
+					
+					for(Field field : fields) {
+						//브레이크 범위에 해당하는 필드
+						if(field.getName().equalsIgnoreCase(timeValue.toString())){
+							
+							log.info("브레이크 범위 필드: "+ field.getName());
+							field.setAccessible(true);
+							
+							//값 변경
+							field.set(vo, -1);
+							log.info("필드 값 변경: " + field.get(vo));
+						}
+					}
+					
+
+				}
+			}
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return vo;
+			
+		}
+	
+	
+	@Transactional
+	@Override
+	public boolean removeRsvdAvail() {
+		// TODO Auto-generated method stub
+		log.info("rsvd Avail remove...");
+		
+		int count = rsvdMapper.countAll();
+		log.info("count : " + count);
+		
+		return rsvdMapper.deleteRsvdAvail() == count;
+	}
+	
 	@Override
 	public boolean modifyStusCd(Long rsvdId, String stusCd) {
 		// TODO Auto-generated method stub
@@ -476,10 +746,109 @@ public class RsvdServiceImpl implements RsvdService{
 		return rsvdMapper.getRsvdCount(userId, cri, "C");
 	}
 
+
 	@Override
-	public boolean removeRsvdAvail() {
-		// TODO Auto-generated method stub
-		return false;
+	public HashMap<String, String> getTodayRsvdStusByTime(Long storeId) {
+		
+		String[] timeArr = {"","09:00","09:30","10:00","10:30","11:00","11:30","12:00"
+		       	,"12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00",
+		       	"16:30","17:00","17:30","18:00","18:30","19:00","19:30"};
+
+		//log.info("time arr length : "+timeArr.length);
+		
+		String[] stusArr = new String[timeArr.length];
+		
+		//log.info("stus arr length : "+timeArr.length);
+		
+		//int[] curNumArr = new int[timeArr.length];
+		
+		RsvdAvailVO rsvdAvail = getRsvdAvailByStoreId(storeId);
+		
+		BStoreVO bstore = bstoreMapper.findByStoreId(storeId);
+		
+		int acm = bstore.getAcmPnum();
+		
+		//log.info("acm : " + acm);
+		
+		for(int i = 1; i < timeArr.length; i++) {
+		
+		//log.info("=================================");
+		
+		TimeDTO dto = getTimeValue(timeArr[i]);
+		
+		//log.info(" "+i+"번째 get time value : " + dto);
+		try {
+			Class<?> availClass = rsvdAvail.getClass();
+			
+			//log.info("avail class : " + availClass);
+			
+			Field[] fields = availClass.getDeclaredFields();
+			
+			//log.info("fields : " + fields);
+			
+			for(Field field : fields) {
+				
+				//log.info("field : " + field);
+				
+				if(field.getName().equalsIgnoreCase(dto.toString())) {
+					//log.info("=================equals===============");
+					field.setAccessible(true);
+					
+					int curPnum = field.getInt(rsvdAvail);
+		
+					//log.info("cur pnum : " + curPnum);
+					
+					//curNumArr[i] = curPnum;
+					
+					int rsvdPnum = acm-curPnum;
+					
+					//log.info("availPnum : " + availPnum);
+					
+					if(rsvdPnum == (acm))
+						stusArr[i] = "R";
+					else if(acm > rsvdPnum && rsvdPnum >= (acm*0.6))
+						stusArr[i] = "Y";
+					else if ((acm*0.6) > rsvdPnum && rsvdPnum >= 0)
+						stusArr[i] = "G";
+					else if (rsvdPnum > acm)
+						stusArr[i] = "B";
+						
+				}
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		}
+		//log.info("======================red===================");
+		//log.info("red : " + acm);
+		//log.info("======================yellow===================");
+		//log.info("cur num이  : " + (acm - acm*0.6) +"보다 크면 yellow");
+		//log.info("available num이  : " + acm*0.6 +"보다 크면 yellow");
+		//log.info("======================green===================");
+		//log.info("acm 0 : " + 0);
+		//log.info("cur stus arr : " + Arrays.toString(stusArr));
+		//log.info("curNumArr : " + Arrays.toString(curNumArr));
+		
+		HashMap<String,String> map = new HashMap<>();
+		
+		for(int i = 1; i < timeArr.length; i++)
+			map.put(timeArr[i], stusArr[i]);
+
+		return map;
 	}
+
+	
+
+	
+
+	
+	
+
+	
+	
+
+	
 
 }

@@ -13,8 +13,10 @@ import com.dealight.domain.RevwPageDTO;
 import com.dealight.domain.RevwVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.RsvdWithWaitDTO;
+import com.dealight.domain.StoreEvalVO;
 import com.dealight.domain.WaitVO;
 import com.dealight.mapper.RevwMapper;
+import com.dealight.mapper.StoreEvalMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Setter;
@@ -27,6 +29,9 @@ public class RevwServiceImpl implements RevwService {
 
 	@Setter(onMethod_ = @Autowired)
 	private RevwMapper revwMapper;
+	
+	@Setter(onMethod_ = @Autowired)
+	private StoreEvalMapper evalMapper;
 
 	@Override
 	public List<RevwVO> getRevwListWithPagingByStoreId(Long storeId, Criteria cri) {
@@ -60,7 +65,9 @@ public class RevwServiceImpl implements RevwService {
 			});
 			revwMapper.insertAllImgs(imgs);
 		}
+
 		
+		evalMapper.addRevwRating(revw.getStoreId(), revw.getRating());
 		
 		Long rsvdId = revw.getRsvdId();
 		Long waitId = revw.getWaitId();

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD  Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 현중 -->
+
+<mapper namespace="com.dealight.mapper.QnAMapper">
+
+	<insert id="insertSelectKey">
+		<selectKey keyProperty="qnaId" order="BEFORE" resultType="long">
+			select seq_qna.nextval from dual
+		</selectKey>
+		
+		insert into tbl_qna(qna_id, qna_ord, qna_title, q_cls_cd, qna_cnts, user_id)
+		values (#{qnaId}, #{qnaOrd}, #{qnaTitle}, #{qClsCd}, #{qnaCnts}, #{userId})
+	</insert>
+
+	<insert id="insertWithOrd">
+	
+		<selectKey keyProperty="qnaOrd" order="BEFORE" resultType="int">
+			select MAX(qna_ord)+1 from tbl_qna
+			where qna_id=#{qnaId}
+		</selectKey>
+		insert into tbl_qna(qna_id, qna_ord, qna_title, q_cls_cd, qna_cnts, user_id)
+		values (#{qnaId}, #{qnaOrd}, #{qnaTitle}, #{qClsCd}, #{qnaCnts}, #{userId})
+	</insert>
+	
+	<select id="read" resultType="com.dealight.domain.QnAVO">
+		select * from tbl_qna
+		where qna_id = #{qnaId}
+	</select>
+	<select id="readWithOrd" resultType="com.dealight.domain.QnAVO">
+		select * from tbl_qna
+		where qna_id = #{qnaId} and qna_ord = #{qnaOrd}
+	</select>
+	
+	<sql id="criteria">
+		<trim suffix="and">
+		<if test='(filterType != null) and (filterType != "") and !(filterType eq "A".toString())'>
+			q_cls_cd = #{filterType}
+		</if>
+		</trim>
+  		<trim suffix="and">
+  			<if test="(keyword != null) and (keyword != '')">
+  			qna_title like '%'||#{keyword}||'%'
+  			</if>
+  		</trim>
+	</sql>
+	
+	
+	<select id="getListWithPaging" resultType="com.dealight.domain.QnAVO">
+		select * 
+		from (select rownum rn, qna_id, qna_title, q_cls_cd, 
+					 qna_cnts, user_id, qna_ord, 
+					 regdate, updatedate
+			  from tbl_qna
+			  where qna_ord = 0 and
+			  		<include refid="criteria"/>
+		<![CDATA[
+			  		rownum <= #{pageNum} * #{amount}
+			  )
+		where rn >(#{pageNum} - 1) * #{amount}
+		]]>
+	</select>
+	
+	
+	<update id="update">
+		update tbl_qna
+		set qna_title = #{qnaTitle},
+			q_cls_cd = #{qClsCd},
+			qna_cnts = #{qnaCnts},
+			user_id = #{userId},
+			updatedate = sysdate
+		where qna_id = #{qnaId} and qna_ord = #{qnaOrd}
+	</update>
+	
+	<delete id="delete">
+		delete from tbl_qna where qna_id = #{qnaId} and qna_ord = #{qnaOrd}
+	</delete>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from tbl_qna
+		where qna_ord = 0 and
+		  	  <include refid="criteria"/>
+		<![CDATA[
+			  qna_id > 0
+			  
+		]]>
+	</select>
+	
+	
+</mapper>

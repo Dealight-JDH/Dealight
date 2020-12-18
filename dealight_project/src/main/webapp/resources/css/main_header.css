@@ -1,0 +1,162 @@
+  /* main header*/
+        .main_nav{
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-content: center;
+            /*border: 1px black solid;*/
+            /*border-bottom: solid 1px rgba(180, 180, 180, 0.856);*/
+            height: 75px;
+            margin: 0 auto;
+            box-shadow: 0 4px 11px rgba(0,0,0,0.1);
+        }   
+        
+        
+        /* main nav left */
+        .main_nav_left{
+            order: 0;
+            width: 10%;
+            min-width: 100px;
+            /*border: black 1px solid;*/
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .menu-dropdown-wrapper{
+			display:relative;
+		}
+        .menu-dropdown-content {
+			  display: none;
+			  position: absolute;
+			  left:4%;
+			  top:50px;
+			  background-color: #f9f9f9;
+			  min-width: 100px;
+			  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+			  padding: 12px 16px;
+			  z-index: 1;
+		}
+		.menu_img{
+			margin : 10px 10px;
+		}
+		.menu_cnts{
+			cursor: pointer;
+		}
+		.menu_cnts:hover{
+			background-color:gray;
+		}
+		.main_nav_left:hover .menu-dropdown-content {
+			  display: block;
+		}
+        .main_nav_left >img{
+            width: 20%;
+        }
+        
+        /* main nav logo */
+        .main_nav_logo{
+            padding-left: 200px;
+            order: 1;
+            min-width: 300px;
+            /*border: black 1px solid;*/
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .main_nav_logo img{
+            width: 15%;
+            height: auto;
+        }
+        
+        /* main nav right */
+        .main_nav_right{
+            margin-right: 10px;
+            order: 2;
+            width: 18%;
+            min-width: 100px;
+            /*border: black 1px solid;*/
+            display: flex;
+        }
+        .main_nav_right > div{
+            /*border: black 1px solid;*/
+            height: 100%;
+            width: 33%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* account btn */
+        .account_btn > img{
+            width: 30%;
+        }
+        .account_btn{margin : auto 15px  auto 15px;}
+        .account_btn::after{
+            right: 1.125em;
+            margin-left:0.900em;
+            margin-top: -.1200em;
+            border: 2px solid rgb(80, 80, 80);
+            border-radius: 2px;
+            border-right: 0;
+            border-top: 0;
+            content: " ";
+            display: block;
+            height : .625em;
+            transform : rotate(-45deg);
+            transform-origin: center;
+            width: .625em;
+            opacity: 80%;
+            cursor: pointer;
+        }
+        .account-dropdown-content{
+        	  display: none;
+			  position: absolute;
+			  right:1%;
+			  top:50px;
+			  background-color: #f9f9f9;
+			  min-width: 100px;
+			  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+			  padding: 12px 16px;
+			  z-index: 1;
+			  height: auto;
+        }
+        .account_btn:hover .account-dropdown-content{
+        	display : block;
+        }
+        .account_cnts:hover{
+			background-color:gray;
+		}
+		.account_cnts a {
+       		text-decoration: none;
+       		
+		}
+        /* end account btn */
+        .bell_btn {
+        	position: relative;
+        }
+        
+        .bell_btn > img{
+            width: 30%;
+        }
+        /* 알림함 */
+        .alert_badge {
+			  position: absolute;
+			  top: 0px;
+			  right: 4px;
+			  padding: 5px 8px;
+			  border-radius: 50%;
+			  background-color: red;
+			  color: white;
+		}
+        
+        .log_img{
+            border: solid 1px black;
+            height: 50%;
+            width: 40%;
+            margin: auto 0;
+        }
+        
+        #nav_user_id{
+        	font-size:18px;
+        	font-weight:light;
+        }

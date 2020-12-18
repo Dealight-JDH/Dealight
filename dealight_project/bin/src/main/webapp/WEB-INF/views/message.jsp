@@ -13,6 +13,6 @@
 <body>
 <h2>Rest Template Result</h2>
 result : ${result}
-<a href='/dealight/business/'>리스트로 돌아가기</a>
+<a href='/dealight/business/manage?storeId='${storeId}>매장으로 돌아가기</a>
 </body>
 </html>

@@ -7,7 +7,7 @@ import com.dealight.domain.LikeVO;
 
 public interface LikeService {
 	
-	void pick(LikeVO like);
+	void pick(String userId, Long storeId);
 	
 	boolean cancel(String userId, Long storeId);
 	

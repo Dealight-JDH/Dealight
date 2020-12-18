@@ -19,7 +19,16 @@ result : ${result}
 code : ${code}</br>
 <a href="/token?code=${code}">get token</a></br>
 
+<script>
+$(document).ready(() =>{
+	if(${code} === null)
+		window.location.href = "https://kauth.kakao.com/oauth/authorize?client_id="+${restKey}+"&redirect_uri="+${redirectURI}+"&response_type=code"+"&storeId="+${storeId}+"&waitId="+waitId;
+	if(${code} !== null)
+		window.location.href = "/token?code="+${code}+"&storeId="+${storeId}+"&waitId="+waitId;
+}
 
+
+</script>
 
 </body>
 </html>

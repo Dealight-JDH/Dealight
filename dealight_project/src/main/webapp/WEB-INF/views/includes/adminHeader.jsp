@@ -24,6 +24,13 @@
     <!-- Custom styles for this template-->
     <link href="/resources/bootstrap/css/sb-admin-2.min.css" rel="stylesheet">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	
+	<!-- 동인 추가  -->
+	<style>
+		.selected_img{
+		border : 4px red solid;
+	}
+	</style>
 </head>
 
 <body id="page-top">
@@ -94,8 +101,8 @@
                         <a class="collapse-item" href="utilities-border.html">사업자매장</a>
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">핫딜관리</h6>
-                        <a class="collapse-item" href="blank.html">핫딜관리</a>
-                        <a class="collapse-item" href="404.html">핫딜제안</a>
+                        <a class="collapse-item" href="/dealight/admin/htdlmanage/A">핫딜관리</a>
+                        <a class="collapse-item" href="/dealight/admin/htdlmanage/suggest">핫딜제안</a>
                     </div>
                 </div>
             </li>
