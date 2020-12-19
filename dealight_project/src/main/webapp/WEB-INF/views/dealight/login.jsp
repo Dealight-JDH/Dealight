@@ -31,7 +31,7 @@
     /* div{
         border: 2px solid red;
     } */
-    .nav-bar{
+    /* .nav-bar{
         display: flex;
         height: 60px;
         justify-content: center;
@@ -39,6 +39,10 @@
         align-items: center;
         background-color: #d32323;
         
+    } */
+    
+    .main_nav{
+    	background-color: #d32323;
     }
     .main-container-wrap{
         min-width: 1050px;
@@ -198,6 +202,11 @@
         justify-content: flex-end;
     }
     
+    p>a{
+    	color: rgb(238, 76, 76);
+    	text-decoration: underline;
+    }
+    
 </style>
 
 </head>
@@ -257,14 +266,14 @@
                 <ul>
                     <li>
                         <div id="kakao_id_login">
-                            <button class="kakao-btn" value="">
+                            <button class="kakao-btn" onclick="moveKakao();">
                                 <span>Continue With KakaoTalk</span>
                             </button>
                         </div>
                     </li>
                     <li>
                         <div id="naver_id_login">
-                            <button class="naver-btn" value="">
+                            <button class="naver-btn" onclick="moveNaver();">
                                 <span>Continue With Naver</span>
                             </button>
                         </div>
@@ -286,15 +295,18 @@
         </div>
 </div>
 
- 
-    <%-- <div id="naver_id_login" style="text-align:center margin-top: 6px;">
-		<a href="${naver_url}">
-			<img width="250" src="/resources/img/naver_Bn_Green.PNG"/>
-		</a><br>
- 		<a href="${kakao_url }">
-     		<img width="250" src="/resources/img/kakao_login_medium_narrow.png">
- 		</a>
-	</div>
-</div> --%>	
+
+<script type="text/javascript">
+
+	function moveKakao(){
+		
+		location.href="${kakao_url }";
+		
+	}
+	
+	function moveNaver(){
+		location.href="${naver_url }";
+	}
+</script>	
 </body>
 </html>

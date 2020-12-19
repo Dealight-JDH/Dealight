@@ -3,72 +3,589 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@include file="../includes/registerHeader.jsp"%>
 <%@include file="../includes/mainMenu.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>로그인</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!--  -->
 
+<style>
+    * { /* CSS초기화. 이거 없으면 div태그 사이에 공백 생김*/
+
+        margin  : 0;   /* 값이 0일 때는 단위 안씀. */
+        border  : 0;
+        padding : 0;
+        /* font-family: 'Nanum Gothic', sans-serif; */
+    }
+
+	/* div{
+            border: 2px solid red;
+    } */
+
+/*     .nav-bar{
+        display: flex;
+        height: 60px;
+        justify-content: center;
+        border: 2px solid red;
+        align-items: center;
+        background-color: #d32323;
+    }
+ */
+ 	.main_nav{
+    	background-color: #d32323;
+    }
+    
+    .main-container-wrap{
+        min-width: 1050px;
+    }
+    .main-container{
+        display: flex;
+        min-height: 720px;
+        width: 1050px;
+        margin: 0 auto;
+        /* padding: 0 15px; */
+        /* padding-top: 0px; */
+        padding-bottom: 36px;
+    }
+
+    .signup-container{
+        display: inline-flex;
+        flex-direction: column;
+        margin: 30px;
+        margin-right: 15px;
+        width: 500px;
+        height: 720px;
+        padding: 0px 15px;
+    }
+
+    .signup-form{
+        display: flex;
+        width: 100%;
+        margin-top: 40px;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .header>h1{
+        display: flex;
+        justify-content: center;
+    }
+
+    .css-input{
+        display: flex;
+        flex-direction: row;
+        /* flex-wrap: wrap; */
+        position: relative;
+        /* padding: 3px; */
+        margin-bottom: 8px;
+        align-items: center;
+    }
+
+    .birthday{
+		display: flex;
+        flex-direction: row;
+        /* padding: 3px; */
+        align-items: center; 
+        margin-left: 10px;
+        /* margin-top: 20px; */
+        border: 1px solid rgb(139, 139, 139);
+        border-radius: 3px;
+        /* box-sizing: border-box; */
+    }
+
+    .birthday>input{
+        width: 83px;
+        height: 40px;
+        text-align: center;
+        outline: none;
+    }
+
+    .css-input>input{
+        padding: 12px 20px;
+        width: 60%;
+        height: 40px;
+        margin: 6px 0;
+        margin-left: 20px;
+        border: 1px solid rgb(139, 139, 139);
+        border-radius: 3px;
+        box-sizing: border-box;
+    }
+
+    .label{
+        display: inline-block;
+        width: 40%;
+        font-weight: 500;
+    }
+
+
+    .css-input>p{
+        width: 20%;
+        font-weight: 500;
+        margin-left: 8px;
+    }
+
+    .woman{
+        margin-left: 16px;
+    }
+
+    .gender-man{
+        position: absolute;
+        margin-left: 120px;
+    }
+
+    .gender-woman{
+        position: absolute;
+        margin-left: 200px;
+    }
+
+    .gender-normal{
+        position: absolute;    
+        margin-left: 300px;
+    }
+
+
+    #pwd{
+        margin-left: 10px;
+        width: 275px;
+    }
+
+    #repwd{
+        margin-left: 10px;
+        width: 275px;
+    }
+    #name{
+        margin-left: 10px;
+        width: 275px;
+    }
+    #email{
+        margin-left: 20px;
+        width: 300px;
+    }
+    .css-man{
+        width: 10%;
+    }
+
+    #telno{
+        margin-left: 10px;
+        width: 277px;
+    }
+    
+    input[type='radio']{
+        width: 18px
+    }
+
+    .regbtn{
+        width: 220px;
+        height: 80%;
+        font-size: 16px;
+        border: 1px solid #d32323;
+        background-color:  #d32323;
+        border-radius: 3px;
+        color: #fff;
+    }
+
+    .form-footer{
+        display: flex;
+        height: 60px;
+        justify-content: center;
+        align-items: center;
+    }
+    .btn{
+        width: 20%;
+        height: 40px;
+        margin-left: 16px;
+        border: 1px solid #d32323;
+        color: #d32323;
+        outline: 0;
+        background-color: white;
+        border-radius: 4px;
+    }
+
+
+    .login-separator{
+        display: flex;
+        justify-content: center;
+        margin: 8px 0px 0px;
+        padding: 8px 0px;
+    }
+    .line{
+        margin-top: 8px;
+        width: 100%;
+        height: 0px;
+        border: 1px solid black;
+
+    }
+    .hr-line1{
+        width: 100%;
+        /* border: 1px solid gray; */
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .check-container{
+        display: inline-flex;
+        margin-left: 8px;
+        margin-top: 30px;
+        width: 420px;
+        height: 720px;
+        padding: 0px 6px;
+    }
+
+    .check{
+        display: flex;
+        flex-direction: column;
+        margin: 40px 0px 0px 20px;
+        width: 400px;
+        height: auto;
+    }
+
+    .check-header>h1{
+        display: flex;
+        width: 100%;
+        height: 40px;
+        justify-content: center;
+    }
+
+    .css-agree{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin: 8px;
+        height: 40px;
+
+    }
+
+    input[type=checkbox]+.ico{
+        display: inline-block;
+        position: relative;
+        width: 24px;
+        height: 24px;
+        margin-right: 12px;
+        border: 0;
+        background: url(https://res.kurly.com/pc/service/common/2006/ico_checkbox.svg) no-repeat 50% 50%;
+        background-size: 24px 24px;
+        vertical-align: -7px;
+    }
+
+    input[type=checkbox]:checked+.ico{
+        /* background: url(https://res.kurly.com/pc/service/common/2006/ico_checkbox_checked.svg) no-repeat 50% 50%;
+         */
+        background: url(/resources/img/checkbox-icon.jpg) no-repeat 50% 50%;
+        background-size: 24px 24px;
+    }
+
+    input[type=radio]+.ico{
+        display: inline-block;
+        position: relative;
+        width: 24px;
+        height: 24px;
+        margin-right: 6px;
+        border: 0;
+        background: url(https://res.kurly.com/pc/service/common/2006/ico_checkbox.svg) no-repeat 50% 50%;
+        background-size: 24px 24px;
+        vertical-align: -7px;
+    }
+
+    input[type=radio]:checked+.ico{
+        /* background: url(https://res.kurly.com/pc/service/common/2006/ico_checkbox_checked.svg) no-repeat 50% 50%;
+         */
+        background: url(/resources/img/checkbox-icon.jpg) no-repeat 50% 50%;
+        background-size: 30px 30px;
+    }
+
+
+    .sub{
+        color: #999;
+    }
+
+    label>input[type="checkbox"]{
+        display: none;
+    }
+
+    label>input[type="radio"]{
+        display: none;
+    }
+
+    .agree-content{
+        display: flex;
+        flex-direction: column;
+        margin: 20px 0px 0px 40px;
+    }
+
+    .ico{
+        color: #ee6a7b;
+
+    }
+    .sub-check{
+        margin: 6px 0px 0px 40px;
+        padding-right: 6px;
+        font-size: 12px;
+        color: #666;
+    }
+
+    .check-view{
+        margin: 16px 0px;
+    }
+
+    .btn-link{
+        position: absolute;
+        right: 22px;
+        top: 0;
+        font-size: 14px;
+        color: #d32323;
+    }
+    .check-title{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .label-all-check{
+        font-weight: 650;
+        font-size: 18px;
+    }
+    
+    .msg{
+    	margin-left: 120px;
+    }
+    
+    .alertMsg{
+    	margin-left: 120px;
+    	margin-bottom: 8px;
+    }
+    
+
+</style>
+ 
+</head>   
 <body>
 
 	<c:if test="${result ne null}">
 
 	</c:if>
-	<form role="form" action="/dealight/register" method="post"
-		onsubmit="return validate()">
-		<div class="register-content">
-			<h2>회원가입</h2>
-			<p>
-				아이디 : <input type="text" name="userId" id="userId">
-				<button type="button" class="overlapCheck">중복확인</button>
-			</p>
-			<p class='msg' id="idmsg">영문 대문자 또는 소문자 또는 숫자로 시작하는 아이디, 길이는
-				5~15자</p>
-			<p>
-				비밀번호 : <input type="password" name="pwd" id="pwd">
-			</p>
-			<p class='msg' id="pwdmsg">비밀번호는 영문 대소문자,특수문자 1개씩은 포함해서 8자리~16자리
-				이내</p>
-			<p>
-				비밀번호 확인 : <input type="password" name="repwd" id="repwd"
-					onblur="checkPwd()">
-			</p>
-			<p class='msg' id="repwdmsg">비밀번호 확인을 위하여 다시 한 번 입력해주세요</p>
-			<p>
-				이름 : <input type="text" name="name" id="name"> 2~8자리
-			</p>
-			<p>
-				성별 : 여자<input type="radio" class="sex" name="sex" value="W">남자<input
-					type="radio" class="sex" name="sex" value="M">
-			</p>
-			<p>
-				생년월일 : <input type="text" name="brdt" id="brdt"
-					placeholder="ex)19900101">
-			</p>
-			<p>
-				핸드폰번호 : <input type="text" name="telno" id="telno"
-					placeholder="ex)01012345678">
-			<p class='msg' id="telnomsg">-빼고 숫자만 입력해주세요</p>
 
-			<%-- <p> 이메일 : <input type="email" name="email" id = "email"value='${email }' readonly="readonly">  </p> --%>
-			<div class="sendEmail">
-				<p>
-					이메일<input type="email" name="email" id="email"
-						placeholder="이메일을 입력하여 주세요">
-					<button id="sendEmailbtn">인증번호 발송</button>
-				</p>
-			</div>
-			<p class="alertMsg"></p>
+    <div class="main-container-wrap">
+        <div class="main-container">
+            <div class="signup-container">
+                <div class="signup-form">
 
-			<div class="btn">
-				<button class="regbtn" type="submit" disabled="disabled" id="reg">회원가입</button>
-				<button class="regbtn" type="button"
-					onclick="location.href='/dealight/dealight' ">취소</button>
-				<!-- 인증번호 받고 넘어온건지 확인하기 위해 -->
-				<%-- <input type="hidden" id="num"  value='<c:out value="${num}"/>'>
-    <input type="hidden" id="authNum"  value='<c:out value="${authNum}"/>'> --%>
-			</div>
-		</div>
-	</form>
+                    <div class="header">
+                            <h1>회원가입</h1>
+                    </div>
 
+
+                    <div class="login-separator">
+                        <div class="hr-line1"><div class="line"></div></div>
+                    </div>
+
+
+                    <form role="form" action="/dealight/register" method="post"
+                    onsubmit="return validate()">
+                        <div class="css-id css-input"> 
+
+                            <p>아이디</p>
+
+                            <input type="text" name="userId" id="userId" placeholder="6자 이상의 영문 혹은 영문과 숫자 조합">
+                            <button type="button" class="btn overlapCheck">중복확인</button>
+                            
+                            <!-- <span class="txt_case1">
+
+                                "6자 이상의 영문 혹은 영문과 숫자를 조합"
+                            </span>
+
+                            <span class="txt_case2">
+
+                                "아이디 중복확인"
+                            </span> -->
+                            
+                        </div>
+                        
+                        <p class='msg' id="idmsg"></p> 
+
+                        <p class='msg' id="idmsg"></p>
+
+                        <div class="css-input">
+                            <p>비밀번호</p>
+                            <input type="password" name="pwd" id="pwd" placeholder="비밀번호를 입력해주세요">
+                        </div>
+
+                        <p class='msg' id="pwdmsg"></p>
+                        <div class="css-input">
+                            <p>비밀번호 확인</p>
+                            <input type="password" name="repwd" id="repwd" placeholder="비밀번호룰 헌번 더 입력해주세요"
+                                onblur="checkPwd()">
+                        </div>
+
+                        <p class='msg' id="repwdmsg"></p>
+                         
+                        <div class="css-input">
+                            <p>이름</p>
+                            <input type="text" name="name" id="name" placeholder="이름을 입력해 주세요">
+                        </div>
+                
+                        <div class="css-input sendEmail">
+                            <p>이메일</p><input type="email" name="email" id="email"
+                                placeholder="이메일을 입력하여 주세요">
+                            <button type="button" class="btn" name="sendBtn" id="sendEmailbtn">발송</button>
+                        </div>
+						
+						<div class="css-input authEmail">
+						</div>
+						
+						
+						<div class="css-input">
+							<div class="alertMsg">
+							<p class="msg"></p>
+							</div>
+						</div>
+						
+                        <div class="css-input">         
+                        
+	                            <p>성별<p>
+	                            <div class="gender-man">
+	                                <label class="gender" for="man">
+	                                    <input type="radio" class="sex" name="sex" value="M" id="man">
+	                                    <span class="ico"></span>
+	                                    남자
+	                                </label>
+	                            </div>
+	
+	                            <div class="gender-woman">
+	                                <label class="gender woman" for="woman">
+	                                    <input type="radio" class="sex" name="sex" value="W" id="woman">
+	                                    <span class="ico"></span>
+	                                    여자
+	                                </label>
+	                            </div>
+	
+	                            <div class="gender-normal">
+	                                <label id="woman" class="gender" for="normal">
+	                                    <input type="radio" class="sex" name="sex" value="n" id="normal">
+	                                    <span class="ico"></span>
+	                                    선택안함
+	                                </label>
+	                            </div>
+                        </div>
+                        
+		                 <div class="css-input">
+                            <p>생년월일</p>
+                            
+                            <div class="birthday"> 
+                                <input type="text" name="brdt" id="brdt1"
+                                placeholder="YYYY" size="4" maxlength="4">
+                                <span class="bar">/</span>
+                                
+                                <input type="text" name="brdt" id="brdt2"
+                                    placeholder="MM" size="2" maxlength="2">
+
+                                <span class="bar">/</span>    
+                                
+                                <input type="text" name="brdt" id="brdt3"
+                                    placeholder="DD" size="2" maxlength="2">
+                            </div>
+		                 </div>
+		                 
+                        <div class="css-input">
+                            <p>휴대폰</p>
+                            <input type="text" name="telno" id="telno"
+                            placeholder="숫자만 입력해주세요">
+                        </div>
+
+                        <!-- <p class='msg' id="telnomsg">-빼고 숫자만 입력해주세요</p> -->
+
+                        <div class="form-footer">
+                            <button class="regbtn" type="submit" disabled="disabled" id="reg">회원가입</button>    
+                        </div>
+                                        
+                		</form>
+                	</div>
+                    <!-- signup-form end-->
+                </div>
+                    <!-- signup-container end-->
+                <!-- signup-form end-->
+
+                <div class="check-container">
+                    <div class="check">
+                        <div class="check-header">
+                            <h1>이용약관</h1>
+                        </div>
+
+                        <div class="login-separator">
+                            <div class="hr-line1"><div class="line"></div></div>
+                        </div>
+
+                        
+                        <div class="css-agree">
+                                <h4>이용약관동의</h4>
+                                <span class="ico">*</span>
+                        </div>
+
+                        <div class="agree-content">
+                            <div class="check-all">
+                            <label class="label-all-check" for="">
+                                <input type="checkbox" value="n" id="allcheck" name="agree_allcheck" required>
+                                <span class="ico"></span>
+                                전체 동의합니다.
+                            </label>
+                                <p class="sub-check">선택항목에 동의하지 않은 경우도 회원가입 및 일반적인 서비스를 이용할 수 있습니다.</p>
+                            </div>
+
+                            <div class="check-view">
+                            <label>
+                                <input type="checkbox" id="agree" name="agree_box" required>
+                                <span class="ico"></span>
+                                이용약관 동의
+                                <span class="sub">(필수)</span>
+                            </label>
+
+                            <a href="#" class="link btn-link btn-agreement">약관보기</a>
+                            </div>
+                            
+                            <div class="check-view">
+                                <label>
+                                    <input type="checkbox"  name="agree_box" id="private1" required>
+                                    <span class="ico"></span>
+                                    개인정보처리방침 동의
+                                    <span class="sub">(필수)</span>
+                                </label>
+                            </div>
+
+                            <div class="check-view">
+                                <label>
+                                    <input type="checkbox"  name="agree_box" id="hiddenCheck">
+                                     <span class="ico"></span>
+                                    개인정보처리방침 동의
+                                    <span class="sub">(선택)</span>
+                                </label>
+                            </div>
+
+                            <div class="check-view">
+                                <label>
+                                    <input type="checkbox"  name="agree_box" id="marketing">
+                                    <span class="ico"></span>
+                                    이벤트, 할인쿠폰 등 혜택/정보 수신 동의
+                                    <span class="sub">(선택)</span>
+                                </label>
+                            </div>
+
+                            <div class="check-view">
+                                <label>
+                                    <input type="checkbox"  name="agree_box" id="fourteen_check" required>
+                                    <span class="ico"></span>
+                                    본인은 만 14세 이상입니다.
+                                    <span class="sub">(필수)</span>
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>                
+            </div>
+	        <!--main-container-->
+        </div>    
+    <!--main-container-wrap-->
+    
 
 
 	<script type="text/javascript">
@@ -107,12 +624,35 @@
 		let showAuthBtnChecked = false;
 		let showModifyBtnChecked = false;
 		
-   	 $("#sendEmailbtn").on("click", function(e){
+	  //이용약관 전체 동의		
+	  $(".label-all-check").on("click", function(){
+        
+        console.log("click");
+
+        if($(this).hasClass("checked") === true) {
+
+            $(this).removeClass("checked");
+            $("#allcheck").removeAttr("checked");
+            allBoxCheck();
+            return;
+        }
+
+        $(this).addClass("checked");
+        $("#allcheck").attr("checked","checked");
+        allBoxCheck("checked");
+        
+	 });
+	
+   	 $("#sendEmailbtn").on("click", sendEmailHandler);
+   	 
+   	 //이메일 발송 핸들러
+   	function sendEmailHandler(e){
    		e.preventDefault();
+   		
    		//유효성 검사
    		let emailValue = $("#email").val();
    		let checked = validEmail();
-   		
+   		console.log("===================");
    		//이메일 인증번호 발송
    		if(checked){
    			
@@ -126,18 +666,46 @@
    			
    			if(!showAuthBtnChecked){
    				
-	   			let str = "인증번호: <input type='text' placeholder='인증번호를 입력해 주세요' name='authInput'>";
-	   			str +=" <button id='authEmail'>"+"인증"+"</button>";
-	   			$(".sendEmail").append(str);
+	   			let str = "<p>인증번호</p><input type='text' placeholder='인증번호를 입력해 주세요' name='authInput'>";
+	   			str +=" <button class='btn' id='authEmail'>인증</button>";
+	   			$(".authEmail").append(str);
 	   			authEmailListner();
 	   			showAuthBtnChecked = true;
    			}
    			
    			
    		}
-   		
-   		
-   	});
+   	}
+   	 
+   	//모든 박스 체크
+     function allBoxCheck(){
+         const isallBox = document.getElementById("allcheck").checked;
+             
+             //sports 체크박스 요소들 가져오기
+             const agreeBox = document.getElementsByName("agree_box");
+             
+             if(isallBox){
+                 for(let i=0; i< agreeBox.length; i++){
+                     if(!agreeBox[i].checked){
+                         agreeBox[i].checked = true; 
+                     } 
+                 }
+             }else{
+                 for(let i=0; i< agreeBox.length; i++){
+                     if(agreeBox[i].checked)
+                         agreeBox[i].checked = false;
+                 }   
+             }
+
+         // for(let i=0; i<5; i++){
+         //     if($("input[name='agree_box']").eq(i).is(":checked") === true){
+         //         $("input[name='agree_box']").eq(i).removeAttr("checked");
+         //     }else{
+         //         $("input[name='agree_box']").eq(i).attr("checked", "checked");
+         //     }
+             
+         // }
+     }
    	 
    	 
    	 function authEmailListner(){
@@ -173,12 +741,27 @@
 				$("input[name='authInput']").attr("readonly","readonly");
 				authChecked = true;
 				
-				if(!showModifyBtnChecked){	
+	   			$("#sendEmailbtn").off();
+	   			$("#sendEmailbtn").attr("id", "modifyEmailbtn");
+	   			$("#modifyEmailbtn").html("변경");
+	   			$("#modifyEmailbtn").css("color", "#F29F05");
+   				$("#modifyEmailbtn").css("border-color", "#F29F05");
+	   			modifyEmailListener();
+	   			
+/* 				if(!showModifyBtnChecked){	
 					let btnStr ="<button id='modifyEmail'>"+"이메일 변경"+"</button>";
 		   			$(".sendEmail").append(btnStr);
+		   			
+		   			
+    
+		   			$("button[name='sendBtn']").attr("name","modifyBtn");
+		   			$("button[name='modifyBtn']").html("변경");
+		   			$("button[name='modifyBtn']").css("color", "#F29F05");
+		   			$("button[name='modifyBtn']").css("border-color", "#F29F05");
+		   			
 		   			modifyEmailListener();
 		   			showModifyBtnChecked = true;
-				}
+				} */
 				
 			}else{
 				
@@ -193,7 +776,7 @@
    	 
    	 function modifyEmailListener(){
 	   	//이메일 변경 버튼 클릭 시
-	 		$("#modifyEmail").on("click", function(e){
+	 		$("#modifyEmailbtn").on("click", function(e){
 	 			e.preventDefault();
 	 			
 	 			email.removeAttr("readonly"); //읽기 전용 제거
@@ -205,7 +788,14 @@
 	 			msg.css("color", "orange");
 	 			msg.text("다시 인증해 주세요");
 	 			
+	 			$("#modifyEmailbtn").off();
+	 			$("#modifyEmailbtn").attr("id", "sendEmailbtn");
+	 			$("#sendEmailbtn").html("발송");
+	   			$("#sendEmailbtn").css("color", "#d32323");
+   				$("#sendEmailbtn").css("border-color", "#d32323");
+   				$("#sendEmailbtn").on("click", sendEmailHandler);
 	 		});
+   				
    	 }
    	 
    	 //회원가입 버튼 클릭 시 유효성 검사 및 인증번호 체크
@@ -336,7 +926,7 @@
     		
     	if($("#pwd").val() == $("#repwd").val()){
     			document.getElementById("repwdmsg").innerHTML = "비밀번호가 일치합니다.";
-        		document.getElementById("repwdmsg").style.color = 'red'; 
+        		document.getElementById("repwdmsg").style.color = 'green'; 
     		} 
     	
     		if($("#pwd").val() != $("#repwd").val()){
@@ -349,7 +939,14 @@
     
  
     //회원가입 버튼 클릭시 유효성 검사 한 번 더!!
-    function validate() {   	
+    function validate() {
+    	
+    	let brdt1 = $("#brdt1").val();
+    	let brdt2 = $("#brdt2").val();
+    	let brdt3 = $("#brdt3").val();
+    	
+    	let birthday = brdt1 + brdt2 + brdt3;
+    	console.log(birthday);
     	
     	//1. pwd 유효성검사
     	if($("#pwd").val() == ""){
@@ -394,13 +991,13 @@
     	}
     	
     	//4.생년월일 유효성검사
-    	if($("#brdt").val() == ""){
+    	if(birthday == ""){
     		alert('생년월일를 입력하여 주세요');
     		$("#brdt").focus();
     		return false;
     	}
     	
-    	if(!jBirth.test($("#brdt").val())){
+    	if(!jBirth.test(birthday)){
     		alert('생년월일 형식에 맞지 않습니다');
     		$("#brdt").val("");
     		$("#brdt").focus();

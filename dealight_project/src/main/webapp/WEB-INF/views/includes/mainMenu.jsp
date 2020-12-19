@@ -23,6 +23,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
 
+
+.main_nav{
+	height: 65px;
+}
 .top {
 	overflow: hidden;
 	flex: 1;
