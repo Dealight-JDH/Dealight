@@ -10,7 +10,6 @@
 <head>
 <meta charset="UTF-8">
 <title>매장 관리</title>
-
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -46,6 +45,7 @@
         }
         .board_wrapper{
             display: flex;
+            flex-wrap:nowrap;
             width: 80%;
             flex-direction: column;
             justify-content: center;
@@ -177,7 +177,7 @@
         }
         .curStus {
             opacity: 1.0;
-            
+            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);
         }
 
         /* board */
@@ -192,7 +192,7 @@
             box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);
         }
         .board_left_box{
-            width: 45%;
+            width: 40%;
             height:90%;
             /*border: 1px black solid;*/
             display: flex;
@@ -201,7 +201,7 @@
             justify-content: center;
         }
         .board_right_box{
-            width: 45%;
+            width: 55%;
             height: 90%;
             /*border: 1px black solid;*/
             display: flex;
@@ -211,7 +211,7 @@
         }
         .next_wrapper{
             /*border: 1px solid black;*/
-            padding-right: 100px;
+            padding-right: 0px;
             width: 70%;
             height: 80%;
             display: flex;
@@ -232,28 +232,28 @@
             justify-content: center;
             align-items: flex-start;
         }
-        .next_wait:before{
-            content: "입장";
-            position: absolute;
-            left: 100%;
-            top: 10%;
-            width: 60px;
-            text-align: center;
-            border-radius: 0 10px 10px 0;
-            background-color: gray;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 4px 7px;
-            cursor: pointer;
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-        }
-        .next_wait:before:hover{
+        .btn_enter_wait{
+	        position: absolute;
+	            left: 100%;
+	            top: 10%;
+	            width: 60px;
+	            text-align: center;
+	            border-radius: 0 10px 10px 0;
+	            background-color: gray;
+	            color: white;
+	            font-size: 18px;
+	            font-weight: bold;
+	            padding: 4px 7px;
+	            cursor: pointer;
+	            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+	            outline:none;
+            	border:0px;
+          }
+        .btn_enter_wait:hover{
             opacity: 0.7;
-        }
-        .next_wait:after{
-            content: "노쇼";
-            position: absolute;
+        	}
+        .btn_noshow_wait{
+        	position: absolute;
             left: 100%;
             top: 40%;
             width: 60px;
@@ -265,10 +265,11 @@
             font-weight: bold;
             padding: 4px 7px;
             cursor: pointer;
-           
             box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            outline:none;
+            border:0px;
         }
-        .next_wait:after:hover{
+        .btn_noshow_wait:hover{
             opacity: 0.7;
         }
         .next_rsvd{
@@ -511,6 +512,9 @@
             justify-content: flex-start;
             align-items: center;
         }
+        .wait{
+        	cursor:pointer;
+        }
         .wait_name.wait_list{
             align-items: center;
         }
@@ -712,7 +716,7 @@
             /*border: 1px solid black;*/
             margin: 50px 30px;
             border-radius: 20px;
-            padding: 5px 15px;
+            
             box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);
         }
         #store_board_main{
@@ -737,16 +741,93 @@
 	        animation: fadeEffect 0.3s;
         }
 
+                /* The Modal (background) */
+        .modal {
+	        display: none; /* Hidden by default */
+	        position: fixed; /* Stay in place */
+	        z-index: 1; /* Sit on top */
+	        left: 0;
+	        top: 0;
+	        width: 100%; /* Full width */
+	        height: 100%; /* Full height */
+	        overflow: auto; /* Enable scroll if needed */
+	        background-color: rgb(0,0,0); /* Fallback color */
+	        background-color: rgba(0, 0, 0, 0.219); /* Black w/ opacity */
+	        animation: fadeEffect 0.8s;
+        }
+
         /* Modal Content/Box */
         .modal-content {
+            position: relative;
 	        background-color: #fefefe;
 	        margin: 10% auto; /* 15% from the top and centered */
-	        padding: 20px;
-	        border: 1px solid #888;
-	        width: 60%; /* Could be more or less, depending on screen size */
+	        
+	        display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-self: start;
+            border-radius: 15px;
+            box-shadow: 3px 3px 7px rgba(44, 36, 36, 0.342);
+	        width: 40%; /* Could be more or less, depending on screen size */
+            height: 60%;
 	        animation: fadeEffect 0.3s;
+            overflow: scroll;
         }
-        
+        .modal_header{
+            padding: 0 0;
+            width: 100%;
+            padding: 20px;
+            padding-bottom: 25px;
+            /*border: 1px black solid;*/
+            background-color: #d32323b6;
+            border-radius: 15px 15px 0 0;
+        }
+        .modal_wrapper_regwait{
+            margin: 10px;
+            padding: 0 25px 50px 25px;
+            /*display: flex;*/
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            display:none;
+        }
+        .modal_tit{
+            /*border: 1px black solid;*/
+            
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            width: 100%;
+            height: 50px;
+            color: #d32323b6;
+            text-shadow: 1px 1px 6px rgba(44, 36, 36, 0.171);
+        }
+        .modal_top{
+            width: 100%;
+            height: 250px;
+            /*border: 1px black solid;*/
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal_bot{
+            width: 100%;
+            height: 100px;
+            /*border: 1px black solid;*/
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal_bot > div{
+            font-weight: bold;
+            font-size: 18px;
+            margin: 5px 0;
+        }
          .modal-content ul{
          	margin : 0 0;
          	display : inline-block;
@@ -754,21 +835,320 @@
 
         /* The Close Button */
         .close_modal {
-        position : absolute;
-        right : 20px;
-        top : 5px;
-        display : inline-block;
-        margin : 0 0;
-        color: #aaa;
-        font-size: 50px;
-        font-weight: bold;
+            position : absolute;
+            right : 20px;
+            top : 10px;
+            display : inline-block;
+            margin : 0 0;
+            color: white;
+            font-size: 24px;
+        
         }
 
         .close_modal:hover,
         .close_modal:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .form_left_wrapper{
+            width: 50%;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            border-right: 2px rgba(71, 71, 71, 0.26) solid;
+        }
+        .form_right_wrapper{
+            width: 50%;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /*border: 1px black solid;*/
+        }
+        #submit_waitRegForm{
+            padding: 30px;
+            background-color:#d32323b6;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            border: 0;
+            border-radius: 30px;
+            text-shadow: 1px 1px 6px rgba(44, 36, 36, 0.171);
+            box-shadow: 1px 1px 6px rgba(44, 36, 36, 0.171);
+            outline: none;
+            cursor: pointer;
+        }
+        #submit_waitRegForm:hover{
+            opacity: 0.7;
+        }
+        #waitRegForm{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+        #waitRegForm > div{
+            width: 80%;
+            margin-top: 10px 0 10px 0;
+        }
+        #waitRegForm input {
+            width: 100%;
+            height: 30px;
+            border: 1px rgb(122, 122, 122) solid;
+            margin: 10px 0 10px 0;
+            border-radius: 5px;
+            padding-left: 10px;
+        }
+        #waitRegForm input:focus{
+            border:1px black solid;
+        }
+        #name_msg,#phoneNum_msg,#pnum_msg{
+        	width:100%;
+        	height:10px;
+        	font-size:6px;
+        	color:green;
+        	padding-left : 10px;
+        }
+        
+        
+        /* hover */
+        
+        .dealight_tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+        }
+
+        .dealight_tooltip .dealight_tooltiptext {
+        visibility: hidden;
+        width: 300px;
+        background-color: white;
         color: black;
-        text-decoration: none;
-        cursor: pointer;
+        text-align: center;
+        font-weight : bold;
+        border-radius: 6px;
+        padding: 5px 0;
+		box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);
+        /* Position the dealight_tooltip */
+        position: absolute;
+        top : 0px;
+        z-index: 1;
+        }
+
+        .dealight_tooltip:hover .dealight_tooltiptext {
+        visibility: visible;
+        }
+        .time_table_rsvd_dtls{
+        	cursor:pointer;
+        }
+        .time_table_rsvd_dtls:hover{
+        	opacity:0.7;
+        }
+        .btnRsvd{
+        	cursor:pointer;
+        }
+        
+        /* 예약 상세 모달 추가 */
+        .modal_wrapper_rsvdDtls{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal_top.rsvdDtls{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-start;
+            height: 250px;
+            /*border: 1px black solid;*/
+            margin-bottom: 20px;
+            
+        }
+        .htdl_stus{
+            position: absolute;
+            top: 15px;
+            right: 30px;
+            font-size: 36px;
+            color: #d32323b6;
+        }
+        .modal_rsvd_info{
+            padding-top: 10px;
+            padding-left: 20px;
+        }
+        .rsvd_left_wrapper{
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 5px;
+            border-right: 2px rgba(71, 71, 71, 0.26) solid;
+        }
+        .rsvd_right_wrapper{
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 5px;
+            
+            overflow:scroll;
+        }
+        .modal_bot_rsvd{
+            width: 95%;
+            height: 170px;
+            /*border: 1px black solid;*/
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            overflow: scroll;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.219);
+            border-radius: 10px;
+        }
+        .rsvd_history{
+            margin-top: 5px;
+            position: relative;
+            width: 80%;
+            height: 130px;
+            /*border: 1px solid black;*/
+            border: 1px solid rgba(92, 92, 92, 0.205);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 2px 2px 8px rgba(44, 36, 36, 0.171);
+            overflow: scroll;
+            min-height: 100px;
+        }
+        .rsvd_history .htdl_stus{
+            top: 10px;
+            right: 20px;
+            font-size: 18px;
+        }
+                .info_box{
+            width: 95%;
+            height: auto;
+            /*border: 1px solid black;*/
+            margin: 50px 30px;
+            border-radius: 20px;
+            
+            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            overflow: hidden;
+        }
+        .store_info_tit{
+            width: 100%;
+            align-self: start;
+            border-radius: 20px 20px 0 0;
+            padding: 20px 20px 20px 30px;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            margin-top: 0;
+            color: white;
+            letter-spacing: 4px;
+            background-color: #d32323b6;
+            height: 40px;
+        }
+        .store_info_cnts{
+            padding: 30px;
+            line-height: 30px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .uploadResult{
+            width: 100%;
+            border: 1px black solid;
+            padding: 0 10px 0 0;
+        }
+        .uploadResult > ul {
+            
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            border: 1px black solid;
+            overflow: scroll;
+        }
+
+        .uploadResult > ul > img {
+            margin: 20px 10px;
+            min-width: 200px;
+            max-height: 100%;
+
+        }
+
+
+        .store_img_tit{
+            padding: 30px;
+            line-height: 30px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .dealight_tooltip_user {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: flex-start;
+            margin: 40px;
+            width: 200px;
+            height: 100px;
+            padding: 10px 15px;
+            
+            border: 1px rgba(82, 82, 82, 0.185) solid;
+            background-color: #d32323b6;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            border-radius: 20px;
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.246);
+            border-right: 32px rgba(0, 0, 0, 0.493) solid ;
+        }
+        .dealight_tooltip_user .dealight_tooltiptext_user {
+            visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: 180px;
+            height: 150px;
+            background-color:  rgb(128, 128, 128);
+            color: white;
+            text-align: center;
+            font-size: 18px;
+            font-weight : bold;
+            border-radius: 6px;
+            padding: 20px 20px;
+            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.700);
+            /* Position the dealight_tooltip */
+            position: absolute;
+            top : -200px;
+            right: 5px;
+            z-index: 1;
+        }
+        .dealight_tooltip_user:hover{
+        	opacity:0.7;
+        }
+
+        .dealight_tooltip_user:hover .dealight_tooltiptext_user {
+             visibility: visible;    
         }
     </style>
 </head>
@@ -843,14 +1223,7 @@
                             <div class="next_rsvd">
                                 <span class="next_tit">NEXT 예약</span>
                                 <div class="next_info nextRsvd">
-                                    <div class="next_info_top">
-                                        <span class="next_rsvd_name">임종우</span>
-                                        <span class="next_rsvd_telno">010-2723-4124</span>
-                                    </div>
-                                    <div class="next_info_bot">
-                                        <span class="next_rsvd_pnum">4명</span>
-                                        <span class="next_rsvd_tm">13:00 </span>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -874,11 +1247,15 @@
 
 
         <div class="info_box"> <!--  info box -->
-        
-                    <h1>매장 정보🏪</h1>
-            <ul class="store"></ul>
-
-            <h2>매장 사진</h2>
+	        <div class="store_info_tit">
+	            <span>매장 정보</span>
+	           </div>
+            <div class="store_info_cnts">
+			
+			</div>
+            <div class="store_img_tit">
+            	<span>매장 사진</span>
+        	</div>
             <div class='uploadResult'>
                 <ul>
                 </ul>
@@ -889,47 +1266,42 @@
                 </div>
             </div>
             
-            <h2>오늘 예약 회원</h2>
-	<c:if test="${empty todayRsvdUserList}">
-		<h2>오늘 예약하신 손님이 없습니다.🤣</h2>
-	</c:if>
-	
-	<c:if test="${not empty todayRsvdUserList}">
-		<c:forEach items="${todayRsvdUserList}" var="user">
-			
-			<div class="dealight_tooltip">
-				==========================================</br>
-				회원 아이디 : ${user.userId}</br>
-				회원 이름 : ${user.name}</br> 
-				회원 이메일 : ${user.email}</br> 
-				회원 전화번호 : ${user.telno}</br>
-				생년 월일 : ${user.brdt}</br> 
-				성별 : ${user.sex }</br> 
-				회원 프로필 사진 : ${user.photoSrc}</br>
-				패널티 회원 여부 : ${user.pmStus}</br>
-  				<div class="dealight_tooltiptext">
-  					예약 번호 : ${user.rsvdId}</br>
-					매장 번호 : ${user.storeId }</br>
-					핫딜 번호 : ${user.htdlId }</br>
-					예약 인원 : ${user.pnum}</br>
-					예약 상태 : ${user.stusCd }</br>
-					등록 날짜 : ${user.inDate }</br>
-					총 가격 : ${user.totAmt }</br>
-					총 주문 수량 : ${user.totQty }</br>
-  				</div>
-			</div>
-		</c:forEach>
-	</c:if>
+    <div>
+		<c:if test="${empty todayRsvdUserList}">
+			<h2>오늘 예약하신 손님이 없습니다.🤣</h2>
+		</c:if>
+		
+		<c:if test="${not empty todayRsvdUserList}">
+			<c:forEach items="${todayRsvdUserList}" var="user">
+			<div class="dealight_tooltip_user">
+	            <div class="rsvd_user_name">${user.name}</div>
+	            <div class="rsvd_user_id">${user.userId}</div>
+	            <div class="rsvd_user_telno">${user.telno}</div>
+	            <div class="dealight_tooltiptext_user">
+	                <span>예약 번호 : ${user.rsvdId}</span>
+	                <span>핫딜 번호 : 124</span>
+	                <span>예약 인원 : ${user.pnum}</span>
+	                <span>등록 날짜 : ${user.inDate }</span>
+	                <span>총 가격 : ${user.totAmt }</span>
+	                <span>총 주문 수량 : ${user.totQty }</span>
+	            </div>
+	        </div>
+			</c:forEach>
+		</c:if>
+	</div>
         </div> <!-- end info box -->
         	<!-- The Modal -->
 	<div id="myModal" class="modal">
 		<!-- Modal content -->
 		<div class="modal-content">
-			<span class="close_modal">&times;</span>
+			<span class="close_modal"><i class="fas fa-times"></i></span>
+	        <div class="modal_header"></div>
 			<ul class="rsvdDtls"></ul>
 			<ul class="userRsvdList"></ul>
 			<ul class="waiting_registerForm"></ul>
 			<ul class="regHtdl"></ul>
+			<div class="modal_wrapper_regwait content_div"></div>
+			<div class="modal_wrapper_rsvdDtls content_div"></div>
 		</div>
 	</div>
 <script>
@@ -979,6 +1351,8 @@ let writeTimeBar = function (curTime) {
 	close.on("click", (e) => {
 		modal.css("display","none");
 		modal.find("ul").html("");
+		modal.find(".content_div").html("");
+		modal.find(".content_div").css("display","none");
 	});
 	
 	window.onclick = function(e) {
@@ -986,6 +1360,8 @@ let writeTimeBar = function (curTime) {
 		  if (e.target === document.getElementById('myModal')) {
 			  modal.css("display","none");
 			  modal.find("ul").html("");
+			  modal.find(".content_div").html("");
+			  modal.find(".content_div").css("display","none");
 		  }
 	}
 	
@@ -994,6 +1370,8 @@ let writeTimeBar = function (curTime) {
     	if(e.key === "Escape"){
     		modal.css("display","none");
     		modal.find("ul").html("");
+    		modal.find(".content_div").html("");
+    		modal.find(".content_div").css("display","none");
     	}
     });
     
@@ -1414,7 +1792,7 @@ let writeTimeBar = function (curTime) {
         /* HTML 태그 변수 설정*/
         const seatStusForm = $("#seatStusForm"),
 	        colorVal = $("#color_value"),
-	        storeUL = $(".store"),
+	        storeInfoDiv = $(".store_info_cnts"),
 	        rsvdListDiv = $(".rsvdList"),
 	        waitListDiv = $(".waitList"),
 	        nextWaitDiv = $(".nextWait"),
@@ -1423,11 +1801,14 @@ let writeTimeBar = function (curTime) {
 	        storeSeatUL = $(".storeSeatStus"),
 	        rsvdRsltUL = $(".rsvdRslt"),
 	        userRsvdListUL = $(".userRsvdList"),
-	        rsvdDtlsUL = $(".rsvdDtls"),
-	        waitRegFormUL = $(".waiting_registerForm"),
+	        rsvdDtlsDiv = $(".modal_wrapper_rsvdDtls"),
+	        rsvdDtlsInfoDiv = $("#modal_rsvd_dtls"),
+	        userRsvdListDiv = $(".modal_bot_rsvd"),
+	        waitRegFormDiv = $(".modal_wrapper_regwait"),
 	        lastWeekRsvdUL = $(".last_week_rsvd"),
 	        regHtdlFormUL = $(".regHtdl"),
 	        btnAcceptHtdl = $(".btnAcceptHtdl")
+	        
         ;
         
         function init(storeId){
@@ -1452,35 +1833,27 @@ let writeTimeBar = function (curTime) {
         function showStoreInfo (storeId){
         	
         	boardService.getStore({storeId : storeId}, function (store) {
-                let str = "";
+                let strStoreInfo = "";
                 if(store == null){
-                    storeUL.html("");
+                	storeInfoDiv.html("");
                     return;
                 }
                 
-                str += "<li>매장번호 : " + store.storeId + "</li>";
-                str += "<li>매장이름 : " + store.storeNm + "</li>";
-                str += "<li>매장 연락처 : " + store.telno + "</li>";
-                str += "<li>매장 수용인원 : " + store.bstore.acmPnum + "</li>";
-                str += "<li>매장 평균식사시간 : " + store.bstore.avgMealTm + "</li>";
-                str += "<li>매장 브레이크종료시간 : " + store.bstore.breakEntm + "</li>";
-                str += "<li>매장 브레이크시작시간 : " + store.bstore.breakSttm + "</li>";
-                str += "<li>매장 관리자 아이디 : " + store.bstore.buserId + "</li>";
-                str += "<li>매장 영업종료시간 : " + store.bstore.closeTm + "</li>";
-                str += "<li>매장 휴무일 : " + store.bstore.hldy + "</li>";
-                str += "<li>매장 라스트오더시간 : " + store.bstore.lastOrdTm + "</li>";
-                str += "<li>매장 메뉴 : " + store.bstore.menus + "</li>";
-                str += "<li>매장 1인석 : " + store.bstore.n1SeatNo + "</li>";
-                str += "<li>매장 2인석 : " + store.bstore.n2SeatNo + "</li>";
-                str += "<li>매장 4인석 : " + store.bstore.n4SeatNo + "</li>";
-                str += "<li>매장 시작시간 : " + store.bstore.openTm + "</li>";
-                str += "<li>매장 착석상태 : " + store.bstore.seatStusCd + "</li>";
-                str += "<li>매장 소개 : " + store.bstore.storeIntro + "</li>";
+                strStoreInfo += "<div class='store_info_items'>매장 이름 : " + store.storeNm + "</div>";
+                strStoreInfo += "<div class='store_info_items'>매장 연락처 : " + store.telno + "</div>";
+                strStoreInfo += "<div class='store_info_items'>매장 수용 인원 : " + store.bstore.acmPnum + "</div>";
+                strStoreInfo += "<div class='store_info_items'>매장 소개 : " + store.bstore.storeIntro + "</div>";
+                strStoreInfo += "<div class='store_info_items'>매장 평균식사시간 : " + store.bstore.acmPnum + "분</div>";
+                strStoreInfo += "<div class='store_info_items'>매장 라스트오더시간 : " + store.bstore.lastOrdTm + "</div>";
                 
-                storeUL.html(str);
+                storeInfoDiv.html(strStoreInfo);
                 
                 /*착석 상태*/
-                storeSeatUL.html("<li>"+ store.bstore.seatStusCd +"</li>")
+                let colors = document.getElementsByClassName("btn_seat_stus");
+                for(let i = 0; i < colors.length; i++){
+                	if(colors[i].dataset.color[0] === store.bstore.seatStusCd)
+                		colors[i].className += " curStus";
+                }
         	})
         };
         
@@ -1497,21 +1870,50 @@ let writeTimeBar = function (curTime) {
                 strWaitList += "<span class='wait_list_tit'>웨이팅 리스트</span>";
                 strWaitList += "<div class='list_blank'></div>";
                 waitList.forEach(wait => {
-                	strWaitList += "<div class='wait'>";
-                    strWaitList += "<a target='_blank' href='/dealight/business/waiting/"+wait.waitId+"'>";
+                	strWaitList += "<div class='wait' data-waitId='"+wait.waitId+"'>";
                         strWaitList += "<div class='list_info_top'>";
                         strWaitList += "<span class='wait_name wait_list'>"+wait.custNm+"</span>";
                         strWaitList += "<span class='wait_telno wait_list'>"+wait.custTelno+"</span>";
                         strWaitList += "</div>";
                         strWaitList += "<div class='list_info_bot'>";
-                        strWaitList += "<span class='list_wait_pnum'>"+wait.waitPnum+"</span>";
-                        strWaitList += "<span class='list_wait_regtm'>"+wait.waitRegTm.toString()+"</span>";
+                        strWaitList += "<span class='list_wait_pnum'>"+wait.waitPnum+"명</span>";
+                        let parStr = wait.waitRegTm.split(" ")[1].split(":");
+      	              	let time = parStr[0] + ":" + parStr[1];
+                        strWaitList += "<span class='list_wait_regtm'>"+time+"</span>";
                         strWaitList += "</div>";
                     	strWaitList += "<button class='btn_wait_call'><a href='/oauth?storeId="+wait.storeId+"&waitId="+wait.waitId+"'>호출</a></button>";
-                    	strWaitList += "</a></div>";
+                    	strWaitList += "</div>";
                 });
     
               waitListDiv.html(strWaitList);   
+             
+              $(".wait").on("click",(e)=>{
+            	  
+            	  console.log(e.target);
+            	  
+            	  let waitId = e.target.dataset.waitid
+            	  
+            	  if(e.target.className === "btn_wait_call" || e.target.parentNode.className === "btn_wait_call")
+            		  return;
+            	  
+            	  console.log("wait1 : "+waitId);
+            	  
+            	  if(e.target.dataset.waitId) waitId = e.target.dataset.waitid;
+            	  
+            	  console.log("wait2 : "+waitId);
+            	  
+                  if(e.target.parentNode.dataset.waitid) waitId = e.target.parentNode.dataset.waitid;
+                  
+                  console.log("wait3 : "+waitId);
+                  
+                  if(e.target.parentNode.parentNode.dataset.waitid) waitId = e.target.parentNode.parentNode.dataset.waitid;
+                  
+                  console.log("wait4 : "+waitId);
+            	  
+                  window.open("/dealight/business/waiting/"+waitId);
+            	  
+              });
+              
               
               let nextWait = boardService.getNextWait(waitList);
               
@@ -1523,8 +1925,10 @@ let writeTimeBar = function (curTime) {
 	              strNextWait += "<span class='wait_telno'>"+nextWait.custTelno+"</span>";
 	              strNextWait += "</div>";
 	              strNextWait += "<div class='next_info_bot'>";
-	              strNextWait += "<span class='next_wait_pnum'>"+nextWait.waitPnum+"</span>";
-	              strNextWait += "<span class='next_wait_regtm'>"+nextWait.waitRegTm+"</span>";
+	              strNextWait += "<span class='next_wait_pnum'>"+nextWait.waitPnum+"명</span>";
+	              let parStr = nextWait.waitRegTm.split(" ")[1].split(":");
+	              let time = parStr[0] + ":" + parStr[1];
+	              strNextWait += "<span class='next_wait_regtm'>"+time+"</span>";
 	              strNextWait += "<button class='btn_enter_wait'>입장</button>";
 	              strNextWait += "<button class='btn_noshow_wait'>노쇼</button>";
 	              strNextWait += "</div>";
@@ -1554,17 +1958,22 @@ let writeTimeBar = function (curTime) {
                 rsvdList.forEach(rsvd => {
                 	if(rsvd.htdlId == null) strRsvdList += "<div class='rsvd rsvd_i btnRsvd'>" ;
                 	else strRsvdList += "<div class='rsvd rsvd_i cur_htdl btnRsvd'>" ;
+                		strRsvdList += "<li hidden class='btnStoreId'>"+rsvd.storeId+"</li>";
+                		strRsvdList += "<li hidden class='btnUserId'>"+rsvd.userId+"</li>";
                 		strRsvdList += "<div class='list_info_top'>";
                 		strRsvdList += "<span class='rsvd_name rsvd_list'>"+rsvd.userId+"</span>";
                 		strRsvdList += "<span class='rsvd_telno rsvd_list'>"+rsvd.totQty+"</span>";
                 		strRsvdList += "</div>";
                 		strRsvdList += "<div class='list_info_bot rsvd_list'>";
-                		strRsvdList += "<span class='list_rsvd_pnum'>"+rsvd.pnum+"</span>";
-                		strRsvdList += "<span class='list_rsvd_regtm'>"+rsvd.time+"</span>";
+                		strRsvdList += "<span class='list_rsvd_pnum'>"+rsvd.pnum+"명</span>";
+                		let parStr = rsvd.time.split(" ")[1].split(":");
+      	              	let time = parStr[0] + ":" + parStr[1];
+                		strRsvdList += "<span class='list_rsvd_regtm'>"+time+"</span>";
                 		strRsvdList += "</div></div>";
                 });
     
               rsvdListDiv.html(strRsvdList);
+              $(".btnRsvd").on("click", showUserRsvdListHandler);
               
             }); 
         }
@@ -1585,9 +1994,9 @@ let writeTimeBar = function (curTime) {
             		strRsvdMap += "<li class='dealight_tooltip'>"+key + " : 예약번호[" + value+"] <span class='dealight_tooltiptext'>"+value+"번호 상세보기</span></li></br>";
             		for(let i = 1; i < 28; i ++){
             			// debug
-            			console.log(key+' : '+i+ ' : '+document.querySelector("'#slide-"+i+"'").textContent);
-            			console.log(key === document.querySelector("'#slide-"+i+"'").textContent);
-            			if(key === document.querySelector("'#slide-"+i+"'").textContent){
+            			console.log(key+' : '+i+ ' : '+document.querySelector("#slide-"+i).textContent);
+            			console.log(key === document.querySelector("#slide-"+i).textContent);
+            			if(key === document.querySelector("#slide-"+i).textContent){
             				let strHtml = "";
             				let strVal = value.toString();
             				
@@ -1603,7 +2012,7 @@ let writeTimeBar = function (curTime) {
             				}
             				strHtml += " 번호 예약</span>";
             				document.querySelector('#slide-'+i+' .time_table').innerHTML = strHtml;
-            				document.querySelector('#slide-'+i+' .time_table').style.border = '2px solid black';
+            				document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(37, 201, 89, 0.911)';
             			}
             		}
             	})
@@ -1618,11 +2027,11 @@ let writeTimeBar = function (curTime) {
                 				else if(value === 'Y')
                 					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(248, 236, 73, 0.781)';
                 				else if(value === 'G')
-                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(37, 201, 89, 0.911)';
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(125, 255, 164, 0.698)';
                 				else if(value === 'B')
                 					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = '#29242460';
                 				else
-                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(125, 255, 164, 0.698)';
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(37, 201, 89, 0.911)';
                 			}
                 		}
                 	});
@@ -1653,19 +2062,21 @@ let writeTimeBar = function (curTime) {
             
             boardService.getNextRsvd({storeId:storeId},function(rsvd){
             	
+            	console.log("get next rsvd .......................");
+            	
         		let strNextRsvd = "";
         		if(!rsvd)
         			return;
-        		strNextRsvd += "<span class='next_tit'>NEXT 예약</span>";
-        		strNextRsvd += "<div class='next_info'>";
         		strNextRsvd += "<div class='next_info_top'>";
         		strNextRsvd += "<span class='next_rsvd_name'>"+rsvd.userId+"</span>";
         		strNextRsvd += "<span class='next_rsvd_telno'>"+rsvd.totQty+"</span>";
-        		strNextRsvd += "<span class='store_htdl'>"+rsvd.htdlId+"</span>";
+        		strNextRsvd += "<span class='store_htdl' style='display:none;'>"+rsvd.htdlId+"</span>";
         		strNextRsvd += "</div>";
         		strNextRsvd += "<div class='next_info_bot'>";
-        		strNextRsvd += "<span class='next_rsvd_pnum'>"+rsvd.pnum+"</span>";
-        		strNextRsvd += "<span class='next_rsvd_tm'>"+rsvd.time+"</span>";
+        		strNextRsvd += "<span class='next_rsvd_pnum'>"+rsvd.pnum+"명</span>";
+        		let parStr = rsvd.time.split(" ")[1].split(":");
+	            let time = parStr[0] + ":" + parStr[1];
+        		strNextRsvd += "<span class='next_rsvd_tm'>"+time+"</span>";
         		strNextRsvd += "</div>";
                 
                 nextRsvdDiv.html(strNextRsvd);
@@ -1884,7 +2295,7 @@ let writeTimeBar = function (curTime) {
         	유저의 예약 히스토리를 보여준다.
         
         */
-        function showUserRsvdList(storeId,userId){
+        function showUserRsvdList(storeId,userId,callback){
         	
         	boardService.getUserRsvdList({storeId:storeId,userId:userId}, function(userRsvdList){
         		
@@ -1892,24 +2303,32 @@ let writeTimeBar = function (curTime) {
         		if(!userRsvdList)
         			return;
         		
-        		strUserRsvdList += "<h1>예약 히스토리</h1>";
+        		strUserRsvdList += "<div class='modal_tit'>";
+        		strUserRsvdList += "<span>kjuioq님의 예약 상세</span>";
+        		strUserRsvdList += "</div>";
+        		strUserRsvdList += "<div class='modal_top rsvdDtls' id='modal_rsvd_dtls'>";
+        		strUserRsvdList += "</div>";
+        		strUserRsvdList += "<div class='modal_bot_rsvd'>";
         		userRsvdList.forEach(rsvd => {
-        			strUserRsvdList += "========================================";
-        			strUserRsvdList += "<li>예약 번호 : "+rsvd.rsvdId+"</li>"; 
-                    strUserRsvdList += "<li>매장번호 : "+ rsvd.storeId + "</li>";
-                    strUserRsvdList += "<li>회원 아이디 : "+ rsvd.userId + "</li>";
-                    strUserRsvdList += "<li>핫딜 번호 :"+ rsvd.htdlId + "</li>";
-                    strUserRsvdList += "<li>승인 번호 : "+ rsvd.aprvNo + "</li>";
-                    strUserRsvdList += "<li>예약 인원 : "+ rsvd.pnum + "</li>";
-                    strUserRsvdList += "<li>예약 시간 : "+ rsvd.time + "</li>";
-                    strUserRsvdList += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
-                    strUserRsvdList += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
-                    strUserRsvdList += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-                    strUserRsvdList += "<li>예약 등록 날짜 : "+ rsvd.regdate + "</li>";
+        			strUserRsvdList += "<div class='rsvd_history'>";
+        			strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+        			
+            		strUserRsvdList += "<span>예약 번호 : "+rsvd.rsvdId+"</span><br>";
+            		strUserRsvdList += "<span>회원 아이디 : "+ rsvd.userId + "</span><br>";
+            		strUserRsvdList += "<span>예약 인원 : "+ rsvd.pnum + "</span><br>";
+            		strUserRsvdList += "<span>예약 시간 : "+ rsvd.time + "</span><br>";
+            		strUserRsvdList += "<span>예약 상태 : "+ rsvd.stusCd + "</span><br>";
+            		strUserRsvdList += "<span>예약 총 금액 : "+ rsvd.totAmt + "</span><br>";
+            		strUserRsvdList += "<span>예약 총 수량 : "+ rsvd.totQty + "</span><br>";
+            		strUserRsvdList += "<span>예약 등록 날짜 : "+ rsvd.regdate + "</span>";
+
         		});
-        		
-        		userRsvdListUL.html(strUserRsvdList);
-        		
+        		strUserRsvdList += "</div>";
+
+        		rsvdDtlsDiv.css("display","flex")
+        		rsvdDtlsDiv.html(strUserRsvdList);
+        		console.log("=======================")
+        		console.log("user history complete")
         		showRsvdDtls(userRsvdList[0].rsvdId);
         		
         	})
@@ -1927,30 +2346,28 @@ let writeTimeBar = function (curTime) {
 				if(!rsvd)
 					return;
 				
-				strRsvdDtls += "<h1>해당 유저 예약 상세</h1>"
-        		strRsvdDtls += "<li>예약 번호 :" + rsvd.rsvdId +"</li>";
-        		strRsvdDtls += "<li>매장 번호 :" + rsvd.storeId +"</li>";
-        		strRsvdDtls += "<li>회원 아이디 : " + rsvd.userId +"</li>";
-        		strRsvdDtls += "<li>핫딜 번호 : " + rsvd.htdlId +"</li>";
-        		strRsvdDtls += "<li>승인 번호 : " + rsvd.aprvNo +"</li>";
-        		strRsvdDtls += "<li>예약 인원 : " + rsvd.pnum +"</li>";
-        		strRsvdDtls += "<li>예약 시간 : " + rsvd.time +"</li>";
-        		strRsvdDtls += "<li>예약 상태 : " + rsvd.stusCd +"</li>";
-        		strRsvdDtls += "<li>예약 총 가격 : " + rsvd.totAmt +"</li>";
-        		strRsvdDtls += "<li>예약 총 수량 : " + rsvd.totQty +"</li>";
-        		strRsvdDtls += "<li>예약 등록 날짜 : " + rsvd.regdate +"</li>";
-        		let cnt = 1;
-        		rsvd.rsvdDtlsList.forEach(dtls => {
-        			strRsvdDtls += "==============================";
-        			strRsvdDtls += "<li>상세 순서 [" + cnt +"]</li>";
-        			strRsvdDtls += "<li>예약 상세 번호 : " + dtls.rsvdSeq +"</li>";
-        			strRsvdDtls += "<li>예약 메뉴 이름 : " + dtls.menuNm +"</li>";
-        			strRsvdDtls += "<li>메뉴 가격 : " + dtls.menuPrc +"</li>";
-        			strRsvdDtls += "<li>메뉴 총 개수 : " + dtls.menuTotQty +"</li>";
-        			cnt += 1;
-        		})
+				strRsvdDtls += "<div class='rsvd_left_wrapper'>";
+				strRsvdDtls += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+				strRsvdDtls += "<div class='modal_rsvd_info'>예약 번호 : " + rsvd.rsvdId +"</div>";
+				strRsvdDtls += "<div class='modal_rsvd_info'>예약 시간 : " + rsvd.time +"</div>";
+				strRsvdDtls += "<div class='modal_rsvd_info'>예약 총 가격 : " + rsvd.totQty +"원</div>";
+				strRsvdDtls += "<div class='modal_rsvd_info'>예약 총 수량 : " + rsvd.totQty +"개</div>";
+				strRsvdDtls += "<div class='modal_rsvd_info'>예약 시간 : " + rsvd.regdate +"</div>";
+				strRsvdDtls += "</div>";
+				strRsvdDtls += "<div class='rsvd_right_wrapper'>";
+				rsvd.rsvdDtlsList.forEach(dtls => {
+					strRsvdDtls += "<div class='modal_rsvd_info'>";
+					strRsvdDtls += "<span>메뉴 이름 : " + dtls.menuNm +"</span><br>";
+					strRsvdDtls += "<span>메뉴 가격 : " + dtls.menuPrc +"원</span><br>";
+					strRsvdDtls += "<span>메뉴 수량 : " + dtls.menuTotQty +"</span>";
+					strRsvdDtls += "</div>";
+				});
+				strRsvdDtls += "</div>";
         		
-        		rsvdDtlsUL.html(strRsvdDtls);
+				$("#modal_rsvd_dtls").html(strRsvdDtls);
+        		console.log("=======================")
+        		console.log(strRsvdDtls);
+        		console.log("rsvd dtls complete")
         		
         	})
         };
@@ -1962,21 +2379,47 @@ let writeTimeBar = function (curTime) {
         
         function showWaitRegisterForm(storeId){
         	
-        	let today = new Date();
+        	let date = new Date();
         	let strWaitRegForm = "";
-        	strWaitRegForm += "<h1>오프라인 웨이팅 등록</h1>";
-        	strWaitRegForm += "<form id='waitRegForm' action='/dealight/business/manage/waiting/register' method='post'>";
-        	strWaitRegForm += "고객 이름<input name='custNm' id='js_wait_custNm'> <span id='name_msg'></span></br>";
-        	strWaitRegForm += "고객 전화번호<input name='custTelno' id='js_wait_custTelno'> <span id='phoneNum_msg'></span></br>";
-        	strWaitRegForm += "웨이팅 인원<input name='waitPnum' id='js_wait_pnum'> <span id='pnum_msg'></span></br>";
-        	strWaitRegForm += "<input name='waitRegTm' value='"+today.toString()+"' hidden>";
-        	strWaitRegForm += "<input name='storeId' value='"+storeId+"' hidden>";
-        	strWaitRegForm += "<button id='submit_waitRegForm' type='submit'>제출하기</button>";
-        	strWaitRegForm += "</form>";
-        	strWaitRegForm += "<h2>현재 시간</h2>";
-        	strWaitRegForm += "<h2>"+today+"</h2>";
         	
-        	waitRegFormUL.html(strWaitRegForm);
+        	parDate = date.toLocaleDateString().split(".");
+        	let regTime = parDate[0] + "/" + parDate[1].trim() + "/" + parDate[2].trim() +" "+
+        	date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        	
+        	strWaitRegForm += "<div class='modal_tit'>";
+        	strWaitRegForm += "<span>웨이팅 현장 등록</span>";
+        	strWaitRegForm += "</div>";
+        	strWaitRegForm += "<div class='modal_top'>";
+        	strWaitRegForm += "<div class='form_left_wrapper'>";
+        	strWaitRegForm += "<form action='/dealight/business/manage/waiting/register' id='waitRegForm' method='post'>";
+        	strWaitRegForm += "<div>";
+        	strWaitRegForm += "<input type='text' class='' id='js_wait_custNm' name='custNm' placeholder='고객 이름'>";
+        	strWaitRegForm += "<span id='name_msg'></span>";
+        	strWaitRegForm += "</div>";
+        	strWaitRegForm += "<div>";
+        	strWaitRegForm += "<input type='text' class='' id='js_wait_custTelno' placeholder='고객 전화번호' name='custTelno' id='js_wait_custTelno'>";
+        	strWaitRegForm += "<span id='phoneNum_msg'></span>";
+        	strWaitRegForm += "</div>";
+        	strWaitRegForm += "<div>";
+        	strWaitRegForm += "<input type='text' class=''id='js_wait_pnum' placeholder='웨이팅 인원' name='waitPnum' id='js_wait_pnum'>";
+        	strWaitRegForm += "<span id='pnum_msg'></span>";
+        	strWaitRegForm += "</div>";
+        	strWaitRegForm += "<input type='text' name='waitRegTm' value='"+regTime+"' hidden>";
+        	strWaitRegForm += "<input type='text' name='storeId' value='"+storeId+"' hidden>";
+        	strWaitRegForm += "</form>";
+        	strWaitRegForm += "</div>";
+        	strWaitRegForm += "<div class='form_right_wrapper'>";
+        	strWaitRegForm += "<button id='submit_waitRegForm' type='submit'>현장 등록</button>";
+        	strWaitRegForm += "</div>";
+        	strWaitRegForm += "</div>";
+        	strWaitRegForm += "<div class='modal_bot'>";
+        	strWaitRegForm += "<div>등록 시간</div>";
+        	strWaitRegForm += "<div>"+regTime+"</div>";
+        	strWaitRegForm += "</div>";
+        	strWaitRegForm += "";
+        	
+        	waitRegFormDiv.css("display","flex")
+        	waitRegFormDiv.html(strWaitRegForm);
         	
         	/* wait register valid check*/
         	const wait_custNm = document.querySelector("#js_wait_custNm"),
@@ -2014,10 +2457,11 @@ let writeTimeBar = function (curTime) {
         	wait_custNm.addEventListener("focusout", () => {
         		if(1 <= wait_custNm.value.length){
         		    if(nameLenCheck()){
-        		        name_msg.innerText = "🙆‍♂️ 이름 형식이 적당하네요.";
+        		        name_msg.innerText = "이름 형식이 적당하네요.";
         		    }
         		    else {
-        		    	name_msg.innerText = "🙅‍♂️ 이름 길이를 다시 확인해 주세요. (5자 이내)";
+        		    	name_msg.innerText = "이름 길이를 다시 확인해 주세요. (5자 이내)";
+        		    	name_msg.style.color = "red";
         		    }
         		}
         	})
@@ -2025,10 +2469,11 @@ let writeTimeBar = function (curTime) {
         	wait_phoneNum.addEventListener("focusout", () => {
         		if(1 <= wait_phoneNum.value.length){
         		    if(phoneNumLenCheck()){
-        		        phoneNum_msg.innerText = "🙆‍♂️ 전화번호 형식이 적당하네요!";
+        		        phoneNum_msg.innerText = "전화번호 형식이 적당하네요!";
         		    }
         		    else {
-        		    	phoneNum_msg.innerText = "🙅‍♂️ 전화번호 길이를 다시 확인해 주세요. (13자 이내)";
+        		    	phoneNum_msg.innerText = " 전화번호 길이를 다시 확인해 주세요. (13자 이내)";
+        		    	phoneNum_msg.style.color = "red";
         		    }
         		}
         	})
@@ -2036,10 +2481,11 @@ let writeTimeBar = function (curTime) {
         	wait_pnum.addEventListener("focusout", () => {
         		if(1 <= wait_pnum.value.length){
         		    if(pnumSizeCheck()){
-        		        pnum_msg.innerText = "🙆‍♂️ 인원이 적당합니다.";
+        		        pnum_msg.innerText = "인원이 적당합니다.";
         		    }
         		    else {
-        		    	pnum_msg.innerText = "🙅‍♂️ 인원이 너무 많거나 형식이 적당하지 않아요! (10명 이내)";
+        		    	pnum_msg.innerText = "인원이 너무 많거나 형식이 적당하지 않아요! (10명 이내)";
+        		    	pnum_msg.style.color = "red";
         		    }
         		}
         	})
@@ -2307,7 +2753,7 @@ let writeTimeBar = function (curTime) {
 				//$(".switch").text('매장관리');
 				showBoard(storeId);
 				$("#rsvd_rslt_baord").css("display", "none");
-				$("#board").css("display", "block");
+				$("#board").css("display", "flex");
 				$(".switch_board").css("color", "#fff").css("background","#343436");
 				$(".switch_rsvd_rslt").css("color", "#000").css("background","#fff");
 			}
@@ -2348,16 +2794,25 @@ let writeTimeBar = function (curTime) {
 
         
         let showUserRsvdListHandler = function(e) {
+        	
         	let rstoreId = $(e.target).parent().find(".btnStoreId").text(),
     		ruserId = $(e.target).parent().find(".btnUserId").text();
-    	
+        	console.log("======================");
+        	console.log(rstoreId);
+        	console.log(ruserId);
+        	
+    		if(!rstoreId){
+    			rstoreId = $(e.target).parent().parent().find(".btnStoreId").text();
+        		ruserId = $(e.target).parent().parent().find(".btnUserId").text();
+    		}
+        	
     		modal.css("display","block");
 
     		showUserRsvdList(rstoreId, ruserId);
         }
         /*예약리스트에 있는 내용 중, 예약 상세 보여주기*/
         /*회원의 예약 리스트 보여주기*/
-        $(".rsvdList").on("click", showUserRsvdListHandler);
+        $(".btnRsvd").on("click", showUserRsvdListHandler);
         	
         /* 웨이팅 등록 */
         $(".btn_wait_register").on("click", e => {
@@ -2375,9 +2830,14 @@ let writeTimeBar = function (curTime) {
 
             let param = {};
             param.storeId = storeId;
-            param.seatStusCd = e.target.dataset.color.toString()[0];
-            e.target.className += " curStus";
             
+            if(e.target.dataset.color) param.seatStusCd = e.target.dataset.color[0];
+            if(e.target.parentNode.dataset.color) param.seatStusCd = e.target.parentNode.dataset.color[0];
+            if(e.target.parentNode.parentNode.dataset.color) param.seatStusCd = e.target.parentNode.parentNode.dataset.color[0];
+            
+            //param.seatStusCd = e.target.dataset.color[0];
+            $(".btn_seat_stus").removeClass("curStus");
+            e.target.className += " curStus";
             
         	boardService.putChangeStatusCd(param, function(result){
             	showStoreInfo(param.storeId);
