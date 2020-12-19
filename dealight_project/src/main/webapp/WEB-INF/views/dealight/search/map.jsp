@@ -9,122 +9,172 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%@include file="../../includes/mainMenu.jsp" %> 
-<style>
-.row {
-  display: -webkit-flex;
-  display: flex;
-}
-.column {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-}
-
-/*       거리바      */
-.level {
-    width: 200px;
-    margin: 10px auto;
-}
-.level input {
-    width: 100%;
-}
-datalist {
-    width: 121%;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-}
-
-datalist option {
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1;
-    -webkit-flex-basis: 0;
-        -ms-flex-preferred-size: 0;
-            flex-basis: 0;
-}
-a:link { color: black; text-decoration: none;}
-a:visited { color: black; text-decoration: none;}
-a:hover { color: black; text-decoration: none;}
-</style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/resources/css/map.css" type ="text/css" />
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<script src="/resources/js/Rater.js"></script>
 </head>
 <body>
-<div class="row">
-  <div class="column" style="background-color:#bbb;">
-  	<form action="#" id="searchForm">
-  		<label>인원</label><input type="text" value="${search.PNum }">
-  		<label>시간</label><input type="text" value="${search.time }">
-  		<label>지역</label><input type="text" value="${search.region }">
-  		<label>검색어</label><input type="text" value="${search.hashTag }">
-  		<label>검색어</label><input type="text" value="${search.storeNm }">
-  	</form>
-	<form id="searchFilter" action="#" >
-		<label>정렬순서
-		<select name="sortType">
-			<option value="D">거리순</option>
-			<option value="H">좋아요순</option>
-			<option value="R">평점순</option>
-			<option value="T">리뷰순</option>
-		</select></label>
-		<label>우선순위
-		<select name="sortPriority">
-			<option value="">--</option>
-			<option value="H">핫딜매장우선보기</option>
-			<option value="S">식사가능매장우선보기</option>
-			<option value="W">웨이팅있는매장보기</option>
-			<option value="R">예약가능매장보기(아직 미구현)</option>
-		</select></label><br>
-		<label><input name="openStore" type="checkbox" name="openStore" checked="checked"> 영업중인매장만보기</label>
-		<div class="level">
-		<input type="range" min="0" max="4" list="num" name="distance" />
-            <datalist id="num">
-                <option value="0.3" label="0.3km"/>
-                <option value="0.5" label="0.5km"/>
-                <option value="1" label="1km"/>
-                <option value="3" label="3km"/>
-                <option value="5" label="5km"/>
-            </datalist>
-		</div>
-		<!-- 데이터중복 없에는 방향을 생각해보자....... -->
-		<button onclick="search()" type="button">필터 적용하기</button>
-	</form>
-	<div id="storeList" style="width:750px;height:540px;overflow: scroll;">
-	</div>
-	<!-- 페이징처리 -->
-	<div id="pagination">
-	
-	</div>
-	
-	</div>
-	<div class="column" style="background-color:#aaa;position:sticky;top: 0;">
-	<div id="map" style="width:750px;height:700px;" ></div>
-	 <button onclick="moveToUser()">내위치보기</button> 
-	 <button onclick="searchMap()">현재위치애서 검색하기</button>
-	 <c:out value='${userId}'/>
-	MAP API
-	
-	
-	 
-	</div>
- </div> 
- 
-<!-- 파라미터 목록~ -->
-<form action="/search/" method="get" id="actionForm">
-	<input type="text" name="pageNum" value="1">
-	<input type="text" name="amount" value="20">
-	<input type="text" name="lat" value="37.570414">
-	<input type="text" name="lng" value="126.985320">
-	<input type="text" name="distance" value="1">
-	<input type="text" name="sortType" value="D">
-	<input type="text" name="sortPriority" value="">
-	<input type="text" name="openStore" value="true">
-</form>
+    <div class="map-main-container">
+
+        <div class="child-left left-container flex-column">
+            <div class="child-full search-container flex-column">
+                <div class="search-header-container flex">
+                    <div class="search-header">
+                        내 주변 음식점
+                    </div>
+                    <div class="selectbox flex">
+                        <div class="label center">정렬 : </div>
+                        <div class="custom_select center">
+                            <select name="sortType" id="sortType">
+                                <option value="D">거리순</option>
+                                <option value="H">좋아요순</option>
+                                <option value="R">평점순</option>
+                                <option value="T">리뷰순</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter-container">
+                    <div class="searchtype-container">
+                        <div class="searchtype flex m-r16">
+                            <div class="p-l16">
+                                줄서기
+                            </div>
+                            <div class="searchtype-img">
+                                <i class='fas fa-user-plus fa-4x' style='color:#f43939;'></i>
+                            </div>
+                        </div>
+                        <div class="searchtype flex">
+                            <div class="p-l16">
+                                예약하기
+                            </div>
+                            <div class="searchtype-img">
+                                <i class='fas fa-utensils fa-4x' style='color:#f43939; padding-left: 20px;'></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-b16">
+
+                        <div class="filter flex">
+                            <div class="filter-item filter-select"  id="filter">
+                                <i class="fas fa-sliders-h"></i> Filter
+                            </div>
+                            <div class="filter-item filter-select" name="openStore" data-select="true">
+                                <i class="fas fa-store-alt"></i> 영업중인매장
+                            </div>
+                        </div>
+
+                        <form id="searchFilter" action="#" class="filter-items flex-column"style="display:none;">
+                            <div class="column flex">
+                                <div class="selectbox flex">
+                                    <div class="label center">우선순위 : </div>
+                                    <div class="custom_select center">
+                                        <select name="sortPriority">
+                                            <option value="">--</option>
+                                            <option value="H">핫딜매장우선보기</option>
+                                            <option value="S">식사가능매장우선보기</option>
+                                            <option value="W">웨이팅있는매장보기</option>
+                                            <option value="R">예약가능매장보기(아직 미구현)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="level">
+                                    <input type="range" min="0" max="4" list="num" name="distance" />
+                                    <datalist id="num">
+                                        <option value="0.3" label="0.3km"/>
+                                        <option value="0.5" label="0.5km"/>
+                                        <option value="1" label="1km"/>
+                                        <option value="3" label="3km"/>
+                                        <option value="5" label="5km"/>
+                                    </datalist>
+                                </div>
+                            </div>
+                            <div class="column flex start">
+                                <div class="filter-item">
+                                    분위기 있는 곳
+                                </div>
+                                <div class="filter-item">
+                                    밥먹는곳
+                                </div>
+                                <div class="filter-item filter-select">
+                                    모임하기 좋은곳
+                                </div>
+                            </div>
+                            <div class="cloumn flex end">
+                                <button class="btn confirm" type="button" onclick="search()">
+                                    적용하기
+                                </button>
+                                <button class="btn cancle" type="button" onclick="closeFilter()">
+                                    닫기
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <form>
+                    <div class="search-bar flex">
+                        <div class="reserve-input flex">
+                            <div class="selectbox flex">
+                                <div class="custom_select center">
+                                    <select>
+                                        <option>13시30분</option>
+                                        <option>14:00</option>
+                                        <option>14:30</option>
+                                        <option>리뷰순</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="selectbox flex">
+                                <div class="custom_select center">
+                                    <select>
+                                        <option>2명</option>
+                                        <option>3명</option>
+                                        <option>평점순</option>
+                                        <option>리뷰순</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn-big">
+                            검색하기
+                        </button>
+                    </div>
+                    </form>
+            </div>
+            <div class="child-full" id="storeList">
+                
+            </div>
+            <div id="pagination">
+			</div>
+        </div>
+        <div class="child-right">
+            <div class="map-container">
+                <diV>
+                    <div>
+                        <div class="map" id="map">
+                            지도화면
+                        </div>
+						<button onclick="moveToUser()">내위치보기</button> 
+	 					<button onclick="searchMap()">현재위치애서 검색하기</button>
+                    </div>
+                </diV>
+            </div>
+        </div>
+    </div>
+    <form action="/search/" method="get" id="actionForm">
+        <input type="text" name="pageNum" value="1">
+        <input type="text" name="amount" value="20">
+        <input type="text" name="lat" value="37.570414">
+        <input type="text" name="lng" value="126.985320">
+        <input type="text" name="distance" value="1">
+        <input type="text" name="sortType" value="D">
+        <input type="text" name="sortPriority" value="">
+        <input type="text" name="openStore" value="true">
+    </form>
+</body>
 
 <!-- 리스트 불러오기 -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0e7b9cd1679ce3dedf526e66a6c1a860"></script>
@@ -177,11 +227,36 @@ a:hover { color: black; text-decoration: none;}
 	window.onload = function(){
 		//지도생성
 		initMap();
-		
+		console.log("init")
 		//메인에서 넘어오는 정보들 날짜, 인원, 검색어, 해시태그
 		//검색정보를 받아온다. ( 인원, 시간, 지역, 해시태그)
 		//매장메인을 보여준다.
 		showMain();
+		
+		 //filter 토글버튼 이벤트
+	    $("#filter").on("click", function(e){
+	        console.log("click");
+	        $(".filter-items").toggle('slow');
+	    });
+
+	    //아이템 클릭 이벤트
+	    $(".filter-items .filter-item").on("click",function(e){
+	        if($(this).attr("id")){
+	            return;
+	        }
+	        if($(this).data("select")===true){
+	            $(this).removeClass("filter-select");
+	            $(this).data("select", false)
+	        }else{
+	            $(this).addClass("filter-select");
+	            $(this).data("select", true)
+	        }
+
+	    });
+	    $("#sortType").on("change", function(e){
+			actionForm.elements["sortType"].value = $(this).val()
+			showMain();
+	    })
 	}
 	
 	function initMap(){
@@ -209,13 +284,13 @@ a:hover { color: black; text-decoration: none;}
 			
 			//searchFilter의 내용을 actionForm에 적용시킨다.
 			//정렬조건 적용
-			actionForm.elements["sortType"].value = searchFilter["sortType"].value
+			//actionForm.elements["sortType"].value = searchFilter["sortType"].value
+			//오픈매장보기 적용
+			//actionForm.elements["openStore"].value = searchFilter["openStore"].checked;
 			//우선순위 적용
 			actionForm.elements["sortPriority"].value = searchFilter["sortPriority"].value;
 			//검색반경 적용
 			actionForm.elements["distance"].value = distance.list.options[distance.value].value;
-			//오픈매장보기 적용
-			actionForm.elements["openStore"].value = searchFilter["openStore"].checked;
 			//paging의 pageNum을 1로 변경
 			actionForm.elements["pageNum"].value = 1;
 	
@@ -230,6 +305,7 @@ a:hover { color: black; text-decoration: none;}
 		lng.value = latlng.getLng();
 		
 	    showMain();
+	    
 	}
 		
 			//ajax통신을 한다.데이터만 받아오고 끝낸다.
@@ -243,9 +319,9 @@ a:hover { color: black; text-decoration: none;}
 			
 	//mainPage를 불러오는 함수
 	function showMain(){
-		let scroll = document.getElementById("storeList");
-		scroll.scrollTop = 0;
-		
+		//let scroll = document.getElementById("storeList");
+		//scroll.scrollTop = 0;
+		console.log("showMain")
 		//입력 작업 출력(응집) 
 		getList(function(pageDTO){
 			//페이지 목록을 출력한다.
@@ -309,36 +385,47 @@ a:hover { color: black; text-decoration: none;}
 		}
 		//console.log(storeList)
 		for( let i=0, len=storeList.length||0; i<len; i++){
-			/* str += "<div class='"+storeList[i].storeId+"'>--------------";
-			str += "<h5>매장번호 : " + storeList[i].storeId + "</h5>";
-			str += "<div>매장거리 : " + storeList[i].dist + "</div>";
-			str += "<div>위치 : " + storeList[i].addr + "</div>";
-			str += "<div>위치 : " + storeList[i].lng + "</div>";
-			str += "<div>위치 : " + storeList[i].lat + "</div>"; */
-			str += "-----------------------------------------------------";
-			str += "<div  class='like' data-storeid='"+storeList[i].storeId+"' data-like='false' ><i class='far fa-heart fa-lg' style='color:red;'/></i></div>"
 			str += "<a href='/dealight/store/"+storeList[i].storeId+" '>"
-			str += "<div>매장사진 : " + storeList[i].repImg + "</div>";
-			str += "<div>매장이름 : " + storeList[i].storeNm + "</div></a>";
-			str += "<div>좋아요 : " + storeList[i].likeTotNum + "</div>";
-			str += "<div>매장평점 : " + storeList[i].avgRating +"(" +storeList[i].revwTotNum + ")</div>";
-			str += "<div>매장 영업시간 : " + storeList[i].openTm + "-" + storeList[i].closeTm +"</div>";
-			str += "<div>대표메뉴 : " + storeList[i].repMenu + "</div>";
-			str += "<div>대기중인 인원 : </div>";
-			str += "<div>오늘 예약중인 인원 : </div>";
-			str += "<div>식사가능 여부 : " + storeList[i].seatStusCd + "</div>";
+			str +='<div class="store-card flex">'
+			str +='<div class="img-container">'
+			str +='<img src="https://via.placeholder.com/200x200" ></div>'
+			str +='<div class="deatial-container flex-column" >'
+			str +='<div class="search-header flex">'
+			str += storeList[i].storeNm
+			str +='<div  class="like" data-storeid="'+storeList[i].storeId+'" data-like="false">'
+			str +='<i class="fas fa-heart" style="color:red"></i>'
+			str +='</div><span class="f14">('+storeList[i].likeTotNum+')</span></div>'
+			str +='<div class="flex rating-box">'
+			str +='<div class="rating" data-rate-value="'+ storeList[i].avgRating +'"></div>'
+			str +='<div class="f14">'+storeList[i].revwTotNum+'('+storeList[i].avgRating+')</div></div>'
+			str +='<div class="f14 m-tb2">'
+			str +='<i class="fas fa-store-alt"></i>'
+			str +='<b>매장영업시간 : </b>'+ storeList[i].openTm + "~" + storeList[i].closeTm + '</div>'
+			str +='<div class="f14 m-tb2">'
+			str +='<i class="fas fa-utensils"></i>'
+			str +='<b>대표메뉴 : </b>'+ storeList[i].repMenu + "</div>";
+			str +='<div class="m-tb2">'
+			if(storeList[i].seatStusCd == 'R'){
+				str +='<i class="fas fa-user-clock" style="color:red"></i> 현재 2명이 대기중이에요~</div>'
+			}
+			if(storeList[i].seatStusCd == 'Y'){
+				str +='<i class="fas fa-drumstick-bite" style="color:coral"></i> 서두르세요 자리가 얼마안남았어요~</div>'
+			}
+			if(storeList[i].seatStusCd == 'G'){
+				str +='<i class="fas fa-drumstick-bite" style="color:green"></i> 바로 식사가능해요~</div>'
+			}
+			str +='<div class="btns felx">'
 			if(storeList[i].htdlStusCd == "A"){
-				str += "<button style='background-color:red;'>핫딜 여부</button>"; 
+				str += '<button class="btn-big">핫딜중</button>'; 
 			}
 			if(storeList[i].htdlStusCd == "P"){
-				str += "<button style='background-color:blue;'>핫딜 여부</button>"; 
+				str += '<button class="btn-big">핫딜예정</button>'
 			}
 			if(storeList[i].seatStusCd == "R"){
-				str += "<button style='background-color:green;' onclick='showHtdl()'>줄서기</button>"; 
+				str += '<button class="btn-big">줄서기</button>' 
 			}
-			str += "<button>예약하기</button>";
-			str += "<div>핫딜 상세 정보</div>";
-			str += "</div>";
+			str += '</div></div></div></div></a>'
+			
 		}
 		list.innerHTML = str;
 		
@@ -514,48 +601,21 @@ a:hover { color: black; text-decoration: none;}
 	    map.panTo(moveLatLon);            
 	}        
 	
-	/* //actionForm을 업데이트를 하는 함수.
-	function actionFormUpdate(cri){
-		//console.log(cri[actionForm.elements[0].name]);
-		for(let i = 0 ; i < actionForm.length; i++){
-			actionForm.elements[i].value = cri[actionForm.elements[i].name];
-		}
-	} */
 	
-	//let searchFilter = document.forms["searchFilter"];
-	
-	//search filter를 업데이트 하는 함수
-	//search filter를 업데이트 해야하나???
-	//filter는 필터창을 닫기버튼을 누르면 원상태
-	//search버튼을 누르면 검색
-	//그렇기때문에 searchfilter를 업데이트 하는것은 불필요
-	/* function searchFilterUpdate(cri){
-		
-		for(let i = 0 ; i < searchFilter.length; i++){
-			
-			let name = searchFilter[i].name;
-			//distance를 update
-			if(name == "distance"){
-				const range = searchFilter["distance"].list.options;
-				for(let j = 0; j<range.length; j++){
-					if(cri.distance == range[j].value){
-						searchFilter[name].value = j;
-						break;
-					}
-				}//end of for
-			} else if(name == "openStore"){
-				//openStore update
-				searchFilter[name].checked = cri[name];
-				
-			} else {
-				
-				searchFilter.elements[i].value = cri[searchFilter.elements[i].name];
-	
-			}
-		}//for
-		
-	} */
 
+$(".rating").rate({
+    max_value: 5,
+    step_size: 0.5,
+    initial_value: 3,
+    selected_symbol_type: 'utf8_star', // Must be a key from symbols
+    cursor: 'default',
+    readonly: true,
+});
+function closeFilter(){
+    //처음 필터조건을 기억하고 닫기버튼을 누르면 초기조건으로 되돌리고 닫아야한다.
+    $(".filter-items").hide('slow');
+
+}
 </script>
 </body>
 </html>
