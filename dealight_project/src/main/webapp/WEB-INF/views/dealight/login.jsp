@@ -19,7 +19,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인 페이지</title>
+<title>로그인</title>
 <style>
  	* { /* CSS초기화. 이거 없으면 div태그 사이에 공백 생김*/
 
@@ -205,6 +205,7 @@
 <h2><c:out value="${error }"/></h2>
 
 
+
     <div class="main-container-wrap">
         <div class="main-container">
 
@@ -241,23 +242,23 @@
 
                 <input type='hidden' name="${_csrf.parameterName }" value="${_csrf.token }"/>
             </form>
-
-			<!-- loginfForm end-->
+            
+            </div>
+            <!-- loginfForm end-->
 
             <div class="login-separator">
                 <div class="hr-line1"><div class="line"></div></div>
                 <div class="hr-or">OR</div>
                 <div class="hr-line2"><div class="line"></div></div>
             </div>
-
-		<!--login-separator end-->
+            <!--login-separator end-->
 
             <div class="social-login">
                 <ul>
                     <li>
                         <div id="kakao_id_login">
                             <button class="kakao-btn" value="">
-                                <span>Continue with KakaoTalk</span>
+                                <span>Continue With KakaoTalk</span>
                             </button>
                         </div>
                     </li>
@@ -274,18 +275,16 @@
             </div>
 
         </div>
-
-		<!--login-container-->
+        <!--login-container-->
 
         <div class="img-container">
             <div class="img-picture">
-                <img src="/resources/img/signup_illustration.png">
+                <img src="/resources/img/signup_illustration.png" alt="">
             </div>
         </div>
 
         </div>
 </div>
-
 
  
     <%-- <div id="naver_id_login" style="text-align:center margin-top: 6px;">
