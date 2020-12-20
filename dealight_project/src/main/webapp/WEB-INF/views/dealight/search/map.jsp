@@ -62,7 +62,7 @@
                             <div class="filter-item filter-select"  id="filter">
                                 <i class="fas fa-sliders-h"></i> Filter
                             </div>
-                            <div class="filter-item filter-select" name="openStore" data-select="true">
+                            <div class="filter-item filter-select" id="openStore" data-select="true">
                                 <i class="fas fa-store-alt"></i> 영업중인매장
                             </div>
                         </div>
@@ -93,13 +93,13 @@
                                 </div>
                             </div>
                             <div class="column flex start">
-                                <div class="filter-item">
+                                <div class="filter-item" data-select="false">
                                     분위기 있는 곳
                                 </div>
-                                <div class="filter-item">
+                                <div class="filter-item" data-select="false">
                                     밥먹는곳
                                 </div>
-                                <div class="filter-item filter-select">
+                                <div class="filter-item" data-select="false">
                                     모임하기 좋은곳
                                 </div>
                             </div>
@@ -153,23 +153,22 @@
         <div class="child-right">
             <div class="map-container">
                 <diV>
-                    <div>
-                        <div class="map" id="map">
-                            지도화면
-                        </div>
-						<button onclick="moveToUser()">내위치보기</button> 
-	 					<button onclick="searchMap()">현재위치애서 검색하기</button>
+                    <div class="map" id="map">
                     </div>
+                    <div style="display:flex; position:absolute;bottom:10px;left:150px;z-index:10;font-size:12px;">
+						<button class="filter-item filter-select" onclick="moveToUser()" >내위치보기</button> 
+	 					<button class="filter-item filter-select" onclick="searchMap()">현재위치애서 검색하기</button>
+ 					</div>
                 </diV>
             </div>
         </div>
     </div>
     <form action="/search/" method="get" id="actionForm">
         <input type="text" name="pageNum" value="1">
-        <input type="text" name="amount" value="20">
+        <input type="text" name="amount" value="10">
         <input type="text" name="lat" value="37.570414">
         <input type="text" name="lng" value="126.985320">
-        <input type="text" name="distance" value="1">
+        <input type="text" name="distance" value="0.5">
         <input type="text" name="sortType" value="D">
         <input type="text" name="sortPriority" value="">
         <input type="text" name="openStore" value="true">
@@ -179,10 +178,21 @@
 <!-- 리스트 불러오기 -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0e7b9cd1679ce3dedf526e66a6c1a860"></script>
 <script type="text/javascript">
+	//페이지가 시작된다.
+	const searchButton = document.getElementById("#searchButton");
+	const searchFilter = document.forms["searchFilter"];
+	const list = document.getElementById("storeList");
+	let actionForm = document.forms["actionForm"];
+	let lat = actionForm.elements["lat"]
+	let lng = actionForm.elements["lng"]
+	let userLatLng = new kakao.maps.LatLng(lat.value, lng.value)
+	let map = "";
+	let markers=[];
 
 	//ajax로 리스트를 불러온다. cri, storeList ,paging관련 변수들이 다 넘어온다.
 	//많아진다면 모듈로 뺴자
 	function getList(callback,error){
+		console.log("getList")
 		$.ajax({
 			type : 'get',
 			url : '/dealight/getlist',
@@ -209,20 +219,10 @@
 		for(let i = 0 ; i < form.length ; i++){
 			obj[form[i].name] = form[i].value;
 		}
-		
+		console.log(obj)
 		return obj;
 	}
 	
-	//페이지가 시작된다.
-	const searchButton = document.getElementById("#searchButton");
-	const searchFilter = document.forms["searchFilter"];
-	const list = document.getElementById("storeList");
-	let actionForm = document.forms["actionForm"];
-	let lat = actionForm.elements["lat"]
-	let lng = actionForm.elements["lng"]
-	let userLatLng = new kakao.maps.LatLng(lat.value, lng.value)
-	let map = "";
-	let markers=[];
 	
 	window.onload = function(){
 		//지도생성
@@ -253,10 +253,28 @@
 	        }
 
 	    });
+	    //정렬기준
 	    $("#sortType").on("change", function(e){
 			actionForm.elements["sortType"].value = $(this).val()
 			showMain();
-	    })
+	    });
+	    
+	    //영업중인매장(하드코딩......)
+	    $("#openStore").on("click",function(e){
+	    	let openStore = $(this).data("select")
+	    	let result = true
+	        if(openStore ===true){
+	            $(this).removeClass("filter-select");
+	            $(this).data("select", false)
+	            result = false
+	        }else{
+	            $(this).addClass("filter-select");
+	            $(this).data("select", true)
+	        }
+			actionForm.elements["openStore"].value = result ;
+			showMain();
+	    });
+	    
 	}
 	
 	function initMap(){
@@ -293,7 +311,7 @@
 			actionForm.elements["distance"].value = distance.list.options[distance.value].value;
 			//paging의 pageNum을 1로 변경
 			actionForm.elements["pageNum"].value = 1;
-	
+			$(".filter-items").hide('slow');
 			//showMain(); 호출
 			showMain();
 	}
@@ -308,6 +326,24 @@
 	    
 	}
 		
+	let storeId = '<c:out value="${store.storeId}"/>';
+	//핫딜관련 로직
+	function getHtdl(storeId, callback, error){
+		
+		console.log("storeId: " + storeId);
+		
+		$.getJSON("/dealight/store/htdl/get/"+storeId+".json", function(data){
+			if(callback){
+				callback(data);
+			}
+			
+		}).fail(function(xhr,status, err){
+			if(error){
+				error();
+			}
+		});
+	}
+	
 			//ajax통신을 한다.데이터만 받아오고 끝낸다.
 			//확인하고 
 			//처리하고 
@@ -324,12 +360,15 @@
 		console.log("showMain")
 		//입력 작업 출력(응집) 
 		getList(function(pageDTO){
+			
 			//페이지 목록을 출력한다.
 			showList(pageDTO);
 			
 			//지도에 마커표시를한다.
 			showMap(pageDTO.storeList);
 		});
+		
+		$(document).scrollTop(0);
 		
 	}
 	
@@ -354,15 +393,14 @@
 			let marker =new kakao.maps.Marker({
 		        map: map, // 마커를 표시할 지도
 		        position: storeLatLng, // 마커를 표시할 위치
-		        title : storeList[i].storeId, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
 		        image : new kakao.maps.MarkerImage(imageSrc, new kakao.maps.Size(24, 35))// 마커 이미지
 		    });
 			
 		    let infoStore = new kakao.maps.InfoWindow({
-		        content: "<div class='"+ storeList[i].storeId +"'>"+storeList[i].storeNm+"</div>" // 인포윈도우에 표시할 내용
+		        content: "<div class='filter-item' data-storeid='"+storeList[i].storeId+"'>"+storeList[i].storeNm+"</div>" // 인포윈도우에 표시할 내용
 		    });
 		    
-			addMarkerEvent(marker,infoStore,i);
+			addMarkerEvent(marker,infoStore,i,storeList[i].storeId);
 			
 		    markers.push(marker);
 		    
@@ -385,16 +423,17 @@
 		}
 		//console.log(storeList)
 		for( let i=0, len=storeList.length||0; i<len; i++){
-			str += "<a href='/dealight/store/"+storeList[i].storeId+" '>"
-			str +='<div class="store-card flex">'
+			//str += "<a href='/dealight/store/"+storeList[i].storeId+" '>"
+			str +='<div class="store-card flex-column">'
+			str +='<div class="flex">'
 			str +='<div class="img-container">'
 			str +='<img src="https://via.placeholder.com/200x200" ></div>'
 			str +='<div class="deatial-container flex-column" >'
 			str +='<div class="search-header flex">'
 			str += storeList[i].storeNm
 			str +='<div  class="like" data-storeid="'+storeList[i].storeId+'" data-like="false">'
-			str +='<i class="fas fa-heart" style="color:red"></i>'
-			str +='</div><span class="f14">('+storeList[i].likeTotNum+')</span></div>'
+			str +='<i class="far fa-heart" style="color:red"></i>'
+			str +='</div><span class="f14">'+storeList[i].likeTotNum+'</span></div>'
 			str +='<div class="flex rating-box">'
 			str +='<div class="rating" data-rate-value="'+ storeList[i].avgRating +'"></div>'
 			str +='<div class="f14">'+storeList[i].revwTotNum+'('+storeList[i].avgRating+')</div></div>'
@@ -409,14 +448,17 @@
 				str +='<i class="fas fa-user-clock" style="color:red"></i> 현재 2명이 대기중이에요~</div>'
 			}
 			if(storeList[i].seatStusCd == 'Y'){
-				str +='<i class="fas fa-drumstick-bite" style="color:coral"></i> 서두르세요 자리가 얼마안남았어요~</div>'
+				str +='<i class="fas fa-user-clock" style="color:coral"></i> 서두르세요 자리가 얼마안남았어요~</div>'
 			}
 			if(storeList[i].seatStusCd == 'G'){
-				str +='<i class="fas fa-drumstick-bite" style="color:green"></i> 바로 식사가능해요~</div>'
+				str +='<i class="fas fa-user-clock" style="color:green"></i> 바로 식사가능해요~</div>'
+			}
+			if(storeList[i].seatStusCd == 'B'){
+				str +='영업중이 아니에요.....</div>'
 			}
 			str +='<div class="btns felx">'
 			if(storeList[i].htdlStusCd == "A"){
-				str += '<button class="btn-big">핫딜중</button>'; 
+				str += '<button class="btn-big" id="htdlBtn" data-storeid="'+storeList[i].storeId+'">핫딜중</button>'; 
 			}
 			if(storeList[i].htdlStusCd == "P"){
 				str += '<button class="btn-big">핫딜예정</button>'
@@ -424,7 +466,8 @@
 			if(storeList[i].seatStusCd == "R"){
 				str += '<button class="btn-big">줄서기</button>' 
 			}
-			str += '</div></div></div></div></a>'
+			str += '</div></div></div>'
+			str += '<div class="htdl'+storeList[i].storeId+'" data-storeid="'+storeList[i].storeId+'"></div></div>'//</a>'
 			
 		}
 		list.innerHTML = str;
@@ -438,22 +481,56 @@
 				alert("로그인을 해주세요");
 				return;
 			}
-			
+			//하드코딩.........제발...
 			if(like === true){
-				let str="<i class='far fa-heart fa-lg' style='color:red;'/></i>";
+				let str="<i class='far fa-heart' style='color:red;'/></i>";
 				$(this).empty().append(str);
 				$(this).data("like", false);
 				removeLike({userId:"<c:out value='${userId}'/>",storeId:storeId});
+				console.log($(this).next()[0].innerHTML)
+				$(this).next()[0].innerHTML = $(this).next()[0].innerHTML-1
 			}
 			if(like === false){
-				let str="<i class='fas fa-heart fa-lg' style='color:red;'/></i>";
+				let str="<i class='fas fa-heart' style='color:red;'/></i>";
 				$(this).empty().append(str);
 				$(this).data("like", true)
 				addLike({userId:"<c:out value='${userId}'/>",storeId:storeId});
+				console.log($(this).next())
+				$(this).next()[0].innerHTML = $(this).next()[0].innerHTML-0+1
 				alert("찜목록에 추가했습니다.")
 			}
 			
 		})
+		
+		$(".rating").rate({
+		    max_value: 5,
+		    step_size: 0.5,
+		    initial_value: 3,
+		    selected_symbol_type: 'utf8_star', // Must be a key from symbols
+		    cursor: 'default',
+		    readonly: true,
+		});
+		
+		//핫딜버튼
+		$("#htdlBtn").on("click", function(e){
+			let storeId = $(this).data("storeid")
+			
+			if($(this).data("isLoaded")===true){
+				$(".htdl"+storeId).toggle();
+				return;
+			}
+			
+			getHtdl(storeId,function(result){
+				//핫딜 창을 만들어야한다.
+				console.log(result);
+				console.log(storeId);
+				$(".htdl"+storeId)[0].innerHTML = JSON.stringify(result)
+				$(".htdl"+storeId)[0]
+				
+			});
+				$(this).data("isLoaded",true)
+		});
+		
 		//페이징처리
 		showPaging(pageDTO)
 	}
@@ -562,30 +639,28 @@
 		return new kakao.maps.LatLng(Number(lat.value) + diffLat, Number(lng.value) + diffLng);
 	}
 	
-	function addMarkerEvent(marker,infoStore,i){
+	function addMarkerEvent(marker,infoStore,i,storeId){
 		//console.log(i);
 	    //let store = document.getElementById("storeList");
 		
 		kakao.maps.event.addListener(marker, 'mouseover', function() {
 	
 			infoStore.open(map, marker);
-	           list.childNodes[i].style.backgroundColor="white";
+	           list.childNodes[i].style.backgroundColor="#bbb";
 	        
 	    });
 		
 		kakao.maps.event.addListener(marker, 'mouseout', function() {
 	
-	           list.childNodes[i].style.backgroundColor="#bbb";
+	           list.childNodes[i].style.backgroundColor="white";
 	           infoStore.close();
 	        
 	    });
 		
 		kakao.maps.event.addListener(marker, 'click', function() {
-			
-			//console.log(marker.Fb)
-	        let storeId = marker.Fb
-			let target = document.getElementsByClassName(storeId)[0]
-			list.scrollTop = target.offsetTop - 300;
+			console.log("click")
+			let target = $(".htdl"+storeId)
+			$(document).scrollTop(target.offset().top -500)
 			
 	
 	    });
@@ -603,14 +678,7 @@
 	
 	
 
-$(".rating").rate({
-    max_value: 5,
-    step_size: 0.5,
-    initial_value: 3,
-    selected_symbol_type: 'utf8_star', // Must be a key from symbols
-    cursor: 'default',
-    readonly: true,
-});
+
 function closeFilter(){
     //처음 필터조건을 기억하고 닫기버튼을 누르면 초기조건으로 되돌리고 닫아야한다.
     $(".filter-items").hide('slow');

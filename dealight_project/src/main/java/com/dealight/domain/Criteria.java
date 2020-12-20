@@ -62,7 +62,7 @@ public class Criteria {
 		this.lat = lat;
 		this.lng = lng;
 		this.sortPriority = sortPriority;
-		this.sortType = sortPriority;
+		this.sortType = sortType;
 		this.openStore = openStore;
 	}
 	
