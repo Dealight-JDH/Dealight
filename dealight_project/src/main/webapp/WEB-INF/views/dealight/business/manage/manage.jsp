@@ -1069,7 +1069,7 @@
         }
         .uploadResult{
             width: 100%;
-            border: 1px black solid;
+            /*border: 1px black solid;*/
             padding: 0 10px 0 0;
         }
         .uploadResult > ul {
@@ -1077,16 +1077,17 @@
             width: 100%;
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
             background-color: white;
-            border: 1px black solid;
+            /*border: 1px black solid;*/
             overflow: scroll;
+            list-style-type:none;
         }
 
-        .uploadResult > ul > img {
-            margin: 20px 10px;
-            min-width: 200px;
+        .uploadResult > ul img {
+            margin: 20px 60px;
+            min-width: 150px;
             max-height: 100%;
 
         }
@@ -1148,7 +1149,68 @@
         }
 
         .dealight_tooltip_user:hover .dealight_tooltiptext_user {
-             visibility: visible;    
+             visibility: visible;
+             opacity: 1; 
+        }
+        
+        #rsvd_rslt_baord{
+        	width:90%;
+        	height:600px;
+        	flex-direction: column;
+        	justify-content: flex-start;
+        	align-items: center;
+        	box-shadow: 2px 2px 12px rgba(0,0,0,0.274);
+        }
+        .chart_wrapper{
+        	width:auto;
+        	height:60%;
+        }
+        .last_week_trend{
+        	padding:15px 30px;
+        	color : white;
+        	background-color : #d32323b6;
+        	display:flex;
+        	flex-direction: row;
+        	justify-content: flex-start;
+        	align-items: center;
+        	font-weight: bold;
+        	font-size:36px;
+        	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.274);
+        	margin-bottom: 15px;
+        	
+        }
+        .today_rsvd_rslt_tit{
+        	display:block;
+        	border-radius:20px;
+        	
+        	margin-left:20px;
+        	padding: 10px 20px;
+        	background-color: black;
+        	color:white;
+        	font-size: 18px;
+        	font-weight: bold;
+        	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.274);
+        }
+        .rsvdRslt{
+        	margin-top:30px;
+        	margin-left:20px;
+        	display:flex;
+        	flex-direction: column;
+        	justify-content: flex-start;
+        	align-items: flex-start;
+        }
+        .rsvd_rslt_wrapper{
+        	font-size : 18px;
+        	font-weight:bold;
+        	margin-top:15px;
+        	margin-left:20px;
+        	display: flex;
+        	flex-direction: row;
+        	justify-content: flex-start;
+        	align-items: center;
+        }
+        .rsvd_rslt_wrapper > div {
+        	margin-right: 15px;
         }
     </style>
 </head>
@@ -1203,12 +1265,15 @@
                 </div> <!-- end top box -->
         
                 <div id="rsvd_rslt_baord" style="display : none">
-                    <h1>최근 7일 Trend📈</h1>
-                    <canvas id="rsvd_chart"></canvas>
-                    <h1>당일 예약 결과💵</h1>
-                    <ul class="rsvdRslt"></ul>
+                    <div class="last_week_trend">최근 7일 Trend</div>
+                    <div class="chart_wrapper"><canvas id="rsvd_chart" style="height:30vh; width:50vw"></canvas></div>
+                    <div class="rsvdRslt">
+	                                        
+                    </div>
+                    <!-- 
                     <h1>최근 7일 예약 현황</h1>            
-                    <ul class="last_week_rsvd"></ul>
+                    <div class="last_week_rsvd"></div>
+                     -->
                 </div>
         
                 <div id="board">
@@ -1799,7 +1864,7 @@ let writeTimeBar = function (curTime) {
 	        nextRsvdDiv = $(".nextRsvd"),
 	        rsvdMapUL = $(".rsvdMap"),
 	        storeSeatUL = $(".storeSeatStus"),
-	        rsvdRsltUL = $(".rsvdRslt"),
+	        rsvdRsltDiv = $(".rsvdRslt"),
 	        userRsvdListUL = $(".userRsvdList"),
 	        rsvdDtlsDiv = $(".modal_wrapper_rsvdDtls"),
 	        rsvdDtlsInfoDiv = $("#modal_rsvd_dtls"),
@@ -2222,16 +2287,18 @@ let writeTimeBar = function (curTime) {
                     let strRsvdRslt = "";
             		if(!dto)
             			return;
-            		
-            		strRsvdRslt += "<li>오늘 총 예약 수 : " + dto.totalTodayRsvd  +"</li>";
-            		strRsvdRslt += "<li>오늘 총 예약 인원 : " + dto.totalTodayRsvdPnum  +"</li>";
-            		strRsvdRslt += "<li>[오늘의 인기 메뉴]</li>";
+            		strRsvdRslt += "<div class='today_rsvd_rslt_tit'>당일 예약 결과</div>";
+            		strRsvdRslt += "<div class='rsvd_rslt_wrapper'>";
+            		strRsvdRslt += "<div>오늘 총 예약 수 : " + dto.totalTodayRsvd  +"</div>";
+            		strRsvdRslt += "<div>오늘 총 예약 인원 : " + dto.totalTodayRsvdPnum  +"</div>";
+            		strRsvdRslt += "<div>[오늘의 인기 메뉴]</div>";
             		Object.entries(dto.todayFavMenuMap).forEach(([key,value]) => {
-    	        		strRsvdRslt += "<li>" + key +' : '+ value  +"</li>";
+    	        		strRsvdRslt += "<div>" + key +' : '+ value  +"</div>";
                     })
+                    strRsvdRslt += "</div>";
 
                     console.log('strRsvdRslt : '+strRsvdRslt);
-                    rsvdRsltUL.html(strRsvdRslt);
+                    rsvdRsltDiv.html(strRsvdRslt);
                         
                     return value[1]({storeId:storeId});
                 }).then(waitList => {
@@ -2754,8 +2821,12 @@ let writeTimeBar = function (curTime) {
 				showBoard(storeId);
 				$("#rsvd_rslt_baord").css("display", "none");
 				$("#board").css("display", "flex");
-				$(".switch_board").css("color", "#fff").css("background","#343436");
-				$(".switch_rsvd_rslt").css("color", "#000").css("background","#fff");
+				$(document.getElementsByClassName("tab_items")).removeClass("curTab");
+				$(".switch_rsvd_rslt").css("color", "black")
+				$(e.target.parentNode).addClass("curTab");
+				$(".switch_board").css("color","white");
+				//$(".switch_board").css("color", "#fff").css("background","#343436");
+				//$(".switch_rsvd_rslt").css("color", "#000").css("background","#fff");
 			}
         }
 		
@@ -2772,8 +2843,12 @@ let writeTimeBar = function (curTime) {
 				showRsvdBoard(storeId);
 				$("#board").css("display", "none");
 				$("#rsvd_rslt_baord").css("display", "block");
-				$(".switch_rsvd_rslt").css("color", "#fff").css("background","#343436");
-				$(".switch_board").css("color", "#000").css("background","#fff");
+				$(document.getElementsByClassName("tab_items")).removeClass("curTab");
+				$(".switch_board").css("color", "black")
+				$(e.target.parentNode).addClass("curTab");
+				$(".switch_rsvd_rslt").css("color","white");
+				//$(".switch_rsvd_rslt").css("color", "#fff").css("background","#343436");
+				//$(".switch_board").css("color", "#000").css("background","#fff");
 			}
 			
         }
