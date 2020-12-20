@@ -14,16 +14,372 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
 </script>
+<script src="/resources/js/Rater.js"></script>
 <style>
-.css-hotdeal {
+* { /* CSS초기화. 이거 없으면 div태그 사이에 공백 생김*/
+
+    margin  : 0;   /* 값이 0일 때는 단위 안씀. */
+    border  : 0;
+    padding : 0;
+    font-family: 'Nanum Gothic', sans-serif;
+    }
+.main_nav{
+   	background-color: #d32323;
+}
+    
+    
+/* .css-hotdeal {
 	display: inline-block;
 	margin: 45px;
 	border: 2px solid red;
 	
-}
+} */
 
 .topnav{
 }
+	/* css 적용*/
+.main-container{
+        display: flex;
+        min-width: 1050px;
+        min-height: auto;
+        padding-bottom: 36px;
+    }
+
+    .search-container{
+        display: flex;
+        width: 100%;
+        height: 80px;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin: 16px 40px 10px 40px;
+        padding: 6px 0px;
+    }
+
+    .search-form{
+        display: flex;
+        position: relative;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 60%;
+        height: 100%;
+    }
+
+    /*flex 수직이 왜 안될까...*/
+    .hotdeal-container{
+        display: flex;
+        width: 95%;
+        height: auto;
+        position: absolute;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: center;
+        margin-top: 140px;
+        left: 33px;
+    }
+
+    .region-input{
+        display: flex;
+        align-items: center;
+        position: absolute;
+        width: 30%;
+        height: 80%;
+        left: 115px;
+    }
+
+    .time-input{
+        display: flex;
+        align-items: center;
+        position: absolute;
+        width: 30%;
+        height: 80%;
+        left: 350px;
+    }
+
+    .search-btn{
+        position: absolute;
+        width: 10%;
+        height: 80%;
+        padding-top: 22px;
+        left: 590px;
+    }
+
+    .css-border{
+        border-radius: 4px 0 0 4px;
+    }
+
+    .css-input{
+        position: absolute;
+        margin: 6px;
+        padding: 10px 12px;
+        width: 95%;
+        height: 40px;
+        /* border: 1px solid black; */
+        background: #fff;
+        box-sizing: border-box;
+        box-shadow: 0px 0px 3px 1px silver;
+    }
+
+    .css-input>input{
+        /* z-index: 1; */
+        background: transparent;
+        width: 100%;
+        height: 22px;
+        font-size: 16px;
+        overflow: hidden;
+        outline: none;
+        /* border: 1px solid black; */
+        /* box-sizing: border-box; */
+    }
+
+    .btn-search{
+        /* border-radius: 0 4px 4px 0;
+        background: #f43939; */
+        width: 30px;
+        height: 35px;
+        outline: none;
+        
+    }
+
+    .search-btn>span{
+        display: flex;
+        border-radius: 0 4px 4px 0;
+        background: #f43939;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 32px;
+        padding: 5px;
+        
+    }
+
+    .card{
+        position: relative;
+        width: 30%;
+        height: 480px;
+        margin: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        padding: 4px;
+        transition: 0.3s;
+    }
+
+    .card:hover{
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    /* .card-body{
+
+    } */
+
+    .card-lmtpnum{
+        display: flex;
+        flex-direction: row;
+        position: relative;
+    }
+
+    .card-elaptime{
+        width: 70px;
+        height: 20px;
+        padding: 3px;
+        color: #d32323;
+        font-weight: bold;
+    }
+
+    .card-lmtpnum>h4{
+        position: absolute;
+        right: 0;
+        margin-left: 3px;
+        margin-bottom: 3px;
+        padding: 3px;
+    }
+    .card-title{
+        display: flex;
+        padding: 3px;
+        align-items: center;
+        height: 40px;
+        background: #d32323;
+        color: white;
+    }
+    
+    .card-menu{
+        display: flex;
+        padding: 6px;
+        align-items: center;
+        font-weight: bold;
+    }
+
+    .card-intro{
+        display: flex;
+        padding: 6px;
+        align-items: center;
+        font-size: 12px;
+    }
+
+    .card-rating{
+        display: flex;
+        flex-direction: row;
+        /* position: relative; */
+        padding: 3px;
+        color: #F29F05;
+        
+    }
+
+    .card-curpnum{
+        position: absolute;
+        display: flex;
+        /* position: absolute; */
+        right: 0;
+        
+    }
+    
+    .arrow-box{
+        visibility: hidden;
+        display: flex;
+        justify-content: center;
+        /* flex-direction: row; */
+        /* justify-content: flex-start; */
+        /* align-items: flex-start; */
+        width: 75px;
+        height: 50px;
+        background-color: #ffffff;
+        color:  #d32323;
+        text-align: center;
+        font-size: 14px;
+        font-weight : bold;
+        border-radius: 6px;
+        padding: 10px 15px;
+        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.700);
+        /* Position the dealight_tooltip */
+        position: absolute;
+        top : 25px;
+        right: 8px;
+        z-index: 1;
+    }
+
+    span:hover{
+        opacity: 0.7;
+    }
+
+    span:hover + p.arrow-box{
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .card-rate{
+        display: flex;
+        position: relative;
+        flex-direction: row;
+
+    }
+    .card-curpnum>span{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 24px;
+        height: 24px;
+    }
+
+    .card-img{
+        display: flex;
+        position: relative;
+
+    }
+
+    .card-dc{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        background: #ffffff;
+        width: 45px;
+        height: 25px;
+        left: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .card-dc>span{
+        font-weight: bold;
+        color:  #d32323;
+    }
+
+    .card-price{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        background: #ffffff;
+        z-index: 1;
+    }
+
+    .card-beforePrice{
+        width: 70px;
+        height: 20px;
+        right: 0;
+        bottom: 35px;
+
+        text-decoration: line-through;
+        color: black; 
+    }
+
+    .card-afterPrice{
+        width: 80px;
+        height: 35px;
+        color:  #d32323;
+        font-weight: bold;
+        font-size: 18px;
+        right: 0;
+        bottom: 0;
+    }
+
+    .panel-footer{
+        display: flex;
+        width: 100%;
+        height: 200px;
+        position: absolute;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: center;
+        bottom: -200px;
+        /* margin-top: 60px; */
+        /* left: 33px; */
+    }
+
+    ul{
+        display: flex;
+        flex-direction: row;
+    }
+
+    li{
+        /* display: flex;
+        flex-direction: row; */
+        list-style: none;
+        /* outline: 1px solid red; */
+    }
+    .pagination a{
+        color: black;
+        padding: 8px 16px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        text-decoration: none;
+    }
+
+    .pagination a.active{
+        background-color: #d32323;
+        border-radius: 5px;
+        color: white;
+    }
+
+    .pagination a:hover:not(.active){
+        background-color: #ddd;
+    }
+
+/* -------------------------------*/
+
 .css-elapTime{
 	color: red;
 	font-weight: bold;
@@ -61,12 +417,7 @@
   font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
+
 h4{
 	display: inline-block;
 }
@@ -97,9 +448,9 @@ h4{
 </style>
 </head>
 <body>
-<h1>핫딜</h1>
+<!-- <h1>핫딜</h1> -->
 
-	<div class="topnav">
+<!-- <div class="topnav">
 		<form action = "/dealight/hotdeal/register">
 			<input type="number" min = "0" name = "storeId" placeholder="매장번호를 선택해주세요">
 			<button type="submit" data-oper = 'register'>핫딜 등록</button>		
@@ -107,18 +458,111 @@ h4{
 		
 		<button type="submit" data-oper = 'activate'>핫딜 진행중</button>
 		<button type="submit" data-oper = 'pending'>핫딜 예정</button>
-	</div>
+	</div> -->
+	
+	<div class="main-container">
+		<div class="search-container">
+            <div class="search-form">
 
-	<div class="hotdeal-search">
+                <div class="region-input">
+
+                    <label class="css-input css-border" ><input type="text"  name="region" placeholder="검색할 지역을 입력해 주세요"></label>                    
+                </div>
+                &#124;
+                <div class="time-input">
+                    <label class="css-input "><input type="text" name="time" placeholder="---시간 검색---"></label>                    
+                </div>
+
+                <div class="search-btn">
+                    <span>
+                    <input type="image" class="btn-search" src="/resources/img/search.svg">
+                    </span>
+                </div>
+
+            </div>
+            <!-- search-form end-->
+        </div>
+        <!-- search-container-->
+        
+        <div class="hotdeal-container">
+            
+            <!-- <div class="card">
+                <div class="card-lmtpnum">
+                    <div class="card-elaptime">
+                        00:52:42
+                    </div>
+                    
+                    <h4>선착순 80명</h4>
+                    
+                </div>
+
+                <div class="card-img">
+
+                    <img class="card-img-top" src="/resources/img/img1.jpg" alt="" style="width: 100%; height: 320px;">
+                    <div class="card-dc">
+                        <span>15%</span>
+                    </div>
+
+                    <div class="card-price card-afterPrice">
+                        <span>₩18500</span>
+                    </div>
+
+                    <div class="card-price card-beforePrice">
+                        <span>₩20000</span>
+                    </div>
+
+                </div>
+                <div class="card-body">
+
+                    <div class="card-rate">
+
+                        <div class="card-rating" data-rate-value=2></div>
+
+                        <div class="card-curpnum">
+                            <span>🔥</span>
+                            <p class="arrow-box">마감까지<br> 20명<br> 남았습니다!</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="card-title">
+                        <h3>[종로] 브런치가 맛있는 집</h3>
+                    </div>
+
+                    <div class="card-menu">
+                        메뉴:&nbsp;<span>디저트 콤보 1인 세트</span>
+                    </div>
+
+                    <div class="card-intro">
+                        소개:&nbsp;<span>청계천 바로 앞! 쫄깃한 도우가 매력적인 뉴욕식 피자 전문점</span>
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+                    
+                </div>
+
+            </div> -->
+             	<div class="panel-footer">
+            
+            	</div>
+            </div>
+            <!-- hotdeal-container end -->
+           
+      </div>
+
+<!-- 	<div class="hotdeal-search">
 		<span class="icon"></span>
 		<button class="hotdeal_locationFilterBtn">
 		<span class="hotdeal_locationFilterLabel">지역</span>
 		</button>
 		<input type="text" style="width:60px;height:20px;">
 		
-	</div>
+	</div> -->
 
-	<div class="hotdeal">
+	<!-- <div class="hotdeal"> -->
 	<%-- <c:forEach items="${lists}" var="htdl" varStatus="status">
 		<div class="css-hotdeal js-htdl<c:out value="${status.index}"/>">
 			=========================================<br> 핫딜 번호:
@@ -149,14 +593,8 @@ h4{
 			<br> =========================================<br>
 		</div>
 	</c:forEach> --%>
-	</div>
+	<!-- </div> -->
 	
-
-	
-	<div class="panel-footer">
-		
-	</div>
-
 	
 	<!-- The Modal -->
 	<div id="myModal" class="modal fade" id="myModal" tabindex="-1" role="dialog"
@@ -212,7 +650,7 @@ h4{
 	</div>
 
 	<script>
-	let htdlUL = $(".hotdeal"); //핫딜
+	let htdlUL = $(".hotdeal-container"); //핫딜
 	let size = '<c:out value="${fn:length(lists)}"/>'; //진행중인 핫딜 갯수
 
 	let showListId = null; //setInterval id
@@ -246,8 +684,8 @@ h4{
 	$(document).ready(function() {
 		
 		console.log("==="+size);
-		//showList(paramStusCd);
-		showListStart(paramStusCd, pageNum); //1초마다 핫딜 리스트를 그린다
+		showList(paramStusCd);
+		//showListStart(paramStusCd, pageNum); //1초마다 핫딜 리스트를 그린다
 		
 		/* for(var i=0; i< size; i++){
 			$(".js-htdl"+i).on('click', function(){
@@ -479,7 +917,7 @@ h4{
 			next = true;
 		}
 		
-		let pageStr = "<div><ul class='pagination'>";
+		let pageStr = "<div class='panel-footer'><ul class='pagination'>";
 		if(prev){
 			pageStr+="<li ><a href='"+(startNum - 1)+"'>Previous</a></li>";
 		}
@@ -502,7 +940,6 @@ h4{
 	//핫딜 그리기
 	function htdlHtml(list){
 		let str = "";
-		
 		//list에 따른 핫딜 동적 생성
 		for(let i =0, len = list.length || 0; i<len; i++){
 			/* let elapTime = getElapTime(list[i].endTm); */
@@ -519,16 +956,16 @@ h4{
 			if(list[i].htdlImg != null){
 				let htdlPhotoSrc = list[i].htdlImg;
 				srcObj = subSrc(htdlPhotoSrc);
-				fileCallPath = encodeURIComponent("/"+ srcObj["uploadPath"] +"/s_"+ srcObj["fileName"]);
+				fileCallPath = encodeURIComponent("/"+ srcObj["uploadPath"]+"/"+ srcObj["fileName"]); //원본
 				
 				//console.log("================핫딜 이미지: " + htdlPhotoSrc);
 			}
 			
-			str += "<div class='css-hotdeal js-htdl"+i+"'>";
-			/* str += "<div class='css-hotdeal js-htdl'>"; */
-			str += "=========================================<br>"
+			/* str += "<div class='css-hotdeal js-htdl"+i+"'>"; */
+			///* str += "<div class='css-hotdeal js-htdl'>"; */ //
+			/* str += "=========================================<br>" */
 			
-			if(fileCallPath != null && srcObj != null){				
+			/* if(fileCallPath != null && srcObj != null){				
 				str += "<div class='uploadResult'>";
 				str += "<ul>";
 				str += "<li data-path='"+ srcObj["uploadPath"] +"'";
@@ -537,36 +974,92 @@ h4{
 				str += "</div>";
 				str += "</li>";
 				str += "</ul></div>";
-			}
+			} */
 			
+			/* if(fileCallPath != null && srcObj != null){				
+				str += "<div class='uploadResult'>";
+				str += "<ul>";
+				str += "<li data-path='"+ srcObj["uploadPath"] +"'";
+				str += " data-filename=\'"+ srcObj["fileName"] +"\'><div>";
+				str += "<img src='/display?fileName=" + fileCallPath + "'>";
+				str += "</div>";
+				str += "</li>";
+				str += "</ul></div>";
+			} */
+			str += "<div class='card js-htdl"+i+"'>";
+			str += "<input type='hidden' class='js-htdlId' value='"+list[i].htdlId+"'>";
+			str += "<div class='card-lmtpnum'>";
+			str += "<div class='card-elaptime'>"+elapTime+"</div>";
+			str += "<h4>선착순 "+list[i].lmtPnum+"명</h4></div>";
+			str += "<div class='card-img'>";
+			
+							
+			str += "<img class='card-img-top' src='/display?fileName=" + fileCallPath + "' style='width:100%; height: 320px;'>";
+			
+			/* str += "<img class='card-img-top' src='/resources/img/img1.jpg' style='width:100%; height: 320px;'>"; */
+			str += "<div class='card-dc'>";
+			str += "<span>"+(list[i].dcRate * 100)+"%</span></div>";
+			str += "<div class='card-price card-afterPrice'>";
+			str += "<span>₩"+(list[i].befPrice - list[i].ddct)+"</span></div>";
+			str += "<div class='card-price card-beforePrice'>";
+			str += "<span>₩"+list[i].befPrice+"</span></div></div>";
+			
+			str += "<div class='card-body'>";
+			
+			str += "<div class='card-rate'>";
+			str += "<div class='card-rating data-rate-value="+Math.round(list[i].storeEval.avgRating)+"'></div>";
+			str += "<div class='card-curpnum'>";
+			str += "<span>🔥</span>";
+			str += "<p class='arrow-box'>마감까지<br>"+(list[i].lmtPnum - list[i].curPnum) +"명<br> 남았습니다!</p></div></div>";
+			
+			str += "<div class='card-title'>";
+			str += "<h3>[종로] 맛집</h3></div>";
+			
+			str += "<div class='card-menu'>";
+			str += "메뉴:&nbsp;<span>";
+			let menuArr = []
+			//핫딜 메뉴 리스트 생성
+			for(let j=0, dtlsLen = list[i].htdlDtls.length || 0; j<dtlsLen; j++){
+				menuArr.push(list[i].htdlDtls[j].menuName);
+				/* str += list[i].menuName+" "; */
+				//console.log(list[i].htdlDtls[j].menuName);
+			}
+			str+= menuArr.join(",") +"</span></div>";
+			
+			
+			str += "<div class='card-intro'>";
+			str += "소개:&nbsp;<span>"+list[i].intro+"</span></div></div></div>";
+
+			/* 
 			str += "남은 시간: <span class='js-elapTime css-elapTime'>"+elapTime+"</span><br>"
 			str += "핫딜 번호: <span class='js-htdlId'>"+ list[i].htdlId+"</span><br>"
-			str += "핫딜 이름: "+ list[i].name+"<br>"
+			str += "핫딜 이름: "+ list[i].name+"<br>" */
 			/* str += "<img src='<spring:url value='/resources/img/testimg.png'/>' width='300px' height='250px'>" */
-			str += "핫딜 할인율: "+ list[i].dcRate * 100+"%"+"<br>"
+			/* str += "핫딜 할인율: "+ list[i].dcRate * 100+"%"+"<br>"
 			str += "핫딜 시작 시간: "+ "<span class= 'js-start'>"+list[i].startTm+"</span>"+"<br>"
 			str += "핫딜 종료 시간: "+ "<span class= 'js-end'>"+list[i].endTm+"</span>"+"<br>"
 			
-			str += "메뉴: ";
+			str += "메뉴: "; */
 			//console.log("======="+ list[i].htdlDtls);
 			//console.log(list[i].htdlDtls);
 		
-		//핫딜 메뉴 리스트 생성
+	/* 	//핫딜 메뉴 리스트 생성
 		for(let j=0, dtlsLen = list[i].htdlDtls.length || 0; j<dtlsLen; j++){
 			str += list[i].htdlDtls[j].menuName+" ";
 			//console.log(list[i].htdlDtls[j].menuName);
-		}
-			str +="<br>";
+		} */
+			/* str +="<br>"; */
 			//console.log("========="+list[i].befPrice);
 			//console.log("========="+list[i].ddct);
-			str += "핫딜 할인 전 가격: <span style='text-decoration:line-through; color:#999999;'>"+ list[i].befPrice+"</span><br>";
+			
+			/* str += "핫딜 할인 전 가격: <span style='text-decoration:line-through; color:#999999;'>"+ list[i].befPrice+"</span><br>";
 			str += "핫딜 할인 후 가격: "+ (list[i].befPrice - list[i].ddct)+"<br>";
 			str += "핫딜 소개: "+ list[i].intro+"<br>";
 			str += "핫딜 마감 인원: "+ list[i].lmtPnum+"<br>";
 			str += "매장 평점 "+ list[i].storeEval.avgRating+"<br>";
 			str += "리뷰 수 "+ list[i].storeEval.revwTotNum+"<br>";
 			str += "=========================================";
-			str +="</div>"
+			str +="</div>" */
 		}
 		return str;
 	}
@@ -718,8 +1211,8 @@ h4{
 			 console.log(this);
 			 
 			 //핫딜번호를 가져온다
-			 let param = $(this).find(".js-htdlId").text();
-			 console.log($(this).find(".js-htdlId").text());
+			 let param = $(this).find(".js-htdlId").val();
+			 console.log($(this).find(".js-htdlId").val());
 
 			 if(userId != null){				 
 				 isHtdlPayExistChecked({htdlId: param, userId: userId}, function(result){
@@ -758,6 +1251,16 @@ h4{
 			}
 		});
 	}
+	
+	$(".card-rating").rate({
+        max_value: 5,
+        step_size: 0.5,
+        initial_value: 0,
+        selected_symbol_type: 'utf8_star', // Must be a key from symbols
+        cursor: 'default',
+        readonly: true,
+    });
+	
 </script>
 </body>
 </html>

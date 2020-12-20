@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인</title>
+<title>회원가입</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -196,6 +196,7 @@
         width: 20%;
         height: 40px;
         margin-left: 16px;
+        font-weight: bold;
         border: 1px solid #d32323;
         color: #d32323;
         outline: 0;
@@ -326,6 +327,7 @@
     }
 
     .check-view{
+    	position: relative;
         margin: 16px 0px;
     }
 
@@ -335,6 +337,7 @@
         top: 0;
         font-size: 14px;
         color: #d32323;
+        text-decoration: none;
     }
     .check-title{
         display: flex;
@@ -355,7 +358,17 @@
     	margin-bottom: 8px;
     }
     
-
+	.btn-agreement::after{
+        content: '>';
+        display: inline-block;
+        color: ee6a7b;
+        width: 2px;
+        /* margin-top: 1px; */
+        /* height: 12px; */
+        /* background: url(right-arrow2.png) no-repeat 50% 0; */
+        /* background-size: 6px 9px; */
+        /* vertical-align: top; */
+    }
 </style>
  
 </head>   
@@ -495,7 +508,7 @@
                         <!-- <p class='msg' id="telnomsg">-빼고 숫자만 입력해주세요</p> -->
 
                         <div class="form-footer">
-                            <button class="regbtn" type="submit" disabled="disabled" id="reg">회원가입</button>    
+                            <button class="regbtn" type="submit" id="reg">회원가입</button>    
                         </div>
                                         
                 		</form>
@@ -539,7 +552,7 @@
                                 <span class="sub">(필수)</span>
                             </label>
 
-                            <a href="#" class="link btn-link btn-agreement">약관보기</a>
+                            	<a href="#" class="link btn-link btn-agreement">약관보기</a>
                             </div>
                             
                             <div class="check-view">
@@ -549,6 +562,8 @@
                                     개인정보처리방침 동의
                                     <span class="sub">(필수)</span>
                                 </label>
+                                
+                                <a href="#" class="link btn-link btn-agreement">약관보기</a>
                             </div>
 
                             <div class="check-view">
@@ -558,6 +573,9 @@
                                     개인정보처리방침 동의
                                     <span class="sub">(선택)</span>
                                 </label>
+                                
+                                <a href="#" class="link btn-link btn-agreement">약관보기</a>
+                                
                             </div>
 
                             <div class="check-view">
@@ -576,6 +594,8 @@
                                     본인은 만 14세 이상입니다.
                                     <span class="sub">(필수)</span>
                                 </label>
+                                
+                                <a href="#" class="link btn-link btn-agreement">약관보기</a>
                             </div>
 
                         </div>
@@ -623,6 +643,54 @@
 		let authNum = null;
 		let showAuthBtnChecked = false;
 		let showModifyBtnChecked = false;
+		
+	    //아이디 중복체크 확인		
+		$(".overlapCheck").click(function(){
+				
+				let btn = document.getElementById("reg");
+				let userId = $("#userId").val();
+				//정규식으로 형식검사 +공백체크
+				if(!jId.test(userId) || blank.test(userId)){
+					document.getElementById("idmsg").innerHTML = "아이디 형식에 맞지 않습니다";
+					document.getElementById("idmsg").style.color = 'red'; 
+					/* btn.disabled = "disabled"; */
+				}
+				//입력했는지 검사
+				if(userId == ""){
+					document.getElementById("idmsg").innerHTML = "아이디를 입력하여 주세요";
+		    		document.getElementById("idmsg").style.color = 'red';
+		    		/* btn.disabled = "disabled"; */
+				}
+				//객제에 담아서
+				let send = {'userId' : userId}
+				
+				$.ajax({
+					async : true,
+					type : 'post',
+					data : send,
+					url : "/dealight/overlapCheck",
+					success : function(data){
+						console.log("=========data 1 : " + data);
+						if(userId != ""){
+							if(data > 0){
+								   document.getElementById("idmsg").innerHTML = "중복된 아이디가 존재합니다.";
+						    	   document.getElementById("idmsg").style.color = 'red';
+						    	   /* btn.disabled = "disabled"; */
+							}else{
+								if(jId.test(userId)){
+								 		document.getElementById("idmsg").innerHTML = "사용 가능한 아이디입니다.";
+								    	   document.getElementById("idmsg").style.color = 'green';
+								    	   btn.disabled = false;
+								 	 }
+							}
+							
+						}
+						
+				}});
+				
+				
+				
+		})
 		
 	  //이용약관 전체 동의		
 	  $(".label-all-check").on("click", function(){
@@ -867,56 +935,8 @@
     	}
     
     
-    //아이디 중복체크 확인
-    $(function(){
-		
-		$(".overlapCheck").click(function(){
-			
-			let btn = document.getElementById("reg");
-			let userId = $("#userId").val();
-			//정규식으로 형식검사 +공백체크
-			if(!jId.test(userId) || blank.test(userId)){
-				document.getElementById("idmsg").innerHTML = "아이디 형식에 맞지 않습니다";
-				document.getElementById("idmsg").style.color = 'red'; 
-				btn.disabled = "disabled";
-			}
-			//입력했는지 검사
-			if(userId == ""){
-				document.getElementById("idmsg").innerHTML = "아이디를 입력하여 주세요";
-	    		document.getElementById("idmsg").style.color = 'red';
-	    		btn.disabled = "disabled";
-			}
-			//객제에 담아서
-			let send = {'userId' : userId}
-			
-			$.ajax({
-				async : true,
-				type : 'post',
-				data : send,
-				url : "/dealight/overlapCheck",
-				success : function(data){
-					console.log("=========data 1 : " + data);
-					if(userId != ""){
-						if(data > 0){
-							   document.getElementById("idmsg").innerHTML = "중복된 아이디가 존재합니다.";
-					    	   document.getElementById("idmsg").style.color = 'red';
-					    	   btn.disabled = "disabled";
-						}else{
-							if(jId.test(userId)){
-							 		document.getElementById("idmsg").innerHTML = "사용 가능한 아이디입니다.";
-							    	   document.getElementById("idmsg").style.color = 'green';
-							    	   btn.disabled = false;
-							 	 }
-						}
-						
-					}
-					
-			}});
-			
-			
-			
-	})
-	})
+
+	
    	//비밀번호와 비밀번호 확인이 일치하는지 확인
     function checkPwd(){
     	if($("#repwd").val() == ""){
@@ -937,6 +957,8 @@
     }//fun end
     
     
+
+    
  
     //회원가입 버튼 클릭시 유효성 검사 한 번 더!!
     function validate() {
@@ -948,9 +970,21 @@
     	let birthday = brdt1 + brdt2 + brdt3;
     	console.log(birthday);
     	
+        let agreeChecked = $("#agree").is(":checked");
+        let privateChecked = $("#private1").is(":checked");
+        let fourteenChecked = $("#fourteen_check").is(":checked");
+
+		
+        //아이디 유효성
+       if($("#userId").val() === ""){
+    	    alert('아이디를 입력해 주세요');
+	   		$("#pwd").focus();
+	   		return false;
+       }
+    	
     	//1. pwd 유효성검사
     	if($("#pwd").val() == ""){
-    		alert('비밀번호를 입력하여 주세요');
+    		alert('비밀번호를 입력해 주세요');
     		$("#pwd").focus();
     		return false;
     	}
@@ -1065,8 +1099,29 @@
         	return false;
         } */
         
+        //이용약관
+        if(!agreeChecked){
+
+            alert('이용약관에 동의해주세요');
+            return false;
+        }
+        
+        //개인정보처리방침
+        if(!privateChecked){
+
+            alert('개인정보처리방침에 동의해주세요');
+            return false;
+        }
+
+        if(!fourteenChecked){
+            alert('만 14세 이상에 동의해주세요');
+            return false;
+        }
+        
+        
     	return true;
     }
+    
   
     
     </script>
