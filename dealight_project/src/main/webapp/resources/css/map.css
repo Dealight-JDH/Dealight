@@ -263,6 +263,8 @@
 	font-weight: bold;
 	border-radius: 3px;
 	padding-left: 5px;
+	size:5;
+	overflow: auto;
 }
 
 .custom_select select:hover {
@@ -270,6 +272,7 @@
 }
 
 .custom_select:before {
+	size:10;
 	content: "";
 	position: absolute;
 	top: 10px;

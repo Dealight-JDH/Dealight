@@ -124,6 +124,38 @@
                                         <option>14:00</option>
                                         <option>14:30</option>
                                         <option>리뷰순</option>
+                                        <option>13시30분</option>
+                                        <option>14:00</option>
+                                        <option>14:30</option>
+                                        <option>리뷰순</option>
+                                        <option>13시30분</option>
+                                        <option>14:00</option>
+                                        <option>14:30</option>
+                                        <option>리뷰순</option>
+                                        <option>13시30분</option>
+                                        <option>14:00</option>
+                                        <option>14:30</option>
+                                        <option>리뷰순</option>
+                                        <option>13시30분</option>
+                                        <option>14:00</option>
+                                        <option>14:30</option>
+                                        <option>리뷰순</option>
+                                        <option>13시30분</option>
+                                        <option>14:00</option>
+                                        <option>14:30</option>
+                                        <option>리뷰순</option>
+                                        <option>13시30분</option>
+                                        <option>14:00</option>
+                                        <option>14:30</option>
+                                        <option>리뷰순</option>
+                                        <option>13시30분</option>
+                                        <option>14:00</option>
+                                        <option>14:30</option>
+                                        <option>리뷰순</option>
+                                        <option>13시30분</option>
+                                        <option>14:00</option>
+                                        <option>14:30</option>
+                                        <option>리뷰순</option>
                                     </select>
                                 </div>
                             </div>

@@ -321,7 +321,7 @@
 
 
 	
-	<select id="findByStoreId" resultType="com.dealight.domain.HtdlVO">
+	<select id="findByStoreId" resultType="com.dealight.domain.HtdlVO" >
 		SELECT
 		*
 		FROM tbl_htdl
@@ -336,6 +336,17 @@
 		where
 		store_id = #{storeId} AND
 		stus_cd = #{stusCd}
+	</select>
+	
+	<select id="getMainHtdlList" resultType="com.dealight.domain.HtdlVO" resultMap="HtdlDetail" >
+		SELECT /*+ INDEX_DESC(tbl_htdl tbl_htdl_pk)*/ 
+		h.*, e.*, rownum
+		FROM tbl_htdl h, tbl_store_eval e
+		WHERE h.store_id = e.store_id and h.stus_cd = 'A' 
+		<![CDATA[
+	 		and rownum <= 6
+	 	]]>
+		
 	</select>
 
 </mapper>

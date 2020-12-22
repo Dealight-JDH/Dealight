@@ -254,7 +254,10 @@ public class HtdlServiceImpl implements HtdlService {
 		return htdlMapper.findByStoreIdStusCd(storeId, "A");
 	}
 
-
+	@Override
+	public List<HtdlVO> readMainHtdlList(){
+		return htdlMapper.getMainHtdlList();
+	}
 	
 
 
