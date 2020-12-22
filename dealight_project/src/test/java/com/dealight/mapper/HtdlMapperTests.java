@@ -495,5 +495,11 @@ public class HtdlMapperTests {
 		
 		lists.forEach(htdlVO -> log.info(htdlVO));
 	}
-	
+
+	@Test
+	public void testGetMainHtdlList() {
+		
+		List<HtdlVO> list = mapper.getMainHtdlList();
+		list.forEach(vo-> log.info(vo));
+	}
 }
