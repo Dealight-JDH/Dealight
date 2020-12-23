@@ -244,7 +244,7 @@
 .footer {
 	border: 1px solid black;
 	width: 100%;
-	height: 180px; . mydropbtn { color : white;
+	height: 180px; 
 	z-index: 1;
 	cursor: pointer;
 }
@@ -271,16 +271,15 @@
         <nav class="main_nav_right">
             <div><c:if test="${userId != null}"> <span id="nav_user_id">${userId }님</span></c:if></div>
             <div class="bell_btn">
-            	<span class='alert_badge'>3</span>
-            	<img src="/resources/icon/bell.png" alt="">
+            	<div class="bell_icon"><i class="fas fa-bell"></i></div>
             </div>
             <div class="account_btn">
-            	<img src="/resources/icon/account.png">
+            	<div class="account_icon"><i class="fas fa-user"></i></div>
             		<div class="account-dropdown-content">
 						<sec:authorize access="isAnonymous()">
 								<div class="account_cnts"><a href="/dealight/login">로그인</a></div>
 								<div class="account_cnts"><a href="/dealight/policies">회원가입</a></div>
-						</sec:authorize>
+						</sec:authorize>	
 						<sec:authorize access="isAuthenticated()">
 							<sec:authorize access="hasRole('ROLE_USER')">
 								<div class="account_cnts"><a href="/dealight/mypage/reservation">예약내역</a></div> 

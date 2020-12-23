@@ -1,128 +1,973 @@
-		#likeWrapper {
-			margin-left: 30px;
-		}
-		#rsvdWrapper {
-			margin-left: 30px;
-		}
-		#waitWrapper {
-			margin-left: 30px;
-		}
-		.modify-content{
-			border: 1px solid;
-			width: 600px;
-			height: 500px;
-			margin: 20px;
-			padding: 20px;
-		}
-		button {
-		
-			margin : 5px;
-		}
-		.pull-right {
-			float : left;
-		}
-		
-        .mypage_menu_nav{
-            border: 1px solid black;
-            float: left;
-            width: 200px;
-        }
-        .mypage_content {
-            padding-left: 10px;
+	       main{
+            width: 1050px;
             height: auto;
-            border: 1px solid black;
-            float: right;
-            width: 820px;
+            display:flex;
+            flex-direction: column;
+           	justify-content: flex-start;
+           	align-items: center;
+           	margin-top:20px;
+            margin-bottom:20px;
         }
-        .content_head {
-            padding : 5px 0 34px;
+        div {
+            /*border: 1px black solid;*/
         }
-        .content_head > h2 {
-            padding-top: 10px;
-            height: 36px;
-            font-weight: 700;
+        .mypage_wrapper{
+            width: 95%;
+            height: 95%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        /* mypage left */
+        .mypage_left{
+            width: 20%;
+            height: 70%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .mypage_tit{
+            width: 100%;
+            height: 100px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-end;
             font-size: 24px;
-            line-height: 36px;
-            color: #333;
-            letter-spacing: -.5px;
-        }
-        .content_main {
-            padding-top: 20px;
-            border-top: 2px solid #333;
-        }
-        .tit_nav {
-            padding-top: 20px;
+            font-weight: bold;
             margin-bottom: 50px;
+            
         }
-        .content_head span {
-        	padding-left : 5px;
-        	font-size : 16px;
+        .mypage_side_menu{
+            width: 100%;
+            height: auto;
+            
         }
-        	/* The Modal (background) */
+        .mypage_side_menu > div{
+            position: relative;
+            width: 90%;
+            height: 60px;
+            font-size: 14px;
+            padding-left: 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            border: 1px solid rgb(242, 242, 242);
+        }
+        .mypage_side_menu > div:after{
+            
+            position: absolute;
+            top: 25px;
+            right: 40px;
+            border: 2px solid rgb(76, 76, 76);;
+            border-radius: 2px;
+            border-right: 0;
+            border-top: 0;
+            content: " ";
+            display: block;
+            height : .625em;
+            transform : rotate(225deg);
+            transform-origin: center;
+            width: .625em;
+            opacity:60%;
+            cursor: pointer;
+        }
+        .mypage_side_menu > div:hover{
+            cursor: pointer;
+            background-color:#4c4c4c59;
+        }
+        .mypage_side_menu > div:hover .mypage_side_menu > div:after{
+            cursor: pointer;
+            color: white;
+        }
+        .side_rsvd{
+            
+            overflow: hidden;
+        }
+
+
+        /* mypage right */
+        .mypage_right{
+            width: 75%;
+            height: 100%;
+        }
+        .mypage_main_header{
+            width: 100%;
+            padding-top: 20px;
+            height: 130px;
+            padding-bottom: 0px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            border-bottom: 3px #4c4c4c solid;
+        }
+        
+        .mypage_main_content{
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-self: start;
+        }
+        .main_header_title{
+            font-weight: bold;
+            font-size: 36px;
+            margin-right: 20px;
+        }
+        .main_header_subtitle{
+            color: #4c4c4c;
+        }
+
+        /* main */
+        .mypage_main_sub{
+            margin-top: 20px;
+            width: 100%;
+            height: 120px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            flex-wrap: nowrap;
+            
+        }
+        .mypage_main_sub > div{
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 14px;
+            cursor: pointer;
+            border: 1px rgb(242, 242, 242) solid;
+        } 
+        .main_value{
+            font-size: 24px;
+            
+        }
+
+        .mypage_main_board{
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            
+            
+        }
+
+        /* rsvd */
+        .rsvd_wrapper{
+            margin-top: 20px;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: 100%;
+            padding: 20px 0;
+            
+        }
+        .css_rsvd_time{
+            display: flex;
+            flex-direction: row;
+            justify-self: start;
+            align-items: center;
+            font-size: 18px;
+            font-weight: lighter;
+            width: 100%;
+            color: #4c4c4c;
+        }
+        .rsvd_tit{
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold ;
+            letter-spacing: 3px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgb(242, 242, 242);
+        }
+        .css_rsvd_box{
+            margin-top: 10px;
+            width: 95%;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px rgb(242, 242, 242) solid;
+        }
+        .rsvd_cnts_wrapper{
+            margin-top: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .rsvd_cnts_img{
+            width: 100px;
+            height: 100%;
+            margin-right : 20px;
+        }
+        .rsvd_cnts{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+        .rsvd_btn_box{
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            height: 100%;
+        }
+        .rsvd_cnts_tit{
+            width: 90px;
+            margin-right: 10px;
+        }
+        .rsvd_cnts_val{
+            font-size: 18px;
+            font-weight: 400;
+        }
+        .cnts{
+            width: 300px;
+        }
+        .cnts > div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .rsvd_tit button{
+            background-color: transparent;
+            border: 0;
+            font-size: 24px;
+            color:  #4c4c4c;
+            outline: none;
+            cursor: pointer;
+        }
+        .rsvd_tit span{
+            margin: 5px 20px;
+        }
+        .rsvd_tit button:hover{
+            opacity: 0.7;
+        }
+        .rsvd_btn_box button{
+            width: 120px;
+            border: 1px red solid;
+            background-color: transparent;
+            padding: 3px 8px;
+            outline: none;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        .rsvd_btn_box button:hover{
+            opacity: 0.7;
+        }
+        /*pagination */
+        
+        .panel-footer{
+	        display: flex;
+	        width: 100%;
+	        height: 200px;
+	        flex-direction: row;
+	        flex-wrap: wrap;
+	        justify-content: center;
+	        align-content: center;
+	        /* margin-top: 60px; */
+	        /* left: 33px; */
+	    }
+	    ul{
+	        display: flex;
+	        flex-direction: row;
+	    }
+	    li{
+	        /* display: flex;
+	        flex-direction: row; */
+	        list-style: none;
+	        /* outline: 1px solid red; */
+	    }
+	    .pagination a{
+	        color: black;
+	        padding: 8px 16px;
+	        border-radius : 5px;
+	        text-decoration: none;
+	    }
+	    .pagination a.active{
+	        background-color: #D32323;
+	        border-radius: 5px;
+	        color: white;
+	    }
+	    .pagination a:hover:not(.active){
+	        background-color: #ddd;
+	    } 
+	    
+	    /* */
+
+                /*  The Modal (background) */
         .modal {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
-        left: 0;
-        top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0,0,0); /* Fallback color */
-        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	        display: none; /* Hidden by default */
+	        position: fixed; /* Stay in place */
+	        z-index: 1; /* Sit on top */
+	        left: 0;
+	        top: 0;
+	        width: 100%; /* Full width */
+	        height: 100%; /* Full height */
+	        overflow: auto; /* Enable scroll if needed */
+	        background-color: rgb(0,0,0); /* Fallback color */
+	        background-color: rgba(0, 0, 0, 0.219); /* Black w/ opacity */
+	        animation: fadeEffect 0.8s;
         }
 
         /* Modal Content/Box */
         .modal-content {
-        background-color: #fefefe;
-        margin: 10% auto; /* 15% from the top and centered */
-        padding: 20px;
-        border: 1px solid #888;
-        width: 60%; /* Could be more or less, depending on screen size */
+            position: relative;
+	        background-color: #fefefe;
+	        margin: 10% auto; /* 15% from the top and centered */
+	        
+	        display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-self: start;
+            border-radius: 3px;
+            box-shadow: 3px 3px 7px rgba(44, 36, 36, 0.342);
+	        width: 40%; /* Could be more or less, depending on screen size */
+            height: auto;
+	        animation: fadeEffect 0.3s;
+            overflow: hidden;
+        }
+        .modal_header{
+            padding: 0 0;
+            width: 100%;
+            padding: 20px;
+            padding-bottom: 25px;
+            /*border: 1px black solid;*/
+            background-color: #d32323;
+            border-radius: 3px 3px 0 0;
+        }
+        .modal_wrapper_regwait{
+            margin: 10px;
+            padding: 0 25px 50px 25px;
+            /*display: flex;*/
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            display:none;
+        }
+        .modal_tit{
+            /*border: 1px black solid;*/
+            
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            width: 100%;
+            height: 50px;
+            color: #d32323;
+            text-shadow: 1px 1px 6px rgba(44, 36, 36, 0.171);
+        }
+        .modal_top{
+            width: 100%;
+            height: 250px;
+            /*border: 1px black solid;*/
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal_bot{
+            width: 100%;
+            height: 100px;
+            /*border: 1px black solid;*/
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal_bot > div{
+            font-weight: bold;
+            font-size: 18px;
+            margin: 5px 0;
+        }
+         .modal-content ul{
+         	margin : 0 0;
+         	display : inline-block;
         }
 
         /* The Close Button */
-        .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        }
+        .close_modal {
+            position : absolute;
+            right : 20px;
+            top : 10px;
+            display : inline-block;
+            margin : 0 0;
+            color: white;
+            font-size: 24px;
         
-        .btn_remove{
-			color: #aaa;
-	        font-size: 28px;
-	        font-weight: bold;
-        }
-        
-        .btn_remove:hover,
-        .btn_remove:focus {
-	        color: black;
-	        text-decoration: none;
-	        cursor: pointer;
         }
 
-        .close:hover,
-        .close:focus {
-	        color: black;
-	        text-decoration: none;
-	        cursor: pointer;
+        .close_modal:hover,
+        .close_modal:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .form_left_wrapper{
+            width: 50%;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            border-right: 2px rgba(71, 71, 71, 0.26) solid;
+        }
+        .form_right_wrapper{
+            width: 50%;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /*border: 1px black solid;*/
+        }
+        #submit_waitRegForm{
+            padding: 30px;
+            background-color:#d32323;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            border: 0;
+            border-radius: 30px;
+            text-shadow: 1px 1px 6px rgba(44, 36, 36, 0.171);
+            box-shadow: 1px 1px 6px rgba(44, 36, 36, 0.171);
+            outline: none;
+            cursor: pointer;
+        }
+	    
+	            /* 예약 상세 모달 추가 */
+                /* 예약 상태 추가 */
+        .modal_wrapper_rsvdDtls{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: auto;
+            overflow: scroll;
+        }
+        .modal_top.rsvdDtls{
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: auto;
+            max-height : 600px;
+            /*border: 1px black solid;*/
+            margin-bottom: 20px;
+            overflow: scroll;
+        }
+        .htdl_stus{
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 28px;
+            color: #d32323b6;
+        }
+        .modal_rsvd_info{
+            width: 90%;
+            padding-top: 10px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .modal_rsvd_info > div:first-child {
+            width: 25%;
+            color: gray;
+            font-size: 12px;
+            padding-left: 5px;
+        }
+        .rsvd_top_wrapper{
+            width: 95%;
+            height: auto;
+            margin-top: 15px;
+            display:flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .rsvd_top_box{
+            position: relative;
+            width: 90%;
+            border: 1px #eeeeef solid;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            height: auto;
+        }
+        .rsvd_mid_wrapper{
+            width: 95%;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-top: 5px;
+            margin-top: 15px;
+        }
+        .rsvd_top_wrapper > div{
+            padding-top: 5px;
+            padding-left: 5px;
+        }
+        .rsvd_top_wrapper > div:last-child{
+            
+            padding-bottom: 20px;
+        }
+        .modal_menu_head{
+            width: 90%;
+            background-color: rgba(163, 163, 163, 0.055);
+            color: black;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            border: 1px #eeeeef solid;
+        }
+        .modal_menu_head > div {
+            width: 33%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin: 5px 0;
+        }
+        .modal_menu_info{
+            border: 1px #eeeeef solid;
+            width: 90%;
+            font-size: 14px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .modal_menu_info > div {
+            width: 33%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin: 5px 0;
+        }
+        .modal_rsvd_tit{
+        	width:90%;
+            margin-top: 5px;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom:15px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .rsvd_history_tit{
+            width: 90%;
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 25px;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom:15px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            padding-left: 5px;
+        }
+        .rsvd_bot_wrapper{
+            width: 95%;
+            height: auto;
+            /*border: 1px black solid;*/
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .rsvd_history{
+            margin : 10px 0;
+            position: relative;
+            width: 90%;
+            height: auto;
+            /*border: 1px solid black;*/
+            border: 1px solid #eeeeef;
+            border-radius: 3px;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+        .rsvd_history > div{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+        .rsvd_history > div > div{
+            align-self: center;
+            height: 100%;
+            width: 70%;
+            margin: 0 0;
+        }
+        .rsvd_history > div > div:first-child {
+            align-self: center;
+            width: 30%;
+            margin: 0 0;
+            color: gray;
+            font-size: 12px;
+            padding-left: 5px;
+        }
+        .rsvd_history .htdl_stus{
+            top: 5px;
+            right: 20px;
+            font-size: 18px;
+        }
+        .rsvd_history .info{
+            margin-top: 5px;
+        }
+        .rsvd_history .info:last-child{
+            margin-bottom: 10px;
+        }
+        .rsvd_history .info{
+            margin-left: 10px;
         }
         
-        /* The Delete Button*/
-        .btn_delete {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
+        /* 매장 상세 모달 */
+        .modal_wrapper_store_info {
+        	display: flex;
+        	flex-direction: column;
+        	justify-content: flex-start;
+        	align-items: center;
+        }
+        /* 매장 상세 모달 */
+        div{
+            /*border: 1px black solid;*/
         }
 
-        .btn_delete:hover,
-        .btn_delete:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
+
+        .modal_wrapper_store_info {
+        	display: flex;
+        	flex-direction: column;
+        	justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            height: 85%;
         }
-        .selected_img{
-			border : 4px red solid;
-		}
+        .modal_top_store{
+            width: 100%;
+            height: 50%;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .modal_top_left{
+            width: 50%;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal_top_right{
+            position: relative;
+            width: 50%;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+        .modal_top_right > div {
+            
+        }
+        .store_info_name{
+            margin-top: 20px;
+            font-size: 36px;
+            font-weight: bolder;
+        }
+        .store_info_brch{
+            margin: 5px 0;
+            font-size: 14px;
+            color: gray;
+        }
+
+        .store_info_telno{
+            margin: 5px 0;
+            margin-top: 40px;
+            font-size: 12px;
+            font-weight: bolder;
+        }
+
+        .store_info_eval{
+            margin: 5px 0;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .store_info_eval > div{
+            margin-right: 10px;
+        }
+
+        .modal_bot_store{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .modal_bot_left{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+        .store_info_tm{
+            position: absolute;
+            font-size: 10px;
+            bottom: 35px;
+            right: 80px;
+            color: rgba(0, 0, 0, 0.555);
+            font-weight: bolder;
+            line-height: 20px;
+        }
+        .store_info_tm > div{
+            margin-bottom: 5px;
+        }
+        .store_info_img{
+            margin-bottom: 20px;
+        }
+        .store_info_detail{
+            position: absolute;
+            top: 25px;
+            right: 80px;
+            font-size: 24px;
+            font-weight: bold;
+            color: gray;
+            cursor: pointer;
+        }
+        .store_info_detail:hover{
+            opacity: 0.7;
+        }
+        .store_info_tot_like{
+        	color:red;
+        	cursor: pointer;
+        	
+        }
+        .store_info_tot_like:hover{
+        	opacity: 0.7;
+        }
+        
+         /* revw reg wrapper */
+        .revw_reg_wrapper{
+            /*border: 1px solid black;*/
+            display: flex;
+        	flex-direction: column;
+        	justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            height: 85%;
+        }
+        .revw_reg_wrapper > div {
+            /*border:  1px black solid;*/
+            margin: 5px 0;
+        }
+        .revw_store_info{
+            width: 90%;
+            display: flex;
+        	flex-direction: row;
+        	justify-content: space-between;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        #revwRegForm{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .revw_rate_wrapper{
+            width: 90%;
+            
+        }
+        .revw_cnts_textarea{
+            width: 100%;
+            height: 90%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+        .revw_cnts_textarea textarea{
+            resize: none;
+            height: 150px;
+            width: 90%;
+            padding: 15px;
+            border-radius: 3px;
+            border-color: #eeeeef;
+        }
+        .revw_rsvd_id{
+            font-size: 12px;
+            align-self: flex-end;
+            color: rgba(0, 0, 0, 0.52);
+            margin-right: 3px;
+        }
+        #revwRegForm > div{
+            margin: 5px 0;
+        }
+        .revw_btn_box{
+            width: 90%;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .revw_btn_box > button {
+            cursor: pointer;
+        }
+        .revw_btn_box > button:hover{
+            opacity: 0.7;
+        }
+        #submit_revwRegForm{
+            align-self: flex-start;
+            background-color: #d32323b6;
+            color: white;
+            border: 0px;
+            border-radius: 3px;
+            font-size: 15px;
+            font-weight: bold;
+            width: 150px;
+            height: 40px;
+        }
+        .modal_wrapper_revw_reg{
+            display: flex;
+        	flex-direction: column;
+        	justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            height: 85%;
+
+        }
+        .modal_top_revw{
+            width: 100%;
+            height: 50%;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .revw_info_wrapper{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .revw_info_wrapper > div{
+            margin: 5px 0;
+        }
+        /* revw info*/
+        .revw_img_box{
+            width: 90%;
+            height: 100px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+        .revw_img_box img {
+            width: 80px;
+        }
+        .revw_img_wrapper{
+            width: 90%;
+            padding: 0 20px;
+
+        }
+        .reply_wrapper {
+            width: 90%;
+            height: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .reply_item{
+            background-color:#9595953a;
+            resize: none;
+            height: 70px;
+            width: 90%;
+            padding: 15px;
+            border-radius: 3px;
+            border: 1px solid #eeeeef;
+            margin-bottom: 15px;
+        }
+        .reply_cnts_wrapper{
+            font-size: 14px;
+        }
+        .reply_cnts{
+            padding : 10px 0 0 30px;
+            font-size: 12px;
+            
+        }
+        .reply_item_icon {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .reply_item_icon * {
+            margin-right: 15px;
+        }
+        .reply_item_icon i{
+            transform: rotate(180deg);
+        }
+        .reply_item_date{
+            font-size: 12px;
+            font-weight: normal;
+        }
+        
+        

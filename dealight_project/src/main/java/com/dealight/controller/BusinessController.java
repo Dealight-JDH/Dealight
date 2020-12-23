@@ -196,6 +196,8 @@ public class BusinessController {
 			
 			WaitVO wait = waitService.read(waitId);
 			
+			wait.setWaitRegTm(wait.getWaitRegTm().split(" ")[1].substring(0,5));
+			
 			log.info(wait);
 			
 			// 현재 예약 상태인 웨이팅 리스트를 가져온다.

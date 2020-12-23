@@ -15,6 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
 <script src="https://kit.fontawesome.com/0f892675ba.js" crossorigin="anonymous"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="/resources/js/Chart.js"></script>
     <style>
@@ -81,7 +82,7 @@
         }
         .curTab{
             color: white;
-            background-color:  #d32323b6;
+            background-color:  #d32323;
             padding: 0px 8px;
             border-radius: 20px;
         }
@@ -164,6 +165,8 @@
             justify-content: center;
         }
         .top_box_items.light{
+        	justify-content: flex-end;
+        	
             /*border: 1px solid black;*/
         }
         .top_box_items.light > *{
@@ -197,8 +200,8 @@
             /*border: 1px black solid;*/
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            align-items: flex-start;
+            justify-content: space-around;
         }
         .board_right_box{
             width: 55%;
@@ -290,7 +293,7 @@
             left: 20px;
             top: 10px;
             padding: 5px 10px;
-            background-color: #d32323b6;
+            background-color: #d32323;
             color: white;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
             box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
@@ -403,19 +406,19 @@
         }
         .list_wrapper{
             /*border: 1px black solid;*/
-            width: 90%;
+            width: 100%;
             height: 80%;
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
+            justify-content: space-around;
             align-items: flex-start;
         }
         
         .wait_list_wrapper{
             /*border: 1px black solid;*/
-            width: 50%;
+            width: 40%;
             height: 100%;
-            margin-left: 20px;
+            
             position: relative;
             display: flex;
             flex-direction: column;
@@ -429,9 +432,8 @@
         }
         .rsvd_list_wrapper{
             /*border: 1px black solid;*/
-            width: 50%;
+            width: 40%;
             height: 100%;
-            margin-left: 20px;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -449,7 +451,7 @@
             left: 20px;
             top: 10px;
             padding: 5px 10px;
-            background-color: #d32323b6;
+            background-color: #d32323;
             color: white;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
             box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
@@ -462,7 +464,7 @@
             left: 20px;
             top: 10px;
             padding: 5px 10px;
-            background-color: #d32323b6;
+            background-color: #d32323;
             color: white;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
             box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
@@ -636,7 +638,7 @@
             /* yellow */
             /*background-color: rgba(248, 236, 73, 0.781);*/
             /* red */
-            /*background-color: #d32323b6;*/
+            /*background-color: #d32323;*/
             /* gray*/
             /*background-color: #29242460;*/
         }
@@ -659,13 +661,13 @@
             top: 12px;
             left: 180px;
             border: 8px solid;
-            border-color: #d32323b6 transparent transparent transparent;
+            border-color: #d32323 transparent transparent transparent;
             pointer-events: none;
         }
         /* manage side menu*/
         .manage_side_menu{
             width: 20%;
-            height: 736px;
+            height: 748px;
             /*border: 1px black solid;*/
             display: flex;
             justify-content: flex-start;
@@ -684,14 +686,14 @@
             margin: 50px 0 0 0;
             padding: 20px;
             /*border: 1px solid black;*/
-            border-radius: 20px;
+            border-radius: 10px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             font-size: 24px;
             font-weight: bold;
-            background-color: #d32323b6;
+            background-color: #d32323;
             color: white;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
             box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.527);
@@ -779,7 +781,7 @@
             padding: 20px;
             padding-bottom: 25px;
             /*border: 1px black solid;*/
-            background-color: #d32323b6;
+            background-color: #d32323;
             border-radius: 15px 15px 0 0;
         }
         .modal_wrapper_regwait{
@@ -802,7 +804,7 @@
             font-weight: bold;
             width: 100%;
             height: 50px;
-            color: #d32323b6;
+            color: #d32323;
             text-shadow: 1px 1px 6px rgba(44, 36, 36, 0.171);
         }
         .modal_top{
@@ -871,7 +873,7 @@
         }
         #submit_waitRegForm{
             padding: 30px;
-            background-color:#d32323b6;
+            background-color:#d32323;
             color: white;
             font-size: 32px;
             font-weight: bold;
@@ -973,34 +975,36 @@
         }
         .htdl_stus{
             position: absolute;
-            top: 15px;
+            top: 55px;
             right: 30px;
             font-size: 36px;
-            color: #d32323b6;
+            color: #d32323;
         }
         .modal_rsvd_info{
-            padding-top: 10px;
+            
             padding-left: 20px;
+            line-height: 25px;
         }
         .rsvd_left_wrapper{
             width: 50%;
-            height: 100%;
+            height: 80%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: flex-start;
             padding-top: 5px;
+            margin-top:15px;
             border-right: 2px rgba(71, 71, 71, 0.26) solid;
         }
         .rsvd_right_wrapper{
             width: 50%;
-            height: 100%;
+            height: 80%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: flex-start;
             padding-top: 5px;
-            
+            margin-top:15px;
             overflow:scroll;
         }
         .modal_bot_rsvd{
@@ -1027,13 +1031,16 @@
             box-shadow: 2px 2px 8px rgba(44, 36, 36, 0.171);
             overflow: scroll;
             min-height: 100px;
+            padding:8px;
         }
         .rsvd_history .htdl_stus{
             top: 10px;
             right: 20px;
             font-size: 18px;
         }
-                .info_box{
+        
+        /* info box */
+        .info_box{
             width: 95%;
             height: auto;
             /*border: 1px solid black;*/
@@ -1058,7 +1065,7 @@
             margin-top: 0;
             color: white;
             letter-spacing: 4px;
-            background-color: #d32323b6;
+            background-color: #d32323;
             height: 40px;
         }
         .store_info_cnts{
@@ -1110,7 +1117,7 @@
             padding: 10px 15px;
             
             border: 1px rgba(82, 82, 82, 0.185) solid;
-            background-color: #d32323b6;
+            background-color: #d32323;
             color: white;
             font-weight: bold;
             font-size: 24px;
@@ -1168,7 +1175,7 @@
         .last_week_trend{
         	padding:15px 30px;
         	color : white;
-        	background-color : #d32323b6;
+        	background-color : #d32323;
         	display:flex;
         	flex-direction: row;
         	justify-content: flex-start;
@@ -1212,6 +1219,102 @@
         .rsvd_rslt_wrapper > div {
         	margin-right: 15px;
         }
+        #seatStusForm{
+        	margin-bottom: 0;
+        	margin-right:50px;
+        }
+        /* 핫딜 제안 등록 폼*/
+                .modal_wrapper_htdl_regform{
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .modal_top.htld_reg{
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .regHtdlForm{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .htdl_reg_form_wrapper{
+            width:  70%;
+        }
+        .htdl_menu{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            font-size: 12px;
+        }
+        .htdl_menu_itmes{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            width: 80%;
+        }
+        .htdl_label_input {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-content: center;
+            width: 80%;
+        }
+        .htdl_label_input > span{
+            margin: 5px 0;
+            width: 30%;
+            font-size: 12px;
+            margin-right: 30px;
+            font-weight: bold;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .htdl_label_input > input,textarea,select{
+            margin: 5px 0;
+            width: 80%;
+            border-radius: 3px;
+            border: 1px black solid;
+            resize: none;
+            padding: 5px;
+        }
+        .htdl_reg_btn_box{
+        	margin-top : 20px;
+            width: 80%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .htdl_reg_btn_box button{
+            outline: none;
+            background-color:#d32323b6;
+            color:white;
+            font-size: 18px;
+            border-radius: 10px;
+            padding: 3px 12px;
+            border: 0;
+            cursor: pointer;
+            margin-right: 20px;
+            font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.219);
+        }
+        .htdl_reg_btn_box button:hover{
+            opacity: 0.7;
+        }
+        .uploadDiv.htdl{
+            width: 80%;
+        }
+        
     </style>
 </head>
 <body>
@@ -1364,9 +1467,9 @@
 			<ul class="rsvdDtls"></ul>
 			<ul class="userRsvdList"></ul>
 			<ul class="waiting_registerForm"></ul>
-			<ul class="regHtdl"></ul>
 			<div class="modal_wrapper_regwait content_div"></div>
 			<div class="modal_wrapper_rsvdDtls content_div"></div>
+			<div class='modal_wrapper_htdl_regform content_div'></div>
 		</div>
 	</div>
 <script>
@@ -1871,7 +1974,7 @@ let writeTimeBar = function (curTime) {
 	        userRsvdListDiv = $(".modal_bot_rsvd"),
 	        waitRegFormDiv = $(".modal_wrapper_regwait"),
 	        lastWeekRsvdUL = $(".last_week_rsvd"),
-	        regHtdlFormUL = $(".regHtdl"),
+	        regHtdlFormDiv = $(".modal_wrapper_htdl_regform"),
 	        btnAcceptHtdl = $(".btnAcceptHtdl")
 	        
         ;
@@ -2088,7 +2191,7 @@ let writeTimeBar = function (curTime) {
                 		for(let i = 1; i < 28; i ++){
                 			if(key === document.querySelector("#slide-"+i).textContent){
                 				if(value === 'R')
-                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = '#d32323b6';
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = '#d32323';
                 				else if(value === 'Y')
                 					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(248, 236, 73, 0.781)';
                 				else if(value === 'G')
@@ -2378,8 +2481,7 @@ let writeTimeBar = function (curTime) {
         		strUserRsvdList += "<div class='modal_bot_rsvd'>";
         		userRsvdList.forEach(rsvd => {
         			strUserRsvdList += "<div class='rsvd_history'>";
-        			strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
-        			
+        			if(rsvd.htdlId != null) strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-fire'></i></i></span>";
             		strUserRsvdList += "<span>예약 번호 : "+rsvd.rsvdId+"</span><br>";
             		strUserRsvdList += "<span>회원 아이디 : "+ rsvd.userId + "</span><br>";
             		strUserRsvdList += "<span>예약 인원 : "+ rsvd.pnum + "</span><br>";
@@ -2388,7 +2490,7 @@ let writeTimeBar = function (curTime) {
             		strUserRsvdList += "<span>예약 총 금액 : "+ rsvd.totAmt + "</span><br>";
             		strUserRsvdList += "<span>예약 총 수량 : "+ rsvd.totQty + "</span><br>";
             		strUserRsvdList += "<span>예약 등록 날짜 : "+ rsvd.regdate + "</span>";
-
+            		strUserRsvdList += "</div>";
         		});
         		strUserRsvdList += "</div>";
 
@@ -2414,7 +2516,7 @@ let writeTimeBar = function (curTime) {
 					return;
 				
 				strRsvdDtls += "<div class='rsvd_left_wrapper'>";
-				strRsvdDtls += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+				if(rsvd.htdlId != null) strRsvdDtls += "<span class='htdl_stus'><i class='fas fa-fire'></i></span>";
 				strRsvdDtls += "<div class='modal_rsvd_info'>예약 번호 : " + rsvd.rsvdId +"</div>";
 				strRsvdDtls += "<div class='modal_rsvd_info'>예약 시간 : " + rsvd.time +"</div>";
 				strRsvdDtls += "<div class='modal_rsvd_info'>예약 총 가격 : " + rsvd.totQty +"원</div>";
@@ -2631,42 +2733,74 @@ let writeTimeBar = function (curTime) {
         	
         		console.log('show reg htdl store id : '+storeId);
         		
+	        	strHtdl += "<div class='modal_tit'>";
+	        	strHtdl += "<span>핫딜 등록하기</span>";
+	        	strHtdl += "</div>";
+	        	strHtdl += "<div class='modal_top htld_reg'>";
+	        	strHtdl += "<div class='htdl_reg_form_wrapper'>";
 	        	strHtdl += "<form class='regHtdlForm' action='/dealight/business/manage/board/htdl/new' method='post'>";
-	        	strHtdl += "<label>핫딜 제목</label> <input class='form-control' name='name'><br>";
-	        	strHtdl += "<div>";
-	        	strHtdl += "<label>핫딜 메뉴</label><br>";
-	        	
+	        	strHtdl += "<div class='htdl_label_input htdl_name'>";
+	        	strHtdl += "<span>핫딜 제목</span>";
+	        	strHtdl += "<input class='form-control' name='name' placeholder='핫딜 제목'>";
+	        	strHtdl += "</div>";
+	        	strHtdl += "<div class='htdl_label_input htdl_menu'>";
+	        	strHtdl += "<span>핫딜 메뉴</span>";
+	        	strHtdl += "<div class='htdl_menu_itmes'>";
 	        	if(menuList)
 	        	menuList.forEach((menu,i) => {
 		        	strHtdl += "<input type='checkbox' id='menu"+i+"' class='js-menu' value='"+menu.price+"'>";
 		        	strHtdl += "<label for='menu"+i+"'>" +menu.name+"</label>";
 	        	});
-		       	strHtdl += "<div class='uploadDiv'><input type='file' name='uploadFile'></div>";
-		       	strHtdl += "<div class='uploadResult'><ul></ul></div></div>";
-	        	strHtdl += "<label>할인율</label> <select id='dcRate' name='dcRate'>";
+	        	strHtdl += "</div>";
+	        	strHtdl += "</div>";
+	        	strHtdl += "<div class='htdl_label_input htdl_dc'>";
+	        	strHtdl += "<span>할인율</span>";
+	        	strHtdl += "<select id='dcRate' name='dcRate'>";
 	        	strHtdl += "<option value=''>--</option>";
 	        	strHtdl += "<option value='10'>10%</option>";
 	        	strHtdl += "<option value='20'>20%</option>";
 	        	strHtdl += "<option value='30'>30%</option>";
 	        	strHtdl += "<option value='40'>40%</option>";
 	        	strHtdl += "<option value='50'>50%</option>";
-	        	strHtdl += "</select><br><label>할인 적용전 가격</label> <input class='js-befPrice'";
-	        	strHtdl += "value='0' name='befPrice' readonly='readonly'><br> <label>할인";
-	        	strHtdl += "적용후 가격</label> <input class='js-aftPrice' readonly='readonly'><br>";
-	        	strHtdl += "<label>핫딜 시작 시간</label> <input type='time' name='startTm' readonly><br> 핫딜 마감 시간<input";
-	        	strHtdl += " type='time' name='endTm' readonly><br> <label>핫딜 제한 인원:";
-	        	strHtdl += "</label> <input class='form-control' type='number' min='0' max='50'";
-	        	strHtdl += "name='lmtPnum' readonly='readonly'><br> <label>핫딜";
-	        	strHtdl += "<label>핫딜 소개</label><br>";
-	        	strHtdl += "<textarea rows='2' cols='22' name='intro'></textarea>";
-	        	strHtdl += "<br> <input type='hidden' id='storeId' name='storeId'";
-	        	strHtdl += "value='"+storeId+"'>";
-	        	strHtdl += "<button class='regHtdlBtn' type='submit' data-oper='register'>승낙</button>";
-	        	strHtdl += "<button class='regHtdlBtn' type='submit' data-oper='refuse'>거절</button>";
-	        	strHtdl += "</form>";
+	        	strHtdl += "</select>";
+	        	strHtdl += "</div>";
+	        	strHtdl += "<div class='htdl_label_input htdl_bef_price'>";
+	        	strHtdl += "<span>할인 적용전 가격</span>";
+	        	strHtdl += "<input class='js-befPrice' value='0' name='befPrice' readonly='readonly'>";
+	        	strHtdl += "</div>";
+	        	
+	        	strHtdl  += "<div class='htdl_label_input htdl_aft_price'>";
+	        	strHtdl  += "<span>할인 적용후 가격</span>";
+	        	strHtdl  += "<input class='js-aftPrice' readonly='readonly'>";
+	        	strHtdl  += "</div>";
+	        	strHtdl  += "<div class='htdl_label_input htdl_start_tm'>";
+	        	strHtdl  += "<span>핫딜 시작 시간</span>";
+	        	strHtdl  += "<input type='time' name='startTm' readonly>";
+	        	strHtdl  += "</div>";
+	        	strHtdl  += "<div class='htdl_label_input htld_end_tm'>";
+	        	strHtdl  += "<span>핫딜 마감 시간</span>";
+	        	strHtdl  += "<input type='time' name='endTm' readonly>";
+	        	strHtdl  += "</div>";
+	        	strHtdl  += "<div class='htdl_label_input htdl_lmt_pnum'>";
+	        	strHtdl  += "<span>핫딜 제한 인원:</span>";
+	        	strHtdl  += "<input class='form-control' type='number' min='0' max='50' name='lmtPnum' readonly='readonly'>";
+	        	strHtdl  += "</div>";
+	        	strHtdl  += "<div class='htdl_label_input htdl_intro'>";
+	        	strHtdl  += "<span>핫딜 소개</span>";
+	        	strHtdl  += "<textarea rows='2' cols='22' name='intro'></textarea>";
+	        	strHtdl  += "</div>";
+	        	
+	        	strHtdl += "<div class='uploadDiv htdl'><input type='file' name='uploadFile'></div>";
+                strHtdl += "<div class='uploadResult'><ul></ul></div>";
+                strHtdl += "<input type='hidden' id='storeId' name='storeId' value='"+storeId+"'>";
+                strHtdl += "<div class='htdl_reg_btn_box'>";
+                strHtdl += "<button class='regHtdlBtn' type='submit' data-oper='register'>승낙</button>";
+                strHtdl += "<button class='regHtdlBtn' type='submit' data-oper='refuse'>거절</button>";
+                strHtdl += "</div>";
 	        	
         		console.log("before strHtdl : "+ strHtdl);
-	        	regHtdlFormUL.html(strHtdl);
+        		regHtdlFormDiv.css("display","flex")
+	        	regHtdlFormDiv.html(strHtdl);
 	        	
 	        	// 핫딜 제안 등록폼에 데이터를 넣어준다.
 	        	$(".regHtdlForm input[name=name]").val($(".manage_htdl_dto").data().name);

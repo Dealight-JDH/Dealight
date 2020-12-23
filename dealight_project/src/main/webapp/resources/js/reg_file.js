@@ -152,8 +152,9 @@
 				
 			});
 			let jobj = $(".uploadResult .selected_img").parent().parent();
+			console.log(jobj.data("path"));
 			if(category === 'storeImgs'||category === 'revwImgs'){
-				str += "<input type='hidden' name='repImg' value='" + jobj.data("path").replace(new RegExp(/\\/g),"/") +"/"+ "s_"+ jobj.data("uuid") +"_"+ jobj.data("filename")+"'>";
+				if(jobj.data("path")) str += "<input type='hidden' name='repImg' value='" + jobj.data("path").replace(new RegExp(/\\/g),"/") +"/"+ "s_"+ jobj.data("uuid") +"_"+ jobj.data("filename")+"'>";
 			}
 	        	
 	        /*위에서 작성한 글을 form에 추가하고 제출한다. */

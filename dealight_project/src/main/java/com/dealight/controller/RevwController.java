@@ -3,24 +3,20 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-// 수빈
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.Criteria;
 import com.dealight.domain.PageDTO;
-import com.dealight.domain.RevwImgVO;
 import com.dealight.domain.RevwVO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.RsvdWithWaitDTO;
-import com.dealight.domain.WaitVO;
 import com.dealight.service.RevwService;
+import com.dealight.service.RsvdService;
+import com.dealight.service.StoreService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -32,6 +28,10 @@ import lombok.extern.log4j.Log4j;
 public class RevwController {
 
 	private RevwService revwService;
+	
+	private StoreService storeService;
+	
+	private RsvdService rsvdService;
 
 	@GetMapping({"","writable-list"})
 	public String getWritableList(HttpSession session, Model model,Criteria cri) {
@@ -43,7 +43,23 @@ public class RevwController {
 		if(cri.getPageNum() == 0)
 			cri = new Criteria(1,5);
 		
+		
 		List<RsvdWithWaitDTO> dtoList = revwService.getWritableListWithPagingByUserId(userId, cri);
+		dtoList.stream().forEach(dto -> {
+			
+			if(dto.getRsvd() != null){
+				RsvdVO rsvd = rsvdService.findRsvdByRsvdIdWithDtls(dto.getRsvd().getRsvdId());
+				String tmpNm = rsvd.getRsvdDtlsList().get(rsvd.getRsvdDtlsList().size() -1).getMenuNm();
+				rsvd.getRsvdDtlsList().stream().forEach(dtls -> {
+					dtls.setMenuNm(dtls.getMenuNm() + ", ");
+				});
+				rsvd.getRsvdDtlsList().get(rsvd.getRsvdDtlsList().size() -1).setMenuNm(tmpNm);
+				rsvd.setStoreRepImg(storeService.getBStore(dto.getStoreId()).getRepImg());
+				dto.setRsvd(rsvd);
+			} else if (dto.getWait() != null) {
+				dto.getWait().setStoreRepImg(storeService.getBStore(dto.getStoreId()).getRepImg());
+			}
+		});
 		int writableRsvd = revwService.countWritableRsvd(userId);
 		int writableWait = revwService.countWritableWait(userId);
 		int total = writableRsvd + writableWait;
@@ -79,6 +95,13 @@ public class RevwController {
 	    int countTotal = revwService.countTotal(userId);
 	    
 	    List<RevwVO> writtenList = revwService.getWrittenListWtihPagingByUserId(userId, cri);
+	    writtenList.stream().forEach(revw -> {
+	    	if(revw.getImgs() != null)
+	    	revw.getImgs().stream().forEach(img -> {
+	    		if(img != null && img.getUploadPath() != null)
+	    		img.setUploadPath(img.getUploadPath().replace("\\", "/"));
+	    	});
+	    });
 	    
 	    log.info("writeentList size..................."+writtenList.size());
 		

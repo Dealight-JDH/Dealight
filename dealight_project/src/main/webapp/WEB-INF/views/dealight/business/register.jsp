@@ -56,7 +56,7 @@
         }
         #regForm input{
             display: inline-block;
-            border-radius: 10px;
+            border-radius: 3px;
             padding: 5px ;
             padding-left: 20px;
             margin: 5px;
@@ -129,8 +129,9 @@
             transition: all 0.2s ease;
             resize: none;
             height: 125px;
-            border-radius: 20px;
+            border-radius: 3px;
             padding: 15px;
+            margin:5px
         }
         .label_input input:focus,
         .label_input .input_textarea:focus
@@ -144,7 +145,7 @@
         }
         .label_input .custom_select {
             position: relative;
-            width: 30%;
+            width: 300px;
             height: 37px;
             padding: 0 0 5px 0;
             border-radius: 20px;
@@ -370,10 +371,10 @@
         	
         }
         #openTm_tit{
-        	margin-right:40px;
+        	margin-right:65px;
         }
         #breakSttm_tit{
-        	margin-right:40px;
+        	margin-right:65px;
         }
         #btn_find_loc{
         	width:10%;

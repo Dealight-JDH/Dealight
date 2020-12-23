@@ -58,27 +58,28 @@
             cursor: pointer;
             display: flex;
             font-size: 12px;
-            
-            width: 600px;
+            border-left: 14px solid black;
+            width: 800px;
             height: 280px;
             background: white;
-            /*border: 1px solid #9090900e;*/
-            border-radius: 10px;
+            border: 1px solid #e6e6e6;
+            
+            border-radius: 5px;
             margin-top: 25px;
             margin-bottom : 25px;
-            box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            /*box-shadow: 2px 2px 8px rgba(0,0,0,0.3);*/
         }
         
         .store_card:hover{
            opacity: 0.7;
-            /*box-shadow: 7px 7px 8px rgba(247, 44, 78, 0.233);*/
+           box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
         }
         .store_card:hover .brno_content_wrapper{
             filter: blur(0);
         }
         .store_info_wrapper{
             margin: auto auto;
-            /*border: 1px solid black;*/
+            
             width: 90%;
             height: 80%;
             display: flex;
@@ -91,6 +92,7 @@
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
+            margin-bottom: 30px;
         }
         .store_info_i.left{
             position: relative;
@@ -105,9 +107,7 @@
             width: 30%;
         }
         .store_info_i.left span{
-            position: absolute;
-            left: 5px;
-            bottom: 5px;
+            
         }
         
         .store_name{
@@ -130,6 +130,10 @@
         .store_info_i.right{
             width: 100%;
             height: 100%;
+            display:flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
         }
         .store_info_i_r{
             /*border: 1px black solid;*/
@@ -146,7 +150,7 @@
         .store_info_wrapper_right{
             height: 100%;
             width: 40%;
-            /*border: 1px solid black;*/
+            
             display: flex;
         }
         .store_img_box{
@@ -157,7 +161,8 @@
             height: 80%;
             margin: 20px 0 20px 40px;
             border-radius: 10px;
-            box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            border: 1px solid #e6e6e6;
+            /*box-shadow: 2px 2px 8px rgba(0,0,0,0.3);*/
             overflow: hidden;
         }
         .store_img_box > img{
@@ -195,14 +200,14 @@
             padding: 0 4px 0 3px;
         }
         .store_info_i.left{
-            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+           	align-items: flex-start;
         }
         .store_open_tit{
-            position: absolute;
             font-size: 14px;
             font-weight: bold;
-            left: 3px;
-            bottom: 60%;
             color: white;
             border-radius: 20px;
             padding: 3px 7px;
@@ -211,25 +216,16 @@
             text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
         }
         .store_open_tm{
-            position: absolute;
             font-size: 24px;
             font-weight: bold;
-            bottom: 20%;
-            left: 3px;
         }
         .store_cur_rsvd{
-            position: absolute;
             font-size: 14px;
             font-weight: bold;
-            top: 25%;
-            left: 10px;
         }
         .store_cur_wait{
-            position: absolute;
             font-size: 14px;
             font-weight: bold;
-            left: 10px;
-            bottom: 25%;
         }
         .store_plus{
             position: relative;
@@ -264,6 +260,12 @@
             color: gray;
             font-weight: bold;
             filter: blur(1.5px);
+        }
+        #store_cur_info{
+        	display: flex;
+        	flex-direction:column;
+        	justify-content: flex-end;
+        	align-items: flex-end;
         }
     </style>
 </head>
@@ -355,7 +357,7 @@
                             	${store.bstore.openTm} - ${store.bstore.closeTm}
                             </div>
                         </div>
-                        <div class="store_info_i right">
+                        <div class="store_info_i right" id="store_cur_info">
                             <div class="store_cur_rsvd">오늘 예약 수 : ${store.curRsvdNum}</div>
                             <div class="store_cur_wait">현재 웨이팅 수 : ${store.curWaitNum}</div>
                         </div>

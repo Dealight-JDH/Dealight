@@ -10,17 +10,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dealight.domain.BStoreVO;
 import com.dealight.domain.Criteria;
-import com.dealight.domain.LikeListDTO;
 import com.dealight.domain.LikeVO;
 import com.dealight.domain.PageDTO;
 import com.dealight.domain.RevwImgVO;
@@ -86,6 +84,7 @@ public class MypageController {
 		if(cri.getPageNum() == 0)
 			cri = new Criteria(1,5);
 
+		
 		List<RsvdVO> rsvdList = rsvdService.findRsvdListWithPagingAndDtlsByUserId(userId, cri);
 
 		// rsvd 메뉴 이름 저장
@@ -96,6 +95,9 @@ public class MypageController {
 				dtls.setMenuNm(dtls.getMenuNm() + ", ");
 			});
 			rsvd.getRsvdDtlsList().get(rsvd.getRsvdDtlsList().size() -1).setMenuNm(tmpNm);
+			
+			// 변경 필요
+			rsvd.setStoreRepImg(storeService.getBStore(rsvd.getStoreId()).getRepImg());
 		});
 
 		int last = rsvdService.getRsvdLastCount(userId, cri);
@@ -167,6 +169,10 @@ public class MypageController {
 			cri = new Criteria(1,5);
 
 		List<WaitVO> waitList = waitService.findWaitListWithPagingByUserId(userId, cri);
+		waitList.stream().forEach(wait -> {
+			BStoreVO store = storeService.getBStore(wait.getStoreId());
+			wait.setStoreRepImg(store.getRepImg());
+		});
 
 		int curWaitCnt = waitService.getCurWaitCnt(userId, cri);
 		int enterCnt = waitService.getEnterWaitCnt(userId, cri);

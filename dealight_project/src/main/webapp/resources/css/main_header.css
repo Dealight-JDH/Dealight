@@ -73,7 +73,7 @@
         .main_nav_right{
             margin-right: 10px;
             order: 2;
-            width: 18%;
+            width: 25%;
             min-width: 100px;
             /*border: black 1px solid;*/
             display: flex;
@@ -87,8 +87,9 @@
             justify-content: center;
         }
         /* account btn */
-        .account_btn > img{
-            width: 30%;
+        .bell_icon{
+            font-size: 32px;
+            opacity: 0.7;
         }
         .account_btn{margin : auto 15px  auto 15px;}
         .account_btn::after{
@@ -111,8 +112,8 @@
         .account-dropdown-content{
         	  display: none;
 			  position: absolute;
-			  right:1%;
-			  top:50px;
+			  right:3%;
+			  top:75px;
 			  background-color: #f9f9f9;
 			  min-width: 100px;
 			  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -133,10 +134,12 @@
         /* end account btn */
         .bell_btn {
         	position: relative;
+        	font-size: 18px;
         }
         
-        .bell_btn > img{
-            width: 30%;
+        .account_icon{
+            font-size: 32px;
+            opacity: 0.7;
         }
         /* 알림함 */
         .alert_badge {
@@ -158,5 +161,5 @@
         
         #nav_user_id{
         	font-size:18px;
-        	font-weight:light;
+        	font-weight:bold;
         }
