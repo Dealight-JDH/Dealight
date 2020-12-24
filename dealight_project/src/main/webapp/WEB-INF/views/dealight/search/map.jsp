@@ -12,9 +12,15 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/resources/css/selectbox.css" type ="text/css" />
 <link rel="stylesheet" href="/resources/css/map.css" type ="text/css" />
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <script src="/resources/js/Rater.js"></script>
+<style type="text/css">
+	div{
+		 /* border: 1px black solid;  */
+	}
+</style>
 </head>
 <body>
     <div class="map-main-container">
@@ -26,20 +32,23 @@
                         내 주변 음식점
                     </div>
                     <div class="selectbox flex">
-                        <div class="label center">정렬 : </div>
-                        <div class="custom_select center">
-                            <select name="sortType" id="sortType">
-                                <option value="D">거리순</option>
-                                <option value="H">좋아요순</option>
-                                <option value="R">평점순</option>
-                                <option value="T">리뷰순</option>
-                            </select>
-                        </div>
+                       <div class="label flex center" id="sortType">
+	                        <div style="width: 40px; margin-top:2px">정렬</div>
+	                        <div class="dropdown" style="display:inline-block; ">
+	                            <div class="dropdown-select">
+	                                <span class="select f14">거리순</span>
+	                                <i class="fa fa-angle-down" style="font-size:20px"></i>
+	                            </div>
+	                            <div class="dropdown-list large-list m0">
+	                               
+	                            </div>
+	                        </div>
+	                    </div>
                     </div>
                 </div>
                 <div class="filter-container">
                     <div class="searchtype-container">
-                        <div class="searchtype flex m-r16">
+                        <div class="searchtype flex m-r16" id="wait">
                             <div class="p-l16">
                                 줄서기
                             </div>
@@ -47,7 +56,7 @@
                                 <i class='fas fa-user-plus fa-4x' style='color:#f43939;'></i>
                             </div>
                         </div>
-                        <div class="searchtype flex">
+                        <div class="searchtype flex" id="reserve">
                             <div class="p-l16">
                                 예약하기
                             </div>
@@ -69,18 +78,21 @@
 
                         <form id="searchFilter" action="#" class="filter-items flex-column"style="display:none;">
                             <div class="column flex">
-                                <div class="selectbox flex">
-                                    <div class="label center">우선순위 : </div>
-                                    <div class="custom_select center">
-                                        <select name="sortPriority">
-                                            <option value="">--</option>
-                                            <option value="H">핫딜매장우선보기</option>
-                                            <option value="S">식사가능매장우선보기</option>
-                                            <option value="W">웨이팅있는매장보기</option>
-                                            <option value="R">예약가능매장보기(아직 미구현)</option>
-                                        </select>
-                                    </div>
-                                </div>
+                            	<div class="selectbox flex">
+			                       <div class="label flex center" id="sortPriority">
+				                        <div style="width: 100px; margin-top:2px">우선정렬</div>
+				                        <div class="dropdown" style="display:inline-block;min-width:150px;">
+				                            <div class="dropdown-select">
+				                                <span class="select f14">--</span>
+				                                <i class="fa fa-angle-down" style="font-size:20px"></i>
+				                            </div>
+				                            <div class="dropdown-list large-list m0" style="width:100%">
+				                               
+				                            </div>
+				                        </div>
+				                    </div>
+			                    </div>
+                               
                                 <div class="level">
                                     <input type="range" min="0" max="4" list="num" name="distance" />
                                     <datalist id="num">
@@ -104,7 +116,7 @@
                                 </div>
                             </div>
                             <div class="cloumn flex end">
-                                <button class="btn confirm" type="button" onclick="search()">
+                                <button class="btn confirm" type="button" id="filterBtn">
                                     적용하기
                                 </button>
                                 <button class="btn cancle" type="button" onclick="closeFilter()">
@@ -114,66 +126,58 @@
                         </form>
                     </div>
                 </div>
-                <form>
-                    <div class="search-bar flex">
-                        <div class="reserve-input flex">
-                            <div class="selectbox flex">
-                                <div class="custom_select center">
-                                    <select>
-                                        <option>13시30분</option>
-                                        <option>14:00</option>
-                                        <option>14:30</option>
-                                        <option>리뷰순</option>
-                                        <option>13시30분</option>
-                                        <option>14:00</option>
-                                        <option>14:30</option>
-                                        <option>리뷰순</option>
-                                        <option>13시30분</option>
-                                        <option>14:00</option>
-                                        <option>14:30</option>
-                                        <option>리뷰순</option>
-                                        <option>13시30분</option>
-                                        <option>14:00</option>
-                                        <option>14:30</option>
-                                        <option>리뷰순</option>
-                                        <option>13시30분</option>
-                                        <option>14:00</option>
-                                        <option>14:30</option>
-                                        <option>리뷰순</option>
-                                        <option>13시30분</option>
-                                        <option>14:00</option>
-                                        <option>14:30</option>
-                                        <option>리뷰순</option>
-                                        <option>13시30분</option>
-                                        <option>14:00</option>
-                                        <option>14:30</option>
-                                        <option>리뷰순</option>
-                                        <option>13시30분</option>
-                                        <option>14:00</option>
-                                        <option>14:30</option>
-                                        <option>리뷰순</option>
-                                        <option>13시30분</option>
-                                        <option>14:00</option>
-                                        <option>14:30</option>
-                                        <option>리뷰순</option>
-                                    </select>
+                <form id="searchForm" action="#">
+                    <div class="search-bar flex center">
+                            <div class="search-item" >
+                                <div class="ws-block" id="region">
+                                    <div>위치</div> 
+                                    <div class="dropdown">
+                                        <div class="dropdown-select">
+                                            <span class="select m4 f16">내 위치</span>
+                                            <i class="fa fa-angle-down" style="font-size:20px"></i>
+                                        </div>
+                                        <div class="dropdown-list">
+                                           
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="selectbox flex">
-                                <div class="custom_select center">
-                                    <select>
-                                        <option>2명</option>
-                                        <option>3명</option>
-                                        <option>평점순</option>
-                                        <option>리뷰순</option>
-                                    </select>
+                            <div class="divider" ></div>
+                            <div class="search-item" id="timebox" style="display:none;">
+                                <div class="ws-block" id="time"> 
+                                    <div>시간</div> 
+                                    <div class="dropdown">
+                                        <div class="dropdown-select">
+                                            <span class="select m4 f16">13시 30분</span>
+                                            <i class="fa fa-angle-down" style="font-size:20px;"></i>
+                                        </div>
+                                        <div class="dropdown-list">
+                                           
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="divider"></div>
+                            
+                            <div class="search-item">
+                                <div class="ws-block" id="pNum">
+                                    <div>인원</div> 
+                                    <div class="dropdown" style="width: 70%; margin-right:10px">
+                                        <div class="dropdown-select">
+                                            <span class="select m4 f16">2명</span>
+                                            <i class="fa fa-angle-down" style="font-size:20px"></i>
+                                        </div>
+                                        <div class="dropdown-list">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <button id="searchBtn" class="search-btn flex" style="flex-basis: 50px;">
+                                    <i class="fas fa-search" style="color: white;"></i>
+                                </button>
+                            </div>
+
                         </div>
-                        <button class="btn-big">
-                            검색하기
-                        </button>
-                    </div>
                     </form>
             </div>
             <div class="child-full" id="storeList">
@@ -285,11 +289,6 @@
 	        }
 
 	    });
-	    //정렬기준
-	    $("#sortType").on("change", function(e){
-			actionForm.elements["sortType"].value = $(this).val()
-			showMain();
-	    });
 	    
 	    //영업중인매장(하드코딩......)
 	    $("#openStore").on("click",function(e){
@@ -307,6 +306,29 @@
 			showMain();
 	    });
 	    
+	    
+	 	//[사용자에게 보여질값, 실제 값]
+	    let item1 = ["거리순", "D"];
+	    let item2 = ["좋아요", "H"];
+	    let item3 = ["평점순","R"];
+	    let item4 = ["리뷰순","T"];
+	    
+	    //셀렉박스에 넣어줄 요소들
+	    let sortValues = [["거리순", "D"], ["좋아요", "H"], ["평점순","R"], ["리뷰순","T"]];
+	    let priorityValues = [["--",""],["핫딜매장우선보기", "H"], ["식사가능매장우선보기", "S"], ["웨이팅있는매장보기","W"], ["예약가능매장보기","R"]];
+    	
+    	//(클릭이벤트를 걸어줄 요소, 셀렉박스 요소값, 선택값을 추가할 form)
+    	selectEvent($("#sortType") ,sortValues,  $("#actionForm"))
+	    //정렬기준
+	    $(".dropdown-list__item").on("click", function(e){
+	    	console.log("change")
+			showMain();
+	    });
+    	selectEvent($("#sortPriority"), priorityValues,  $("#searchFilter"))
+    	const searchForm = $("#searchForm")
+    	selectEvent($("#region") ,priorityValues, searchForm)
+    	selectEvent($("#time") ,priorityValues, searchForm)
+    	selectEvent($("#pNum") ,priorityValues, searchForm)
 	}
 	
 	function initMap(){
@@ -327,26 +349,32 @@
 		user.setMap(map);
 	}
 	
-	//searchButton에 click이벤트를 등록한다.
-	function search(){
-			let distance = searchFilter["distance"];
-			console.log("searchBtn Click");
-			
-			//searchFilter의 내용을 actionForm에 적용시킨다.
-			//정렬조건 적용
-			//actionForm.elements["sortType"].value = searchFilter["sortType"].value
-			//오픈매장보기 적용
-			//actionForm.elements["openStore"].value = searchFilter["openStore"].checked;
-			//우선순위 적용
-			actionForm.elements["sortPriority"].value = searchFilter["sortPriority"].value;
-			//검색반경 적용
-			actionForm.elements["distance"].value = distance.list.options[distance.value].value;
-			//paging의 pageNum을 1로 변경
-			actionForm.elements["pageNum"].value = 1;
-			$(".filter-items").hide('slow');
-			//showMain(); 호출
-			showMain();
-	}
+	//searchFilter에 click이벤트를 등록한다.
+	$("#filterBtn").on("click", function(e){
+		e.preventDefault();
+		let distance = searchFilter["distance"];
+		console.log("searchBtn Click");
+		
+		//searchFilter의 내용을 actionForm에 적용시킨다.
+		//정렬조건 적용
+		//actionForm.elements["sortType"].value = searchFilter["sortType"].value
+		//오픈매장보기 적용
+		//actionForm.elements["openStore"].value = searchFilter["openStore"].checked;
+		//우선순위 적용
+		actionForm.elements["sortPriority"].value = $("#searchFilter").find("input[name='sortPriority']").val();
+		//검색반경 적용
+		actionForm.elements["distance"].value = distance.list.options[distance.value].value;
+		//paging의 pageNum을 1로 변경
+		actionForm.elements["pageNum"].value = 1;
+		$(".filter-items").hide('slow');
+		//showMain(); 호출
+		showMain();
+	})
+	
+	$("#searchBtn").on("click",function(e){
+		e.preventDefault();
+		
+	})
 	
 	function searchMap(){
 		var latlng = map.getCenter(); 
@@ -456,7 +484,7 @@
 		//console.log(storeList)
 		for( let i=0, len=storeList.length||0; i<len; i++){
 			//str += "<a href='/dealight/store/"+storeList[i].storeId+" '>"
-			str +='<div class="store-card flex-column">'
+			str +='<div class="store-card flex-column" data-storeid="'+storeList[i].storeId+'">'
 			str +='<div class="flex">'
 			str +='<div class="img-container">'
 			str +='<img src="https://via.placeholder.com/200x200" ></div>'
@@ -490,7 +518,7 @@
 			}
 			str +='<div class="btns felx">'
 			if(storeList[i].htdlStusCd == "A"){
-				str += '<button class="btn-big" id="htdlBtn" data-storeid="'+storeList[i].storeId+'">핫딜중</button>'; 
+				str += '<button class="btn-big htdlBtn" data-storeid="'+storeList[i].storeId+'">핫딜중</button>'; 
 			}
 			if(storeList[i].htdlStusCd == "P"){
 				str += '<button class="btn-big">핫딜예정</button>'
@@ -499,12 +527,19 @@
 				str += '<button class="btn-big">줄서기</button>' 
 			}
 			str += '</div></div></div>'
-			str += '<div class="htdl'+storeList[i].storeId+'" data-storeid="'+storeList[i].storeId+'"></div></div>'//</a>'
+			str += '<div class="htdl flex htdl'+storeList[i].storeId+'" data-storeid="'+storeList[i].storeId+'"></div></div>'//</a>'
 			
 		}
 		list.innerHTML = str;
 		
+		//매장이동이벤트
+		$(".store-card").on("click", function(e){
+			location.href = "/dealight/store/"+ $(this).data("storeid");
+		})
+		
+		//좋아요 이벤트
 		$(".like").on("click", function(e){
+			e.stopPropagation();
 			let storeId = $(this).data("storeid");
 			let like = $(this).data("like");
 			console.log(like);
@@ -544,7 +579,8 @@
 		});
 		
 		//핫딜버튼
-		$("#htdlBtn").on("click", function(e){
+		$(".htdlBtn").on("click", function(e){
+			e.stopPropagation();
 			let storeId = $(this).data("storeid")
 			
 			if($(this).data("isLoaded")===true){
@@ -552,20 +588,46 @@
 				return;
 			}
 			
-			getHtdl(storeId,function(result){
+			getHtdl(storeId,function(htdl){
 				//핫딜 창을 만들어야한다.
-				console.log(result);
+				console.log(htdl);
 				console.log(storeId);
-				$(".htdl"+storeId)[0].innerHTML = JSON.stringify(result)
-				$(".htdl"+storeId)[0]
+				let str ='';
+                str+='<div class="card-img">'
+                str+='<img src="1.jpg" alt="" style="width: 200px; height: 200px; z-index: -1;">'
+				str+='<div class="card-img-top"></div>'
+				str+='<div class="card-dc">'
+				str+='<span>'+htdl.dcRate * 100+'</span>'
+				str+='</div>'
+				str+='<div class="card-price card-afterPrice">'
+				str+='<span>₩'+htdl.befPrice +'</span>'
+				str+='</div>'
+				str+='<div class="card-price card-beforePrice">'
+				str+='<span>₩'+(htdl.befPrice - htdl.ddct) +'</span>'
+				str+='</div>'
+				str+='</div>'
+				str+='<div class="deatial-container flex-column m-l16" style="width: 100%;">'
+				str+='<div class="card-title">'
+				str+='<h3>['+htdl.brch +'] '+htdl.name +'</h3>'
+				str+='</div>'
+				str+='<div class="card-menu">'
+				str+='메뉴:&nbsp;<span>디저트 콤보 1인 세트</span>'
+				str+='</div>'
+				str+='<div class="card-intro">'
+				str+='<div style="width: 40px; align-self: flex-start;">소개 : </div><span>'+htdl.intro +'</span>'
+				str+='</div>'
+				str+='</div>'
 				
+				$(".htdl"+storeId)[0].innerHTML = str;
 			});
 				$(this).data("isLoaded",true)
 		});
 		
 		//페이징처리
 		showPaging(pageDTO)
-	}
+		
+	}// end showList
+	
 	function isLogin(){
 		let userId = "<c:out value='${userId}'/>"
 		if(userId ==='' || userId === null){
@@ -708,14 +770,94 @@
 	    map.panTo(moveLatLon);            
 	}        
 	
+	function closeFilter(){
+	    //처음 필터조건을 기억하고 닫기버튼을 누르면 초기조건으로 되돌리고 닫아야한다.
+	    $(".filter-items").hide('slow');
+		
+	}
 	
+	function selectEvent(dropdown, values, form){
+	    const list = dropdown.find(".dropdown-list");
+	    const selectValue =dropdown.find(".select");
+	   	let name = dropdown.attr("id");
+		
+	    //셀렉박스 클릭 이벤트
+        dropdown.on('click', function(e){
+        	e.stopPropagation();
+			list.css("opacity","1")
+	    	
+	    	if(list.css("visibility") ==="visible"){
+	    		list.css("visibility","")
+	    		return
+	    	}
+	        list.css("visibility","visible");
+        });
+	    
+	    //셀렉박스 외부 클릭시 이벤트
+        $(document).click(function(){
+        	list.css("visibility","") 
+        });
+        
+      	//select 아이템 추가
+        let str = addItem(values);
+        list.append(str);
+        
+        //셀렉박스 요소 선택 이벤트
+        dropdown.find(".dropdown-list__item").on("click", function(e){
+        	//클릭시 셀렉박스에 내용 반영
+            selectValue.html($(this).html());
+        	
+        	let inputTag = form.find("input[name='"+name+"']");
+        	console.log(inputTag);
+        	console.log($(this).data("value"))
+        	if(inputTag.length == 0){
+        		let str =""
+        		str += "<input type='hidden' name='"+ name +"' value='" + $(this).data("value") + "'>"
+        		form.append(str);
+        		
+        		return;
+        	}
+        	//간단하게 form 요소만 변경(기존에 있어야함)
+            inputTag.val($(this).data("value"));
+        	
+        });
+        
+      	//select 아이템 추가 함수
+        function addItem(values){
+           let str ="";
+           for(let index in values){
+           		str += "<div class='dropdown-list__item' data-value='"+(values[index])[1]+"'>"+(values[index])[0]+"</div>";
+           }
+           return str;
+        		
+        }
+      	
+   	};
+	$("#reserve").on("click", function(e){
+    	
+        $(this).addClass("select-bar");
+        
+        $(this).prev().removeClass("select-bar")
+        //시간 셀렉박스를 보여준다.
+        $("#timebox").show("slow");
+    });
+    
+    $("#wait").on("click", function(e){
+    	
+        $(this).addClass("select-bar");
+        
+        $(this).next().removeClass("select-bar")
+        
+        //시간 셀렉바스를 숨긴다.
+        $("#timebox").hide("slow");
+        
+        //form에서 time을 지워준다.
+        $("#form").find("input[name='time']").remove();
+    });
 
-
-function closeFilter(){
-    //처음 필터조건을 기억하고 닫기버튼을 누르면 초기조건으로 되돌리고 닫아야한다.
-    $(".filter-items").hide('slow');
-
-}
+    
+    
+    
 </script>
 </body>
 </html>

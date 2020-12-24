@@ -192,7 +192,6 @@
 </script>
 <script>
 
-    //ex)
     
     
     $(document).ready(function(){
