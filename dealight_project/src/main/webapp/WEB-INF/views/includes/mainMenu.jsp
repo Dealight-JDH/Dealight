@@ -24,12 +24,6 @@
 <style>
 
 
-.main_nav{
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	height: 65px;
-}
 .top {
 	overflow: hidden;
 	flex: 1;

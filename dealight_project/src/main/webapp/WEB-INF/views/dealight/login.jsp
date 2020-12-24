@@ -240,7 +240,7 @@
                 </div>
                 
                 <div class="remember">
-                    <input type="checkbox" name="remember-me" id="remember-me">Remember me
+                    <label for="remember-me"><input type="checkbox" name="remember-me" id="remember-me">자동 로그인</label>
                 </div>
 
                 <div>
