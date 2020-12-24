@@ -37,9 +37,9 @@ public class MainStoreJoinVO {
     private String breakSttm;
     // 브레이크타임종료시간 
     private String breakEntm;
-//추가코드 핫딜 상태코드
+    //추가코드 핫딜 상태코드
     private String htdlStusCd;
-//예약관련 변수 추가해야 
+    //예약관련 변수 추가해야 
    
     //====================================위치테이블
     private String addr;

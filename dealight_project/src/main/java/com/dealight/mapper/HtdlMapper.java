@@ -79,5 +79,6 @@ public interface HtdlMapper {
 	// update
 	public int update(HtdlVO htdl);
 	
+	public List<HtdlVO> getMainHtdlList();
 
 }
