@@ -1,13 +1,9 @@
 package com.dealight.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +23,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -35,6 +30,7 @@ import com.dealight.domain.AllStoreVO;
 import com.dealight.domain.Criteria;
 import com.dealight.domain.HtdlVO;
 import com.dealight.domain.MenuVO;
+import com.dealight.domain.PageDTO;
 import com.dealight.domain.RevwVO;
 import com.dealight.domain.StoreImgVO;
 import com.dealight.domain.StoreTagVO;
@@ -82,20 +78,39 @@ public class ManageController {
 	
 	// 핫딜 히스토리
 	@GetMapping("/dealhistory")
-	public String dealHistory(Model model,long storeId,HttpServletRequest request) {
+	public String dealHistory(Model model,long storeId,HttpServletRequest request,Criteria cri) {
 		
 		log.info("business manage dealhistory..");
 		
-		List<HtdlVO> htdlList = htdlService.readAllStoreHtdlList(storeId);
+		log.info("before cri : "+cri);
+		
+		if(cri.getPageNum() < 1)
+			cri = new Criteria(1,10);
+		
+		log.info("after cri : "+cri);
+		
+		List<HtdlVO> htdlList = htdlService.findHtdlWithRsltByStoreId(storeId, cri);
 		
 		model.addAttribute("htdlList",htdlList);
+		
+		htdlList.stream().forEach(htdl -> {
+			htdl.setHtdlImg(htdl.getHtdlImg());
+		});
+		
+		log.info("htdl list : "+htdlList);
 		
 		// 현재 상태가 Active인 핫딜을 가져온다.
 		List<HtdlVO> curList = htdlList.stream().filter(htdl -> 
 			htdl.getStusCd().equals("A")
 		).collect(Collectors.toList());
 		
+		log.info("cur list : "+curList);
+		
+		int total = htdlService.getHtdlTotal(storeId, cri);
+		
 		model.addAttribute("curList", curList);
+		model.addAttribute("storeId",storeId);
+		model.addAttribute("pageMaker",new PageDTO(cri,total));
 		
 		return "/dealight/business/manage/dealhistory";
 	}

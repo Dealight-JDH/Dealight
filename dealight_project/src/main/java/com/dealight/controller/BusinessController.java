@@ -169,7 +169,7 @@ public class BusinessController {
 	// 해당 매장의 관리 화면을 보여준다.
 	// 대부분의 로직이 REST FUL 방식으로 변경(Board Controller로 대체되었다.)
 	@GetMapping("/manage")
-	public String manage(Model model, long storeId,HttpServletRequest request, String code) {
+	public String manage(Model model, Long storeId,HttpServletRequest request, String code) {
 		
 		log.info("business manage..");
 		
@@ -181,6 +181,7 @@ public class BusinessController {
 		// 오늘 예약한 사용자의 사용자 정보와 예약 정보를 가져온다.
 		List<UserWithRsvdDTO> todayRsvdUserList = rsvdService.userListTodayRsvd(storeId);
 		
+		model.addAttribute("store",storeService.findByStoreIdWithBStore(storeId));
 		model.addAttribute("userId",userId);
 		model.addAttribute("storeId", storeId);
 		model.addAttribute("todayRsvdUserList", todayRsvdUserList);

@@ -15,7 +15,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
 <script src="https://kit.fontawesome.com/0f892675ba.js" crossorigin="anonymous"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="/resources/js/Chart.js"></script>
 <link rel="stylesheet" href="/resources/css/manage.css">
@@ -38,11 +37,11 @@
                         <div><a href="/dealight/business/">매장 리스트</a></div>
                         <div id="store_info_box">
                             <div class="store_info_tit">매장 이름</div>
-                            <div class="store_info_val">피자필</div>
+                            <div class="store_info_val">${store.storeNm}</div>
                             <div class="store_info_tit">매장 수용 인원</div>
-                            <div class="store_info_val">60명</div>
+                            <div class="store_info_val">${store.bstore.acmPnum}</div>
                             <div class="store_info_tit">매장 평균 식사 시간</div>
-                            <div class="store_info_val">30분</div>
+                            <div class="store_info_val">${store.bstore.avgMealTm}</div>	
                         </div>
                     </div>
                 </div>

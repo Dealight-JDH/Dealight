@@ -18,6 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlRsltVO;
@@ -494,6 +495,41 @@ public class HtdlMapperTests {
 		List<HtdlVO> lists = mapper.getList();
 		
 		lists.forEach(htdlVO -> log.info(htdlVO));
+	}
+	
+	@Test
+	public void findHtdlWithRsltByStoreIdTest1() {
+		
+		Long storeId = 1L;
+		int pageNum = 1;
+		int amount = 5;
+		Criteria cri = new Criteria(pageNum,amount);
+		
+		List<HtdlVO> list = mapper.findHtdlWithRsltByStoreId(storeId, cri);
+		
+		assertNotNull(list);
+		list.stream().forEach(htdl -> {
+			log.info("htdl : "+htdl);
+			assertNotNull(htdl.getHtdlRslt());
+			assertTrue(htdl.getStoreId().equals(storeId));
+		});
+		
+		assertTrue(list.size() == amount);
+		
+	}
+	
+	@Test
+	public void getHtdlTotalTest1() {
+		
+		Long storeId = 1L;
+		int pageNum = 1;
+		int amount = 5;
+		Criteria cri = new Criteria(pageNum,amount);
+		
+		int result = mapper.getHtdlTotal(storeId, cri);
+		
+		log.info("result : "+result);
+		
 	}
 	
 }

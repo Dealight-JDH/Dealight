@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.AttachFileDTO;
+import com.dealight.domain.Criteria;
 import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlPageDTO;
@@ -252,6 +253,16 @@ public class HtdlServiceImpl implements HtdlService {
 	public List<HtdlVO> readActStoreHtdlList(long storeId) {
 		
 		return htdlMapper.findByStoreIdStusCd(storeId, "A");
+	}
+
+	@Override
+	public List<HtdlVO> findHtdlWithRsltByStoreId(Long storeId, Criteria cri) {
+		return htdlMapper.findHtdlWithRsltByStoreId(storeId, cri);
+	}
+
+	@Override
+	public int getHtdlTotal(Long storeId, Criteria cri) {
+		return htdlMapper.getHtdlTotal(storeId, cri);
 	}
 
 
