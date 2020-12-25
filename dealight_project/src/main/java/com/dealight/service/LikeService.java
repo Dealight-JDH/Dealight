@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.dealight.domain.Criteria;
 import com.dealight.domain.LikeVO;
+import com.dealight.domain.StoreVO;
 
 public interface LikeService {
 	
@@ -20,5 +21,7 @@ public interface LikeService {
 	List<LikeVO> findListWithPagingByUserId(String userId, Criteria cri);
 	
 	int getLikeTotalByUserId(String userId, Criteria cri);
+	
+	List<StoreVO> findStoreListWithPagingByUserId(String userId, Criteria cri);
 
 }

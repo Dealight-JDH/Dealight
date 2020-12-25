@@ -634,7 +634,7 @@ window.onload = function () {
 	            max_value: 5,
 	            step_size: 0.5,
 	            initial_value: 3,
-	            selected_symbol_type: 'utf8_star', // Must be a key from symbols
+	            selected_symbol_type: 'utf8_star', // Must be a  key from symbols
 	            cursor: 'default',
 	            readonly: false,
 	            update_input_field_name: $("#rate_input")

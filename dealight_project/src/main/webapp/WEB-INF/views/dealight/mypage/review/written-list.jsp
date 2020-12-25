@@ -29,6 +29,10 @@
 	.modal_top_revw{
 		height: auto;
 	}
+	.border{
+		height: 20px;
+		border-bottom: 1px #eeeeef solid;
+	}
 </style>
 </head>
 <body>
@@ -113,6 +117,9 @@
 														</div>
 														</div>
 													</c:if>
+												</div>
+												<div class="border">
+												
 												</div>
 											</div>
 										</div>

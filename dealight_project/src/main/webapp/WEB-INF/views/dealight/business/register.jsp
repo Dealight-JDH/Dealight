@@ -14,7 +14,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 <title>매장 등록 하기</title>
 	<style>
-	        *{
+	    *{
             font-family: 'Nanum Gothic', sans-serif;
         }
         .store_box{
@@ -25,24 +25,31 @@
             
             min-width: 1025px;
             min-height: 800px;
-
+			border : 1px solid #eeeeef; 
             border-radius: 10px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            background-color: #f4f5f7;
+            background-color: #f4f4f4;
             padding-bottom : 25px;
-            box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            /*box-shadow: 2px 2px 8px rgba(0,0,0,0.3);*/
             
         }
         .register_tit{
             font-size: 24px;
             font-weight: 700;
             margin-bottom: 25px;
-            color: #D32323;
-            text-align: center;
+            color: black;
+            text-align: left;
             width: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+        .register_tit > span {
+        	padding-left : 10px;
         }
         #regForm{
             margin-top: 50px;
@@ -61,6 +68,7 @@
             padding-left: 20px;
             margin: 5px;
             height: 40px;
+            margin-left : 10px;
         }
         .reg_form div{
             padding: 30px;
@@ -99,19 +107,20 @@
             /*border: 1px solid black;*/
         }
         .label_input{
+        	margin-top:10px;
             display: flex;
-            flex-direction: row;
-            justify-content: start;
-            align-items: center;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
             /*border: 1px solid black;*/
         }
         .label_input label{
             padding: 5px;
             margin: 5px;
-            width: 200px;
+            width: 300px;
             color: rgba(46, 45, 45, 0.767);
             margin-right: 10px;
-            font-size: 18px;
+            font-size: 14px;
             font-weight: 600;
             letter-spacing: 2px;
         }
@@ -145,7 +154,7 @@
         }
         .label_input .custom_select {
             position: relative;
-            width: 300px;
+            width: 100%;
             height: 37px;
             padding: 0 0 5px 0;
             border-radius: 20px;
@@ -159,7 +168,7 @@
             -moz-appearance:   none;
             appearance:        none;
             outline: none;
-            width: 60%;
+            width: 100%;
             height: 100%;
             border: 0px;
             padding: 8px 10px;
@@ -171,7 +180,7 @@
             content: "";
             position: absolute;
             top: 42%;
-            right: 41%;
+            right: 2%;
             border: 8px solid;
             border-color: #d5dbd9 transparent transparent transparent;
             pointer-events: none;
@@ -186,6 +195,13 @@
             margin: auto auto;
             width: 80%;
             /*border: 1px solid black;*/
+        }
+        .label_input.terms{
+        	display: flex;
+        	flex-direction: row;
+        	justify-content:flex-start;
+        	align-items: center;
+        	margin-bottom : 20px;
         }
         .label_input.terms span{
             font-size: 14px;
@@ -242,18 +258,15 @@
             display: block;
         }
         #btnSubmit{
-            width: 60%;
-            height: 80px;
+            width: 25%;
+            height: 40px;
             border: 0;
-            border-radius: 20px;
-            font-size: 36px;
+            font-size: 18px;
             font-weight: bold;
             color: white;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-            background-color: #d323239d;
-            box-shadow: 4px 4px 8px rgba(0,0,0,0.3);
+            background-color: #f43939;
             cursor: pointer;
-            border-radius: 40px;
+            border-radius: 3px;
         }
         #btnSubmit:hover{
             opacity: 0.7;
@@ -262,7 +275,7 @@
         	padding-top:20px;
         	padding-left:10px;
         	padding-bottom:10px;
-            border-top: 32px #d323239d solid;
+            /*border-top: 32px #d323239d solid;*/
             font-size: 18px;
             font-weight: bold;
             background-color: #f4f5f788; 
@@ -275,7 +288,7 @@
         	padding-top:20px;
         	padding-left:10px;
         	padding-bottom:10px;
-            border-top: 32px #d323239d solid;
+            /*border-top: 32px #d323239d solid;*/
             font-size: 18px;
             font-weight: bold;
             background-color: #f4f5f788;
@@ -288,7 +301,7 @@
         	padding-top:20px;
         	padding-left:10px;
         	padding-bottom:10px;
-            border-top: 32px #d323239d solid;
+            /*border-top: 32px #d323239d solid;*/
             font-size: 18px;
             font-weight: bold;
             background-color: #f4f5f788;
@@ -349,7 +362,9 @@
             width : 600px;
         }
         #map {
-        	margin : auto auto;
+        	margin-top:20px;
+        	margin-left:10px;
+        	align-self: flex-start;
             display : hidden;
         }
         #rep_img_box{
@@ -361,31 +376,54 @@
             border : 4px red solid;
         }
         .label_input.select_box{
+        	width:60%;
             /*border: 1px solid black;*/
-        }
-        #openTm{
-        	
-            width: 60%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
         }
         #breakSttm{
         	
         }
         #openTm_tit{
-        	margin-right:65px;
+        	margin-right:25px;
         }
         #breakSttm_tit{
-        	margin-right:65px;
+        	margin-right:25px;
         }
         #btn_find_loc{
         	width:10%;
         	padding: 0 0;
         	padding-left:0;
         }
+        .btn_box{
+        	display: flex;
+        	flex-direction: row;
+        	justify-content: flex-start;
+        	align-items: center;
+        	width:80%;
+        }
+        .reg_description{
+        	font-size: 11px;
+        	margin-top: 20px;
+        	color: gray;
+        }
+        input{
+        	margin-left: 5px;
+        }
+        .custom_select.last{
+        	width: 60%;
+        }
 	</style>
 	<style>
 	main{
 		margin : 30px auto;
 		width:1050px;
+	}
+	#breakEntm_label,#closeTm_label{
+		margin-left:10px;
+		margin-right:-;
 	}
 </style>
         <script>
@@ -409,10 +447,11 @@
         <form action="/dealight/business/register" method="post" id='regForm' name="form">
                 <div class="register_tit">
                     <span>매장 등록 신청서</span>
+                    <span class="reg_description">아래 신청서의 항목을 모두 작성해주세요.</span>
                 </div>
                 <div class="fixed_info_wrapper">
                     <div id="store_basic_info">
-                        <span id="basic_info_tit">매장 기본 정보 (변경 불가)</span>
+                        <span id="basic_info_tit">매장 기본 정보</span>
                     </div>
                     <div class="label_input">
                         <label>유저아이디</label>
@@ -452,7 +491,7 @@
                                 <option value="10:30">09:30</option>
                             </select>
                         </div>
-                        <label for="closeTm">영업 마감</label>
+                        <label for="closeTm" id="closeTm_label">영업 마감</label>
                         <div class='custom_select'>
                             <select id="closeTm" name="closeTm">
                                 <option value=""></option>
@@ -466,7 +505,7 @@
                                 <option value=""></option>
                             </select>
                          </div>
-                        <label for="breakEntm">브레이크 타임 종료</label>
+                        <label for="breakEntm" id="breakEntm_label">브레이크 타임 종료</label>
                         <div class='custom_select'>
                             <select id="breakEntm" name="breakEntm">
                                 <option value=""></option>
@@ -475,7 +514,7 @@
                     </div>
                     <div class="label_input">
                         <label>라스트 오더</label>
-                        <div class='custom_select'>
+                        <div class='custom_select last'>
                             <select id="lastOrdTm" name="lastOrdTm">
                                 <option value=""></option>
                             </select>
@@ -573,7 +612,9 @@
                         <span>딜라이트 이용약관, 개인정보 수집 및 이용, 위치정보 이용약관(선택), 프로모션 정보 수신(선택)에 모두 동의합니다.</span>
                     </div>
                 </div>
-            <button type="submit" id="btnSubmit">등록하기</button><br>
+            <div class="btn_box">
+				<button type="submit" id="btnSubmit">등록하기</button><br>            
+            </div>
         </form>
     </main>
 <!-- 카카오 지도  -->

@@ -18,1446 +18,112 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="/resources/js/Chart.js"></script>
-    <style>
-        *{
-            font-family: 'Nanum Gothic', sans-serif;
-        }
-        .store_board{
-            width: 95%;
-            height: auto;
-            /*border: 1px solid black;*/
-            /*margin: 50px 30px;*/
-            margin-top: 20px;
-            border-radius: 20px;
-            padding: 5px 15px;
-            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);
-        }
-        .main_box{
-            margin: 20px;
-            /*border: 1px black solid;*/
-            
-        }
-        .board{
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            /*border: 1px black solid;*/
-        }
-        .board_wrapper{
-            display: flex;
-            flex-wrap:nowrap;
-            width: 80%;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            /*border: 1px black solid;*/
-        }
-        .tab_nav{
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-end;
-            align-items: flex-end;
-            /*border: 1px solid black;*/
-            padding: 5px 0;
-            height: 30px;
-            width: 90%;
-            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);
-            margin-bottom: 20px;
-        }
-        .tab_items{
-            /*border: 1px solid black;*/
-            padding: auto auto;
-            margin: auto 15px 0 15px;
-            cursor: pointer;
-        }
-        .tab_items:hover{
-            opacity: 0.7;
-            box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.274);
-        }
-        .tab_items a{
-            padding: 5px 5px;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .curTab{
-            color: white;
-            background-color:  #d32323;
-            padding: 0px 8px;
-            border-radius: 20px;
-        }
-
-
-        .board_top_box{
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            /*border: 1px black solid;*/
-            width: 90%;
-            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);
-            margin-bottom: 20px;
-        }
-        .top_box_items{
-            width: 50%;
-            /*border: 1px solid black;*/
-        }
-        .clock{
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            font-family: 'Montserrat', sans-serif;
-        }
-        .cur_date{
-            font-size: 24px;
-            font-weight: bold;
-            width: 50%;
-            height: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            /*border: 1px solid black;*/
-        }
-        .cur_date > span {
-            padding-right: 10px;
-        }
-        .cur_time{
-            font-size: 24px;
-            font-weight: bold;
-            width: 50%;
-            height: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            /*border: 1px solid black;*/
-        }
-        .cur_time > span{
-            padding-right: 10px;
-        }
-        .time{
-            color: rgba(0, 0, 0, 0.794);
-        }
-        .btn_seat_stus{
-            cursor: pointer;
-            outline: none;
-            border: 0; 
-            padding: 0; 
-            background-color: transparent !important; 
-            font-size: 32px;
-            padding: 0 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.274);
-            opacity: 0.5;
-        }
-        .btn_seat_stus:hover{
-            opacity: 1.0;
-        }
-        .btn_seat_stus.green{color: green;}
-        .btn_seat_stus.yellow{color: yellow;}
-        .btn_seat_stus.red{color: red;}
-        .top_box_items{
-            padding: 10px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-        }
-        .top_box_items.light{
-        	justify-content: flex-end;
-        	
-            /*border: 1px solid black;*/
-        }
-        .top_box_items.light > *{
-            /*border: 1px black solid;*/
-
-        }
-        .top_box_items.light > span{
-            font-weight: bold;
-            font-size: 24px;
-            padding-right: 10px;
-        }
-        .curStus {
-            opacity: 1.0;
-            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);
-        }
-
-        /* board */
-        #board{
-            /*border: 1px black solid;*/
-            width: 90%;
-            height: 600px;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);
-        }
-        .board_left_box{
-            width: 40%;
-            height:90%;
-            /*border: 1px black solid;*/
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: space-around;
-        }
-        .board_right_box{
-            width: 55%;
-            height: 90%;
-            /*border: 1px black solid;*/
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .next_wrapper{
-            /*border: 1px solid black;*/
-            padding-right: 0px;
-            width: 70%;
-            height: 80%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-around;
-            
-        }
-        .next_wait{
-            position: relative;
-            /*border: 1px solid black;*/
-            height: 40%;
-            width: 100%;
-            border-radius: 20px;
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-        }
-        .btn_enter_wait{
-	        position: absolute;
-	            left: 100%;
-	            top: 10%;
-	            width: 60px;
-	            text-align: center;
-	            border-radius: 0 10px 10px 0;
-	            background-color: gray;
-	            color: white;
-	            font-size: 18px;
-	            font-weight: bold;
-	            padding: 4px 7px;
-	            cursor: pointer;
-	            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-	            outline:none;
-            	border:0px;
-          }
-        .btn_enter_wait:hover{
-            opacity: 0.7;
-        	}
-        .btn_noshow_wait{
-        	position: absolute;
-            left: 100%;
-            top: 40%;
-            width: 60px;
-            text-align: center;
-            border-radius: 0 10px 10px 0;
-            background-color: gray;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 4px 7px;
-            cursor: pointer;
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            outline:none;
-            border:0px;
-        }
-        .btn_noshow_wait:hover{
-            opacity: 0.7;
-        }
-        .next_rsvd{
-            position: relative;
-            /*border: 1px solid black;*/
-            height: 40%;
-            width: 100%;
-            border-radius: 20px;
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-        }
-        .next_tit{
-            position: absolute;
-            border-radius: 10px;
-            left: 20px;
-            top: 10px;
-            padding: 5px 10px;
-            background-color: #d32323;
-            color: white;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-        .next_info{
-            margin-top: 20px;
-            margin-left: 20px;
-            /*border: 1px black solid;*/
-            width: 90%;
-            height: 70%;
-            padding: 5px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .next_info_top{
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: flex-end;
-            /*border: 1px solid black;*/
-            width: 100%;
-            height: 30%;
-        }
-        .next_info_top > span{
-            
-            padding-bottom: 3px;
-        }
-        .next_info_bot{
-            /*border: 1px solid black;*/
-            width: 100%;
-            height: 70%;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-            align-items: center;
-        }
-        .wait_name{
-            letter-spacing: 2px;
-            font-weight: bold;
-            font-size: 14px;
-            border-radius: 20px;
-            color: white;
-            padding: 4px 7px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            background-color: rgba(106, 153, 255, 0.87);
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-        }
-        .wait_telno{
-            align-self: flex-end;
-            letter-spacing: 2px;
-            font-weight: bold;
-            font-size: 9px;
-            border-radius: 20px;
-            color: white;
-            padding: 4px 7px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            background-color: rgba(106, 153, 255, 0.87);
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-        }
-        .next_wait_pnum{
-            font-weight: bold;
-            font-size: 42px;
-            color:rgba(0, 0, 0, 0.548);
-            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.13);
-        }
-        .next_wait_regtm{
-            font-weight: bold;
-            font-size: 42px;
-            color:rgba(0, 0, 0, 0.548);
-            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.13);
-        }
-        .next_rsvd_name{
-            letter-spacing: 2px;
-            font-weight: bold;
-            font-size: 14px;
-            border-radius: 20px;
-            color: white;
-            padding: 4px 7px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            background-color: rgba(106, 153, 255, 0.87);
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-        }
-        .next_rsvd_telno{
-            align-self: flex-end;
-            letter-spacing: 2px;
-            font-weight: bold;
-            font-size: 9px;
-            border-radius: 20px;
-            color: white;
-            padding: 4px 7px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            background-color: rgba(106, 153, 255, 0.87);
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-        }
-        .next_rsvd_pnum{
-            font-weight: bold;
-            font-size: 42px;
-            color:rgba(0, 0, 0, 0.548);
-            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.13);
-        }
-        .next_rsvd_tm{
-            font-weight: bold;
-            font-size: 42px;
-            color:rgba(0, 0, 0, 0.548);
-            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.13);
-        }
-        .list_wrapper{
-            /*border: 1px black solid;*/
-            width: 100%;
-            height: 80%;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-            align-items: flex-start;
-        }
-        
-        .wait_list_wrapper{
-            /*border: 1px black solid;*/
-            width: 40%;
-            height: 100%;
-            
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            overflow:scroll;
-            box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.274);
-        }
-        .wait_list_wrapper::-webkit-scrollbar{
-            display: none;
-        }
-        .rsvd_list_wrapper{
-            /*border: 1px black solid;*/
-            width: 40%;
-            height: 100%;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            overflow:scroll;
-            box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.274);
-        }
-        .rsvd_list_wrapper::-webkit-scrollbar{
-            display: none;
-        }
-        .wait_list_tit{
-            position: absolute;
-            border-radius: 10px;
-            left: 20px;
-            top: 10px;
-            padding: 5px 10px;
-            background-color: #d32323;
-            color: white;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-        .rsvd_list_tit{
-            position: absolute;
-            border-radius: 10px;
-            left: 20px;
-            top: 10px;
-            padding: 5px 10px;
-            background-color: #d32323;
-            color: white;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-        .wait{
-            /*border: 1px solid black;*/
-            height: 25%;
-            min-height: 20%;
-            width: 90%;
-            margin: 5px;
-            border-radius: 10px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.404);
-        }
-        .wait > button{
-            position: absolute;
-            right: 15px;
-            bottom: 10px;
-        }
-        .list_blank{
-            /*border: 1px solid black;*/
-            min-height: 15%;
-            height: 15%;
-            width: 90%;
-        }
-        .list_info_top{
-            /*border: 1px black solid;*/
-            width: 100%;
-            height: 50%;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-            align-items: center;
-        }
-        .list_info_bot{
-            /*border: 1px black solid;*/
-            width: 100%;
-            height: 50%;
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-        }
-        .wait{
-        	cursor:pointer;
-        }
-        .wait_name.wait_list{
-            align-items: center;
-        }
-        .wait_telno.wait_list{
-            align-self: center;
-        }
-        .list_wait_pnum{
-            /*border: 1px black solid;*/
-            font-weight: bold;
-            font-size: 24px;
-            color:rgba(0, 0, 0, 0.548);
-            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.13);
-        }
-        .list_wait_regtm{
-            /*border: 1px black solid;*/
-            font-weight: bold;
-            font-size: 24px;
-            color:rgba(0, 0, 0, 0.548);
-            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.13);
-        }
-        .list_info_bot >span{
-            margin-left: 20px;
-            margin-right: 10px;
-        }
-        .list_info_bot.rsvd_list{
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-        }
-        .rsvd{
-            /*border: 1px solid black;*/
-            height: 25%;
-            min-height: 20%;
-            width: 90%;
-            margin: 5px;
-            border-radius: 10px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.404);
-        }
-        .rsvd_name.rsvd_list{
-            align-items: center;
-        }
-        .rsvd_telno.rsvd_list{
-            align-self: center;
-        }
-        .list_rsvd_pnum{
-            /*border: 1px black solid;*/
-            font-weight: bold;
-            font-size: 24px;
-            color:rgba(0, 0, 0, 0.548);
-            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.13);
-        }
-        .list_rsvd_regtm{
-            /*border: 1px black solid;*/
-            font-weight: bold;
-            font-size: 24px;
-            color:rgba(0, 0, 0, 0.548);
-            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.13);
-        }
-        .rsvd_name{
-            letter-spacing: 2px;
-            font-weight: bold;
-            font-size: 14px;
-            border-radius: 20px;
-            color: white;
-            padding: 4px 7px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            background-color: rgba(106, 153, 255, 0.87);
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-        }
-        .rsvd_telno{
-            align-self: flex-end;
-            letter-spacing: 2px;
-            font-weight: bold;
-            font-size: 9px;
-            border-radius: 20px;
-            color: white;
-            padding: 4px 7px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            background-color: rgba(106, 153, 255, 0.87);
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-        }
-        
-        /* 타임 바*/
-        .rsvd_time_bar{
-            /*border: solid 1px black;*/
-            position: relative;
-            margin : 0 auto;
-            margin-top : 50px;
-            margin-bottom: 50px;
-            border-radius: 10px;
-            width: 80%;
-            height: 100px;
-            display: flex;
-            flex-direction: row;
-            overflow-x: auto;
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            font-family: 'Montserrat', sans-serif;
-        }
-        .rsvd_time {
-            width: 150px;
-    		flex-shrink: 0;
-    		height: 100%;
-        }
-        .time_table{
-            border :rgba(255, 255, 255, 0.575) solid 1px;
-            border-radius: 5px;
-       		width: 150px;
-        	height: 50px;
-            /* green 예약 없을 때 */
-            background-color: rgba(125, 255, 164, 0.698);
-            /* green 예약 있을 때*/
-            /*background-color: rgba(37, 201, 89, 0.911);*/
-            /* yellow */
-            /*background-color: rgba(248, 236, 73, 0.781);*/
-            /* red */
-            /*background-color: #d32323;*/
-            /* gray*/
-            /*background-color: #29242460;*/
-        }
-        .time_text_box{
-            display: flex;
-            justify-content: center;
-            flex-direction: row;
-            align-items: center;
-        }
-        .time_text{
-            text-align: center;
-            font-weight: bolder;
-            font-size: 16px;
-            padding: 3px;
-            margin: 3px;
-        }
-        .cur_time_mark{
-            display: inline;
-            position: absolute;
-            top: 12px;
-            left: 180px;
-            border: 8px solid;
-            border-color: #d32323 transparent transparent transparent;
-            pointer-events: none;
-        }
-        /* manage side menu*/
-        .manage_side_menu{
-            width: 20%;
-            height: 748px;
-            /*border: 1px black solid;*/
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            flex-direction: column;
-            box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.274);
-        }
-        .manage_side_menu a{text-decoration: none; color: white;}
-        .manage_side_menu a:visited { text-decoration: none; color: white;} 
-        .manage_side_menu a:hover { text-decoration: none; color: white;} 
-        .manage_side_menu a:active { text-decoration: none; color: white;}
-        .manage_side_menu > div{
-            cursor: pointer;
-            width: 70%;
-            height: 10%;
-            margin: 50px 0 0 0;
-            padding: 20px;
-            /*border: 1px solid black;*/
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            font-weight: bold;
-            background-color: #d32323;
-            color: white;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.527);
-        }
-        
-        .btn_wait_register{
-            text-align: center;
-            line-height: 40px;
-        }
-        #side_menu_tit{
-            cursor: unset;
-            width: 100%;
-            padding: 0;
-            border-radius: 0;
-            align-self: start;
-            margin-top: 0;
-            margin-bottom: 50px;
-        }
-        .info_box{
-            width: 95%;
-            height: auto;
-            /*border: 1px solid black;*/
-            margin: 50px 30px;
-            border-radius: 20px;
-            
-            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);
-        }
-        #store_board_main{
-        	width:95%;
-        	max-width:95%;
-        }
-        #switch_manage{
-        	color:white;
-        }
-        /* The Modal (background) */
-        .modal {
-	        display: none; /* Hidden by default */
-	        position: fixed; /* Stay in place */
-	        z-index: 1; /* Sit on top */
-	        left: 0;
-	        top: 0;
-	        width: 100%; /* Full width */
-	        height: 100%; /* Full height */
-	        overflow: auto; /* Enable scroll if needed */
-	        background-color: rgb(0,0,0); /* Fallback color */
-	        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-	        animation: fadeEffect 0.3s;
-        }
-
-                /* The Modal (background) */
-        .modal {
-	        display: none; /* Hidden by default */
-	        position: fixed; /* Stay in place */
-	        z-index: 1; /* Sit on top */
-	        left: 0;
-	        top: 0;
-	        width: 100%; /* Full width */
-	        height: 100%; /* Full height */
-	        overflow: auto; /* Enable scroll if needed */
-	        background-color: rgb(0,0,0); /* Fallback color */
-	        background-color: rgba(0, 0, 0, 0.219); /* Black w/ opacity */
-	        animation: fadeEffect 0.8s;
-        }
-
-        /* Modal Content/Box */
-        .modal-content {
-            position: relative;
-	        background-color: #fefefe;
-	        margin: 10% auto; /* 15% from the top and centered */
-	        
-	        display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-self: start;
-            border-radius: 15px;
-            box-shadow: 3px 3px 7px rgba(44, 36, 36, 0.342);
-	        width: 40%; /* Could be more or less, depending on screen size */
-            height: 60%;
-	        animation: fadeEffect 0.3s;
-            overflow: scroll;
-        }
-        .modal_header{
-            padding: 0 0;
-            width: 100%;
-            padding: 20px;
-            padding-bottom: 25px;
-            /*border: 1px black solid;*/
-            background-color: #d32323;
-            border-radius: 15px 15px 0 0;
-        }
-        .modal_wrapper_regwait{
-            margin: 10px;
-            padding: 0 25px 50px 25px;
-            /*display: flex;*/
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            display:none;
-        }
-        .modal_tit{
-            /*border: 1px black solid;*/
-            
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            font-weight: bold;
-            width: 100%;
-            height: 50px;
-            color: #d32323;
-            text-shadow: 1px 1px 6px rgba(44, 36, 36, 0.171);
-        }
-        .modal_top{
-            width: 100%;
-            height: 250px;
-            /*border: 1px black solid;*/
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal_bot{
-            width: 100%;
-            height: 100px;
-            /*border: 1px black solid;*/
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal_bot > div{
-            font-weight: bold;
-            font-size: 18px;
-            margin: 5px 0;
-        }
-         .modal-content ul{
-         	margin : 0 0;
-         	display : inline-block;
-        }
-
-        /* The Close Button */
-        .close_modal {
-            position : absolute;
-            right : 20px;
-            top : 10px;
-            display : inline-block;
-            margin : 0 0;
-            color: white;
-            font-size: 24px;
-        
-        }
-
-        .close_modal:hover,
-        .close_modal:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .form_left_wrapper{
-            width: 50%;
-            height: 80%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            border-right: 2px rgba(71, 71, 71, 0.26) solid;
-        }
-        .form_right_wrapper{
-            width: 50%;
-            height: 80%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            /*border: 1px black solid;*/
-        }
-        #submit_waitRegForm{
-            padding: 30px;
-            background-color:#d32323;
-            color: white;
-            font-size: 32px;
-            font-weight: bold;
-            border: 0;
-            border-radius: 30px;
-            text-shadow: 1px 1px 6px rgba(44, 36, 36, 0.171);
-            box-shadow: 1px 1px 6px rgba(44, 36, 36, 0.171);
-            outline: none;
-            cursor: pointer;
-        }
-        #submit_waitRegForm:hover{
-            opacity: 0.7;
-        }
-        #waitRegForm{
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-        }
-        #waitRegForm > div{
-            width: 80%;
-            margin-top: 10px 0 10px 0;
-        }
-        #waitRegForm input {
-            width: 100%;
-            height: 30px;
-            border: 1px rgb(122, 122, 122) solid;
-            margin: 10px 0 10px 0;
-            border-radius: 5px;
-            padding-left: 10px;
-        }
-        #waitRegForm input:focus{
-            border:1px black solid;
-        }
-        #name_msg,#phoneNum_msg,#pnum_msg{
-        	width:100%;
-        	height:10px;
-        	font-size:6px;
-        	color:green;
-        	padding-left : 10px;
-        }
-        
-        
-        /* hover */
-        
-        .dealight_tooltip {
-        position: relative;
-        display: inline-block;
-        border-bottom: 1px dotted black;
-        }
-
-        .dealight_tooltip .dealight_tooltiptext {
-        visibility: hidden;
-        width: 300px;
-        background-color: white;
-        color: black;
-        text-align: center;
-        font-weight : bold;
-        border-radius: 6px;
-        padding: 5px 0;
-		box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);
-        /* Position the dealight_tooltip */
-        position: absolute;
-        top : 0px;
-        z-index: 1;
-        }
-
-        .dealight_tooltip:hover .dealight_tooltiptext {
-        visibility: visible;
-        }
-        .time_table_rsvd_dtls{
-        	cursor:pointer;
-        }
-        .time_table_rsvd_dtls:hover{
-        	opacity:0.7;
-        }
-        .btnRsvd{
-        	cursor:pointer;
-        }
-        
-        /* 예약 상세 모달 추가 */
-        .modal_wrapper_rsvdDtls{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal_top.rsvdDtls{
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: flex-start;
-            height: 250px;
-            /*border: 1px black solid;*/
-            margin-bottom: 20px;
-            
-        }
-        .htdl_stus{
-            position: absolute;
-            top: 55px;
-            right: 30px;
-            font-size: 36px;
-            color: #d32323;
-        }
-        .modal_rsvd_info{
-            
-            padding-left: 20px;
-            line-height: 25px;
-        }
-        .rsvd_left_wrapper{
-            width: 50%;
-            height: 80%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            padding-top: 5px;
-            margin-top:15px;
-            border-right: 2px rgba(71, 71, 71, 0.26) solid;
-        }
-        .rsvd_right_wrapper{
-            width: 50%;
-            height: 80%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            padding-top: 5px;
-            margin-top:15px;
-            overflow:scroll;
-        }
-        .modal_bot_rsvd{
-            width: 95%;
-            height: 170px;
-            /*border: 1px black solid;*/
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            overflow: scroll;
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.219);
-            border-radius: 10px;
-        }
-        .rsvd_history{
-            margin-top: 5px;
-            position: relative;
-            width: 80%;
-            height: 130px;
-            /*border: 1px solid black;*/
-            border: 1px solid rgba(92, 92, 92, 0.205);
-            border-radius: 10px;
-            margin-bottom: 10px;
-            box-shadow: 2px 2px 8px rgba(44, 36, 36, 0.171);
-            overflow: scroll;
-            min-height: 100px;
-            padding:8px;
-        }
-        .rsvd_history .htdl_stus{
-            top: 10px;
-            right: 20px;
-            font-size: 18px;
-        }
-        
-        /* info box */
-        .info_box{
-            width: 95%;
-            height: auto;
-            /*border: 1px solid black;*/
-            margin: 50px 30px;
-            border-radius: 20px;
-            
-            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            overflow: hidden;
-        }
-        .store_info_tit{
-            width: 100%;
-            align-self: start;
-            border-radius: 20px 20px 0 0;
-            padding: 20px 20px 20px 30px;
-            font-size: 24px;
-            font-weight: bold;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            margin-top: 0;
-            color: white;
-            letter-spacing: 4px;
-            background-color: #d32323;
-            height: 40px;
-        }
-        .store_info_cnts{
-            padding: 30px;
-            line-height: 30px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .uploadResult{
-            width: 100%;
-            /*border: 1px black solid;*/
-            padding: 0 10px 0 0;
-        }
-        .uploadResult > ul {
-            
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-            background-color: white;
-            /*border: 1px black solid;*/
-            overflow: scroll;
-            list-style-type:none;
-        }
-
-        .uploadResult > ul img {
-            margin: 20px 60px;
-            min-width: 150px;
-            max-height: 100%;
-
-        }
-
-
-        .store_img_tit{
-            padding: 30px;
-            line-height: 30px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .dealight_tooltip_user {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            align-items: flex-start;
-            margin: 40px;
-            width: 200px;
-            height: 100px;
-            padding: 10px 15px;
-            
-            border: 1px rgba(82, 82, 82, 0.185) solid;
-            background-color: #d32323;
-            color: white;
-            font-weight: bold;
-            font-size: 24px;
-            border-radius: 20px;
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.246);
-            border-right: 32px rgba(0, 0, 0, 0.493) solid ;
-        }
-        .dealight_tooltip_user .dealight_tooltiptext_user {
-            visibility: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-start;
-            width: 180px;
-            height: 150px;
-            background-color:  rgb(128, 128, 128);
-            color: white;
-            text-align: center;
-            font-size: 18px;
-            font-weight : bold;
-            border-radius: 6px;
-            padding: 20px 20px;
-            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.700);
-            /* Position the dealight_tooltip */
-            position: absolute;
-            top : -200px;
-            right: 5px;
-            z-index: 1;
-        }
-        .dealight_tooltip_user:hover{
-        	opacity:0.7;
-        }
-
-        .dealight_tooltip_user:hover .dealight_tooltiptext_user {
-             visibility: visible;
-             opacity: 1; 
-        }
-        
-        #rsvd_rslt_baord{
-        	width:90%;
-        	height:600px;
-        	flex-direction: column;
-        	justify-content: flex-start;
-        	align-items: center;
-        	box-shadow: 2px 2px 12px rgba(0,0,0,0.274);
-        }
-        .chart_wrapper{
-        	width:auto;
-        	height:60%;
-        }
-        .last_week_trend{
-        	padding:15px 30px;
-        	color : white;
-        	background-color : #d32323;
-        	display:flex;
-        	flex-direction: row;
-        	justify-content: flex-start;
-        	align-items: center;
-        	font-weight: bold;
-        	font-size:36px;
-        	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.274);
-        	margin-bottom: 15px;
-        	
-        }
-        .today_rsvd_rslt_tit{
-        	display:block;
-        	border-radius:20px;
-        	
-        	margin-left:20px;
-        	padding: 10px 20px;
-        	background-color: black;
-        	color:white;
-        	font-size: 18px;
-        	font-weight: bold;
-        	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.274);
-        }
-        .rsvdRslt{
-        	margin-top:30px;
-        	margin-left:20px;
-        	display:flex;
-        	flex-direction: column;
-        	justify-content: flex-start;
-        	align-items: flex-start;
-        }
-        .rsvd_rslt_wrapper{
-        	font-size : 18px;
-        	font-weight:bold;
-        	margin-top:15px;
-        	margin-left:20px;
-        	display: flex;
-        	flex-direction: row;
-        	justify-content: flex-start;
-        	align-items: center;
-        }
-        .rsvd_rslt_wrapper > div {
-        	margin-right: 15px;
-        }
-        #seatStusForm{
-        	margin-bottom: 0;
-        	margin-right:50px;
-        }
-        /* 핫딜 제안 등록 폼*/
-                .modal_wrapper_htdl_regform{
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-        }
-        .modal_top.htld_reg{
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-        }
-        .regHtdlForm{
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-        }
-        .htdl_reg_form_wrapper{
-            width:  70%;
-        }
-        .htdl_menu{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            font-size: 12px;
-        }
-        .htdl_menu_itmes{
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-            width: 80%;
-        }
-        .htdl_label_input {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-content: center;
-            width: 80%;
-        }
-        .htdl_label_input > span{
-            margin: 5px 0;
-            width: 30%;
-            font-size: 12px;
-            margin-right: 30px;
-            font-weight: bold;
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-        }
-        .htdl_label_input > input,textarea,select{
-            margin: 5px 0;
-            width: 80%;
-            border-radius: 3px;
-            border: 1px black solid;
-            resize: none;
-            padding: 5px;
-        }
-        .htdl_reg_btn_box{
-        	margin-top : 20px;
-            width: 80%;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: flex-start;
-        }
-        .htdl_reg_btn_box button{
-            outline: none;
-            background-color:#d32323b6;
-            color:white;
-            font-size: 18px;
-            border-radius: 10px;
-            padding: 3px 12px;
-            border: 0;
-            cursor: pointer;
-            margin-right: 20px;
-            font-weight: bold;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.219);
-        }
-        .htdl_reg_btn_box button:hover{
-            opacity: 0.7;
-        }
-        .uploadDiv.htdl{
-            width: 80%;
-        }
-        
-    </style>
+<link rel="stylesheet" href="/resources/css/manage.css">
 </head>
 <body>
-    <main class="store_board" id="store_board_main">
+<main class="store_board" id="store_board_main">
         <div class="main_box"><!-- main box -->
             <div class="board"> <!-- board -->
-                <div class="manage_side_menu">
-                    <div id="side_menu_tit">
-                        매장 관리 화면
+                <div class="board_left_wrapper">
+                    <div class="board_left_top">
+                        <div class="nav_date js-clock">
+                        	<span class="date">2020-12-18</span><span style="color:white;">_</span><span class="time">00:00</span>
+                        </div>
                     </div>
-                    <div class="btn_wait_register">
-                        오프라인 웨이팅<br>
-                        등록
-                    </div>
-                    <div>
-                        <a href="/dealight/business/manage/dealhistory?storeId=${storeId}">핫딜 히스토리</a>
-                    </div>
-                    <div>
-                        <a href="/dealight/business/manage/modify?storeId=${storeId}">매장 정보 수정</a>
+                    <div class="board_left_bot">
+                        <div class="btn_wait_register">현장 등록</div>
+                        <div><a href="/dealight/business/manage/modify?storeId=${storeId}">정보 수정</a></div>
+                        <div><a href="/dealight/business/manage/menu?storeId=${storeId}">메뉴 수정</a></div>
+                        <div><a href="/dealight/business/manage/dealhistory?storeId=${storeId}">핫딜 이력</a></div>
+                        <div><a href="/dealight/business/">매장 리스트</a></div>
+                        <div id="store_info_box">
+                            <div class="store_info_tit">매장 이름</div>
+                            <div class="store_info_val">피자필</div>
+                            <div class="store_info_tit">매장 수용 인원</div>
+                            <div class="store_info_val">60명</div>
+                            <div class="store_info_tit">매장 평균 식사 시간</div>
+                            <div class="store_info_val">30분</div>
+                        </div>
                     </div>
                 </div>
-                <div class="board_wrapper"> <!-- board wrapper -->
-                    <nav class="tab_nav">
-                            <div class="tab_items curTab"><a class="switch switch_board" id="switch_manage">매장관리</a></div>
-                            <div class="tab_items"><a class="switch switch_rsvd_rslt">현황판</a></div>
-                    </nav>
-                    <div class="board_top_box"> <!-- top box -->
-                        <div class="top_box_items date_box"> <!-- cur time -->
-                            <div class="js-clock clock">
-                                    <div class="cur_date">
-                                        <span><i class="far fa-calendar-alt"></i></span>
-                                        <span class="date">2020-12-18</span>
-                                    </div>
-                                    <div class="cur_time">
-                                        <span><i class="far fa-clock"></i></span>
-                                        <span class="time">00:00</span>
-                                    </div>
+                <div class="board_right_wrapper">
+                    <div class="board_wrapper"> <!-- board wrapper -->
+                        <div class="board_top_box"> <!-- top box -->
+                            <div class="top_box_items light"> 
+                                <span>영업 상태</span>
+                                <form id="seatStusForm" action="/dealight/business/manage/board/seat"
+                                        method="put">
+                                        <input name="seatStusColor" id="color_value" value="" hidden>
+                                        <input name="storeId" value="${storeId}" hidden>
+                                        <button class="btn_seat_stus green" data-color="Green"><i class="fas fa-circle"></i></button>
+                                        <button class="btn_seat_stus yellow" data-color="Yellow"><i class="fas fa-circle"></i></button>
+                                        <button class="btn_seat_stus red" data-color="Red"><i class="fas fa-circle"></i></button>
+                                </form>
+                            </div> 
+                            <div class="top_box_items tab_nav">
+                                <div class="tab_items curTab"><a class="switch switch_board" id="switch_manage">매장관리</a></div>
+                                <div class="tab_items"><a class="switch switch_rsvd_rslt">현황판</a></div>
                             </div>
-                        </div> <!-- end time -->
-                        <div class="top_box_items light"> <!-- light -->
-                            <span>현재 착석 상태</span>
-                            <form id="seatStusForm" action="/dealight/business/manage/board/seat"
-                                    method="put">
-                                    <input name="seatStusColor" id="color_value" value="" hidden>
-                                    <input name="storeId" value="${storeId}" hidden>
-                                    <button class="btn_seat_stus green" data-color="Green"><i class="fas fa-circle"></i></button>
-                                    <button class="btn_seat_stus yellow" data-color="Yellow"><i class="fas fa-circle"></i></button>
-                                    <button class="btn_seat_stus red" data-color="Red"><i class="fas fa-circle"></i></button>
-                            </form>
-                        </div> <!-- end light -->
-                </div> <!-- end top box -->
-        
-                <div id="rsvd_rslt_baord" style="display : none">
-                    <div class="last_week_trend">최근 7일 Trend</div>
-                    <div class="chart_wrapper"><canvas id="rsvd_chart" style="height:30vh; width:50vw"></canvas></div>
-                    <div class="rsvdRslt">
-	                                        
-                    </div>
-                    <!-- 
-                    <h1>최근 7일 예약 현황</h1>            
-                    <div class="last_week_rsvd"></div>
-                     -->
-                </div>
-        
-                <div id="board">
-                    <div class="board_left_box">
-                        <div class="next_wrapper">
-                            <div class="next_wait">
-                                <span class="next_tit">NEXT 웨이팅</span>
-                                <div class="next_info nextWait">
+                            <div class="">
 
+                            </div>
+                        </div> <!-- end top box -->
+            
+                    <div id="rsvd_rslt_baord" style="display : none">
+                        <div class="last_week_trend">최근 7일 Trend</div>
+                        <div class="chart_wrapper"><canvas id="rsvd_chart" style="font-weight:bold; height:30vh; width:50vw"></canvas></div>
+                        <div class="rsvdRslt">
+                                                
+                        </div>
+                        <!-- 
+                        <h1>최근 7일 예약 현황</h1>            
+                        <div class="last_week_rsvd"></div>
+                        -->
+                    </div>
+            
+                    <div id="board">
+                        <div class="board_left_box">
+                            <div class="next_wrapper">
+                                <div class="next_wait">
+                                    <span class="next_tit">NEXT 웨이팅</span>
+                                    <div class="next_info nextWait">
+
+                                    </div>
+                                </div>
+                                <div class="next_rsvd">
+                                    <span class="next_tit">NEXT 예약</span>
+                                    <div class="next_info nextRsvd">
+                                        <div class='next_info_top'>
+                                            <span class='next_rsvd_name'>김동인</span>
+                                            <span class='next_rsvd_telno'>010-2737-5157</span>
+                                            <span class='store_htdl' style='display:none;'>"+rsvd.htdlId+"</span>
+                                        </div>
+                                        <div class='next_info_bot'>
+                                            <div class='next_rsvd_pnum'>30명</div>
+                                            <div class='next_rsvd_tm'>14:00</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="next_rsvd">
-                                <span class="next_tit">NEXT 예약</span>
-                                <div class="next_info nextRsvd">
-                                    
+                        </div> <!-- end left box -->
+                        <div class="board_right_box">
+                            <div class="list_wrapper">
+                                <div class="wait_list_wrapper waitList">
+                                </div>
+                                <div class="rsvd_list_wrapper rsvdList">
                                 </div>
                             </div>
-                        </div>
-                    </div> <!-- end left box -->
-                    <div class="board_right_box">
-                        <div class="list_wrapper">
-                            <div class="wait_list_wrapper waitList">
-                            </div>
-                            <div class="rsvd_list_wrapper rsvdList">
-                            </div>
-                        </div>
-                    </div> <!-- end right box -->
-                </div> <!-- end board wrapper -->
-            </div> <!-- end board -->
+                        </div> <!-- end right box -->
+                    </div> <!-- end board wrapper -->
+                </div> <!-- end board -->
+            </div>
             </div>
                 <div class="rsvd_time_bar"><!-- rsvd time bar -->
                     
                 </div> <!-- end rsvd time bar -->
             </div> <!-- end main box -->
         </main>
-
-
-        <div class="info_box"> <!--  info box -->
-	        <div class="store_info_tit">
-	            <span>매장 정보</span>
-	           </div>
-            <div class="store_info_cnts">
-			
-			</div>
-            <div class="store_img_tit">
-            	<span>매장 사진</span>
-        	</div>
-            <div class='uploadResult'>
-                <ul>
-                </ul>
-            </div> <!-- uploadResult -->
-            
-            <div class='bigPictureWrapper'>
-                <div class='bigPicture'>
-                </div>
-            </div>
-            
-    <div>
-		<c:if test="${empty todayRsvdUserList}">
-			<h2>오늘 예약하신 손님이 없습니다.🤣</h2>
-		</c:if>
-		
-		<c:if test="${not empty todayRsvdUserList}">
-			<c:forEach items="${todayRsvdUserList}" var="user">
-			<div class="dealight_tooltip_user">
-	            <div class="rsvd_user_name">${user.name}</div>
-	            <div class="rsvd_user_id">${user.userId}</div>
-	            <div class="rsvd_user_telno">${user.telno}</div>
-	            <div class="dealight_tooltiptext_user">
-	                <span>예약 번호 : ${user.rsvdId}</span>
-	                <span>핫딜 번호 : 124</span>
-	                <span>예약 인원 : ${user.pnum}</span>
-	                <span>등록 날짜 : ${user.inDate }</span>
-	                <span>총 가격 : ${user.totAmt }</span>
-	                <span>총 주문 수량 : ${user.totQty }</span>
-	            </div>
-	        </div>
-			</c:forEach>
-		</c:if>
-	</div>
-        </div> <!-- end info box -->
+        
         	<!-- The Modal -->
 	<div id="myModal" class="modal">
 		<!-- Modal content -->
@@ -2036,12 +702,11 @@ let writeTimeBar = function (curTime) {
                     return;
                 }
                 strWaitList += "<span class='wait_list_tit'>웨이팅 리스트</span>";
-                strWaitList += "<div class='list_blank'></div>";
                 waitList.forEach(wait => {
                 	strWaitList += "<div class='wait' data-waitId='"+wait.waitId+"'>";
                         strWaitList += "<div class='list_info_top'>";
                         strWaitList += "<span class='wait_name wait_list'>"+wait.custNm+"</span>";
-                        strWaitList += "<span class='wait_telno wait_list'>"+wait.custTelno+"</span>";
+                        strWaitList += "<span class='wait_telno wait_list'>"+wait.custTelno+"<button class='btn_wait_call'><a href='/oauth?storeId="+wait.storeId+"&waitId="+wait.waitId+"'><i class='fas fa-comment-dots'></i></a></button></span>";
                         strWaitList += "</div>";
                         strWaitList += "<div class='list_info_bot'>";
                         strWaitList += "<span class='list_wait_pnum'>"+wait.waitPnum+"명</span>";
@@ -2049,7 +714,6 @@ let writeTimeBar = function (curTime) {
       	              	let time = parStr[0] + ":" + parStr[1];
                         strWaitList += "<span class='list_wait_regtm'>"+time+"</span>";
                         strWaitList += "</div>";
-                    	strWaitList += "<button class='btn_wait_call'><a href='/oauth?storeId="+wait.storeId+"&waitId="+wait.waitId+"'>호출</a></button>";
                     	strWaitList += "</div>";
                 });
     
@@ -2093,10 +757,12 @@ let writeTimeBar = function (curTime) {
 	              strNextWait += "<span class='wait_telno'>"+nextWait.custTelno+"</span>";
 	              strNextWait += "</div>";
 	              strNextWait += "<div class='next_info_bot'>";
-	              strNextWait += "<span class='next_wait_pnum'>"+nextWait.waitPnum+"명</span>";
+	              strNextWait += "<div class='next_wait_pnum'>"+nextWait.waitPnum+"명</div>";
 	              let parStr = nextWait.waitRegTm.split(" ")[1].split(":");
 	              let time = parStr[0] + ":" + parStr[1];
-	              strNextWait += "<span class='next_wait_regtm'>"+time+"</span>";
+	              strNextWait += "<div class='next_wait_regtm'>"+time+"</div>";
+	              strNextWait += "</div>";
+	              strNextWait += "<div class='next_wait_btn_box'>";
 	              strNextWait += "<button class='btn_enter_wait'>입장</button>";
 	              strNextWait += "<button class='btn_noshow_wait'>노쇼</button>";
 	              strNextWait += "</div>";
@@ -2121,7 +787,6 @@ let writeTimeBar = function (curTime) {
                 }
                 console.log("===============================");
                 strRsvdList += "<span class='rsvd_list_tit'>예약 리스트</span>";
-                strRsvdList += "<div class='list_blank'></div>";
                 
                 rsvdList.forEach(rsvd => {
                 	if(rsvd.htdlId == null) strRsvdList += "<div class='rsvd rsvd_i btnRsvd'>" ;
@@ -2129,14 +794,14 @@ let writeTimeBar = function (curTime) {
                 		strRsvdList += "<li hidden class='btnStoreId'>"+rsvd.storeId+"</li>";
                 		strRsvdList += "<li hidden class='btnUserId'>"+rsvd.userId+"</li>";
                 		strRsvdList += "<div class='list_info_top'>";
-                		strRsvdList += "<span class='rsvd_name rsvd_list'>"+rsvd.userId+"</span>";
-                		strRsvdList += "<span class='rsvd_telno rsvd_list'>"+rsvd.totQty+"</span>";
+                		strRsvdList += "<div class='rsvd_name rsvd_list'>"+rsvd.userId+"</div>";
+                		strRsvdList += "<div class='rsvd_telno rsvd_list'>"+rsvd.totQty+"</div>";
                 		strRsvdList += "</div>";
                 		strRsvdList += "<div class='list_info_bot rsvd_list'>";
-                		strRsvdList += "<span class='list_rsvd_pnum'>"+rsvd.pnum+"명</span>";
+                		strRsvdList += "<div class='list_rsvd_pnum'>"+rsvd.pnum+"명</div>";
                 		let parStr = rsvd.time.split(" ")[1].split(":");
       	              	let time = parStr[0] + ":" + parStr[1];
-                		strRsvdList += "<span class='list_rsvd_regtm'>"+time+"</span>";
+                		strRsvdList += "<div class='list_rsvd_regtm'>"+time+"</div>";
                 		strRsvdList += "</div></div>";
                 });
     
@@ -2241,10 +906,10 @@ let writeTimeBar = function (curTime) {
         		strNextRsvd += "<span class='store_htdl' style='display:none;'>"+rsvd.htdlId+"</span>";
         		strNextRsvd += "</div>";
         		strNextRsvd += "<div class='next_info_bot'>";
-        		strNextRsvd += "<span class='next_rsvd_pnum'>"+rsvd.pnum+"명</span>";
+        		strNextRsvd += "<div class='next_rsvd_pnum'>"+rsvd.pnum+"명</div>";
         		let parStr = rsvd.time.split(" ")[1].split(":");
 	            let time = parStr[0] + ":" + parStr[1];
-        		strNextRsvd += "<span class='next_rsvd_tm'>"+time+"</span>";
+        		strNextRsvd += "<div class='next_rsvd_tm'>"+time+"</div>";
         		strNextRsvd += "</div>";
                 
                 nextRsvdDiv.html(strNextRsvd);
@@ -2473,31 +1138,50 @@ let writeTimeBar = function (curTime) {
         		if(!userRsvdList)
         			return;
         		
-        		strUserRsvdList += "<div class='modal_tit'>";
-        		strUserRsvdList += "<span>kjuioq님의 예약 상세</span>";
-        		strUserRsvdList += "</div>";
         		strUserRsvdList += "<div class='modal_top rsvdDtls' id='modal_rsvd_dtls'>";
+        		
+        		strUserRsvdList += "<div class='rsvd_top_wrapper'>";
         		strUserRsvdList += "</div>";
-        		strUserRsvdList += "<div class='modal_bot_rsvd'>";
-        		userRsvdList.forEach(rsvd => {
-        			strUserRsvdList += "<div class='rsvd_history'>";
-        			if(rsvd.htdlId != null) strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-fire'></i></i></span>";
-            		strUserRsvdList += "<span>예약 번호 : "+rsvd.rsvdId+"</span><br>";
-            		strUserRsvdList += "<span>회원 아이디 : "+ rsvd.userId + "</span><br>";
-            		strUserRsvdList += "<span>예약 인원 : "+ rsvd.pnum + "</span><br>";
-            		strUserRsvdList += "<span>예약 시간 : "+ rsvd.time + "</span><br>";
-            		strUserRsvdList += "<span>예약 상태 : "+ rsvd.stusCd + "</span><br>";
-            		strUserRsvdList += "<span>예약 총 금액 : "+ rsvd.totAmt + "</span><br>";
-            		strUserRsvdList += "<span>예약 총 수량 : "+ rsvd.totQty + "</span><br>";
-            		strUserRsvdList += "<span>예약 등록 날짜 : "+ rsvd.regdate + "</span>";
-            		strUserRsvdList += "</div>";
-        		});
+        		strUserRsvdList += "<div class='rsvd_mid_wrapper'>";
         		strUserRsvdList += "</div>";
 
-        		rsvdDtlsDiv.css("display","flex")
+        		strUserRsvdList += "<div class='rsvd_bot_wrapper'>";
+        		strUserRsvdList += "<div class='rsvd_history_tit'>";
+        		strUserRsvdList += "매장 방문 히스토리";
+        		strUserRsvdList += "</div>";
+        		userRsvdList.forEach(rsvd => {
+    	    		strUserRsvdList += "<div class='rsvd_history'>";
+    	    		strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+    	    		strUserRsvdList += "<div class='info'>";
+    	    		strUserRsvdList += "<div>예약 번호</div>";
+    	    		strUserRsvdList += "<div>"+rsvd.rsvdId+"</div>";
+    	    		strUserRsvdList += "</div>";
+    	    		strUserRsvdList += "<div class='info'>";
+    	    		strUserRsvdList += "<div>예약 인원</div>";
+    	    		strUserRsvdList += "<div>"+ rsvd.pnum + "</div>";
+    	    		strUserRsvdList += "</div>";
+    	    		strUserRsvdList += "<div class='info'>";
+    	    		strUserRsvdList += "<div>예약 시간</div>";
+    	    		strUserRsvdList += "<div>"+ rsvd.time + "</div>";
+    	    		strUserRsvdList += "</div>";
+    	    		strUserRsvdList += "<div class='info'>";
+    	    		strUserRsvdList += "<div>예약 총 금액</div>";
+    	    		strUserRsvdList += "<div>"+ rsvd.totAmt + "</div>";
+    	    		strUserRsvdList += "</div>";
+    	    		strUserRsvdList += "<div class='info'>";
+    	    		strUserRsvdList += "<div>예약 총 수량</div>";
+    	    		strUserRsvdList += "<div>"+ rsvd.totQty + "</div>";
+    	    		strUserRsvdList += "</div>";
+    	    		strUserRsvdList += "</div>";
+        		});
+        		strUserRsvdList += "</div>";
+        		
+
+
+        		rsvdDtlsDiv.css("display","flex");
         		rsvdDtlsDiv.html(strUserRsvdList);
-        		console.log("=======================")
-        		console.log("user history complete")
+        		console.log("=======================");
+        		console.log("user history complete");
         		showRsvdDtls(userRsvdList[0].rsvdId);
         		
         	})
@@ -2511,31 +1195,55 @@ let writeTimeBar = function (curTime) {
         	
         	boardService.getRsvdDtls({rsvdId:rsvdId}, function(rsvd){
         		
-				let strRsvdDtls = "";
-				if(!rsvd)
-					return;
-				
-				strRsvdDtls += "<div class='rsvd_left_wrapper'>";
-				if(rsvd.htdlId != null) strRsvdDtls += "<span class='htdl_stus'><i class='fas fa-fire'></i></span>";
-				strRsvdDtls += "<div class='modal_rsvd_info'>예약 번호 : " + rsvd.rsvdId +"</div>";
-				strRsvdDtls += "<div class='modal_rsvd_info'>예약 시간 : " + rsvd.time +"</div>";
-				strRsvdDtls += "<div class='modal_rsvd_info'>예약 총 가격 : " + rsvd.totQty +"원</div>";
-				strRsvdDtls += "<div class='modal_rsvd_info'>예약 총 수량 : " + rsvd.totQty +"개</div>";
-				strRsvdDtls += "<div class='modal_rsvd_info'>예약 시간 : " + rsvd.regdate +"</div>";
-				strRsvdDtls += "</div>";
-				strRsvdDtls += "<div class='rsvd_right_wrapper'>";
-				rsvd.rsvdDtlsList.forEach(dtls => {
-					strRsvdDtls += "<div class='modal_rsvd_info'>";
-					strRsvdDtls += "<span>메뉴 이름 : " + dtls.menuNm +"</span><br>";
-					strRsvdDtls += "<span>메뉴 가격 : " + dtls.menuPrc +"원</span><br>";
-					strRsvdDtls += "<span>메뉴 수량 : " + dtls.menuTotQty +"</span>";
-					strRsvdDtls += "</div>";
-				});
-				strRsvdDtls += "</div>";
+        		console.log("rsvd id : "+rsvdId)
         		
-				$("#modal_rsvd_dtls").html(strRsvdDtls);
+    			let strRsvdDtlsTop = "";
+    			
+    			if(!rsvd)
+    				return;
+    			
+    			strRsvdDtlsTop += "<div class='modal_rsvd_tit'>예약 상세</div>";
+    			strRsvdDtlsTop += "<div class='rsvd_top_box'>";
+    			if(rsvd.htdlId != null) strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-fire'></i></span>";
+    			strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+    			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
+    			strRsvdDtlsTop += "<div>예약 번호</div>";
+    			strRsvdDtlsTop += "<div>"+rsvd.rsvdId+"</div>";
+    			strRsvdDtlsTop += "</div>";
+    			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
+    			strRsvdDtlsTop += "<div>예약 시간</div>";
+    			strRsvdDtlsTop += "<div>"+rsvd.time+"</div>";
+    			strRsvdDtlsTop += "</div>";
+    			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
+    			strRsvdDtlsTop += "<div>예약 총 가격</div>";
+    			strRsvdDtlsTop += "<div>"+rsvd.totAmt+"원</div>";
+    			strRsvdDtlsTop += "</div>";
+    			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
+    			strRsvdDtlsTop += "<div>예약 총 수량</div>";
+    			strRsvdDtlsTop += "<div>"+rsvd.totQty+"개</div>";
+    			strRsvdDtlsTop += "</div>";
+    			strRsvdDtlsTop += "</div>";
+    			
+    			$(".rsvd_top_wrapper").html(strRsvdDtlsTop);
+    			
+    			let strRsvdDtlsMid = "";
+    			
+    			strRsvdDtlsMid += "<div class='modal_menu_head'>";
+    			strRsvdDtlsMid += "<div>메뉴</div>";
+    			strRsvdDtlsMid += "<div>가격</div>";
+    			strRsvdDtlsMid += "<div>수량</div>";
+    			strRsvdDtlsMid += "</div>";
+    			rsvd.rsvdDtlsList.forEach(dtls => {
+    				strRsvdDtlsMid += "<div class='modal_menu_info'>";
+    				strRsvdDtlsMid += "<div>" + dtls.menuNm +"</div>";
+    				strRsvdDtlsMid += "<div>" + dtls.menuPrc +"원</div>";
+    				strRsvdDtlsMid += "<div>" + dtls.menuTotQty +"</div>";
+    				strRsvdDtlsMid += "</div>";
+    			});
+    			
+    			$(".rsvd_mid_wrapper").html(strRsvdDtlsMid);
+        		
         		console.log("=======================")
-        		console.log(strRsvdDtls);
         		console.log("rsvd dtls complete")
         		
         	})

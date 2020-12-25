@@ -6,6 +6,114 @@
   <!-- 동인 -->
 <mapper namespace="com.dealight.mapper.LikeMapper">
 
+  	<resultMap id="StoreVO" type="com.dealight.domain.StoreVO">
+		<result column="store_id" property="storeId" />
+		<result column="store_nm" property="storeNm" />
+		<result column="telno" property="telno" />
+		<result column="cls_cd" property="clsCd" />
+
+		<association property="bstore" javaType="com.dealight.domain.BStoreVO">
+			<result column="buser_id" property="buserId" />
+			<result column="seat_stus_cd" property="seatStusCd" />
+			<result column="rep_img" property="repImg" />
+			<result column="rep_menu" property="repMenu" />
+			<result column="brch" property="brch" />
+			<result column="open_tm" property="openTm" />
+			<result column="close_tm" property="closeTm" />
+			<result column="break_sttm" property="breakSttm" />
+			<result column="break_entm" property="breakEntm" />
+			<result column="last_ord_tm" property="lastOrdTm" />
+			<result column="n1_seat_no" property="n1SeatNo" />
+			<result column="n2_seat_no" property="n2SeatNo" />
+			<result column="n4_seat_no" property="n4SeatNo" />
+			<result column="store_intro" property="storeIntro" />
+			<result column="avg_meal_tm" property="avgMealTm" />
+			<result column="hldy" property="hldy" />
+			<result column="acm_pnum" property="acmPnum" />
+			
+			<association property="htdl" javaType="com.dealight.domain.HtdlVO">
+				<result column="htdl_id" property="htdlId" />
+				<result column="name" property="name" />
+				<result column="dc_rate" property="dcRate" />
+				<result column="start_tm" property="startTm" />
+				<result column="end_tm" property="endTm" />
+				<result column="lmt_pnum" property="lmtPnum" />
+				<result column="intro" property="intro" />
+				<result column="bef_price" property="befPrice" />
+				<result column="ddct" property="ddct" />
+				<result column="cur_pnum" property="curPnum" />
+				<result column="stus_cd" property="stusCd" />
+			</association>
+
+			<collection property="tag" ofType="com.dealight.domain.StoreTagVO">
+				<result property="storeId" column="store_id" />
+				<result property="tagNm" column="tag_nm" />
+			</collection>
+			
+			<collection property="menus" ofType="com.dealight.domain.MenuVO">
+				<result property="storeId" column="store_id" />
+				<result property="menuSeq" column="menu_seq" />
+				<result property="price" column="price" />
+				<result property="imgUrl" column="menu_img" />
+				<result property="name" column="menu_name" />
+				<result property="recoMenu" column="reco_menu" />
+			</collection>
+			
+			
+			<!-- <collection property="revws" ofType="RevwVO"> <result property="id" 
+				column="id" /> <result property="storeId" column="store_id" /> <result property="rsvdId" 
+				column="rsvd_id" /> <result property="waitId" column="wait_id" /> <result 
+				property="userId" column="user_id" /> <result property="cnts" column="cnts" 
+				/> <result property="regDt" column="reg_dt" /> <result property="rating" 
+				column="rating" /> <result property="replyCnts" column="reply_cnts" /> <result 
+				property="replyRegDt" column="reply_reg_dt" /> </collection> -->
+				
+			<collection property="waits" ofType="com.dealight.domain.WaitVO">
+				<result property="waitId" column="wait_id" />
+				<result property="storeId" column="store_id" />
+				<result property="userId" column="user_id" />
+				<result property="waitRegTm" column="regdate" />
+				<result property="waitPnum" column="wait_pnum" />
+				<result property="custTelno" column="cust_telno" />
+				<result property="waitStusCd" column="wait_stus_cd" />
+				<result property="custNm" column="cust_nm" />
+				<result property="waitStusCd" column="wait_stus_cd" />
+				<result property="waitTot" column="wait_tot" />
+				<result property="revwStus" column="revw_stus" />
+				<result property="waitTot" column="wait_tot" />
+			</collection>
+		</association>
+		<!-- 다울  nstore-->
+		<association property="nstore" javaType="com.dealight.domain.NStoreVO">
+			<result column="store_id" property="storeId" />
+			<result column="biz_tm" property="bizTm" />
+			<result column="menu" property="menu" />
+		</association>
+		<!-- 다울  nstore end-->
+		<association property="loc" javaType="com.dealight.domain.StoreLocVO">
+			<result property="storeId" column="store_id" />
+			<result property="addr" column="addr" />
+			<result property="lat" column="lat" />
+			<result property="lng" column="lng" />
+		 </association>
+		 
+		<association property="eval"
+			javaType="com.dealight.domain.StoreEvalVO">
+			<result property="storeId" column="store_id" />
+			<result property="avgRating" column="avg_rating" />
+			<result property="revwTotNum" column="revw_tot_num" />
+			<result property="likeTotNum" column="like_tot_num" />
+		</association>
+		
+		<collection property="imgs"
+			ofType="com.dealight.domain.StoreImgVO">
+			<result property="storeId" column="store_id" />
+			<result property="imgSeq" column="img_seq" />
+			<result property="fileName" column="fileName" />
+			<result property="rep" column="rep" />
+		</collection>
+	</resultMap>
+
 <select id="findListWithPagingByUserId" resultType="com.dealight.domain.LikeVO">
 <![CDATA[
 		SELECT 
@@ -20,6 +128,26 @@
 		)
 		WHERE rn > (#{cri.pageNum} -1) * #{cri.amount}
 ]]>
+</select>
+
+<select id="findStoreListWithPagingByUserId" resultMap="StoreVO">
+<![CDATA[
+		SELECT *
+        FROM(
+            SELECT 
+                store_id, user_id, regdate, updatedate
+            FROM 
+            (
+                SELECT rownum rn,store_id, user_id, regdate, updatedate 
+                /*+ INDEX_DESC(tbl_rsvd tbl_like_pk)*/
+                FROM tbl_like
+                WHERE  user_id = #{userId}
+                AND rownum <= #{cri.pageNum} * #{cri.amount}
+            )
+            WHERE rn > (#{cri.pageNum} -1) * #{cri.amount}
+        ) l, tbl_bstore b, tbl_store s
+        WHERE l.store_id = b.store_id and s.store_id = b.store_id
+        ]]>
 </select>
 
 <select id="findByUserIdAndStoreId" resultType="com.dealight.domain.LikeVO">

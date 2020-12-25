@@ -11,41 +11,85 @@
 <link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
+<style>
+.mypage_main_sub > div{
+	width : 100%;
+}
+.btn_like_cancel{
+	color : tomato;
+	cursor: pointer;
+}
+.btn_like_cancel:hover{
+	opacity: 0.7;
+}
+</style>
 </head>
 <body>
-	<main>
+<main>
+        <div class="mypage_wrapper">
         <%@include file="/WEB-INF/views/includes/mypageSidebar.jsp" %>
-        <div class="mypage_content">
-            <div class="content_head">
-                <h2>찜 목록<span>찜한 매장 목록을 가져옵니다.</span></h2>
-            </div>
-            <div class='total'>
-            	<h2>회원 아이디 : ${userId }</h2>
-				<h2>총 찜 횟수 : ${total}회</h2>
-            </div>
-            <div class="content_main">
-				<div id="likeWrapper">
-					<div class="like_list">
-						<c:if test="${empty likeList}">
+        
+        <div class="mypage_right">
+                <div class="mypage_main_header">
+                    <div class="main_header_title">찜 목록</div>
+                    <div class="main_header_subtitle">찜한 매장 목록을 가져옵니다.</div>
+                </div>
+                <div class="mypage_main_content">
+                    <div class="mypage_main_sub">
+                        <div>
+                            <span class="main_tit">총 찜 횟수</span>
+                            <span class="main_value total">${total} 회</span>
+                        </div>
+                    </div>
+                    <div class="mypage_main_board">
+	                    <c:if test="${empty storeList}">
 							<h2>찜을 한 이력이 없습니다.</h2>
 						</c:if>
 						
-						<c:if test="${not empty likeList}">
-							<h2>찜 목록</h2>
-							<c:forEach items="${likeList}" var="like">
-								<div>
-									==================================<span class="btn_remove">&times;</span>
-									<h3>찜 매장 : <span class="store_id">${like.storeId}</span></h3>
-									<h3>찜 등록날짜 : ${like.regdate}</h3>
-									<button class="btn_store_info">매장 상세 보기</button>
-								</div>
-							</c:forEach>
-						</c:if>
-					</div>
-				</div>
+						<c:if test="${not empty storeList}">
+							<c:forEach items="${storeList}" var="store">
+	                        <div class="rsvd_wrapper">
+	                            <div class="css_rsvd_box">
+	                                <div class="rsvd_tit">
+	                                    <div>
+	                                    	<div class="btn_like_cancel">
+	                                    	 	<i class='fas fa-heart'></i>
+	                                        </div>
+	                                    	<span style='display:none;' class="store_id">${store.storeId}</span>
+	                                    </div>
+	                                    <div><button class="btn_store_dtls"><i class="fas fa-angle-right"></i></button></div>
+	                                </div>
+	                                <div class="rsvd_cnts">
+	                                    <div class="rsvd_cnts_wrapper">
+	                                        <div class="rsvd_cnts_img">
+	                                        <img src='/display?fileName=${store.bstore.repImg}'>
+	                                        </div>
+	                                        <div class="cnts">
+	                                        	<div>
+	                                        		<span class="rsvd_cnts_tit">매장이름</span>
+	                                                <span class="rsvd_cnts_val">${store.storeNm}</span>
+	                                        	</div>
+	                                            <div>
+	                                                <span class="rsvd_cnts_tit">영업시간</span>
+	                                                <span class="rsvd_cnts_val">${store.bstore.openTm} - ${store.bstore.closeTm}</span>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <div class="rsvd_btn_box">
+	                                        <button class="btn_store_info">매장 정보 보기</button>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        </c:forEach>
+                        </c:if>
+                    </div>
+			<!-- end pagination -->
+                </div>
             </div>
-            <!-- pagination -->
-			<div class='pull-right'>
+        </div> <!-- end mypage wrapper -->
+                    <!-- pagination -->
+			<div class='pull-right panel-footer'>
 				<ul class='pagination'>
 					<c:if test="${pageMaker.prev}">
 						<li class='paginate_button previous'>
@@ -70,17 +114,16 @@
 				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 				<input type='hidden' name='amount' value = '${pageMaker.cri.amount}'>
 			</form>
-			<!-- end pagination -->
-        </div>
     </main>
     
     <div id="myModal" class="modal">
 		<!-- Modal content -->
 		<div class="modal-content">
-			<span class="close">&times;</span>
+			<span class="close_modal"><i class="fas fa-times"></i></span>
+	        <div class="modal_header"></div>
 			<ul class="revw_regForm"></ul>
 			<ul class="store_info"></ul>
-			<div id="map" style="width:500px;height:400px;"></div>
+			<div class="modal_wrapper_store_info content_div"></div>
 		</div>
 	</div>
 	
@@ -91,13 +134,15 @@ $(document).ready(function() {
 	
     const userId = '${userId}',
 	    storeInfoUL = $(".store_info"),
-	    likeListDiv = $(".like_list"),
+	    likeListDiv = $(".mypage_main_board"),
 	    paginationUL = $(".pagination"),
 	    totalDiv = $(".total"),
 	    btn_show_board = $("#btn_show_board"),
+	    storeInfoDiv = $(".modal_wrapper_store_info"),
 	    pageNum = ${pageMaker.cri.pageNum},
 	    amount = ${pageMaker.cri.amount}
-	;
+	    
+	    ;
 	    
     let container,options,map,mapContainer,mapOption,markerPosition,marker;
 
@@ -121,59 +166,62 @@ $(document).ready(function() {
     /* 출력 로직*/
     function showStoreInfo(userId,storeId) {
     	
+    	console.log("user id : "+userId);
+    	console.log("store id : "+storeId);
+    	
     	getStoreInfo({userId:userId,storeId : storeId}, store => {
     		
     		let strStoreInfo = "";
     		if(!store)
     			return;
     		
-    		strStoreInfo += "<h1>매장 정보</h1>";
+    		strStoreInfo += "<div class='modal_tit'>";
+    		strStoreInfo += "<span>매장 정보</span>";
+    		strStoreInfo += "</div>";
+    		
+    		strStoreInfo += "<div class='modal_top_store'>";
+    		strStoreInfo += "<div class='modal_top_left'>";
+    		strStoreInfo += "<div class='modal_top_left'>";
     		strStoreInfo += "<img src='/display?fileName="+store.bstore.repImg+"'>";
-    		strStoreInfo += "<li>매장 번호 : <span class='store_info_id'>"+store.storeId+"</span></l1>";
-    		strStoreInfo += "<li>매장 이름 : "+store.storeNm+"</l1>";
-    		strStoreInfo += "<li>매장 번호 : "+store.telno+"</l1>";
-    		strStoreInfo += "<li>매장 상태 : "+store.clsCd+"</l1>";
-    		strStoreInfo += "<li>매장 관리자 아이디 : "+store.bstore.buserId+"</l1>";
-    		strStoreInfo += "<li>매장 분점 : "+store.bstore.brch+"</l1>";
-    		strStoreInfo += "<li>매장 대표 메뉴 : "+store.bstore.repMenu+"</l1>";
-    		strStoreInfo += "<li>매장 착석 상태 : "+store.bstore.seatStusCd+"</l1>";
-    		strStoreInfo += "<li>매장 영업 시작 시간 : "+store.bstore.openTm+"</l1>";
-    		strStoreInfo += "<li>매장 영업 마감 시간 : "+store.bstore.closeTm+"</l1>";
-    		strStoreInfo += "<li>매장 브레이크타임 시작 시간 : "+store.bstore.breakSttm+"</l1>";
-    		strStoreInfo += "<li>매장 브레이크타임 종료 시간 : "+store.bstore.breakEntm+"</l1>";
-    		strStoreInfo += "<li>매장 라스트오더 시간 : "+store.bstore.lastOrdTm+"</l1>";
-    		strStoreInfo += "<li>매장 1인 테이블 수 : "+store.bstore.n1SeatNo+"</l1>";
-    		strStoreInfo += "<li>매장 2인 테이블 수 : "+store.bstore.n2SeatNo+"</l1>";
-    		strStoreInfo += "<li>매장 4인 테이블 수 : "+store.bstore.n4SeatNo+"</l1>";
-    		strStoreInfo += "<li>매장 소개 : "+store.bstore.storeIntro+"</l1>";
-    		strStoreInfo += "<li>매장 평균 식사 시간 : "+store.bstore.avgMealTm+"</l1>";
-    		strStoreInfo += "<li>매장 휴무일 : "+store.bstore.hldy+"</l1>";
-    		strStoreInfo += "<li>매장 수용 가능 인원 : "+store.bstore.acmPnum+"</l1>";
-    		strStoreInfo += "<li>매장 좋아요 수 : "+store.eval.likeTotNum+"</l1>";
-    		strStoreInfo += "<li>매장 리뷰 수 : "+store.eval.revwTotNum+"</l1>";
-    		strStoreInfo += "<li>매장 평균 평점 : "+store.eval.avgRating+"</l1>";
-    		strStoreInfo += "<li>매장 주소 : "+store.loc.addr+"</l1><br>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "<div class='modal_top_right'>";
+    		strStoreInfo += "<div class='store_info_name'>"+store.storeNm+"</div>";
+    		strStoreInfo += "<div class='store_info_brch'>"+store.bstore.brch+"</div>";
+    		strStoreInfo += "<div class='store_info_telno'>"+store.telno+"</div>";
+    		strStoreInfo += "<div class='store_info_rating'><div class='rating' data-rate-value='"+store.eval.avgRating+"'></div></div>";
+    		strStoreInfo += "<div class='store_info_eval'>";
+    		if(store.like) strStoreInfo += "<div class='store_info_tot_like btn_like_cancel'><i class='fas fa-heart'></i> "+store.eval.likeTotNum+"</div>";
+    		else if (!store.like) strStoreInfo += "<div class='store_info_tot_like btn_like_pick'><i class='far fa-heart'></i> "+store.eval.likeTotNum+"</div>";
+    		strStoreInfo += "<div class='store_info_tot_revw'><i class='fas fa-pencil-alt'></i> "+store.eval.revwTotNum+"</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "<div class='store_info_tm'>";
+    		strStoreInfo += "<div class='store_info_biz_tm'>영업 시간 : "+store.bstore.openTm+" - "+store.bstore.closeTm+"</div>";
+    		strStoreInfo += "<div class='store_info_break_tm'>브레이크 타임 : "+store.bstore.breakSttm+" - "+store.bstore.breakEntm+"</div>";
+    		strStoreInfo += "<div class='store_info_break_tm'>라스트오더 : "+store.bstore.lastOrdTm+"</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "<div class='store_info_detail'>";
+    		strStoreInfo += "<i class='fas fa-angle-right'></i>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "<span style='display:none;' class='store_info_id'>"+store.storeId+"</span>";
     		
-    		modal.find("#map").css("display", "block");
     		
-    		container = document.getElementById('map');
-    		options = {
-    					center : new kakao.maps.LatLng(store.loc.lat, store.loc.lng),
-    					level : 3
-    				};
-    		map = new kakao.maps.Map(container, options);
-    		mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-    		mapOption = { 
-    		    center: new kakao.maps.LatLng(store.loc.lat, store.loc.lng), // 지도의 중심좌표
-    		    level: 3 // 지도의 확대 레벨
-    		};
-    		markerPosition  = new kakao.maps.LatLng(store.loc.lat, store.loc.lng);
-    		marker = new kakao.maps.Marker({
-    			position: markerPosition
-    		});
-    		marker.setMap(map);
+    		storeInfoDiv.css("display","flex");
+    		storeInfoDiv.html(strStoreInfo);
     		
-    		storeInfoUL.html(strStoreInfo);
+    		/* Rater.js 로직*/
+	        $(".rating").rate({
+	            max_value: 5,
+	            step_size: 0.5,
+	            initial_value: 3,
+	            selected_symbol_type: 'utf8_star', // Must be a key from symbols
+	            cursor: 'default',
+	            readonly: true,
+	        });
+    		
+    		$(".store_info_detail").on("click", e => window.open("/dealight/store/"+store.storeId))
     	    $(".btn_like_pick").on("click",likeAddHandler);
     	    $(".btn_like_cancel").on("click",likeRemoveHandler);
     		
@@ -209,10 +257,11 @@ $(document).ready(function() {
 	    function getLikeList(params,callback,error) {
 	    	
 	    	let pageNum = params.pageNum,
-	    		amount = params.amount
+	    		amount = params.amount,
+	    		userId = params.userId
 	    	;
 	    	
-	    	$.getJSON("/dealight/mypage/like/"+ pageNum +"/"+ amount+".json",
+	    	$.getJSON("/dealight/mypage/like/list/"+ pageNum +"/"+ amount+ "/" + userId + ".json",
 	                   function(data){
 	                       if(callback){
 	                           callback(data);
@@ -225,29 +274,60 @@ $(document).ready(function() {
 	    	
 	    }
 	    
-	    function showLikeList(pageNum,amount) {
+	    function showLikeList(pageNum,amount,userId) {
 	    	
-	    	getLikeList({pageNum:pageNum,amount:amount}, dto => {
+	    	getLikeList({pageNum:pageNum,amount:amount,userId : userId}, dto => {
 	    		
                 let strLikeList = "",
                 	strPagination = "",
                 	strTotal = "";
                 
-                if(dto.likeList == null){
+                if(!dto.storeList){
                 	likeListDiv.html("<h2>찜을 한 이력이 없습니다.</h2>");
                 	paginationUL.html("");
                     return;
                 }
                 
-                dto.likeList.forEach(like => {
-                	console.log(like.storeId);
-                	console.log(like.regdate);
+                if(dto.storeList)
+                dto.storeList.forEach(store => {
+                	strLikeList += "<div class='rsvd_wrapper'>";
+                	strLikeList += "<div class='css_rsvd_box'>";
+                	strLikeList += "<div class='rsvd_tit'>";
                 	strLikeList += "<div>";
-					strLikeList += "==================================<span class='btn_remove'>&times;</span>";
-					strLikeList += "<h3>찜 매장 : <span class='store_id'>"+like.storeId+"</span></h3>";
-					strLikeList += "<h3>찜 등록날짜 :"+like.regdate+"</h3>";
-					strLikeList += "<button class='btn_store_info'>매장 상세 보기</button>";
-					strLikeList += "</div>";
+                	strLikeList += "<div class='btn_like_cancel'>";
+                	strLikeList += "<i class='fas fa-heart'></i>";
+                	strLikeList += "</div>";
+                	strLikeList += "<span style='display:none;' class='store_id'>"+store.storeId+"</span>";
+                	strLikeList += "</div>";
+                	strLikeList += "<div><button class='btn_store_dtls'><i class='fas fa-angle-right'></i></button></div>";
+                	strLikeList += "</div>";
+                	strLikeList += "<div class='rsvd_cnts'>";
+                	strLikeList += "<div class='rsvd_cnts_wrapper'>";
+                	strLikeList += "<div class='rsvd_cnts_img'>";
+                	strLikeList += "<img src='/display?fileName="+store.bstore.repImg+"'>";
+                	strLikeList += "</div>";
+                	strLikeList += "<div class='cnts'>";
+                	
+                	strLikeList += "<div>";
+                	strLikeList += "<span class='rsvd_cnts_tit'>매장이름</span>";
+                	strLikeList += "<span class='rsvd_cnts_val'>"+store.storeNm+"</span>";
+                	strLikeList += "</div>";
+                	strLikeList += "<div>";
+                	strLikeList += "<span class='rsvd_cnts_tit'>영업시간</span>";
+                	strLikeList += "<span class='rsvd_cnts_val'>"+store.bstore.openTm+ "-" +store.bstore.closeTm+"</span>";
+                	strLikeList += "</div>";
+                	
+                	strLikeList += "</div>";
+                	strLikeList += "</div>";
+                	
+                	strLikeList += "<div class='rsvd_btn_box'>";
+                	strLikeList += "<button class='btn_store_info'>매장 정보 보기</button>";
+                	strLikeList += "</div>";
+                	
+                	strLikeList += "</div>";
+                	strLikeList += "</div>";
+                	strLikeList += "</div>";
+                	
                 });
                 
                 likeListDiv.html(strLikeList);
@@ -269,7 +349,7 @@ $(document).ready(function() {
 					
 				paginationUL.html(strPagination);
 				
-            	strTotal = "<h2>총 찜 횟수 :"+dto.total+"</h2>";
+            	strTotal = dto.total + " 회";
             	
 				totalDiv.html(strTotal);
 				
@@ -283,6 +363,8 @@ $(document).ready(function() {
 		        $(".btn_store_info").on("click", storeInfoHandler);
 		        
 		        $(".btn_remove").on("click", likeRemoveHandler);
+		        
+		        $(".btn_like_cancel").on("click", likeRemoveHandler);
 				
 	    	}); //end get like list
 	    	
@@ -301,7 +383,7 @@ $(document).ready(function() {
 	}
     
     let storeInfoHandler = function (e) {
-    	let storeId = $(e.target).parent().find(".store_id").text(),
+    	let storeId = $(e.target).parent().parent().parent().parent().find(".store_id").text(),
     		userId = '${userId}';
     	
     	showStoreInfo(userId, storeId);
@@ -310,12 +392,12 @@ $(document).ready(function() {
     
     let likeRemoveHandler = function(e){
     	
-    	let storeId = $(e.target).parent().find(".store_id").text(),
+    	let storeId = $(e.target).parent().parent().parent().parent().parent().find(".store_id").text(),
 			userId = '${userId}';
 		
 		removeLike({userId:userId,storeId:storeId});
+		showLikeList($("input[name='pageNum']").val(),$("input[name='amount']").val(),userId);
 		
-		showLikeList($("input[name='pageNum']").val(),$("input[name='amount']").val());
 		
 		alert('pageNum : ' + pageNum + ', amount : ' + amount + ', userId : ' + userId + ', storeId : ' +storeId);
     }
@@ -327,7 +409,12 @@ $(document).ready(function() {
     $(".btn_store_info").on("click", storeInfoHandler);
     
     /* like 삭제 */
-    $(".btn_remove").on("click", likeRemoveHandler);
+    $(".btn_like_cancel").on("click", likeRemoveHandler);
+    
+    $(".btn_store_dtls").on("click", (e) => {
+    	console.log("store dtls btn click....................")
+    	location.href = "/dealight/store/" + $(e.target).parent().parent().parent().parent().find(".store_id").text();
+    });
     
 	
 }); /* document ready end*/

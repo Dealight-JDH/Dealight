@@ -21,8 +21,9 @@
             min-width: 100px;
             /*border: black 1px solid;*/
             display: flex;
+            flex-direction:row;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
         }
         .menu-dropdown-wrapper{
 			display:relative;
@@ -50,22 +51,10 @@
 		.main_nav_left:hover .menu-dropdown-content {
 			  display: block;
 		}
-        .main_nav_left >img{
-            width: 20%;
-        }
         
-        /* main nav logo */
-        .main_nav_logo{
-            padding-left: 200px;
-            order: 1;
-            min-width: 300px;
-            /*border: black 1px solid;*/
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
         .main_nav_logo img{
-            width: 15%;
+        	padding-left:50px;
+            width: 100%;
             height: auto;
         }
         
@@ -73,26 +62,41 @@
         .main_nav_right{
             margin-right: 10px;
             order: 2;
-            width: 25%;
+            width: 30%;
             min-width: 100px;
             /*border: black 1px solid;*/
             display: flex;
         }
-        .main_nav_right > div{
+        .main_nav_right > div:first-child{
             /*border: black 1px solid;*/
             height: 100%;
-            width: 33%;
+            width: 70%;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-end;
         }
         /* account btn */
         .bell_icon{
             font-size: 32px;
             opacity: 0.7;
         }
-        .account_btn{margin : auto 15px  auto 15px;}
-        .account_btn::after{
+        .account_btn{
+        	 height: 100%;
+            width: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        	margin : auto 15px  auto 15px;
+        }
+        .reg_brno{
+        	width: 40%;
+        	display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        /*.account_btn::after{
             right: 1.125em;
             margin-left:0.900em;
             margin-top: -.1200em;
@@ -108,24 +112,41 @@
             width: .625em;
             opacity: 80%;
             cursor: pointer;
-        }
+        }*/
         .account-dropdown-content{
         	  display: none;
 			  position: absolute;
 			  right:3%;
-			  top:75px;
-			  background-color: #f9f9f9;
+			  top: 80px;
+			  background-color: white;
 			  min-width: 100px;
 			  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-			  padding: 12px 16px;
 			  z-index: 1;
 			  height: auto;
+			  border-radius: 20px;
+			  flex-direction: column;
+			  align-items: flex-start;
+			  justify-content: flex-start;
+			  width: 200px;
+			  overflow: hidden;
         }
-        .account_btn:hover .account-dropdown-content{
-        	display : block;
+        .account-dropdown-content > div:first-child{
+        	margin-top: 10px;
+        } 
+        .account-dropdown-content > div:last-child{
+        	margin-bottom: 10px;
         }
+        .common_menu_cnts{
+        	width:100%;
+        	border-top: 1px #eeeeef solid;
+        }
+		.account_cnts{
+			padding: 15px 8px;
+			width:100%;
+			height: 20px;
+		}
         .account_cnts:hover{
-			background-color:gray;
+			background-color:rgba(177, 177, 177, 0.198);
 		}
 		.account_cnts a {
        		text-decoration: none;
@@ -136,10 +157,32 @@
         	position: relative;
         	font-size: 18px;
         }
+        .account_icon_box{
         
+        	width:100%;
+        	padding : 5px 7px;
+        	border : 1px #eeeeef solid;
+        	display: flex;
+        	flex-direction: row;
+        	justify-content: space-around;
+        	align-items: center;
+        	cursor:pointer;
+        	border-radius: 30px;
+        }
+        .account_btn:hover .account-dropdown-content{
+        	display : flex;
+        }
+        .account_icon_box:hover{
+        	box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+        }
         .account_icon{
             font-size: 32px;
             opacity: 0.7;
+        }
+        .account_menu{
+        	font-size: 22px;
+        	opacity: 0.7;
+        	margin-right:5px;
         }
         /* 알림함 */
         .alert_badge {
@@ -161,5 +204,4 @@
         
         #nav_user_id{
         	font-size:18px;
-        	font-weight:bold;
         }

@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.BStoreVO;
 import com.dealight.domain.Criteria;
+import com.dealight.domain.LikeListDTO;
 import com.dealight.domain.LikeVO;
 import com.dealight.domain.PageDTO;
 import com.dealight.domain.RevwImgVO;
@@ -217,15 +218,28 @@ public class MypageController {
 		if(cri.getPageNum() == 0)
 			cri = new Criteria(1,5);
 
-		List<LikeVO> likeList = likeService.findListWithPagingByUserId(userId, cri);
+		List<StoreVO> storeList = likeService.findStoreListWithPagingByUserId(userId, cri);
 		int total = likeService.getLikeTotalByUserId(userId, cri);
 
 		model.addAttribute("userId", userId);
-		model.addAttribute("likeList", likeList);
+		model.addAttribute("storeList", storeList);
 		model.addAttribute("total",total);
 		model.addAttribute("pageMaker",new PageDTO(cri,total));
 
 		return "/dealight/mypage/like";
+	}
+	
+	@GetMapping(value = "/like/list/{pageNum}/{amount}/{userId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<LikeListDTO> getLikeList(@PathVariable("pageNum") int pageNum, @PathVariable("amount") int amount,
+														@PathVariable("userId") String userId){
+		LikeListDTO dto = new LikeListDTO();
+		Criteria cri = new Criteria(pageNum,amount);
+		dto.setStoreList(likeService.findStoreListWithPagingByUserId(userId,cri));
+		dto.setTotal(likeService.getLikeTotalByUserId(userId, cri));
+		dto.setPageMaker(new PageDTO(cri,dto.getTotal()));
+		
+		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 
 	

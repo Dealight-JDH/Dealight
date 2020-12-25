@@ -527,10 +527,10 @@ window.onload = function () {
 	
     let likeRemoveHandler = function(e){
     	
-    	let storeId = $(e.target).parent().find(".store_info_id").text(),
+    	let storeId = $(e.target).parent().parent().parent().parent().parent().parent().find(".store_info_id").text(),
 			userId = '${userId}';
 
-		
+		console.log()
 		removeLike({userId:userId,storeId:storeId});
 		alert("찜이 취소 되었습니다.");		
 		showStoreInfo(userId, storeId);

@@ -261,20 +261,16 @@
 <body>
 <header class="main_nav">
         <nav class="main_nav_left">
-        	<img class='menu_img' src="/resources/icon/menu.png" alt="">
-	        	<div class='menu-dropdown-content'>
-	        		<div class="menu_cnts"><p>핫딜 찾기</p></div>
-	        		<div class="menu_cnts"><p>매장 찾기</p></div>
-	        	</div>
+        	<div class="main_nav_logo"><img id="logo" src="/resources/icon/d2.png" alt=""></div>
         </nav>
-        <div class="main_nav_logo"><img id="logo" src="/resources/icon/logo.png" alt=""></div>
+        
         <nav class="main_nav_right">
             <div><c:if test="${userId != null}"> <span id="nav_user_id">${userId }님</span></c:if></div>
-            <div class="bell_btn">
-            	<div class="bell_icon"><i class="fas fa-bell"></i></div>
-            </div>
+            <div class="reg_brno">매장 등록</div>
             <div class="account_btn">
-            	<div class="account_icon"><i class="fas fa-user"></i></div>
+            	<div class="account_icon_box">
+            		<div class="account_menu"><i class="fas fa-bars"></i></div>
+            		<div class="account_icon"><i class="fas fa-user-circle"></i></div>
             		<div class="account-dropdown-content">
 						<sec:authorize access="isAnonymous()">
 								<div class="account_cnts"><a href="/dealight/login">로그인</a></div>
@@ -296,7 +292,12 @@
 								<div class="account_cnts"><a href="/dealight/mypage/modify">회원정보수정</a></div>
 								<div class="account_cnts"><a href="dealight/logout" onclick="submit(event)">로그아웃</a></div>
 						</sec:authorize>
+						<div class="common_menu_cnts">
+							<div class="account_cnts"><a href="/dealight/hotdeal/main">핫딜 찾기</a></div>
+		        			<div class="account_cnts"><a href="/dealight/search/">매장 찾기</a></div>
+		        		</div>
 					</div>
+            	</div>
             </div>
         </nav>
     </header>
