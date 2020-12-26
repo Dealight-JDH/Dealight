@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
+<%@include file="../../includes/mainMenu.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -54,7 +54,7 @@
         position: relative;
         padding: 0 8px 8px;
         width: 99%;
-        height: 570px;
+        height: 450px;
     }
     .hotdeal-img>img{
         width: 100%;
@@ -266,6 +266,11 @@
         color: orange;
         font-size: 24px;
     }
+    
+    .reseaurant-btn{
+    	cursor: pointer;
+    	outline: none;
+    }
 
 </style>
 </head>
@@ -289,10 +294,12 @@
                  </h1>
                 
                 <div class="hotdealDetail_restaurantBtn">
+                <button type="button" class="reseaurant-btn js-restaurantBtn">
                     <i class="hotdealDetail__restaurantIcon"></i>
                     <span class="hotdealDetail__restaurantLabel">
                         식당 정보 보기
                     </span>
+                    </button>
                 </div>
 
                 <p class="hotdealInfo_title">
@@ -391,7 +398,7 @@
 
             <div class="hotdealDetail-btnContainer">
                 <button class="hotdealDetail_btn js-dealBtn">
-                    <span><i class="fas fa-fire"></i></span>
+                    <!-- <span><i class="fas fa-fire"></i></span> -->
                     <span class="hotdeal_btnMessage btn_text">딜 하기</span></button>
             </div>
 
@@ -481,6 +488,13 @@
 			 });
 		 }
 		
+
+		$(".js-restaurantBtn").on("click", function(e){
+			e.preventDefault();
+			location.href = "/dealight/store/"+storeId;
+		});
+		
+		//버튼 클릭시 매장 상세 페이지
 		$(".js-dealBtn").on("click", function(e){
 			e.preventDefault();
 			let body = $("body");
@@ -511,12 +525,12 @@
 		console.log("=========htdlId: " + htdlId);
 		/* checkStusCdStart(htdlId); */
 		
-		/* if(stusCd === 'A'){
+		if(stusCd === 'A'){
 			/* showHtdlElapTime(endTime, null); */
-		//	showElapTimeStart();
-		/* }else if(stusCd === 'P'){
+			showElapTimeStart();
+		}else if(stusCd === 'P'){
 			showHtdlElapTime(endTime, startTime);
-		}  */
+		}
 		
 		checkStusCd(htdlId);
 	});
@@ -620,6 +634,9 @@
 			if(countElapTime === "00:00:00"){
 				stusCd = 'I';
 				//css 변경
+				dealBtn.find(".btn_text").text("🔥핫딜이 종료되었습니다.");
+				dealBtn.css("background", "black");
+				dealBtn.prop("disabled", true);
 			}
 		}
 		

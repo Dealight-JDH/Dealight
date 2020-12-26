@@ -33,7 +33,7 @@
         border: 1px solid red;
     } */
     
-    .nav-bar{
+/*     .nav-bar{
         display: flex;
         
         height: 60px;
@@ -42,7 +42,7 @@
         align-items: center;
         background-color: #d32323;
         color: white;
-    }
+    } */
 
     .main-container{
         display: flex;
@@ -212,14 +212,14 @@
     }
 
     .hotdealState-wrap{
-        display: flex;
+       	display: flex;
         align-items: center;
         align-items: flex-end;
         width: 100%;
-        height: 55px;
+        height: 40px;
         margin-top: 20px;
         margin-left: 30px;
-        margin-bottom: 10px;
+        /* margin-bottom: 10px; */
         /* border: 1px solid red; */
     }
 
@@ -844,9 +844,15 @@
         vertical-align: top;
         cursor: pointer;
         z-index: 600;
-        background-color: red;
-        color: #202020;
+        background-color: rgb(180, 173, 173);
+        color: white;
+        font-weight: 700;
         border-radius: 25px;
+        outline: none;
+    }
+    
+    .btn_content:hover{
+    	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     }
 
 </style>
@@ -872,8 +878,8 @@
           </label>
           <p>OFF</p><p style="display:none;">ON</p> -->
 
-          <button type="button" id="hotdeal_btn" class="btn_content">
-
+          <button type="button" id="hotdeal_btn" data-oper="pending" class="btn_content">
+			핫딜 예정 보기
           </button>
           </div>
 		<div class="search-container">
@@ -1157,7 +1163,124 @@
 			console.log("aaaa");
 		}); */
 		
+		let check = $("input[type='checkbox']");
+        check.click(function(){
+            $("p").toggle();
+        });
 
+        //[사용자에게 보여질값, 실제 값]
+	    let item1 = ["내 위치", "a"];
+	    let item2 = ["종로구", "b"];
+	    let item3 = ["평양","c"];
+        let item4 = ["화성","d"];
+        
+        let startTimeArr = ["09:00","09:30","10:00","10:30",
+        "11:00","11:30","12:00","12:30","13:00","13:30",
+        "14:00","14:30","15:00","15:30","16:00","16:30","17:00",
+        "17:30","18:00","18:30","19:00","19:30"];
+
+        let endTimeArr = ["09:00","09:30","10:00","10:30",
+        "11:00","11:30","12:00","12:30","13:00","13:30",
+        "14:00","14:30","15:00","15:30","16:00","16:30","17:00",
+        "17:30","18:00","18:30","19:00","19:30"];
+        
+	    //셀렉박스에 넣어줄 요소들
+	    let values = [item1, item2, item3, item4];
+	    //아이디값을 넣어줄 inpu태그의 name으로 지정할것
+    	const region = $("#region");
+	    const startTime = $("#startTime");
+	    const endTime = $("#endTime");
+    	const form = $("#searchForm");
+    	//(클릭이벤트를 걸어줄 요소, 셀렉박스 요소값, 선택값을 추가할 form)
+    	
+    	
+    	// selectEvent(region ,values, form);
+    	
+        selectEvent(startTime ,startTimeArr, form);
+        selectEvent(endTime ,endTimeArr, form);
+        /* Rater.js 로직*/
+        $(".card-rating").rate({
+                        max_value: 5,
+                        step_size: 0.5,
+                        initial_value: 0,
+                        selected_symbol_type: 'utf8_star', // Must be a key from symbols
+                        cursor: 'default',
+                        readonly: true,
+                    });
+
+        
+        
+        for(let i=0; i<3; i++){
+
+            $(".js-search"+i).on("click", "label input", function(){
+
+                console.log("====");
+                // let regionState =  $(".css-regionLabel").hasClass("css-regionLabel");
+                
+                let selectLabel = $(this).find("js-label");
+
+                console.log(selectLabel);
+                console.log(i);
+                //selectLabel.attr('class', "select-label");
+                switch(i){
+                    case 0:                        
+                        $(".css-regionLabel").attr('class', "select-regionLabel");
+                        console.log(".....click");
+                        break;
+                        
+                    case 1:
+                        $(".css-startTimeLabel").attr('class', "select-startTimeLabel");
+                        
+                        break;
+                        
+                    case 2:
+                        
+                        $(".css-endTimeLabel").attr('class', "select-endTimeLabel");
+                        
+                        break;
+                        
+                }
+                
+                // if(selectLabel.hasClass("css-regionLabel")){
+                //     selectLabel.attr('class', "select-label");
+                    
+                // }else if(selectLabel.hasClass("css-startTimeLabel")){
+                //     selectLabel.attr('class', "select-label");
+                    
+                // }else if(selectLabel.hasClass("css-endTimeLabel")){
+                //     selectLabel.attr('class', "select-label");
+                    
+                // }
+
+                // if(beforeState){
+                //     $(".css-regionLabel").attr('class', "select-label");
+                //     return;
+                // }
+            });
+
+        }
+
+        $(".js-search0").on("focusout", function(){
+            $(".select-regionLabel").attr('class', "css-regionLabel");
+            $(".css-regionLabel").addClass("css-label");
+            $(".css-regionLabel").addClass("js-label");
+            console.log("...");
+        });
+
+        $(".js-search1").on("focusout", function(){
+            $(".select-startTimeLabel").attr('class', "css-startTimeLabel");
+            $(".css-startTimeLabel").addClass("css-label");
+            $(".css-startTimeLabel").addClass("js-label");
+            console.log("...startTime label");
+        });
+
+        $(".js-search2").on("focusout", function(){
+            $(".select-endTimeLabel").attr('class', "css-endTimeLabel");
+            $(".css-endTimeLabel").addClass("css-label");
+            $(".css-endTimeLabel").addClass("js-label");
+            // console.log("...");
+        });
+       
 		$("button").on("click", function(e){
 			e.preventDefault();
 			
@@ -1172,10 +1295,16 @@
 						console.log(list[i].dtlsList);	
 					}	
 				}); */ 
-				stop(showListId);
+				/* stop(showListId); */
+				stop(showElapTimeId);
 				htdlUL.empty();
 				paramStusCd = "P";
 				showList(paramStusCd, pageNum);
+				$(this).data("oper", "activate");
+				$(this).css("background", "red");
+				$(this).css("color", "white");
+				$(this).text("핫딜중 보기");
+				console.log("oper change : " + $(this).data("oper"));
 				//showListStart("P",pageNum);
 			}else if(operation === 'activate'){
 				//핫딜 진행중
@@ -1186,14 +1315,21 @@
 					
 				});  */
 				
-				stop(showListId);
+				/* stop(showListId); */
 				htdlUL.empty();
 				paramStusCd = "A";
-				showListStart(paramStusCd, pageNum);
+				showList(paramStusCd);
+				$(this).data("oper", "pending");
+				$(this).css("background", "rgb(180, 173, 173)");
+				$(this).css("color", "white");
+				$(this).text("핫딜예정 보기");
+				console.log("oper change : " + $(this).data("oper"));
+				/* showListStart(paramStusCd, pageNum); */
 				//showList("A");
-			}else if(operation === 'register'){
-				$("form").submit();
 			}
+			/* else if(operation === 'register'){
+				$("form").submit();
+			} */
 		});
 		
 		//모달 닫기
@@ -1418,6 +1554,7 @@
 	//핫딜 그리기
 	function htdlHtml(list){
 		let str = "";
+		str +="<div class='hotdealState-wrap'></div>";
 		//list에 따른 핫딜 동적 생성
 		for(let i =0, len = list.length || 0; i<len; i++){
 			/* let elapTime = getElapTime(list[i].endTm); */
@@ -1467,6 +1604,7 @@
 				str += "</li>";
 				str += "</ul></div>";
 			} */
+			
 			str += "<div class='card js-htdl"+i+"'>";
 			str += "<input type='hidden' class='js-htdlId' value='"+list[i].htdlId+"'>";
 			str += "<div class='card-lmtpnum'>";
@@ -1497,7 +1635,7 @@
 			str += "<h3>[종로] 맛집</h3></div>";
 			
 			str += "<div class='card-menu'>";
-			str += "메뉴:&nbsp;<span>";
+			str += "<span>";
 			let menuArr = []
 			//핫딜 메뉴 리스트 생성
 			for(let j=0, dtlsLen = list[i].htdlDtls.length || 0; j<dtlsLen; j++){
@@ -1509,7 +1647,7 @@
 			
 			
 			str += "<div class='card-intro'>";
-			str += "소개:&nbsp;<span>"+list[i].intro+"</span></div></div></div>";
+			str += "<span>"+list[i].intro+"</span></div></div></div>";
 
 			/* 
 			str += "남은 시간: <span class='js-elapTime css-elapTime'>"+elapTime+"</span><br>"
@@ -1696,20 +1834,22 @@
 			 //핫딜번호를 가져온다
 			 let param = $(this).find(".js-htdlId").val();
 			 console.log($(this).find(".js-htdlId").val());
+			 
+			 location.href="/dealight/hotdeal/get/"+param;
 
-			 if(userId != null){				 
+			/*  if(userId != null){				 
 				 isHtdlPayExistChecked({htdlId: param, userId: userId}, function(result){
 					 console.log("===========hotdeal pay check: "+ result);
 					 ishtdlPayHistory = result;
 				 });
-			 }
+			 } */
 
-			 getHtdl({htdlId: param}, function(result){
+			 /* getHtdl({htdlId: param}, function(result){
 				 
 				 console.log("핫딜 get.."+ JSON.stringify(result));
 				 //모달에 값 전달하기
 				 showModal(result, ishtdlPayHistory);
-			 }); 
+			 });  */
 			 
 		 });
 		}
@@ -1734,6 +1874,68 @@
 			}
 		});
 	}
+	
+	function selectEvent(dropdown, values, searchForm){
+	    const list = dropdown.find(".dropdown-list");
+	    const selectValue =dropdown.find(".dropdown-select");
+           let name = dropdown.attr("id");
+           
+	    //셀렉박스 클릭 이벤트
+        dropdown.on('click', function(e){
+        	e.stopPropagation();
+			list.css("opacity","1")
+	    	if(list.css("visibility") ==="visible"){
+	    		list.css("visibility","")
+	    		return
+	    	}
+	        list.css("visibility","visible");
+        });
+
+	    //셀렉박스 외부 클릭시 이벤트
+        // $(document).click(function(){
+        //     list.css("visibility", "") 
+        //     console.log("......외부 클릭");
+        // });
+
+        dropdown.on("focusout",function(){
+            list.css("visibility", "") 
+            console.log("......외부 클릭");
+        });
+
+      	//select 아이템 추가
+        let str = addItem(values);
+        list.append(str);
+
+        //셀렉박스 요소 선택 이벤트
+        dropdown.find(".dropdown-list__item").on("click", function(e){
+            //클릭시 셀렉박스에 내용 반영
+            
+            selectValue.find("input").val($(this).html());
+        	console.log(searchForm.find("input[name='"+name+"']").length);
+        	let inputTag = searchForm.find("input[name='"+name+"']");
+        	if(inputTag.length == 0){
+        		let str =""
+        		str += "<input type='hidden' name='"+ name +"' value='" + $(this).data("value") + "'>"
+        		searchForm.append(str);
+        		return;
+        	}
+        	//간단하게 form 요소만 변경(기존에 있어야함)
+            inputTag.val($(this).data("value"));
+        });
+
+    };
+
+    //select 아이템 추가 함수
+    function addItem(values){
+        let str ="";
+        for(let index in values){   
+            
+            str += "<div class='dropdown-list__item' data-value='"+(values[index])+"'>"+(values[index])+"</div>";
+            
+        }
+        return str;
+    }
+    
 	
 	$(".card-rating").rate({
         max_value: 5,
