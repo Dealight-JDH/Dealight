@@ -12,6 +12,7 @@
 <title>매장 수정</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
+<script src="/resources/js/Rater.js"></script>
 <style>
 	.file_body img {
 	
@@ -106,6 +107,7 @@
 	매장 경도 : ${store.lng}</br>
 	
 	평균 평점 : ${store.avgRating }</br>
+	<div class='rating' data-rate-value='${store.avgRating }'></div>
 	리뷰 수 : ${store.revwTotNum }</br>
 	좋아요 합계 : ${store.likeTotNum }</br>
 =====================================		
@@ -168,6 +170,7 @@
 		<h5>회원 아이디 : <input name="userId" value="${revw.userId }" readonly></h5>
 		<h5>리뷰 내용 : <input name="cnts" value="${revw.cnts }" readonly></h5>
 		<h5>평점 : <input name="rating" value="${revw.rating }" readonly></h5>
+		<div class='rating' data-rate-value='${revw.rating }'></div>
 		<h5>답글 내용 : <input name="replyCnts" value="${revw.replyCnts }"></h5>
 		<h5>답글 등록 날짜 : <input name="replyRegDt" value="${revw.replyRegDt }"></h5>
 		<button class="btn_reg_reply">답글 달기</button>
@@ -314,6 +317,16 @@ let regReplyHandler = function (e) {
 };
 
 	$(".btn_reg_reply").on("click",regReplyHandler);
+	
+	/* Rater.js 로직*/
+    $(".rating").rate({
+        max_value: 5,
+        step_size: 0.5,
+        initial_value: 3,
+        selected_symbol_type: 'utf8_star', // Must be a key from symbols
+        cursor: 'default',
+        readonly: true,
+    });
 
 </script>
 <%@include file="../../../../includes/mainFooter.jsp" %>

@@ -142,6 +142,7 @@
     </form>
 <%@include file="../includes/mainFooter.jsp" %>
 
+
 <script>
      $(".card-rating").rate({
         max_value: 5,

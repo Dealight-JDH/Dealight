@@ -2,21 +2,468 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@include file="../../includes/mainMenu.jsp" %>
-<%@include file="../../includes/loginModal.jsp" %>
-<%@include file="../../includes/loginmodalHeader.jsp" %>
+
 <!DOCTYPE html>
 <!-- 다울 -->
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/resources/css/selectbox.css" type="text/css" />
+<link rel="stylesheet" href="/resources/css/bstore.css">
 <link rel="stylesheet" href="/resources/css/store.css">
 <link rel="stylesheet" href="/resources/css/tab.css">
-<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<script src="/resources/js/Rater.js"></script>
 </head>
 <body>
+    <div class="store-container flex-column center">
+        <div class="main-header">
+            <div class="main-img-container">
+                <c:if test="${store.imgs[0].fileName ne null}">
+					<c:forEach items="${store.imgs }" var="imgs">
+						<img class="main-img"
+							src='/resources/images/store/<c:out value="${imgs.fileName}" />'>
+					</c:forEach>
+				</c:if>
+            </div>
+            <!-- absolute -->
+            <div class="shadow"></div>
+            <div class="header-container flex-column">
+                <div class="header-title flex">
+                    ${store.storeNm }
+                    <div class="like" data-storeid="'+storeList[i].storeId+'" data-like="false">
+                        <i class="fa fa-heart fa-xs" style="color:#f43939"></i>
+                    </div>
+                    <div class="header-box m4">${store.eval.likeTotNum}</div>
+                </div>
+                <div class="header-rate flex">
+                    <div class='rating' data-rate-value='${store.eval.avgRating}'></div>
+                    <div class="header-box m4">
+                        ${store.eval.revwTotNum}개의 리뷰
+                    </div>
+
+                </div>
+                <div class="contents-container flex">
+                    <div class="contents">
+                        분위기 좋은집
+                    </div>
+                    <div class="contents">
+                        분위기 좋은집
+                    </div>
+                    <div class="contents">
+                        분위기 좋은집
+                    </div>
+                    <div class="contents">
+                        분위기 좋은집
+                    </div>
+                </div>
+                <div class="contents-container flex">
+                    <div class="stus ${store.bstore.seatStusCd ne 'B'? 'green':'' }">
+                    	<c:choose>
+                    		<c:when test="${store.bstore.seatStusCd eq 'B'}">
+		                        <i class="fas fa-store-alt fa-lg"></i>영업이 끝났습니다
+                    		</c:when>
+                    		<c:otherwise>
+		                        <i class="fas fa-store-alt fa-lg"></i>영업중
+                    		</c:otherwise>
+                    	</c:choose>
+                    </div>
+                    <c:if test="${store.bstore.htdl ne null }">
+	                    <div class="stus red">
+	                        <i class="fas fa-fire fa-lg"></i>
+	                        핫딜중
+	                    </div>
+                    </c:if>
+                    <c:if test="${store.bstore.seatStusCd ne 'B'}">
+	                    <div class="stus white">
+		                    <c:choose>
+								<c:when test="${store.bstore.seatStusCd eq 'G'}">
+			                        <i class="fas fa-user-clock" style="color:green"></i> 바로 식사가능해요~
+								</c:when>
+								<c:when test="${store.bstore.seatStusCd eq 'R'}">
+			                        <i class="fas fa-user-clock" style="color:#f43939"></i> 현재 <c:out value="${store.bstore.waits.waitTot}" />명이 대기중이에요~
+								</c:when>
+								<c:when test="${store.bstore.seatStusCd eq 'Y'}">
+			                        <i class="fas fa-user-clock" style="color:tomato"></i> 서두르세요 자리가 얼마 안남았어~
+								</c:when>
+							</c:choose>
+	                    </div>
+                    </c:if>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="main-body flex center">
+            <div class="flex-column item-container">
+
+                <div class="divider"></div>
+
+                <div class="body-item flex-column">
+                    <h4 class="item-header">
+                        매장정보
+                    </h4>
+                    <div class="item-contents flex-column">
+                        <div class="item">
+                            <div class="i-title"><i class="fas fa-store"></i> 식당소개</div>
+                            <div class="i-contents">${store.bstore.storeIntro}</div>
+                        </div>
+                        <div class="item flex-column">
+                            <div class="i-title"><i class="fas fa-phone-square-alt"></i> 전화번호</div>
+                            <div class="i-contents">${store.telno}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="body-item flex-column">
+                    <h4 class="item-header">
+                        메뉴소개
+                    </h4>
+                    <div class="menu-container flex">
+                    	<c:forEach items="${store.bstore.menus }" var="menus">
+                    		<c:if test="${menus.imgUrl ne null}">
+		                        <div class="menu-card flex-column">
+		                            <img class="menu-img" src="https://via.placeholder.com/200x200">
+		                            ${menus.imgUrl}
+		                            <div class="i-contents">
+		                                <c:out value="${menus.name}" />
+		                            </div>
+		                            <div class="i-contents">${menus.price}</div>
+		                        </div>
+                    		</c:if>
+                        </c:forEach>
+
+                    </div>
+                    <div class="menus flex">
+                    	<c:forEach items="${store.bstore.menus }" var="menus">
+                    		<c:if test="${menus.imgUrl eq null}">
+		                        <div class="menu-item flex">
+		                            <div class="i-contents">
+		                                ${menus.name} -
+		                            </div>
+		                            <div class="i-contents"> ${menus.price}원</div>
+		                        </div>
+                        	</c:if>
+                        </c:forEach>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="body-item flex-column">
+                    <h4 class="item-header">
+                        매장위치 & 영업시간
+                    </h4>
+                    <div class="location-container flex">
+                        <div class="map" id="map" >
+                        </div>
+                        <div class="item-contents  flex-column">
+                            <div class="item flex">
+                                <div class="i-title loc center">주소</div>
+                                <div class="i-contents center">${store.loc.addr}</div>
+                            </div>
+                            <div class="item flex">
+                                <div class="i-title loc">영업시간</div>
+                                <div class="i-contents center">${store.bstore.openTm} - ${store.bstore.closeTm}</div>
+                            </div>
+                            <div class="item flex">
+                                <div class="i-title loc">브레이크타임</div>
+                                <div class="i-contents center">${store.bstore.breakSttm} - ${store.bstore.breakEntm}</div>
+                            </div>
+                            <div class="item flex">
+                                <div class="i-title loc">휴일</div>
+                                <div class="i-contents center">${store.bstore.hldy}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="body-item flex-column">
+                    <div class="item-header">
+                        매장 리뷰
+                    </div>
+                    <div class="revw-card">
+                        <%-- <c:if test="${not empty writtenList}"> --%>
+                        <div class="revw_wrapper">
+                            <%-- <c:forEach items="${writtenList}" var="revw"> --%>
+                            <div class='modal_top_revw'>
+                                <div class='revw_reg_wrapper'>
+                                    <div class='revw_store_info'>
+                                        <div class='revw_store_name'>아이디</div>
+                                        <div class='revw_rate_wrapper'>
+                                            <div class='rating' data-rate-value='"+revw.rating+"'
+                                                style="font-size: 16px"></div>
+                                        </div>
+                                        <div class='revw_rsvd_id'>
+                                            <span>리뷰 등록 날짜 : ${revw.regdate}</span>
+                                        </div>
+                                    </div>
+                                    <div class='revw_info_wrapper' action='/dealight/mypage/review/register' method='post'>
+
+                                        <div class='revw_cnts_textarea'>
+                                            <textarea cols='30' row='20' name='cnts' readonly>${revw.cnts}</textarea>
+                                        </div>
+                                        <input name='rating' id='rate_input' hidden>
+                                        <%-- <c:if test="${revw.imgs != null}">
+														<div class='revw_img_box'>
+															<div class='revw_img_wrapper'>
+														<c:forEach items="${revw.imgs}" var="img">
+															<c:if test="${img.fileName != null}">
+																<img src=''>
+                                                            </c:if>
+                                                        </div>
+														</c:forEach>  --%>
+                                    </div>
+                                   <%--  </c:if> --%>
+                                    <%-- <c:if test="${revw.replyCnts != null}"> --%>
+                                    <div class='reply_wrapper'>
+                                        <div class='reply_item'>
+                                            <div class='reply_item_icon'>
+                                                <i class='fas fa-reply'></i>
+                                                <div class='reply_item_name'>${revw.storeNm}</div>
+                                                <div class='reply_item_date'>${revw.replyRegDt}</div>
+                                            </div>
+                                            <div class='reply_cnts_wrapper'>
+                                                <div class='reply_cnts'>
+                                                    ${revw.replyCnts}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <%-- </c:if> --%>
+                                </div>
+                            </div>
+                            <%-- </c:forEach> --%>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="nav-container">
+                <div class="nav flex-column">
+                    <div class="nav-box htdl">
+                    	<c:if test="${store.bstore.htdl ne null }">
+	                        <div class="nav-header" id="htdlBtn">
+	                            핫딜중인 상품
+	                        </div>
+	                        <div class="nav-body" id="htdl" style="display:none">
+	                            <div class="htdlcard js-htdl0">
+	                                <div class="card-img">
+	                                    <img src="1.jpg" alt="" style="width: 100%; z-index: -1;">
+	                                    <div class="card-img-top"></div>
+	                                    <div class="card-dc">
+					                        <span> <fmt:formatNumber value="${store.bstore.htdl.dcRate}" type="percent" groupingUsed="false" /></span>
+					                    </div>
+					                    <div class="card-price card-afterPrice">
+					                        <span>₩${store.bstore.htdl.befPrice }</span>
+					                    </div>
+					                    <div class="card-price card-beforePrice">
+					                        <span>₩${store.bstore.htdl.befPrice - store.bstore.htdl.ddct }</span>
+					                    </div>
+					                </div>
+					                <div class="card-body">
+					                    <div class="card-rate">
+					                        <div class="card-rating" data-rate-value=2></div>
+					                        <div class="card-curpnum">
+					                            <span><i class="fas fa-fire"></i></span>
+					                            
+					                        </div>
+					                    </div>
+					                    <div class="card-title">
+					                        <h3>[${store.bstore.htdl.brch }] ${store.bstore.htdl.name }</h3>
+					                    </div>
+					                    <div class="card-menu">
+					                        메뉴:&nbsp;<span>디저트 콤보 1인 세트</span>
+					                    </div>
+					                    <div class="card-intro">
+					                        <div style="width: 40px; align-self: flex-start;">소개 : </div><span>${store.bstore.htdl.intro }</span>
+	                                    </div>
+	                                </div>
+	                            <button class="nav-btn" id="purchase">
+	                                구매하기
+	                            </button>
+	                            </div>
+	                        </div>
+                        </c:if>
+                    </div>
+
+                    <div class="nav-box">
+                        <div class="nav-header">
+                            예약 & 줄서기
+                        </div>
+                        <div class="nav-tabs flex">
+                            <div class="tab" id="wait">줄서기</div>
+                            <div class="tab tab-selected" id="reserve">예약하기</div>
+                        </div>
+                        <form id="waitingForm" action="/dealight/store/wait" method="post" class="wait-tab flex-column" style="display: none;">
+                            <div class="dropdown-box flex">
+                                <div class="dropdown flex" id="pNum">
+                                    <div class="dropdown-select flex">
+                                        <span class="select">인원</span>
+                                        <i class="fa fa-angle-down" style="font-size:20px"></i>
+                                    </div>
+                                    <div class="dropdown-list">
+                                        <!-- <div class="dropdown-list__item">
+                                            blabla1
+                                        </div>
+                                        <div class="dropdown-list__item">
+                                            blablabla2
+                                        </div>
+                                        <div class="dropdown-list__item">
+                                            blablabla3
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="nav-btn" type="submit">
+                                줄서기
+                            </button>
+                            <input type='hidden' name='storeId'value='<c:out value="${store.storeId }"/>' />
+                        </form>
+                        <form id="reserveForm" action="/dealight/reservation/" method="get" class="wait-tab flex-column">
+                            <div class="flex">
+                                <div class="dropdown-box flex">
+                                    <div class="dropdown flex" id="time">
+                                        <div class="dropdown-select flex">
+                                            <span class="select">시간</span>
+                                            <i class="fa fa-angle-down" style="font-size:20px"></i>
+                                        </div>
+                                        <div class="dropdown-list">
+                                            <!-- <div class="dropdown-list__item">
+                                                blabla1
+                                            </div>
+                                            <div class="dropdown-list__item">
+                                                blablabla2
+                                            </div>
+                                            <div class="dropdown-list__item">
+                                                blablabla3
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-box flex">
+                                    <div class="dropdown flex" id="pNumRsvd">
+                                        <div class="dropdown-select flex">
+                                            <span class="select">인원</span>
+                                            <i class="fa fa-angle-down" style="font-size:20px"></i>
+                                        </div>
+                                        <div class="dropdown-list">
+                                            <!-- <div class="dropdown-list__item">
+                                                blabla1
+                                            </div>
+                                            <div class="dropdown-list__item">
+                                                blablabla2
+                                            </div>
+                                            <div class="dropdown-list__item">
+                                                blablabla3
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown-box flex">
+                                <div class="dropdown flex" id="menu">
+                                    <div class="dropdown-select flex">
+                                        <span class="select">메뉴</span>
+                                        <i class="fa fa-angle-down" style="font-size:20px"></i>
+                                    </div>
+                                    <div class="dropdown-list">
+                                        <!-- <div class="dropdown-list__item">
+                                            blabla1
+                                        </div>
+                                        <div class="dropdown-list__item">
+                                            blablabla2
+                                        </div>
+                                        <div class="dropdown-list__item">
+                                            blablabla3
+                                        </div> -->
+                                        <c:forEach items="${store.bstore.menus }" var="menu">
+                                        	<div class='dropdown-list__item' data-value='${menu.menuSeq}' data-price='${menu.price }'>${menu.name }</div>
+										</c:forEach>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-column" >
+                            	<div class="flex-column" id="menus">
+	                                <div class="menu-container flex">
+	                                    <div class="menu-header center">
+	                                        만두굿<br>
+	                                        (18000원)                        
+	                                    </div>
+	                                    <div class="menu-qty flex center">
+	                                        <div class="qty center">
+	                                            9
+	                                        </div>
+	                                        <div class="qty-btn flex-column">
+	                                            <div class="menu-btn flex">
+	                                                <i class="fas fa-plus center"></i>
+	                                            </div>
+	                                            <div class="menu-btn flex">
+	                                                <i class="fas fa-minus center"></i>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <div class="cancle center">
+	                                        <i class="fas fa-times" style="color: #f43939;"></i>
+	                                    </div>
+	                                </div>
+	                                <div class="menu-container flex">
+	                                    <div class="menu-header center">
+	                                        핫딜 상품 <br>
+	                                        2인세트
+	                                        만두, 깡통<br>
+	                                        (18000원)
+	                                    </div>
+	                                    <div class="menu-qty flex center">
+	                                        <div class="qty center">
+	                                            9
+	                                        </div>
+	                                        <div class="qty-btn flex-column">
+	                                            <div class="menu-btn flex">
+	                                                <i class="fas fa-plus center"></i>
+	                                            </div>
+	                                            <div class="menu-btn flex">
+	                                                <i class="fas fa-minus center"></i>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <div class="cancle center">
+	                                        <i class="fas fa-times" style="color: #f43939;"></i>
+	                                    </div>
+	                                </div>
+	                            </div>
+                                <div class="divider"></div>
+                                <div class="flex" style="justify-content: flex-end">
+	                                <div id="total">
+	                                    
+	                                </div>
+	                                원
+                                </div>
+                                
+
+								<div id="htdl-container"></div>
+							</div>
+                            <button class="nav-btn" type="submit">
+                                예약하기
+                            </button>
+                            <input type='hidden' name='storeId'value='<c:out value="${store.storeId }"/>' />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
 	<div class="container">
 
 		<div class="left">
@@ -50,13 +497,10 @@
 				</c:choose>
 				<br>
 				<!-- 웨이팅중인 고객수 -->
-				<c:forEach items="${store.bstore.waits }" var="waits">
 					<h4>
-						<c:out value="${waits.waitTot}" />
+						<c:out value="${store.bstore.waits.waitTot}" />
 						명이 웨이팅 중 입니다!
 					</h4>
-					<br>
-				</c:forEach>
 				<br>
 
 				<div class="img">
@@ -88,8 +532,7 @@
 					<p>영업시간 : ${store.bstore.openTm} - ${store.bstore.closeTm}</p>
 				</c:if>
 				<c:if test="${store.bstore.breakSttm ne null}">
-					<p>브레이크 타임 : ${store.bstore.breakSttm} -
-						${store.bstore.breakEntm}</p>
+					<p>브레이크 타임 : ${store.bstore.breakSttm} - ${store.bstore.breakEntm}</p>
 				</c:if>
 				<c:if test="${store.bstore.lastOrdTm ne null}">
 					<p>라스트오더 : ${store.bstore.lastOrdTm}</p>
@@ -191,10 +634,7 @@
 								<div class="row">
 									<select id="menu">
 										<option value="">메뉴</option>
-										<c:if test="${store.bstore.htdl.htdlId ne null}">
-											<%-- <c:if test=" ${store.bstore.htdl.stusCd eq P }"> --%>
-											<%-- </c:if> --%>
-										</c:if>
+										
 										<c:forEach items="${store.bstore.menus }" var="menus">
 											<option value="${menus.menuSeq}">${menus.name }</option>
 										</c:forEach>
@@ -244,11 +684,16 @@
 	<!-- 현중 -->
 	<script type="text/javascript">
 		window.onload=function(){
+			
+			//핫딜 중인 상품 클릭 이벤트
+			$("#htdlBtn").click(function() {
+				$("#htdl").slideToggle();
+			});
+			
+			//
 			let result = '<c:out value="${result }"/>';
 			checkModal(result);
 			function checkModal(result){
-				console.log("123")
-				
 				
 				if(result === "fail"){
 					alert("줄서기를 할 수 없습니다..(마이페이지에서 나의 상태를 확인해주세요.)")
@@ -258,108 +703,233 @@
 				}
 			}
 			
+			//selectbox 
+			let pNumValues = [["1명", "1"], ["2명", "2"], ["3명","3"], ["4명","4"]];
+		    let timeValues = [["",""],["핫딜매장우선보기", "H"], ["식사가능매장우선보기", "S"], ["웨이팅있는매장보기","W"], ["예약가능매장보기","R"]];
+	    	let a = "<c:out value='${store.bstore.menus }'/>"
+	    	console.log(a);
+	    	//(클릭이벤트를 걸어줄 요소, 셀렉박스 요소값, 선택값을 추가할 form)
+	    	selectEvent($("#pNum") ,pNumValues,  $("#waitingForm"))
+	    	selectEvent($("#time") ,timeValues,  $("#reserveForm"))
+	    	selectEvent($("#pNumRsvd") ,pNumValues,  $("#reserveForm"))
+	    	selectMenu($("#menu"),$("#resverForm"))
+		    //정렬기준
+		    /* $(".dropdown-list__item").on("click", function(e){
+		    	console.log("change")
+				showMain();
+		    }); */
+			
+			
 		}
+		 $("#reserve").on("click", function(e){
+		    	
+	        $(this).addClass("tab-selected");
+	        
+	        $(this).prev().removeClass("tab-selected")
+	        //시간 셀렉박스를 보여준다.
+	        $("#waitingForm").hide();
+	        $("#reserveForm").show();
+	        
+	        
+	    });
+	    
+	    $("#wait").on("click", function(e){
+	    	
+	        $(this).addClass("tab-selected");
+	        
+	        $(this).next().removeClass("tab-selected")
+	        
+	        //시간 셀렉바스를 숨긴다.
+	        $("#reserveForm").hide();
+	        $("#waitingForm").show();
+	    });
+	    
+	    function selectMenu(menu,form){
+	    	 const list = menu.find(".dropdown-list");
+			 const selectValue =menu.find(".select");
+	    	//셀렉메뉴 클릭 이벤트를 등록하고
+			 menu.on('click', function(e){
+		        	e.stopPropagation();
+					list.css("opacity","1")
+			    	
+			    	if(list.css("visibility") ==="visible"){
+			    		list.css("visibility","")
+			    		return
+			    	}
+			        list.css("visibility","visible");
+		        });
+	    	//셀렉박스 외부 클릭시 이벤트 등록
+	    	$(document).click(function(){
+	        	list.css("visibility","") 
+	        });
+	    	//셀렉 박스 요소 클릭 이벤트
+	    	 menu.find(".dropdown-list__item").on("click", function(e){
+	            selectValue.html($(this).html());
+	    		//요소를 클릭하면
+	    		
+	    		//요소가 이미추가되어있나 확인
+	    		let seq = $(this).data("value");
+	    		if($("#menus").find("div[data-value='" + seq +"']").length != 0){
+					alert("이미 추가하신 메뉴입니다.")
+				 	return;
+	    		}
+	    		
+	    		//메뉴 컨테이너에 요소추가
+	    		let str = "";
+	    		str += '<div class="menu-container flex" data-value="'+$(this).data("value")+'">'
+	    		str += '<div class="menu-header center">'
+	    		str += $(this).text() + '<br>(' + $(this).data("price") + '원)</div>'
+	    		str += '<div class="menu-qty flex center" data-qty="1" data-price="'+  $(this).data("price") +'">'
+	    		str += '<div class="qty center">1</div>'
+	    		str += '<div class="qty-btn flex-column">'
+	    		str += '<div class="menu-btn plus flex"><i class="fas fa-plus center"></i></div>'
+	    		str += '<div class="menu-btn minus flex"><i class="fas fa-minus center"></i></div>'
+	    		str += '</div></div>'
+	    		str += '<div class="cancle center"><i class="fas fa-times" style="color: #f43939;"></i></div></div>'
+	    		
+	    		$("#menus").append(str);
+	    		
+    			//메뉴이름 수량 +,-
+    			//이벤트 +,-,x 이벤트 등
+	    		let target = $("#menus").find("div[data-value='" + seq +"']")
+	    		
+	    		//메뉴를 추가한뒤 total에 가격추가
+	    		$("#total").text( ($(this).data("price")-0) + ($("#total").text()-0))
+	    		
+	    		//plus
+	    		console.log(target)
+	    		target.on("click", ".menu-qty .qty-btn .plus", function(e){
+	    			console.log("plus")
+	    			let qtyTag =target.find(".menu-qty")
+	    			let curQty = qtyTag.data("qty");
+	    			if(curQty == 10){
+	    				alert("최고 수량입니다.");
+	    				return;
+	    			}
+	    			
+	    			qtyTag.data("qty", curQty + 1);
+	    			qtyTag.find(".qty").text(curQty + 1)
+	    			
+	    			$("#total").text( (qtyTag.data("price")-0) + ($("#total").text()-0))
+	    			
+	    			
+	    		});
+    			
+    			//minus
+	    		target.on("click", ".menu-qty .qty-btn .minus", function(e){
+	    			console.log("minus")
+	    			let qtyTag =target.find(".menu-qty")
+	    			let curQty = qtyTag.data("qty");
+	    			if(curQty == 1){
+	    				alert("최소 수량입니다.");
+	    				return;
+	    			}
+	    			
+	    			qtyTag.data("qty", curQty - 1);
+	    			qtyTag.find(".qty").text(curQty - 1)
+	    			
+	    			$("#total").text($("#total").text()- qtyTag.data("price"))
+	    		})
+	    		
+	    		//cancle
+	    		target.on("click", ".cancle", target,function(e){
+	    			console.log("cancle")
+	    			let menu = $(this).prev();
+	    			console.log(menu.data("price")*menu.data("qty"))
+	    			$("#total").text($("#total").text()-menu.data("price")*menu.data("qty"))
+	    			
+	    			target.remove();
+	    			
+	    		}) 
+	    		
+	        	
+	    	 })
+	        	
+  	    }
+	    
+	    
+	    //예약하기 버튼 클릭시(종우꺼 확인) 
+	    	//이벤트를 막고
+	    	//로그인 확인하고
+	    	//메뉴가 있는지 확인
+	    	//인원수 확인
+	    	//시간 확인
+	    	
+	    	//핫딜 구매 체크
+	    	
+	    	//form에 요소들 추가
+	    	//핫딜 메뉴가 있는지 확인
+	    		//있으면 추가
+	    	//메뉴추가
+	    		//메뉴이름
+	    		//메뉴가격
+	    		//메뉴수량
+	    	
+	    	//예약 가능여부 체크
+	    		//콜벡으로 form제출
+	    		//아니면
+	    			//form 초기화 시키고 아이디 태그 추가
+	    	
+	    
+	    function selectEvent(dropdown, values, form){
+		    const list = dropdown.find(".dropdown-list");
+		    const selectValue =dropdown.find(".select");
+		   	let name = dropdown.attr("id");
+			
+		    //셀렉박스 클릭 이벤트
+	        dropdown.on('click', function(e){
+	        	e.stopPropagation();
+				list.css("opacity","1")
+		    	
+		    	if(list.css("visibility") ==="visible"){
+		    		list.css("visibility","")
+		    		return
+		    	}
+		        list.css("visibility","visible");
+	        });
+		    
+		    //셀렉박스 외부 클릭시 이벤트
+	        $(document).click(function(){
+	        	list.css("visibility","") 
+	        });
+	        
+	      	//select 아이템 추가
+	        let str = addItem(values);
+	        list.append(str);
+	        
+	        //셀렉박스 요소 선택 이벤트
+	        dropdown.find(".dropdown-list__item").on("click", function(e){
+	            selectValue.html($(this).html());
+	        	
+	        	let inputTag = form.find("input[name='"+name+"']");
+	        	console.log(inputTag);
+	        	console.log($(this).data("value"))
+	        	if(inputTag.length == 0){
+	        		let str =""
+	        		str += "<input type='hidden' name='"+ name +"' value='" + $(this).data("value") + "'>"
+	        		form.append(str);
+	        		
+	        		return;
+	        	}
+	        	//간단하게 form 요소만 변경(기존에 있어야함)
+	            inputTag.val($(this).data("value"));
+	        	
+	        });
+	        
+	      	//select 아이템 추가 함수
+	        function addItem(values){
+	           let str ="";
+	           for(let index in values){
+	           		str += "<div class='dropdown-list__item' data-value='"+(values[index])[1]+"'>"+(values[index])[0]+"</div>";
+	           }
+	           return str;
+	        		
+	        }
+	      	
+	   	};
 	</script>
 
-	<!--리뷰 -->
-	<script type="text/javascript">
-		$(document).ready(function() {
-			let storeIdValue = '<c:out value="${store.storeId}"/>';
-			let revwUL = $(".revwColumn");
-			showList(1);
-
-			let pageNum = 1;
-			let revwPageFooter = $(".revwFooter");
-
-			function showRevwPage(revwCnt) {
-				let endNum = Math.ceil(pageNum / 5.0) * 5;
-				let startNum = endNum - 4;
-
-				let prev = startNum != 1;
-				let next = false;
-
-				if (endNum * 4 >= revwCnt) {
-					endNum = Math.ceil(revwCnt / 4.0);
-				}
-				if (endNum * 4 < revwCnt) {
-					next = true;
-				}
-				
-				let str = "<ul>";
-
-				if (prev) {
-					str += "<li><a href='" + (startNum - 1)
-							+ "'>Previous</a></li>";
-				}
-
-				for (let i = startNum; i <= endNum; i++) {
-					/* var active= pageNum ==i?"active":""; */
-					str += "<li><a href='"+i+"'>" + i
-							+ "</a></li>";
-				}
-				if (next) {
-					str += "<li><a href='" + (endNum + 1)
-							+ "'>Next</a></li>";
-				}
-				str += "</ul></div>";
-				console.log(str);
-				revwPageFooter.html(str);
-
-			}
-
-			function showList(page) {
-				console.log("show list" + page);
-				revwService.getList(
-								{
-									storeId : storeIdValue,
-									page : page || 1
-								},
-								function(revwCnt, list) {
-									console.log("revwCnt: "+ revwCnt);
-									console.log("list: "+ list);
-									console.log(list);
-									if (page == -1) {
-										pageNum = Math.ceil(revwCnt / 4.0);
-										showList(pageNum);
-										return;
-									}
-
-									let str = "";
-									if (list == null || list.length == 0) {
-										return;
-									}
-									for (let i = 0, len = list.length || 0; i < len; i++) {
-										str += "<div class='revwCon'><strong>"+ list[i].userId+ "</strong>";
-										str += " <strong>"+ list[i].rating+ "점</strong>"
-										str += " <small class='reg'>"+ list[i].regDt+ "</small>";
-										str += "<p>"+ list[i].cnts;
-										
-										if(list[i].replyCnts !=null){
-											str += "<div class='reply'>"+ list[i].replyCnts+"</div>";
-										}	
-										str	+= "</p></div></div></div>";
-									}
-									revwUL.html(str);
-									showRevwPage(revwCnt);
-								});
-
-			}
-			revwPageFooter.on("click", "li a", function(e) {
-				e.preventDefault();
-				console.log("page click");
-
-				let targetPageNum = $(this).attr("href");
-
-				console.log("targetPageNum :" + targetPageNum);
-
-				pageNum = targetPageNum;
-
-				showList(pageNum);
-
-			});
-
-		});
-	</script>
+	
 	
 <!--메뉴선택 -->
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
@@ -378,6 +948,7 @@
 			menusNm : "${menus.name }",
 			cnt : 0
 		});
+		
 	</c:forEach>
 	//종우 ------------------------
 	let paramHtdlId = '<c:out value="${store.bstore.htdl.htdlId}"/>' || null;
@@ -425,6 +996,7 @@
 						alert("핫딜은 하나만 구매가능합니다.")
 						return;
 					}
+					$("#htdl").slideToggle();
 					addHtdl(result);
 				})
 			});
@@ -691,6 +1263,7 @@
 	}
 
 	$('#btnAddMenus').on('click', function() {
+		//value만 넘겨주면 된다.
 		menus.select($('#menu option:selected').val());
 	});
 	
@@ -827,73 +1400,7 @@
 </script>
 	
 <!-- 예약/웨이팅 탭 -->
-<script>
-	$(document).ready(function() {
 
-		// Variables
-		var clickedTab = $(".tabs > .active");
-		var tabWrapper = $(".tab__content");
-		var activeTab = tabWrapper.find(".active");
-		var activeTabHeight = activeTab.outerHeight();
-
-		// Show tab on page load
-		activeTab.show();
-
-		// Set height of wrapper on page load
-		tabWrapper.height(activeTabHeight);
-
-		$(".tabs > li").on("click", function() {
-
-			// Remove class from active tab
-			$(".tabs > li").removeClass("active");
-
-			// Add class active to clicked tab
-			$(this).addClass("active");
-
-			// Update clickedTab variable
-			clickedTab = $(".tabs .active");
-
-			// fade out active tab
-			activeTab.fadeOut(250, function() {
-
-				// Remove active class all tabs
-				$(".tab__content > li").removeClass(
-						"active");
-
-				// Get index of clicked tab
-				var clickedTabIndex = clickedTab.index();
-
-				// Add class active to corresponding tab
-				$(".tab__content > li").eq(clickedTabIndex)
-						.addClass("active");
-
-				// update new active tab
-				activeTab = $(".tab__content > .active");
-
-				// Update variable
-				activeTabHeight = activeTab.outerHeight();
-
-				// Animate height of wrapper to new tab height
-				tabWrapper.stop().delay(50).animate({
-					height : activeTabHeight
-				}, 500, function() {
-
-					// Fade in active tab
-					activeTab.delay(50).fadeIn(250);
-
-				});
-			});
-		});
-	});
-</script>
-<!-- 핫딜  이벤트 -->
-<script>
-	$(document).ready(function() {
-		$("#htdlBtn").click(function() {
-			$("#htdl").slideToggle();
-		});
-	});
-</script>
 	
 	<!-- 지도 -->
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0e7b9cd1679ce3dedf526e66a6c1a860&libraries=services,clusterer,drawing"></script>
@@ -919,7 +1426,105 @@
 	// 마커가 지도 위에 표시되도록 설정합니다
 	marker.setMap(map);
 	</script>
-	
+<!--리뷰 -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			let storeIdValue = '<c:out value="${store.storeId}"/>';
+			let revwUL = $(".revwColumn");
+			showList(1);
+
+			let pageNum = 1;
+			let revwPageFooter = $(".revwFooter");
+
+			function showRevwPage(revwCnt) {
+				let endNum = Math.ceil(pageNum / 5.0) * 5;
+				let startNum = endNum - 4;
+
+				let prev = startNum != 1;
+				let next = false;
+
+				if (endNum * 4 >= revwCnt) {
+					endNum = Math.ceil(revwCnt / 4.0);
+				}
+				if (endNum * 4 < revwCnt) {
+					next = true;
+				}
+				
+				let str = "<ul>";
+
+				if (prev) {
+					str += "<li><a href='" + (startNum - 1)
+							+ "'>Previous</a></li>";
+				}
+
+				for (let i = startNum; i <= endNum; i++) {
+					/* var active= pageNum ==i?"active":""; */
+					str += "<li><a href='"+i+"'>" + i
+							+ "</a></li>";
+				}
+				if (next) {
+					str += "<li><a href='" + (endNum + 1)
+							+ "'>Next</a></li>";
+				}
+				str += "</ul></div>";
+				console.log(str);
+				revwPageFooter.html(str);
+
+			}
+
+			function showList(page) {
+				console.log("show list" + page);
+				revwService.getList(
+								{
+									storeId : storeIdValue,
+									page : page || 1
+								},
+								function(revwCnt, list) {
+									console.log("revwCnt: "+ revwCnt);
+									console.log("list: "+ list);
+									console.log(list);
+									if (page == -1) {
+										pageNum = Math.ceil(revwCnt / 4.0);
+										showList(pageNum);
+										return;
+									}
+
+									let str = "";
+									if (list == null || list.length == 0) {
+										return;
+									}
+									for (let i = 0, len = list.length || 0; i < len; i++) {
+										str += "<div class='revwCon'><strong>"+ list[i].userId+ "</strong>";
+										str += " <strong>"+ list[i].rating+ "점</strong>"
+										str += " <small class='reg'>"+ list[i].regDt+ "</small>";
+										str += "<p>"+ list[i].cnts;
+										
+										if(list[i].replyCnts !=null){
+											str += "<div class='reply'>"+ list[i].replyCnts+"</div>";
+										}	
+										str	+= "</p></div></div></div>";
+									}
+									revwUL.html(str);
+									showRevwPage(revwCnt);
+								});
+
+			}
+			revwPageFooter.on("click", "li a", function(e) {
+				e.preventDefault();
+				console.log("page click");
+
+				let targetPageNum = $(this).attr("href");
+
+				console.log("targetPageNum :" + targetPageNum);
+
+				pageNum = targetPageNum;
+
+				showList(pageNum);
+
+			});
+
+		});
+	</script>
 	
 </body>
 </html>
