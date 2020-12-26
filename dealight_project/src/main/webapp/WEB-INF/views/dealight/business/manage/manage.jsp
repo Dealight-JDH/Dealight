@@ -92,15 +92,7 @@
                                 <div class="next_rsvd">
                                     <span class="next_tit">NEXT 예약</span>
                                     <div class="next_info nextRsvd">
-                                        <div class='next_info_top'>
-                                            <span class='next_rsvd_name'>김동인</span>
-                                            <span class='next_rsvd_telno'>010-2737-5157</span>
-                                            <span class='store_htdl' style='display:none;'>"+rsvd.htdlId+"</span>
-                                        </div>
-                                        <div class='next_info_bot'>
-                                            <div class='next_rsvd_pnum'>30명</div>
-                                            <div class='next_rsvd_tm'>14:00</div>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>

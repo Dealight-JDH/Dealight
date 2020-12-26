@@ -29,7 +29,7 @@
             height: auto;
             /*border: black 1px solid;*/
             
-            border-radius: 10px;
+            border-radius: 3px;
             box-shadow: 3px 3px 7px rgba(44, 36, 36, 0.342);
         }
 
@@ -43,8 +43,8 @@
             justify-content: center;
             flex-direction: column;
             align-items: center;
-            background-color: #d32323b6;
-            border-radius: 10px 10px 0 0;
+            background-color: black;
+            border-radius: 3px 3px 0 0;
         }
         .wait_tit > .badge {
             
@@ -67,13 +67,13 @@
             font-weight: bold;
         }
         .wait_info{
-            height: 400px;
+            height: 250px;
             /*border: 1px solid black;*/
             width: 100%;
         }
         .wait_info_wrapper {
             display: grid;
-            grid-template-rows: repeat(4,1fr);
+            grid-template-rows: repeat(3,1fr);
             grid-template-columns: repeat(4,1fr);
             grid-template-areas: 
             ". store store .",
@@ -83,7 +83,7 @@
             ;
             /*border: 1px solid black;*/
             margin: 20px 30px;
-            height: 350px;
+            height: 250px;
             text-align: center;
         }
         #store_name {
@@ -91,7 +91,6 @@
             /*border: 1px solid black;*/
             font-weight: bold;
             font-size: 24px;
-            margin-top: 40px;
         }
         #wait_id_wrapper {
             grid-column: 2/4;
@@ -178,7 +177,7 @@
             text-align: center;
             /*border: 1px solid black;*/
             width: 100%;
-            height: 150px;
+            height: 100px;
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
@@ -195,7 +194,7 @@
             justify-content: center;
             align-items: center;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 14px;
         }
         .wait_time_tit{
             width: 100%;
@@ -206,7 +205,7 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            text-shadow: 3px 3px 7px rgba(44, 36, 36, 0.342);
+            /*text-shadow: 3px 3px 7px rgba(44, 36, 36, 0.342);*/
             margin-top: 3px;
         }
         .wait_time_val{
@@ -216,7 +215,7 @@
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
-            font-size: 42px;
+            font-size: 36px;
             font-weight: bold;
             color: rgba(0, 0, 0, 0.897);
         }
@@ -230,7 +229,7 @@
             justify-content: center;
             align-items: center;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 14px;
         }
         .cur_wait_pnum_tit{
             width: 100%;
@@ -241,7 +240,7 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            text-shadow: 3px 3px 7px rgba(44, 36, 36, 0.342);
+            /*text-shadow: 3px 3px 7px rgba(44, 36, 36, 0.342);*/
             margin-top: 3px;
         }
         .cur_wait_pnum_val{
@@ -251,13 +250,13 @@
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
-            font-size: 42px;
+            font-size: 36px;
             font-weight: bold;
         }
         .store_info{
             /*border: 1px solid black;*/
             width: 100%;
-            height: 400px;
+            height: 350px;
             text-align: center;
             align-items: center;
         }
@@ -329,7 +328,6 @@
         </div>
         <div class="wait_info">
             <div class="wait_info_wrapper">
-                <div id="store_name">매장 이름 : ${store.storeNm}</div>
                 <div id="wait_id_wrapper">
                     <div class="wait_id_val">${wait.waitId}</div>
                     <div class="wait_id_tit">웨이팅 번호</div>
@@ -368,8 +366,8 @@
                 <div>${store.storeNm}</div>
                 <div><img src='/display?fileName=${store.bstore.repImg}'></div>
             </div>
-            <div id="store_telno">매장 전화번호 : ${store.telno}</div>
-            <div id="map" style="width:500px;height:200px;"></div>
+            <div id="store_telno">${store.telno}</div>
+            <div id="map" style="width:500px;height:150px;"></div>
         </div>
     </div>
 <script type="text/javascript">

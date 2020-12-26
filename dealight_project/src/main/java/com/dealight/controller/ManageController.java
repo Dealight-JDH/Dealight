@@ -34,6 +34,7 @@ import com.dealight.domain.PageDTO;
 import com.dealight.domain.RevwVO;
 import com.dealight.domain.StoreImgVO;
 import com.dealight.domain.StoreTagVO;
+import com.dealight.domain.StoreVO;
 import com.dealight.service.HtdlService;
 import com.dealight.service.RevwService;
 import com.dealight.service.RsvdService;
@@ -108,8 +109,11 @@ public class ManageController {
 		
 		int total = htdlService.getHtdlTotal(storeId, cri);
 		
+		StoreVO store = storeService.findByStoreIdWithBStore(storeId);
+		
 		model.addAttribute("curList", curList);
 		model.addAttribute("storeId",storeId);
+		model.addAttribute("store",store);
 		model.addAttribute("pageMaker",new PageDTO(cri,total));
 		
 		return "/dealight/business/manage/dealhistory";
@@ -142,17 +146,25 @@ public class ManageController {
 		// 태그리스트
 	
 		
-		AllStoreVO store = storeService.findAllStoreInfoByStoreId(storeId);
+		AllStoreVO allStore = storeService.findAllStoreInfoByStoreId(storeId);
 		
-		log.info("All store......................"+store);
+		log.info("All store......................"+allStore);
 		
 		if(cri.getPageNum() == 0)
 			cri = new Criteria(1,5);
 		
 		List<RevwVO> revwList = revwService.getRevwListWithPagingByStoreId(storeId, cri);
 		
-		if(store != null) {
-			List<MenuVO> menuList = store.getMenuList();
+		revwList.stream().forEach(revw -> {
+	    	if(revw.getImgs() != null)
+	    	revw.getImgs().stream().forEach(img -> {
+	    		if(img != null && img.getUploadPath() != null)
+	    		img.setUploadPath(img.getUploadPath().replace("\\", "/"));
+	    	});
+	    });
+		
+		if(allStore != null) {
+			List<MenuVO> menuList = allStore.getMenuList();
 			
 			log.info(menuList);
 			
@@ -162,17 +174,18 @@ public class ManageController {
 				log.info(menu);
 			});
 			
-			List<StoreImgVO> imgs = store.getImgs();
+			List<StoreImgVO> imgs = allStore.getImgs();
 			
-			List<StoreTagVO> tagList = store.getTagList();
+			List<StoreTagVO> tagList = allStore.getTagList();
 			model.addAttribute("menuList",menuList);
 			model.addAttribute("imgs",imgs);
-			
+			model.addAttribute("storeId",storeId);
 			model.addAttribute("tagList",tagList);
 		}
-		
+		StoreVO store = storeService.findByStoreIdWithBStore(storeId);
 		
 		model.addAttribute("store", store);
+		model.addAttribute("allStore", allStore);
 		model.addAttribute("userId",userId);
 		model.addAttribute("revwList",revwList);
 		
@@ -279,7 +292,9 @@ public class ManageController {
 			if(menu.getThumImgUrl() != null)
 				menu.setEncThumImgUrl(URLEncoder.encode(menu.getThumImgUrl()));
 		});
+		StoreVO store = storeService.findByStoreIdWithBStore(storeId);
 		
+		model.addAttribute("store", store);
 		model.addAttribute("menus",menus);
 		model.addAttribute("storeId",storeId);
 		

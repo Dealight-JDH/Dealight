@@ -159,6 +159,7 @@ public class BusinessController {
 			store.setCurRsvdNum(rsvdService.readTodayCurRsvdList(id).size());
 		});
 		
+		
 		model.addAttribute("storeList", list);
 		model.addAttribute("buserList", buserList);
 		

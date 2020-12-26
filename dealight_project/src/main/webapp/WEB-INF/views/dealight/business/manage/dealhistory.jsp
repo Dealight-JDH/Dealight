@@ -36,6 +36,7 @@
             font-weight: bold;
             margin-left: 15px;
             padding-top: 15px;
+            padding-bottom:10px;
             border-bottom: 1px solid #eeeeef;
         }
         .htdl_cur_tit{
@@ -88,7 +89,10 @@
         }
 
         .htdl_info_img{
-            
+            display:flex;
+            flex-direction:row;
+            justify-content:center;
+            align-items:center;
             width: 100px;
             height: 100%;
         }
@@ -276,7 +280,7 @@
 	                        <c:forEach items="${curList}" var="htdl">
 	                            <div class="htdl_cur_row">
 	                             <div class="htdl_name">${htdl.name}</div>
-                                <div class="htdl_set_name">디저트 콤보 1인 세트</div>
+                                <div class="htdl_set_name">세트이름(미정)</div>
                                 <div class="htdl_intro">${htdl.intro}</div>
                                 <div class="htdl_info_wrapper">
                                     <div class="htdl_info_img">
