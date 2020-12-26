@@ -306,7 +306,7 @@
                         </div>
                         <form id="waitingForm" action="/dealight/store/wait" method="post" class="wait-tab flex-column" style="display: none;">
                             <div class="dropdown-box flex">
-                                <div class="dropdown flex" id="pNum">
+                                <div class="dropdown flex" id="pnum">
                                     <div class="dropdown-select flex">
                                         <span class="select">인원</span>
                                         <i class="fa fa-angle-down" style="font-size:20px"></i>
@@ -324,10 +324,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <button class="nav-btn" type="submit">
+                            <button class="nav-btn" id="waitingBtn">
                                 줄서기
                             </button>
-                            <input type='hidden' name='storeId'value='<c:out value="${store.storeId }"/>' />
                         </form>
                         <form id="reserveForm" action="/dealight/reservation/" method="get" class="wait-tab flex-column">
                             <div class="flex">
@@ -393,292 +392,30 @@
                                 </div>
                             </div>
                             <div class="flex-column" >
-                            	<div class="flex-column" id="menus">
-	                                <div class="menu-container flex">
-	                                    <div class="menu-header center">
-	                                        만두굿<br>
-	                                        (18000원)                        
-	                                    </div>
-	                                    <div class="menu-qty flex center">
-	                                        <div class="qty center">
-	                                            9
-	                                        </div>
-	                                        <div class="qty-btn flex-column">
-	                                            <div class="menu-btn flex">
-	                                                <i class="fas fa-plus center"></i>
-	                                            </div>
-	                                            <div class="menu-btn flex">
-	                                                <i class="fas fa-minus center"></i>
-	                                            </div>
-	                                        </div>
-	                                    </div>
-	                                    <div class="cancle center">
-	                                        <i class="fas fa-times" style="color: #f43939;"></i>
-	                                    </div>
-	                                </div>
-	                                <div class="menu-container flex">
-	                                    <div class="menu-header center">
-	                                        핫딜 상품 <br>
-	                                        2인세트
-	                                        만두, 깡통<br>
-	                                        (18000원)
-	                                    </div>
-	                                    <div class="menu-qty flex center">
-	                                        <div class="qty center">
-	                                            9
-	                                        </div>
-	                                        <div class="qty-btn flex-column">
-	                                            <div class="menu-btn flex">
-	                                                <i class="fas fa-plus center"></i>
-	                                            </div>
-	                                            <div class="menu-btn flex">
-	                                                <i class="fas fa-minus center"></i>
-	                                            </div>
-	                                        </div>
-	                                    </div>
-	                                    <div class="cancle center">
-	                                        <i class="fas fa-times" style="color: #f43939;"></i>
-	                                    </div>
-	                                </div>
-	                            </div>
-                                <div class="divider"></div>
-                                <div class="flex" style="justify-content: flex-end">
-	                                <div id="total">
-	                                    
-	                                </div>
-	                                원
-                                </div>
-                                
-
 								<div id="htdl-container"></div>
+                            	<div class="flex-column" id="menus">
+	                            </div>
+	                            
+                                <div class="divider"></div>
+                                
+                                <div class="flex" style="justify-content: flex-end; display:none;">
+	                                <div id="total"></div>원
+                                </div>
+
 							</div>
-                            <button class="nav-btn" type="submit">
+                            <button class="nav-btn" id="reserveBtn">
                                 예약하기
                             </button>
-                            <input type='hidden' name='storeId'value='<c:out value="${store.storeId }"/>' />
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+<form id="actionForm" action="#" method="get">
+	<input type='hidden' name='storeId' value='<c:out value="${store.storeId }"/>' />
+</form>
 </body>
-	<div class="container">
-
-		<div class="left">
-			<div class="column">
-				<!-- 상태코드에 따라 동그라미색 반영 이모지 추가 필요/핫딜 이모지&처리코드 필요 -->
-				<c:choose>
-					<c:when test="${store.bstore.seatStusCd eq 'O'}">
-						<span> 주황</span>
-					</c:when>
-					<c:when test="${store.bstore.seatStusCd eq 'G'}">
-						<span> 초록</span>
-					</c:when>
-					<c:when test="${store.bstore.seatStusCd eq 'R'}">
-						<span> 빨강</span>
-					</c:when>
-					<c:when test="${store.bstore.seatStusCd eq 'Y'}">
-						<span> 노랑</span>
-					</c:when>
-				</c:choose>
-				<!-- 매장이름 -->
-				<h1 style="display: inline-block">${store.storeNm }</h1>
-				<!-- 좋아요 버튼 이모지 추가필요-->
-				<button type="button">하트</button>
-				<c:choose>
-					<c:when test="${store.bstore.seatStusCd eq 'B'}">
-						<span style="border-style:solid; padding:5px; color:black" >영업종료</span>
-					</c:when>
-					<c:when test="${store.bstore.seatStusCd ne 'B'}">
-						<span style="border-style:solid; padding:5px; color:red;" >영업중</span>
-					</c:when>
-				</c:choose>
-				<br>
-				<!-- 웨이팅중인 고객수 -->
-					<h4>
-						<c:out value="${store.bstore.waits.waitTot}" />
-						명이 웨이팅 중 입니다!
-					</h4>
-				<br>
-
-				<div class="img">
-
-					<!--대표이미지 추가해야할수도?-->
-					<c:if test="${store.imgs[0].fileName ne null}">
-						<c:forEach items="${store.imgs }" var="imgs">
-							<img class="imgCon"
-								src='/resources/images/store/<c:out value="${imgs.fileName}" />'>
-						</c:forEach>
-					</c:if>
-				</div>
-				<p>평균평점 : ${store.eval.avgRating} 리뷰 : ${store.eval.revwTotNum}
-					좋아요 : ${store.eval.likeTotNum}</p>
-			</div>
-			<!--  미구현 -->
-			<div class="column">
-				<h1>예약 가능상태</h1>
-			</div>
-			<div class="column">
-				<h1>매장정보</h1>
-				<c:if test="${store.bstore.storeIntro ne null}">
-					<p>${store.bstore.storeIntro}</p>
-				</c:if>
-				<p>${store.loc.addr}</p>
-				<p>${store.telno}</p>
-
-				<c:if test="${store.bstore.openTm ne null}">
-					<p>영업시간 : ${store.bstore.openTm} - ${store.bstore.closeTm}</p>
-				</c:if>
-				<c:if test="${store.bstore.breakSttm ne null}">
-					<p>브레이크 타임 : ${store.bstore.breakSttm} - ${store.bstore.breakEntm}</p>
-				</c:if>
-				<c:if test="${store.bstore.lastOrdTm ne null}">
-					<p>라스트오더 : ${store.bstore.lastOrdTm}</p>
-				</c:if>
-				<c:if test="${store.bstore.hldy ne null}">
-					<p>휴무일 : ${store.bstore.hldy}</p>
-				</c:if>
-			</div>
-			<div class="column">
-				<h1>메뉴</h1>
-				<c:forEach items="${store.bstore.menus }" var="menus">
-					<p>
-						<c:out value="${menus.imgUrl}" />
-						<c:out value="${menus.name}" />
-						<c:out value="${menus.price}" />
-					</p>
-
-				</c:forEach>
-
-			</div>
-
-			<div class="column">
-				<h1>리뷰</h1>
-				<div class='revwColumn'></div>
-				<div class="revwFooter"></div>
-			</div>
-
-			<div class="column">
-				<h1>지도</h1>
-				<div id="map" style="width: 100%; height: 350px; margin-bottom:50px;"></div>
-			</div>
-
-			<!-- 미구현 -->
-			<div class="column">
-				<h1>주변가게</h1>
-				<div class="conNearByColumn">
-
-					<c:forEach items="${nearbyStore}" var="nearbyStore">
-						<div class="conNearBy">
-							<img class="imgNearBy"
-								src='/resources/images/store/<c:out value="${nearbyStore.repImg}" />'>
-							${nearbyStore.storeNm} ${nearbyStore.avgRating}
-							${nearbyStore.revwTotNum} ${nearbyStore.likeTotNum}<br>
-							${nearbyStore.addr}
-						</div>
-
-					</c:forEach>
-
-				</div>
-
-			</div>
-		
-		</div>
-
-		<div class="right">
-			<div class="sticky">
-				<c:if test="${store.bstore.htdl ne null }">
-					<div class="htdlBtnCon">
-						<button id='htdlBtn'>지금 진행중인 핫딜!</button>
-					</div>	
-					<div class="htdlCon">
-						
-						<div id='htdl'>
-							<button id="purchase">구매하기</button>
-							${store.bstore.htdl }
-						</div>
-					</div>
-				</c:if> 
-			<section class="tabWrapper">
-				<ul class="tabs">
-					<li class="active">예약</li>
-					<li>줄서기</li>
-				</ul>
-
-				<ul class="tab__content">
-
-					<li class="active">
-						<div class="content__wrapper">
-							<form id="reserveForm" action="/dealight/reservation/"
-								method="get">
-								<input type='hidden' name='storeId'value='<c:out value="${store.storeId }"/>' />
-
-								<!-- <input type="hidden" id="selMenu" name="selMenu"> -->
-								<div class="row">
-									<select id="time" required="required">
-										<option value="">시간</option>
-										<option value="13:30">13:30</option>
-										<option value="14:00">14:00</option>
-										<option value="14:30">14:30</option>
-									</select> 
-									<select id="num" required="required">
-										<option value="">인원수</option>
-										<option value="1">1</option>
-										<option value="2">2</option>
-										<option value="3">3</option>
-										<option value="4">4</option>
-									</select>
-								</div>
-								<div class="row">
-									<select id="menu">
-										<option value="">메뉴</option>
-										
-										<c:forEach items="${store.bstore.menus }" var="menus">
-											<option value="${menus.menuSeq}">${menus.name }</option>
-										</c:forEach>
-									</select> <input type="button" id="btnAddMenus" value="추가"></input>
-
-								</div>
-								<div id="container"></div><br>
-								<div id="htdl-container"></div>
-								
-								<span id="menusTotAmtSumMsg"></span> <span id="menusTotAmt" name="totAmt" value="0"></span>
-								<button class ="tabWrapperBtn" type="submit">예약하기</button>
-							</form>
-						</div>
-						
-						
-					</li>
-						
-					<li>
-						<div class="content__wrapper">
-							<form id="waitingForm" action="/dealight/store/wait" method="post">
-								<div class="row">
-									 <select id="waitingNum" required="required">
-										<option value="">인원수</option>
-										<option value="1">1</option>
-										<option value="2">2</option>
-										<option value="3">3</option>
-										<option value="4">4</option>
-									</select>
-								</div>
-								<input type='hidden' name='storeId' value='<c:out value="${store.storeId }"/>' />
-								<button class ="tabWrapperBtn" type="submit">줄서기</button>
-							</form>
-						</div>
-					</li>
-
-				</ul>
-					
-				<form id='reserveFormObj' action="/dealight/reservation/" method="get">
-					<input type='hidden' name='storeId' value='<c:out value="${store.storeId }"/>' />
-				</form>
-			</section>
-		</div>
-	</div>
-	
 	<script type="text/javascript" src="/resources/js/revw.js"></script>
 	
 	<!-- 현중 -->
@@ -689,7 +426,16 @@
 			$("#htdlBtn").click(function() {
 				$("#htdl").slideToggle();
 			});
-			
+			//핫딜 구매하기 버튼 클릭--종우
+			$("#purchase").on("click", function(e){
+				let htdlContainer = $("#htdl-container");
+				
+				if(htdlContainer[0].hasChildNodes()){
+					alert("핫딜은 하나만 구매가능합니다.")
+					return;
+				}
+				$("#htdl").slideToggle();
+			}) 
 			//
 			let result = '<c:out value="${result }"/>';
 			checkModal(result);
@@ -705,44 +451,187 @@
 			
 			//selectbox 
 			let pNumValues = [["1명", "1"], ["2명", "2"], ["3명","3"], ["4명","4"]];
-		    let timeValues = [["",""],["핫딜매장우선보기", "H"], ["식사가능매장우선보기", "S"], ["웨이팅있는매장보기","W"], ["예약가능매장보기","R"]];
+		    let timeValues = [["13:00","13:00"],["13:30", "13:30"], ["14:00", "14:00"], ["17:00","17:00"], ["17:30","17:30"]];
 	    	let a = "<c:out value='${store.bstore.menus }'/>"
 	    	console.log(a);
-	    	//(클릭이벤트를 걸어줄 요소, 셀렉박스 요소값, 선택값을 추가할 form)
-	    	selectEvent($("#pNum") ,pNumValues,  $("#waitingForm"))
-	    	selectEvent($("#time") ,timeValues,  $("#reserveForm"))
-	    	selectEvent($("#pNumRsvd") ,pNumValues,  $("#reserveForm"))
-	    	selectMenu($("#menu"),$("#resverForm"))
-		    //정렬기준
-		    /* $(".dropdown-list__item").on("click", function(e){
-		    	console.log("change")
-				showMain();
-		    }); */
-			
-			
-		}
-		 $("#reserve").on("click", function(e){
-		    	
-	        $(this).addClass("tab-selected");
-	        
-	        $(this).prev().removeClass("tab-selected")
-	        //시간 셀렉박스를 보여준다.
-	        $("#waitingForm").hide();
-	        $("#reserveForm").show();
-	        
-	        
-	    });
-	    
-	    $("#wait").on("click", function(e){
 	    	
-	        $(this).addClass("tab-selected");
-	        
-	        $(this).next().removeClass("tab-selected")
-	        
-	        //시간 셀렉바스를 숨긴다.
-	        $("#reserveForm").hide();
-	        $("#waitingForm").show();
-	    });
+	    	//(클릭이벤트를 걸어줄 요소, 셀렉박스 요소값, 선택값을 추가할 form)
+	    	selectEvent($("#pnum") ,pNumValues,  $("#actionForm"))
+	    	selectEvent($("#time") ,timeValues,  $("#actionForm"))
+	    	selectEvent($("#pNumRsvd") ,pNumValues,  $("#actionForm"))
+	    	selectMenu($("#menu"),$("#resverForm"))
+		   
+			const actionForm = $("#actionForm")
+			
+			//탭에서 예약하기 클릭
+			 $("#reserve").on("click", function(e){
+			    	
+		        $(this).addClass("tab-selected");
+		        
+		        $(this).prev().removeClass("tab-selected")
+		        //시간 셀렉박스를 보여준다.
+		        $("#waitingForm").hide();
+		        $("#reserveForm").show();
+		        $(".pnum .dropdown-select .select").text("인원")
+		        
+		        //actionForm 초기화
+		        let storeIdTag = $("input[name='storeId']").clone();
+		        actionForm.empty()
+				actionForm.append(storeIdTag);		        
+		    });
+		    
+	    	//탭에서 줄서기 클릭
+		    $("#wait").on("click", function(e){
+		    	
+		        $(this).addClass("tab-selected");
+		        
+		        $(this).next().removeClass("tab-selected")
+		        
+		        //시간 셀렉바스를 숨긴다.
+		        $("#reserveForm").hide();
+		        $("#waitingForm").show();
+		        $(".time .dropdown-select .select").text("시간")
+		        $(".pNumRsvd .dropdown-select .select").text("인원")
+		        
+		        
+		        //actionForm 초기화
+		        let storeIdTag = $("input[name='storeId']").clone();
+		        actionForm.empty()
+				actionForm.append(storeIdTag);		        
+		    });
+		    
+			//줄서기 클릭(form 제출)
+			$("#waitingBtn").on("click", function(e) {
+				
+				e.preventDefault();
+				
+				if (actionForm.find("input[name='pnum']").length == 0 ) {
+					alert("인원수를 선택해주세요");
+					return;
+				}
+				actionForm.attr("action","/dealight/store/wait").attr("method","post")
+				actionForm.submit();
+			});
+		    
+		    let paramHtdlId = '<c:out value="${store.bstore.htdl.htdlId}"/>' || null;
+			let paramUserId = '<c:out value="${userId}"/>' || null;
+			let storeId = '<c:out value="${store.storeId}"/>';
+			
+			let isHtdlPayHistory = false;//핫딜을 구매했는지 체크
+		    
+		    //예약하기 버튼 클릭시(종우꺼 확인) 
+		    $("#reserveBtn").on("click", function(e) {
+		    	//이벤트를 막고
+		    	e.preventDefault();
+						    
+		    	let menus = $("#menus")
+		    	//로그인 확인하고
+		    	/* if(paramUserId === null){
+					alert("로그인 후 서비스를 이용해 주세요.");
+					return;
+				} */
+		    	//메뉴가 있는지 확인
+		    	
+		    	if (menus.find(".menu-container").length == 0) {
+					alert("메뉴가 선택되지않았습니다");
+					return;
+				}
+		    	//인원수 확인
+		    	if (actionForm.find("input[name='pnum']").length == 0) {
+					alert("인원수를 선택해 주세요");
+					return;
+				}
+				
+		    	//시간 확인
+				if (actionForm.find("input[name='time']").length == 0) {
+					alert("예약시간을 선택해 주세요");
+					return;
+				}
+		    	
+		    	//핫딜 구매 체크
+				/* if(paramHtdlId != null && paramUserId != null){
+					
+					isHtdlPayExistChecked({userId : paramUserId, htdlId: paramHtdlId},function(result){
+						
+						console.log("===========hotdeal pay check: "+ result);
+						isHtdlPayHistory = result;
+						
+						if(!isHtdlPayHistory && paramHtdlId != null){
+							alert('이미 핫딜 상품을 구매하셨습니다. 감사합니다');
+							return;
+						}
+						
+					});
+				} */
+		    	
+		    	//form에 요소들 추가
+		    	menus.find(".menu-container").each(function(index, item){
+			    	//핫딜 메뉴가 있는지 확인
+			    		//있으면 추가
+					//if(paramHtdlId != null){
+					//	const htdlIdInput = '<input type="hidden" name="htdlId" value="'+paramHtdlId+'">';
+					//	reserveFormObj.append(htdlIdInput);
+					//}
+		    			
+		    		//메뉴이름
+	    			const menuNm = '<input type="hidden" name=menu['+index+'].name value="'+$(item).data("value")+'">';
+		    		//메뉴가격
+					const menuPrice = '<input type="hidden" name=menu['+index+'].price value="'+$(item).find(".menu-qty").data("price")+'">';
+		    		//메뉴수량
+					const menuQty = '<input type="hidden" name=menu['+index+'].qty value="'+$(item).find(".menu-qty").data("qty")+'">';
+						
+			    	//메뉴추가
+					actionForm.append(menuNm).append(menuPrice).append(menuQty);
+		    	});
+				let time = $("input[name='time']").val();
+		    	let pnum = $("input[name='pnum']").val();
+				console.log(storeId)
+				console.log(pnum)
+				console.log(time)
+		    	//예약 가능여부 체크
+		    	isRsvdAvailChecked({storeId: storeId, time: time, pnum: pnum}, function(data){
+					console.log("reserve avail check: " + data);
+					
+					RsvdAvailChecked = data;
+					if(RsvdAvailChecked){
+						actionForm.attr("action","/dealight/reservation/")
+		    			//form제출
+						actionForm.submit();
+					}
+					else{
+		    			//form 초기화 시키고 아이디 태그 추가
+						let storeIdTag = $("input[name='storeId']").clone();
+						let pnumTag = $("input[name='pnum']").clone();
+						let timeTag = $("input[name='time']").clone();
+						actionForm.empty();
+						actionForm.append(storeIdTag).append(pnumTag).append(timeTag);
+						alert('선택하신 인원 및 시간은 예약이 불가합니다. 죄송합니다.');
+						return;
+					}
+				});
+		    function isRsvdAvailChecked(param, callback, error){
+				
+				let storeId = param.storeId;
+				let time = param.time;
+				let pnum = param.pnum;
+				console.log(storeId)
+				console.log(pnum)
+				console.log(time)
+
+				$.getJSON("/dealight/reservation/rsvdavailcheck/"+storeId+"/"+time+"/"+pnum+".json",
+						function(data){
+							 if(callback){
+								callback(data);
+							}
+							
+					}).fail(function(xhr,status, err){
+						if(error){
+							error();
+						}
+					});
+			}
+		    });//예약하기
+		}
 	    
 	    function selectMenu(menu,form){
 	    	 const list = menu.find(".dropdown-list");
@@ -764,19 +653,23 @@
 	        });
 	    	//셀렉 박스 요소 클릭 이벤트
 	    	 menu.find(".dropdown-list__item").on("click", function(e){
-	            selectValue.html($(this).html());
 	    		//요소를 클릭하면
-	    		
+	    		const menus = $("#menus")
 	    		//요소가 이미추가되어있나 확인
-	    		let seq = $(this).data("value");
+	    		let seq = $(this).text();
 	    		if($("#menus").find("div[data-value='" + seq +"']").length != 0){
 					alert("이미 추가하신 메뉴입니다.")
 				 	return;
 	    		}
+	    		//처음추가되는 상황일때 총액을 보여준다.
+	    		//처음추가되는 상황일때 총액을 보여준다.
+	    		if(menus.find(".menu-container").length == 0){
+	    			$("#total").parent().show();
+	    		}
 	    		
 	    		//메뉴 컨테이너에 요소추가
 	    		let str = "";
-	    		str += '<div class="menu-container flex" data-value="'+$(this).data("value")+'">'
+	    		str += '<div class="menu-container flex" data-value="'+$(this).text()+'">'
 	    		str += '<div class="menu-header center">'
 	    		str += $(this).text() + '<br>(' + $(this).data("price") + '원)</div>'
 	    		str += '<div class="menu-qty flex center" data-qty="1" data-price="'+  $(this).data("price") +'">'
@@ -839,42 +732,23 @@
 	    			$("#total").text($("#total").text()-menu.data("price")*menu.data("qty"))
 	    			
 	    			target.remove();
-	    			
-	    		}) 
+	    			if(menus.find(".menu-container").length == 0){
+		    			$("#total").parent().hide();
+		    		}
+	    		});
 	    		
 	        	
-	    	 })
+	    	 });
 	        	
   	    }
-	    
-	    
-	    //예약하기 버튼 클릭시(종우꺼 확인) 
-	    	//이벤트를 막고
-	    	//로그인 확인하고
-	    	//메뉴가 있는지 확인
-	    	//인원수 확인
-	    	//시간 확인
-	    	
-	    	//핫딜 구매 체크
-	    	
-	    	//form에 요소들 추가
-	    	//핫딜 메뉴가 있는지 확인
-	    		//있으면 추가
-	    	//메뉴추가
-	    		//메뉴이름
-	    		//메뉴가격
-	    		//메뉴수량
-	    	
-	    	//예약 가능여부 체크
-	    		//콜벡으로 form제출
-	    		//아니면
-	    			//form 초기화 시키고 아이디 태그 추가
-	    	
 	    
 	    function selectEvent(dropdown, values, form){
 		    const list = dropdown.find(".dropdown-list");
 		    const selectValue =dropdown.find(".select");
 		   	let name = dropdown.attr("id");
+		   	if(name == "pNumRsvd"){
+		   		name = "pnum"
+		   	}
 			
 		    //셀렉박스 클릭 이벤트
 	        dropdown.on('click', function(e){
@@ -927,38 +801,9 @@
 	        }
 	      	
 	   	};
-	</script>
-
-	
-	
-<!--메뉴선택 -->
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-<script type="text/javascript">
-
-		
-
-	var menus = new Menus();
-
-	//jstl로 전체 상품 목록 미리 세팅<select id="menu" onchange="mySelect()" >
-
-	<c:forEach items="${store.bstore.menus }" var="menus">
-		menus.arrAllMenus.push({
-			menusId : "${menus.menuSeq}",
-			menusUnprc : "${menus.price}",
-			menusNm : "${menus.name }",
-			cnt : 0
-		});
-		
-	</c:forEach>
-	//종우 ------------------------
-	let paramHtdlId = '<c:out value="${store.bstore.htdl.htdlId}"/>' || null;
-	let paramUserId = '<c:out value="${userId}"/>' || null;
-	let storeId = '<c:out value="${store.storeId}"/>';
-	
-	let isHtdlPayHistory = false;//핫딜을 구매했는지 체크
 
 	//전달받은 핫딜번호를 ajax를 통해 vo 가져오기
-	function getHtdl(param, callback, error){
+	/* function getHtdl(param, callback, error){
 		
 		let htdlId = param.htdlId;
 		console.log("htdlId: " + htdlId);
@@ -973,9 +818,9 @@
 				error();
 			}
 		});
-	}
+	} */
 	
-	$(document).ready(function() {
+	/* $(document).ready(function() {
 		console.log("hotdeal htdlId.........."+ paramHtdlId);
 		
 		let htdl = {};
@@ -1029,7 +874,7 @@
 		}
 		
 		
-	});
+	}); */
 	
 	
 	
@@ -1087,320 +932,14 @@
 	}
 	
 	//예약 가능여부 체크
-	function isRsvdAvailChecked(param, callback, error){
-		
-		let storeId = param.storeId;
-		let time = param.time;
-		let pnum = param.pnum;
-
-		$.getJSON("/dealight/reservation/rsvdavailcheck/"+storeId+"/"+time+"/"+pnum+".json",
-				function(data){
-					 if(callback){
-						callback(data);
-					}
-					
-			}).fail(function(xhr,status, err){
-				if(error){
-					error();
-				}
-			});
-	}
+	
 	//=================================================
 	
-	function Menus() {
-
-		//json 배열[{menusId:menusId, menusNm:menusNm, amt:amt},{...},{...}]
-		this.arrAllMenus = new Array();//상품 목록
-		this.arrSelMenus = new Array();//선택한 상품 목록
-
-		var p = this;
-
-		//상품 추가 시
-		this.select = function(trgtMenusId) {
-
-			var selectedIndex = -1;
-
-			//전체 목록 배열에서 검색하여 menusId가 없다면 선택 목록에 push후 container안에 그려준다.
-
-			//선택 목록에서 검색
-			for (var i = 0; i < p.arrSelMenus.length; i++) {
-
-				if (p.arrSelMenus[i].menusId == trgtMenusId) {
-					selectedIndex = i;
-					break;
-				}
-			}
-
-			if (selectedIndex < 0) {//선택목록에 없을 경우 추가. 잇을경우 얼럿.
-				//전체목록에서 선택 추가해줌.
-				for (var j = 0; j < p.arrAllMenus.length; j++) {
-
-					if (p.arrAllMenus[j].menusId == trgtMenusId) {
-						p.arrSelMenus.push(p.arrAllMenus[j]);
-						p.arrSelMenus[p.arrSelMenus.length - 1].cnt = 1;//무조건 개수 초기화
-						p.appendChoiceDiv(p.arrAllMenus[j]);
-						break;
-					}
-				}
-			} else {
-				alert("이미 추가한 상품입니다.");
-			}
-			p.afterProc();
-		}
-
-		//상품 제거 시
-		this.deselect = function(trgtMenusId) {
-
-			var selectedIndex = -1;
-
-			//배열에서 검색.
-			for (var i = 0; i < p.arrSelMenus.length; i++) {
-
-				if (p.arrSelMenus[i].menusId == trgtMenusId) {
-					p.removeChoiceDiv(p.arrSelMenus[i]);
-					p.arrSelMenus.splice(i, 1);
-					break;
-				}
-			}
-			p.afterProc();
-		}
-		//종우----------
-		//핫딜 상품 제거 시
-		this.htdlDeSelect = function(trgtMenusId) {
-
-			var selectedIndex = -1;
-			//배열에서 검색.
-			for (var i = 0; i < p.arrSelMenus.length; i++) {
-				if (p.arrSelMenus[i].htdlId == trgtMenusId) {
-					p.arrSelMenus.splice(i, 1);
-					break;
-				}
-			}
-			p.afterProc();
-		}
-		//--------------
-
-		this.appendChoiceDiv = function(prmtObj) {
-
-			var innerHtml = "";
-
-			innerHtml += '<div id="div_'+prmtObj.menusId+'">';
-			innerHtml += '	<span>' + prmtObj.menusNm + '</span>';
-			innerHtml += '	<input  type="text" id="input_sumAmt_'+prmtObj.menusId+'" name="" value="0" readonly ="readonly"/>'
-			innerHtml += '	<br><button type="button" id="" class="add" name="" onclick="menus.minus(\''+ prmtObj.menusId + '\');">-</button>';
-			innerHtml += '	<input style=width:30px; type="text" id="input_cnt_'+prmtObj.menusId+'" name="" value="0" readonly ="readonly"/>'
-			innerHtml += '	<button  type="button" id="" class="remove" name="" onclick="menus.plus(\''+ prmtObj.menusId + '\');">+</button>';
-			innerHtml += '	<button type="button" id="" class="remove" name="" onclick="menus.deselect(\''+ prmtObj.menusId + '\');">X</button>';
-			innerHtml += '</div>';
-			$('#container').append(innerHtml);
-
-		}
-		this.removeChoiceDiv = function(prmtObj) {
-			$("#div_" + prmtObj.menusId).remove();
-		}
-
-		this.plus = function(trgtMenusId) {
-
-			for (var i = 0; i < p.arrSelMenus.length; i++) {
-
-				if (p.arrSelMenus[i].menusId == trgtMenusId) {
-					if (p.arrSelMenus[i].cnt >= 10) {
-						alert("최대수량입니다.");
-						break;
-					}
-
-					p.arrSelMenus[i].cnt++;
-					break;
-				}
-			}
-
-			p.afterProc();
-		}
-
-		this.minus = function(trgtMenusId) {
-
-			for (var i = 0; i < p.arrSelMenus.length; i++) {
-
-				if (p.arrSelMenus[i].menusId == trgtMenusId) {
-					if (p.arrSelMenus[i].cnt == 1) {
-						alert("최소수량입니다.");
-						break;
-					}
-					p.arrSelMenus[i].cnt--;
-					break;
-				}
-			}
-
-			p.afterProc();
-		}
-
-		//계산 후처리.
-		this.afterProc = function() {
-
-			for (var i = 0; i < p.arrSelMenus.length; i++) {
-				$('#input_cnt_' + p.arrSelMenus[i].menusId).val(
-						p.arrSelMenus[i].cnt);
-				$('#input_sumAmt_' + p.arrSelMenus[i].menusId).val(
-						p.arrSelMenus[i].cnt * p.arrSelMenus[i].menusUnprc);
-			}
-
-			var menusTotAmt = 0;
-			for (var i = 0; i < p.arrSelMenus.length; i++) {
-				menusTotAmt += p.arrSelMenus[i].cnt
-						* p.arrSelMenus[i].menusUnprc;
-			}
-			if (menusTotAmt == 0) {
-				$('#menusTotAmtSumMsg').text("");
-				$('#menusTotAmt').text("");
-
-			} else {
-				$('#menusTotAmtSumMsg').text("총금액");
-				$('#menusTotAmt').text(menusTotAmt);
-
-			}
-		}
-
-	}
-
-	$('#btnAddMenus').on('click', function() {
-		//value만 넘겨주면 된다.
-		menus.select($('#menu option:selected').val());
-	});
 	
-	//종우
-	const reserveForm = $("#reserveForm");
-	const reserve = $("#reserve");
-	const pnum = $("#pnum");
-	const reserveFormObj = $("#reserveFormObj");
+
 	
-	$("#reserveForm button").on("click", function(e) {
-		//1.기존 이벤트(페이지 이동)를 막는다
-		e.preventDefault();
-
-		if(paramUserId === null){
-			alert("로그인 후 서비스를 이용해 주세요.");
-			return;
-		}
-		//시간,인원 수
-		let time = $("#time option:selected").val();
-		let pnum = $("#num option:selected").val();
-		let RsvdAvailChecked = false;
-		
-		//예약 가능여부 체크
-		isRsvdAvailChecked({storeId: storeId, time: time, pnum: pnum},
-				function(data){
-			console.log("reserve avail check: " + data);
-			
-			RsvdAvailChecked = data;
-		});
-		
-		
-		//해당 핫딜 구매했는지 체크
-		if(paramHtdlId != null && paramUserId != null){
-			
-			isHtdlPayExistChecked({userId : paramUserId, htdlId: paramHtdlId},
-					function(result){
-				
-				console.log("===========hotdeal pay check: "+ result);
-				isHtdlPayHistory = result;
-				
-				if(!isHtdlPayHistory && paramHtdlId != null){
-					alert('이미 핫딜 상품을 구매하셨습니다. 감사합니다');
-					return;
-				}
-				
-			});
-		}
-		
-		//2.이벤트 막고 하고 싶은거
-		//2.1 페이지 이동시 다음페이지에 데이터를 넘길 수 있도록 input hidden에 선택된 메뉴 수량 넣음
-		//시간
-		
-		if (menus.arrSelMenus.length === 0) {
-			alert("메뉴가 선택되지않았습니다");
-			return;
-		}
-
-		if ($("#num option:selected").val() === "") {
-			alert("인원수를 선택해 주세요");
-			return;
-		}
-		
-		if ($("#time option:selected").val() === "") {
-			alert("예약시간을 선택해 주세요");
-			return;
-		}
-
-		const personNum = '<input type="hidden" name=pnum value="'+ $("#num option:selected").val() + '">';
-		const reserveTime = '<input type="hidden" name=time value="'+ $("#time option:selected").val() + '">';
-		reserveFormObj.append(personNum);
-		reserveFormObj.append(reserveTime);
-		//3. 2에서 하고 싶은 거 실행 후  submit()
-
-		for (let i = 0; i < menus.arrSelMenus.length; i++) {
-			if (menus.arrSelMenus[i].cnt === 0) {
-				alert("메뉴 수량을 선택해주세요");
-				return;
-			}
-			
-			//핫딜번호
-			if(paramHtdlId != null){
-				const htdlIdInput = '<input type="hidden" name="htdlId" value="'+paramHtdlId+'">';
-				reserveFormObj.append(htdlIdInput);
-			}
-			
-			//메뉴이름
-			const menuNm = '<input type="hidden" name=menu['+i+'].name value="'+menus.arrSelMenus[i].menusNm+'">';
-			const menuPrice = '<input type="hidden" name=menu['+i+'].price value="'+menus.arrSelMenus[i].menusUnprc+'">';
-			const menuQty = '<input type="hidden" name=menu['+i+'].qty value="'+menus.arrSelMenus[i].cnt+'">';
-			reserveFormObj.append(menuNm);
-			reserveFormObj.append(menuPrice);
-			reserveFormObj.append(menuQty);
-
-		}
-		
-		setTimeout(()=>{
-			if(RsvdAvailChecked){
-				reserveFormObj.submit();
-			}
-			else{
-				let storeIdTag = $("input[name='storeId']").clone();
-				reserveFormObj.empty();
-				reserveFormObj.append(storeIdTag);
-				alert('선택하신 현재 인원은 예약이 불가합니다. 죄송합니다.');
-				return;
-			}
-		}, 200);
-		
-	});
-//-----------------------웨이팅 등록 이벤트------------------현중
-	$(document).ready(function() {
-		
-		const waitingForm = $("#waitingForm");
-		
-		$("#waitingForm button").on("click", function(e) {
-			
-			e.preventDefault();
-			
-			if ($("#waitingNum option:selected").val() === "") {
-				alert("인원수를 선택해주세요");
-				return;
-			}
-			
-			let inputTag = "";
-			inputTag += '<input type="hidden" name=pnum value="' + $("#waitingNum option:selected").val() + '">';
-			waitingForm.append(inputTag);
-
-			waitingForm.submit();
-
-			//waitingForm.submit();
-		});
-
-	});
+	
 </script>
-	
-<!-- 예약/웨이팅 탭 -->
-
 	
 	<!-- 지도 -->
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0e7b9cd1679ce3dedf526e66a6c1a860&libraries=services,clusterer,drawing"></script>
@@ -1427,7 +966,24 @@
 	marker.setMap(map);
 	</script>
 <!--리뷰 -->
-	<script type="text/javascript">
+	<!-- <script type="text/javascript">
+		
+			function getList(param, callback, error){
+				var storeId = param.storeId;
+				var page = param.page || 1;
+				
+				$.getJSON("/revws/pages/"+storeId+"/"+page+".json",
+						function(data){
+					if(callback){
+						//callback(data);
+						callback(data.revwCnt,data.list);
+					}
+				}).fail(function(xhr, status, err){
+					if(error){
+						error();
+					}
+				});
+			}
 		$(document).ready(function() {
 			let storeIdValue = '<c:out value="${store.storeId}"/>';
 			let revwUL = $(".revwColumn");
@@ -1474,12 +1030,7 @@
 
 			function showList(page) {
 				console.log("show list" + page);
-				revwService.getList(
-								{
-									storeId : storeIdValue,
-									page : page || 1
-								},
-								function(revwCnt, list) {
+				getList({storeId : storeIdValue,page : page || 1},function(revwCnt, list) {
 									console.log("revwCnt: "+ revwCnt);
 									console.log("list: "+ list);
 									console.log(list);
@@ -1525,6 +1076,6 @@
 
 		});
 	</script>
-	
+	 -->
 </body>
 </html>
