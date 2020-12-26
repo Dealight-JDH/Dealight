@@ -3,6 +3,7 @@ package com.dealight.service;
 import java.util.List;
 
 import com.dealight.domain.AttachFileDTO;
+import com.dealight.domain.Criteria;
 import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlPageDTO;
@@ -74,5 +75,9 @@ public interface HtdlService {
 	List<HtdlVO> readActStoreHtdlList(long storeId);
 	
 	List<HtdlVO> readMainHtdlList();
+
+	List<HtdlVO> findHtdlWithRsltByStoreId(Long storeId, Criteria cri);
+	
+	int getHtdlTotal(Long storeId, Criteria cri);
 
 }

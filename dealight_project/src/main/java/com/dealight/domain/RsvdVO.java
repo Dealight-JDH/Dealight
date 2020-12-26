@@ -83,5 +83,6 @@ public class RsvdVO {
     private int revwStus;
     
     private String strRegDate;
+    private String storeRepImg;
     
 }

@@ -9,7 +9,11 @@
 <meta charset="UTF-8">
 <title>회원 정보 수정</title>
 <link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
+<link rel="stylesheet" href="/resources/css/manage.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+
+</style>
 </head>
 <body>
 <div id="container">

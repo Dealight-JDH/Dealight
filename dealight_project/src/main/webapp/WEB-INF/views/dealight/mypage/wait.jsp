@@ -14,50 +14,92 @@
 <script src="/resources/js/Rater.js"></script>
 </head>
 <body>
-    <main class="mypage_wrapper">
+	<main>
+        <div class="mypage_wrapper">
         <%@include file="/WEB-INF/views/includes/mypageSidebar.jsp" %>
-        <div class="mypage_content">
-            <div class="content_head">
-                <h2>웨이팅 내역<span>웨이팅 내역을 가져옵니다.</span></h2>
+        
+        <div class="mypage_right">
+                <div class="mypage_main_header">
+                    <div class="main_header_title">웨이팅 내역</div>
+                    <div class="main_header_subtitle">회원님의 지난 웨이팅 내역을 가져옵니다.</div>
+                </div>
+                <div class="mypage_main_content">
+                    <div class="mypage_main_sub">
+                        <div>
+                            <span class="main_tit">입장 횟수</span>
+                            <span class="main_value">${total} 회</span>
+                        </div>
+                        <div>
+                            <span class="main_tit">노쇼 횟수</span>
+                            <span class="main_value">${panaltyCnt} 회</span>
+                        </div>
+                        <div>
+                            <span class="main_tit">총 웨이팅 횟수</span>
+                            <span class="main_value">${total} 회</span>
+                        </div>
+                    </div>
+                    <div class="mypage_main_board">
+	                    <c:if test="${empty waitList}">
+							<h2>웨이팅 이력이 없습니다.</h2>
+						</c:if>
+						
+						<c:if test="${not empty waitList}">
+							<c:forEach items="${waitList}" var="wait">
+	                        <div class="rsvd_wrapper">
+	                            <div class="css_rsvd_time">
+	                                <span>${wait.waitRegTm }</span>
+	                            </div>
+	                            <div class="css_rsvd_box">
+	                                <div class="rsvd_tit">
+	                                    <div>
+	                                    	웨이팅 번호 : <span class="wait_id">${wait.waitId}</span>
+	                                    	<span style='display:none;' class="revw_stus">${wait.revwStus}</span>
+	                                    	<span style='display:none;' class="store_id">${wait.storeId}</span>
+	                                    </div>
+	                                </div>
+	                                <div class="rsvd_cnts">
+	                                    <div class="rsvd_cnts_wrapper">
+	                                        <div class="rsvd_cnts_img">
+	                                        <img src='/display?fileName=${wait.storeRepImg}'>
+	                                        
+	                                        </div>
+	                                        <div class="cnts">
+	                                            <div>
+	                                                <span class="rsvd_cnts_tit">웨이팅 인원</span>
+													<span class="rsvd_cnts_val">${wait.waitPnum }</span>
+	                                            </div>
+	                                            <div>
+	                                                <span class="rsvd_cnts_tit">웨이팅 상태</span>
+	                                                <c:if test="${wait.waitStusCd eq 'C'}">
+	                                                	<span class="rsvd_cnts_val" style="color:blue;">현재 웨이팅</span>
+	                                                </c:if>
+	                                                <c:if test="${wait.waitStusCd eq 'E'}">
+	                                                	<span class="rsvd_cnts_val">입장</span>
+	                                                </c:if>
+	                                                <c:if test="${wait.waitStusCd eq 'P'}">
+	                                                	<span class="rsvd_cnts_val" style="color:red;">노쇼</span>
+	                                                </c:if>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <div class="rsvd_btn_box">
+	                                        <button class="btn_store_info">매장 정보 보기</button>
+	                                        <c:if test="${wait.revwStus > 0}"> <button class="btn_revw_info">리뷰 보기</button></c:if>
+											<c:if test="${wait.revwStus == 0}"><button class="btn_revw_reg">리뷰 쓰기</button></c:if>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        </c:forEach>
+                        </c:if>
+                    </div>
+			<!-- end pagination -->
+                </div>
             </div>
-            <div>
-                	<h2>회원 아이디 : ${userId }</h2>
-					<h2>현재 웨이팅 횟수 : ${curWaitCnt}회</h2>
-					<h2>총 노쇼 횟수 : ${panaltyCnt}회</h2>
-					<h2>총 웨이팅 횟수 : ${enterCnt}회</h2>
-					<h2>총 웨이팅 횟수 : ${total}회</h2>
-            </div>
-            <div class="content_main">
-				<div id="waitWrapper">
-					<c:if test="${empty waitList}">
-						<h2>웨이팅 이력이 없습니다.</h2>
-					</c:if>
-					
-					<c:if test="${not empty waitList}">
-					<h2>웨이팅 리스트</h2>
-						<c:forEach items="${waitList}" var="wait">
-							<div>
-								====================================
-								<h3>웨이팅 번호 : <span class="wait_id">${wait.waitId}</span></h3>
-								<h5>매장번호 : <span class="store_id">${wait.storeId}</span></h5></br>
-								날짜 : ${wait.waitRegTm } </br>
-								인원 : ${wait.waitPnum }</br>
-								이용자 전화번호 : ${wait.custTelno }</br>
-								이용자 이름 : ${wait.custNm }</br>
-								현재 웨이팅 상태 : ${wait.waitStusCd}<br>
-								리뷰 상태 : <span class="revw_stus">${wait.revwStus }</span></br>
-								<button class="btn_store_info">매장 정보 보기</button>
-								<c:if test="${wait.revwStus > 0}"> <button class="btn_revw_info">리뷰 보기</button></c:if>
-								<c:if test="${wait.revwStus == 0}"><button class="btn_revw_reg">리뷰 쓰기</button></c:if>
-							</div>
-						</c:forEach>
-					</c:if>
-				</div>
-            </div>
-            <!-- pagination -->
-			<div class='pull-right'>
+        </div> <!-- end mypage wrapper -->
+                    <!-- pagination -->
+			<div class='pull-right panel-footer'>
 				<ul class='pagination'>
-			
 					<c:if test="${pageMaker.prev}">
 						<li class='paginate_button previous'>
 							<a href="${pageMaker.startPage - 1}">Previous</a>
@@ -81,18 +123,19 @@
 				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 				<input type='hidden' name='amount' value = '${pageMaker.cri.amount}'>
 			</form>
-			<!-- end pagination -->
-        </div>
     </main>
     
     <div id="myModal" class="modal">
 		<!-- Modal content -->
 		<div class="modal-content">
-			<span class="close">&times;</span>
+			<span class="close_modal"><i class="fas fa-times"></i></span>
+	        <div class="modal_header"></div>
 			<ul class="revw_regForm"></ul>
 			<ul class="store_info"></ul>
 			<ul class="revwInfo"></ul>
-			<div id="map" style="width:500px;height:400px;"></div>
+			<div class="modal_wrapper_revw_reg content_div"></div>
+			<div class='modal_wrapper_revw_info content_div'></div>
+			<div class="modal_wrapper_store_info content_div"></div>
 		</div>
 	</div>
 
@@ -123,7 +166,12 @@ window.onload = function () {
 	    revwRegFormUL = $(".revw_regForm"),
 	    storeInfoUL = $(".store_info"),
 	    btn_show_board = $("#btn_show_board"),
-	    revwInfoUL = $(".revwInfo")
+	    revwInfoUL = $(".revwInfo"),
+	    revwInfoDiv = $(".modal_wrapper_revw_info"),
+	    storeInfoDiv = $(".modal_wrapper_store_info"),
+        revwRegDiv = $(".modal_wrapper_revw_reg"),
+        pageNum = ${pageMaker.cri.pageNum},
+        amount = ${pageMaker.cri.amount}
 	;
 	    
 	let container,options,map,mapContainer,mapOption,markerPosition,marker;
@@ -233,24 +281,56 @@ window.onload = function () {
     		let strRevw = "";
     		if(!revw) return;
     		
-    		strRevw += "<h1>리뷰 보기</h1>";
-    		strRevw += "<h5>리뷰 번호 : "+revw.revwId+"</h5>";
-    		strRevw += "<h5>매장 번호 : "+revw.storeId+"</h5>";
-    		strRevw += "<h5>매장 이름 : "+revw.storeNm+"</h5>";
-    		strRevw += "<h5>웨이팅 번호 : "+revw.waitId+"</h5>";
-    		strRevw += "<h5>회원 아이디 : "+revw.userId+"</h5>";
-    		strRevw += "<h5>리뷰 내용 : "+revw.cnts+"</h5>";
-    		strRevw += "<h5>평점 : "+revw.rating+"</h5>";
-    		strRevw += "<h5>답글 내용 : "+revw.replyCnts+"</h5>";
-    		strRevw += "<h5>답글 등록 날짜 : "+revw.replyRegDt+"</h5>";
+    		strRevw += "<div class='modal_tit'>";
+    		strRevw += "<span>리뷰 보기</span>";
+    		strRevw += "</div>";
+    		strRevw += "<div class='modal_top_revw'>";
+    		strRevw += "<div class='revw_reg_wrapper'>";
+    		strRevw += "<div class='revw_store_info'>";
+    		strRevw += "<div class='revw_store_name'>"+revw.storeNm+"</div>";
+    		strRevw += "<div class='revw_rsvd_id'>";
+    		strRevw += "<span>리뷰 등록 날짜 : "+revw.regdate+"</span>";
+    		strRevw += "</div>";
+    		strRevw += "</div>";
+    		strRevw += "<div class='revw_info_wrapper' action='/dealight/mypage/review/register' method='post'>";
+    		strRevw += "<div class='revw_rate_wrapper'>";
     		strRevw += "<div class='rating' data-rate-value='"+revw.rating+"'></div>";
-    		strRevw += "<h5>리뷰 사진</h5>";
+    		strRevw += "</div>";
+    		strRevw += "<div class='revw_cnts_textarea'>";
+    		strRevw += "<textarea cols='30' row='20' name='cnts' readonly>"+revw.cnts+"</textarea>";
+    		strRevw += "</div>";
+    		strRevw += "<input name='rating' id='rate_input' hidden>";
+    		if(revw.imgs){    			
+    		strRevw += "<div class='revw_img_box'>";
+    		strRevw += "<div class='revw_img_wrapper'>";
     		for(let i = 0; i < revw.imgs.length; i++)
-    			if(revw.imgs[i].fileName !== null) strRevw += "<img src='/display?fileName="+encodeURIComponent(revw.imgs[i].uploadPath+"/s_"+revw.imgs[i].uuid+"_"+revw.imgs[i].fileName)+"'>";
+    			if(revw.imgs[i].fileName !== null) 
+    				strRevw += "<img src='/display?fileName="+encodeURIComponent(revw.imgs[i].uploadPath+"/s_"+revw.imgs[i].uuid+"_"+revw.imgs[i].fileName)+"'>";
+    		strRevw += "</div>";
+    		strRevw += "</div>";
+    		}
+    		if(revw.replyCnts){
+    			
+    		strRevw += "<div class='reply_wrapper'>";
+    		strRevw += "<div class='reply_item'>";
+    		strRevw += "<div class='reply_item_icon'>";
+    		strRevw += "<i class='fas fa-reply'></i>";
+    		strRevw += "<div class='reply_item_name'>"+revw.storeNm+"</div>";
+    		strRevw += "<div class='reply_item_date'>"+revw.replyRegDt+"</div>";
+    		strRevw += "</div>";
+    		strRevw += "<div class='reply_cnts_wrapper'>";
+    		strRevw += "<div class='reply_cnts'>";
+    		strRevw += revw.replyCnts;
+    		strRevw += "</div>";
+    		strRevw += "</div>";
+    		strRevw += "</div>";
+    		}
+    		strRevw += "</div>";
+    		strRevw += "</div>";
     		
-    		revwInfoUL.html(strRevw);
-    		
-    		/* Rater.js 로직*/
+    		revwInfoDiv.css("display","block");
+    		revwInfoDiv.html(strRevw);
+	        /* Rater.js 로직*/
 	        $(".rating").rate({
 	            max_value: 5,
 	            step_size: 0.5,
@@ -262,67 +342,55 @@ window.onload = function () {
     	});
     };
        
-       function showStoreInfo(userId,storeId) {
-       	
-       	getStoreInfo({userId:userId,storeId : storeId}, store=>{
-       		
-       		let strStoreInfo = "";
-       		if(!store)
-       			return;
-       		
-       		strStoreInfo += "<h1>매장 정보</h1>";
-       		strStoreInfo += "<img src='/display?fileName="+store.bstore.repImg+"'>";    		
-       		if(!store.like) strStoreInfo += "<button class='btn_like_pick'>찜 하기</button>";
-    		if(store.like) strStoreInfo += "<button class='btn_like_cancel'>찜 취소하기</button>";
-    		strStoreInfo += "<li>매장 번호 : <span class='store_info_id'>"+store.storeId+"</span></l1>";
-       		strStoreInfo += "<li>매장 이름 : "+store.storeNm+"</l1>";
-       		strStoreInfo += "<li>매장 번호 : "+store.telno+"</l1>";
-       		strStoreInfo += "<li>매장 상태 : "+store.clsCd+"</l1>";
-       		strStoreInfo += "<li>매장 관리자 아이디 : "+store.bstore.buserId+"</l1>";
-       		strStoreInfo += "<li>매장 분점 : "+store.bstore.brch+"</l1>";
-       		strStoreInfo += "<li>매장 대표 메뉴 : "+store.bstore.repMenu+"</l1>";
-       		strStoreInfo += "<li>매장 착석 상태 : "+store.bstore.seatStusCd+"</l1>";
-       		strStoreInfo += "<li>매장 영업 시작 시간 : "+store.bstore.openTm+"</l1>";
-       		strStoreInfo += "<li>매장 영업 마감 시간 : "+store.bstore.closeTm+"</l1>";
-       		strStoreInfo += "<li>매장 브레이크타임 시작 시간 : "+store.bstore.breakSttm+"</l1>";
-       		strStoreInfo += "<li>매장 브레이크타임 종료 시간 : "+store.bstore.breakEntm+"</l1>";
-       		strStoreInfo += "<li>매장 라스트오더 시간 : "+store.bstore.lastOrdTm+"</l1>";
-       		strStoreInfo += "<li>매장 1인 테이블 수 : "+store.bstore.n1SeatNo+"</l1>";
-       		strStoreInfo += "<li>매장 2인 테이블 수 : "+store.bstore.n2SeatNo+"</l1>";
-       		strStoreInfo += "<li>매장 4인 테이블 수 : "+store.bstore.n4SeatNo+"</l1>";
-       		strStoreInfo += "<li>매장 소개 : "+store.bstore.storeIntro+"</l1>";
-       		strStoreInfo += "<li>매장 평균 식사 시간 : "+store.bstore.avgMealTm+"</l1>";
-       		strStoreInfo += "<li>매장 휴무일 : "+store.bstore.hldy+"</l1>";
-       		strStoreInfo += "<li>매장 수용 가능 인원 : "+store.bstore.acmPnum+"</l1>";
-    		strStoreInfo += "<li>매장 좋아요 수 : "+store.eval.likeTotNum+"</l1>";
-    		strStoreInfo += "<li>매장 리뷰 수 : "+store.eval.revwTotNum+"</l1>";
-    		strStoreInfo += "<li>매장 평균 평점 : "+store.eval.avgRating+"</l1>";
-    		strStoreInfo += "<div class='rating' data-rate-value='"+store.eval.avgRating+"'></div>";
+    // 매장 정보를 보여준다.
+    let showStoreInfo = function (userId,storeId) {
+    	
+    	console.log("user id : "+userId);
+    	console.log("store id : "+storeId);
+    	
+    	getStoreInfo({userId:userId,storeId : storeId}, store => {
     		
-       		strStoreInfo += "<li>매장 주소 : "+store.loc.addr+"</l1>";
-       		
-       		modal.find("#map").css("display", "block");
-       		
-       		container = document.getElementById('map');
-       		options = {
-       					center : new kakao.maps.LatLng(store.loc.lat, store.loc.lng),
-       					level : 3
-       				};
-       		map = new kakao.maps.Map(container, options);
-       		mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-       		mapOption = { 
-       		    center: new kakao.maps.LatLng(store.loc.lat, store.loc.lng), // 지도의 중심좌표
-       		    level: 3 // 지도의 확대 레벨
-       		};
-       		markerPosition  = new kakao.maps.LatLng(store.loc.lat, store.loc.lng);
-       		marker = new kakao.maps.Marker({
-       			position: markerPosition
-       		});
-       		marker.setMap(map);
-       		
-       		storeInfoUL.html(strStoreInfo);
-       		
-       		/* Rater.js 로직*/
+    		let strStoreInfo = "";
+    		if(!store)
+    			return;
+    		
+    		strStoreInfo += "<div class='modal_tit'>";
+    		strStoreInfo += "<span>매장 정보</span>";
+    		strStoreInfo += "</div>";
+    		
+    		strStoreInfo += "<div class='modal_top_store'>";
+    		strStoreInfo += "<div class='modal_top_left'>";
+    		strStoreInfo += "<div class='modal_top_left'>";
+    		strStoreInfo += "<img src='/display?fileName="+store.bstore.repImg+"'>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "<div class='modal_top_right'>";
+    		strStoreInfo += "<div class='store_info_name'>"+store.storeNm+"</div>";
+    		strStoreInfo += "<div class='store_info_brch'>"+store.bstore.brch+"</div>";
+    		strStoreInfo += "<div class='store_info_telno'>"+store.telno+"</div>";
+    		strStoreInfo += "<div class='store_info_rating'><div class='rating' data-rate-value='"+store.eval.avgRating+"'></div></div>";
+    		strStoreInfo += "<div class='store_info_eval'>";
+    		if(store.like) strStoreInfo += "<div class='store_info_tot_like btn_like_cancel'><i class='fas fa-heart'></i> "+store.eval.likeTotNum+"</div>";
+    		else if (!store.like) strStoreInfo += "<div class='store_info_tot_like btn_like_pick'><i class='far fa-heart'></i> "+store.eval.likeTotNum+"</div>";
+    		strStoreInfo += "<div class='store_info_tot_revw'><i class='fas fa-pencil-alt'></i> "+store.eval.revwTotNum+"</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "<div class='store_info_tm'>";
+    		strStoreInfo += "<div class='store_info_biz_tm'>영업 시간 : "+store.bstore.openTm+" - "+store.bstore.closeTm+"</div>";
+    		strStoreInfo += "<div class='store_info_break_tm'>브레이크 타임 : "+store.bstore.breakSttm+" - "+store.bstore.breakEntm+"</div>";
+    		strStoreInfo += "<div class='store_info_break_tm'>라스트오더 : "+store.bstore.lastOrdTm+"</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "<div class='store_info_detail'>";
+    		strStoreInfo += "<i class='fas fa-angle-right'></i>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "<span style='display:none;' class='store_info_id'>"+store.storeId+"</span>";
+    		
+    		
+    		storeInfoDiv.css("display","flex");
+    		storeInfoDiv.html(strStoreInfo);
+    		
+    		/* Rater.js 로직*/
 	        $(".rating").rate({
 	            max_value: 5,
 	            step_size: 0.5,
@@ -331,47 +399,64 @@ window.onload = function () {
 	            cursor: 'default',
 	            readonly: true,
 	        });
-       		
+    		
+    		$(".store_info_detail").on("click", e => window.open("/dealight/store/"+store.storeId))
     	    $(".btn_like_pick").on("click",likeAddHandler);
     	    $(".btn_like_cancel").on("click",likeRemoveHandler);
-       		
-       	});
-       	
-       }
-       
-       /* 리뷰 등록 폼을 보여준다.*/
-       function showRevwRegForm(storeId,userId,waitId){
-    	   
-    	let strRevwRegForm = "";    			
-    			
-    	getStoreInfo({userId:userId,storeId : storeId}, store=>{
     		
-    		console.log("get store info..................");
-       		
-       		if(!store)
-       			return;
-       	
+    	});
+    	
+    };
+       
+    /* 리뷰 등록 폼을 보여준다.*/
+    let showRevwRegForm = function (storeId,userId,waitId){
+ 	   
+ 	let strRevw = "";    			
+ 			
+ 	getStoreInfo({userId : userId, storeId : storeId}, store => {
+ 		
+ 		console.log("get store info..................");
+    		
+    		if(!store)
+    			return;
+    		
+    		
+    		strRevw += "<div class='modal_tit'>";
+            strRevw += "<span>리뷰 작성</span>";
+            strRevw += "</div>";
+            strRevw += "<div class='modal_top_revw'>";
+    		strRevw += "<div class='revw_reg_wrapper'>";
+    		strRevw += "<div class='revw_store_info'>";
+    		strRevw += "<div class='revw_store_name'>"+store.storeNm+"</div>";
+    		strRevw += "<div class='revw_rsvd_id'>웨이팅 번호 : "+waitId+"</div>";
+    		strRevw += "</div>";
+    		strRevw += "<form id='revwRegForm' action='/dealight/mypage/review/register' method='post'>";
+    		strRevw += "<div class='revw_rate_wrapper'>";
+    		strRevw += "<div class='rating' dat	a-rate-value=3></div>";
+    		strRevw += "</div>";
+    		strRevw += "<div class='revw_cnts_textarea'>";
+    		strRevw += "<textarea cols='30' row='20' name='cnts' placeholder='리뷰 내용을 입력해주세요.'></textarea>";
+    		strRevw += "</div>";
+    		strRevw += "<input name='rating' id='rate_input' hidden>";
+    		strRevw += "<div class='file_body'></div>";
+    		strRevw += "<div class='form_img'><input id='js_upload' type='file' name='uploadFile' multiple></div>";
+    		strRevw += "<div class='uploadResult'><ul></ul></div>";
+    		strRevw += "<div class='revw_btn_box'>";
+    		strRevw += "<button id='submit_revwRegForm'>리뷰 등록</button>";
+    		strRevw += "</div>";
+    		strRevw += "<input name='storeId' value='"+store.storeId+"' hidden>";
+    		strRevw += "<input name='storeNm' value='"+store.storeNm+"' hidden>";
+    		strRevw += "<input name='waitId' value='"+waitId+"' hidden>";
+    		strRevw += "<input name='rating' id='rate_input' hidden>";
+    		strRevw += "<input name='userId' value='"+userId+"' hidden>";
+    		strRevw += "<input name='prevPage' value='wait?pageNum="+pageNum+"&amount="+amount+"' id='' hidden>";
+    		strRevw += "</form>";
+    		strRevw += "</div>";	
+    		strRevw += "</div>";
 	       	
-	       	strRevwRegForm += "<h1>리뷰 작성</h1>";
-	       	strRevwRegForm += "<form id='revwRegForm' action='/dealight/mypage/review/register' method='post'>";
-	       	strRevwRegForm += "매장 번호 : <input name='storeId' value='"+store.storeId+"' readonly></br>";
-	       	strRevwRegForm += "매장 이름 : <input name='storeNm' value='"+store.storeNm+"' readonly></br>";
-	       	strRevwRegForm += "웨이팅 번호 : <input name='waitId' value='"+waitId+"' readonly></br>";
-	       	strRevwRegForm += "회원 아이디 : <input name='userId' value='"+userId+"' readonly></br>";
-	       	strRevwRegForm += "리뷰 내용 : <input type='textarea' name='cnts' id=''></br>";
-	       	strRevwRegForm += "평점 주기"
-		    strRevwRegForm += "<div class='rating' data-rate-value=3></div>";
-		    strRevwRegForm += "<input name='rating' id='rate_input' hidden>";
-	       	strRevwRegForm += "파일첨부 : <div class='file_body'>"; 
-	       	strRevwRegForm += "<div class='form_img'><input id='js_upload' type='file' name='uploadFile' multiple></div>";
-	       	strRevwRegForm += "<div class='uploadResult'><ul></ul></div></div>";
-	       	strRevwRegForm += "<input name='prevPage' value='wait' id='' hidden>";
-	       	strRevwRegForm += "<div class='bigPictureWrapper'><div class='bigPicture'></div></div>";
-	       	strRevwRegForm += "</form>";
-	       	strRevwRegForm += "<button id='submit_revwRegForm'>제출하기</button>";
-	       	
-	       	revwRegFormUL.html(strRevwRegForm);
-	       	
+    		revwRegDiv.css("display","flex");
+	       	revwRegDiv.html(strRevw);
+
 	       	/* Rater.js 로직*/
 	        $(".rating").rate({
 	            max_value: 5,
@@ -382,7 +467,7 @@ window.onload = function () {
 	            readonly: false,
 	            update_input_field_name: $("#rate_input")
 	        });
-	       	
+	    	
 	       	// 리뷰
 	    	// btn id
 	    	btnSubmit = "#submit_revwRegForm";
@@ -395,17 +480,22 @@ window.onload = function () {
 	    	if(isModal)  $("#js_upload").change(uploadHandler); 
 	    	$(".uploadResult").on("click", "button", deleteHandler);
 	        //$(".uploadResult").on("click", "li", showImageHandler);
-	    	//$(".bigPictureWrapper").on("click",bigImgAniHandler);
+	    	$(".bigPictureWrapper").on("click",bigImgAniHandler);
 	    	if(pageType === 'modify' || pageType === 'register') $(".uploadResult").on("click","img",selRepImgHandler);
-    	});
-    			
-    	
-       };
+ 		
+ 	});
+ 			
+ 	
+    };
        
    	let showRevwRegFormHandler =  function(e) {
-       	let storeId = $(e.target).parent().find(".store_id").text(),
-	   		waitId = $(e.target).parent().find(".wait_id").text(),
-	   		revwStus = $(e.target).parent().find(".revw_stus").text();
+       	let storeId = $(e.target).parent().parent().parent().parent().find(".store_id").text(),
+	   		waitId = $(e.target).parent().parent().parent().parent().find(".wait_id").text(),
+	   		revwStus = $(e.target).parent().parent().parent().parent().find(".revw_stus").text();
+       	
+       	console.log("store id : "+storeId);
+    	console.log("wait id : "+waitId);
+    	console.log("revw stus : "+revwStus);
        	
 	    if(revwStus > 0) return;
 		
@@ -415,7 +505,9 @@ window.onload = function () {
    	
     let showWaitRevwHandler = function(e) {
     	
-    	let waitId = $(e.target).parent().find(".wait_id").text();
+    	let waitId = $(e.target).parent().parent().parent().parent().find(".wait_id").text();
+    	
+    	console.log("wait id : "+waitId);
     	
     	showWaitRevw(waitId);
     	modal.css("display","block");
@@ -423,18 +515,22 @@ window.onload = function () {
     }
    	
 	let showStoreInfoHandler = function(e) {
-    	let storeId = $(e.target).parent().find(".store_id").text(),
+    	let storeId = $(e.target).parent().parent().parent().parent().find(".store_id").text(),
     		userId = '${userId}';
+    		
+    	console.log("store id : "+storeId);
+    	console.log("user id : "+userId);
+    		
     	showStoreInfo(userId,storeId);
     	modal.css("display","block");
 	}
 	
     let likeRemoveHandler = function(e){
     	
-    	let storeId = $(e.target).parent().find(".store_info_id").text(),
+    	let storeId = $(e.target).parent().parent().parent().parent().parent().parent().find(".store_info_id").text(),
 			userId = '${userId}';
 
-		
+		console.log()
 		removeLike({userId:userId,storeId:storeId});
 		alert("찜이 취소 되었습니다.");		
 		showStoreInfo(userId, storeId);
@@ -443,15 +539,13 @@ window.onload = function () {
     
     let likeAddHandler = function(e){
     	
-    	let storeId = $(e.target).parent().find(".store_info_id").text(),
+    	let storeId = $(e.target).parent().parent().parent().parent().parent().parent().find(".store_info_id").text(),
 			userId = '${userId}';
 
 		addLike({userId:userId,storeId:storeId});
 		
-		alert($(e.target).parent().find(".store_info_id").text()+"번이 추가 되었습니다.");
+		alert($(e.target).parent().parent().parent().parent().parent().parent().find(".store_info_id").text()+"번이 추가 되었습니다.");
 
-		
-		
 		showStoreInfo(userId, storeId);
     }
        
