@@ -49,5 +49,8 @@ public interface BStoreMapper {
 
 	//jongwoo
 	public List<RsvdWithStoreDTO> findLastWeekRsvdRateListByStoreId();
-	public List<RsvdWithStoreDTO> findLastWeekRsvdPnum(int day); 
+	public List<RsvdWithStoreDTO> findLastWeekRsvdPnum(int day);
+	
+	int updateHtdlStus(@Param("storeId")Long storeId, @Param("stusCd")String stusCd);
+	
 }

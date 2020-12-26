@@ -34,6 +34,7 @@ public class HtdlServiceTests {
 	private HtdlTimeCheckService timeCheck;
 	//TODO 핫딜 서비스 테스트
 	
+	
 	@Test
 	public void testReadDtls() {
 		Long htdlId = 185l;
