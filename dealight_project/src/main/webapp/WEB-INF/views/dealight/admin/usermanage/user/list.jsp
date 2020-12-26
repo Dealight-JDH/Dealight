@@ -60,9 +60,9 @@
 									</c:when>
 								</c:choose>
 								<td><fmt:formatDate pattern="yyyy-MM-dd"
-										value="${user.regdate }" /></td>
+										value="${user.regDate }" /></td>
 								<td><fmt:formatDate pattern="yyyy-MM-dd"
-										value="${user.updatedate }" /></td>
+										value="${user.updateDate }" /></td>
 							</tr>
 						</c:forEach>
                    </tbody>
