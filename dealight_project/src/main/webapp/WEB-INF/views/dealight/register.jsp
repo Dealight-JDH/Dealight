@@ -465,12 +465,12 @@
             display : inline-block;
             margin : 0 0;
             color: #999;
-            font-size: 45px;
+            font-size: 24px;
             font-weight: 300;
         }
         .close_modal:hover,
         .close_modal:focus {
-            color: black;
+            /* color: black; */
             text-decoration: none;
             cursor: pointer;
         }
@@ -716,7 +716,7 @@
                                 이용약관 동의
                                 <span class="sub">(필수)</span>
                             </label>
-                                <a href="#" class="link btn-link btn-agreement js-agree">약관보기</a>
+                                <a href="#none" class="link btn-link btn-agreement js-agree">약관보기</a>
                             </div>
                             
                             <div class="check-view">
@@ -726,7 +726,7 @@
                                     개인정보처리방침 동의
                                     <span class="sub">(필수)</span>
                                 </label>
-                                    <a href="#" class="link btn-link btn-agreement js-agree">약관보기</a>
+                                    <a href="#none" class="link btn-link btn-agreement js-agree">약관보기</a>
                             </div>
 
                             <div class="check-view">
@@ -736,7 +736,7 @@
                                     개인정보처리방침 동의
                                     <span class="sub">(선택)</span>
                                 </label>
-                                    <a href="#" class="link btn-link btn-agreement js-agree">약관보기</a>
+                                    <a href="#none" class="link btn-link btn-agreement js-agree">약관보기</a>
                             </div>
 
                             <div class="check-view">
@@ -776,7 +776,7 @@
 	        <div class="modal_header">
                 <h4 class="css-agreeTitle" id="js-agreeTitle"></h4>
 
-                <div class="close_modal">x</div>
+                <!-- <div class="close_modal">x</div> -->
             </div>
 		
             <div class="css-agreecontent">

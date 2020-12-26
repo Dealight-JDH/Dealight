@@ -35,7 +35,7 @@ public class HtdlRestController {
 			MediaType.APPLICATION_JSON_UTF8_VALUE,
 			MediaType.APPLICATION_XML_VALUE
 	})
-	public HttpEntity<List<HtdlVO>> main(@PathVariable String stusCd, @PathVariable int page) {
+	public ResponseEntity<List<HtdlVO>> main(@PathVariable String stusCd, @PathVariable int page) {
 		
 		//상태에 따른 핫딜 리스트 필터
 //		List<HtdlVO> filterList = service.getList().stream()
@@ -54,16 +54,17 @@ public class HtdlRestController {
 	
 	
 
-	
 	//핫딜 상세
 	@GetMapping(value = "/get/{htdlId}", produces = {
 			MediaType.APPLICATION_JSON_UTF8_VALUE,
 			MediaType.APPLICATION_XML_VALUE
 	})
-	public HttpEntity<HtdlVO> get(@PathVariable Long htdlId) {
+	public ResponseEntity<HtdlVO> get(@PathVariable Long htdlId) {
 		log.info("get...");
 		
 		return new ResponseEntity(service.read(htdlId), HttpStatus.OK);
 		
 	}
+	
+	
 }

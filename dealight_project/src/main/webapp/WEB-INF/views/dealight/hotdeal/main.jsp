@@ -16,47 +16,61 @@
 </script>
 <script src="/resources/js/Rater.js"></script>
 <style>
-* { /* CSS초기화. 이거 없으면 div태그 사이에 공백 생김*/
+	
+	* { /* CSS초기화. 이거 없으면 div태그 사이에 공백 생김*/
 
     margin  : 0;   /* 값이 0일 때는 단위 안씀. */
     border  : 0;
     padding : 0;
     font-family: 'Nanum Gothic', sans-serif;
     }
-.main_nav{
-   	background-color: #d32323;
-}
-    
-    
-/* .css-hotdeal {
-	display: inline-block;
-	margin: 45px;
-	border: 2px solid red;
-	
-} */
 
-.topnav{
-}
-	/* css 적용*/
-.main-container{
-        display: flex;
-        min-width: 1050px;
-        min-height: auto;
-        padding-bottom: 36px;
+    body{
+        background-color: whitesmoke;
     }
+
+    /* div{
+        border: 1px solid red;
+    } */
+    
+    .nav-bar{
+        display: flex;
+        
+        height: 60px;
+        justify-content: center;
+        border: 1px solid red;
+        align-items: center;
+        background-color: #d32323;
+        color: white;
+    }
+
+    .main-container{
+        display: flex;
+        /* position: relative; */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-width: 1050px;
+        height: auto;
+        padding-bottom: 36px;
+        
+    }
+    
 
     .search-container{
         display: flex;
-        width: 100%;
+        width: 95%;
         height: 80px;
         flex-direction: row;
         justify-content: center;
+        /* position: absolute; */
         align-items: center;
-        margin: 16px 40px 10px 40px;
+        margin-top: 20px;
+        /* margin: 16px 40px 10px 150px; */
         padding: 6px 0px;
     }
 
-    .search-form{
+    .search-wrap{
         display: flex;
         position: relative;
         flex-direction: row;
@@ -66,27 +80,234 @@
         height: 100%;
     }
 
-    /*flex 수직이 왜 안될까...*/
+    .search-form{
+        display: flex;
+        width: 80%;
+        /* height: 70%; */
+        border: 1px solid rgb(221, 221, 221);
+        color: rgb(34,34,34 );
+        height: 66px;
+        position: relative;
+        border-radius: 32px;
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 16px 32px, rgba(0, 0, 0, 0.1) 0px 3px 8px;
+        background-color: rgb(247, 247, 247);
+        /* border: 1px solid red; */
+    }
+
+    .css-regionLabel{
+        display: block;
+        cursor: pointer;
+        /* position: absolute; */
+        /* top:6px;
+        left: 30px; */
+        width: 100%;
+        /* height: 68px; */
+        /* margin: 20px 30px; */
+        border-radius: 32px;
+        padding: 15px 30px;
+
+
+        /* background-clip: padding-box;
+        border: 1px solid transparent;
+        border-radius: 32px;
+        bottom: 0;
+        content:"";
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 0; */
+
+    }
+
+    /* .css-regionLabel:after{
+        background-clip: padding-box;
+        border: 1px solid transparent;
+        border-radius: 32px;
+        bottom: 0;
+        content:"";
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 0;
+    }  */
+
+    .select-regionLabel{
+        display: block;
+        cursor: pointer;
+        
+        border-radius: 32px !important;
+        /* padding: 6px 0; */
+        position: absolute !important;
+        background-clip: padding-box !important;
+        border: 1px solid rgb(255,255,255);
+        border-radius: 32px;
+        padding: 15px 30px;
+        /* padding: 6px 30px; */
+        background-color: rgb(255,255,255);
+        box-shadow: rgb(0,0,0,0.2) 0 6px 20px;
+        z-index: 1;
+    }
+
+    .select-startTimeLabel{
+        display: block;
+        cursor: pointer;
+        
+        border-radius: 32px !important;
+        /* padding: 6px 0; */
+        position: absolute !important;
+        background-clip: padding-box !important;
+        border: 1px solid rgb(255,255,255);
+        border-radius: 32px;
+        padding: 15px 15px;
+        /* padding: 6px 30px; */
+        background-color: rgb(255,255,255);
+        box-shadow: rgb(0,0,0,0.2) 0 6px 20px;
+        z-index: 1;
+    }
+
+
+    .select-endTimeLabel{
+        display: block;
+        cursor: pointer;
+        
+        border-radius: 32px !important;
+        /* padding: 6px 0; */
+        position: absolute !important;
+        background-clip: padding-box !important;
+        border: 1px solid rgb(255,255,255);
+        border-radius: 32px;
+        padding: 15px 15px;
+        /* padding: 6px 30px; */
+        background-color: rgb(255,255,255);
+        box-shadow: rgb(0,0,0,0.2) 0 6px 20px;
+        z-index: 1;
+    }
+
+
+    /* .select-label:after{
+        background-clip: padding-box;
+        border: 1px solid rgb(255,255,255);
+        border-radius: 32px;
+        padding: 14px 32px;
+        background-color: rgb(255,255,255);
+        box-shadow: rgb(0,0,0,0.2) 0 6px 20px;
+        z-index: 3;
+
+    } */
+
+    
     .hotdeal-container{
         display: flex;
-        width: 95%;
+        width: 85%;
         height: auto;
-        position: absolute;
+        /* position: absolute; */
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
         align-content: center;
-        margin-top: 140px;
-        left: 33px;
+        margin-top: 30px;
+        /* left: 33px; */
     }
 
-    .region-input{
+    .hotdealState-wrap{
+        display: flex;
+        align-items: center;
+        align-items: flex-end;
+        width: 100%;
+        height: 55px;
+        margin-top: 20px;
+        margin-left: 30px;
+        margin-bottom: 10px;
+        /* border: 1px solid red; */
+    }
+
+    /* .region-input{
         display: flex;
         align-items: center;
         position: absolute;
         width: 30%;
         height: 80%;
         left: 115px;
+    } */
+
+    .css-region{
+        display: flex;
+        position: relative;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        /* border: 1px solid red; */
+    }
+
+    .label-region{
+        line-height: 16px;
+        font-weight: 800;
+        font-size: 12px;
+        padding-bottom: 2px;
+        /* padding-bottom: 2px; */
+    }
+
+    .css-label:hover {
+	    background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .region-box{
+        display: flex;
+        width: 205px;
+        height: 100%;
+    }
+
+    .startTime-box{
+        display: flex;
+        width: 180px;
+        height: 100%;
+        /* border: 1px solid red; */
+    }
+
+    .css-startTime{
+        display: flex;
+        position: relative;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        /* border: 1px solid red; */
+    }
+
+    .css-startTimeLabel{
+        display: block;
+        cursor: pointer;
+        width: 100%;
+        border-radius: 32px;
+        padding: 15px 0 15px 30px;
+        /* border: 1px solid red; */
+    }
+
+    .endTime-box{
+        display: flex;
+        width: 180px;
+        height: 100%;
+        /* border: 1px solid red; */
+    }
+    
+    .css-endTime{
+        display: flex;
+        position: relative;
+        align-items: center;
+        width: 80%;
+        height: 100%;
+        /* border: 1px solid red; */
+        
+    }
+
+    .css-endTimeLabel{
+        display: block;
+        cursor: pointer;
+        width: 63%;
+        border-radius: 32px;
+        padding: 15px 30px;
+        /* border: 1px solid red; */
     }
 
     .time-input{
@@ -98,13 +319,13 @@
         left: 350px;
     }
 
-    .search-btn{
+    /* .search-btn{
         position: absolute;
         width: 10%;
         height: 80%;
         padding-top: 22px;
         left: 590px;
-    }
+    } */
 
     .css-border{
         border-radius: 4px 0 0 4px;
@@ -120,6 +341,24 @@
         background: #fff;
         box-sizing: border-box;
         box-shadow: 0px 0px 3px 1px silver;
+    }
+
+    .css-select{
+        position: absolute;
+        margin: 6px;
+        padding: 10px 12px 10px 30px;
+        width: 95%;
+        height: 40px;
+        /* border: 1px solid black; */
+        background: #fff;
+        box-sizing: border-box;
+        box-shadow: 0px 0px 3px 1px silver;
+        /* overflow:scroll; */
+        
+    }
+    .css-select:focus{
+        top: 8px;
+        height: 80px;
     }
 
     .css-input>input{
@@ -158,8 +397,10 @@
     .card{
         position: relative;
         width: 30%;
-        height: 480px;
-        margin: 16px;
+        height: 30%;
+        /* height: 480px; */
+        margin: 10px 10px;
+        /* margin: 16px; */
         overflow: hidden;
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
         padding: 4px;
@@ -176,12 +417,13 @@
 
     .card-lmtpnum{
         display: flex;
-        flex-direction: row;
+        /* flex-direction: row; */
         position: relative;
     }
 
     .card-elaptime{
-        width: 70px;
+        /* width: 70px; */
+        width: 100%;
         height: 20px;
         padding: 3px;
         color: #d32323;
@@ -191,17 +433,21 @@
     .card-lmtpnum>h4{
         position: absolute;
         right: 0;
+        top: 2px;
         margin-left: 3px;
         margin-bottom: 3px;
         padding: 3px;
+        /* z-index: 1; */
     }
     .card-title{
         display: flex;
         padding: 3px;
         align-items: center;
         height: 40px;
-        background: #d32323;
-        color: white;
+        background-color: #FBF0F0;
+        /* background: #d32323; */
+        /* color: white; */
+        color: black;
     }
     
     .card-menu{
@@ -223,6 +469,7 @@
         flex-direction: row;
         /* position: relative; */
         padding: 3px;
+        font-size: 24px;
         color: #F29F05;
         
     }
@@ -233,6 +480,11 @@
         /* position: absolute; */
         right: 0;
         
+    }
+
+    .opacity{
+        background-color: #FFFFFF;
+        opacity: 0.4;
     }
     
     .arrow-box{
@@ -285,7 +537,18 @@
     .card-img{
         display: flex;
         position: relative;
+        width: 100%;
+        height: 320px;
 
+    }
+
+    .card-img-top{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent);
     }
 
     .card-dc{
@@ -293,17 +556,18 @@
         justify-content: center;
         align-items: center;
         position: absolute;
-        background: #ffffff;
+        background: #D32323;
+        border-radius: 3px;
         width: 45px;
         height: 25px;
-        left: 0;
-        bottom: 0;
+        left: -2px;
+        bottom: 10px;
         z-index: 1;
     }
 
     .card-dc>span{
         font-weight: bold;
-        color:  #d32323;
+        color:  white;
     }
 
     .card-price{
@@ -311,7 +575,8 @@
         justify-content: center;
         align-items: center;
         position: absolute;
-        background: #ffffff;
+        /* background: #ffffff; */
+        border-radius: 3px;
         z-index: 1;
     }
 
@@ -320,19 +585,25 @@
         height: 20px;
         right: 0;
         bottom: 35px;
-
+        /* font-size: 14px; */
         text-decoration: line-through;
-        color: black; 
+        color: white; 
     }
 
     .card-afterPrice{
         width: 80px;
         height: 35px;
-        color:  #d32323;
-        font-weight: bold;
+        color:  whitesmoke;
+
+        font-weight: 900;
+        font-size: 19px;
+        right: 5px;
+        bottom: 0;
+
+        /* font-weight: bold;
         font-size: 18px;
         right: 0;
-        bottom: 0;
+        bottom: 0; */
     }
 
     .panel-footer{
@@ -378,71 +649,204 @@
         background-color: #ddd;
     }
 
-/* -------------------------------*/
+    .panel-footer1{
+        margin-top: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100%;
+        height: 100px;
+    }
 
-.css-elapTime{
-	color: red;
-	font-weight: bold;
-}
+    .time-input>span{
+        position: absolute;
+        left: 10px;
+        top: 20px;
+        z-index: 1;
+    }
+
+    /* .hotdeal-wrapper{
+        display: flex;
+        width: 100%;
+        position: absolute;
+        height: auto;
+        margin-top: 10px;
+    } */
+
+    #region_input{
+        outline: none;
+        background: none;
+    }
+
+    #startTime_input{
+        outline: none;
+        background: none;
+    }
+
+    #endTime_input{
+        outline: none;
+        background: none;
+    }
+
+    .search-btn{
+        display: flex;
+        position: absolute;
+        
+        border-radius: 24px;
+        height: 48px;
+        width: 48px;
+        align-self: center;
+        justify-content: center;
+        align-items: center;
+        background-color: #f43939;
+        left: 590px;
+        outline: none;
+        cursor: pointer;
+
+    }
+
+    .divider{
+        height: 10px;
+        border: 1px gray solid;
+        align-self: center;
+    }
+
+    .dropdown {
+        width: 100%;
+        position: relative;
+    }
+
+    .dropdown-list {
+        opacity: 1;
+        visibility: visible;
+    }
+    .dropdown-select {
+        padding-top: 6px;
+        border-radius: 20px;
+        width: 100%;
+        height: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 18px;
+        cursor: pointer;
+    }
+    .dropdown-list {
+        border-radius: 14px;
+        background-color: white;
+        position: absolute;
+        width: 100%;
+        top: 120%;
+        left: 0;
+        right: 0;
+        opacity: 0;
+        height: 80px;
+        visibility: hidden;
+        transition: opacity 0.2s linear, visibility 0.2s linear;
+        overflow: scroll;
+        z-index : 10;
+    }
+    .dropdown-list__item {
+        z-index : 10;
+        margin: 10px;
+        padding: 6px;
+        font-size: 12px;
+    }
+
+    .dropdown-list__item:hover {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
 
 
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
+    .switch-wrap{
+        position: absolute;
+        right: 0;
+        bottom: 25px;
+        position: fixed;
 
-/* Modal Content/Box */
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
-}
+    }
+    .switch {
+        
+        position: relative;
+        display: inline-block;
+        width: 80px;
+        height: 34px;
+        vertical-align:middle;
+    }
 
-/* The Close Button */
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
+    
+    .switch input {display:none;}
 
+    
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
 
-h4{
-	display: inline-block;
-}
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
 
-.text-center {
-      text-align: center;
-}
-.css-btn{
-     background-color: #EB0000;
-     color: white;
-     width: 350px;
-     height: 40px;
-     border-radius: 6px;
-     border-style: hidden;
-     font-size: 16px;
-}
-.hotdeal-search{
-	text-align: center;
-}
+    input:checked + .slider {
+        background-color: #d32323;
+    }
 
-.hotdeal_locationFilterLabel{
-	margin-right: 6px;
-    font-size: 14px;
-    line-height: 16px;
-    color: #FF0000;
+    input:focus + .slider {
+        box-shadow: 0 0 1px #d32323;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(50px);
+        -ms-transform: translateX(50px);
+        transform: translateX(50px);
+    }
+
+    
+    .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+
+    p {
+        margin:0px;
+        display:inline-block;
+        font-size:15px;
+        font-weight:bold;
+    }
+
+    .btn_content{
+        position: fixed;
+        right: 10px;
+        bottom: 23px;
+        display: inline-block;
+        width: 120px;
+        height: 45px;
+        background-position: -270px -55px;
+        background-repeat: no-repeat;
+        vertical-align: top;
+        cursor: pointer;
+        z-index: 600;
+        background-color: red;
+        color: #202020;
+        border-radius: 25px;
     }
 
 </style>
@@ -461,38 +865,91 @@ h4{
 	</div> -->
 	
 	<div class="main-container">
+		<div class="switch-wrap">
+        <!-- <label class="switch">
+            <input type="checkbox">
+            <span class="slider round">핫딜중</span>
+          </label>
+          <p>OFF</p><p style="display:none;">ON</p> -->
+
+          <button type="button" id="hotdeal_btn" class="btn_content">
+
+          </button>
+          </div>
 		<div class="search-container">
-            <div class="search-form">
+            <div class="search-wrap">
+                <div class="search-form">
+                    <div class="region-box js-search0" id="region">
+                            <div class="css-region">
+                                <label class="css-regionLabel css-label js-label">
+                                    <div class="label-region">지역</div>
 
-                <div class="region-input">
+                                    <div class="dropdown-select">
+                                        <input type="text" id="region_input" required placeholder="지역을 선택해주세요">
+                                    </div>
 
-                    <label class="css-input css-border" ><input type="text"  name="region" placeholder="검색할 지역을 입력해 주세요"></label>                    
+                                <div class="dropdown-list"></div>
+                                </label>
+                            </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="startTime-box js-search1" id="startTime">
+                        
+                        <div class="css-startTime">
+                            <label class="css-startTimeLabel css-label js-label">
+                                
+                                
+                                <div class="label-region">시작시간</div>
+                                <div class="dropdown-select">
+                                    <input type="text" id="startTime_input" required placeholder="시간">
+                                </div>
+                                <div class="dropdown-list"></div>
+                            </label>
+                        </div>
+                    </div>
+
+                <div class="divider"></div>
+
+                <div class="region-box js-search2" id="endTime">
+                         
+                    <div class="css-endTime">
+                        <label class="css-endTimeLabel css-label js-label">
+                            <div class="label-region">종료시간</div>
+
+                            <div class="dropdown-select">
+                            <input type="text" id="endTime_input" required placeholder="시간">
+                            </div>
+
+                            <div class="dropdown-list">
+                            </div>
+                        </label>
+                
                 </div>
-                &#124;
-                <div class="time-input">
-                    <label class="css-input "><input type="text" name="time" placeholder="---시간 검색---"></label>                    
+            </div>
+
+
+                <button id="searchBtn" class="search-btn flex" style="flex-basis: 50px;">
+                    <img src="/resources/img/search.svg" alt="" style="width: 24px;">
+                    <!-- <i class="fas fa-search" style="color: white;"></i> -->
+                </button>
+                    
+                
                 </div>
 
-                <div class="search-btn">
-                    <span>
-                    <input type="image" class="btn-search" src="/resources/img/search.svg">
-                    </span>
-                </div>
 
             </div>
-            <!-- search-form end-->
-        </div>
+            <!--search-form end-->
+       </div> 
         <!-- search-container-->
         
         <div class="hotdeal-container">
-            
-            <!-- <div class="card">
+          <%--   <div class="card js-htdl<c:out value="${status.index}"/>">
                 <div class="card-lmtpnum">
                     <div class="card-elaptime">
                         00:52:42
                     </div>
                     
-                    <h4>선착순 80명</h4>
+                    <h4>선착순 <c:out value="${htdl.lmtPnum}" />명</h4>
                     
                 </div>
 
@@ -544,12 +1001,15 @@ h4{
                     
                 </div>
 
-            </div> -->
-             	<div class="panel-footer">
+            </div> --%>
             
-            	</div>
+            
             </div>
             <!-- hotdeal-container end -->
+            
+             	<div class="panel-footer1">
+            
+            	</div>
            
       </div>
 
@@ -596,58 +1056,58 @@ h4{
 	<!-- </div> -->
 	
 	
-	<!-- The Modal -->
-	<div id="myModal" class="modal fade" id="myModal" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
+		<!-- The Modal -->
+<!-- 		<div id="myModal" class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true"> -->
+		
+		  <!-- Modal content -->
+<!-- 		  <div class="modal-content">
+		  <span class="close">&times;</span>
+		    <div class="modal-header">
+		    	선착순: <h4 class="modal-lmtPnum" id="lmtPnum"></h4><label>명</label><br>
+		    	<h4 class="modal-name" id="htdlName"></h4><br> -->
+		    	<!-- <input type="hidden" id="mhtdlId" name = "htdlId"> -->
+<!-- 		    </div>
 	
-	  <!-- Modal content -->
-	  <div class="modal-content">
-	  <span class="close">&times;</span>
-	    <div class="modal-header">
-	    	선착순: <h4 class="modal-lmtPnum" id="lmtPnum"></h4><label>명</label><br>
-	    	<h4 class="modal-name" id="htdlName"></h4><br>
-	    	<!-- <input type="hidden" id="mhtdlId" name = "htdlId"> -->
-	    </div>
-
-	    <div class="modal-body">
-	    <div class="modal-htdlImg">
-	    </div>
-	    	<span class= 'modal-startTm' id="startTm"></span> &nbsp; - &nbsp; <span class= 'modal-endTm' id="endTm"></span><br>
-	    	<span class= 'css-elapTime modal-elapTime' id="elapTime"></span><br>
-	    	<h4 class="modal-dcRate" id="dcRate"></h4><br>
-	    	<span class="modal-befPrice" id="befPrice" style="text-decoration:line-through; color:#999999;">
-	    	</span>
-	    	<br>
-	    	<h4 class="modal-afterPrice" id="afterPrice"></h4><br>
-	    	<h4 class="modal-avgRating" id="avgRating"></h4><br>
-	    	<h4 class="modal-revwTotNum" id="revwTotNum"></h4><br>
-	    	<h4 class="modal-menuName" id="menuName"></h4><br>
-	    	<h4 class="modal-intro" id="intro"></h4><br>
-	    </div>
-	    
-	    <div class="modal-footer">
-	    	<h3 style="color: red; font-weight: bold;">※ 유의 사항</h3>
-	    	<ul>
-	    		<li>1인 1매만 구매 가능합니다.</li>
-	    		<li>구매 전 전용 지점을 확인해주세요.</li>
-	    		<li>시간을 준수해 주시기 바랍니다.</li>
-	    		<li>양도 및 재판매 불가합니다.</li>
-	    	</ul>
-	    	<h3 style="color: red; font-weight: bold;">※ 환불 규정</h3>
-	    	<ul>
-	    		<li>사용 기간 내 환불 요청에 한해 구매 금액 전액 환불, 상품 사용 기간 이후 환불 요청 건은 수수료 10%를 제외한 금액 환불을 원칙으로 합니다.</li>
-	    		<li>환불 기간 연장은 불가합니다.</li>
-	    		<li>구매 후 1시간 이내 환불 요청: 100% 환불</li>
-	    		<li>구매 후 1시간 이후 환불 요청: 90% 환불</li>
-	    	</ul>
-	    	
-	   		<br>
-	    <div class="text-center">	
-        		<button type="submit" class="css-btn js-dealBtn">딜 하기</button>	    		
-      	</div>
-	    </div>
-	  </div>
-	</div>
+		    <div class="modal-body">
+		    <div class="modal-htdlImg">
+		    </div>
+		    	<span class= 'modal-startTm' id="startTm"></span> &nbsp; - &nbsp; <span class= 'modal-endTm' id="endTm"></span><br>
+		    	<span class= 'css-elapTime modal-elapTime' id="elapTime"></span><br>
+		    	<h4 class="modal-dcRate" id="dcRate"></h4><br>
+		    	<span class="modal-befPrice" id="befPrice" style="text-decoration:line-through; color:#999999;">
+		    	</span>
+		    	<br>
+		    	<h4 class="modal-afterPrice" id="afterPrice"></h4><br>
+		    	<h4 class="modal-avgRating" id="avgRating"></h4><br>
+		    	<h4 class="modal-revwTotNum" id="revwTotNum"></h4><br>
+		    	<h4 class="modal-menuName" id="menuName"></h4><br>
+		    	<h4 class="modal-intro" id="intro"></h4><br>
+		    </div>
+		    
+		    <div class="modal-footer">
+		    	<h3 style="color: red; font-weight: bold;">※ 유의 사항</h3>
+		    	<ul>
+		    		<li>1인 1매만 구매 가능합니다.</li>
+		    		<li>구매 전 전용 지점을 확인해주세요.</li>
+		    		<li>시간을 준수해 주시기 바랍니다.</li>
+		    		<li>양도 및 재판매 불가합니다.</li>
+		    	</ul>
+		    	<h3 style="color: red; font-weight: bold;">※ 환불 규정</h3>
+		    	<ul>
+		    		<li>사용 기간 내 환불 요청에 한해 구매 금액 전액 환불, 상품 사용 기간 이후 환불 요청 건은 수수료 10%를 제외한 금액 환불을 원칙으로 합니다.</li>
+		    		<li>환불 기간 연장은 불가합니다.</li>
+		    		<li>구매 후 1시간 이내 환불 요청: 100% 환불</li>
+		    		<li>구매 후 1시간 이후 환불 요청: 90% 환불</li>
+		    	</ul>
+		    	
+		   		<br>
+			    <div class="text-center">	
+		        		<button type="submit" class="css-btn js-dealBtn">딜 하기</button>	    		
+		      	</div>
+		    </div>
+		  </div>
+		</div> -->
 
 	<script>
 	let htdlUL = $(".hotdeal-container"); //핫딜
@@ -656,7 +1116,7 @@ h4{
 	let showListId = null; //setInterval id
 	let showElapTimeId = null; // elapTime id
 	let pageNum = 1;
-	let htdlPageFooter = $(".panel-footer"); //핫딜 페이지
+	let htdlPageFooter = $(".panel-footer1"); //핫딜 페이지
 	
 	//모달
 	let modal = $(".modal"),
@@ -802,7 +1262,7 @@ h4{
 		showListId = setInterval(showList, 1000, stusCd, pageNum);
 	}
 	
-	//경과시간 카운트다운
+	/* //경과시간 카운트다운
 	function showElapTimeStart(elapTime){
 		showElapTimeId = setInterval(getModalElapTime, 1000, elapTime);
 	}
@@ -812,11 +1272,11 @@ h4{
 		
 		let elapTime = getElapTime(endTime, startTime);
 		mElapTime.html(elapTime);
-	}
+	} */
 	
 	//핫딜 경과시간
 	function showHtdlElapTime(endTime, startTime){
-
+		
 		let elapTime = getElapTime(endTime, startTime);
 		/* $(".js-elapTime1").html(elapTime); */
 		return elapTime;
@@ -840,7 +1300,10 @@ h4{
 		//console.log("endTime: " + endTime);
 		
 		console.log("==================시간계산 startTime: " + startTime);
-		
+			
+		if(fmtTime.getTime() - date.getTime()<=0){
+			return "00:00:00";
+		}
 		//경과 시간
 		let elapsedTime = (fmtTime.getTime() - date.getTime()) / 1000;
 		
@@ -864,7 +1327,22 @@ h4{
 		return elapTime;
 	}
 	
+	//핫딜 경과시간 카운트 다운
+	function showElapTimeStart(){
+		showElapTimeId = setInterval(countElapTime, 1000);
+	}
 	
+	function countElapTime(){
+		for(let i=0, len=elapTimeArr.length; i<len; i++){
+			//1초씩 카운트 다운
+			let countElapTime = getElapTime(elapTimeArr[i], null);
+			//card-elaptime 출력
+			$(".card-elaptime").text(countElapTime);
+			if(countElapTime === "00:00:00"){
+				//css 변경
+			}
+		}
+	}
 	
 	//핫딜 리스트 보여주기
 	function showList(param, page){
@@ -917,9 +1395,9 @@ h4{
 			next = true;
 		}
 		
-		let pageStr = "<div class='panel-footer'><ul class='pagination'>";
+		let pageStr = "<div class='panel-footer1'><ul class='pagination'>";
 		if(prev){
-			pageStr+="<li ><a href='"+(startNum - 1)+"'>Previous</a></li>";
+			pageStr+="<li><a href='"+(startNum - 1)+"'>Previous</a></li>";
 		}
 		
 		for(let i = startNum; i<=endNum; i++){
@@ -936,7 +1414,7 @@ h4{
 		//console.log(pageStr);
 		htdlPageFooter.html(pageStr);
 	}
-	
+	let elapTimeArr = [];
 	//핫딜 그리기
 	function htdlHtml(list){
 		let str = "";
@@ -944,10 +1422,13 @@ h4{
 		for(let i =0, len = list.length || 0; i<len; i++){
 			/* let elapTime = getElapTime(list[i].endTm); */
 			let elapTime = "";
-			if(list[i].stusCd === 'A')
+			if(list[i].stusCd === 'A'){
 				elapTime = showHtdlElapTime(list[i].endTm, null);
-			else
+				elapTimeArr.push(list[i].endTm);
+			}
+			else{				
 				elapTime = showHtdlElapTime(list[i].endTm, list[i].startTm);
+			}
 			
 			let fileCallPath = null;
 			let srcObj = null;
@@ -1061,6 +1542,8 @@ h4{
 			str += "=========================================";
 			str +="</div>" */
 		}
+		
+		showElapTimeStart();
 		return str;
 	}
 	

@@ -72,5 +72,7 @@ public interface HtdlService {
 	// mapper method �ʿ�
 	// htdl_stus_cd = 'A'
 	List<HtdlVO> readActStoreHtdlList(long storeId);
+	
+	
 
 }

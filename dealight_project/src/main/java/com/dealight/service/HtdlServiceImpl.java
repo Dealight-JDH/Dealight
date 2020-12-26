@@ -254,6 +254,8 @@ public class HtdlServiceImpl implements HtdlService {
 		return htdlMapper.findByStoreIdStusCd(storeId, "A");
 	}
 
+	
+
 
 	
 

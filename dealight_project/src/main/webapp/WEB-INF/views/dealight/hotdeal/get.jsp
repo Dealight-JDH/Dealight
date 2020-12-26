@@ -13,7 +13,7 @@
 
 <div>
 	
-		<label>핫딜 제목</label> <input class="form-control" name='title'
+<%-- 		<label>핫딜 제목</label> <input class="form-control" name='title'
 		 value='<c:out value="${vo.name}"/>' readonly='readonly'><br>
 		
 		<label>핫딜 메뉴</label> 
@@ -51,7 +51,7 @@
     	<c:out value="${vo.intro }"/>
     	</textarea>
 		</c:if>
-		
+		 --%>
 </div>
 </body>
 </html>
