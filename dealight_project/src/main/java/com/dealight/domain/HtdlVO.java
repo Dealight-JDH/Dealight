@@ -79,6 +79,9 @@ public class HtdlVO {
 	
 	@NotNull
 	private String brch;
+	
+	private String storeName;
+	private String storeIntro;
 
 	//핫딜 결과
 	private HtdlRsltVO htdlRslt;

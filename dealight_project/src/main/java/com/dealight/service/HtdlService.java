@@ -14,6 +14,9 @@ import com.dealight.domain.StoreMenuVO;
 
 public interface HtdlService {
 	
+	//해당 핫딜 상태
+	String getStusCdById(Long htdlId);
+	
 	//식당 메뉴 조회
 	List<StoreMenuVO> findMenuById(Long storeId); 
 

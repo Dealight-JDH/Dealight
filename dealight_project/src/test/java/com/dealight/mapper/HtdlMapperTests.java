@@ -34,6 +34,16 @@ public class HtdlMapperTests {
 	@Autowired
 	private HtdlMapper mapper;
 	
+	@Test
+	public void testFindStusCdById() {
+		log.info(mapper.findStusCdById(208l));
+	}
+	@Test
+	public void testHtdlDtlsWithStore() {
+		HtdlVO vo = mapper.findHtdlWithStore(208l);
+		
+		log.info("=============vo=========="+ vo);
+	}
 	
 	@Test
 	public void testHtdlDtlsRslt() {

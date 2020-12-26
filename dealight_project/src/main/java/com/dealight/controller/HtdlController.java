@@ -113,11 +113,21 @@ public class HtdlController {
 	
 	//핫딜 상세
 	@GetMapping("/get/{htdlId}")
-	public void get(@PathVariable Long htdlId, Model model) {
+	public String get(Authentication auth , @PathVariable Long htdlId, Model model) {
 		log.info("get...");
 		
 		HtdlVO htdlVO = service.read(htdlId);
-		model.addAttribute("vo", htdlVO);
+		
+		model.addAttribute("htdl", htdlVO);
+		
+		if(auth != null) {			
+			String userId = auth.getName();
+			
+			if(userId != null) {
+				model.addAttribute("userId", userId);
+			}
+		}	
+		return "dealight/hotdeal/get";
 	}
 
 	//핫딜 메인 페이지
@@ -142,14 +152,13 @@ public class HtdlController {
 //		model.addAttribute("lists", lists.stream()
 //					.filter(htdl -> htdl.getStusCd().equals("A"))
 //					.collect(Collectors.toList()));
-//		if(auth != null) {			
-//			String userId = auth.getName();
-//			
-//			if(userId != null) {
-//				model.addAttribute("userId", userId);
-//			}
-//			
-//		}
+		if(auth != null) {			
+			String userId = auth.getName();
+			
+			if(userId != null) {
+				model.addAttribute("userId", userId);
+			}			
+		}
 		
 		model.addAttribute("lists", service.getList("A", hCri));
 //		model.addAttribute("pageMaker", new HtdlPageDTO(hCri, 123));

@@ -146,7 +146,7 @@ public class HtdlServiceImpl implements HtdlService {
 	public HtdlVO read(Long htdlId) {
 		// TODO Auto-generated method stub
 		log.info("read.....");
-		return htdlMapper.findHtdlById(htdlId);
+		return htdlMapper.findHtdlWithStore(htdlId);
 	}
 	
 	@Override
@@ -252,6 +252,15 @@ public class HtdlServiceImpl implements HtdlService {
 	public List<HtdlVO> readActStoreHtdlList(long storeId) {
 		
 		return htdlMapper.findByStoreIdStusCd(storeId, "A");
+	}
+
+	@Override
+	public String getStusCdById(Long htdlId) {
+		// TODO Auto-generated method stub
+		log.info("get stusCd by id ...");
+		
+		return htdlMapper.findStusCdById(htdlId);
+		
 	}
 
 	

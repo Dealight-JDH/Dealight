@@ -53,18 +53,28 @@ public class HtdlRestController {
 	}
 	
 	
+	//핫딜 상태 체크
+	@GetMapping(value="/get/stuscd/{htdlId}", produces = {
+			MediaType.APPLICATION_JSON_UTF8_VALUE
+	})
+	public ResponseEntity<String> getStusCd(@PathVariable Long htdlId) {
+		
+		log.info("get stusCd by htdlId....");
+		return new ResponseEntity<String>(service.getStusCdById(htdlId), HttpStatus.OK);
+	}
+	
 
 	//핫딜 상세
-	@GetMapping(value = "/get/{htdlId}", produces = {
-			MediaType.APPLICATION_JSON_UTF8_VALUE,
-			MediaType.APPLICATION_XML_VALUE
-	})
-	public ResponseEntity<HtdlVO> get(@PathVariable Long htdlId) {
-		log.info("get...");
-		
-		return new ResponseEntity(service.read(htdlId), HttpStatus.OK);
-		
-	}
+//	@GetMapping(value = "/get/{htdlId}", produces = {
+//			MediaType.APPLICATION_JSON_UTF8_VALUE,
+//			MediaType.APPLICATION_XML_VALUE
+//	})
+//	public ResponseEntity<HtdlVO> get(@PathVariable Long htdlId) {
+//		log.info("get...");
+//		
+//		return new ResponseEntity(service.read(htdlId), HttpStatus.OK);
+//		
+//	}
 	
 	
 }

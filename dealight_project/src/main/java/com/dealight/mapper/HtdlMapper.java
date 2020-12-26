@@ -29,6 +29,8 @@ public interface HtdlMapper {
 	int getTotalCount(@Param("stusCd") String stusCd, @Param("hCri") HtdlCriteria hCri);
 	int curPnumUpdate(HtdlVO vo);
 	
+	//해당 핫딜 상태 find
+	String findStusCdById(Long htdlId);
 	Long getSeqHtdl();
 	
 	//오늘 날짜 해당 핫딜 by storeId
@@ -59,6 +61,9 @@ public interface HtdlMapper {
 	//핫딜+상세+매장평가
 	HtdlVO findHtdlById(Long htdlId);
 	List<HtdlVO> getHtdlList();
+	
+	//핫딜+상세+매장소개
+	HtdlVO findHtdlWithStore(Long htdlId);
 	
 	// create
 	public void insert(HtdlVO htdl);

@@ -6,8 +6,48 @@
 		
 		<!-- 동인 -->
 <!-- jongwoo -->
-
-
+	
+	
+	<!-- 핫딜+상세+매장 소개 -->
+	
+	<resultMap type="com.dealight.domain.HtdlVO" id="getHtdlDetail">
+		<id column="htdl_id" property="htdlId"/> 
+			<result column="name" property="name"/>
+			<result column="store_id" property="storeId"/>
+			<result column="htdl_img" property="htdlImg"/>
+			<result column="dc_rate" property="dcRate"/>
+			<result column="start_tm" property="startTm"/>
+			<result column="end_tm" property="endTm"/>
+			<result column="lmt_pnum" property="lmtPnum"/>
+			<result column="intro" property="intro"/>
+			<result column="bef_price" property="befPrice"/>
+			<result column="ddct" property="ddct"/>
+			<result column="cur_pnum" property="curPnum"/>
+			<result column="stus_cd" property="stusCd"/>
+			<result column="regdate" property="regDate"/>
+			<result column="updatedate" property="updateDate"/>
+			<result column="brch" property="brch"/>
+			
+			<result column="store_nm" property="storeName"/>
+			<result column="store_intro" property="storeIntro"/>
+		
+			
+		<collection property="htdlDtls" ofType="com.dealight.domain.HtdlDtlsVO">
+					<id column="htdl_id" property="htdlId"/>
+					<id column="htdl_seq" property="htdlSeq"/> 
+					<result column="menu_name" property="menuName"/>
+					<result column="menu_price" property="menuPrice"/>
+				</collection>
+				
+	</resultMap>
+	<select id="findHtdlWithStore" resultMap="getHtdlDetail">
+		select h.htdl_id, h.name, h.store_id, h.htdl_img, h.dc_rate, h.start_tm, h.end_tm, h.lmt_pnum, h.intro, h.bef_price, h.ddct,
+		h.cur_pnum, h.stus_cd, h.regdate, h.updatedate, h.brch, s.store_nm, b.store_intro, d.htdl_seq, d.menu_name, d.menu_price
+		from tbl_htdl h, tbl_htdl_dtls d, tbl_bstore b, tbl_store s
+		where h.htdl_id = #{htdlId} and h.store_id = b.store_id and b.store_id = s.store_id and h.htdl_id = d.htdl_id
+	</select>
+			
+	
 	<!--오늘 날짜 핫딜 체크-->
 	<select id="sysdateCheckHtdl">
 		select count(*)
@@ -96,6 +136,7 @@
 			 WHERE h.htdl_id = d.htdl_id and h.store_id = e.store_id 	
 		</select>
 		
+		<!-- 핫딜+상세+매장평가 -->
 		<select id="findHtdlById" parameterType="long" resultMap="HtdlDetail">
 			SELECT h.*, d.*, e.*
 		      FROM tbl_htdl h, tbl_htdl_dtls d, tbl_store_eval e
@@ -178,6 +219,11 @@
 		
 		
 		<!-- 핫딜 mapper -->
+		<select id="findStusCdById" resultType="String">
+			select stus_cd
+			from tbl_htdl
+			where htdl_id = #{htdlId}
+		</select>
 		
 		<select id="getTotalCount" resultType="int">
 			select count(*) from tbl_htdl where htdl_id > 0 and stus_cd = #{stusCd}
