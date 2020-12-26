@@ -234,6 +234,7 @@
 	</collection>
 </resultMap>
 
+
 <resultMap type="com.dealight.domain.UserWithRsvdDTO" id="UserWithRsvdDTO">
 	
 	<result column="rsvd_id" property="rsvdId"/>
@@ -364,6 +365,7 @@
 			and TO_CHAR(to_date(time, 'YYYY/MM/DD HH24/mi/ss'),'YYYYMMDD') BETWEEN TO_CHAR(sysdate - 7,'YYYYMMDD')
 			AND TO_CHAR(sysdate,'YYYYMMDD')
 	</select>
+	
 	
 	<select id="findRsvdListWithPagingByUserId" resultType="com.dealight.domain.RsvdVO">
 		<![CDATA[

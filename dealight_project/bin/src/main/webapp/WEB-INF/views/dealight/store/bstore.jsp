@@ -47,7 +47,6 @@
 					<c:when test="${store.bstore.seatStusCd ne 'B'}">
 						<span style="border-style:solid; padding:5px; color:red;" >영업중</span>
 					</c:when>
-					
 				</c:choose>
 				<br>
 				<!-- 웨이팅중인 고객수 -->
@@ -147,221 +146,219 @@
 
 		<div class="right">
 			<div class="sticky">
-			<c:if test="${store.bstore.htdl.htdlId ne null}"> <%-- ${store.bstore.htdl.stusCd!=null } --%>
-				<c:if test=" ${store.bstore.htdl.stusCd eq P }">
-				<div class="htdlBtnCon">
-				<button id='htdlBtn'>지금 진행중인 핫딜!</button>
-				</div>	
-				<div class="htdlCon">
-					<P id='htdl'>핫딜상세</p>
-				</div>
-				</c:if>
-			</c:if>
+				<c:if test="${store.bstore.htdl ne null }">
+					<div class="htdlBtnCon">
+						<button id='htdlBtn'>지금 진행중인 핫딜!</button>
+					</div>	
+					<div class="htdlCon">
+						
+						<div id='htdl'>
+							<button id="purchase">구매하기</button>
+							${store.bstore.htdl }
+						</div>
+					</div>
+				</c:if> 
 			<section class="tabWrapper">
-					<ul class="tabs">
-						<li class="active">예약</li>
-						<li>줄서기</li>
-					</ul>
+				<ul class="tabs">
+					<li class="active">예약</li>
+					<li>줄서기</li>
+				</ul>
 
-					<ul class="tab__content">
+				<ul class="tab__content">
 
-						<li class="active">
-							<div class="content__wrapper">
-								<form id="reserveForm" action="/dealight/reservation/"
-									method="get">
-									<input type='hidden' name='storeId'
-										value='<c:out value="${store.storeId }"/>' />
+					<li class="active">
+						<div class="content__wrapper">
+							<form id="reserveForm" action="/dealight/reservation/"
+								method="get">
+								<input type='hidden' name='storeId'value='<c:out value="${store.storeId }"/>' />
 
-									<!-- <input type="hidden" id="selMenu" name="selMenu"> -->
-									<div class="row">
-										<select id="time" required="required">
-											<option value="">시간</option>
-											<option value="13:30">13:30</option>
-											<option value="14:00">14:00</option>
-											<option value="14:30">14:30</option>
-										</select> 
-										<select id="num" required="required">
-											<option value="">인원수</option>
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-										</select>
-									</div>
-									<div class="row">
-										<select id="menu">
-											<option value="">메뉴</option>
-											<c:if test="${store.bstore.htdl.htdlId ne null}">
-												<%-- <c:if test=" ${store.bstore.htdl.stusCd eq P }"> --%>
-												<%-- </c:if> --%>
-											</c:if>
-											<c:forEach items="${store.bstore.menus }" var="menus">
-												<option value="${menus.menuSeq}">${menus.name }</option>
-											</c:forEach>
-										</select> <input type="button" id="btnAddMenus" value="추가"></input>
+								<!-- <input type="hidden" id="selMenu" name="selMenu"> -->
+								<div class="row">
+									<select id="time" required="required">
+										<option value="">시간</option>
+										<option value="13:30">13:30</option>
+										<option value="14:00">14:00</option>
+										<option value="14:30">14:30</option>
+									</select> 
+									<select id="num" required="required">
+										<option value="">인원수</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+									</select>
+								</div>
+								<div class="row">
+									<select id="menu">
+										<option value="">메뉴</option>
+										<c:if test="${store.bstore.htdl.htdlId ne null}">
+											<%-- <c:if test=" ${store.bstore.htdl.stusCd eq P }"> --%>
+											<%-- </c:if> --%>
+										</c:if>
+										<c:forEach items="${store.bstore.menus }" var="menus">
+											<option value="${menus.menuSeq}">${menus.name }</option>
+										</c:forEach>
+									</select> <input type="button" id="btnAddMenus" value="추가"></input>
 
-									</div>
-									<div id="container"></div><br>
-									<div id="htdl-container"></div>
-									
-									<span id="menusTotAmtSumMsg"></span> <span id="menusTotAmt" name="totAmt" value="0"></span>
-									<button class ="tabWrapperBtn" type="submit">예약하기</button>
-								</form>
-							</div>
-							
-							
-						</li>
-							
-						<li><div class="content__wrapper">
-								<form id="waitingForm" action="/dealight/waiting"
-									method="post">
-									<input type='hidden' name='storeId' value='<c:out value="${store.storeId }"/>' />
+								</div>
+								<div id="container"></div><br>
+								<div id="htdl-container"></div>
+								
+								<span id="menusTotAmtSumMsg"></span> <span id="menusTotAmt" name="totAmt" value="0"></span>
+								<button class ="tabWrapperBtn" type="submit">예약하기</button>
+							</form>
+						</div>
+						
+						
+					</li>
+						
+					<li>
+						<div class="content__wrapper">
+							<form id="waitingForm" action="/dealight/store/wait" method="post">
+								<div class="row">
+									 <select id="waitingNum" required="required">
+										<option value="">인원수</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+									</select>
+								</div>
+								<input type='hidden' name='storeId' value='<c:out value="${store.storeId }"/>' />
+								<button class ="tabWrapperBtn" type="submit">줄서기</button>
+							</form>
+						</div>
+					</li>
 
-									<!-- <input type="hidden" id="selMenu" name="selMenu"> -->
-									<div class="row">
-										 <select id="waitingNum" required="required">
-											<option value="">인원수</option>
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-										</select>
-									</div>
-									<button class ="tabWrapperBtn" type="submit">줄서기</button>
-								</form>
-							</div>
-						</li>
-
-					</ul>
+				</ul>
 					
-					<form id='reserveFormObj' action="/dealight/reservation/" method="get">
-									<input type='hidden' name='storeId'
-										value='<c:out value="${store.storeId }"/>' />
-					</form>
-				</section>
-				</div>
+				<form id='reserveFormObj' action="/dealight/reservation/" method="get">
+					<input type='hidden' name='storeId' value='<c:out value="${store.storeId }"/>' />
+				</form>
+			</section>
 		</div>
-			<div class="footer">
-			<h1>footer</h1>
-			</div>
 	</div>
 	
 	<script type="text/javascript" src="/resources/js/revw.js"></script>
+	
+	<!-- 현중 -->
+	<script type="text/javascript">
+		window.onload=function(){
+			let result = '<c:out value="${result }"/>';
+			checkModal(result);
+			function checkModal(result){
+				console.log("123")
+				
+				
+				if(result === "fail"){
+					alert("줄서기를 할 수 없습니다..(마이페이지에서 나의 상태를 확인해주세요.)")
+				}
+				if(result === "success"){
+					alert("줄서기를 성공하셨습니다.")
+				}
+			}
+			
+		}
+	</script>
 
 	<!--리뷰 -->
 	<script type="text/javascript">
-		$(document)
-				.ready(
-						function() {
-							
-							
-							
-							let storeIdValue = '<c:out value="${store.storeId}"/>';
-							let revwUL = $(".revwColumn");
-							showList(1);
+		$(document).ready(function() {
+			let storeIdValue = '<c:out value="${store.storeId}"/>';
+			let revwUL = $(".revwColumn");
+			showList(1);
 
-							let pageNum = 1;
-							let revwPageFooter = $(".revwFooter");
+			let pageNum = 1;
+			let revwPageFooter = $(".revwFooter");
 
-							function showRevwPage(revwCnt) {
-								let endNum = Math.ceil(pageNum / 5.0) * 5;
-								let startNum = endNum - 4;
+			function showRevwPage(revwCnt) {
+				let endNum = Math.ceil(pageNum / 5.0) * 5;
+				let startNum = endNum - 4;
 
-								let prev = startNum != 1;
-								let next = false;
+				let prev = startNum != 1;
+				let next = false;
 
-								if (endNum * 4 >= revwCnt) {
-									endNum = Math.ceil(revwCnt / 4.0);
-								}
-								if (endNum * 4 < revwCnt) {
-									next = true;
-								}
-								let str = "<ul>";
+				if (endNum * 4 >= revwCnt) {
+					endNum = Math.ceil(revwCnt / 4.0);
+				}
+				if (endNum * 4 < revwCnt) {
+					next = true;
+				}
+				
+				let str = "<ul>";
 
-								if (prev) {
-									str += "<li><a href='" + (startNum - 1)
-											+ "'>Previous</a></li>";
-								}
+				if (prev) {
+					str += "<li><a href='" + (startNum - 1)
+							+ "'>Previous</a></li>";
+				}
 
-								for (let i = startNum; i <= endNum; i++) {
-									/* var active= pageNum ==i?"active":""; */
-									str += "<li><a href='"+i+"'>" + i
-											+ "</a></li>";
-								}
-								if (next) {
-									str += "<li><a href='" + (endNum + 1)
-											+ "'>Next</a></li>";
-								}
-								str += "</ul></div>";
-								console.log(str);
-								revwPageFooter.html(str);
+				for (let i = startNum; i <= endNum; i++) {
+					/* var active= pageNum ==i?"active":""; */
+					str += "<li><a href='"+i+"'>" + i
+							+ "</a></li>";
+				}
+				if (next) {
+					str += "<li><a href='" + (endNum + 1)
+							+ "'>Next</a></li>";
+				}
+				str += "</ul></div>";
+				console.log(str);
+				revwPageFooter.html(str);
 
-							}
+			}
 
-							function showList(page) {
-								console.log("show list" + page);
-								revwService
-										.getList(
-												{
-													storeId : storeIdValue,
-													page : page || 1
-												},
-												function(revwCnt, list) {
-													console.log("revwCnt: "
-															+ revwCnt);
-													console
-															.log("list: "
-																	+ list);
-													console.log(list);
-													if (page == -1) {
-														pageNum = Math
-																.ceil(revwCnt / 4.0);
-														showList(pageNum);
-														return;
-													}
+			function showList(page) {
+				console.log("show list" + page);
+				revwService.getList(
+								{
+									storeId : storeIdValue,
+									page : page || 1
+								},
+								function(revwCnt, list) {
+									console.log("revwCnt: "+ revwCnt);
+									console.log("list: "+ list);
+									console.log(list);
+									if (page == -1) {
+										pageNum = Math.ceil(revwCnt / 4.0);
+										showList(pageNum);
+										return;
+									}
 
-													let str = "";
-													if (list == null
-															|| list.length == 0) {
-														return;
-													}
-													for (let i = 0, len = list.length || 0; i < len; i++) {
-														str += "<div class='revwCon'><strong>"
-																+ list[i].userId
-																+ "</strong>";
-														str += " <strong>"
-																+ list[i].rating
-																+ "점</strong>"
-														str += " <small class='reg'>"
-																+ list[i].regDt
-																+ "</small>";
-														str += "<p>"
-																+ list[i].cnts;
-														if(list[i].replyCnts !=null){
-														str += "<div class='reply'>"+ list[i].replyCnts+"</div>";
-														}	
-														str	+= "</p></div></div></div>";
-													}
-													revwUL.html(str);
-													showRevwPage(revwCnt);
-												});
+									let str = "";
+									if (list == null || list.length == 0) {
+										return;
+									}
+									for (let i = 0, len = list.length || 0; i < len; i++) {
+										str += "<div class='revwCon'><strong>"+ list[i].userId+ "</strong>";
+										str += " <strong>"+ list[i].rating+ "점</strong>"
+										str += " <small class='reg'>"+ list[i].regDt+ "</small>";
+										str += "<p>"+ list[i].cnts;
+										
+										if(list[i].replyCnts !=null){
+											str += "<div class='reply'>"+ list[i].replyCnts+"</div>";
+										}	
+										str	+= "</p></div></div></div>";
+									}
+									revwUL.html(str);
+									showRevwPage(revwCnt);
+								});
 
-							}
-							revwPageFooter.on("click", "li a", function(e) {
-								e.preventDefault();
-								console.log("page click");
+			}
+			revwPageFooter.on("click", "li a", function(e) {
+				e.preventDefault();
+				console.log("page click");
 
-								let targetPageNum = $(this).attr("href");
+				let targetPageNum = $(this).attr("href");
 
-								console.log("targetPageNum :" + targetPageNum);
+				console.log("targetPageNum :" + targetPageNum);
 
-								pageNum = targetPageNum;
+				pageNum = targetPageNum;
 
-								showList(pageNum);
+				showList(pageNum);
 
-							});
+			});
 
-						});
+		});
 	</script>
 	
 <!--메뉴선택 -->
@@ -375,32 +372,64 @@
 	//jstl로 전체 상품 목록 미리 세팅<select id="menu" onchange="mySelect()" >
 
 	<c:forEach items="${store.bstore.menus }" var="menus">
-	menus.arrAllMenus.push({
-		menusId : "${menus.menuSeq}",
-		menusUnprc : "${menus.price}",
-		menusNm : "${menus.name }",
-		cnt : 0
-	});
+		menus.arrAllMenus.push({
+			menusId : "${menus.menuSeq}",
+			menusUnprc : "${menus.price}",
+			menusNm : "${menus.name }",
+			cnt : 0
+		});
 	</c:forEach>
-	
-	let paramHtdlId = '<c:out value="${htdlId}"/>' || null;
+	//종우 ------------------------
+	let paramHtdlId = '<c:out value="${store.bstore.htdl.htdlId}"/>' || null;
 	let paramUserId = '<c:out value="${userId}"/>' || null;
 	let storeId = '<c:out value="${store.storeId}"/>';
 	
 	let isHtdlPayHistory = false;//핫딜을 구매했는지 체크
 
+	//전달받은 핫딜번호를 ajax를 통해 vo 가져오기
+	function getHtdl(param, callback, error){
+		
+		let htdlId = param.htdlId;
+		console.log("htdlId: " + htdlId);
+		
+		$.getJSON("/dealight/store/htdl/get/"+htdlId+".json", function(data){
+			if(callback){
+				callback(data);
+			}
+			
+		}).fail(function(xhr,status, err){
+			if(error){
+				error();
+			}
+		});
+	}
+	
 	$(document).ready(function() {
-
-
 		console.log("hotdeal htdlId.........."+ paramHtdlId);
-
+		
+		let htdl = {};
 		if(paramHtdlId != null){
 			
-		//핫딜 페이지에서 넘어온 핫딜 ajax
-		getHtdl({htdlId : paramHtdlId},function(result){
-			
-			console.log(result);
-			
+			//핫딜 페이지에서 넘어온 핫딜 ajax
+			getHtdl({htdlId : paramHtdlId},function(result){
+				htdl = result;
+				console.log(htdl);
+				
+				addHtdl(result);
+
+				$("#purchase").on("click", function(e){
+					let htdlContainer = $("#htdl-container");
+					
+					console.log(htdlContainer[0].hasChildNodes());
+					if(htdlContainer[0].hasChildNodes()){
+						alert("핫딜은 하나만 구매가능합니다.")
+						return;
+					}
+					addHtdl(result);
+				})
+			});
+		}
+		function addHtdl(result){
 			if(result != null){
 				let menusNm = [];
 				
@@ -425,9 +454,9 @@
 					menus.htdlDeSelect(result.htdlId+"htdl");
 				});
 			}
-			
-		  });
 		}
+		
+		
 	});
 	
 	
@@ -485,40 +514,6 @@
 		
 	}
 	
-	//전달받은 핫딜번호를 ajax를 통해 vo 가져오기
-	function getHtdl(param, callback, error){
-		
-		let htdlId = param.htdlId;
-		console.log("htdlId: " + htdlId);
-		
-		$.getJSON("/dealight/store/htdl/get/"+htdlId+".json", function(data){
-			if(callback){
-				callback(data);
-			}
-			
-		}).fail(function(xhr,status, err){
-			if(error){
-				error();
-			}
-		});
-	}
-	
-	 //예약 가능여부 체크
-	/* function isRsvdAvailChecked(param, callback, error){
-		
-		let storeId = param.storeId;
-		let time = param.time;
-		let pnum = param.pnum;
-		
-		return new Promise(function(resolve, reject){
-			
-			$.getJSON("/dealight/reservation/rsvdavailcheck/"+storeId+"/"+time+"/"+pnum+".json",
-					function(data){
-						resolve(data);
-				});
-		});
-	}  */
-	
 	//예약 가능여부 체크
 	function isRsvdAvailChecked(param, callback, error){
 		
@@ -538,6 +533,7 @@
 				}
 			});
 	}
+	//=================================================
 	
 	function Menus() {
 
@@ -596,7 +592,7 @@
 			}
 			p.afterProc();
 		}
-		
+		//종우----------
 		//핫딜 상품 제거 시
 		this.htdlDeSelect = function(trgtMenusId) {
 
@@ -610,6 +606,7 @@
 			}
 			p.afterProc();
 		}
+		//--------------
 
 		this.appendChoiceDiv = function(prmtObj) {
 
@@ -618,13 +615,10 @@
 			innerHtml += '<div id="div_'+prmtObj.menusId+'">';
 			innerHtml += '	<span>' + prmtObj.menusNm + '</span>';
 			innerHtml += '	<input  type="text" id="input_sumAmt_'+prmtObj.menusId+'" name="" value="0" readonly ="readonly"/>'
-			innerHtml += '	<br><button type="button" id="" class="add" name="" onclick="menus.minus(\''
-					+ prmtObj.menusId + '\');">-</button>';
+			innerHtml += '	<br><button type="button" id="" class="add" name="" onclick="menus.minus(\''+ prmtObj.menusId + '\');">-</button>';
 			innerHtml += '	<input style=width:30px; type="text" id="input_cnt_'+prmtObj.menusId+'" name="" value="0" readonly ="readonly"/>'
-			innerHtml += '	<button  type="button" id="" class="remove" name="" onclick="menus.plus(\''
-					+ prmtObj.menusId + '\');">+</button>';
-			innerHtml += '	<button type="button" id="" class="remove" name="" onclick="menus.deselect(\''
-					+ prmtObj.menusId + '\');">X</button>';
+			innerHtml += '	<button  type="button" id="" class="remove" name="" onclick="menus.plus(\''+ prmtObj.menusId + '\');">+</button>';
+			innerHtml += '	<button type="button" id="" class="remove" name="" onclick="menus.deselect(\''+ prmtObj.menusId + '\');">X</button>';
 			innerHtml += '</div>';
 			$('#container').append(innerHtml);
 
@@ -699,240 +693,207 @@
 	$('#btnAddMenus').on('click', function() {
 		menus.select($('#menu option:selected').val());
 	});
+	
+	//종우
 	const reserveForm = $("#reserveForm");
 	const reserve = $("#reserve");
 	const pnum = $("#pnum");
 	const reserveFormObj = $("#reserveFormObj");
 	
-	$("#reserveForm button")
-			.on("click", function(e) {
+	$("#reserveForm button").on("click", function(e) {
+		//1.기존 이벤트(페이지 이동)를 막는다
+		e.preventDefault();
+
+		if(paramUserId === null){
+			alert("로그인 후 서비스를 이용해 주세요.");
+			return;
+		}
+		//시간,인원 수
+		let time = $("#time option:selected").val();
+		let pnum = $("#num option:selected").val();
+		let RsvdAvailChecked = false;
+		
+		//예약 가능여부 체크
+		isRsvdAvailChecked({storeId: storeId, time: time, pnum: pnum},
+				function(data){
+			console.log("reserve avail check: " + data);
+			
+			RsvdAvailChecked = data;
+		});
+		
+		
+		//해당 핫딜 구매했는지 체크
+		if(paramHtdlId != null && paramUserId != null){
+			
+			isHtdlPayExistChecked({userId : paramUserId, htdlId: paramHtdlId},
+					function(result){
 				
-						//1.기존 이벤트(페이지 이동)를 막는다
-						e.preventDefault();
+				console.log("===========hotdeal pay check: "+ result);
+				isHtdlPayHistory = result;
+				
+				if(!isHtdlPayHistory && paramHtdlId != null){
+					alert('이미 핫딜 상품을 구매하셨습니다. 감사합니다');
+					return;
+				}
+				
+			});
+		}
+		
+		//2.이벤트 막고 하고 싶은거
+		//2.1 페이지 이동시 다음페이지에 데이터를 넘길 수 있도록 input hidden에 선택된 메뉴 수량 넣음
+		//시간
+		
+		if (menus.arrSelMenus.length === 0) {
+			alert("메뉴가 선택되지않았습니다");
+			return;
+		}
 
-						if(paramUserId === null){
-							alert("로그인 후 서비스를 이용해 주세요.");
-							return;
-						}
-						//시간,인원 수
-						let time = $("#time option:selected").val();
-						let pnum = $("#num option:selected").val();
+		if ($("#num option:selected").val() === "") {
+			alert("인원수를 선택해 주세요");
+			return;
+		}
+		
+		if ($("#time option:selected").val() === "") {
+			alert("예약시간을 선택해 주세요");
+			return;
+		}
 
-						let RsvdAvailChecked = false;
-						
-						//예약 가능여부 체크
-						isRsvdAvailChecked({storeId: storeId, time: time, pnum: pnum},
-								function(data){
-							console.log("reserve avail check: " + data);
-							
-							RsvdAvailChecked = data;
-							
-							
-							
-						});
-						
-						
-						//해당 핫딜 구매했는지 체크
-						if(paramHtdlId != null && paramUserId != null){
-							
-							isHtdlPayExistChecked({userId : paramUserId, htdlId: paramHtdlId},
-									function(result){
-								
-								console.log("===========hotdeal pay check: "+ result);
-								isHtdlPayHistory = result;
-								
-								if(!isHtdlPayHistory && paramHtdlId != null){
-									alert('이미 핫딜 상품을 구매하셨습니다. 감사합니다');
-									return;
-								}
-								
-							});
-						}
-						
-						//2.이벤트 막고 하고 싶은거
-						//2.1 페이지 이동시 다음페이지에 데이터를 넘길 수 있도록 input hidden에 선택된 메뉴 수량 넣음
-						//시간
-						
-						if (menus.arrSelMenus.length === 0) {
-							alert("메뉴가 선택되지않았습니다");
-							return;
-						}
+		const personNum = '<input type="hidden" name=pnum value="'+ $("#num option:selected").val() + '">';
+		const reserveTime = '<input type="hidden" name=time value="'+ $("#time option:selected").val() + '">';
+		reserveFormObj.append(personNum);
+		reserveFormObj.append(reserveTime);
+		//3. 2에서 하고 싶은 거 실행 후  submit()
 
-						if ($("#num option:selected").val() === "") {
-							alert("인원수를 선택해 주세요");
-							return;
-						}
-						
-						if ($("#time option:selected").val() === "") {
-							alert("예약시간을 선택해 주세요");
-							return;
-						}
-						
-						
-							
-						/* isRsvdAvailChecked({storeId: storeId, time: time, pnum: pnum})
-							.then(function(result){
-								console.log("reserve avlail check: " + result);
-								
-								RsvdAvailChecked = result;
-						});
-						 */
-						
+		for (let i = 0; i < menus.arrSelMenus.length; i++) {
+			if (menus.arrSelMenus[i].cnt === 0) {
+				alert("메뉴 수량을 선택해주세요");
+				return;
+			}
+			
+			//핫딜번호
+			if(paramHtdlId != null){
+				const htdlIdInput = '<input type="hidden" name="htdlId" value="'+paramHtdlId+'">';
+				reserveFormObj.append(htdlIdInput);
+			}
+			
+			//메뉴이름
+			const menuNm = '<input type="hidden" name=menu['+i+'].name value="'+menus.arrSelMenus[i].menusNm+'">';
+			const menuPrice = '<input type="hidden" name=menu['+i+'].price value="'+menus.arrSelMenus[i].menusUnprc+'">';
+			const menuQty = '<input type="hidden" name=menu['+i+'].qty value="'+menus.arrSelMenus[i].cnt+'">';
+			reserveFormObj.append(menuNm);
+			reserveFormObj.append(menuPrice);
+			reserveFormObj.append(menuQty);
 
-						const personNum = '<input type="hidden" name=pnum value="'
-								+ $("#num option:selected").val() + '">';
-								reserveFormObj.append(personNum);
-						const reserveTime = '<input type="hidden" name=time value="'
-								+ $("#time option:selected").val() + '">';
-								reserveFormObj.append(reserveTime);
-						//3. 2에서 하고 싶은 거 실행 후  submit()
+		}
+		
+		setTimeout(()=>{
+			if(RsvdAvailChecked){
+				reserveFormObj.submit();
+			}
+			else{
+				let storeIdTag = $("input[name='storeId']").clone();
+				reserveFormObj.empty();
+				reserveFormObj.append(storeIdTag);
+				alert('선택하신 현재 인원은 예약이 불가합니다. 죄송합니다.');
+				return;
+			}
+		}, 200);
+		
+	});
+//-----------------------웨이팅 등록 이벤트------------------현중
+	$(document).ready(function() {
+		
+		const waitingForm = $("#waitingForm");
+		
+		$("#waitingForm button").on("click", function(e) {
+			
+			e.preventDefault();
+			
+			if ($("#waitingNum option:selected").val() === "") {
+				alert("인원수를 선택해주세요");
+				return;
+			}
+			
+			let inputTag = "";
+			inputTag += '<input type="hidden" name=pnum value="' + $("#waitingNum option:selected").val() + '">';
+			waitingForm.append(inputTag);
 
-						for (let i = 0; i < menus.arrSelMenus.length; i++) {
+			waitingForm.submit();
 
-							if (menus.arrSelMenus[i].cnt === 0) {
-								alert("메뉴 수량을 선택해주세요");
-								return;
-							}
-							
-							//핫딜번호
-							if(paramHtdlId != null){
-								const htdlIdInput = '<input type="hidden" name="htdlId" value="'+paramHtdlId+'">';
-								reserveFormObj.append(htdlIdInput);
-								
-							}
-							
-							
-							//메뉴이름
-							const menuNm = '<input type="hidden" name=menu['+i+'].name value="'+menus.arrSelMenus[i].menusNm+'">';
-							reserveFormObj.append(menuNm);
-							const menuPrice = '<input type="hidden" name=menu['+i+'].price value="'+menus.arrSelMenus[i].menusUnprc+'">';
-							reserveFormObj.append(menuPrice);
-							const menuQty = '<input type="hidden" name=menu['+i+'].qty value="'+menus.arrSelMenus[i].cnt+'">';
-							reserveFormObj.append(menuQty);
+			//waitingForm.submit();
+		});
 
-						}
-						
-						setTimeout(()=>{
-							if(RsvdAvailChecked){
-								reserveFormObj.submit();
-							}
-							else{
-								let storeIdTag = $("input[name='storeId']").clone();
-								reserveFormObj.empty();
-								reserveFormObj.append(storeIdTag);
-								alert('선택하신 현재 인원은 예약이 불가합니다. 죄송합니다.');
-								return;
-							}
-						}, 200);
-						
-					});
-
-	const waitingForm = $("#waitingForm");
-	$(document)
-			.ready(
-					function() {
-
-						$("#waitingForm button")
-								.on("click", function(e) {
-											if (submitted == true) {
-												return;
-											}
-											//1.기존 이벤트(페이지 이동)를 막는다
-											e.preventDefault();
-											//2.이벤트 막고 하고 싶은거
-											//2.1 페이지 이동시 다음페이지에 데이터를 넘길 수 있도록 input hidden에 선택된 메뉴 수량 넣음
-											//시간
-											if ($("#waitingNum option:selected")
-													.val() === "") {
-												alert("인원수를 선택해주세요");
-												return;
-											}
-											const watingPersonNum = '<input type="hidden" name=pnum value="'
-													+ $(
-															"#waitingNum option:selected")
-															.val() + '">';
-											waitingForm.append(watingPersonNum);
-
-											submitted = true;
-											waitingForm.submit();
-
-											//waitingForm.submit();
-										});
-
-					});
+	});
 </script>
 	
-	<!-- 예약/웨이팅 탭 -->
-	<script>
-		$(document).ready(
-				function() {
+<!-- 예약/웨이팅 탭 -->
+<script>
+	$(document).ready(function() {
 
-					// Variables
-					var clickedTab = $(".tabs > .active");
-					var tabWrapper = $(".tab__content");
-					var activeTab = tabWrapper.find(".active");
-					var activeTabHeight = activeTab.outerHeight();
+		// Variables
+		var clickedTab = $(".tabs > .active");
+		var tabWrapper = $(".tab__content");
+		var activeTab = tabWrapper.find(".active");
+		var activeTabHeight = activeTab.outerHeight();
 
-					// Show tab on page load
-					activeTab.show();
+		// Show tab on page load
+		activeTab.show();
 
-					// Set height of wrapper on page load
-					tabWrapper.height(activeTabHeight);
+		// Set height of wrapper on page load
+		tabWrapper.height(activeTabHeight);
 
-					$(".tabs > li").on(
-							"click",
-							function() {
+		$(".tabs > li").on("click", function() {
 
-								// Remove class from active tab
-								$(".tabs > li").removeClass("active");
+			// Remove class from active tab
+			$(".tabs > li").removeClass("active");
 
-								// Add class active to clicked tab
-								$(this).addClass("active");
+			// Add class active to clicked tab
+			$(this).addClass("active");
 
-								// Update clickedTab variable
-								clickedTab = $(".tabs .active");
+			// Update clickedTab variable
+			clickedTab = $(".tabs .active");
 
-								// fade out active tab
-								activeTab.fadeOut(250, function() {
+			// fade out active tab
+			activeTab.fadeOut(250, function() {
 
-									// Remove active class all tabs
-									$(".tab__content > li").removeClass(
-											"active");
+				// Remove active class all tabs
+				$(".tab__content > li").removeClass(
+						"active");
 
-									// Get index of clicked tab
-									var clickedTabIndex = clickedTab.index();
+				// Get index of clicked tab
+				var clickedTabIndex = clickedTab.index();
 
-									// Add class active to corresponding tab
-									$(".tab__content > li").eq(clickedTabIndex)
-											.addClass("active");
+				// Add class active to corresponding tab
+				$(".tab__content > li").eq(clickedTabIndex)
+						.addClass("active");
 
-									// update new active tab
-									activeTab = $(".tab__content > .active");
+				// update new active tab
+				activeTab = $(".tab__content > .active");
 
-									// Update variable
-									activeTabHeight = activeTab.outerHeight();
+				// Update variable
+				activeTabHeight = activeTab.outerHeight();
 
-									// Animate height of wrapper to new tab height
-									tabWrapper.stop().delay(50).animate({
-										height : activeTabHeight
-									}, 500, function() {
+				// Animate height of wrapper to new tab height
+				tabWrapper.stop().delay(50).animate({
+					height : activeTabHeight
+				}, 500, function() {
 
-										// Fade in active tab
-										activeTab.delay(50).fadeIn(250);
+					// Fade in active tab
+					activeTab.delay(50).fadeIn(250);
 
-									});
-								});
-							});
 				});
-	</script>
-	<!-- 핫딜  -->
-	<script>
-		$(document).ready(function() {
-			$("#htdlBtn").click(function() {
-				$("#htdl").slideToggle();
 			});
 		});
-	</script>
+	});
+</script>
+<!-- 핫딜  이벤트 -->
+<script>
+	$(document).ready(function() {
+		$("#htdlBtn").click(function() {
+			$("#htdl").slideToggle();
+		});
+	});
+</script>
 	
 	<!-- 지도 -->
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0e7b9cd1679ce3dedf526e66a6c1a860&libraries=services,clusterer,drawing"></script>

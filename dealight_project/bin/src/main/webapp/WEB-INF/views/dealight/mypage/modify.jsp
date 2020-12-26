@@ -27,6 +27,8 @@
                 <p>성별 : 여자<input type="radio" name="sex" value="W">남자<input type="radio" name="sex" value="M">  </p>
                 <p>프로필사진 : <input type = "text" name="photoSrc" id="photoSrc" value="<c:out value = "${user.photoSrc }"/>" >
                 <p> SNS연동 : <input type="radio" name="snsLginYn" value="Y">yes<input type="radio" name="snsLginYn" value="N">no  </p>
+                <p> 현재 패널티 상태 : <input  value="${user.pmStus}" readonly>
+                <p> 패널티 총 횟수 : <input value="${user.pmCnt}" readonly>
                 
                 <div>
                 <button type="submit" data-oper="modify">회원수정</button>

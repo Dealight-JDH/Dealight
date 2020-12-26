@@ -167,6 +167,10 @@
         .rsvd_i{
         	cursor: pointer;
         }
+        .rsvd_i.cur_htdl {
+        	border : 1px solid red;
+        }
+        
         .wait_wrapper{
             border: solid black 1px;
             position: absolute;
