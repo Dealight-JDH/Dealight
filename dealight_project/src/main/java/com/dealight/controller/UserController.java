@@ -32,6 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.AuthVO;
 import com.dealight.domain.Email;
+import com.dealight.domain.UserRequestDTO;
 import com.dealight.domain.UserVO;
 import com.dealight.service.MailService;
 import com.dealight.service.UserService;
@@ -300,9 +301,9 @@ public class UserController {
 
 	// 회원가입
 	@PostMapping("/register")
-	public String register(@Valid UserVO user, BindingResult result, HttpServletRequest request,
+	public String register(@Valid UserRequestDTO requestUser , BindingResult result, HttpServletRequest request,
 			 RedirectAttributes rttr) {
-		log.info("register: " + user);
+		log.info("register: " + requestUser);
 
 		if (result.hasErrors()) {
 			List<ObjectError> list = result.getAllErrors();
@@ -313,6 +314,8 @@ public class UserController {
 		//register.jsp로 리턴해도 이메일 인증 다시 받아야함...생각해보자
 			return "dealight/register";
 		}
+		
+		UserVO user = requestUser.toEntity();
 		//권한 부여
 		AuthVO auth = AuthVO.builder().userId(user.getUserId()).auth("ROLE_USER").build();
 		//암호화

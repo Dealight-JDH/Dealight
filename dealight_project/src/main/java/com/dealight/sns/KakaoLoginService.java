@@ -1,6 +1,7 @@
 package com.dealight.sns;
 
 import java.net.URI;
+import java.util.Date;
 
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpEntity;
@@ -41,6 +42,7 @@ public class KakaoLoginService {
 		String gender = String.valueOf(kakaoAccount.get("gender"));
 		String phoneNumber = String.valueOf(kakaoAccount.get("phone_number"));
 		String birthday = String.valueOf(kakaoAccount.get("birthday"));
+		
 		
 		SnsVO kakaoVO = SnsVO.builder()
 							.userId(email)

@@ -25,6 +25,11 @@ public class BStoreMapperTests {
 	@Setter(onMethod_ = @Autowired)
 	private BStoreMapper mapper;
 	
+	
+	@Test
+	public void testUpdateHtdlStus() {
+		mapper.updateHtdlStus(17l, "I");
+	}
 	@Test
 	public void testInsert() {
 		

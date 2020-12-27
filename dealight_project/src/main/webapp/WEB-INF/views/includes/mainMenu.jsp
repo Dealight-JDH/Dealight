@@ -23,6 +23,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
 
+
 .top {
 	overflow: hidden;
 	flex: 1;
@@ -274,8 +275,9 @@
             		<div class="account-dropdown-content">
 						<sec:authorize access="isAnonymous()">
 								<div class="account_cnts"><a href="/dealight/login">로그인</a></div>
-								<div class="account_cnts"><a href="/dealight/policies">회원가입</a></div>
-						</sec:authorize>	
+								<div class="account_cnts"><a href="/dealight/register">회원가입</a></div>
+						</sec:authorize>
+
 						<sec:authorize access="isAuthenticated()">
 							<sec:authorize access="hasRole('ROLE_USER')">
 								<div class="account_cnts"><a href="/dealight/mypage/reservation">예약내역</a></div> 

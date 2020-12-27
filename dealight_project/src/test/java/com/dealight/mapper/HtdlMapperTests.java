@@ -35,6 +35,16 @@ public class HtdlMapperTests {
 	@Autowired
 	private HtdlMapper mapper;
 	
+	@Test
+	public void testFindStusCdById() {
+		log.info(mapper.findStusCdById(208l));
+	}
+	@Test
+	public void testHtdlDtlsWithStore() {
+		HtdlVO vo = mapper.findHtdlWithStore(208l);
+		
+		log.info("=============vo=========="+ vo);
+	}
 	
 	@Test
 	public void testHtdlDtlsRslt() {
@@ -74,11 +84,11 @@ public class HtdlMapperTests {
 	public void testSearch() {
 		
 		HtdlCriteria hCri = new HtdlCriteria(1,30);
-		hCri.setType("B");
-		hCri.setKeyword("동대문");
+//		hCri.setType("B");
+		hCri.setKeyword("종로");
 		hCri.setStartTm("2020/11/27 13:00");
 		hCri.setEndTm("2020/11/27 14:00");
-		List<HtdlVO> list = mapper.getListWithPaging("A", hCri);
+		List<HtdlVO> list = mapper.getListWithPaging("I", hCri);
 		
 		list.forEach(vo -> log.info(vo));
 	}

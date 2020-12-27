@@ -68,17 +68,34 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         if (session != null) {
         	
         	session.setAttribute("userId", authentication.getName());
-        	log.info("session....................................user id : "+session.getAttribute("userId"));
+        	log.info("session.............user id : "+session.getAttribute("userId"));
+        	
             String redirectUrl = (String) session.getAttribute("prevPage");
+            
             log.warn("==========redirectUrl: " + redirectUrl);
-            System.out.println(redirectUrl);
+            log.info(redirectUrl);
+            
+            //관리자 리다이렉트
+    		if(roleNames.contains("ROLE_ADMIN")) {
+    			response.sendRedirect("/dealight/admin/main");
+    			return;
+    		}
+    		
+    		//사업자 리다이렉트
+    		if(roleNames.contains("ROLE_MEMBER")) {
+    			response.sendRedirect("/dealight/business/");
+    			return;
+    		}
+    		
             if (redirectUrl != null) {
                 session.removeAttribute("prevPage");
                 log.warn("========auth success: " + redirectUrl);
                 
-                if(redirectUrl.contains("/dealight/register"))
+    
+                if(redirectUrl.contains("/dealight/register") || redirectUrl.contains("/dealight/login"))
                 	redirectUrl = super.getDefaultTargetUrl();
                 getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+                
             } else {
                 super.onAuthenticationSuccess(request, response, authentication);
             }

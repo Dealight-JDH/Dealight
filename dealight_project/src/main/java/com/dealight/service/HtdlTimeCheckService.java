@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.HtdlRsltVO;
 import com.dealight.domain.HtdlVO;
+import com.dealight.mapper.BStoreMapper;
 import com.dealight.mapper.HtdlMapper;
 
 import lombok.extern.log4j.Log4j;
@@ -30,6 +32,8 @@ public class HtdlTimeCheckService {
 
 	@Autowired
 	private HtdlMapper htdlMapper;
+	@Autowired
+	private BStoreMapper bStoreMapper;
 	
 	@Autowired
 	private HtdlService service;
@@ -37,54 +41,54 @@ public class HtdlTimeCheckService {
 	private List<HtdlVO> lists = null;
 	ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(3);
 	
-//	@PostConstruct
-//	public void postConstruct() throws ParseException {
-//		
-//		//서버 구동시 한번만 조회하여 데이터 가져오기
-//		getList();
-//		log.info(Thread.currentThread().getName());
-//		log.info("------postConstruct");
-//
-//		//스케쥴러 실행
-//		exec.scheduleAtFixedRate(new Runnable() {
-//			
-//			@Override
-//			@Scheduled(fixedDelay = 3000)
-//			public void run() {
-//				// TODO Auto-generated method stub
-//				try {
-//					log.info("------check======");
-//					//서비스 시작
-//					service(lists);
-//					log.info("------check"+ Thread.currentThread().getName()+"---------");
-//				}catch(Exception e){
-//					e.printStackTrace();
-//					exec.shutdown();
-//				}
-//			}
-//			
-//		}, 0, 3, TimeUnit.SECONDS); 
-//	}
-//	
-//	@PreDestroy
-//	public void preDestroy() {
-//		log.info("============predestroy");
-//		try {
-//			exec.shutdown();
-//			if(!exec.awaitTermination(1, TimeUnit.SECONDS)) {
-//				log.info("아직 처리중인 작업 존재");
-//				exec.shutdownNow();
-//				log.info("작업 강제 종료");
-//				
-//			}
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			exec.shutdownNow();
-//			
-//		}
-//		log.info("스케줄러 종료");
-//	}
+	@PostConstruct
+	public void postConstruct() throws ParseException {
+		
+		//서버 구동시 한번만 조회하여 데이터 가져오기
+		getList();
+		log.info(Thread.currentThread().getName());
+		log.info("------postConstruct");
+
+		//스케쥴러 실행
+		exec.scheduleAtFixedRate(new Runnable() {
+			
+			@Override
+			@Scheduled(fixedDelay = 3000)
+			public void run() {
+				// TODO Auto-generated method stub
+				try {
+					log.info("------check======");
+					//서비스 시작
+					service(lists);
+					log.info("------check"+ Thread.currentThread().getName()+"---------");
+				}catch(Exception e){
+					e.printStackTrace();
+					exec.shutdown();
+				}
+			}
+			
+		}, 0, 3, TimeUnit.SECONDS); 
+	}
+	
+	@PreDestroy
+	public void preDestroy() {
+		log.info("============predestroy");
+		try {
+			exec.shutdown();
+			if(!exec.awaitTermination(1, TimeUnit.SECONDS)) {
+				log.info("아직 처리중인 작업 존재");
+				exec.shutdownNow();
+				log.info("작업 강제 종료");
+				
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			exec.shutdownNow();
+			
+		}
+		log.info("스케줄러 종료");
+	}
 	
 	//핫딜을 등록할떄마다 리스트에 추가
 	public void addHtdl(HtdlVO vo) {
@@ -155,6 +159,10 @@ public class HtdlTimeCheckService {
 				if(isStusCdCheck(lists.get(i).getStusCd(), "P")) {						
 					lists.get(i).setStusCd("P");
 					htdlMapper.update(lists.get(i));
+					updateStoreHtdlStus(lists.get(i).getStoreId(), "P");
+//					int update = bStoreMapper.updateHtdlStus(lists.get(i).getStoreId(), "P");
+//					if(update == 1)
+//						log.info("매장 핫딜 상태 변경");
 					log.info("변화================="+lists.get(i).getHtdlId()+"번 핫딜 핫딜 예정");
 				}
 				
@@ -168,6 +176,8 @@ public class HtdlTimeCheckService {
 					
 					lists.get(i).setStusCd("A");
 					htdlMapper.update(lists.get(i));
+					updateStoreHtdlStus(lists.get(i).getStoreId(), "A");
+//					bStoreMapper.updateHtdlStus(lists.get(i).getStoreId(), "A");
 					log.info("변화================="+lists.get(i).getHtdlId()+"번 핫딜 진행 시작!!");
 						
 				}
@@ -177,6 +187,8 @@ public class HtdlTimeCheckService {
 					if(isStusCdCheck(lists.get(i).getStusCd(), "I")) {
 						lists.get(i).setStusCd("I");
 						htdlMapper.update(lists.get(i));
+						updateStoreHtdlStus(lists.get(i).getStoreId(), "I");
+//						bStoreMapper.updateHtdlStus(lists.get(i).getStoreId(), "I");
 						log.info("변화==========" +lists.get(i).getHtdlId()+"번 핫딜 안원 마감");
 						registerHtdlRsltVO(lists.get(i), htdlMapper, startTmList.get(i), sysdate);
 					}
@@ -188,6 +200,8 @@ public class HtdlTimeCheckService {
 				if(isStusCdCheck(lists.get(i).getStusCd(), "I")) {
 					lists.get(i).setStusCd("I");
 					htdlMapper.update(lists.get(i));
+					updateStoreHtdlStus(lists.get(i).getStoreId(), "I");
+//					bStoreMapper.updateHtdlStus(lists.get(i).getStoreId(), "I");
 					log.info("변화================="+lists.get(i).getHtdlId()+"번 핫딜 시간 종료");
 					registerHtdlRsltVO(lists.get(i), htdlMapper, startTmList.get(i), endTmList.get(i));
 				}
@@ -205,6 +219,19 @@ public class HtdlTimeCheckService {
 	
 }
 	
+	
+	//매장 핫딜 상태 변경
+	public void updateStoreHtdlStus(Long storeId, String stusCd) {
+		
+		int update = bStoreMapper.updateHtdlStus(storeId, stusCd);
+		if(update == 1) {
+			
+			log.info("매장 핫딜 상태 변경");
+			return;
+		}
+		
+		log.info("매장 핫딜 상태 실패");
+	}
 	//핫딜 상태 변화
 	public boolean isStusCdCheck(String currStusCd, String eventStusCd) {
 		return !(currStusCd.equals(eventStusCd));
