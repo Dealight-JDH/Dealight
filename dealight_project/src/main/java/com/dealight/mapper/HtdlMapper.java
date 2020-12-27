@@ -80,6 +80,8 @@ public interface HtdlMapper {
 	// update
 	public int update(HtdlVO htdl);
 	
+	public List<HtdlVO> getMainHtdlList();
+	
 	List<HtdlVO> findHtdlWithRsltByStoreId(@Param("storeId") Long storeId, @Param("cri")Criteria cri);
 	
 	int getHtdlTotal(@Param("storeId") Long storeId, @Param("cri")Criteria cri);

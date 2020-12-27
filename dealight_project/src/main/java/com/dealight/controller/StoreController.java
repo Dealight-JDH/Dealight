@@ -66,12 +66,14 @@ public class StoreController {
 		HtdlVO dealVO = htdlService.readHtdlDtls(htdlId);
 		return new ResponseEntity<>(dealVO, HttpStatus.OK);
 	}
-	
-//	@GetMapping("/store/{storeId}")
-//	public String storeGet(@PathVariable("storeId") long storeId, Model model) {
-//		
-//		
-//		return "/dealight/store/bstore";
+//	@GetMapping(value = "/revws/pages/{storeId}/{page}", produces = {
+//			MediaType.APPLICATION_JSON_UTF8_VALUE,
+//			MediaType.APPLICATION_XML_VALUE
+//	})
+//	public ResponseEntity<HtdlVO> getStoreHtdl(@PathVariable Long htdlId) {
+//		log.info("get...");
+//		HtdlVO dealVO = htdlService.readHtdlDtls(htdlId);
+//		return new ResponseEntity<>(dealVO, HttpStatus.OK);
 //	}
 	
 	@GetMapping("/store/{storeId}")

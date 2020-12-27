@@ -14,7 +14,6 @@ public class SearchDTO {
 	private int pNum;
 	private String time;
 	private String region;
-	private String hashTag;
 	private String storeNm;
 
 }

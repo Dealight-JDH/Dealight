@@ -74,6 +74,8 @@ public interface HtdlService {
 	// htdl_stus_cd = 'A'
 	List<HtdlVO> readActStoreHtdlList(long storeId);
 	
+	List<HtdlVO> readMainHtdlList();
+
 	List<HtdlVO> findHtdlWithRsltByStoreId(Long storeId, Criteria cri);
 	
 	int getHtdlTotal(Long storeId, Criteria cri);

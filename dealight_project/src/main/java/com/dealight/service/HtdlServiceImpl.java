@@ -256,6 +256,11 @@ public class HtdlServiceImpl implements HtdlService {
 	}
 
 	@Override
+	public List<HtdlVO> readMainHtdlList(){
+		return htdlMapper.getMainHtdlList();
+	}
+	
+	@Override
 	public List<HtdlVO> findHtdlWithRsltByStoreId(Long storeId, Criteria cri) {
 		return htdlMapper.findHtdlWithRsltByStoreId(storeId, cri);
 	}

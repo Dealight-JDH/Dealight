@@ -266,7 +266,7 @@
         
         <nav class="main_nav_right">
             <div><c:if test="${userId != null}"> <span id="nav_user_id">${userId }님</span></c:if></div>
-            <div class="nav_reg_brno">매장 등록</div>
+            <div class="nav_reg_brno"><a href="/dealight/mypage/bizauth/list">매장 등록</a></div>
             <div class="account_btn">
             	<div class="account_icon_box">
             		<div class="account_menu"><i class="fas fa-bars"></i></div>

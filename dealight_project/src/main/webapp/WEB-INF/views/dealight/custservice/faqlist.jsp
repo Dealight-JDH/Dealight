@@ -8,20 +8,20 @@
 <head>
 <meta charset="UTF-8">
 <title>FAQ</title>
+<link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 <link rel="stylesheet" href="/resources/css/custservice.css" type ="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-
- <main id="main-container" class="flex-column">
-       <%@include file="/WEB-INF/views/includes/custservicemenu.jsp" %>
-
+<main>
+        <div class="mypage_wrapper">
+<%@include file="/WEB-INF/views/includes/custserviceSidebar.jsp" %>
+        
         <div class="box-container flex-column">
-            <div class="board-header flex-column">
-                <div style="margin-left: 30px;">
-                    FAQ
+            <div class="mypage_main_header">
+                    <div class="main_header_title">FAQ</div>
+                    <div class="main_header_subtitle">자주묻는 질문</div>
                 </div>
-            </div>
             <div class="board-body flex-column">
                 <form action="/dealight/custservice/" class="search" id="searchForm">
                     <label>
@@ -111,10 +111,11 @@
 					<input type="hidden" name="filterType" value="<c:out value='${pageDTO.cri.filterType }'/>">
 					<input type="hidden" name="keyword" value="<c:out value='${pageDTO.cri.keyword }'/>">
 				</form>
-            </div>
-            
-        </div>
+				</div>
+				</div>
+				</div>
     </main>
+ 
 
 
 </body>
