@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.dealight.domain.Criteria;
 import com.dealight.domain.LikeVO;
+import com.dealight.domain.StoreVO;
 import com.dealight.mapper.LikeMapper;
 import com.dealight.mapper.StoreEvalMapper;
 
@@ -67,6 +68,12 @@ public class LikeServiceImpl implements LikeService {
 	public int getLikeTotalByUserId(String userId, Criteria cri) {
 		
 		return likeMapper.getLikeTotal(userId, cri);
+	}
+
+	@Override
+	public List<StoreVO> findStoreListWithPagingByUserId(String userId, Criteria cri) {
+		
+		return likeMapper.findStoreListWithPagingByUserId(userId, cri);
 	}
 
 }

@@ -79,7 +79,9 @@
 					</if>
 		                and s.store_id = l.store_id 
 		                and s.store_id = e.store_id 
+		            <if test="sortPriority != '' or sortType !=''">
 		           	order by 
+		            </if>
 		           			<!-- 우선순위 -->
 							 <choose>
 							 	<when test="sortPriority == 'H'.toString()">

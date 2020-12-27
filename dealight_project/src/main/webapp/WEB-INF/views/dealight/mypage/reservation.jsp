@@ -8,61 +8,102 @@
 <head>
 <meta charset="UTF-8">
 <title>예약 내역</title>
-<link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
 <script src="/resources/js/Rater.js"></script>
+<link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 </head>
 <body>
-    <main class="mypage_wrapper">
+    <main>
+        <div class="mypage_wrapper">
         <%@include file="/WEB-INF/views/includes/mypageSidebar.jsp" %>
-        <div class="mypage_content">
-            <div class="content_head">
-                <h2>예약 내역<span>지난 예약 내역을 가져옵니다.</span></h2>
+        
+        <div class="mypage_right">
+                <div class="mypage_main_header">
+                    <div class="main_header_title">예약 내역</div>
+                    <div class="main_header_subtitle">회원님의 지난 예약 내역을 가져옵니다.</div>
+                </div>
+                <div class="mypage_main_content">
+                    <div class="mypage_main_sub">
+                        <div>
+                            <span class="main_tit">현재 예약횟수</span>
+                            <span class="main_value">${curCnt} 회</span>
+                        </div>
+                        <div>
+                            <span class="main_tit">지난 예약 횟수</span>
+                            <span class="main_value">${last} 회</span>
+                        </div>
+                        <div>
+                            <span class="main_tit">총 예약 횟수</span>
+                            <span class="main_value">${total} 회</span>
+                        </div>
+                    </div>
+                    <div class="mypage_main_board">
+	                    <c:if test="${empty rsvdList}">
+							<h2>예약한 이력이 없습니다.</h2>
+						</c:if>
+						
+						<c:if test="${not empty rsvdList}">
+							<c:forEach items="${rsvdList}" var="rsvd">
+	                        <div class="rsvd_wrapper">
+	                            <div class="css_rsvd_time">
+	                                <span>${rsvd.time }</span>
+	                            </div>
+	                            <div class="css_rsvd_box">
+	                                <div class="rsvd_tit">
+	                                    <div>
+	                                    	예약번호 : <span class="rsvd_id">${rsvd.rsvdId}</span>
+	                                    	<span style='display:none;' class="revw_stus">${rsvd.revwStus}</span>
+	                                    	<span style='display:none;' class="store_id">${rsvd.storeId}</span>
+	                                    </div>
+	                                    <div><button class="btn_rsvd_dtls"><i class="fas fa-angle-right"></i></button></div>
+	                                </div>
+	                                <div class="rsvd_cnts">
+	                                    <div class="rsvd_cnts_wrapper">
+	                                        <div class="rsvd_cnts_img">
+	                                        <img src='/display?fileName=${rsvd.storeRepImg}'>
+	                                        
+	                                        </div>
+	                                        <div class="cnts">
+	                                            <div>
+	                                                <span class="rsvd_cnts_tit">메뉴목록</span>
+	                                                <c:forEach items="${rsvd.rsvdDtlsList}" var="rsvdDtls">
+														<span class="rsvd_cnts_val">${rsvdDtls.menuNm}</span>
+													</c:forEach>
+	                                            </div>
+	                                            <div>
+	                                                <span class="rsvd_cnts_tit">결제금액</span>
+	                                                <span class="rsvd_cnts_val">${rsvd.totAmt}원</span>
+	                                            </div>
+	                                            <div>
+	                                                <span class="rsvd_cnts_tit">예약상태</span>
+	                                                <c:if test="${rsvd.stusCd eq 'C'}">
+	                                                	<span class="rsvd_cnts_val">현재예약</span>
+	                                                </c:if>
+	                                                <c:if test="${rsvd.stusCd eq 'L'}">
+	                                                	<span class="rsvd_cnts_val">지난예약</span>
+	                                                </c:if>
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                    <div class="rsvd_btn_box">
+	                                        <button class="btn_store_info">매장 정보 보기</button>
+	                                        <c:if test="${rsvd.revwStus > 0}"> <button class="btn_revw_info">리뷰 보기</button></c:if>
+											<c:if test="${rsvd.revwStus == 0}"><button class="btn_revw_reg">리뷰 쓰기</button></c:if>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        </c:forEach>
+                        </c:if>
+                    </div>
+			<!-- end pagination -->
+                </div>
             </div>
-            <div>
-                	<h2>회원 아이디 : ${userId }</h2>
-					<h2>현재 예약 횟수 : ${curCnt}회</h2>
-					<h2>총 지난 예약 횟수 : ${last}회</h2>
-					<h2>총 예약 횟수 : ${total}회</h2>
-            </div>
-            <div class="content_main">
-				<div id="rsvdWrapper">
-					<c:if test="${empty rsvdList}">
-						<h2>예약한 이력이 없습니다.</h2>
-					</c:if>
-					
-					<c:if test="${not empty rsvdList}">
-					<h2>예약 리스트</h2>
-						<c:forEach items="${rsvdList}" var="rsvd">
-							<div>
-								====================================
-								<h5>예약 번호 : <span class="rsvd_id">${rsvd.rsvdId}</span></h5>
-								<h5>매장번호 : <span class="store_id">${rsvd.storeId}</span></h5></br>
-								날짜 : ${rsvd.time } </br>
-								인원 : ${rsvd.pnum }</br>
-								메뉴 : 
-								<c:forEach items="${rsvd.rsvdDtlsList}" var="rsvdDtls">
-								${rsvdDtls.menuNm}
-								</c:forEach>
-								</br>
-								결제금액 : ${rsvd.totAmt}</br>
-								결제수량 : ${rsvd.totQty}</br>
-								현재 예약 상태 : ${rsvd.stusCd}</br>
-								리뷰 상태 : <span class="revw_stus">${rsvd.revwStus }</span></br>
-								<button class="btn_rsvd_dtls">예약 상세 보기</button>
-								<button class="btn_store_info">매장 정보 보기</button>
-								<c:if test="${rsvd.revwStus > 0}"> <button class="btn_revw_info">리뷰 보기</button></c:if>
-								<c:if test="${rsvd.revwStus == 0}"><button class="btn_revw_reg">리뷰 쓰기</button></c:if>
-							</div>
-						</c:forEach>
-					</c:if>
-				</div>
-            </div>
-            <!-- pagination -->
-			<div class='pull-right'>
+        </div> <!-- end mypage wrapper -->
+                    <!-- pagination -->
+			<div class='pull-right panel-footer'>
 				<ul class='pagination'>
-			
 					<c:if test="${pageMaker.prev}">
 						<li class='paginate_button previous'>
 							<a href="${pageMaker.startPage - 1}">Previous</a>
@@ -86,20 +127,21 @@
 				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 				<input type='hidden' name='amount' value = '${pageMaker.cri.amount}'>
 			</form>
-			<!-- end pagination -->
-        </div>
     </main>
-    
-    <div id="myModal" class="modal">
+            
+            	<!-- The Modal -->
+	<div id="myModal" class="modal">
 		<!-- Modal content -->
 		<div class="modal-content">
-			<span class="close">&times;</span>
+			<span class="close_modal"><i class="fas fa-times"></i></span>
+	        <div class="modal_header"></div>
 			<ul class="rsvdDtls"></ul>
 			<ul class="userRsvdList"></ul>
 			<ul class="revw_regForm"></ul>
-			<ul class="store_info"></ul>
-			<ul class="revwInfo"></ul>
-			<div id="map" style="width:500px;height:400px;"></div>
+			<div class="modal_wrapper_revw_reg content_div"></div>
+			<div class='modal_wrapper_revw_info content_div'></div>
+			<div class="modal_wrapper_store_info content_div"></div>
+			<div class="modal_wrapper_rsvdDtls content_div"></div>
 		</div>
 	</div>
 
@@ -130,12 +172,19 @@ window.onload = function () {
 	    rsvdDtlsUL = $(".rsvdDtls"),
 	    userId = '${userId}',
 	    revwRegFormUL = $(".revw_regForm"),
-	    storeInfoUL = $(".store_info"),
 	    btn_show_board = $("#btn_show_board"),
-	    revwInfoUL = $(".revwInfo")
+	    revwInfoDiv = $(".modal_wrapper_revw_info"),
+	    storeInfoDiv = $(".modal_wrapper_store_info"),
+        rsvdDtlsDiv = $(".modal_wrapper_rsvdDtls"),
+        rsvdDtlsInfoDiv = $("#modal_rsvd_dtls"),
+        revwRegDiv = $(".modal_wrapper_revw_reg"),
+        pageNum = ${pageMaker.cri.pageNum},
+        amount = ${pageMaker.cri.amount}
 	;
 	    
 	let container,options,map,mapContainer,mapOption,markerPosition,marker;
+	
+	
 	
 	/* 페이징 로직*/
 	let actionForm = $("#actionForm");
@@ -285,23 +334,55 @@ window.onload = function () {
     		let strRevw = "";
     		if(!revw) return;
     		
-    		strRevw += "<h1>리뷰 보기</h1>";
-    		strRevw += "<h5>리뷰 번호 : "+revw.revwId+"</h5>";
-    		strRevw += "<h5>매장 번호 : "+revw.storeId+"</h5>";
-    		strRevw += "<h5>매장 이름 : "+revw.storeNm+"</h5>";
-    		strRevw += "<h5>예약 번호 : "+revw.rsvdId+"</h5>";
-    		strRevw += "<h5>회원 아이디 : "+revw.userId+"</h5>";
-    		strRevw += "<h5>리뷰 내용 : "+revw.cnts+"</h5>";
-    		strRevw += "<h5>평점 : "+revw.rating+"</h5>";
+    		strRevw += "<div class='modal_tit'>";
+    		strRevw += "<span>리뷰 보기</span>";
+    		strRevw += "</div>";
+    		strRevw += "<div class='modal_top_revw'>";
+    		strRevw += "<div class='revw_reg_wrapper'>";
+    		strRevw += "<div class='revw_store_info'>";
+    		strRevw += "<div class='revw_store_name'>"+revw.storeNm+"</div>";
+    		strRevw += "<div class='revw_rsvd_id'>";
+    		strRevw += "<span>리뷰 등록 날짜 : "+revw.regdate+"</span>";
+    		strRevw += "</div>";
+    		strRevw += "</div>";
+    		strRevw += "<div class='revw_info_wrapper' action='/dealight/mypage/review/register' method='post'>";
+    		strRevw += "<div class='revw_rate_wrapper'>";
     		strRevw += "<div class='rating' data-rate-value='"+revw.rating+"'></div>";
-    		strRevw += "<h5>답글 내용 : "+revw.replyCnts+"</h5>";
-    		strRevw += "<h5>답글 등록 날짜 : "+revw.replyRegDt+"</h5>";
-
-    		strRevw += "<h5>리뷰 사진</h5>";
+    		strRevw += "</div>";
+    		strRevw += "<div class='revw_cnts_textarea'>";
+    		strRevw += "<textarea cols='30' row='20' name='cnts' readonly>"+revw.cnts+"</textarea>";
+    		strRevw += "</div>";
+    		strRevw += "<input name='rating' id='rate_input' hidden>";
+    		if(revw.imgs){    			
+    		strRevw += "<div class='revw_img_box'>";
+    		strRevw += "<div class='revw_img_wrapper'>";
     		for(let i = 0; i < revw.imgs.length; i++)
-    			if(revw.imgs[i].fileName !== null) strRevw += "<img src='/display?fileName="+encodeURIComponent(revw.imgs[i].uploadPath+"/s_"+revw.imgs[i].uuid+"_"+revw.imgs[i].fileName)+"'>";
+    			if(revw.imgs[i].fileName !== null) 
+    				strRevw += "<img src='/display?fileName="+encodeURIComponent(revw.imgs[i].uploadPath+"/s_"+revw.imgs[i].uuid+"_"+revw.imgs[i].fileName)+"'>";
+    		strRevw += "</div>";
+    		strRevw += "</div>";
+    		}
+    		if(revw.replyCnts){
+    			
+    		strRevw += "<div class='reply_wrapper'>";
+    		strRevw += "<div class='reply_item'>";
+    		strRevw += "<div class='reply_item_icon'>";
+    		strRevw += "<i class='fas fa-reply'></i>";
+    		strRevw += "<div class='reply_item_name'>"+revw.storeNm+"</div>";
+    		strRevw += "<div class='reply_item_date'>"+revw.replyRegDt+"</div>";
+    		strRevw += "</div>";
+    		strRevw += "<div class='reply_cnts_wrapper'>";
+    		strRevw += "<div class='reply_cnts'>";
+    		strRevw += revw.replyCnts;
+    		strRevw += "</div>";
+    		strRevw += "</div>";
+    		strRevw += "</div>";
+    		}
+    		strRevw += "</div>";
+    		strRevw += "</div>";
     		
-    		revwInfoUL.html(strRevw);
+    		revwInfoDiv.css("display","block");
+    		revwInfoDiv.html(strRevw);
 	        /* Rater.js 로직*/
 	        $(".rating").rate({
 	            max_value: 5,
@@ -326,58 +407,41 @@ window.onload = function () {
     		if(!store)
     			return;
     		
-    		strStoreInfo += "<h1>매장 정보</h1>";
+    		strStoreInfo += "<div class='modal_tit'>";
+    		strStoreInfo += "<span>매장 정보</span>";
+    		strStoreInfo += "</div>";
+    		
+    		strStoreInfo += "<div class='modal_top_store'>";
+    		strStoreInfo += "<div class='modal_top_left'>";
+    		strStoreInfo += "<div class='modal_top_left'>";
     		strStoreInfo += "<img src='/display?fileName="+store.bstore.repImg+"'>";
-    		if(!store.like) strStoreInfo += "<button class='btn_like_pick'>찜 하기</button>";
-    		if(store.like) strStoreInfo += "<button class='btn_like_cancel'>찜 취소하기</button>";
-    		strStoreInfo += "<li>매장 번호 : <span class='store_info_id'>"+store.storeId+"</span></l1>";
-    		strStoreInfo += "<li>매장 이름 : "+store.storeNm+"</l1>";
-    		strStoreInfo += "<li>매장 번호 : "+store.telno+"</l1>";
-    		strStoreInfo += "<li>매장 상태 : "+store.clsCd+"</l1>";
-    		strStoreInfo += "<li>매장 관리자 아이디 : "+store.bstore.buserId+"</l1>";
-    		strStoreInfo += "<li>매장 분점 : "+store.bstore.brch+"</l1>";
-    		strStoreInfo += "<li>매장 대표 메뉴 : "+store.bstore.repMenu+"</l1>";
-    		strStoreInfo += "<li>매장 착석 상태 : "+store.bstore.seatStusCd+"</l1>";
-    		strStoreInfo += "<li>매장 영업 시작 시간 : "+store.bstore.openTm+"</l1>";
-    		strStoreInfo += "<li>매장 영업 마감 시간 : "+store.bstore.closeTm+"</l1>";
-    		strStoreInfo += "<li>매장 브레이크타임 시작 시간 : "+store.bstore.breakSttm+"</l1>";
-    		strStoreInfo += "<li>매장 브레이크타임 종료 시간 : "+store.bstore.breakEntm+"</l1>";
-    		strStoreInfo += "<li>매장 라스트오더 시간 : "+store.bstore.lastOrdTm+"</l1>";
-    		strStoreInfo += "<li>매장 1인 테이블 수 : "+store.bstore.n1SeatNo+"</l1>";
-    		strStoreInfo += "<li>매장 2인 테이블 수 : "+store.bstore.n2SeatNo+"</l1>";
-    		strStoreInfo += "<li>매장 4인 테이블 수 : "+store.bstore.n4SeatNo+"</l1>";
-    		strStoreInfo += "<li>매장 소개 : "+store.bstore.storeIntro+"</l1>";
-    		strStoreInfo += "<li>매장 평균 식사 시간 : "+store.bstore.avgMealTm+"</l1>";
-    		strStoreInfo += "<li>매장 휴무일 : "+store.bstore.hldy+"</l1>";
-    		strStoreInfo += "<li>매장 수용 가능 인원 : "+store.bstore.acmPnum+"</l1>";
-    		strStoreInfo += "<li>매장 좋아요 수 : "+store.eval.likeTotNum+"</l1>";
-    		strStoreInfo += "<li>매장 리뷰 수 : "+store.eval.revwTotNum+"</l1>";
-    		strStoreInfo += "<li>매장 평균 평점 : "+store.eval.avgRating+"</l1>";
-    		strStoreInfo += "<div class='rating' data-rate-value='"+store.eval.avgRating+"'></div>";
-    		//strStoreInfo += "<li>좋아요 여뷰 : "+store.like+"</l1>";
-    		strStoreInfo += "<li>매장 주소 : "+store.loc.addr+"</l1><br>";
-
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "<div class='modal_top_right'>";
+    		strStoreInfo += "<div class='store_info_name'>"+store.storeNm+"</div>";
+    		strStoreInfo += "<div class='store_info_brch'>"+store.bstore.brch+"</div>";
+    		strStoreInfo += "<div class='store_info_telno'>"+store.telno+"</div>";
+    		strStoreInfo += "<div class='store_info_rating'><div class='rating' data-rate-value='"+store.eval.avgRating+"'></div></div>";
+    		strStoreInfo += "<div class='store_info_eval'>";
+    		if(store.like) strStoreInfo += "<div class='store_info_tot_like btn_like_cancel'><i class='fas fa-heart'></i> "+store.eval.likeTotNum+"</div>";
+    		else if (!store.like) strStoreInfo += "<div class='store_info_tot_like btn_like_pick'><i class='far fa-heart'></i> "+store.eval.likeTotNum+"</div>";
+    		strStoreInfo += "<div class='store_info_tot_revw'><i class='fas fa-pencil-alt'></i> "+store.eval.revwTotNum+"</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "<div class='store_info_tm'>";
+    		strStoreInfo += "<div class='store_info_biz_tm'>영업 시간 : "+store.bstore.openTm+" - "+store.bstore.closeTm+"</div>";
+    		strStoreInfo += "<div class='store_info_break_tm'>브레이크 타임 : "+store.bstore.breakSttm+" - "+store.bstore.breakEntm+"</div>";
+    		strStoreInfo += "<div class='store_info_break_tm'>라스트오더 : "+store.bstore.lastOrdTm+"</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "<div class='store_info_detail'>";
+    		strStoreInfo += "<i class='fas fa-angle-right'></i>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "<span style='display:none;' class='store_info_id'>"+store.storeId+"</span>";
     		
-    		modal.find("#map").css("display", "block");
     		
-    		container = document.getElementById('map');
-    		options = {
-    					center : new kakao.maps.LatLng(store.loc.lat, store.loc.lng),
-    					level : 3
-    				};
-    		map = new kakao.maps.Map(container, options);
-    		mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-    		mapOption = { 
-    		    center: new kakao.maps.LatLng(store.loc.lat, store.loc.lng), // 지도의 중심좌표
-    		    level: 3 // 지도의 확대 레벨
-    		};
-    		markerPosition  = new kakao.maps.LatLng(store.loc.lat, store.loc.lng);
-    		marker = new kakao.maps.Marker({
-    			position: markerPosition
-    		});
-    		marker.setMap(map);
-    		
-    		storeInfoUL.html(strStoreInfo);
+    		storeInfoDiv.css("display","flex");
+    		storeInfoDiv.html(strStoreInfo);
     		
     		/* Rater.js 로직*/
 	        $(".rating").rate({
@@ -389,89 +453,137 @@ window.onload = function () {
 	            readonly: true,
 	        });
     		
+    		$(".store_info_detail").on("click", e => window.open("/dealight/store/"+store.storeId))
     	    $(".btn_like_pick").on("click",likeAddHandler);
     	    $(".btn_like_cancel").on("click",likeRemoveHandler);
     		
     	});
     	
     };
+    function showUserRsvdList(storeId,userId,selRsvdId,callback){
+    	
+    	getUserRsvdList({storeId:storeId,userId:userId}, function(userRsvdList){
+    		
+    		let strUserRsvdList = "";
+    		if(!userRsvdList)
+    			return;
+    		
+    		strUserRsvdList += "<div class='modal_top rsvdDtls' id='modal_rsvd_dtls'>";
+    		
+    		strUserRsvdList += "<div class='rsvd_top_wrapper'>";
+    		strUserRsvdList += "</div>";
+    		strUserRsvdList += "<div class='rsvd_mid_wrapper'>";
+    		strUserRsvdList += "</div>";
+
+    		strUserRsvdList += "<div class='rsvd_bot_wrapper'>";
+    		strUserRsvdList += "<div class='rsvd_history_tit'>";
+    		strUserRsvdList += "매장 방문 히스토리";
+    		strUserRsvdList += "</div>";
+    		userRsvdList.forEach(rsvd => {
+	    		strUserRsvdList += "<div class='rsvd_history'>";
+	    		strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+	    		strUserRsvdList += "<div class='info'>";
+	    		strUserRsvdList += "<div>예약 번호</div>";
+	    		strUserRsvdList += "<div>"+rsvd.rsvdId+"</div>";
+	    		strUserRsvdList += "</div>";
+	    		strUserRsvdList += "<div class='info'>";
+	    		strUserRsvdList += "<div>예약 인원</div>";
+	    		strUserRsvdList += "<div>"+ rsvd.pnum + "</div>";
+	    		strUserRsvdList += "</div>";
+	    		strUserRsvdList += "<div class='info'>";
+	    		strUserRsvdList += "<div>예약 시간</div>";
+	    		strUserRsvdList += "<div>"+ rsvd.time + "</div>";
+	    		strUserRsvdList += "</div>";
+	    		strUserRsvdList += "<div class='info'>";
+	    		strUserRsvdList += "<div>예약 총 금액</div>";
+	    		strUserRsvdList += "<div>"+ rsvd.totAmt + "</div>";
+	    		strUserRsvdList += "</div>";
+	    		strUserRsvdList += "<div class='info'>";
+	    		strUserRsvdList += "<div>예약 총 수량</div>";
+	    		strUserRsvdList += "<div>"+ rsvd.totQty + "</div>";
+	    		strUserRsvdList += "</div>";
+	    		strUserRsvdList += "</div>";
+    		});
+    		strUserRsvdList += "</div>";
+    		
+
+
+    		rsvdDtlsDiv.css("display","flex");
+    		rsvdDtlsDiv.html(strUserRsvdList);
+    		console.log("=======================");
+    		console.log("user history complete");
+    		console.log("sel rsvd id : " + selRsvdId);
+    		showRsvdDtls(selRsvdId);
+    		
+    	})
+    };
+    
     /*
-	유저의 예약 히스토리를 보여준다.
-	*/
-	let showUserRsvdList = function (storeId,userId,selRsvdId){
-		
-		getUserRsvdList({storeId:storeId,userId:userId}, function(userRsvdList){
+    	예약 상세를 보여준다.
+    
+    */
+    function showRsvdDtls(rsvdId){
+    	
+    	getRsvdDtls({rsvdId:rsvdId}, function(rsvd){
+    		
+    		console.log("rsvd id : "+rsvdId)
+    		
+			let strRsvdDtlsTop = "";
 			
-			let strUserRsvdList = "";
-			if(!userRsvdList)
-				return;
-			
-			strUserRsvdList += "<h1>예약 히스토리</h1>";
-			userRsvdList.forEach(rsvd => {
-				strUserRsvdList += "========================================";
-				strUserRsvdList += "<li>예약 번호 : "+rsvd.rsvdId+"</li>"; 
-	            strUserRsvdList += "<li>매장번호 : "+ rsvd.storeId + "</li>";
-	            strUserRsvdList += "<li>회원 아이디 : "+ rsvd.userId + "</li>";
-	            strUserRsvdList += "<li>핫딜 번호 :"+ rsvd.htdlId + "</li>";
-	            strUserRsvdList += "<li>승인 번호 : "+ rsvd.aprvNo + "</li>";
-	            strUserRsvdList += "<li>예약 인원 : "+ rsvd.pnum + "</li>";
-	            strUserRsvdList += "<li>예약 시간 : "+ rsvd.time + "</li>";
-	            strUserRsvdList += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
-	            strUserRsvdList += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
-	            strUserRsvdList += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-	            strUserRsvdList += "<li>예약 등록 날짜 : "+ rsvd.regdate + "</li>";
-			});
-			
-			userRsvdListUL.html(strUserRsvdList);
-			
-			showRsvdDtls(selRsvdId);
-			
-		});
-	};
-	
-	/*
-	예약 상세를 보여준다.
-	*/
-	let showRsvdDtls = function (rsvdId){
-		
-		getRsvdDtls({rsvdId:rsvdId}, function(rsvd){
-			
-			let strRsvdDtls = "";
 			if(!rsvd)
 				return;
 			
-			strRsvdDtls += "<h1>해당 유저 예약 상세</h1>"
-			strRsvdDtls += "<li>예약 번호 :" + rsvd.rsvdId +"</li>";
-			strRsvdDtls += "<li>매장 번호 :" + rsvd.storeId +"</li>";
-			strRsvdDtls += "<li>회원 아이디 : " + rsvd.userId +"</li>";
-			strRsvdDtls += "<li>핫딜 번호 : " + rsvd.htdlId +"</li>";
-			strRsvdDtls += "<li>승인 번호 : " + rsvd.aprvNo +"</li>";
-			strRsvdDtls += "<li>예약 인원 : " + rsvd.pnum +"</li>";
-			strRsvdDtls += "<li>예약 시간 : " + rsvd.time +"</li>";
-			strRsvdDtls += "<li>예약 상태 : " + rsvd.stusCd +"</li>";
-			strRsvdDtls += "<li>예약 총 가격 : " + rsvd.totAmt +"</li>";
-			strRsvdDtls += "<li>예약 총 수량 : " + rsvd.totQty +"</li>";
-			strRsvdDtls += "<li>예약 등록 날짜 : " + rsvd.regdate +"</li>";
-			let cnt = 1;
+			strRsvdDtlsTop += "<div class='modal_rsvd_tit'>예약 상세</div>";
+			strRsvdDtlsTop += "<div class='rsvd_top_box'>";
+			if(rsvd.htdlId != null) strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-fire'></i></span>";
+			strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
+			strRsvdDtlsTop += "<div>예약 번호</div>";
+			strRsvdDtlsTop += "<div>"+rsvd.rsvdId+"</div>";
+			strRsvdDtlsTop += "</div>";
+			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
+			strRsvdDtlsTop += "<div>예약 시간</div>";
+			strRsvdDtlsTop += "<div>"+rsvd.time+"</div>";
+			strRsvdDtlsTop += "</div>";
+			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
+			strRsvdDtlsTop += "<div>예약 총 가격</div>";
+			strRsvdDtlsTop += "<div>"+rsvd.totAmt+"원</div>";
+			strRsvdDtlsTop += "</div>";
+			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
+			strRsvdDtlsTop += "<div>예약 총 수량</div>";
+			strRsvdDtlsTop += "<div>"+rsvd.totQty+"개</div>";
+			strRsvdDtlsTop += "</div>";
+			strRsvdDtlsTop += "</div>";
+			
+			$(".rsvd_top_wrapper").html(strRsvdDtlsTop);
+			
+			let strRsvdDtlsMid = "";
+			
+			strRsvdDtlsMid += "<div class='modal_menu_head'>";
+			strRsvdDtlsMid += "<div>메뉴</div>";
+			strRsvdDtlsMid += "<div>가격</div>";
+			strRsvdDtlsMid += "<div>수량</div>";
+			strRsvdDtlsMid += "</div>";
 			rsvd.rsvdDtlsList.forEach(dtls => {
-				strRsvdDtls += "==============================";
-				strRsvdDtls += "<li>상세 순서 [" + cnt +"]</li>";
-				strRsvdDtls += "<li>예약 상세 번호 : " + dtls.rsvdSeq +"</li>";
-				strRsvdDtls += "<li>예약 메뉴 이름 : " + dtls.menuNm +"</li>";
-				strRsvdDtls += "<li>메뉴 가격 : " + dtls.menuPrc +"</li>";
-				strRsvdDtls += "<li>메뉴 총 개수 : " + dtls.menuTotQty +"</li>";
-				cnt += 1;
-			})
+				strRsvdDtlsMid += "<div class='modal_menu_info'>";
+				strRsvdDtlsMid += "<div>" + dtls.menuNm +"</div>";
+				strRsvdDtlsMid += "<div>" + dtls.menuPrc +"원</div>";
+				strRsvdDtlsMid += "<div>" + dtls.menuTotQty +"</div>";
+				strRsvdDtlsMid += "</div>";
+			});
 			
-			rsvdDtlsUL.html(strRsvdDtls);
-			
-		})
-	};
+			$(".rsvd_mid_wrapper").html(strRsvdDtlsMid);
+    		
+    		console.log("=======================")
+    		console.log("rsvd dtls complete")
+    		
+    	})
+    };
 	
     /* 리뷰 등록 폼을 보여준다.*/
     let showRevwRegForm = function (storeId,userId,rsvdId){
  	   
- 	let strRevwRegForm = "";    			
+ 	let strRevw = "";    			
  			
  	getStoreInfo({userId : userId, storeId : storeId}, store => {
  		
@@ -479,33 +591,50 @@ window.onload = function () {
     		
     		if(!store)
     			return;
+    		
+    		
+    		strRevw += "<div class='modal_tit'>";
+            strRevw += "<span>리뷰 작성</span>";
+            strRevw += "</div>";
+            strRevw += "<div class='modal_top_revw'>";
+    		strRevw += "<div class='revw_reg_wrapper'>";
+    		strRevw += "<div class='revw_store_info'>";
+    		strRevw += "<div class='revw_store_name'>"+store.storeNm+"</div>";
+    		strRevw += "<div class='revw_rsvd_id'>예약번호 : "+rsvdId+"</div>";
+    		strRevw += "</div>";
+    		strRevw += "<form id='revwRegForm' action='/dealight/mypage/review/register' method='post'>";
+    		strRevw += "<div class='revw_rate_wrapper'>";
+    		strRevw += "<div class='rating' dat	a-rate-value=3></div>";
+    		strRevw += "</div>";
+    		strRevw += "<div class='revw_cnts_textarea'>";
+    		strRevw += "<textarea cols='30' row='20' name='cnts' placeholder='리뷰 내용을 입력해주세요.'></textarea>";
+    		strRevw += "</div>";
+    		strRevw += "<input name='rating' id='rate_input' hidden>";
+    		strRevw += "<div class='file_body'></div>";
+    		strRevw += "<div class='form_img'><input id='js_upload' type='file' name='uploadFile' multiple></div>";
+    		strRevw += "<div class='uploadResult'><ul></ul></div>";
+    		strRevw += "<div class='revw_btn_box'>";
+    		strRevw += "<button id='submit_revwRegForm'>리뷰 등록</button>";
+    		strRevw += "</div>";
+    		strRevw += "<input name='storeId' value='"+store.storeId+"' hidden>";
+    		strRevw += "<input name='storeNm' value='"+store.storeNm+"' hidden>";
+    		strRevw += "<input name='rsvdId' value='"+rsvdId+"' hidden>";
+    		strRevw += "<input name='rating' id='rate_input' hidden>";
+    		strRevw += "<input name='userId' value='"+userId+"' hidden>";
+    		strRevw += "<input name='prevPage' value='reservation?pageNum="+pageNum+"&amount="+amount+"' id='' hidden>";
+    		strRevw += "</form>";
+    		strRevw += "</div>";	
+    		strRevw += "</div>";
 	       	
-	       	strRevwRegForm += "<h1>리뷰 작성</h1>";
-	       	strRevwRegForm += "<form id='revwRegForm' action='/dealight/mypage/review/register' method='post'>";
-	       	strRevwRegForm += "매장 번호 : <input name='storeId' value='"+store.storeId+"' readonly></br>";
-	       	strRevwRegForm += "매장 이름 : <input name='storeNm' value='"+store.storeNm+"' readonly></br>";
-	       	strRevwRegForm += "예약 번호 : <input name='rsvdId' value='"+rsvdId+"' readonly></br>";
-	       	strRevwRegForm += "회원 아이디 : <input name='userId' value='"+userId+"' readonly></br>";
-	       	strRevwRegForm += "리뷰 내용 : <input type='textarea' name='cnts' id=''></br>";
-	       	strRevwRegForm += "평점 주기"
-	       	strRevwRegForm += "<div class='rating' data-rate-value=3></div>";
-	       	strRevwRegForm += "<input name='rating' id='rate_input' hidden>";
-	       	strRevwRegForm += "파일첨부 : <div class='file_body'>"; 
-	       	strRevwRegForm += "<div class='form_img'><input id='js_upload' type='file' name='uploadFile' multiple></div>";
-	       	strRevwRegForm += "<div class='uploadResult'><ul></ul></div></div>";
-	       	strRevwRegForm += "<input name='prevPage' value='reservation' id='' hidden>";
-	       	strRevwRegForm += "<div class='bigPictureWrapper'><div class='bigPicture'></div></div>";
-	       	strRevwRegForm += "</form>";
-	       	strRevwRegForm += "<button id='submit_revwRegForm'>제출하기</button>";
-	       	
-	       	revwRegFormUL.html(strRevwRegForm);
+    		revwRegDiv.css("display","flex");
+	       	revwRegDiv.html(strRevw);
 
 	       	/* Rater.js 로직*/
 	        $(".rating").rate({
 	            max_value: 5,
 	            step_size: 0.5,
 	            initial_value: 3,
-	            selected_symbol_type: 'utf8_star', // Must be a key from symbols
+	            selected_symbol_type: 'utf8_star', // Must be a  key from symbols
 	            cursor: 'default',
 	            readonly: false,
 	            update_input_field_name: $("#rate_input")
@@ -533,7 +662,7 @@ window.onload = function () {
     
     let showRsvdRevwHandler = function(e) {
     	
-    	let rsvdId = $(e.target).parent().find(".rsvd_id").text();
+    	let rsvdId = $(e.target).parent().parent().parent().parent().find(".rsvd_id").text();
     	
     	showRsvdRevw(rsvdId);
     	modal.css("display","block");
@@ -542,9 +671,13 @@ window.onload = function () {
 	
 	let showRsvdDtlsHandler = function(e) {
 		
-    	let rstoreId = $(e.target).parent().find(".store_id").text(),
-		selRsvdId = $(e.target).parent().find(".rsvd_id").text(),
+    	let rstoreId = $(e.target).parent().parent().parent().parent().find(".store_id").text(),
+		selRsvdId = $(e.target).parent().parent().parent().parent().find(".rsvd_id").text(),
 		ruserId = '${userId}';
+		
+		console.log("store id : "+rstoreId);
+		console.log("sel rsvd id : "+selRsvdId);
+		console.log("user id : "+ruserId);
 	
 	
 		showUserRsvdList(rstoreId, ruserId, selRsvdId);
@@ -552,10 +685,14 @@ window.onload = function () {
 	};
 	
 	let showRevwRegFormHandler =  function(e) {
-    	let storeId = $(e.target).parent().find(".store_id").text(),
-		rsvdId = $(e.target).parent().find(".rsvd_id").text(),
-		revwStus = $(e.target).parent().find(".revw_stus").text();
+    	let storeId = $(e.target).parent().parent().parent().parent().find(".store_id").text(),
+		rsvdId = $(e.target).parent().parent().parent().parent().find(".rsvd_id").text(),
+		revwStus = $(e.target).parent().parent().parent().parent().find(".revw_stus").text();
        	
+    	console.log("store id : "+storeId);
+    	console.log("rsvd id : " + rsvdId);
+    	console.log("revw stus : " + revwStus);
+    	
 	    if(revwStus > 0) return;
 		
 		showRevwRegForm(storeId,userId,rsvdId);
@@ -563,7 +700,7 @@ window.onload = function () {
 	}
 	
 	let showStoreInfoHandler = function(e) {
-    	let storeId = $(e.target).parent().find(".store_id").text(),
+    	let storeId = $(e.target).parent().parent().parent().parent().find(".store_id").text(),
     	userId = '${userId}';
     	
     	modal.css("display","block");
@@ -572,10 +709,10 @@ window.onload = function () {
 	
     let likeRemoveHandler = function(e){
     	
-    	let storeId = $(e.target).parent().find(".store_info_id").text(),
+    	let storeId = $(e.target).parent().parent().parent().parent().parent().parent().find(".store_info_id").text(),
 			userId = '${userId}';
 
-		
+		console.log("store id : "+storeId);
 		removeLike({userId:userId,storeId:storeId});
 		alert("찜이 취소 되었습니다.");		
 		showStoreInfo(userId, storeId);
@@ -584,15 +721,14 @@ window.onload = function () {
     
     let likeAddHandler = function(e){
     	
-    	let storeId = $(e.target).parent().find(".store_info_id").text(),
+    	let storeId = $(e.target).parent().parent().parent().parent().parent().parent().find(".store_info_id").text(),
 			userId = '${userId}';
-
+	
+		console.log("store id : "+storeId);
 		addLike({userId:userId,storeId:storeId});
 		
 		alert($(e.target).parent().find(".store_info_id").text()+"번이 추가 되었습니다.");
 
-		
-		
 		showStoreInfo(userId, storeId);
     }
 	

@@ -87,7 +87,6 @@
 	            </ul>
             </div>
                 <di class="wait_register_wrapper">
-                	<button class='btnAcceptHtdl'>핫딜 등록</button>
                     <button class="btn_wait_register">오프라인 웨이팅 등록</button>
                 </div><!-- end wait board -->
                 <p id="dealhistory"><a href="/dealight/business/manage/dealhistory?storeId=${storeId}">핫딜 히스토리</a></p>
@@ -163,7 +162,9 @@ const storeId = ${storeId};
 /*시간바 만들기*/
 /*현재시간으로 스크롤 고정*/
 writeTimeBar = function (curTime) {
-    timeArr = ['','09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30','22:00'];
+    timeArr = ['','09:00','09:30','10:00','10:30','11:00','11:30','12:00'
+    	,'12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00',
+    	'16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30','22:00'];
     let strTime = "";
     let curPos = 0; 
     for(let i = 1; i <= 27; i++){
@@ -469,6 +470,24 @@ let curHour = curToday.getHours(),
 
         };
         
+        // 오늘의 시간대 별 예약 상태를 가져온다.
+        function getTodayRsvdStusMap(param,callback,error){
+      
+        	let storeId = param.storeId;
+        	
+        	$.getJSON("/dealight/business/manage/board/reservation/stusmap/"+ storeId +".json",
+                    function(data){
+                        if(callback){
+                            callback(data);
+                        }
+                    }).fail(function(xhr,status,err){
+                        if(error){
+                            error();
+                        }
+            });
+
+        };
+        
         // 해당 매장의 다음 웨이팅을 가져온다.
         function getNextRsvd(param,callback,error){
         	
@@ -526,6 +545,27 @@ let curHour = curToday.getHours(),
             })
         }
         
+        // 핫딜 정보를 등록한다.
+        function regHtdl(wait, callback,error) {
+    
+            $.ajax({
+                type : 'post',
+                url : '/dealight/business/manage/board/htdl/new',
+                data : JSON.stringify(wait),
+                contentType : "application/json; charset=utf-8",
+                success : function(result, status, xhr) {
+                    if(callback) {
+                        callback(result);
+                    }
+                },
+                error : function(xhr, status, er) {
+                    if(error) {
+                        error(er);
+                    }               
+                }
+            })
+        }
+        
         // '해당 매장'의 지난주 예약 정보를 가져온다.
         function getLastWeekRsvd(param, callback,error) {
         	
@@ -565,6 +605,7 @@ let curHour = curToday.getHours(),
     
         return {
             regWait:regWait,
+            regHtdl:regHtdl,
             getStore : getStore,
             getWaitList : getWaitList,
             getRsvdList : getRsvdList,
@@ -575,6 +616,7 @@ let curHour = curToday.getHours(),
             getNextWait : getNextWait,
             getNextRsvd : getNextRsvd,
             getTodayRsvdMap : getTodayRsvdMap,
+            getTodayRsvdStusMap : getTodayRsvdStusMap,
             getRsvdRslt : getRsvdRslt,
             getLastWeekWait : getLastWeekWait,
             getUserRsvdList : getUserRsvdList,
@@ -723,7 +765,8 @@ let curHour = curToday.getHours(),
                     return;
                 }
                 rsvdList.forEach(rsvd => {
-                	strRsvdList += "<div class='rsvd rsvd_i'>" ;
+                	if(rsvd.htdlId == null) strRsvdList += "<div class='rsvd rsvd_i'>" ;
+                	else strRsvdList += "<div class='rsvd rsvd_i cur_htdl'>" ;
                     strRsvdList += "<ul class='btnRsvd'>" + "<h3>예약 번호 : "+rsvd.rsvdId+"</h3>"; 
                         strRsvdList += "<li hidden class='btnStoreId'>"+rsvd.storeId+"</li>";
                         strRsvdList += "<li hidden class='btnUserId'>"+rsvd.userId+"</li>";
@@ -780,9 +823,29 @@ let curHour = curToday.getHours(),
             				}
             				strHtml += " 번호 예약</span>";
             				document.querySelector('#slide-'+i+' .time_table').innerHTML = strHtml;
-            				document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'yellow';
+            				document.querySelector('#slide-'+i+' .time_table').style.border = '2px solid black';
             			}
             		}
+            	})
+            	
+            	boardService.getTodayRsvdStusMap({storeId:storeId},function(map){
+            		Object.entries(map).forEach(([key,value]) => {
+                		console.log("key : "+key+", value : " + value);
+                		for(let i = 1; i < 28; i ++){
+                			if(key === document.querySelector('#slide-'+i+' h6').textContent){
+                				if(value === 'R')
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'red';
+                				else if(value === 'Y')
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'yellow';
+                				else if(value === 'G')
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'green';
+                				else if(value === 'B')
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'black';
+                				else
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'orange';
+                			}
+                		}
+                	});
             	})
             	
             	rsvdMapUL.html(strRsvdMap);
@@ -1275,7 +1338,7 @@ let curHour = curToday.getHours(),
         	
         		console.log('show reg htdl store id : '+storeId);
         		
-	        	strHtdl += "<form class='regHtdlForm' action='/dealight/hotdeal/register' method='post'>";
+	        	strHtdl += "<form class='regHtdlForm' action='/dealight/business/manage/board/htdl/new' method='post'>";
 	        	strHtdl += "<label>핫딜 제목</label> <input class='form-control' name='name'><br>";
 	        	strHtdl += "<div>";
 	        	strHtdl += "<label>핫딜 메뉴</label><br>";
@@ -1297,12 +1360,11 @@ let curHour = curToday.getHours(),
 	        	strHtdl += "</select><br><label>할인 적용전 가격</label> <input class='js-befPrice'";
 	        	strHtdl += "value='0' name='befPrice' readonly='readonly'><br> <label>할인";
 	        	strHtdl += "적용후 가격</label> <input class='js-aftPrice' readonly='readonly'><br>";
-	        	strHtdl += "<label>핫딜 기간</label> <input type='time' name='startTm'> <input";
-	        	strHtdl += "type='time' name='endTm'><br> <label>핫딜 제안 인원:";
+	        	strHtdl += "<label>핫딜 시작 시간</label> <input type='time' name='startTm' readonly><br> 핫딜 마감 시간<input";
+	        	strHtdl += " type='time' name='endTm' readonly><br> <label>핫딜 제한 인원:";
 	        	strHtdl += "</label> <input class='form-control' type='number' min='0' max='50'";
-	        	strHtdl += "name='suggPnum' readonly='readonly'><br> <label>핫딜";
-	        	strHtdl += "예약 손님 인원: </label> <input class='form-control' type='number' min='0'";
-	        	strHtdl += "max='50' name='lmtPnum'><br> <label>핫딜 소개</label><br>";
+	        	strHtdl += "name='lmtPnum' readonly='readonly'><br> <label>핫딜";
+	        	strHtdl += "<label>핫딜 소개</label><br>";
 	        	strHtdl += "<textarea rows='2' cols='22' name='intro'></textarea>";
 	        	strHtdl += "<br> <input type='hidden' id='storeId' name='storeId'";
 	        	strHtdl += "value='"+storeId+"'>";
@@ -1313,6 +1375,12 @@ let curHour = curToday.getHours(),
         		console.log("before strHtdl : "+ strHtdl);
 	        	regHtdlFormUL.html(strHtdl);
 	        	
+	        	// 핫딜 제안 등록폼에 데이터를 넣어준다.
+	        	$(".regHtdlForm input[name=name]").val($(".manage_htdl_dto").data().name);
+        		$(".regHtdlForm input[name=lmtPnum]").val($(".manage_htdl_dto").data().lmtpnum);
+        		$(".regHtdlForm input[name=startTm]").val($(".manage_htdl_dto").data().starttm);
+        		$(".regHtdlForm input[name=endTm]").val($(".manage_htdl_dto").data().endtm);
+        		
 	        	/* jong woo js*/
 	        	//메뉴 리스트, 할인율, 메뉴 체크박스
 	        	let menus = document.querySelectorAll(".js-menu"),
@@ -1324,6 +1392,26 @@ let curHour = curToday.getHours(),
 	        		afterPrice = document.querySelector(".js-aftPrice"),
 	        		total = 0,
 	        		rate = 0;
+	        	
+	            // 핫딜 등록폼 
+	    		//할인 적용한 가격 계산
+	    		let getAfterPrice = function (total, rate) {
+	    			let price = total - (total * rate);
+	    			console.log(price);
+	    			afterPrice.value = price;
+	    		}
+
+	    		//메뉴 체크
+	    		let menuCheck = function (price, idx) {
+
+	    			if (menus[idx].checked)
+	    				total += Number(price);
+	    			else
+	    				total -= Number(price);
+	    			befPrice.value = total;
+
+	    			getAfterPrice(total, rate);
+	    		};
 	        	
 	        	//메뉴에 따른 가격 선택
 	    		for (let i = 0; i < menus.length; i++) {
@@ -1345,6 +1433,7 @@ let curHour = curToday.getHours(),
 	    		let regHtdlFormObj = $(".regHtdlForm");
 	    		
 	    		$(".regHtdlBtn").on("click", function(e){
+	    			
 	    			e.preventDefault();
 	    			
 	    			let operation = $(this).data("oper");
@@ -1364,30 +1453,45 @@ let curHour = curToday.getHours(),
 	    					}
 	    				}
 	    				regHtdlFormObj.append("<input type='hidden' name='htdlPhotoSrc' value='"+ path + "/" + fileName + "'>");
-	    				regHtdlFormObj.submit();
+	    				
+	    				let formData = new FormData();
+	    				
+	    				let inputData = $(".regHtdlForm input");
+	    				
+	    				for(let i = 0; i < inputData.length; i++){
+	    					formData.append($(".regHtdlForm input")[i].name, $(".regHtdlForm input")[i].value)
+	    				}
+	    				
+	    				$.ajax({
+	    		            url : '/dealight/business/manage/board/htdl/new',
+	    		            processData : false,
+	    		            contentType : false, data:
+	    		                formData, type: 'POST',
+	    		                dataType : 'json',
+	    		                success : function(result) {
+	    		                	alert(result);
+	    		                	console.log(result);
+	    			        		modal.find("ul").html("");
+	    			    			modal.find("input").val("");
+	    			    			modal.css("display","none");
+	    		                }
+	    		        })
+	    		        alert("핫딜을 등록하셨습니다.");
+	    				setTimeout(()=>{
+	    					modal.find("ul").html("");
+		    				modal.find("input").val("");
+		    				modal.css("display","none");
+		    				$(".alert.manage_htdl").addClass("hide");
+		    	    		$(".alert.manage_htdl").removeClass("show");
+	    				},1000)
+	    				//regHtdlFormObj.submit();
 	    				
 	    			}else if(operation === 'refuse'){
 	    				alert("핫딜이 거절 되었습니다.");
+	    				modal.find("ul").html("");
+		    			modal.find("input").val("");
+		    			modal.css("display","none");
 	    			}
-	    			
-	    			//할인 적용한 가격 계산
-	    			function getAfterPrice(total, rate) {
-	    				let price = total - (total * rate);
-	    				console.log(price);
-	    				afterPrice.value = price;
-	    			}
-	
-	    			//메뉴 체크
-	    			function menuCheck(price, idx) {
-	
-	    				if (menus[idx].checked)
-	    					total += Number(price);
-	    				else
-	    					total -= Number(price);
-	    				befPrice.value = total;
-	
-	    				getAfterPrice(total, rate);
-	    			};
 	    			
 	    		}); // reg btn click
         	});// end get menuList
@@ -1539,7 +1643,7 @@ let curHour = curToday.getHours(),
 	   		// 다른 페이지 어디서든 소켓을 불러올 수 있어야 하기 때문이다.
 	   		
 	   	 	// 소켓을 ws로 연다.
-	   	 	var ws = new WebSocket("ws://localhost:8080/manageSocket");
+	   	 	var ws = new WebSocket("ws://localhost:8181/manageSocket");
 	   	 	socket = ws;
 	
 	   	 	// 커넥션이 연결되었는지 확인한다.
@@ -1565,10 +1669,15 @@ let curHour = curToday.getHours(),
 	   	 	    console.log("cmd : "+data.cmd);
 	   	 		console.log("sendUser : "+data.sendUser);
 	   	 	    console.log("storeId : "+data.storeId);
+	   	 	    console.log("dto : " + data.htdlDto);
 	   	 	    
 				let curNotiCnt = $(".show").length;
 	 	    
 	 	    	console.log("curNotiCnt : "+curNotiCnt);
+	 	    	
+	 	    	let dtoSpan ="";
+	 	    	//let dtoSpan = "<span class='manage_htdl_dto' data-name='"+dto.name+"' data-startNm='"+dto.startNm+"' data-endTm='"+dto.endTm+"' data-lmtPnum='"+dto.lmtPnum+"' ></span>"
+	 	    	if(data.htdlDto) dtoSpan = "<span class='manage_htdl_dto' data-name='"+data.htdlDto.name+"' data-startTm='"+data.htdlDto.startTm+"' data-endTm='"+data.htdlDto.endTm+"' data-lmtPnum='"+data.htdlDto.lmtPnum+"' ></span>"
 	   	 	    
 				if(data.cmd === 'rsvd'){
 		   	 		showRsvdList(storeId);
@@ -1594,7 +1703,7 @@ let curHour = curToday.getHours(),
 		   	 		$('.alert.manage_htdl .alert_tit').html('핫딜 알림');
 		   	 		//$('.alert.manage_htdl .alert_senduser').html(data.sendUser);
 		   			$('.alert.manage_htdl .alert_msg').html(data.msg);
-		   			document.getElementsByClassName("manage_htdl")[0].style.bottom = 15 + curNotiCnt*75;
+		   			$('.alert_dto').html(dtoSpan);
 		   			$('.alert.manage_htdl').removeClass("hide");
 		   	 		$('.alert.manage_htdl').addClass("show");
 		   	 		$('.alert.manage_htdl').addClass("showAlert");

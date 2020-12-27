@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlRsltVO;
@@ -78,6 +79,12 @@ public interface HtdlMapper {
 	
 	// update
 	public int update(HtdlVO htdl);
+	
+	public List<HtdlVO> getMainHtdlList();
+	
+	List<HtdlVO> findHtdlWithRsltByStoreId(@Param("storeId") Long storeId, @Param("cri")Criteria cri);
+	
+	int getHtdlTotal(@Param("storeId") Long storeId, @Param("cri")Criteria cri);
 	
 
 }

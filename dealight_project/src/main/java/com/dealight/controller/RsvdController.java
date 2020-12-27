@@ -78,7 +78,7 @@ public class RsvdController {
 		
 		//해당 매장의 예약가능 여부
 		RsvdAvailVO rsvdAvailVO = rsvdService.getRsvdAvailByStoreId(storeId);
-		
+		log.info("=======================================rsvdvailcheck");
 		boolean checked = rsvdService.isRsvdAvailChecked(rsvdAvailVO, time, pnum);
 //		return new ResponseEntity<Boolean>(body, status);
 		return new ResponseEntity<Boolean>(checked, HttpStatus.OK);

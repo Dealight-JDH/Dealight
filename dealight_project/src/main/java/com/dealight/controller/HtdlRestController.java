@@ -66,4 +66,14 @@ public class HtdlRestController {
 		return new ResponseEntity(service.read(htdlId), HttpStatus.OK);
 		
 	}
+	@GetMapping(value = "/get/{storeId}", produces = {
+			MediaType.APPLICATION_JSON_UTF8_VALUE,
+			MediaType.APPLICATION_XML_VALUE
+	})
+	public HttpEntity<HtdlVO> getByStoreId(@PathVariable Long storeId) {
+		log.info("get...");
+		
+		return new ResponseEntity(service.readActStoreHtdlList(storeId), HttpStatus.OK);
+		
+	}
 }

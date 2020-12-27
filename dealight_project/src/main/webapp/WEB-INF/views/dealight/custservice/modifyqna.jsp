@@ -9,17 +9,29 @@
 <meta charset="UTF-8">
 <title>FAQ</title>
 <link rel="stylesheet" href="/resources/css/custservice.css" type ="text/css" />
+<link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+.mypage_main_sub > div{
+	width : 100%;
+}
+.btn_like_cancel{
+	color : tomato;
+	cursor: pointer;
+}
+.btn_like_cancel:hover{
+	opacity: 0.7;
+}
+</style>
 </head>
 <body>
- <main id="main-container" class="flex-column">
-        <%@include file="/WEB-INF/views/includes/custservicemenu.jsp" %>
-
+<main>
+        <div class="mypage_wrapper">
+<%@include file="/WEB-INF/views/includes/custserviceSidebar.jsp" %>
         <div class="box-container flex-column">
-            <div class="board-header flex-column">
-                <div style="margin-left: 30px;">
-                    QnA
-                </div>
+            <div class="mypage_main_header">
+                <div class="main_header_title">QnA</div>
+                <div class="main_header_subtitle">궁금한 점을 물어보세요.</div>
             </div>
             <div class="board-body flex-column">
                 <form role="form" action="/dealight/custservice/modifyqna" method="post">
@@ -57,6 +69,7 @@
 
 
 </main>
+<%@include file="/WEB-INF/views/includes/mainFooter.jsp" %>
 </body>
 </html>
 <script>

@@ -57,11 +57,12 @@ public class BStoreVO {
 	    // 수용인원 
 	    private int acmPnum = -1;
 	    
+	    
 	    private HtdlVO htdl;
 	    private List<StoreTagVO> tag;
 	    private List<MenuVO> menus;
 	    //추가 WaitVO 추가됨
-	    private List<WaitVO> waits;
+	    private WaitVO waits;
 	    
 	    public static class Builder{
 	    	private final Long storeId;

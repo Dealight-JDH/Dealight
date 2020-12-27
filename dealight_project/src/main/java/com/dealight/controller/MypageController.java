@@ -10,15 +10,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dealight.domain.BStoreVO;
 import com.dealight.domain.Criteria;
 import com.dealight.domain.LikeListDTO;
 import com.dealight.domain.LikeVO;
@@ -86,6 +85,7 @@ public class MypageController {
 		if(cri.getPageNum() == 0)
 			cri = new Criteria(1,5);
 
+		
 		List<RsvdVO> rsvdList = rsvdService.findRsvdListWithPagingAndDtlsByUserId(userId, cri);
 
 		// rsvd 메뉴 이름 저장
@@ -96,6 +96,9 @@ public class MypageController {
 				dtls.setMenuNm(dtls.getMenuNm() + ", ");
 			});
 			rsvd.getRsvdDtlsList().get(rsvd.getRsvdDtlsList().size() -1).setMenuNm(tmpNm);
+			
+			// 변경 필요
+			rsvd.setStoreRepImg(storeService.getBStore(rsvd.getStoreId()).getRepImg());
 		});
 
 		int last = rsvdService.getRsvdLastCount(userId, cri);
@@ -167,6 +170,10 @@ public class MypageController {
 			cri = new Criteria(1,5);
 
 		List<WaitVO> waitList = waitService.findWaitListWithPagingByUserId(userId, cri);
+		waitList.stream().forEach(wait -> {
+			BStoreVO store = storeService.getBStore(wait.getStoreId());
+			wait.setStoreRepImg(store.getRepImg());
+		});
 
 		int curWaitCnt = waitService.getCurWaitCnt(userId, cri);
 		int enterCnt = waitService.getEnterWaitCnt(userId, cri);
@@ -211,15 +218,28 @@ public class MypageController {
 		if(cri.getPageNum() == 0)
 			cri = new Criteria(1,5);
 
-		List<LikeVO> likeList = likeService.findListWithPagingByUserId(userId, cri);
+		List<StoreVO> storeList = likeService.findStoreListWithPagingByUserId(userId, cri);
 		int total = likeService.getLikeTotalByUserId(userId, cri);
 
 		model.addAttribute("userId", userId);
-		model.addAttribute("likeList", likeList);
+		model.addAttribute("storeList", storeList);
 		model.addAttribute("total",total);
 		model.addAttribute("pageMaker",new PageDTO(cri,total));
 
 		return "/dealight/mypage/like";
+	}
+	
+	@GetMapping(value = "/like/list/{pageNum}/{amount}/{userId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<LikeListDTO> getLikeList(@PathVariable("pageNum") int pageNum, @PathVariable("amount") int amount,
+														@PathVariable("userId") String userId){
+		LikeListDTO dto = new LikeListDTO();
+		Criteria cri = new Criteria(pageNum,amount);
+		dto.setStoreList(likeService.findStoreListWithPagingByUserId(userId,cri));
+		dto.setTotal(likeService.getLikeTotalByUserId(userId, cri));
+		dto.setPageMaker(new PageDTO(cri,dto.getTotal()));
+		
+		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 
 	
