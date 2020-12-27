@@ -28,7 +28,7 @@
                 <div class="mypage_main_header">
                     <div class="main_header_title">리뷰 가능 리스트</div>
                     <div class="main_header_subtitle">리뷰가 가능한 예약과 웨이팅을 불러옵니다.</div>
-                    <a href="/dealight/mypage/review/written-list">작성한 리뷰 보기</a>
+                    <div class="main_header_link"><a href="/dealight/mypage/review/written-list">작성한 리뷰 보기</a></div>
                 </div>
                 <div class="mypage_main_content">
                                     <div class="mypage_main_sub">

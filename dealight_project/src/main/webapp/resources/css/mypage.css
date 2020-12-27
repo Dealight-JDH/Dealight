@@ -96,6 +96,7 @@
             height: 100%;
         }
         .mypage_main_header{
+        	
             width: 100%;
             padding-top: 20px;
             height: 130px;
@@ -122,6 +123,17 @@
         }
         .main_header_subtitle{
             color: #4c4c4c;
+        }
+        .main_header_link{
+        	font-size: 8px;
+        	padding : 5px 10px;
+        	background-color: white;
+        	border: 1px black solid;
+        	border-radius: 3px;
+        	cursor: pointer;
+        }
+        .main_header_link:hover{
+        	opacity: 0.7;
         }
 
         /* main */
@@ -243,6 +255,18 @@
         .rsvd_cnts_val{
             font-size: 18px;
             font-weight: 400;
+        }
+        .wait_stus_cd{
+        	border: 1px #eeeeef solid;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            margin-right: 10px;
+            padding: 1px 4px;
+            font-weight: bold;
+            margin-top:5px;
         }
         .cnts{
             width: 300px;
@@ -381,7 +405,7 @@
             width: 100%;
             height: 50px;
             color: #d32323;
-            text-shadow: 1px 1px 6px rgba(44, 36, 36, 0.171);
+            /*text-shadow: 1px 1px 6px rgba(44, 36, 36, 0.171);*/
         }
         .modal_top{
             width: 100%;
@@ -455,7 +479,7 @@
             font-weight: bold;
             border: 0;
             border-radius: 30px;
-            text-shadow: 1px 1px 6px rgba(44, 36, 36, 0.171);
+            /*text-shadow: 1px 1px 6px rgba(44, 36, 36, 0.171);*/
             box-shadow: 1px 1px 6px rgba(44, 36, 36, 0.171);
             outline: none;
             cursor: pointer;

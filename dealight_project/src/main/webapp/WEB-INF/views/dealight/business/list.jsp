@@ -71,7 +71,6 @@
             border: 1px solid #e6e6e6;
             
             border-radius: 5px;
-            margin-top: 25px;
             margin-bottom : 25px;
             /*box-shadow: 2px 2px 8px rgba(0,0,0,0.3);*/
         }
@@ -302,14 +301,25 @@
         }
         #list_board > a{
         	
-        	margin : 20px auto;
+        	margin : 10px 0 0 30px;
+        }
+        #list_board > a:first-child {
+        	marign-top : 20px;
         }
         #list_board > .store_card	{
         	
-        	margin : 20px auto;
+        	margin : auto auto;
         }
         .store_card{
         	position: relative;
+        }
+        .store_list_tit{
+        	width : 80%;
+        	font-size: 24px;
+        	font-weight: bold;
+        	margin : 20px 30px;
+        	padding-bottom : 20px;
+        	border-bottom: 1px solid #eeeeef;
         }
     </style>
 </head>
@@ -350,6 +360,7 @@
                        </div>
 	                       <!-- board start -->
 	                       <div id="list_board">
+	                       		<div class="store_list_tit">매장 리스트</div>
 	                       		<c:if test="${not empty buserList}">
 								<c:forEach items="${buserList}" var="buser">
 							        <div class="store_card">

@@ -118,6 +118,13 @@
 				group by b.store_id
 	</select>
 -->
+
+	<update id="updateHtdlStus">
+		update tbl_bstore
+		set htdl_stus_cd = #{stusCd}
+		where store_id = #{storeId}
+	</update>
+
 	
 	
 

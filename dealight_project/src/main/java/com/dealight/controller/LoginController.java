@@ -108,8 +108,8 @@ public class LoginController {
 			userService.register(user, authVO);
 		}
 		
-		
-		rttr.addFlashAttribute("user", kakaoVO);
+		rttr.addFlashAttribute("user", user);
+		rttr.addFlashAttribute("pwd", kakaoVO.getId());
 		// session.setAttribute("snsUser", kakaoVO);
 		// return "/dealight/dealight";
 		return "redirect:/dealight/snslogin";
@@ -162,7 +162,8 @@ public class LoginController {
 			userService.register(user, authVO);
 		}
 		
-		rttr.addFlashAttribute("user", naverVO);
+		rttr.addFlashAttribute("user", user);
+		rttr.addFlashAttribute("pwd", naverVO.getId());
 //        log.info("name :" + name);
 //        log.info("nickname :"+ nickname);
 		log.info("=====" + apiResult);

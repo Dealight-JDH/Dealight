@@ -19,7 +19,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인 페이지</title>
+<title>로그인</title>
 <style>
  	* { /* CSS초기화. 이거 없으면 div태그 사이에 공백 생김*/
 
@@ -31,7 +31,7 @@
     /* div{
         border: 2px solid red;
     } */
-    .nav-bar{
+    /* .nav-bar{
         display: flex;
         height: 60px;
         justify-content: center;
@@ -39,6 +39,10 @@
         align-items: center;
         background-color: #d32323;
         
+    } */
+    
+    .main_nav{
+    	background-color: #d32323;
     }
     .main-container-wrap{
         min-width: 1050px;
@@ -198,11 +202,17 @@
         justify-content: flex-end;
     }
     
+    p>a{
+    	color: rgb(238, 76, 76);
+    	text-decoration: underline;
+    }
+    
 </style>
 
 </head>
 <body>
 <h2><c:out value="${error }"/></h2>
+
 
 
     <div class="main-container-wrap">
@@ -230,7 +240,7 @@
                 </div>
                 
                 <div class="remember">
-                    <input type="checkbox" name="remember-me" id="remember-me">Remember me
+                    <label for="remember-me"><input type="checkbox" name="remember-me" id="remember-me">자동 로그인</label>
                 </div>
 
                 <div>
@@ -241,29 +251,29 @@
 
                 <input type='hidden' name="${_csrf.parameterName }" value="${_csrf.token }"/>
             </form>
-
-			<!-- loginfForm end-->
+            
+            </div>
+            <!-- loginfForm end-->
 
             <div class="login-separator">
                 <div class="hr-line1"><div class="line"></div></div>
                 <div class="hr-or">OR</div>
                 <div class="hr-line2"><div class="line"></div></div>
             </div>
-
-		<!--login-separator end-->
+            <!--login-separator end-->
 
             <div class="social-login">
                 <ul>
                     <li>
                         <div id="kakao_id_login">
-                            <button class="kakao-btn" value="">
-                                <span>Continue with KakaoTalk</span>
+                            <button class="kakao-btn" onclick="moveKakao();">
+                                <span>Continue With KakaoTalk</span>
                             </button>
                         </div>
                     </li>
                     <li>
                         <div id="naver_id_login">
-                            <button class="naver-btn" value="">
+                            <button class="naver-btn" onclick="moveNaver();">
                                 <span>Continue With Naver</span>
                             </button>
                         </div>
@@ -274,12 +284,11 @@
             </div>
 
         </div>
-
-		<!--login-container-->
+        <!--login-container-->
 
         <div class="img-container">
             <div class="img-picture">
-                <img src="/resources/img/signup_illustration.png">
+                <img src="/resources/img/signup_illustration.png" alt="">
             </div>
         </div>
 
@@ -287,15 +296,17 @@
 </div>
 
 
- 
-    <%-- <div id="naver_id_login" style="text-align:center margin-top: 6px;">
-		<a href="${naver_url}">
-			<img width="250" src="/resources/img/naver_Bn_Green.PNG"/>
-		</a><br>
- 		<a href="${kakao_url }">
-     		<img width="250" src="/resources/img/kakao_login_medium_narrow.png">
- 		</a>
-	</div>
-</div> --%>	
+<script type="text/javascript">
+
+	function moveKakao(){
+		
+		location.href="${kakao_url }";
+		
+	}
+	
+	function moveNaver(){
+		location.href="${naver_url }";
+	}
+</script>	
 </body>
 </html>

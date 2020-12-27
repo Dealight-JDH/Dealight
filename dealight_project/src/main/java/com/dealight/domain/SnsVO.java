@@ -33,6 +33,7 @@ public class SnsVO {
 	//전화번호
 	private String phoneNumber;
 	
+	
 	List<AuthVO> authList;	
 
 }  

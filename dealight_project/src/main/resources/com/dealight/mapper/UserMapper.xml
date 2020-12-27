@@ -92,7 +92,7 @@ values (#{userId}, #{name}, #{pwd}, #{email}, #{telno}, #{brdt}, #{sex}, #{snsLg
 </insert>
 
 <insert id="insertAuth">
-insert into tbl_user_auth (user_id, auth)values(#{userId}, #{auth})
+insert into tbl_user_auth (user_id, auth) values(#{userId}, #{auth})
 </insert>
 
 
