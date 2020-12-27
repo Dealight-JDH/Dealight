@@ -3,6 +3,7 @@ package com.dealight.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlPageDTO;
 import com.dealight.domain.HtdlSearchDTO;
+import com.dealight.domain.HtdlVO;
 import com.dealight.service.HtdlService;
 
 import lombok.RequiredArgsConstructor;
@@ -105,4 +107,15 @@ public class HtdlRestController {
 //	}
 	
 	
+	@GetMapping(value = "/get/{storeId}", produces = {
+			MediaType.APPLICATION_JSON_UTF8_VALUE,
+			MediaType.APPLICATION_XML_VALUE
+	})
+	public HttpEntity<HtdlVO> getByStoreId(@PathVariable Long storeId) {
+		log.info("get...");
+		
+		return new ResponseEntity(service.readActStoreHtdlList(storeId), HttpStatus.OK);
+		
+	}
+
 }

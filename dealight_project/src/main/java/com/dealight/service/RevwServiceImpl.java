@@ -65,12 +65,17 @@ public class RevwServiceImpl implements RevwService {
 			});
 			revwMapper.insertAllImgs(imgs);
 		}
-
 		
+		log.info(".........................reg revw vo : "+revw);
+
 		evalMapper.addRevwRating(revw.getStoreId(), revw.getRating());
 		
 		Long rsvdId = revw.getRsvdId();
 		Long waitId = revw.getWaitId();
+		
+		log.info(".........................rsvd id : "+rsvdId);
+		log.info("......................... id : "+waitId);
+		
 		if(rsvdId != null && rsvdId > 0)
 			revwMapper.addCntRsvdRevwStus(rsvdId);
 		else if(waitId != null && waitId > 0)

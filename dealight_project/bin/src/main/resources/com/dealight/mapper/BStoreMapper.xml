@@ -88,5 +88,37 @@
 		WHERE store_id = #{storeId}
 	</update>
 
+<!-- jongwoo 보류 -->	
+<!-- 	<resultMap type="com.dealight.domain.RsvdWithStoreDTO" id="RsvdWithStoreDTO">
+	
+		<id column="store_id" property="storeId"/>        
+		<result column="acm_pnum" property="acmPnum"/>
+	    <result column="rsvd_id" property="rsvdId"/>
+	    <result column="store_id" property="storeId"/>
+	    <result column="htdl_id" property="htdlId"/>
+	    <result column="pnum" property="pnum"/>
+	    <result column="time" property="time"/>
+	    <result column="stus_cd" property="stusCd"/>	    
+	</resultMap>
+
+	<select id="findLastWeekRsvdRateListByStoreId" resultMap="RsvdWithStoreDTO">
+			select b.store_id, d.rsvd_id, d.htdl_id, d.pnum, d.time, d.stus_cd, b.acm_pnum
+			from tbl_rsvd d, tbl_bstore b
+			where d.store_id = b.store_id and stus_cd = 'L'
+				and TO_CHAR(to_date(time, 'YYYY/MM/DD HH24/mi/ss'),'YYYYMMDD') BETWEEN TO_CHAR(sysdate - 7,'YYYYMMDD')
+				AND TO_CHAR(sysdate,'YYYYMMDD')
+	</select> -->
+	
+<!-- 	<select id="findLastWeekRsvdPnum" resultMap="RsvdWithStoreDTO">
+		select b.store_id, sum(d.pnum) pnum
+				from tbl_rsvd d, tbl_bstore b
+				where b.store_id = d.store_id and stus_cd = 'L'and 
+	            TO_CHAR(to_date(d.time, 'YYYY/MM/DD HH24/mi/ss'),'YYYYMMDD') BETWEEN TO_CHAR(sysdate - #{day},'YYYYMMDD')
+					AND TO_CHAR(sysdate,'YYYYMMDD')
+				group by b.store_id
+	</select>
+-->
+	
+	
 
 </mapper>

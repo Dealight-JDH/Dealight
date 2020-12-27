@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"   pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+    <%@include file="../../../includes/mainMenu.jsp" %>
 
 <!-- 현중 -->
 <!DOCTYPE html>
@@ -9,17 +10,14 @@
 <meta charset="UTF-8">
 <title>사업자등록페이지</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
+<link rel="stylesheet" href="/resources/css/custservice.css" type ="text/css" />
+
+
 <style type="text/css">
-.container {
-  border: 2px solid #ccc;
-  background-color: #eee;
-  border-radius: 5px;
-  padding: 16px;
-  margin: 16px 0;
   .uploadResult{
 	width:100%;
-	background-color: gray;
-}
+	background-color: gray;}
 .uploadResult ul{
 	display: flex;
 	flex-flow: row;
@@ -58,39 +56,60 @@
 }
 .bigPicture img {
 	width: 600px;
+}.mypage_main_sub > div{
+	width : 100%;
 }
+.btn_like_cancel{
+	color : tomato;
+	cursor: pointer;
 }
+.btn_like_cancel:hover{
+	opacity: 0.7;
+}
+
 </style>
 </head>
 <body>
-<div class="container">
-	<form action="/dealight/mypage/bizauth/register" method="post" name="register">
-		<label>ID</label><input type="text" name="userId" value="${buser.userId }"><br>
-		-----------------><br>
-		<label>대표자명</label><input type="text" name="repName" value="${buser.repName }"><br>
-		<label>매장명</label><input type="text" name="storeNm" value="${buser.storeNm }"><br>
-		<label>휴대전화</label><input type="text" name="telno" value="${buser.telno }"><br>
-		<label>사업장전화번호</label><input type="text" name="storeTelno" value="${buser.storeTelno }"><br>
-		<label>사업자등록번호</label><input type="text" name="brno" value="${buser.brno }"><br>
-	</form>
-	<div>
-	<div class="uploadDiv">
-		<input type="file" name="uploadFile">
+<main>
+<div class="mypage_wrapper">
+<%@include file="/WEB-INF/views/includes/custserviceSidebar.jsp" %>
+	<div class="box-container flex-column">
+	    <div class="mypage_main_header">
+	        <div class="main_header_title">사업자등록</div>
+	        <div class="main_header_subtitle">매장을 등록해주세요.</div>
+	    </div>
+	    <div class="mypage_content" style="padding: 10px">
+			<form action="/dealight/mypage/bizauth/register" method="post" name="register">
+				<label>ID</label><input type="text" name="userId" value="${buser.userId }"><br>
+				-----------------><br>
+				<label>대표자명</label><input type="text" name="repName" value="${buser.repName }"><br>
+				<label>매장명</label><input type="text" name="storeNm" value="${buser.storeNm }"><br>
+				<label>휴대전화</label><input type="text" name="telno" value="${buser.telno }"><br>
+				<label>사업장전화번호</label><input type="text" name="storeTelno" value="${buser.storeTelno }"><br>
+				<label>사업자등록번호</label><input type="text" name="brno" value="${buser.brno }"><br>
+			</form>
+			<div>
+			<div class="uploadDiv">
+				<input type="file" name="uploadFile">
+			</div>
+			<div class="uploadResult">
+				<ul>
+				</ul>
+			</div>
+				<button type="button" class="regbtn">신청하기</button>
+				<button type="button" class="listbtn">목록으로</button>
+			</div>
+		
+		<div class="bigPictureWrapper">
+			<div class="bigPicture">
+			</div>
+		</div>
+		</div>
+		
 	</div>
-	<div class="uploadResult">
-		<ul>
-		</ul>
-	</div>
-		<button type="button" class="regbtn">신청하기</button>
-		<button type="button" class="listbtn">목록으로</button>
-	</div>
-
 </div>
+</main>	   
 
-<div class="bigPictureWrapper">
-	<div class="bigPicture">
-	</div>
-</div>
 
 
 </body>

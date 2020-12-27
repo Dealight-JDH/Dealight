@@ -16,72 +16,123 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
 <script src="/resources/js/Rater.js"></script>
+<style>
+	.revw_wrapper{
+		    margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: 100%;
+            padding: 20px 0;
+	}
+	.modal_top_revw{
+		height: auto;
+	}
+	.border{
+		height: 20px;
+		border-bottom: 1px #eeeeef solid;
+	}
+</style>
 </head>
 <body>
-<main class="mypage_wrapper">
+
+<main>
+        <div class="mypage_wrapper">
         <%@include file="/WEB-INF/views/includes/mypageSidebar.jsp" %>
-        <div class="mypage_content">
-            <div class="content_head">
-                <h2>마이 리뷰 리스트<span>작성한 리뷰를 보여줍니다.</span></h2>
-                <a href="/dealight/mypage/review/">작성 가능한 서비스 이력 보기</a>
-            </div>
-            <div class='total'>
-            		<h2>유저 아이디 : ${userId}</h2>
-            		<h2>리뷰 개수 : ${countRevw }</h2>
-            		<h2>예약 횟수 : ${countRsvd }</h2>
-            		<h2>웨이팅 횟수 : ${countWait }</h2>
-            		<h2>딜라이트 이용 개수 : ${countTotal }</h2>
-					<h2>마이 리뷰 리스트</h2>
-            </div>
-            <div class="content_main">
-				<div id="revwWrapper">
-					<div class="revw_list">
-						<c:if test="${empty writtenList}">
+        
+        <div class="mypage_right">
+                <div class="mypage_main_header">
+                    <div class="main_header_title">마이 리뷰 리스트</div>
+                    <div class="main_header_subtitle">작성한 리뷰를 보여줍니다.</div>
+                    <a href="/dealight/mypage/review/">작성 가능한 서비스 이력 보기</a>
+                </div>
+                <div class="mypage_main_content">
+                                    <div class="mypage_main_sub">
+                        <div>
+                            <span class="main_tit">리뷰 개수</span>
+                            <span class="main_value">${countRevw } 개</span>
+                        </div>
+                        <div>
+                            <span class="main_tit">예약 횟수</span>
+                            <span class="main_value">${countRsvd } 회</span>
+                        </div>
+                        <div>
+                            <span class="main_tit">웨이팅 횟수</span>
+                            <span class="main_value">${countWait } 회</span>
+                        </div>
+                        <div>
+                            <span class="main_tit">총 이용 횟수</span>
+                            <span class="main_value">${countTotal } 회</span>
+                        </div>
+                    </div>
+                    <div class="mypage_main_board">
+	                    <c:if test="${empty writtenList}">
 							작성한 리뷰가 없습니다.
 						</c:if>
 						
 						<c:if test="${not empty writtenList}">
+			                <div class="revw_wrapper">
 							<c:forEach items="${writtenList}" var="revw">
-							<div>
-								==================================================
-								<h5>매장번호 : <span class="store_id">${revw.storeId}</span></h5>
-								<h5>리뷰 번호 : ${revw.revwId}</h5>
-								<h5>매장 이름 : ${revw.storeNm}</h5>
-								<c:if test="${revw.waitId == -1 }"><h5>예약 번호 : <span class="rsvd_id">${revw.rsvdId}</span></h5></c:if>
-								<c:if test="${revw.rsvdId == -1 }"><h5>웨이팅 번호 : ${revw.waitId}</h5></c:if>
-								<h5>회원 아이디 : ${revw.userId }</h5>
-								<h5>리뷰 내용 : ${revw.cnts }</h5>
-								<h5>평점 : ${revw.rating }</h5>
-								<div class='rating' data-rate-value='${revw.rating }'></div>
-								<h5>답글 내용 : ${revw.replyCnts }</h5>
-								<h5>답글 등록 날짜 : ${revw.replyRegDt }</h5>
-								<c:if test="${not empty revw.imgs}">
-									<c:forEach items="${revw.imgs}" var="img">
-									------------------------------------------
-										<input class="revw_id_list" hidden value="${img.revwId}">
-										<ul class='revw_imgs_${img.imgSeq}'></ul>
-										<h5>리뷰 번호 : ${img.revwId}</h5>
-										<h5>사진 일련 번호 : ${img.imgSeq}</h5>
-										<h5>파일 이름 : ${img.fileName}</h5>
-										<h5>uuid : ${img.uuid}</h5>
-										<h5>upload path : ${img.uploadPath}</h5>
-										<h5>이미지 여부 : ${img.image}</h5>
-									</br>
-									</c:forEach>
-								</c:if>
-								<c:if test="${revw.waitId == -1 }">
-									<button class="btn_rsvd_dtls">예약 상세 보기</button>
-								</c:if>
-								<button class="btn_store_info">매장 정보 보기</button>
-								</br>
-								</div>
-							</c:forEach>
-						</c:if>
-					</div>
-				</div>
+										<div class='modal_top_revw'>
+											<div class='revw_reg_wrapper'>
+												<div class='revw_store_info'>
+													<div class='revw_store_name'>${revw.storeNm}</div>
+													<div class='revw_rsvd_id'>
+														<span>리뷰 등록 날짜 : ${revw.regdate}</span>
+													</div>
+												</div>
+												<div class='revw_info_wrapper' action='/dealight/mypage/review/register' method='post'>
+													<div class='revw_rate_wrapper'>
+														<div class='rating' data-rate-value='"+revw.rating+"'></div>
+													</div>
+													<div class='revw_cnts_textarea'>
+														<textarea cols='30' row='20' name='cnts' readonly>${revw.cnts}</textarea>
+													</div>
+													<input name='rating' id='rate_input' hidden>
+													<c:if test="${revw.imgs != null}">
+														<div class='revw_img_box'>
+															<div class='revw_img_wrapper'>
+														<c:forEach items="${revw.imgs}" var="img">
+															<c:if test="${img.fileName != null}">
+																<img src='/display?fileName=${img.uploadPath}/s_${img.uuid}_${img.fileName}'>
+															</c:if>
+														</c:forEach>
+														</div>
+														</div>
+													</c:if>
+													<c:if test="${revw.replyCnts != null}">
+														<div class='reply_wrapper'>
+															<div class='reply_item'>
+																<div class='reply_item_icon'>
+																	<i class='fas fa-reply'></i>
+																	<div class='reply_item_name'>${revw.storeNm}</div>
+																	<div class='reply_item_date'>${revw.replyRegDt}</div>
+																</div>
+															<div class='reply_cnts_wrapper'>
+																<div class='reply_cnts'>
+																	${revw.replyCnts}
+																</div>
+															</div>
+														</div>
+														</div>
+													</c:if>
+												</div>
+												<div class="border">
+												
+												</div>
+											</div>
+										</div>
+	                        	</c:forEach>
+			                </div>
+                        </c:if>
+                    </div>
+			<!-- end pagination -->
+                </div>
             </div>
-            <!-- pagination -->
-			<div class='pull-right'>
+        </div> <!-- end mypage wrapper -->
+                    <!-- pagination -->
+			<div class='pull-right panel-footer'>
 				<ul class='pagination'>
 					<c:if test="${pageMaker.prev}">
 						<li class='paginate_button previous'>
@@ -106,8 +157,6 @@
 				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 				<input type='hidden' name='amount' value = '${pageMaker.cri.amount}'>
 			</form>
-			<!-- end pagination -->
-        </div>
     </main>
     
     <div id="myModal" class="modal">

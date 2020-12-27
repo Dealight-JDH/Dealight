@@ -48,5 +48,7 @@ public class WaitVO {
     private int revwStus = 0;
     private int waitTot;
     private String strWaitRegTm;
+    private String storeRepImg;
+    private String storeNm;
     
 }

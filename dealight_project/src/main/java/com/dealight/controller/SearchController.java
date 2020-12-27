@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.dealight.domain.SearchDTO;
+import com.dealight.service.HtdlService;
 import com.dealight.service.SearchService;
 
 import lombok.AllArgsConstructor;
@@ -14,13 +15,13 @@ import lombok.extern.log4j.Log4j;
 //현중
 @Controller
 @Log4j
-//@RequestMapping("/dealight/search/")
+@RequestMapping("/dealight/*")
 @AllArgsConstructor
 public class SearchController {
 
+	private HtdlService hService;
 	
-	
-	@GetMapping("/dealight/search/")
+	@GetMapping("/search")
 	public String list(SearchDTO search, Model model) {
 		
 		//searchDTO 유효성검사를 해줘야한다.
@@ -30,5 +31,10 @@ public class SearchController {
 		model.addAttribute("search", search);
 		
 		return "dealight/search/map";
+	}
+	
+	@GetMapping("/dealight")
+	public void getHtdl(Model model) {
+		model.addAttribute("htdl", hService.readMainHtdlList());
 	}
 }

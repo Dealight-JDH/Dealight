@@ -279,10 +279,6 @@ public class UserController {
 		return false;
 	}
 
-	// main page 불러오기
-	@GetMapping("/dealight")
-	public void dealight() {
-	}
 
 	// 모든 회원리스트 불러오기(관리자용)
 	@GetMapping("/list")

@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.dealight.domain.BStoreVO;
 import com.dealight.domain.Criteria;
 import com.dealight.domain.LikeVO;
+import com.dealight.domain.StoreVO;
 
 public interface LikeMapper {
 	
@@ -18,6 +20,8 @@ public interface LikeMapper {
 	List<LikeVO> findListByUserId(String userId);
 	
 	List<LikeVO> findListWithPagingByUserId(@Param("userId") String userId,@Param("cri") Criteria cri);
+	
+	List<StoreVO> findStoreListWithPagingByUserId(@Param("userId") String userId,@Param("cri") Criteria cri);
 	
 	List<LikeVO> findListByStoreId(Long storeId);
 	

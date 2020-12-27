@@ -16,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.Criteria;
 import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlVO;
@@ -171,5 +172,15 @@ public class HtdlServiceTests {
 		
 		log.info(list);
 		
+	}
+	
+	@Test
+	public void findHtdlWithRsltByStoreIdTest1() {
+		
+		Long storeId = 1L;
+		int pageNum = 1;
+		int amount = 10;
+		Criteria cri = new Criteria(1,10);
+		service.findHtdlWithRsltByStoreId(storeId, cri);
 	}
 }

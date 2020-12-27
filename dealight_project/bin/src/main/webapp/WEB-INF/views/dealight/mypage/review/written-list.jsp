@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
+<script src="/resources/js/Rater.js"></script>
 </head>
 <body>
 <main class="mypage_wrapper">
@@ -51,6 +52,7 @@
 								<h5>회원 아이디 : ${revw.userId }</h5>
 								<h5>리뷰 내용 : ${revw.cnts }</h5>
 								<h5>평점 : ${revw.rating }</h5>
+								<div class='rating' data-rate-value='${revw.rating }'></div>
 								<h5>답글 내용 : ${revw.replyCnts }</h5>
 								<h5>답글 등록 날짜 : ${revw.replyRegDt }</h5>
 								<c:if test="${not empty revw.imgs}">
@@ -146,6 +148,16 @@ $(document).ready(function() {
 		actionForm.find("input[name='pageNum']").val($(this).attr("href"));
 		actionForm.submit();
 	});
+	
+	/* Rater.js 로직*/
+    $(".rating").rate({
+        max_value: 5,
+        step_size: 0.5,
+        initial_value: 3,
+        selected_symbol_type: 'utf8_star', // Must be a key from symbols
+        cursor: 'default',
+        readonly: true,
+    });
 	
     /*get 함수*/
 	// 예약의 '예약상세'를 가져온다.
@@ -293,6 +305,7 @@ $(document).ready(function() {
     		strStoreInfo += "<li>매장 좋아요 수 : "+store.eval.likeTotNum+"</l1>";
     		strStoreInfo += "<li>매장 리뷰 수 : "+store.eval.revwTotNum+"</l1>";
     		strStoreInfo += "<li>매장 평균 평점 : "+store.eval.avgRating+"</l1>";
+    		strStoreInfo += "<div class='rating' data-rate-value='"+store.eval.avgRating+"'></div>";
     		strStoreInfo += "<li>매장 주소 : "+store.loc.addr+"</l1><br>";
        		
        		modal.find("#map").css("display", "block");
@@ -315,6 +328,16 @@ $(document).ready(function() {
        		marker.setMap(map);
        		
        		storeInfoUL.html(strStoreInfo);
+       		/* Rater.js 로직*/
+	        $(".rating").rate({
+	            max_value: 5,
+	            step_size: 0.5,
+	            initial_value: 3,
+	            selected_symbol_type: 'utf8_star', // Must be a key from symbols
+	            cursor: 'default',
+	            readonly: true,
+	        });
+       		
     	    $(".btn_like_pick").on("click",likeAddHandler);
     	    $(".btn_like_cancel").on("click",likeRemoveHandler);
        		

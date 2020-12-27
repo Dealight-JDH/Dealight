@@ -16,9 +16,9 @@
             <div class="footer_container_right">
                 <div class="footer_list_wrapper"><ul class="footer_list">
                     <li><a href="#">딜라이트 소개</a></li>
-                    <li><a href="#">사업자 등록</a></li>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">QNA</a></li>
+                    <li><a href="/dealight/mypage/bizauth/list">사업자 등록</a></li>
+                    <li><a href="/dealight/custservice/">FAQ</a></li>
+                    <li><a href="/dealight/custservice/qnalist">QNA</a></li>
                     <li><a href="#">이용약관</a></li>
                     <li><a href="#">이용안내</a></li>
                 </ul></div>

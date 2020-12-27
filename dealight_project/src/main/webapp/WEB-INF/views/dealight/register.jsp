@@ -267,8 +267,7 @@
     }
 
     input[type=checkbox]:checked+.ico{
-        /* background: url(https://res.kurly.com/pc/service/common/2006/ico_checkbox_checked.svg) no-repeat 50% 50%;
-         */
+        
         background: url(/resources/img/check_circle_small.png) no-repeat 50% 50%;
         background-size: 24px 24px;
     }

@@ -60,7 +60,7 @@ public class AjaxController {
 		Criteria cri = new Criteria(pageNum, amount);
 		int total = likeService.getLikeTotalByUserId(userId, cri);
 
-		dto.setLikeList(likeService.findListWithPagingByUserId(userId, cri));
+		//dto.setLikeList(likeService.findListWithPagingByUserId(userId, cri));
 		dto.setTotal(total);
 		dto.setPageMaker(new PageDTO(cri,total));
 

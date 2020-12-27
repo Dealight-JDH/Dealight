@@ -1,62 +1,90 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"   pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
-<!-- 현중 -->
+    <%@include file="../../../includes/mainMenu.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>사업자등록목록</title>
-<style type="text/css">
-.container {
-  border: 2px solid #ccc;
-  background-color: #eee;
-  border-radius: 5px;
-  padding: 16px;
-  margin: 16px 0;
+<title>FAQ</title>
+<link rel="stylesheet" href="/resources/css/custservice.css" type ="text/css" />
+<link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+.mypage_main_sub > div{
+	width : 100%;
 }
-
-/* Clear floats after containers */
-.container::after {
-  content: "";
-  clear: both;
-  display: table;
+.btn_like_cancel{
+	color : tomato;
+	cursor: pointer;
+}
+.btn_like_cancel:hover{
+	opacity: 0.7;
 }
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-
-<h1>사업자등록확인</h1>
-
-<c:forEach items="${list}" var="buser">
-	<div class="container">
-		<div class="buserText">
-			<a class="move" href="<c:out value='${buser.brSeq }'/>">
-				<label>접수번호 : </label><c:out value="${buser.brSeq }"/><br>
-				<label>매장명 : </label><c:out value="${buser.storeNm }"/><br>
-				<label>접수날짜 : </label><fmt:formatDate pattern="yyyy-MM-dd" value="${buser.regdate }"/><br>
-				<label>진행상태 : </label><c:out value="${buser.brJdgStusCd }"/><br>
-			</a>
-		</div>
-		<div class="buserBtn">
-			<c:choose>
-				<c:when test="${buser.brJdgStusCd eq 'C'}">
-					<button class="managebtn" data-oper="manage" data-brseq="<c:out value='${buser.brSeq }'/>">
-						매장관리
-					</button>
-				</c:when>
-				<c:when test="${buser.brJdgStusCd eq 'F'}">
-					<button class="requestbtn" data-oper="request" data-brseq="${buser.brSeq }">
-						재심사요청하기
-					</button>
-				</c:when>
-			</c:choose>
+<main>
+	<div class="mypage_wrapper">
+<%@include file="/WEB-INF/views/includes/custserviceSidebar.jsp" %>
+		<div class="box-container flex-column">
+		    <div class="mypage_main_header">
+		        <div class="main_header_title">사업자등록</div>
+		        <div class="main_header_subtitle">매장을 등록해주세요.</div>
+		    </div>
+        		<button id="regbtn" class="registerbtn" data-oper="register" style="align-self: flex-start; margin:20px;">사업자등록하기</button>
+		     <div class="contents-wrapper flex-column">
+			     <c:forEach items="${list}" var="buser">
+			     	<div class="rsvd_wrapper" style="height:100px; padding:0;">
+	                    <div class="css_rsvd_box">
+	                        <div class="rsvd_cnts">
+	                            <div class="rsvd_cnts_wrapper">
+	                                
+	                                <div class="cnts">
+	                                	<div>
+	                                		<span class="rsvd_cnts_tit"><a class="move" href="<c:out value='${buser.brSeq }'/>">접수번호</a></span>
+	                                        <span class="rsvd_cnts_val">${buser.brSeq }</span>
+	                                	</div>
+	                                    <div>
+	                                        <span class="rsvd_cnts_tit">매장명</span>
+	                                        <span class="rsvd_cnts_val">${buser.storeNm }</span>
+	                                    </div>
+	                                </div>
+	                                <div class="cnts">
+	                                	<div>
+	                                		<span class="rsvd_cnts_tit">접수날짜</span>
+	                                        <span class="rsvd_cnts_val"><fmt:formatDate pattern="yyyy-MM-dd" value="${buser.regdate }"/></span>
+	                                	</div>
+	                                    <div>
+	                                        <span class="rsvd_cnts_tit">진행상태</span>
+	                                        <span class="rsvd_cnts_val">${buser.brJdgStusCd }</span>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <div class="rsvd_btn_box">
+	                                <c:choose>
+										<c:when test="${buser.brJdgStusCd eq 'C'}">
+											<button class="managebtn" data-oper="manage" data-brseq="<c:out value='${buser.brSeq }'/>">
+												매장관리
+											</button>
+										</c:when>
+										<c:when test="${buser.brJdgStusCd eq 'F'}">
+											<button class="requestbtn" data-oper="request" data-brseq="${buser.brSeq }">
+												재심사요청하기
+											</button>
+										</c:when>
+									</c:choose>
+	                            </div>
+	                        </div>
+	                    </div>
+	            	</div>
+	        	</c:forEach>
+            </div>
 		</div>
 	</div>
-</c:forEach>
-<button id="regbtn" class="registerbtn" data-oper="register" >사업자등록하기</button>
+</main>
+
+
 <!-- 버튼제어 폼 -->
 <form action="/dealight/mypage/bizauth/modify" id="operForm" method="post">
 	<input type="hidden" id="brSeq" name="brSeq" value="" >
@@ -124,5 +152,7 @@ window.onload = function(){
 }
 
 </script>
+<%@include file="/WEB-INF/views/includes/mainFooter.jsp" %>
+
 </body>
 </html>

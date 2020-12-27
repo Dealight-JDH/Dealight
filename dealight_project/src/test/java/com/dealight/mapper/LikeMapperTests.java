@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.Criteria;
 import com.dealight.domain.LikeVO;
+import com.dealight.domain.StoreVO;
 
 import lombok.extern.log4j.Log4j;
 
@@ -132,6 +133,23 @@ public class LikeMapperTests {
 		
 		log.info("result.............. : " + result);
 		
+	}
+	
+	@Test
+	public void findStoreListWithPagingByUserIdTest1() {
+		
+		String userId = "aaaa";
+		int pageNum = 1;
+		int amount = 5;
+		
+		Criteria cri = new Criteria(pageNum,amount);
+		
+		List<StoreVO> list = mapper.findStoreListWithPagingByUserId(userId,cri);
+		
+		list.stream().forEach(store -> {
+			log.info("store : "+store);
+			log.info("store name : "+store.getStoreNm());
+		});
 	}
 
 }
