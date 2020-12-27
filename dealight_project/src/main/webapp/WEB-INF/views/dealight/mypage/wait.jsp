@@ -69,15 +69,14 @@
 													<span class="rsvd_cnts_val">${wait.waitPnum }</span>
 	                                            </div>
 	                                            <div>
-	                                                <span class="rsvd_cnts_tit">웨이팅 상태</span>
 	                                                <c:if test="${wait.waitStusCd eq 'W'}">
-	                                                	<span class="rsvd_cnts_val" style="color:blue;">현재 웨이팅</span>
+	                                                	<span class="rsvd_cnts_val wait_stus_cd" style="color:blue;">웨이팅</span>
 	                                                </c:if>
 	                                                <c:if test="${wait.waitStusCd eq 'E'}">
-	                                                	<span class="rsvd_cnts_val">입장</span>
+	                                                	<span class="rsvd_cnts_val wait_stus_cd">입장</span>
 	                                                </c:if>
 	                                                <c:if test="${wait.waitStusCd eq 'P'}">
-	                                                	<span class="rsvd_cnts_val" style="color:red;">노쇼</span>
+	                                                	<span class="rsvd_cnts_val wait_stus_cd" style="color:red;">노쇼</span>
 	                                                </c:if>
 	                                            </div>
 	                                        </div>

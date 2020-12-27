@@ -256,6 +256,18 @@
             font-size: 18px;
             font-weight: 400;
         }
+        .wait_stus_cd{
+        	border: 1px #eeeeef solid;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            margin-right: 10px;
+            padding: 1px 4px;
+            font-weight: bold;
+            margin-top:5px;
+        }
         .cnts{
             width: 300px;
         }

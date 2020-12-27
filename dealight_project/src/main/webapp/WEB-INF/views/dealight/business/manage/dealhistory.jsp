@@ -325,7 +325,7 @@
                                
                         <div class="htdl_bef_history_tit">과거 핫딜 내역</div>
                         
-                        <div class="htdl_bef_history_wrapper">
+	                        <div class="htdl_bef_history_wrapper">
                         <c:if test="${not empty htdlList}">
                         	<c:forEach items="${htdlList}" var="htdl">
 	                            <div class="htdl_bef_history_row">
