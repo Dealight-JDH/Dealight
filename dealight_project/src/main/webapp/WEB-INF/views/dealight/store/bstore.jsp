@@ -261,10 +261,10 @@
 					                        <span> <fmt:formatNumber value="${store.bstore.htdl.dcRate}" type="percent" groupingUsed="false" /></span>
 					                    </div>
 					                    <div class="card-price card-afterPrice">
-					                        <span>₩${store.bstore.htdl.befPrice }</span>
+					                        ₩<span>${store.bstore.htdl.befPrice }</span>
 					                    </div>
 					                    <div class="card-price card-beforePrice">
-					                        <span>₩${store.bstore.htdl.befPrice - store.bstore.htdl.ddct }</span>
+					                        ₩<span>${store.bstore.htdl.befPrice - store.bstore.htdl.ddct }</span>
 					                    </div>
 					                </div>
 					                <div class="card-body">
@@ -284,9 +284,9 @@
 					                        <div style="width: 40px; align-self: flex-start;">소개 : </div><span>${store.bstore.htdl.intro }</span>
 	                                    </div>
 	                                </div>
-	                            <button class="nav-btn" id="purchase">
-	                                구매하기
-	                            </button>
+		                            <button class="nav-btn" id="purchase" data-id="${store.bstore.htdl.htdlId }">
+		                                구매하기
+		                            </button>
 	                            </div>
 	                        </div>
                         </c:if>
@@ -423,15 +423,58 @@
 				$("#htdl").slideToggle();
 			});
 			//핫딜 구매하기 버튼 클릭--종우
-			/* $("#purchase").on("click", function(e){
+			$("#purchase").on("click", function(e){
 				let htdlContainer = $("#htdl-container");
-				
-				if(htdlContainer[0].hasChildNodes()){
+
+				const menus = $("#menus")
+	    		//요소가 이미추가되어있나 확인
+	    		let seq = $(this).prev().find(".card-menu span").html();
+	    		if($("#menus").find("div[data-value='" + seq +"']").length != 0){
 					alert("핫딜은 하나만 구매가능합니다.")
-					return;
-				}
+				 	return;
+	    		}
+	    		console.log(seq)
+	    		//처음추가되는 상황일때 총액을 보여준다.
+	    		if(menus.find(".menu-container").length == 0){
+	    			$("#total").parent().show();
+	    		}
+	    		let price = $(this).siblings(".card-img").find(".card-beforePrice span").html()
+	    		console.log($(this).siblings(".card-img").find(".card-beforePrice span").html())
+	    		let str = "";
+	    		str += '<div class="menu-container flex" data-value="'+seq+'" data-htdl="'+ $(this).data("id") +'">'
+	    		str += '<div class="menu-header center">'
+	    		str += seq + '<br>(' + price + '원)</div>'
+	    		str += '<div class="menu-qty flex center" data-qty="1" data-price="'+ price +'">'
+	    		str += '<div class="qty center">1</div>'
+	    		str += '<div class="qty-btn flex-column">'
+	    		str += '</div></div>'
+	    		str += '<div class="cancle center"><i class="fas fa-times" style="color: #f43939;"></i></div></div>'
+	    		
+	    		$("#menus").append(str);
+	    		
+    			//메뉴이름 수량 +,-
+    			//이벤트 +,-,x 이벤트 등
+	    		let target = $("#menus").find("div[data-value='" + seq +"']")
+	    		
+	    		//메뉴를 추가한뒤 total에 가격추가
+	    		$("#total").text( (price -0) + ($("#total").text()-0))
+	    		
+	    		//cancle
+	    		target.on("click", ".cancle", target,function(e){
+	    			console.log("cancle")
+	    			let menu = $(this).prev();
+	    			console.log(menu.data("price")*menu.data("qty"))
+	    			$("#total").text($("#total").text()-menu.data("price")*menu.data("qty"))
+	    			
+	    			target.remove();
+	    			if(menus.find(".menu-container").length == 0){
+		    			$("#total").parent().hide();
+		    		}
+	    		});
 				$("#htdl").slideToggle();
-			})  */
+			})  
+			
+			
 			//
 			let result = '<c:out value="${result }"/>';
 			checkModal(result);
@@ -522,10 +565,10 @@
 						    
 		    	let menus = $("#menus")
 		    	//로그인 확인하고
-		    	/* if(paramUserId === null){
+		    	if(paramUserId === null){
 					alert("로그인 후 서비스를 이용해 주세요.");
 					return;
-				} */
+				}
 		    	//메뉴가 있는지 확인
 		    	
 		    	if (menus.find(".menu-container").length == 0) {
@@ -560,14 +603,26 @@
 					});
 				} */
 		    	
-		    	//form에 요소들 추가
+		    	//form에 요소들 추가  시간, 인원, 메뉴리스트, 핫딜번호, 사용자, 매장번호
 		    	menus.find(".menu-container").each(function(index, item){
 			    	//핫딜 메뉴가 있는지 확인
-			    		//있으면 추가
-					//if(paramHtdlId != null){
-					//	const htdlIdInput = '<input type="hidden" name="htdlId" value="'+paramHtdlId+'">';
-					//	reserveFormObj.append(htdlIdInput);
-					//}
+			    	if($(item).data("htdl") != null){
+			    		
+			    		isHtdlPayExistChecked({userId : paramUserId, htdlId: $(item).data("htdl")},function(result){
+							
+							console.log("===========hotdeal pay check: "+ result);
+							isHtdlPayHistory = result;
+							
+							if(!isHtdlPayHistory && paramHtdlId != null){
+								alert('이미 핫딜 상품을 구매하셨습니다. 감사합니다');
+								return;
+							}
+							
+						});
+			    		
+						const htdlIdInput = '<input type="hidden" name="htdlId" value="'+$(item).data("htdl") +'">';
+			    		actionForm.append(htdlIdInput);
+			    	}
 		    			
 		    		//메뉴이름
 	    			const menuNm = '<input type="hidden" name=menu['+index+'].name value="'+$(item).data("value")+'">';
@@ -604,7 +659,8 @@
 						alert('선택하신 인원 및 시간은 예약이 불가합니다. 죄송합니다.');
 						return;
 					}
-				});
+				}); 
+		    });//예약하기
 		    function isRsvdAvailChecked(param, callback, error){
 				
 				let storeId = param.storeId;
@@ -626,7 +682,6 @@
 						}
 					});
 			}
-		    });//예약하기
 		}
 	    
 	    function selectMenu(menu,form){
