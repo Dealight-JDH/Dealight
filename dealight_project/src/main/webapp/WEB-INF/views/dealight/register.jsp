@@ -460,8 +460,8 @@
         /* The Close Button */
         .close_modal {
             position : absolute;
-            right : 35px;
-            top : 18px;
+            right : 40px;
+            top : 35px;
             display : inline-block;
             margin : 0 0;
             color: #999;

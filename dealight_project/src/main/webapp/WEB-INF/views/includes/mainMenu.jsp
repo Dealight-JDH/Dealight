@@ -280,7 +280,7 @@
             		<div class="account-dropdown-content">
 						<sec:authorize access="isAnonymous()">
 								<div class="account_cnts"><a href="/dealight/login">로그인</a></div>
-								<div class="account_cnts"><a href="/dealight/policies">회원가입</a></div>
+								<div class="account_cnts"><a href="/dealight/register">회원가입</a></div>
 						</sec:authorize>
 						<sec:authorize access="isAuthenticated()">
 							<sec:authorize access="hasRole('ROLE_USER')">

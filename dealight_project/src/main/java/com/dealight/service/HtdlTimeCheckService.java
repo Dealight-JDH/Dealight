@@ -41,54 +41,54 @@ public class HtdlTimeCheckService {
 	private List<HtdlVO> lists = null;
 	ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(3);
 	
-//	@PostConstruct
-//	public void postConstruct() throws ParseException {
-//		
-//		//서버 구동시 한번만 조회하여 데이터 가져오기
-//		getList();
-//		log.info(Thread.currentThread().getName());
-//		log.info("------postConstruct");
-//
-//		//스케쥴러 실행
-//		exec.scheduleAtFixedRate(new Runnable() {
-//			
-//			@Override
-//			@Scheduled(fixedDelay = 3000)
-//			public void run() {
-//				// TODO Auto-generated method stub
-//				try {
-//					log.info("------check======");
-//					//서비스 시작
-//					service(lists);
-//					log.info("------check"+ Thread.currentThread().getName()+"---------");
-//				}catch(Exception e){
-//					e.printStackTrace();
-//					exec.shutdown();
-//				}
-//			}
-//			
-//		}, 0, 3, TimeUnit.SECONDS); 
-//	}
-//	
-//	@PreDestroy
-//	public void preDestroy() {
-//		log.info("============predestroy");
-//		try {
-//			exec.shutdown();
-//			if(!exec.awaitTermination(1, TimeUnit.SECONDS)) {
-//				log.info("아직 처리중인 작업 존재");
-//				exec.shutdownNow();
-//				log.info("작업 강제 종료");
-//				
-//			}
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			exec.shutdownNow();
-//			
-//		}
-//		log.info("스케줄러 종료");
-//	}
+	@PostConstruct
+	public void postConstruct() throws ParseException {
+		
+		//서버 구동시 한번만 조회하여 데이터 가져오기
+		getList();
+		log.info(Thread.currentThread().getName());
+		log.info("------postConstruct");
+
+		//스케쥴러 실행
+		exec.scheduleAtFixedRate(new Runnable() {
+			
+			@Override
+			@Scheduled(fixedDelay = 3000)
+			public void run() {
+				// TODO Auto-generated method stub
+				try {
+					log.info("------check======");
+					//서비스 시작
+					service(lists);
+					log.info("------check"+ Thread.currentThread().getName()+"---------");
+				}catch(Exception e){
+					e.printStackTrace();
+					exec.shutdown();
+				}
+			}
+			
+		}, 0, 3, TimeUnit.SECONDS); 
+	}
+	
+	@PreDestroy
+	public void preDestroy() {
+		log.info("============predestroy");
+		try {
+			exec.shutdown();
+			if(!exec.awaitTermination(1, TimeUnit.SECONDS)) {
+				log.info("아직 처리중인 작업 존재");
+				exec.shutdownNow();
+				log.info("작업 강제 종료");
+				
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			exec.shutdownNow();
+			
+		}
+		log.info("스케줄러 종료");
+	}
 	
 	//핫딜을 등록할떄마다 리스트에 추가
 	public void addHtdl(HtdlVO vo) {
