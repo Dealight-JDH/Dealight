@@ -115,6 +115,23 @@
     	align-items: center;
     	padding : 3px 5px;
     }
+    .modify_la_in .custom_select {
+    	border : 1px rgba(118, 118, 118) solid;
+    	margin : 0;
+    	width: 15%;
+    	height: 100%;
+    	display: flex;
+    	flex-direction: row;
+    	justify-content: flex-start;
+    	align-items: center;
+    	padding : 3px 5px;
+    }
+    .custom_select select {
+    	width: 100%;
+    	border: 0;
+    	margin: 0;
+    	padding: 0;	
+    }
     #btnSubmit{
     	margin-left: 15px;
     	align-self: flex-start;
@@ -174,7 +191,8 @@
             align-items: flex-start;
             width: 100%;
             padding: 20px 0;
-	}
+		}
+
         .revw_reg_wrapper{
             border: 1px solid #eeeeef;
             display: flex;
@@ -188,6 +206,9 @@
         .revw_reg_wrapper > div {
             /*border:  1px black solid;*/
             margin: 5px 0;
+        }
+        .revw_reg_wrapper .revw_store_info{
+        	margin-top: 20px;
         }
         .revw_store_info{
             width: 90%;
@@ -423,28 +444,49 @@
 					<input name="telno" value="${allStore.telno}" required></br>
 				</div>
 				<div class="modify_la_in">
-					<label id="openTm">시작시간</label>
-					<input name="openTm" value="${allStore.openTm}" required></br>
-				</div>
-				<div class="modify_la_in">
-					<label id="closeTm">마감시간</label>
-					<input name="closeTm" value="${allStore.closeTm}" required></br>
-				</div>
-				<div class="modify_la_in">
 					<label id="buserId">사업자 회원 아이디</label>
 					<input name="buserId" value="${allStore.buserId}" readonly></br>
 				</div>
 				<div class="modify_la_in">
-					<label id="breakSttm">브레이크타임시작시간</label>
-					<input name="breakSttm" value="${allStore.breakSttm}"></br>
+					<label>시작시간</label>
+					<!-- <input name="openTm" value="${allStore.openTm}" required> -->
+					<div id="openTm" class='custom_select'>
+	                     <select  name="openTm">
+	                     </select>
+	                 </div>
 				</div>
 				<div class="modify_la_in">
-					<label id="breakEntm">브레이크타임마감시간</label>
-					<input name="breakEntm" value="${allStore.breakEntm}"></br>
+					<label>마감시간</label>
+					<!-- <input name="closeTm" value="${allStore.closeTm}" required> -->
+					<div id="closeTm" class='custom_select'>
+	                     <select  name="closeTm">
+	                        <option value=""></option>
+	                     </select>
+	                </div>
 				</div>
 				<div class="modify_la_in">
-					<label id="lastOrdTm">라스트오더 시간</label>
-					<input name="lastOrdTm" value="${allStore.lastOrdTm}"></br>
+					<label>브레이크타임시작시간</label>
+					<!-- <input name="breakSttm" value="${allStore.breakSttm}"> -->
+					<div id="breakSttm" class='custom_select'>
+	                     <select  name="breakSttm">
+	                     </select>
+	                 </div>
+				</div>
+				<div class="modify_la_in">
+					<label>브레이크타임마감시간</label>
+					<!-- <input name="breakEntm" value="${allStore.breakEntm}"> -->
+					<div id="breakEntm" class='custom_select'>
+	                     <select  name="breakEntm">
+	                     </select>
+	                 </div>
+				</div>
+				<div class="modify_la_in">
+					<label>라스트오더 시간</label>
+					<!-- <input name="lastOrdTm" value="${allStore.lastOrdTm}"></br> -->
+					<div id="lastOrdTm" class='custom_select'>
+	                     <select  name="lastOrdTm">
+	                     </select>
+	                 </div>
 				</div>
 				<div class="modify_la_in">
 					<label id="n1SeatNo">1인 테이블 개수</label>
@@ -474,7 +516,7 @@
 					<label id="acmPnum">매장수용인원</label>
 					<input name="acmPnum" value="${allStore.acmPnum}"></br>
 				</div>
-				<button id="btnSubmit" type="submit">제출하기</button>
+				<button id="btnSubmit" type="submit">수정하기</button>
 				<div class="border"></div>
 			</div>
 		<div class="modify_loc_wrapper">
@@ -618,6 +660,43 @@
 <%@include file="../../../../includes/manage_nav_bot.jsp" %>
 <script src="/resources/js/clock.js"></script>
 <script>
+writeTimeBar = function () {
+	
+	let openTm = '${allStore.openTm}',
+		closeTm = '${allStore.closeTm}',
+		breakSttm = '${allStore.breakSttm}',
+		breakEntm = '${allStore.breakEntm}',
+		lastOrdTm = '${allStore.lastOrdTm}'
+		;
+	
+	console.log("open tm : "+openTm);
+	console.log("close tm : "+closeTm);
+	console.log("breake st tm : "+breakSttm);
+	console.log("break en tm : "+breakEntm);
+	console.log("last ord tm : "+lastOrdTm);
+		
+    timeArr = ['입력 전','09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30','22:00'];
+    strTime = "";
+    strTime += "<select>";
+    for(let i = 1; i <= 27; i++){
+        strTime += "<option value='"+timeArr[i]+"'>"+timeArr[i]+"</option>";
+    }
+    strTime += "</select>";
+    
+	document.querySelector("#openTm").innerHTML = strTime;
+	document.querySelector("#closeTm").innerHTML = strTime;
+	document.querySelector("#breakSttm").innerHTML = strTime;
+	document.querySelector("#breakEntm").innerHTML = strTime;
+	document.querySelector("#lastOrdTm").innerHTML = strTime;
+	
+	
+	$("#openTm option[value='"+openTm+"']").attr("selected","selected");
+    $("#closeTm option[value='"+closeTm+"']").attr("selected","selected");
+    $("#breakSttm option[value='"+breakSttm+"']").attr("selected","selected");
+    $("#breakEntm option[value='"+breakEntm+"']").attr("selected","selected");
+    $("#lastOrdTm option[value='"+lastOrdTm+"']").attr("selected","selected");
+}
+writeTimeBar();
 
 const storeId = ${storeId};
 

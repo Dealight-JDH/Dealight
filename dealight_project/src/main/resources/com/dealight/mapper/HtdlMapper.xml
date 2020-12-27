@@ -38,9 +38,14 @@
 			(
 	            SELECT rownum rn,name, store_id,htdl_id, dc_rate,start_tm,end_tm,lmt_pnum,intro,bef_price,ddct,cur_pnum,stus_cd,brch,htdl_img,regdate,updatedate
 			    /*+ INDEX_DESC(tbl_htdl tbl_htdl_pk)*/
+			    FROM
+			    (
+			    SELECT name, store_id,htdl_id, dc_rate,start_tm,end_tm,lmt_pnum,intro,bef_price,ddct,cur_pnum,stus_cd,brch,htdl_img,regdate,updatedate
 			    FROM tbl_htdl
 			    WHERE  store_id = #{storeId}
-			    AND rownum <= #{cri.pageNum} * #{cri.amount}
+			    ORDER BY regdate desc
+			    )
+			    WHERE rownum <= #{cri.pageNum} * #{cri.amount}
 	        ) h, tbl_htdl_rslt hr
 			WHERE rn > (#{cri.pageNum} -1) * #{cri.amount}
 	        AND h.htdl_id = hr.htdl_id

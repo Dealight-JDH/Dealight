@@ -45,7 +45,7 @@
                 <div class="mypage_main_header">
                     <div class="main_header_title">마이 리뷰 리스트</div>
                     <div class="main_header_subtitle">작성한 리뷰를 보여줍니다.</div>
-                    <a href="/dealight/mypage/review/">작성 가능한 서비스 이력 보기</a>
+                    <div class='main_header_link'><a href="/dealight/mypage/review/">작성 가능한 내역 보기</a></div>
                 </div>
                 <div class="mypage_main_content">
                                     <div class="mypage_main_sub">

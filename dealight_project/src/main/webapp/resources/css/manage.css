@@ -1508,6 +1508,7 @@
             justify-content: flex-start;
             align-items: center;
             width: 80%;
+            flex-wrap : wrap;
         }
         .htdl_label_input {
             display: flex;
@@ -1526,6 +1527,7 @@
             flex-direction: row;
             justify-content: flex-start;
             align-items: center;
+            align-self: center;
         }
         .htdl_label_input > input,textarea,select{
             margin: 5px 0;
@@ -1541,9 +1543,10 @@
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: space-between;
         }
         .htdl_reg_btn_box button{
+        	width:45%;
             outline: none;
             background-color:#d32323b6;
             color:white;
@@ -1552,7 +1555,6 @@
             padding: 3px 12px;
             border: 0;
             cursor: pointer;
-            margin-right: 20px;
             font-weight: bold;
             text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.219);
         }

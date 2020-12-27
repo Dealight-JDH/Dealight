@@ -1442,6 +1442,10 @@ let writeTimeBar = function (curTime) {
 	        	strHtdl += "<span>핫딜 제목</span>";
 	        	strHtdl += "<input class='form-control' name='name' placeholder='핫딜 제목'>";
 	        	strHtdl += "</div>";
+	        	strHtdl += "<div class='htdl_label_input htdl_name'>";
+	        	strHtdl += "<span>세트 이름</span>";
+	        	strHtdl += "<input class='form-control' name='setName' placeholder='세트 이름'>";
+	        	strHtdl += "</div>";
 	        	strHtdl += "<div class='htdl_label_input htdl_menu'>";
 	        	strHtdl += "<span>핫딜 메뉴</span>";
 	        	strHtdl += "<div class='htdl_menu_itmes'>";
