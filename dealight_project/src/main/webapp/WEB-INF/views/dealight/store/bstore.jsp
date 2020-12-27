@@ -15,8 +15,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="/resources/css/selectbox.css" type="text/css" />
 <link rel="stylesheet" href="/resources/css/bstore.css">
-<link rel="stylesheet" href="/resources/css/store.css">
-<link rel="stylesheet" href="/resources/css/tab.css">
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <script src="/resources/js/Rater.js"></script>
 </head>
@@ -272,7 +270,6 @@
 					                </div>
 					                <div class="card-body">
 					                    <div class="card-rate">
-					                        <div class="card-rating" data-rate-value=2></div>
 					                        <div class="card-curpnum">
 					                            <span><i class="fas fa-fire"></i></span>
 					                            
@@ -424,10 +421,10 @@
 			
 			//핫딜 중인 상품 클릭 이벤트
 			$("#htdlBtn").click(function() {
-				$("#htdl").slideToggle();
+				$("#htdl").toggle();
 			});
 			//핫딜 구매하기 버튼 클릭--종우
-			$("#purchase").on("click", function(e){
+			/* $("#purchase").on("click", function(e){
 				let htdlContainer = $("#htdl-container");
 				
 				if(htdlContainer[0].hasChildNodes()){
@@ -435,7 +432,7 @@
 					return;
 				}
 				$("#htdl").slideToggle();
-			}) 
+			})  */
 			//
 			let result = '<c:out value="${result }"/>';
 			checkModal(result);
