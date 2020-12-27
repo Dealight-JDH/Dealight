@@ -289,7 +289,7 @@
                                     <div class="htdl_info">
                                         <div>
                                             <span class="htdl_info_ddct_tit">할인율</span>
-                                            <span class="htdl_info_ddct_val">${htdl.dcRate}</span>
+                                            <span class="htdl_info_ddct_val">${htdl.dcRate*100}%</span>
                                             <span class="htdl_info_befprice_tit">할인 전 가격</span>
                                             <span class="htdl_info_befprice_val">${htdl.befPrice}원</span>
                                             <span class="htdl_info_aftprice_tit">할인 후 가격</span>
@@ -339,7 +339,7 @@
 	                                    <div class="htdl_info">
 	                                        <div>
 	                                            <span class="htdl_info_ddct_tit">할인율</span>
-	                                            <span class="htdl_info_ddct_val">${htdl.dcRate}%</span>
+	                                            <span class="htdl_info_ddct_val">${htdl.dcRate*100}%</span>
 	                                            <span class="htdl_info_befprice_tit">할인 전 가격</span>
 	                                            <span class="htdl_info_befprice_val">${htdl.befPrice}원</span>
 	                                            <span class="htdl_info_aftprice_tit">할인 후 가격</span>

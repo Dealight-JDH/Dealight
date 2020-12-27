@@ -98,8 +98,11 @@
 		height: 70%;
 		
 	}
+	.menu_left_wrapper.menu_reg_wrapper{
+		border: 1px #eeeeef solid;
+	}
 	.menu_reg_wrapper.modal_menu{
-		width : 60%;
+		width : 80%;
 	}
 
 	.menu_right_wrapper{
@@ -225,9 +228,16 @@
     	justify-content:flex-start;
     	align-items: center;
     }
+    .menu_la_in > input.reco_menu{
+    	height: 20px;
+    	display: flex;
+    	flex-direction: row;
+    	justify-content:flex-start;
+    	align-items: center;
+    }
     .btn_modify.modal_menu {
     	margin-top:20px;
-    	width: 50%;
+    	width: 45%;
     	align-self: flex-start;
         background-color: #d32323b6;
         color: white;
@@ -237,6 +247,7 @@
         font-weight: bold;
         height: 40px;
         cursor: pointer;
+        margin-right: 5%;
     }
     .btn_modify.modal_menu:hover{
     	opacity: 0.7;
@@ -246,7 +257,7 @@
     }
     .btn_remove.modal_menu {
     	margin-top:20px;
-    	width: 50%;
+    	width: 45%;
     	align-self: flex-start;
         background-color: #d32323b6;
         color: white;
@@ -256,6 +267,10 @@
         font-weight: bold;
         height: 40px;
         cursor: pointer;
+    }
+    #menuForm_modify{
+    	padding: 20px;
+    	border : 1px #eeeeef solid;
     }
 </style>
 </head>
@@ -564,21 +579,31 @@ $(document).ready(function(e){
 		strMenu += "</div>";
 		strMenu += "<div class='menu_la_in'>";
 		strMenu += "<label>추천 여부</label>";
-		strMenu += "<input type='checkbox' name='recoMenu' "+recoCheck+">";
+		strMenu += "<input type='checkbox' name='recoMenu' class='reco_menu' "+recoCheck+">";
 		strMenu += "</div>";
 		strMenu += "<div>";
-		if(imgUrl) strMenu += "메뉴 사진 : <img class='menu_img_mdoal' src='/display?fileName="+encodeURI(thumImgUrl)+"'>";
-		strMenu += "</div>";
 		strMenu += "<div><h2>사진 첨부하기(1개만 가능)</h2></div>";
 		strMenu += "<div class='file_body_modify'>";
 		strMenu += "<div class='form_img_modify'>";
 		strMenu += "<input type='file' id='js_upload' name='uploadFile'>";
 		strMenu += "</div>";
 		strMenu += "<div class='uploadResult_modify'>";
-		strMenu += "<ul></ul></div></div>";
+		strMenu += "<ul>";
+		
+		if(imgUrl){			
+			strMenu += "<li data-imgurl='"+imgUrl+"' data-thumimgurl='"+thumImgUrl+"'><div>";
+			strMenu += "<span> " + imgUrl + "</span>";
+			strMenu += "<button type='button' ";
+			strMenu += "class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+			strMenu += "<img class='menu_img_mdoal' src='/display?fileName="+encodeURI(thumImgUrl)+"'>";
+			strMenu += "</div></li>";
+		}
+		
+		
+		strMenu += "</ul></div></div>";
 		strMenu += "<div class='bigPictureWrapper_modify'><div class='bigPicture_modify'></div></div>";
-		strMenu += "<input hidden name='imgUrl' value='"+imgUrl+"'>";
-		strMenu += "<input hidden name='thumImgUrl' value='"+thumImgUrl+"'>";
+		if(imgUrl) strMenu += "<input hidden name='imgUrl' value='"+imgUrl+"'>";
+		if(imgUrl) strMenu += "<input hidden name='thumImgUrl' value='"+thumImgUrl+"'>";
 		strMenu += "<button data-oper='modify' class='btn_modify modal_menu'>수정</button>";
 		strMenu += "<button data-oper='remove' class='btn_remove modal_menu'>제거</button>";
 		strMenu += "</form>";
@@ -654,9 +679,13 @@ $(document).ready(function(e){
 				$(".uploadResult_modify ul li").each(function(i, obj) {
 					
 					let jobj = $(obj);
-					
-					$("#menuForm_modify").find("input[name='imgUrl']").val(jobj.data("path").replace(new RegExp(/\\/g),"/")+"/"+jobj.data("uuid")+"_"+jobj.data("filename"));
-					$("#menuForm_modify").find("input[name='thumImgUrl']").val(jobj.data("path").replace(new RegExp(/\\/g),"/")+"/"+"s_"+jobj.data("uuid")+"_"+jobj.data("filename"));
+					if(jobj.data("imgurl")){
+						$("#menuForm_modify").find("input[name='imgUrl']").val(jobj.data("imgurl"));
+						$("#menuForm_modify").find("input[name='thumbImgUrl']").val(jobj.data("thumimgurl"));						
+					} else {
+						$("#menuForm_modify").find("input[name='imgUrl']").val(jobj.data("path").replace(new RegExp(/\\/g),"/")+"/"+jobj.data("uuid")+"_"+jobj.data("filename"));
+						$("#menuForm_modify").find("input[name='thumImgUrl']").val(jobj.data("path").replace(new RegExp(/\\/g),"/")+"/"+"s_"+jobj.data("uuid")+"_"+jobj.data("filename"));						
+					}
 					
 				});
 		        	
@@ -776,9 +805,14 @@ $(document).ready(function(e){
 		$(".bigPictureWrapper_modify").on("click",bigImgAniHandler_modify);
 		$(".btn_modify").on("click", inputHandler_modify);
 		$(".btn_remove").on("click", function(e){
+			
+			e.preventDefault();
+			
 			if(confirm("정말로 삭제하시겠습니까?")){
 				formObj_modify.attr("method", "post");
 				formObj_modify.attr("action", "/dealight/business/manage/menu/delete").submit();
+			} else {
+				return;
 			}
 		});
 		
