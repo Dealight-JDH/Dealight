@@ -2,13 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@include file="../../includes/mainMenu.jsp" %>
 <!DOCTYPE html>
-<!-- 다울 -->
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<%@include file="../../includes/mainMenu.jsp" %>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
@@ -421,7 +420,7 @@
 			
 			//핫딜 중인 상품 클릭 이벤트
 			$("#htdlBtn").click(function() {
-				$("#htdl").toggle();
+				$("#htdl").slideToggle();
 			});
 			//핫딜 구매하기 버튼 클릭--종우
 			/* $("#purchase").on("click", function(e){
