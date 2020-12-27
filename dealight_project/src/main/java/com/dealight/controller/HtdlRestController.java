@@ -1,20 +1,21 @@
 package com.dealight.controller;
 
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlPageDTO;
-import com.dealight.domain.HtdlVO;
+import com.dealight.domain.HtdlSearchDTO;
 import com.dealight.service.HtdlService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,11 +32,38 @@ public class HtdlRestController {
 	private final HtdlService service;
 	
 	
+	@GetMapping(value="/get/search/{stusCd}/{page}", produces = {
+			MediaType.APPLICATION_JSON_UTF8_VALUE,
+			MediaType.APPLICATION_FORM_URLENCODED_VALUE
+	})
+	public ResponseEntity<HtdlPageDTO> searchHtdl(@PathVariable String stusCd, @PathVariable int page,
+			@RequestBody HtdlSearchDTO requestDto, BindingResult bindingResult) {
+		if(bindingResult.hasErrors()) {
+			
+		}
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+		Date date = new Date();
+		String sysdate = format.format(date);
+		
+		log.info("htdl search...");
+		
+		log.info("=====================search request: " + requestDto);
+		
+		HtdlCriteria hCri = new HtdlCriteria(page, 9);
+		hCri.setKeyword(requestDto.getRegion());
+//		hCri.setStartTm(sysdate+" "+ requestDto.getStartTm());
+//		hCri.setEndTm(sysdate+" " + requestDto.getEndTm());
+		hCri.setStartTm("2020/11/27 "+requestDto.getStartTm());
+		hCri.setEndTm("2020/11/27 "+requestDto.getEndTm());
+		return new ResponseEntity<>(service.getListPage(stusCd, hCri), HttpStatus.OK);
+		
+	}
+	
 	@GetMapping(value = "/main/{stusCd}/{page}", produces = {
 			MediaType.APPLICATION_JSON_UTF8_VALUE,
 			MediaType.APPLICATION_XML_VALUE
 	})
-	public ResponseEntity<List<HtdlVO>> main(@PathVariable String stusCd, @PathVariable int page) {
+	public ResponseEntity<HtdlPageDTO> main(@PathVariable String stusCd, @PathVariable int page) {
 		
 		//상태에 따른 핫딜 리스트 필터
 //		List<HtdlVO> filterList = service.getList().stream()
@@ -49,7 +77,7 @@ public class HtdlRestController {
 //		List<HtdlVO> lists = service.getList(stusCd, hCri);
 		
 		log.info("hCri: " + hCri);
-		return new ResponseEntity(service.getListPage(stusCd, hCri), HttpStatus.OK);
+		return new ResponseEntity<>(service.getListPage(stusCd, hCri), HttpStatus.OK);
 	}
 	
 	

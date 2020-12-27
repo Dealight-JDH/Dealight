@@ -229,6 +229,7 @@
         cursor: pointer;
         border-radius: 3px;
         outline: none;
+        font-weight: 700;
         z-index: 1;
     }
 
@@ -476,17 +477,23 @@
 						dealBtn.find(".btn_text").text("🔥이미 구매하신 상품입니다.");
 						dealBtn.css("background", "black");
 						dealBtn.prop("disabled", true);
-					}else if(stusCd !== 'A'){
-						dealBtn.find(".btn_text").text("🔥오픈 예정입니다.");
-						dealBtn.css("background", "orange");
-						dealBtn.prop("disabled", true);
-					}else{
-						dealBtn.find(".btn_text").text("🔥딜 하기");
-						dealBtn.css("background", "red");
-						dealBtn.prop("disabled", false);
 					} 
 			 });
 		 }
+		
+		 if(stusCd == 'P'){
+				dealBtn.find(".btn_text").text("🔥오픈 예정입니다.");
+				dealBtn.css("background", "orange");
+				dealBtn.prop("disabled", true);
+		}else if(stusCd == 'I'){
+				dealBtn.find(".btn_text").text("🔥핫딜이 종료되었습니다");
+				dealBtn.css("background", "black");
+				dealBtn.prop("disabled", true);
+		}else{
+			dealBtn.find(".btn_text").text("🔥딜 하기");
+			dealBtn.css("background", "red");
+			dealBtn.prop("disabled", false);
+		}
 		
 
 		$(".js-restaurantBtn").on("click", function(e){

@@ -934,7 +934,7 @@
             </div>
 
 
-                <button id="searchBtn" class="search-btn flex" style="flex-basis: 50px;">
+                <button id="searchBtn" data-oper="search" class="search-btn flex" style="flex-basis: 50px;">
                     <img src="/resources/img/search.svg" alt="" style="width: 24px;">
                     <!-- <i class="fas fa-search" style="color: white;"></i> -->
                 </button>
@@ -1147,10 +1147,13 @@
 	const userId= "<c:out value="${userId}"/>" || null;
 	let ishtdlPayHistory = false;
 	
+	let elapTimeArr = []; //경과시간 배열
+	
 	$(document).ready(function() {
 		
 		console.log("==="+size);
 		showList(paramStusCd);
+		showElapTimeStart();
 		//showListStart(paramStusCd, pageNum); //1초마다 핫딜 리스트를 그린다
 		
 		/* for(var i=0; i< size; i++){
@@ -1287,6 +1290,47 @@
 			let operation = $(this).data("oper");
 			console.log(operation);
 			
+			//핫딜 검색
+			if(operation === 'search'){
+				/* let regionVal = $("#region_input").val();
+				let startTmVal = $("#startTime_input").val();
+				let endTmVal = $("#endTime_input").val(); */
+				/* let region = encodeURIComponent(regionVal);
+				let startTm = encodeURIComponent(startTmVal);
+				let endTm = encodeURIComponent(endTmVal); */
+				/* stusCd: paramStusCd,
+				page: pageNum, */
+				let regionVal = "종로";
+				let startTmVal = "13:00";
+				let endTmVal = "14:00";
+				let region = encodeURIComponent(regionVal);
+				let startTm = encodeURIComponent(startTmVal);
+				let endTm = encodeURIComponent(endTmVal);
+				let data = {
+						region: region,
+						startTm: startTm,
+						endTm: endTm
+						}
+				
+				console.log(JSON.stringify(data));
+				$.ajax({
+					type:'get',
+					url:"/dealight/get/search/I/1",
+					dataType: 'json',
+					contentType:'application/json; charset=utf-8',
+					data: JSON.stringify(data),
+					success: function(data){
+						console.log(data);
+					}
+					
+				});
+				
+				/* getSearchHtdlList(obj, function(result){
+					console.log("===========result=======");
+					console.log(result);
+				}) */
+			}
+			
 			//핫딜 예정
 			if(operation === 'pending'){
 				 /* getList({stusCd: "P"}, function(list){
@@ -1319,6 +1363,7 @@
 				htdlUL.empty();
 				paramStusCd = "A";
 				showList(paramStusCd);
+				showElapTimeStart();
 				$(this).data("oper", "pending");
 				$(this).css("background", "rgb(180, 173, 173)");
 				$(this).css("color", "white");
@@ -1333,39 +1378,39 @@
 		});
 		
 		//모달 닫기
-		$(".close").on("click", function(){
+	/* 	$(".close").on("click", function(){
 			clearInterval(showElapTimeId);
 			mElapTime.html("");
 			modal.hide();
 		});
-		
+		 */
 		//딜 하기 클릭 시 매장 상세로 이동한다
-		$(".js-dealBtn").on("click", function(e){
+/* 		$(".js-dealBtn").on("click", function(e){
 			e.preventDefault();
 			let body = $("body");
 			
 			console.log("================htdlId: " + htdlId);
 			//해당 핫딜번호,메뉴,가격 
 			/* let htdlId = $("#mhtdlId").val(); */
-			let htdlMenu = $("#menuName").text();
-			let afterPrice = $("#afterPrice").text().substr(1);
+			/* let htdlMenu = $("#menuName").text();
+			let afterPrice = $("#afterPrice").text().substr(1); */
 			
 			//폼 만들기
-			let form = $("<form></form>");
+			/* let form = $("<form></form>");
 			form.attr("action", "/dealight/store");
-			form.attr("method", "get");
+			form.attr("method", "get"); */
 			//요청 폼 입력
-			let storeIdInput = $("<input type='hidden' value='"+ storeId +"' name='storeId'>");
+			/* let storeIdInput = $("<input type='hidden' value='"+ storeId +"' name='storeId'>");
 			let htdlIdInput = $("<input type='hidden' value='"+ htdlId +"' name='htdlId'>");
 			let clsCdInput = $("<input type='hidden' value='B' name='clsCd'>");
 		    form.append(storeIdInput);
 		    form.append(htdlIdInput);
 		    form.append(clsCdInput);
-		    form.appendTo(body);
+		    form.appendTo(body); */
 		    //전송
-		    form.submit();
+		    //form.submit();
 		    
-		});
+		//});
 		
 		//페이지 번호 클릭 시
 		htdlPageFooter.on("click", "li a", function(e){
@@ -1480,6 +1525,39 @@
 		}
 	}
 	
+	//검색된 핫딜 리스트 가져오기
+	function getSearchHtdlList(param, callback, error){
+		
+		let stusCd = param.stusCd;
+		let page = param.page || 1;
+		let region = param.region;
+		let startTm = param.startTm;
+		let endTm = param.endTm;
+		//let regionStr = encodeURIComponent(region);
+		
+	/* 	let data = {
+				region:region,
+				startTm:startTm,
+				endTm:endTm
+		} */
+		
+		let searchUrl = "/dealight/get/search/I/"+page+"?region="+regionStr+"&startTm="+startTm+"&endTm="+endTm;
+		
+	
+		
+		/* $.getJSON("/dealight/get/search/I/"+page+"?region="+regionStr+"&startTm="+startTm+"&endTm="+endTm
+				, function(result){
+			if(callback){
+				callback(result);
+			}
+		}).fail(function(xhr,status, err){
+			if(error){
+				error();
+			}
+		}); */
+		
+	}
+	
 	//핫딜 리스트 보여주기
 	function showList(param, page){
 		
@@ -1550,7 +1628,7 @@
 		//console.log(pageStr);
 		htdlPageFooter.html(pageStr);
 	}
-	let elapTimeArr = [];
+	
 	//핫딜 그리기
 	function htdlHtml(list){
 		let str = "";
@@ -1681,7 +1759,7 @@
 			str +="</div>" */
 		}
 		
-		showElapTimeStart();
+		/* showElapTimeStart(); */
 		return str;
 	}
 	

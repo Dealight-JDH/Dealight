@@ -264,7 +264,7 @@
 	 	]]>
 	 	
 	 	<trim prefix="AND(" suffix=")" prefixOverrides="OR">
- 	 	<if test="hCri.type == 'B'.toString()">
+ 	 	<if test="hCri.keyword neq null">
  	 		brch like '%'||#{hCri.keyword}||'%'
  	 	</if>
  	 	</trim>
@@ -276,7 +276,7 @@
             
 	 		 ]]>
  	 	</if>
-	 	<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+	 	<!-- <trim prefix="(" suffix=") AND " prefixOverrides="OR">
 	 		<foreach item='type' collection="hCri.typeArr">
 	 			<trim prefix="OR">
 	 				<choose>
@@ -289,7 +289,7 @@
 	 				</choose>
 	 			</trim>     
 	 		</foreach>
-	 	</trim>
+	 	</trim> -->
 	 	<![CDATA[
 	 	)
 	 	where
