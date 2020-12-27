@@ -826,15 +826,17 @@
 	const jTelno = /^\d{3}\d{3,4}\d{4}$/; //전화번호 정규식 '-'빼고 숫자만 01063517402
 	const blank = /\s/g;
 	
+	let formObj = $("form");
+    let authChecked = false;
+	let email = $("#email");
+	let msg = $(".alertMsg");
+	let authNum = null;
+	let showAuthBtnChecked = false;
+	let showModifyBtnChecked = false;
+	
     $(document).ready(function(){
     	
-	    let formObj = $("form");
-	    let authChecked = false;
-		let email = $("#email");
-		let msg = $(".alertMsg");
-		let authNum = null;
-		let showAuthBtnChecked = false;
-		let showModifyBtnChecked = false;
+	    	
 		
 		let len = $(".js-agree").length;
         closeModalListener();
