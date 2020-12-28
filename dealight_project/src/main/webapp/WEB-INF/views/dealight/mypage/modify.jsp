@@ -271,11 +271,11 @@
                             
                             <p>성별</p>
                             <c:if test="${user.sex eq 'M' }">
-                                <input type="email" name="email" id="gender" value="남자" readonly>
+                                <input type="text" name="email" id="gender" value="남자" readonly>
                             </c:if>
                             
                             <c:if test="${user.sex eq 'W' }">
-                                <input type="email" name="email" id="gender" value=여자" readonly>
+                                <input type="text" name="email" id="gender" value=여자" readonly>
                             </c:if>
                               
                         </div>

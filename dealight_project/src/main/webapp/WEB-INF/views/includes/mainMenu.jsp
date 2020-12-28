@@ -295,7 +295,7 @@
 							<sec:authorize access="hasRole('ROLE_ADMIN')">								
 								<div class="account_cnts"><a href="/dealight/mypage/business/">서비스 관리</a></div>
 							</sec:authorize>
-								<div class="account_cnts"><a href="/dealight/mypage/modify">회원정보수정</a></div>
+								<div class="account_cnts"><a href="/dealight/mypage/get">회원정보수정</a></div>
 								<div class="account_cnts"><a href="dealight/logout" onclick="submit(event)">로그아웃</a></div>
 						</sec:authorize>
 					</div>
