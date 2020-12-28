@@ -189,38 +189,6 @@ public class BusinessController {
 		
 		return "/dealight/business/manage/manage";
 	}
-
-		// 웨이팅의 상세 정보(번호표)를 볼 수 있다.
-		@GetMapping("/waiting/{waitId}")
-		public String waiting(Model model, @PathVariable("waitId") long waitId) {
-			
-			log.info("business waiting detail..");
-			
-			WaitVO wait = waitService.read(waitId);
-			
-			wait.setWaitRegTm(wait.getWaitRegTm().split(" ")[1].substring(0,5));
-			
-			log.info(wait);
-			
-			// 현재 예약 상태인 웨이팅 리스트를 가져온다.
-			List<WaitVO> curStoreWaitiList = waitService.curStoreWaitList(wait.getStoreId(), "W");
-			
-			// 현재 웨이팅의 순서를 찾아온다.
-			int order = waitService.calWatingOrder(curStoreWaitiList, wait.getWaitId());
-			
-			// 현재 웨이팅 순서와 시간('임의의 시간인 15분')을 계산한다.
-			int waitTime = waitService.calWaitingTime(curStoreWaitiList, wait.getWaitId(), 15);
-			
-			// 해당 매장의 위치정보를 가져온다.
-			StoreVO store = storeService.findStoreWithBStoreAndLocByStoreId(wait.getStoreId());
-			
-			model.addAttribute("wait",wait);
-			model.addAttribute("order",order);
-			model.addAttribute("waitTime", waitTime);
-			model.addAttribute("store",store);
-			
-			return "/dealight/business/manage/waiting/waiting";
-		}
 		
 		@GetMapping("/test")
 		public String test(HttpSession session,Model model) {

@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -111,12 +112,22 @@ public class HtdlController {
 	}
 	
 	//핫딜 상세
-	@GetMapping("/get")
-	public void get(@RequestParam("htdlId") Long htdlId, Model model) {
+	@GetMapping("/get/{htdlId}")
+	public String get(Authentication auth , @PathVariable Long htdlId, Model model) {
 		log.info("get...");
 		
 		HtdlVO htdlVO = service.read(htdlId);
-		model.addAttribute("vo", htdlVO);
+		
+		model.addAttribute("htdl", htdlVO);
+		
+		if(auth != null) {			
+			String userId = auth.getName();
+			
+			if(userId != null) {
+				model.addAttribute("userId", userId);
+			}
+		}	
+		return "dealight/hotdeal/get";
 	}
 
 	//핫딜 메인 페이지
@@ -124,7 +135,7 @@ public class HtdlController {
 	public void getList(Authentication auth, HtdlCriteria hCri, Model model) {
 	
 		log.info("hotdeal getList...");
-		List<HtdlVO> lists = service.getList();
+//		List<HtdlVO> lists = service.getList();
 		
 //		List<HtdlVO> filterList = lists.stream()
 //										.filter(htdl -> htdl.getStusCd().equals(stusCd))
@@ -146,8 +157,7 @@ public class HtdlController {
 			
 			if(userId != null) {
 				model.addAttribute("userId", userId);
-			}
-			
+			}			
 		}
 		
 		model.addAttribute("lists", service.getList("A", hCri));

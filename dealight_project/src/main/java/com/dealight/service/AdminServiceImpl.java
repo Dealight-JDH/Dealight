@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.AuthVO;
 import com.dealight.domain.BUserVO;
 import com.dealight.domain.Criteria;
 import com.dealight.domain.HtdlDtlsVO;
@@ -68,10 +69,21 @@ public class AdminServiceImpl implements AdminService {
 		//insertSelectKey?????
 		bMapper.insert(buser);
 	}
-
+	
+	@Transactional
 	@Override
 	public boolean modifyBUser(BUserVO buser) {
 		log.info("modify BUser : " + buser);
+		
+		//심사 변경 상태가 완료일 때 권한부여
+		if(buser.getBrJdgStusCd().equalsIgnoreCase("c")) {
+			AuthVO auth = AuthVO.builder()
+						.userId(buser.getUserId())
+						.auth("ROLE_MEMBER")
+						.build();
+			uMapper.insertAuth(auth);
+		}
+			
 		return bMapper.update(buser) == 1;
 	}
 

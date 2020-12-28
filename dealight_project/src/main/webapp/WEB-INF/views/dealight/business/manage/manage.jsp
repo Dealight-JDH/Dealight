@@ -733,7 +733,7 @@ let writeTimeBar = function (curTime) {
                   
                   console.log("wait4 : "+waitId);
             	  
-                  window.open("/dealight/business/waiting/"+waitId);
+                  window.open("/dealight/waiting/"+waitId);
             	  
               });
               

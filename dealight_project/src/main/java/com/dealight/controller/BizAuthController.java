@@ -53,6 +53,7 @@ public class BizAuthController {
 		
 		//TODO
 		//등록이 실패하면???
+		buser.setReason("테스트");
 		service.register(buser);
 		log.info("brSeq :" + buser.getBrSeq());
 		rttr.addFlashAttribute("result", buser.getBrSeq());

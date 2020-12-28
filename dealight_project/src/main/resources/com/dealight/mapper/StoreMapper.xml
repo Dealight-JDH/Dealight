@@ -334,8 +334,8 @@
 			and s.store_id = l.store_id
 			and s.store_id = b.store_id
 			and s.store_id = e.store_id
-			and s.store_id = h.store_id
-			and s.store_id = w.store_id
+			and s.store_id = h.store_id(+)
+			and s.store_id = w.store_id(+)
 			and s.store_id = t.store_id(+)
 			and s.store_id = i.store_id(+)
 			and s.store_id = m.store_id(+)
