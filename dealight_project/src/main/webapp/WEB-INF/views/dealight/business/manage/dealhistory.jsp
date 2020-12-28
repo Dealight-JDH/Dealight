@@ -96,6 +96,9 @@
             width: 100px;
             height: 100%;
         }
+        .htdl_info_img > img {
+        	width:100px;
+        }
         
         .htdl_info_wrapper{
             display: flex;
