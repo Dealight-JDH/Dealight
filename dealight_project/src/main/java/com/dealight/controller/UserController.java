@@ -374,12 +374,13 @@ public class UserController {
 
 	// 회원정보 수정
 	@PostMapping("/mypage/modify")
-	public String modify(UserVO user, Model model, RedirectAttributes rttr) {
-		log.info("modify: " + user);
+	public String modify(@Valid UserRequestDTO requestUser, Model model, RedirectAttributes rttr) {
+		log.info("modify: " + requestUser);
 		// (이름[닉네임], 이메일, 전화번호, sns연동 만 변경
+		UserVO user = requestUser.toEntity();
 		service.modify(user);
 		// 프로필 사진 수정
-		service.modifyPhoto(user);
+		//service.modifyPhoto(user);
 
 		rttr.addFlashAttribute("result", "회원 정보 수정이 완료되었습니다.");
 		model.addAttribute("user", service.get(user.getUserId()));
@@ -417,11 +418,16 @@ public class UserController {
 	public String remove(String userId, HttpSession session, RedirectAttributes rttr) {
 		
 		log.info("user.... withdraw");
+		log.info("////................userId: " + userId);
 		
-		service.remove(userId);
+		if(service.remove(userId)) {
+			session.invalidate();
+			rttr.addFlashAttribute("result", "회원 탈퇴에 성공하였습니다.");
+			return "redirect:/dealight/dealight";
+		}
 		
-		
-		return "redircet:/dealight/logout";
+		rttr.addFlashAttribute("result", "회원 탈퇴에 실패하였습니다.");
+		return "/dealight/mypage/modify";
 		
 	}
 

@@ -144,6 +144,8 @@
 
 
 <script>
+const msg = "<c:out value= '${result}'/>";
+
      $(".card-rating").rate({
         max_value: 5,
         step_size: 0.5,
@@ -196,6 +198,10 @@
     
     
     $(document).ready(function(){
+    	
+    	if(msg.length > 0 ){
+    		alert(msg);
+    	}
     	
     	//[사용자에게 보여질값, 실제 값]
 	    let item1 = ["내 위치", "a"];
