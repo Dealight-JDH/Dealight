@@ -15,11 +15,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.dealight.domain.StoreVO;
+import com.dealight.domain.WaitVO;
 import com.dealight.service.CallService;
+import com.dealight.service.StoreService;
 import com.dealight.service.UserService;
+import com.dealight.service.WaitService;
 
 import lombok.extern.log4j.Log4j;
 
@@ -44,6 +50,12 @@ public class HomeController {
 	
 	@Autowired
 	private CallService callService;
+	
+	@Autowired
+	private WaitService waitService;
+	
+	@Autowired
+	private StoreService storeService;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -192,5 +204,37 @@ public class HomeController {
 
 		return "message";
 	}
+	
+	// 웨이팅의 상세 정보(번호표)를 볼 수 있다.
+			@GetMapping("/dealight/waiting/{waitId}")
+			public String waiting(Model model, @PathVariable("waitId") long waitId) {
+				
+				log.info("business waiting detail..");
+				
+				WaitVO wait = waitService.read(waitId);
+				
+				wait.setWaitRegTm(wait.getWaitRegTm().split(" ")[1].substring(0,5));
+				
+				log.info(wait);
+				
+				// 현재 예약 상태인 웨이팅 리스트를 가져온다.
+				List<WaitVO> curStoreWaitiList = waitService.curStoreWaitList(wait.getStoreId(), "W");
+				
+				// 현재 웨이팅의 순서를 찾아온다.
+				int order = waitService.calWatingOrder(curStoreWaitiList, wait.getWaitId());
+				
+				// 현재 웨이팅 순서와 시간('임의의 시간인 15분')을 계산한다.
+				int waitTime = waitService.calWaitingTime(curStoreWaitiList, wait.getWaitId(), 15);
+				
+				// 해당 매장의 위치정보를 가져온다.
+				StoreVO store = storeService.findStoreWithBStoreAndLocByStoreId(wait.getStoreId());
+				
+				model.addAttribute("wait",wait);
+				model.addAttribute("order",order);
+				model.addAttribute("waitTime", waitTime);
+				model.addAttribute("store",store);
+				
+				return "/dealight/business/manage/waiting/waiting";
+			}
 	
 }

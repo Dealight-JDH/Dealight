@@ -58,6 +58,7 @@
 	                                    	<span style='display:none;' class="revw_stus">${wait.revwStus}</span>
 	                                    	<span style='display:none;' class="store_id">${wait.storeId}</span>
 	                                    </div>
+	                                    <div><button class="btn_wait"><i class="fas fa-angle-right"></i></button></div>
 	                                </div>
 	                                <div class="rsvd_cnts">
 	                                    <div class="rsvd_cnts_wrapper">
@@ -563,6 +564,15 @@ window.onload = function () {
 	    $(".btn_like_cancel").on("click",likeRemoveHandler);
 	
 }; /* document ready end*/
+
+$(".btn_wait").on("click",(e) => {
+	
+	
+	let waitId = $(e.target).parent().parent().parent().parent().find(".wait_id").text();
+	
+	window.open("/dealight/waiting/"+waitId);
+	
+})
 
 </script>
 <%@include file="../../includes/mainFooter.jsp" %>

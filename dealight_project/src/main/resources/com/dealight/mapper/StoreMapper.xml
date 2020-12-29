@@ -106,7 +106,9 @@
 			
 			<association property="htdl" javaType="com.dealight.domain.HtdlVO">
 				<result column="htdl_id" property="htdlId" />
+				<result column="htdl_img" property="htdlImg" />
 				<result column="name" property="name" />
+				<result column="set_name" property="setName" />
 				<result column="dc_rate" property="dcRate" />
 				<result column="start_tm" property="startTm" />
 				<result column="end_tm" property="endTm" />
@@ -178,12 +180,13 @@
 			<result property="likeTotNum" column="like_tot_num" />
 		</association>
 		
-		<collection property="imgs"
-			ofType="com.dealight.domain.StoreImgVO">
+		<collection property="imgs" ofType="com.dealight.domain.StoreImgVO">
 			<result property="storeId" column="store_id" />
+			<result property="uuid" column="uuid" />
+			<result property="uploadPath" column="uploadPath" />
+			<result property="rep" column="rep" />
 			<result property="imgSeq" column="img_seq" />
 			<result property="fileName" column="fileName" />
-			<result property="rep" column="rep" />
 		</collection>
 	</resultMap>
 	
@@ -309,10 +312,11 @@
 			b.break_entm,b.last_ord_tm,b.n1_seat_no,b.n2_seat_no,b.n4_seat_no,b.store_intro,b.avg_meal_tm,b.hldy,b.acm_pnum,
 			b.buser_id,b.seat_stus_cd,b.open_tm,b.close_tm, b.break_sttm,
 			h.htdl_id,h.name,h.dc_rate,h.start_tm,h.end_tm,h.lmt_pnum,h.intro,h.bef_price,h.ddct,h.cur_pnum,h.stus_cd,
+			h.htdl_img, h.set_name,
 			m.menu_seq,m.name menu_name, m.price,m.img_url menu_img, m.reco_menu,
 			ROUND(e.avg_rating,2) avg_rating,e.revw_tot_num,e.like_tot_num,
 			s.store_id,s.store_nm,s.telno,
-			i.img_seq,i.fileName,
+			i.img_seq,i.fileName,i.uuid,i.uploadpath,i.rep,
 			l.addr,l.lat,l.lng,
 			w.wait_tot,
 			t.tag_nm
@@ -324,7 +328,8 @@
 					and store_id = #{storeId}
 				GROUP by store_id
 			 ) w,
-			 (	select htdl_id,name,dc_rate,start_tm,end_tm,lmt_pnum,intro,bef_price,ddct,cur_pnum,stus_cd,store_id
+			 (	select htdl_id,name,dc_rate,start_tm,end_tm,lmt_pnum,intro,bef_price,ddct,cur_pnum,stus_cd,store_id,
+			 		   htdl_img, set_name
 			 	from tbl_htdl
 			 	where  store_id = #{storeId}
 					and stus_cd != 'I'

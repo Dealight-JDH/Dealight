@@ -5,6 +5,58 @@
 		<mapper namespace="com.dealight.mapper.HtdlMapper">
 		
 		<!-- 동인 -->
+		<resultMap type="com.dealight.domain.HtdlVO" id="HtdlWithRsltVO">
+			<id column="htdl_id" property="htdlId"/> 
+			<result column="name" property="name"/>
+			<result column="store_id" property="storeId"/>
+			<result column="htdl_img" property="htdlImg"/>
+			<result column="dc_rate" property="dcRate"/>
+			<result column="start_tm" property="startTm"/>
+			<result column="end_tm" property="endTm"/>
+			<result column="lmt_pnum" property="lmtPnum"/>
+			<result column="intro" property="intro"/>
+			<result column="bef_price" property="befPrice"/>
+			<result column="ddct" property="ddct"/>
+			<result column="cur_pnum" property="curPnum"/>
+			<result column="stus_cd" property="stusCd"/>
+			<result column="brch" property="brch"/>
+			<association property="htdlRslt" javaType="com.dealight.domain.HtdlRsltVO">
+				<result column="last_pnum" property="lastPnum"/> 
+				<result column="htdl_lmt_pnum" property="htdlLmtPnum"/>
+				<result column="rsvd_rate" property="rsvdRate"/>
+				<result column="elap_tm" property="elapTm"/>
+				<result column="regdate" property="regDate"/>
+				<result column="updatedate" property="updateDate"/>
+			</association>
+		</resultMap>
+		
+		<select id="findHtdlWithRsltByStoreId" resultMap="HtdlWithRsltVO">
+		<![CDATA[
+			SELECT 
+			    name, h.store_id,h.htdl_id, dc_rate,start_tm,end_tm,lmt_pnum,intro,bef_price,ddct,cur_pnum,stus_cd,brch,htdl_img,h.regdate,h.updatedate,last_pnum,htdl_lmt_pnum,rsvd_rate
+			FROM 
+			(
+	            SELECT rownum rn,name, store_id,htdl_id, dc_rate,start_tm,end_tm,lmt_pnum,intro,bef_price,ddct,cur_pnum,stus_cd,brch,htdl_img,regdate,updatedate
+			    /*+ INDEX_DESC(tbl_htdl tbl_htdl_pk)*/
+			    FROM
+			    (
+			    SELECT name, store_id,htdl_id, dc_rate,start_tm,end_tm,lmt_pnum,intro,bef_price,ddct,cur_pnum,stus_cd,brch,htdl_img,regdate,updatedate
+			    FROM tbl_htdl
+			    WHERE  store_id = #{storeId}
+			    ORDER BY regdate desc
+			    )
+			    WHERE rownum <= #{cri.pageNum} * #{cri.amount}
+	        ) h, tbl_htdl_rslt hr
+			WHERE rn > (#{cri.pageNum} -1) * #{cri.amount}
+	        AND h.htdl_id = hr.htdl_id
+		]]>
+		</select>
+		
+		<select id="getHtdlTotal" resultType="int">
+			select COUNT(*)
+			from tbl_htdl
+			where store_id = #{storeId}
+		</select>
 <!-- jongwoo -->
 
 

@@ -272,24 +272,24 @@ public class StoreServiceTests {
 	}
 	
 	
-	/*
-	 * @Test public void modifyBStoreTest1() {
-	 * 
-	 * StoreVO store = storeService.findByStoreIdWithBStore(storeId);
-	 * store.setClsCd("B");
-	 * 
-	 * log.info(store);
-	 * 
-	 * store.getBstore().setHldy("����"); store.setRepImg("d"); store.setBrch("d");
-	 * 
-	 * assertTrue(storeService.modifyStore(store));
-	 * 
-	 * store = storeService.findByStoreIdWithBStore(storeId);
-	 * 
-	 * log.info(store);
-	 * 
-	 * }
-	 */
+	
+	  @Test public void modifyBStoreTest1() {
+	  
+	  StoreVO store = storeService.findByStoreIdWithBStore(storeId);
+	  store.setClsCd("B");
+	  
+	  log.info(store);
+	  
+	  //store.getBstore().setHldy("����"); store.setRepImg("d"); store.setBrch("d");
+	  
+	  assertTrue(storeService.modifyStore(store));
+	  
+	 store = storeService.findByStoreIdWithBStore(storeId);
+	  
+	  log.info(store);
+	  
+	  }
+	 
 	
 	/*
 	 * @Test

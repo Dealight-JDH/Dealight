@@ -1,6 +1,7 @@
 package com.dealight.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
@@ -353,6 +354,39 @@ public class MypageController {
 
 		return "/dealight/mypage/notice";
 	}
+	
+	// rsvdId로 예약 객체와 예약 상세 객체를 가져온다.
+	@GetMapping(value = "/reservation/dtls/{rsvdId}", 
+			produces = {
+					MediaType.APPLICATION_JSON_UTF8_VALUE,
+					MediaType.APPLICATION_XML_VALUE
+	})
+	@ResponseBody
+	public ResponseEntity<RsvdVO> getRsvdDtls(@PathVariable("rsvdId") Long rsvdId) {
+		
+		log.info("get rsvd dtls..................");
+		
+		return new ResponseEntity<>(rsvdService.findRsvdByRsvdIdWithDtls(rsvdId), HttpStatus.OK);
+	}
+	
+	// 해당 유저의 매장 내역 리스트를 보여준다. 
+	@GetMapping(value = "/reservation/list/{storeId}/{userId}", 
+			produces = {
+					MediaType.APPLICATION_JSON_UTF8_VALUE,
+					MediaType.APPLICATION_XML_VALUE
+	})
+	@ResponseBody
+	public ResponseEntity<List<RsvdVO>> getRsvdList(@PathVariable("storeId") long storeId, @PathVariable("userId") String userId) {
+		
+		log.info("get user rsvd list....................");		
+		
+		List<RsvdVO> rsvdList = userService.getRsvdListStoreUser(storeId, userId);
+		
+		rsvdList = rsvdList.stream().sorted((r1,r2) -> (int) (r2.getRegdate().getTime() - r1.getRegdate().getTime())).collect(Collectors.toList());
+		
+		return new ResponseEntity<>(rsvdList, HttpStatus.OK);
+		//return new ResponseEntity<>(userService.getRsvdListStoreUser(storeId, userId), HttpStatus.OK);
+	}	
 
 
 }

@@ -1,39 +1,32 @@
 package com.dealight.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.dealight.domain.Criteria;
 import com.dealight.domain.HtdlVO;
-import com.dealight.domain.RsvdDtlsVO;
-import com.dealight.domain.RsvdVO;
+import com.dealight.domain.RevwPageDTO;
 import com.dealight.domain.UserVO;
 import com.dealight.domain.WaitVO;
 import com.dealight.handler.ManageSocketHandler;
 import com.dealight.service.HtdlService;
-import com.dealight.service.RsvdService;
+import com.dealight.service.RevwService;
 import com.dealight.service.StoreService;
 import com.dealight.service.UserService;
 import com.dealight.service.WaitService;
@@ -52,9 +45,8 @@ public class StoreController {
 	
 	private WaitService waitService;
 	private HtdlService htdlService;
-	private RsvdService rsvdService;
 	private StoreService storeService;
-
+	private RevwService revwService;
 	
 	//핫딜 상세(스토어)
 	@GetMapping(value = "/store/htdl/get/{htdlId}", produces = {
@@ -66,15 +58,16 @@ public class StoreController {
 		HtdlVO dealVO = htdlService.readHtdlDtls(htdlId);
 		return new ResponseEntity<>(dealVO, HttpStatus.OK);
 	}
-//	@GetMapping(value = "/revws/pages/{storeId}/{page}", produces = {
-//			MediaType.APPLICATION_JSON_UTF8_VALUE,
-//			MediaType.APPLICATION_XML_VALUE
-//	})
-//	public ResponseEntity<HtdlVO> getStoreHtdl(@PathVariable Long htdlId) {
-//		log.info("get...");
-//		HtdlVO dealVO = htdlService.readHtdlDtls(htdlId);
-//		return new ResponseEntity<>(dealVO, HttpStatus.OK);
-//	}
+	@GetMapping(value = "/revws/pages/{storeId}/{page}", produces = {
+			MediaType.APPLICATION_JSON_UTF8_VALUE,
+			MediaType.APPLICATION_XML_VALUE
+	})
+	public ResponseEntity<RevwPageDTO> getRevw(@PathVariable("storeId") Long storeId, @PathVariable("page") int page) {
+		log.info("....get Revw");
+		Criteria cri = new Criteria(page, 5);
+		RevwPageDTO dto = new RevwPageDTO(revwService.getCountByStoreId(storeId), revwService.getRevwListWithPagingByStoreId(storeId, cri));
+		return new ResponseEntity<>( dto, HttpStatus.OK);
+	}
 	
 	@GetMapping("/store/{storeId}")
 	public String store(HttpSession session, @PathVariable("storeId") long storeId, Long htdlId, Model model) {
