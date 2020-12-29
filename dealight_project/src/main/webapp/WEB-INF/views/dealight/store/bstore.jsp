@@ -431,7 +431,7 @@
 
 				const menus = $("#menus")
 	    		//요소가 이미추가되어있나 확인
-	    		let seq = $(this).prev().find(".card-menu span").html();
+	    		let seq = $(this).siblings(".card-body").find(".card-menu span").html();
 	    		if($("#menus").find("div[data-value='" + seq +"']").length != 0){
 					alert("핫딜은 하나만 구매가능합니다.")
 				 	return;

@@ -20,6 +20,20 @@
 	div{
 		 /* border: 1px black solid;  */
 	}
+    .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+    .wrap * {padding: 0;margin: 0;}
+    .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+    .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+    .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+    .info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+    .info .close:hover {cursor: pointer;}
+    .info .body {position: relative;overflow: hidden;}
+    .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+    .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+    .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+    .info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+    .info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+    .info .link {color: #5085BB;}
 </style>
 </head>
 <body>
@@ -210,7 +224,7 @@
         <input type="text" name="openStore" value="true">
     </form>
 </body>
-
+<%@include file="/WEB-INF/views/includes/mainFooter.jsp" %>
 <!-- 리스트 불러오기 -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0e7b9cd1679ce3dedf526e66a6c1a860"></script>
 <script type="text/javascript">
@@ -224,6 +238,7 @@
 	let userLatLng = new kakao.maps.LatLng(lat.value, lng.value)
 	let map = "";
 	let markers=[];
+	let overlays=[];
 
 	//ajax로 리스트를 불러온다. cri, storeList ,paging관련 변수들이 다 넘어온다.
 	//많아진다면 모듈로 뺴자
@@ -460,9 +475,32 @@
 		        position: storeLatLng, // 마커를 표시할 위치
 		        image : new kakao.maps.MarkerImage(imageSrc, new kakao.maps.Size(24, 35))// 마커 이미지
 		    });
+			let content = '<div class="wrap wrap'+i+'" data-storeid="'+storeList[i].storeId+'" style="display:none">' + 
+            '    <div class="info">' + 
+            '        <div class="title">' + 
+            '            카카오 스페이스닷원' + 
+            '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
+            '        </div>' + 
+            '        <div class="body">' + 
+            '            <div class="img">' +
+            '                <img src="'+ +'" width="73" height="70">' +
+            '           </div>' + 
+            '            <div class="desc">' + 
+            '                <div class="ellipsis">제주특별자치도 제주시 첨단로 242</div>' + 
+            '                <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>' + 
+            '                <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' + 
+            '            </div>' + 
+            '        </div>' + 
+            '    </div>' +    
+            '</div>';
 			
-		    let infoStore = new kakao.maps.InfoWindow({
-		        content: "<div class='filter-item' data-storeid='"+storeList[i].storeId+"'>"+storeList[i].storeNm+"</div>" // 인포윈도우에 표시할 내용
+		    //let infoStore = new kakao.maps.InfoWindow({
+		    //    content: "<div class='filter-item' data-storeid='"+storeList[i].storeId+"'>"+storeList[i].storeNm+"</div>" // 인포윈도우에 표시할 내용
+		    //});
+		    let infoStore = new kakao.maps.CustomOverlay({
+		        content: content,
+		        map: map,
+		        position: marker.getPosition()
 		    });
 		    
 			addMarkerEvent(marker,infoStore,i,storeList[i].storeId);
@@ -503,8 +541,8 @@
 			if(storeList[i].repImg != null){
 				let storePhotoSrc = storeList[i].repImg
 				srcObj = subSrc(storePhotoSrc);
-				let fileCallPath = encodeURIComponent( "/"+ srcObj["uploadPath"] +"/"+ srcObj["realFileName"]); //원본
 				
+				let fileCallPath = encodeURIComponent( "/"+ srcObj["uploadPath"] +"/"+ srcObj["realFileName"]); //원본
 				//console.log("================store 이미지: " + fileCallPath);
 				src = "/display?fileName=" + fileCallPath;
 			}else{
@@ -516,7 +554,7 @@
 			str +='<div class="store-card flex-column" data-storeid="'+storeList[i].storeId+'">'
 			str +='<div class="flex">'
 			str +='<div class="img-container" style="margin-right:20px">'
-			str +='<img src="' + src + '" style="width:100%" ></div>'
+			str +='<img src="' +src + '" style="width:100%" ></div>'
 			str +='<div class="deatial-container flex-column" >'
 			str +='<div class="search-header flex">'
 			str += storeList[i].storeNm
@@ -751,6 +789,7 @@
 	function deleteMaker(){
 		for(let i =0; i<markers.length; i++){
 			markers[i].setMap(null)
+			overlays[i]=null
 		}
 	}	
 	
@@ -768,15 +807,15 @@
 		
 		kakao.maps.event.addListener(marker, 'mouseover', function() {
 	
-			infoStore.open(map, marker);
+			$(".wrap"+i).show()
 	           list.childNodes[i].style.backgroundColor="#bbb";
 	        
 	    });
 		
 		kakao.maps.event.addListener(marker, 'mouseout', function() {
 	
+			$(".wrap"+i).hide()
 	           list.childNodes[i].style.backgroundColor="white";
-	           infoStore.close();
 	        
 	    });
 		

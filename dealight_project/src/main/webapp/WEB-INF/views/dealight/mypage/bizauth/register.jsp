@@ -194,7 +194,7 @@
 	        <div class="main_header_subtitle">매장을 등록해주세요.</div>
 	    </div>
 	    <div class="mypage_content" style="padding: 10px">
-			<form action="/dealight/mypage/bizauth/register" method="post" name="register">
+			<form action="/dealight/mypage/bizauth/register" method="post" name="register" id="reg">
 				<div class="css-id css-input">
 					<p>대표자명</p>
                  	<input type="text" name="repName" value="<c:out value = "${buser.repName }"/>" required="required">
@@ -284,13 +284,30 @@ window.onload = function(){
 	const formObj = $("form[name='register']");
 	regbtn.onclick = function(){
 		const uploadResult = document.getElementsByClassName("uploadResult")[0];
-		let obj = (uploadResult.children[0]).children[0];
+		let obj = (uploadResult.children[0]).children[0] || null;
 		let str = "";
 		//유효성 검사 필수
-		
+		let valid = true;
+		$("#reg div").each(function(index, item){
+			if($(item).find("input").val() ==""){
+				valid=false;
+				return;
+			}
+				
+		})
+		if(!valid){
+			alert("모든항목을 기입해주세요")
+			return
+		}
 		console.dir(obj);
-		
-		str += "<input type='hidden' name='brPhotoSrc' value='"+obj.dataset["path"]+ "/" +obj.dataset["filename"] + "'>";
+		if(obj == null){
+			alert("사진을 등록해주세요")
+			return;
+		}
+		if(formObj.find("input[name='brPhotoSrc']").length ==0 ){
+			str += "<input type='hidden' name='brPhotoSrc' value='"+obj.dataset["path"]+ "/" +obj.dataset["filename"] + "'>";
+			
+		}
 		
 		formObj.append(str).submit();
 	}
