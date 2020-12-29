@@ -37,6 +37,12 @@ public class HtdlServiceTests {
 	
 	
 	@Test
+	public void testGetStusHtdl() {
+		
+		log.info("============="+service.getStusCdById(208L));
+	}
+	
+	@Test
 	public void testReadDtls() {
 		Long htdlId = 185l;
 		

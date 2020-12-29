@@ -520,6 +520,13 @@
             outline: none;
             cursor: pointer;
         }
+        
+    .nav_reg_brno>a{
+    	color:white;
+    }
+    #nav_user_id{
+    color:white;
+    }
 </style>
 </head>   
 <body>
