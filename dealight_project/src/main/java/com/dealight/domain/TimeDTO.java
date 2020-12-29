@@ -28,7 +28,13 @@ public enum TimeDTO {
 	EIGHTEEN(LocalDateTime.of(LocalDateTime.now().getYear(),LocalDateTime.now().getMonthValue(),LocalDateTime.now().getDayOfMonth(),18,0)),
 	EIGHTEENHALF(LocalDateTime.of(LocalDateTime.now().getYear(),LocalDateTime.now().getMonthValue(),LocalDateTime.now().getDayOfMonth(),18,30)),
 	NINETEEN(LocalDateTime.of(LocalDateTime.now().getYear(),LocalDateTime.now().getMonthValue(),LocalDateTime.now().getDayOfMonth(),19,0)),
-	NINETEENHALF(LocalDateTime.of(LocalDateTime.now().getYear(),LocalDateTime.now().getMonthValue(),LocalDateTime.now().getDayOfMonth(),19,30));
+	NINETEENHALF(LocalDateTime.of(LocalDateTime.now().getYear(),LocalDateTime.now().getMonthValue(),LocalDateTime.now().getDayOfMonth(),19,30)),
+	TWENTY(LocalDateTime.of(LocalDateTime.now().getYear(),LocalDateTime.now().getMonthValue(),LocalDateTime.now().getDayOfMonth(),20,0)),
+	TWENTYHALF(LocalDateTime.of(LocalDateTime.now().getYear(),LocalDateTime.now().getMonthValue(),LocalDateTime.now().getDayOfMonth(),20,30)),
+	TWENTYONE(LocalDateTime.of(LocalDateTime.now().getYear(),LocalDateTime.now().getMonthValue(),LocalDateTime.now().getDayOfMonth(),21,0)),
+	TWENTYONEHALF(LocalDateTime.of(LocalDateTime.now().getYear(),LocalDateTime.now().getMonthValue(),LocalDateTime.now().getDayOfMonth(),21,30)),
+	TWENTYTWO(LocalDateTime.of(LocalDateTime.now().getYear(),LocalDateTime.now().getMonthValue(),LocalDateTime.now().getDayOfMonth(),22,0));
+	
 	
 	private LocalDateTime time;
 
