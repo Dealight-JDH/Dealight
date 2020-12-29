@@ -67,7 +67,7 @@ public class HtdlTimeCheckService {
 				}
 			}
 			
-		}, 0, 1, TimeUnit.SECONDS); 
+		}, 0, 3, TimeUnit.SECONDS); 
 		
 	}
 	
