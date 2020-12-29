@@ -91,10 +91,9 @@
         <div class="middle-header">
             핫딜상품
         </div>
-
         <div class="middle-container flex">
         	<c:forEach var="htdl" items="${htdl }">
-            <div class="card js-htdl0">
+            <div class="card js-htdl0" data-htdlid="${htdl.htdlId }">
                 <div class="card-lmtpnum">
                     <div class="card-elaptime">
                         HOT
@@ -102,7 +101,7 @@
                     <h4>선착순 ${htdl.lmtPnum }명</h4>
                 </div>
                 <div class="card-img">
-                    <img src="1.jpg" alt="" style="width: 100%; height: 320px; z-index: -1;">
+                    <img src="/display?fileName=/<c:out value='${htdl.htdlImg }'/>" alt="" style="width: 100%; height: 320px; z-index: -1;">
                     <div class="card-img-top"></div>
                     <div class="card-dc">
                         <span> <fmt:formatNumber value="${htdl.dcRate}" type="percent" groupingUsed="false" /></span>
@@ -126,7 +125,7 @@
                         <h3>[${htdl.brch }] ${htdl.name }</h3>
                     </div>
                     <div class="card-menu">
-                        메뉴:&nbsp;<span>디저트 콤보 1인 세트</span>
+                        메뉴:&nbsp;<span>${htdl.setName }</span>
                     </div>
                     <div class="card-intro">
                         <div style="width: 40px; align-self: flex-start;">소개 : </div><span>${htdl.intro }</span>
@@ -192,8 +191,6 @@
     }
 </script>
 <script>
-
-    
     
     $(document).ready(function(){
     	
@@ -205,6 +202,11 @@
 	    
 	    //셀렉박스에 넣어줄 요소들
 	    let values = [item1, item2, item3, item4];
+	    let timeValues = [["09:00","09:00"], ["09:30","09:30"],["10:00","10:00"],["10:30","10:30"],
+	        ["11:00","11:00"],["11:30","11:30"],["12:00","12:00"],["12:30","12:30"],["13:00","13:00"],["13:30","13:30"],
+	        ["14:00","14:00"],["14:30","14:30"],["15:00","15:00"],["15:30","15:30"],["16:00","16:00"],["16:30","16:30"],["17:00","17:00"],
+	        ["17:30","17:30"],["18:00","18:00"],["18:30","18:30"],["19:00","19:00"],["19:30","19:30"]];
+	    let pNumValues = [["1명", "1"], ["2명", "2"], ["3명","3"], ["4명","4"]];
 	    //아이디값을 넣어줄 inpu태그의 name으로 지정할것
     	const region = $("#region");
 	    const time = $("#time");
@@ -213,9 +215,12 @@
     	
     	//(클릭이벤트를 걸어줄 요소, 셀렉박스 요소값, 선택값을 추가할 form)
     	selectEvent(region ,values, form)
-    	selectEvent(time ,values, form)
-    	selectEvent(pNum ,values, form)
+    	selectEvent(time ,timeValues, form)
+    	selectEvent(pNum ,pNumValues, form)
     	
+    	$(".card").on("click", function(e){
+    		self.location = "/dealight/hotdeal/get/" + $(this).data("htdlid")
+    	})
     	
     });
     

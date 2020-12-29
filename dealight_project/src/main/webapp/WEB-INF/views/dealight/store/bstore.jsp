@@ -243,14 +243,14 @@
             <div class="nav-container">
                 <div class="nav flex-column">
                    	<c:if test="${store.bstore.htdl ne null }">
-                    	<div class="nav-box htdl">
-	                        <div class="nav-header" id="htdlBtn" style="cursor: pointer;">
+                    	<div class="nav-box htdl" id="htdlBtn">
+	                        <div class="nav-header"  style="cursor: pointer;">
 	                            핫딜중인 상품
 	                        </div>
 	                        <div class="nav-body" id="htdl" style="display:none">
 	                            <div class="htdlcard js-htdl0">
 	                                <div class="card-img">
-	                                    <img src="1.jpg" alt="" style="width: 100%; z-index: -1;">
+	                                    <img src="/display?fileName=/${store.bstore.htdl.htdlImg }" alt="" style="width: 100%; z-index: -1;">
 	                                    <div class="card-img-top"></div>
 	                                    <div class="card-dc">
 					                        <span> <fmt:formatNumber value="${store.bstore.htdl.dcRate}" type="percent" groupingUsed="false" /></span>
@@ -273,13 +273,13 @@
 					                        <h3>[${store.bstore.htdl.brch }] ${store.bstore.htdl.name }</h3>
 					                    </div>
 					                    <div class="card-menu">
-					                        메뉴:&nbsp;<span>디저트 콤보 1인 세트</span>
+					                        메뉴:&nbsp;<span>${store.bstore.htdl.setName }</span>
 					                    </div>
 					                    <div class="card-intro">
 					                        <div style="width: 40px; align-self: flex-start;">소개 : </div><span>${store.bstore.htdl.intro }</span>
 	                                    </div>
 	                                </div>
-		                            <button class="nav-btn " id="htdldtls" data-id="${store.bstore.htdl.htdlId }" style="background-color: #0ab3c9">
+		                            <button class="nav-btn " id="htdldtls" data-id="${store.bstore.htdl.htdlId }" style="background-color: #0ab3c9; border: none">
 		                                상세보기
 		                            </button>
 		                            <button class="nav-btn" id="purchase" data-id="${store.bstore.htdl.htdlId }">
@@ -421,7 +421,11 @@
 			$("#htdlBtn").click(function() {
 				$("#htdl").slideToggle();
 			});
-			//핫딜 구매하기 버튼 클릭--종우
+			$("#htdldtls").on("click",function(e){
+				self.location = "/dealight/hotdeal/get/" + $(this).data("id")
+			})
+			
+			//핫딜 구매하기 버튼 클릭
 			$("#purchase").on("click", function(e){
 				let htdlContainer = $("#htdl-container");
 
@@ -470,9 +474,14 @@
 		    			$("#total").parent().hide();
 		    		}
 	    		});
-				$("#htdl").slideToggle();
 			})  
 			
+			//
+			let htdlId = '<c:out value="${htdlId}"/>' || null;
+			console.log(htdlId)
+			if(htdlId){
+				$("#purchase").trigger("click");
+			}
 			
 			//
 			let result = '<c:out value="${result }"/>';
@@ -928,7 +937,7 @@
 	
 	
 	//전달받은 핫딜 폼 그리기
-	function showHtdlForm(htdlVO){
+	/* function showHtdlForm(htdlVO){
 		
 		if(htdlVO != null){
 			let htdlMenuName = [];
@@ -949,15 +958,15 @@
 			htdlStr += '<button type="button" id="htdlRemoveBtn" class="remove" name="">X</button>';
 			htdlStr += '</div>';
 			
-			/* menusTotAmt += afterPrcie;
+			menusTotAmt += afterPrcie;
 			$('#menusTotAmtSumMsg').text("총금액");
-			$('#menusTotAmt').text(menusTotAmt); */
+			$('#menusTotAmt').text(menusTotAmt);
 			
 			$("#htdl-container").append(htdlStr);
 			menus.afterProc();
 			
 		}
-	}
+	} */
 	
 	
 	//핫딜 구매이력 체크

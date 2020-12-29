@@ -27,7 +27,7 @@
 <main>
 	<div class="mypage_wrapper">
 <%@include file="/WEB-INF/views/includes/custserviceSidebar.jsp" %>
-		<div class="box-container flex-column">
+		<div class="box-container flex-column" >
 		    <div class="mypage_main_header">
 		        <div class="main_header_title">사업자등록</div>
 		        <div class="main_header_subtitle">매장을 등록해주세요.</div>
