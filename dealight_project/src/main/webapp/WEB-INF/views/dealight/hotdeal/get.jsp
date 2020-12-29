@@ -310,7 +310,7 @@
                 </p>
 
                 <div class="hotdealInfo_elapTime">
-                    <span>남은 시간 :</span><span class="hotdeal_elapTime">
+                    <span class="js-elapTime">남은 시간 :</span><span class="hotdeal_elapTime">
                     	
                     </span>
                 </div>
@@ -536,10 +536,16 @@
 			/* showHtdlElapTime(endTime, null); */
 			showElapTimeStart();
 		}else if(stusCd === 'P'){
-			showHtdlElapTime(endTime, startTime);
+			showElapTimeStart();
+			/* showHtdlElapTime(endTime, startTime); */
+			/* checkStusCdStart(htdlId); */
 		}
 		
-		checkStusCd(htdlId);
+		/* checkStusCd(htdlId); */
+		/* getStusCd({htdlId: htdlId}, function(result){
+			console.log("=============result: " + result);
+		}); */
+		
 	});
 	
 	function checkStusCdStart(param){
@@ -547,15 +553,19 @@
 		checkStusCdId = setInterval(checkStusCd, 1000, param);
 	}
 	
+	//핫딜 상태 체크
 	function checkStusCd(param){
 		console.log("param htdlId : " + param);
 		
 		getStusCd({htdlId: param}, function(result){
 			
 			console.log("=======result: " + result);
-			/* if(stusCd != result){
+			console.log("========================result: " + result);
+
+			if(stusCd != result){
 				stusCd = result;
-			} */
+				location.reload();
+			}
 		});
 	}
 		
@@ -563,13 +573,14 @@
 			let htdlId = param.htdlId;
 			console.log("ajax before param: " + htdlId);
 
-			$.get("/dealight/hotdeal/get/stuscd/"+htdlId+".json", function(result){
+			$.get("/dealight/hotdeal/get/stuscd/"+htdlId, function(data){
+				console.log("========ajax comlete");
 				if(callback){
-					callback(result);
+					callback(data)
 				}
 			}).fail(function(xhr,status, err){
 				if(error){
-					error();
+					err();
 				}
 			});  
 			
@@ -645,9 +656,37 @@
 				dealBtn.css("background", "black");
 				dealBtn.prop("disabled", true);
 			}
+			
+		}else if(stusCd === 'P'){
+			let countElapTime = getElapTime(startTime, null);
+			
+			$(".js-elapTime").html("시작까지 남은 시간:");
+			$(".hotdeal_elapTime").text(countElapTime);
+			if(countElapTime === "00:00:00"){
+				stusCd = 'A';
+				//css 변경
+				dealBtn.find(".btn_text").text("🔥딜 하기");
+				dealBtn.css("background", "red");
+				dealBtn.prop("disabled", false);
+			}
 		}
-		
 	}
+	
+	/* function countElapTime(){
+		//1초씩 카운트 다운
+		if(stusCd === 'A'){			
+			let countElapTime = getElapTime(endTime, null);
+			//card-elaptime 출력
+			$(".hotdeal_elapTime").text(countElapTime);
+			if(countElapTime === "00:00:00"){
+				stusCd = 'I';
+				//css 변경
+				dealBtn.find(".btn_text").text("🔥핫딜이 종료되었습니다.");
+				dealBtn.css("background", "black");
+				dealBtn.prop("disabled", true);
+			}
+		}	
+	} */
 	
 	//핫딜 구매이력 체크
 	 function isHtdlPayExistChecked(param, callback, error){

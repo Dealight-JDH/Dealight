@@ -85,10 +85,11 @@ public class HtdlRestController {
 	
 	//핫딜 상태 체크
 	@GetMapping(value="/get/stuscd/{htdlId}", produces = {
-			MediaType.APPLICATION_JSON_UTF8_VALUE
+			MediaType.TEXT_PLAIN_VALUE
 	})
 	public ResponseEntity<String> getStusCd(@PathVariable Long htdlId) {
 		
+		log.info("htdlId......: " + htdlId);
 		log.info("get stusCd by htdlId....");
 		return new ResponseEntity<String>(service.getStusCdById(htdlId), HttpStatus.OK);
 	}

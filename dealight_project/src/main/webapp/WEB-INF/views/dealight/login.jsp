@@ -213,6 +213,9 @@
     	text-decoration: underline;
     }
     
+    .nav_reg_brno>a{
+    	color:white;
+    }
 </style>
 
 </head>
