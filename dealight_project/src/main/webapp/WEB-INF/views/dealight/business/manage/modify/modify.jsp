@@ -450,16 +450,16 @@
 				<div class="modify_la_in">
 					<label>시작시간</label>
 					<!-- <input name="openTm" value="${allStore.openTm}" required> -->
-					<div id="openTm" class='custom_select'>
-	                     <select  name="openTm">
+					<div class='custom_select'>
+	                     <select  id="openTm">
 	                     </select>
 	                 </div>
 				</div>
 				<div class="modify_la_in">
 					<label>마감시간</label>
 					<!-- <input name="closeTm" value="${allStore.closeTm}" required> -->
-					<div id="closeTm" class='custom_select'>
-	                     <select  name="closeTm">
+					<div class='custom_select'>
+	                     <select  id="closeTm">
 	                        <option value=""></option>
 	                     </select>
 	                </div>
@@ -467,24 +467,24 @@
 				<div class="modify_la_in">
 					<label>브레이크타임시작시간</label>
 					<!-- <input name="breakSttm" value="${allStore.breakSttm}"> -->
-					<div id="breakSttm" class='custom_select'>
-	                     <select  name="breakSttm">
+					<div class='custom_select'>
+	                     <select  id="breakSttm">
 	                     </select>
 	                 </div>
 				</div>
 				<div class="modify_la_in">
 					<label>브레이크타임마감시간</label>
 					<!-- <input name="breakEntm" value="${allStore.breakEntm}"> -->
-					<div id="breakEntm" class='custom_select'>
-	                     <select  name="breakEntm">
+					<div class='custom_select'>
+	                     <select  id="breakEntm">
 	                     </select>
 	                 </div>
 				</div>
 				<div class="modify_la_in">
 					<label>라스트오더 시간</label>
 					<!-- <input name="lastOrdTm" value="${allStore.lastOrdTm}"></br> -->
-					<div id="lastOrdTm" class='custom_select'>
-	                     <select  name="lastOrdTm">
+					<div class='custom_select'>
+	                     <select  id="lastOrdTm">
 	                     </select>
 	                 </div>
 				</div>
@@ -695,6 +695,37 @@ writeTimeBar = function () {
     $("#breakSttm option[value='"+breakSttm+"']").attr("selected","selected");
     $("#breakEntm option[value='"+breakEntm+"']").attr("selected","selected");
     $("#lastOrdTm option[value='"+lastOrdTm+"']").attr("selected","selected");
+    
+    let strInput = "";
+    strInput += "<input type='text' id='inputOpenTm' name='openTm' value='"+openTm+"' hidden>";
+    strInput += "<input type='text' id='inputCloseTm' name='closeTm' value='"+closeTm+"' hidden>";
+    strInput += "<input type='text' id='inputBreakSttm' name='breakSttm' value='"+breakSttm+"' hidden>";
+    strInput += "<input type='text' id='inputBreakEntm' name='breakEntm' value='"+breakEntm+"' hidden>";
+    strInput += "<input type='text' id='inputLastOrdTm' name='lastOrdTm' value='"+lastOrdTm+"' hidden>";
+    
+    $("#modifyForm").append(strInput);
+    
+    
+    $("#openTm").change(() => {
+    	let target = document.getElementById("openTm");	
+		$("#inputOpenTm").val(target.options[target.selectedIndex].text);
+    });
+    $("#closeTm").change(() => {
+    	let target = document.getElementById("closeTm");	
+		$("#inputCloseTm").val(target.options[target.selectedIndex].text);
+    });
+    $("#breakSttm").change(() => {
+    	let target = document.getElementById("breakSttm");	
+		$("#inputBreakSttm").val(target.options[target.selectedIndex].text);
+    });
+    $("#breakEntm").change(() => {
+    	let target = document.getElementById("breakEntm");	
+		$("#inputBreakEntm").val(target.options[target.selectedIndex].text);
+    });
+    $("#lastOrdTm").change(() => {
+    	let target = document.getElementById("lastOrdTm");	
+		$("#inputLastOrdTm").val(target.options[target.selectedIndex].text);
+    });
 }
 writeTimeBar();
 

@@ -244,7 +244,7 @@
 .footer {
 	border: 1px solid black;
 	width: 100%;
-	height: 180px; . mydropbtn { color : white;
+	height: 180px; 
 	z-index: 1;
 	cursor: pointer;
 }
@@ -261,31 +261,30 @@
 <body>
 <header class="main_nav">
         <nav class="main_nav_left">
-        	<img class='menu_img' src="/resources/icon/menu.png" alt="">
-	        	<div class='menu-dropdown-content'>
-	        		<div class="menu_cnts"><p>핫딜 찾기</p></div>
-	        		<div class="menu_cnts"><p>매장 찾기</p></div>
-	        	</div>
+        	<div class="main_nav_logo"><img id="logo" src="/resources/icon/d2.png" alt=""></div>
         </nav>
-        <div class="main_nav_logo"><img id="logo" src="/resources/icon/logo.png" alt=""></div>
+        
         <nav class="main_nav_right">
             <div><c:if test="${userId != null}"> <span id="nav_user_id">${userId }님</span></c:if></div>
-            <div class="bell_btn">
-            	<span class='alert_badge'>3</span>
-            	<img src="/resources/icon/bell.png" alt="">
-            </div>
+            <div class="nav_reg_brno"><a href="/dealight/mypage/bizauth/list">매장 등록</a></div>
             <div class="account_btn">
-            	<img src="/resources/icon/account.png">
+            	<div class="account_icon_box">
+            		<div class="account_menu"><i class="fas fa-bars"></i></div>
+            		<div class="account_icon"><i class="fas fa-user-circle"></i></div>
             		<div class="account-dropdown-content">
+						<div class="common_menu_cnts">
+							<div class="account_cnts"><a href="/dealight/hotdeal/main">핫딜 찾기</a></div>
+	        				<div class="account_cnts"><a href="/dealight/search/">매장 찾기</a></div>
+	        			</div>
 						<sec:authorize access="isAnonymous()">
 								<div class="account_cnts"><a href="/dealight/login">로그인</a></div>
 								<div class="account_cnts"><a href="/dealight/policies">회원가입</a></div>
-						</sec:authorize>
+						</sec:authorize>	
 						<sec:authorize access="isAuthenticated()">
 							<sec:authorize access="hasRole('ROLE_USER')">
-								<div class="account_cnts"><a href="/dealight/mypage/reservation">예약내역</a></div> 
-								<div class="account_cnts"><a href="/dealight/mypage/wait">웨이팅</a></div>
-								<div class="account_cnts"><a href="/dealight/mypage/review/">나의리뷰</a></div>
+								<div class="account_cnts"><a href="/dealight/mypage/reservation">예약 내역</a></div> 
+								<div class="account_cnts"><a href="/dealight/mypage/wait">웨이팅 내역</a></div>
+								<div class="account_cnts"><a href="/dealight/mypage/review/">나의 리뷰</a></div>
 								<div class="account_cnts"><a href="/dealight/mypage/like">찜 목록</a> </div>
 							</sec:authorize>
 							<sec:authorize access="hasRole('ROLE_MEMBER')">								
@@ -298,6 +297,7 @@
 								<div class="account_cnts"><a href="dealight/logout" onclick="submit(event)">로그아웃</a></div>
 						</sec:authorize>
 					</div>
+            	</div>
             </div>
         </nav>
     </header>

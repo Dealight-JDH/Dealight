@@ -20,61 +20,141 @@
 </head>
 
 <body>
-<main class="mypage_wrapper">
+<main>
+        <div class="mypage_wrapper">
         <%@include file="/WEB-INF/views/includes/mypageSidebar.jsp" %>
-        <div class="mypage_content">
-            <div class="content_head">
-                <h2>리뷰 가능 리스트<span>리뷰가 가능한 예약과 웨이팅을 불러옵니다.</span></h2>
-                <a href="/dealight/mypage/review/written-list">작성한 리뷰 보기</a>
-            </div>
-            <div class='total'>
-            		<h2>유저 아이디 : ${userId}</h2>
-					<h2>리뷰 가능한 리스트</h2>
-            </div>
-            <div class="content_main">
-				<div id="revwWrapper">
-					<div class="revw_list">
-						<c:if test="${empty dtoList}">
-							리뷰 가능한 항목이 없습니다.
+        
+        <div class="mypage_right">
+                <div class="mypage_main_header">
+                    <div class="main_header_title">리뷰 가능 리스트</div>
+                    <div class="main_header_subtitle">리뷰가 가능한 예약과 웨이팅을 불러옵니다.</div>
+                    <div class="main_header_link"><a href="/dealight/mypage/review/written-list">작성한 리뷰 보기</a></div>
+                </div>
+                <div class="mypage_main_content">
+                                    <div class="mypage_main_sub">
+                        <div>
+                            <span class="main_tit">리뷰 가능한 예약 내역</span>
+                            <span class="main_value">${writableRsvd} 개</span>
+                        </div>
+                        <div>
+                            <span class="main_tit">리뷰 가능한 웨이팅 내역</span>
+                            <span class="main_value">${writableWait} 개</span>
+                        </div>
+                    </div>
+                    <div class="mypage_main_board">
+	                    <c:if test="${empty dtoList}">
+							<h2>리뷰 가능한 내역이 없습니다.</h2>
 						</c:if>
 						
 						<c:if test="${not empty dtoList}">
-							<c:forEach items="${dtoList }" var="dto">
-							<div>
-							==================================================
-								<h5>매장번호 : <span class="store_id">${dto.storeId}</span></h5>
-								<h5>회원 아이디 : ${dto.userId}</h5>
-								<h5>시간 : <h2>${dto.time}</h2></h5>
-								<h5>리뷰 상태 : ${dto.revwStus}</h5>
+							<c:forEach items="${dtoList}" var="dto">
 								<c:if test="${not empty dto.rsvd }">
-									<h2>예약</h2>
-									<h5>예약 번호 : <span class='rsvd_id'>${dto.rsvd.rsvdId}</span></h5>
-									<h5>핫딜 번호 : ${dto.rsvd.htdlId}</h5>
-									<h5>승인 번호 : ${dto.rsvd.aprvNo}</h5>
-									<h5>예약 인원 : ${dto.rsvd.pnum}</h5>
-									<h5>예약 상태 : ${dto.rsvd.stusCd}</h5>
-									<h5>예약 총 금액 : ${dto.rsvd.totAmt}</h5>
-									<h5>예약 총 수량 : ${dto.rsvd.totQty}</h5>
-									<button class="btn_rsvd_dtls">예약 상세 보기</button>
-								</c:if>
-								<c:if test="${not empty dto.wait }">
-									<h2>웨이팅</h2>
-									<h5>웨이팅 번호: <span class='wait_id'>${dto.wait.waitId}</span></h5>
-									<h5>웨이팅 인원: ${dto.wait.waitPnum}</h5>
-									<h5>손님 이름: ${dto.wait.custNm}</h5>
-									<h5>손님 번호: ${dto.wait.custTelno}</h5>
-									<h5>웨이팅 상태: ${dto.wait.waitStusCd}</h5>
-								</c:if>
-								<button class="btn_store_info">매장 정보 보기</button>
-								<button class="btn_revw_reg">리뷰 쓰기</button></br>
-								</div>
-							</c:forEach>
-						</c:if>
-					</div>
-				</div>
+			                        <div class="rsvd_wrapper">
+			                            <div class="css_rsvd_time">
+			                                <span>${dto.rsvd.time }</span>
+			                            </div>
+			                            <div class="css_rsvd_box">
+			                                <div class="rsvd_tit">
+			                                    <div>
+			                                    	예약번호 : <span class="rsvd_id">${dto.rsvd.rsvdId}</span>
+			                                    	<span style='display:none;' class="revw_stus">${dto.rsvd.revwStus}</span>
+			                                    	<span style='display:none;' class="store_id">${dto.storeId}</span>
+			                                    </div>
+			                                    <div><button class="btn_rsvd_dtls"><i class="fas fa-angle-right"></i></button></div>
+			                                </div>
+			                                <div class="rsvd_cnts">
+			                                    <div class="rsvd_cnts_wrapper">
+			                                        <div class="rsvd_cnts_img">
+			                                        <img src='/display?fileName=${dto.rsvd.storeRepImg}'>
+			                                        
+			                                        </div>
+			                                        <div class="cnts">
+			                                            <div>
+			                                                <span class="rsvd_cnts_tit">메뉴목록</span>
+			                                                <c:forEach items="${dto.rsvd.rsvdDtlsList}" var="rsvdDtls">
+																<span class="rsvd_cnts_val">${rsvdDtls.menuNm}</span>
+															</c:forEach>
+			                                            </div>
+			                                            <div>
+			                                                <span class="rsvd_cnts_tit">결제금액</span>
+			                                                <span class="rsvd_cnts_val">${dto.rsvd.totAmt}원</span>
+			                                            </div>
+			                                            <div>
+			                                                <span class="rsvd_cnts_tit">예약상태</span>
+			                                                <c:if test="${dto.rsvd.stusCd eq 'C'}">
+			                                                	<span class="rsvd_cnts_val">현재예약</span>
+			                                                </c:if>
+			                                                <c:if test="${dto.rsvd.stusCd eq 'L'}">
+			                                                	<span class="rsvd_cnts_val">지난예약</span>
+			                                                </c:if>
+			                                            </div>
+			                                        </div>
+			                                    </div>
+			                                    <div class="rsvd_btn_box">
+			                                        <button class="btn_store_info">매장 정보 보기</button>
+			                                        <c:if test="${dto.rsvd.revwStus > 0}"> <button class="btn_revw_info">리뷰 보기</button></c:if>
+													<c:if test="${dto.rsvd.revwStus == 0}"><button class="btn_revw_reg">리뷰 쓰기</button></c:if>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                        </div>
+			                     </c:if>
+			                     <c:if test="${not empty dto.wait }">
+			                     	<div class="rsvd_wrapper">
+			                            <div class="css_rsvd_time">
+			                                <span>${dto.wait.waitRegTm }</span>
+			                            </div>
+			                            <div class="css_rsvd_box">
+			                                <div class="rsvd_tit">
+			                                    <div>
+			                                    	웨이팅 번호 : <span class="wait_id">${dto.wait.waitId}</span>
+			                                    	<span style='display:none;' class="revw_stus">${dto.wait.revwStus}</span>
+			                                    	<span style='display:none;' class="store_id">${dto.storeId}</span>
+			                                    </div>
+			                                </div>
+			                                <div class="rsvd_cnts">
+			                                    <div class="rsvd_cnts_wrapper">
+			                                        <div class="rsvd_cnts_img">
+			                                        <img src='/display?fileName=${dto.wait.storeRepImg}'>
+			                                        
+			                                        </div>
+			                                        <div class="cnts">
+			                                            <div>
+			                                                <span class="rsvd_cnts_tit">웨이팅 인원</span>
+															<span class="rsvd_cnts_val">${dto.wait.waitPnum }</span>
+			                                            </div>
+			                                            <div>
+			                                                <span class="rsvd_cnts_tit">웨이팅 상태</span>
+			                                                <c:if test="${dto.wait.waitStusCd eq 'C'}">
+			                                                	<span class="rsvd_cnts_val" style="color:blue;">현재 웨이팅</span>
+			                                                </c:if>
+			                                                <c:if test="${dto.wait.waitStusCd eq 'E'}">
+			                                                	<span class="rsvd_cnts_val">입장</span>
+			                                                </c:if>
+			                                                <c:if test="${dto.wait.waitStusCd eq 'P'}">
+			                                                	<span class="rsvd_cnts_val" style="color:red;">노쇼</span>
+			                                                </c:if>
+			                                            </div>
+			                                        </div>
+			                                    </div>
+			                                    <div class="rsvd_btn_box">
+			                                        <button class="btn_store_info">매장 정보 보기</button>
+			                                        <c:if test="${dto.wait.revwStus > 0}"> <button class="btn_revw_info">리뷰 보기</button></c:if>
+													<c:if test="${dto.wait.revwStus == 0}"><button class="btn_revw_reg">리뷰 쓰기</button></c:if>
+			                                    </div>
+			                                </div>
+			                            </div>
+			                        </div>
+			                     </c:if>
+	                        </c:forEach>
+                        </c:if>
+                    </div>
+			<!-- end pagination -->
+                </div>
             </div>
-            <!-- pagination -->
-			<div class='pull-right'>
+        </div> <!-- end mypage wrapper -->
+                    <!-- pagination -->
+			<div class='pull-right panel-footer'>
 				<ul class='pagination'>
 					<c:if test="${pageMaker.prev}">
 						<li class='paginate_button previous'>
@@ -99,23 +179,22 @@
 				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
 				<input type='hidden' name='amount' value = '${pageMaker.cri.amount}'>
 			</form>
-			<!-- end pagination -->
-        </div>
     </main>
-    
-    <div id="myModal" class="modal">
+            
+            	<!-- The Modal -->
+	<div id="myModal" class="modal">
 		<!-- Modal content -->
 		<div class="modal-content">
-			<span class="close">&times;</span>
+			<span class="close_modal"><i class="fas fa-times"></i></span>
+	        <div class="modal_header"></div>
 			<ul class="rsvdDtls"></ul>
 			<ul class="userRsvdList"></ul>
 			<ul class="revw_regForm"></ul>
-			<ul class="store_info"></ul>
-			<div id="map" style="width:500px;height:400px;"></div>
+			<div class="modal_wrapper_revw_reg content_div"></div>
+			<div class='modal_wrapper_revw_info content_div'></div>
+			<div class="modal_wrapper_store_info content_div"></div>
+			<div class="modal_wrapper_rsvdDtls content_div"></div>
 		</div>
-	</div>
-		
-	
 	</div>
 <script type="text/javascript" src="/resources/js/modal.js"></script>
 <script>
@@ -145,7 +224,14 @@ $(document).ready(function() {
 	    storeInfoUL = $(".store_info"),
 	    userRsvdListUL = $(".userRsvdList"),
 	    rsvdDtlsUL = $(".rsvdDtls"),
-	    btn_show_board = $("#btn_show_board")
+	    btn_show_board = $("#btn_show_board"),
+	    revwInfoDiv = $(".modal_wrapper_revw_info"),
+	    storeInfoDiv = $(".modal_wrapper_store_info"),
+        rsvdDtlsDiv = $(".modal_wrapper_rsvdDtls"),
+        rsvdDtlsInfoDiv = $("#modal_rsvd_dtls"),
+        revwRegDiv = $(".modal_wrapper_revw_reg"),
+        pageNum = ${pageMaker.cri.pageNum},
+        amount = ${pageMaker.cri.amount}
 	;
 	    
 	let container,options,map,mapContainer,mapOption,markerPosition,marker;
@@ -276,63 +362,47 @@ $(document).ready(function() {
        	
        	getStoreInfo({userId:userId,storeId : storeId}, store=>{
        		
-       		let strStoreInfo = "";
-       		if(!store)
-       			return;
-       		
-       		strStoreInfo += "<h1>매장 정보</h1>";
-       		strStoreInfo += "<img src='/display?fileName="+store.bstore.repImg+"'>";
-    		if(!store.like) strStoreInfo += "<button class='btn_like_pick'>찜 하기</button>";
-    		if(store.like) strStoreInfo += "<button class='btn_like_cancel'>찜 취소하기</button>";
-    		strStoreInfo += "<li>매장 번호 : <span class='store_info_id'>"+store.storeId+"</span></l1>";
-       		strStoreInfo += "<li>매장 이름 : "+store.storeNm+"</l1>";
-       		strStoreInfo += "<li>매장 번호 : "+store.telno+"</l1>";
-       		strStoreInfo += "<li>매장 상태 : "+store.clsCd+"</l1>";
-       		strStoreInfo += "<li>매장 관리자 아이디 : "+store.bstore.buserId+"</l1>";
-       		strStoreInfo += "<li>매장 분점 : "+store.bstore.brch+"</l1>";
-       		strStoreInfo += "<li>매장 대표 메뉴 : "+store.bstore.repMenu+"</l1>";
-       		strStoreInfo += "<li>매장 착석 상태 : "+store.bstore.seatStusCd+"</l1>";
-       		strStoreInfo += "<li>매장 영업 시작 시간 : "+store.bstore.openTm+"</l1>";
-       		strStoreInfo += "<li>매장 영업 마감 시간 : "+store.bstore.closeTm+"</l1>";
-       		strStoreInfo += "<li>매장 브레이크타임 시작 시간 : "+store.bstore.breakSttm+"</l1>";
-       		strStoreInfo += "<li>매장 브레이크타임 종료 시간 : "+store.bstore.breakEntm+"</l1>";
-       		strStoreInfo += "<li>매장 라스트오더 시간 : "+store.bstore.lastOrdTm+"</l1>";
-       		strStoreInfo += "<li>매장 1인 테이블 수 : "+store.bstore.n1SeatNo+"</l1>";
-       		strStoreInfo += "<li>매장 2인 테이블 수 : "+store.bstore.n2SeatNo+"</l1>";
-       		strStoreInfo += "<li>매장 4인 테이블 수 : "+store.bstore.n4SeatNo+"</l1>";
-       		strStoreInfo += "<li>매장 소개 : "+store.bstore.storeIntro+"</l1>";
-       		strStoreInfo += "<li>매장 평균 식사 시간 : "+store.bstore.avgMealTm+"</l1>";
-       		strStoreInfo += "<li>매장 휴무일 : "+store.bstore.hldy+"</l1>";
-       		strStoreInfo += "<li>매장 수용 가능 인원 : "+store.bstore.acmPnum+"</l1>";
-    		strStoreInfo += "<li>매장 좋아요 수 : "+store.eval.likeTotNum+"</l1>";
-    		strStoreInfo += "<li>매장 리뷰 수 : "+store.eval.revwTotNum+"</l1>";
-    		strStoreInfo += "<li>매장 평균 평점 : "+store.eval.avgRating+"</l1>";
-    		strStoreInfo += "<div class='rating' data-rate-value='"+store.eval.avgRating+"'></div>";
-    		strStoreInfo += "<li>매장 주소 : "+store.loc.addr+"</l1><br>";
+    		let strStoreInfo = "";
+    		if(!store)
+    			return;
     		
-       		
-       		modal.find("#map").css("display", "block");
-       		
-       		container = document.getElementById('map');
-       		options = {
-       					center : new kakao.maps.LatLng(store.loc.lat, store.loc.lng),
-       					level : 3
-       				};
-       		map = new kakao.maps.Map(container, options);
-       		mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-       		mapOption = { 
-       		    center: new kakao.maps.LatLng(store.loc.lat, store.loc.lng), // 지도의 중심좌표
-       		    level: 3 // 지도의 확대 레벨
-       		};
-       		markerPosition  = new kakao.maps.LatLng(store.loc.lat, store.loc.lng);
-       		marker = new kakao.maps.Marker({
-       			position: markerPosition
-       		});
-       		marker.setMap(map);
-       		
-       		storeInfoUL.html(strStoreInfo);
-       		
-       		/* Rater.js 로직*/
+    		strStoreInfo += "<div class='modal_tit'>";
+    		strStoreInfo += "<span>매장 정보</span>";
+    		strStoreInfo += "</div>";
+    		
+    		strStoreInfo += "<div class='modal_top_store'>";
+    		strStoreInfo += "<div class='modal_top_left'>";
+    		strStoreInfo += "<div class='modal_top_left'>";
+    		strStoreInfo += "<img src='/display?fileName="+store.bstore.repImg+"'>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "<div class='modal_top_right'>";
+    		strStoreInfo += "<div class='store_info_name'>"+store.storeNm+"</div>";
+    		strStoreInfo += "<div class='store_info_brch'>"+store.bstore.brch+"</div>";
+    		strStoreInfo += "<div class='store_info_telno'>"+store.telno+"</div>";
+    		strStoreInfo += "<div class='store_info_rating'><div class='rating' data-rate-value='"+store.eval.avgRating+"'></div></div>";
+    		strStoreInfo += "<div class='store_info_eval'>";
+    		if(store.like) strStoreInfo += "<div class='store_info_tot_like btn_like_cancel'><i class='fas fa-heart'></i> "+store.eval.likeTotNum+"</div>";
+    		else if (!store.like) strStoreInfo += "<div class='store_info_tot_like btn_like_pick'><i class='far fa-heart'></i> "+store.eval.likeTotNum+"</div>";
+    		strStoreInfo += "<div class='store_info_tot_revw'><i class='fas fa-pencil-alt'></i> "+store.eval.revwTotNum+"</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "<div class='store_info_tm'>";
+    		strStoreInfo += "<div class='store_info_biz_tm'>영업 시간 : "+store.bstore.openTm+" - "+store.bstore.closeTm+"</div>";
+    		strStoreInfo += "<div class='store_info_break_tm'>브레이크 타임 : "+store.bstore.breakSttm+" - "+store.bstore.breakEntm+"</div>";
+    		strStoreInfo += "<div class='store_info_break_tm'>라스트오더 : "+store.bstore.lastOrdTm+"</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "<div class='store_info_detail'>";
+    		strStoreInfo += "<i class='fas fa-angle-right'></i>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "</div>";
+    		strStoreInfo += "<span style='display:none;' class='store_info_id'>"+store.storeId+"</span>";
+    		
+    		
+    		storeInfoDiv.css("display","flex");
+    		storeInfoDiv.html(strStoreInfo);
+    		
+    		/* Rater.js 로직*/
 	        $(".rating").rate({
 	            max_value: 5,
 	            step_size: 0.5,
@@ -341,9 +411,10 @@ $(document).ready(function() {
 	            cursor: 'default',
 	            readonly: true,
 	        });
-       		
-       	    $(".btn_like_pick").on("click",likeAddHandler);
-       	    $(".btn_like_cancel").on("click",likeRemoveHandler);
+    		
+    		$(".store_info_detail").on("click", e => window.open("/dealight/store/"+store.storeId))
+    	    $(".btn_like_pick").on("click",likeAddHandler);
+    	    $(".btn_like_cancel").on("click",likeRemoveHandler);
        		
        	});
        	
@@ -358,28 +429,55 @@ $(document).ready(function() {
    		getUserRsvdList({storeId:storeId,userId:userId}, function(userRsvdList){
    			
    			let strUserRsvdList = "";
-   			if(!userRsvdList)
-   				return;
-   			
-   			strUserRsvdList += "<h1>예약 히스토리</h1>";
-   			userRsvdList.forEach(rsvd => {
-   				strUserRsvdList += "========================================";
-   				strUserRsvdList += "<li>예약 번호 : "+rsvd.rsvdId+"</li>"; 
-   	            strUserRsvdList += "<li>매장번호 : "+ rsvd.storeId + "</li>";
-   	            strUserRsvdList += "<li>회원 아이디 : "+ rsvd.userId + "</li>";
-   	            strUserRsvdList += "<li>핫딜 번호 :"+ rsvd.htdlId + "</li>";
-   	            strUserRsvdList += "<li>승인 번호 : "+ rsvd.aprvNo + "</li>";
-   	            strUserRsvdList += "<li>예약 인원 : "+ rsvd.pnum + "</li>";
-   	            strUserRsvdList += "<li>예약 시간 : "+ rsvd.time + "</li>";
-   	            strUserRsvdList += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
-   	            strUserRsvdList += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
-   	            strUserRsvdList += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-   	            strUserRsvdList += "<li>예약 등록 날짜 : "+ rsvd.regdate + "</li>";
-   			});
-   			
-   			userRsvdListUL.html(strUserRsvdList);
-   			
-   			showRsvdDtls(selRsvdId);
+    		if(!userRsvdList)
+    			return;
+    		
+    		strUserRsvdList += "<div class='modal_top rsvdDtls' id='modal_rsvd_dtls'>";
+    		
+    		strUserRsvdList += "<div class='rsvd_top_wrapper'>";
+    		strUserRsvdList += "</div>";
+    		strUserRsvdList += "<div class='rsvd_mid_wrapper'>";
+    		strUserRsvdList += "</div>";
+
+    		strUserRsvdList += "<div class='rsvd_bot_wrapper'>";
+    		strUserRsvdList += "<div class='rsvd_history_tit'>";
+    		strUserRsvdList += "매장 방문 히스토리";
+    		strUserRsvdList += "</div>";
+    		userRsvdList.forEach(rsvd => {
+	    		strUserRsvdList += "<div class='rsvd_history'>";
+	    		strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+	    		strUserRsvdList += "<div class='info'>";
+	    		strUserRsvdList += "<div>예약 번호</div>";
+	    		strUserRsvdList += "<div>"+rsvd.rsvdId+"</div>";
+	    		strUserRsvdList += "</div>";
+	    		strUserRsvdList += "<div class='info'>";
+	    		strUserRsvdList += "<div>예약 인원</div>";
+	    		strUserRsvdList += "<div>"+ rsvd.pnum + "</div>";
+	    		strUserRsvdList += "</div>";
+	    		strUserRsvdList += "<div class='info'>";
+	    		strUserRsvdList += "<div>예약 시간</div>";
+	    		strUserRsvdList += "<div>"+ rsvd.time + "</div>";
+	    		strUserRsvdList += "</div>";
+	    		strUserRsvdList += "<div class='info'>";
+	    		strUserRsvdList += "<div>예약 총 금액</div>";
+	    		strUserRsvdList += "<div>"+ rsvd.totAmt + "</div>";
+	    		strUserRsvdList += "</div>";
+	    		strUserRsvdList += "<div class='info'>";
+	    		strUserRsvdList += "<div>예약 총 수량</div>";
+	    		strUserRsvdList += "<div>"+ rsvd.totQty + "</div>";
+	    		strUserRsvdList += "</div>";
+	    		strUserRsvdList += "</div>";
+    		});
+    		strUserRsvdList += "</div>";
+    		
+
+
+    		rsvdDtlsDiv.css("display","flex");
+    		rsvdDtlsDiv.html(strUserRsvdList);
+    		console.log("=======================");
+    		console.log("user history complete");
+    		console.log("sel rsvd id : " + selRsvdId);
+    		showRsvdDtls(selRsvdId);
    		})
    	};
    	
@@ -390,34 +488,56 @@ $(document).ready(function() {
    		
    		getRsvdDtls({rsvdId:rsvdId}, function(rsvd){
    			
-   			let strRsvdDtls = "";
-   			if(!rsvd)
-   				return;
-   			
-   			strRsvdDtls += "<h1>해당 유저 예약 상세</h1>"
-   			strRsvdDtls += "<li>예약 번호 :" + rsvd.rsvdId +"</li>";
-   			strRsvdDtls += "<li>매장 번호 :" + rsvd.storeId +"</li>";
-   			strRsvdDtls += "<li>회원 아이디 : " + rsvd.userId +"</li>";
-   			strRsvdDtls += "<li>핫딜 번호 : " + rsvd.htdlId +"</li>";
-   			strRsvdDtls += "<li>승인 번호 : " + rsvd.aprvNo +"</li>";
-   			strRsvdDtls += "<li>예약 인원 : " + rsvd.pnum +"</li>";
-   			strRsvdDtls += "<li>예약 시간 : " + rsvd.time +"</li>";
-   			strRsvdDtls += "<li>예약 상태 : " + rsvd.stusCd +"</li>";
-   			strRsvdDtls += "<li>예약 총 가격 : " + rsvd.totAmt +"</li>";
-   			strRsvdDtls += "<li>예약 총 수량 : " + rsvd.totQty +"</li>";
-   			strRsvdDtls += "<li>예약 등록 날짜 : " + rsvd.regdate +"</li>";
-   			let cnt = 1;
-   			rsvd.rsvdDtlsList.forEach(dtls => {
-   				strRsvdDtls += "==============================";
-   				strRsvdDtls += "<li>상세 순서 [" + cnt +"]</li>";
-   				strRsvdDtls += "<li>예약 상세 번호 : " + dtls.rsvdSeq +"</li>";
-   				strRsvdDtls += "<li>예약 메뉴 이름 : " + dtls.menuNm +"</li>";
-   				strRsvdDtls += "<li>메뉴 가격 : " + dtls.menuPrc +"</li>";
-   				strRsvdDtls += "<li>메뉴 총 개수 : " + dtls.menuTotQty +"</li>";
-   				cnt += 1;
-   			})
-   			
-   			rsvdDtlsUL.html(strRsvdDtls);
+console.log("rsvd id : "+rsvdId)
+    		
+			let strRsvdDtlsTop = "";
+			
+			if(!rsvd)
+				return;
+			
+			strRsvdDtlsTop += "<div class='modal_rsvd_tit'>예약 상세</div>";
+			strRsvdDtlsTop += "<div class='rsvd_top_box'>";
+			if(rsvd.htdlId != null) strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-fire'></i></span>";
+			strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
+			strRsvdDtlsTop += "<div>예약 번호</div>";
+			strRsvdDtlsTop += "<div>"+rsvd.rsvdId+"</div>";
+			strRsvdDtlsTop += "</div>";
+			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
+			strRsvdDtlsTop += "<div>예약 시간</div>";
+			strRsvdDtlsTop += "<div>"+rsvd.time+"</div>";
+			strRsvdDtlsTop += "</div>";
+			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
+			strRsvdDtlsTop += "<div>예약 총 가격</div>";
+			strRsvdDtlsTop += "<div>"+rsvd.totAmt+"원</div>";
+			strRsvdDtlsTop += "</div>";
+			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
+			strRsvdDtlsTop += "<div>예약 총 수량</div>";
+			strRsvdDtlsTop += "<div>"+rsvd.totQty+"개</div>";
+			strRsvdDtlsTop += "</div>";
+			strRsvdDtlsTop += "</div>";
+			
+			$(".rsvd_top_wrapper").html(strRsvdDtlsTop);
+			
+			let strRsvdDtlsMid = "";
+			
+			strRsvdDtlsMid += "<div class='modal_menu_head'>";
+			strRsvdDtlsMid += "<div>메뉴</div>";
+			strRsvdDtlsMid += "<div>가격</div>";
+			strRsvdDtlsMid += "<div>수량</div>";
+			strRsvdDtlsMid += "</div>";
+			rsvd.rsvdDtlsList.forEach(dtls => {
+				strRsvdDtlsMid += "<div class='modal_menu_info'>";
+				strRsvdDtlsMid += "<div>" + dtls.menuNm +"</div>";
+				strRsvdDtlsMid += "<div>" + dtls.menuPrc +"원</div>";
+				strRsvdDtlsMid += "<div>" + dtls.menuTotQty +"</div>";
+				strRsvdDtlsMid += "</div>";
+			});
+			
+			$(".rsvd_mid_wrapper").html(strRsvdDtlsMid);
+    		
+    		console.log("=======================");
+    		console.log("rsvd dtls complete");
    			
    		})
    	};
@@ -430,33 +550,50 @@ $(document).ready(function() {
     			
     	getStoreInfo({userId:userId,storeId : storeId}, store=>{
     		
-    		console.log("get store info..................");
-       		
-       		if(!store)
-       			return;
-       	
+			console.log("get store info..................");
+    		
+    		if(!store)
+    			return;
+    		let strRevw = "";
+    		
+    		strRevw += "<div class='modal_tit'>";
+            strRevw += "<span>리뷰 작성</span>";
+            strRevw += "</div>";
+            strRevw += "<div class='modal_top_revw'>";
+    		strRevw += "<div class='revw_reg_wrapper'>";
+    		strRevw += "<div class='revw_store_info'>";
+    		strRevw += "<div class='revw_store_name'>"+store.storeNm+"</div>";
+    		if(waitId) strRevw += "<div class='revw_rsvd_id'>웨이팅 번호 : "+waitId+"</div>";
+    		if(rsvdId) strRevw += "<div class='revw_rsvd_id'>예약번호 : "+rsvdId+"</div>";
+    		strRevw += "</div>";
+    		strRevw += "<form id='revwRegForm' action='/dealight/mypage/review/register' method='post'>";
+    		strRevw += "<div class='revw_rate_wrapper'>";
+    		strRevw += "<div class='rating' dat	a-rate-value=3></div>";
+    		strRevw += "</div>";
+    		strRevw += "<div class='revw_cnts_textarea'>";
+    		strRevw += "<textarea cols='30' row='20' name='cnts' placeholder='리뷰 내용을 입력해주세요.'></textarea>";
+    		strRevw += "</div>";
+    		strRevw += "<input name='rating' id='rate_input' hidden>";
+    		strRevw += "<div class='file_body'></div>";
+    		strRevw += "<div class='form_img'><input id='js_upload' type='file' name='uploadFile' multiple></div>";
+    		strRevw += "<div class='uploadResult'><ul></ul></div>";
+    		strRevw += "<div class='revw_btn_box'>";
+    		strRevw += "<button id='submit_revwRegForm'>리뷰 등록</button>";
+    		strRevw += "</div>";
+    		strRevw += "<input name='storeId' value='"+store.storeId+"' hidden>";
+    		strRevw += "<input name='storeNm' value='"+store.storeNm+"' hidden>";
+    		if(rsvdId) strRevw += "<input name='rsvdId' value='"+rsvdId+"' hidden>";
+    		if(waitId) strRevw += "<input name='waitId' value='"+waitId+"' hidden>";
+    		strRevw += "<input name='rating' id='rate_input' hidden>";
+    		strRevw += "<input name='userId' value='"+userId+"' hidden>";
+    		strRevw += "<input name='prevPage' value='reservation?pageNum="+pageNum+"&amount="+amount+"' id='' hidden>";
+    		strRevw += "</form>";
+    		strRevw += "</div>";	
+    		strRevw += "</div>";
 	       	
-	       	strRevwRegForm += "<h1>리뷰 작성</h1>";
-	       	strRevwRegForm += "<form id='revwRegForm' action='/dealight/mypage/review/register' method='post'>";
-	       	strRevwRegForm += "매장 번호 : <input name='storeId' value='"+store.storeId+"' readonly></br>";
-	       	strRevwRegForm += "매장 이름 : <input name='storeNm' value='"+store.storeNm+"' readonly></br>";
-	       	if(rsvdId) strRevwRegForm += "예약 번호 : <input name='rsvdId' value='"+rsvdId+"' readonly></br>";
-	       	if(waitId) strRevwRegForm += "웨이팅 번호 : <input name='waitId' value='"+waitId+"' readonly></br>";
-	       	strRevwRegForm += "회원 아이디 : <input name='userId' value='"+userId+"' readonly></br>";
-	       	strRevwRegForm += "리뷰 내용 : <input type='textarea' name='cnts' id=''></br>";
-	       	strRevwRegForm += "평점 주기"
-		    strRevwRegForm += "<div class='rating' data-rate-value=3></div>";
-		    strRevwRegForm += "<input name='rating' id='rate_input' hidden>";
-	       	strRevwRegForm += "파일첨부 : <div class='file_body'>"; 
-	       	strRevwRegForm += "<div class='form_img'><input id='js_upload' type='file' name='uploadFile' multiple></div>";
-	       	strRevwRegForm += "<div class='uploadResult'><ul></ul></div></div>";
-	       	strRevwRegForm += "<input name='prevPage' value='review/' id='' hidden>";
-	       	strRevwRegForm += "<div class='bigPictureWrapper'><div class='bigPicture'></div></div>";
-	       	strRevwRegForm += "</form>";
-	       	strRevwRegForm += "<button id='submit_revwRegForm'>제출하기</button>";
-	       	
-	       	revwRegFormUL.html(strRevwRegForm);
-	       	
+    		revwRegDiv.css("display","flex");
+	       	revwRegDiv.html(strRevw);
+
 	       	/* Rater.js 로직*/
 	        $(".rating").rate({
 	            max_value: 5,
@@ -467,7 +604,8 @@ $(document).ready(function() {
 	            readonly: false,
 	            update_input_field_name: $("#rate_input")
 	        });
-	       	
+	    	
+	       	// 리뷰
 	    	// btn id
 	    	btnSubmit = "#submit_revwRegForm";
 	    	/* form 역할을 하는 엘리먼트를 선택한다. */
@@ -479,10 +617,10 @@ $(document).ready(function() {
 	    	if(isModal)  $("#js_upload").change(uploadHandler); 
 	    	$(".uploadResult").on("click", "button", deleteHandler);
 	        //$(".uploadResult").on("click", "li", showImageHandler);
-	    	//$(".bigPictureWrapper").on("click",bigImgAniHandler);
+	    	$(".bigPictureWrapper").on("click",bigImgAniHandler);
 	    	if(pageType === 'modify' || pageType === 'register') $(".uploadResult").on("click","img",selRepImgHandler);
-	       	
-    	});
+ 		
+ 	});
        };
 	       	
        
@@ -490,9 +628,9 @@ $(document).ready(function() {
        /*매장의 예약 리스트 보여주기*/
        $(".btn_rsvd_dtls").on("click", e => {
        	
-       	let rstoreId = $(e.target).parent().find(".store_id").text(),
-       		selRsvdId = $(e.target).parent().find(".rsvd_id").text(),
-       		ruserId = '${userId}';
+    	  let rstoreId = $(e.target).parent().parent().parent().parent().find(".store_id").text(),
+	   		selRsvdId = $(e.target).parent().parent().parent().parent().find(".rsvd_id").text(),
+	   		ruserId = '${userId}';
        		
        	console.log('store id ............... : ' + rstoreId);
        	console.log('rsvd id ............... : ' + selRsvdId);
@@ -507,9 +645,10 @@ $(document).ready(function() {
        /* 리뷰 등록  모달 */
        $(".btn_revw_reg").on("click", e => {
        	
-       	let storeId = $(e.target).parent().find(".store_id").text(),
-       		waitId = $(e.target).parent().find(".wait_id").text(),
-       		rsvdId = $(e.target).parent().find(".rsvd_id").text();
+    	   let storeId = $(e.target).parent().parent().parent().parent().find(".store_id").text(),
+   				rsvdId = $(e.target).parent().parent().parent().parent().find(".rsvd_id").text(),
+   				revwStus = $(e.target).parent().parent().parent().parent().find(".revw_stus").text(),
+   				waitId = $(e.target).parent().parent().parent().parent().find(".wait_id").text();
        	
        	showRevwRegForm(storeId,userId,waitId,rsvdId);
        	modal.css("display","block");
@@ -522,7 +661,7 @@ $(document).ready(function() {
        $(".btn_store_info").on("click", e => {
     	   
        	
-	       	let storeId = $(e.target).parent().find(".store_id").text(),
+    	   let storeId = $(e.target).parent().parent().parent().parent().find(".store_id").text(),
 	    		userId = '${userId}';
 	       	
     	    console.log('storeId.....................'+storeId);
@@ -534,28 +673,27 @@ $(document).ready(function() {
        
        let likeRemoveHandler = function(e){
        	
-       	let storeId = $(e.target).parent().find(".store_info_id").text(),
-   			userId = '${userId}';
+    	let storeId = $(e.target).parent().parent().parent().parent().parent().parent().find(".store_info_id").text(),
+			userId = '${userId}';
 
-   		
-   		removeLike({userId:userId,storeId:storeId});
-   		alert("찜이 취소 되었습니다.");		
-   		showStoreInfo(userId, storeId);
+		console.log("store id : "+storeId);
+		removeLike({userId:userId,storeId:storeId});
+		alert("찜이 취소 되었습니다.");		
+		showStoreInfo(userId, storeId);
    		
        }
        
        let likeAddHandler = function(e){
        	
-       	let storeId = $(e.target).parent().find(".store_info_id").text(),
-   			userId = '${userId}';
+       	let storeId = $(e.target).parent().parent().parent().parent().parent().parent().find(".store_info_id").text(),
+			userId = '${userId}';
 
-   		addLike({userId:userId,storeId:storeId});
-   		
-   		alert($(e.target).parent().find(".store_info_id").text()+"번이 추가 되었습니다.");
-
-   		
-   		
-   		showStoreInfo(userId, storeId);
+		console.log("store id : "+storeId);
+		addLike({userId:userId,storeId:storeId});
+		
+		alert($(e.target).parent().find(".store_info_id").text()+"찜이 추가 되었습니다.");
+	
+		showStoreInfo(userId, storeId);
        }
 	
 }); /* document ready end*/

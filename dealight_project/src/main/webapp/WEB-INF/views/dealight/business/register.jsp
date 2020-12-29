@@ -497,7 +497,7 @@
 	                        <label for="openTm" id="openTm_tit">영업 시작</label>
 	                        <div class='custom_select'>
 	                            <select id="openTm" name="openTm">
-	                                <option value="09:00">09:00</option>
+	                                <option value="09:00">09:00</option>		
 	                                <option value="10:30">09:30</option>
 	                            </select>
 	                        </div>

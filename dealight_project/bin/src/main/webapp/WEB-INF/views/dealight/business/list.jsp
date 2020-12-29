@@ -11,6 +11,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>매장 리스트</title>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/0f892675ba.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/resources/css/manage.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
 	main{
@@ -58,27 +64,27 @@
             cursor: pointer;
             display: flex;
             font-size: 12px;
-            
+            border-left: 14px solid black;
             width: 600px;
-            height: 280px;
+            height: 250px;
             background: white;
-            /*border: 1px solid #9090900e;*/
-            border-radius: 10px;
-            margin-top: 25px;
+            border: 1px solid #e6e6e6;
+            
+            border-radius: 5px;
             margin-bottom : 25px;
-            box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            /*box-shadow: 2px 2px 8px rgba(0,0,0,0.3);*/
         }
         
         .store_card:hover{
            opacity: 0.7;
-            /*box-shadow: 7px 7px 8px rgba(247, 44, 78, 0.233);*/
+           box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
         }
         .store_card:hover .brno_content_wrapper{
             filter: blur(0);
         }
         .store_info_wrapper{
             margin: auto auto;
-            /*border: 1px solid black;*/
+            
             width: 90%;
             height: 80%;
             display: flex;
@@ -91,6 +97,7 @@
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
+            margin-bottom: 30px;
         }
         .store_info_i.left{
             position: relative;
@@ -105,9 +112,7 @@
             width: 30%;
         }
         .store_info_i.left span{
-            position: absolute;
-            left: 5px;
-            bottom: 5px;
+            
         }
         
         .store_name{
@@ -130,6 +135,10 @@
         .store_info_i.right{
             width: 100%;
             height: 100%;
+            display:flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
         }
         .store_info_i_r{
             /*border: 1px black solid;*/
@@ -146,7 +155,7 @@
         .store_info_wrapper_right{
             height: 100%;
             width: 40%;
-            /*border: 1px solid black;*/
+            
             display: flex;
         }
         .store_img_box{
@@ -157,7 +166,8 @@
             height: 80%;
             margin: 20px 0 20px 40px;
             border-radius: 10px;
-            box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            border: 1px solid #e6e6e6;
+            /*box-shadow: 2px 2px 8px rgba(0,0,0,0.3);*/
             overflow: hidden;
         }
         .store_img_box > img{
@@ -195,47 +205,39 @@
             padding: 0 4px 0 3px;
         }
         .store_info_i.left{
-            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+           	align-items: flex-start;
         }
         .store_open_tit{
-            position: absolute;
             font-size: 14px;
             font-weight: bold;
-            left: 3px;
-            bottom: 60%;
             color: white;
             border-radius: 20px;
             padding: 3px 7px;
             background-color: gray;
             box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
             text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
         }
         .store_open_tm{
-            position: absolute;
             font-size: 24px;
             font-weight: bold;
-            bottom: 20%;
-            left: 3px;
         }
         .store_cur_rsvd{
-            position: absolute;
             font-size: 14px;
             font-weight: bold;
-            top: 25%;
-            left: 10px;
         }
         .store_cur_wait{
-            position: absolute;
             font-size: 14px;
             font-weight: bold;
-            left: 10px;
-            bottom: 25%;
         }
         .store_plus{
             position: relative;
             margin:auto auto; 
             text-align: center; 
-            font-size: 128px; 
+            font-size: 64px; 
             font-weight: lighter;
         }
         .plus_box{
@@ -244,12 +246,14 @@
             margin: auto auto; 
             color: green;
             /*border: 1px solid black; */
-            text-align: center;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
         }
         .store_plus:hover{
             margin:auto auto; 
             text-align: center; 
-            font-size: 128px; 
             font-weight: lighter;
             opacity: 0.4;
         }
@@ -265,113 +269,162 @@
             font-weight: bold;
             filter: blur(1.5px);
         }
+        #store_cur_info{
+        	display: flex;
+        	flex-direction:column;
+        	justify-content: flex-end;
+        	align-items: flex-end;
+        }
+        
+        .board_left_bot > div{
+        	display: none;
+        }
+        #btn_wait_register_id{
+        	display: flex;
+        	height: 20%;
+        }
+        #store_info_box{
+        	display: flex;
+        }
+        
+        
+        /**/
+        #list_board{
+        	width: 100%;
+            height: 95%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            overflow-y:scroll;
+            overflow-x: hidden;
+        }
+        #list_board > a{
+        	
+        	margin : 10px 0 0 30px;
+        }
+        #list_board > a:first-child {
+        	marign-top : 20px;
+        }
+        #list_board > .store_card	{
+        	
+        	margin : auto auto;
+        }
+        .store_card{
+        	position: relative;
+        }
+        .store_list_tit{
+        	width : 80%;
+        	font-size: 24px;
+        	font-weight: bold;
+        	margin : 20px 30px;
+        	padding-bottom : 20px;
+        	border-bottom: 1px solid #eeeeef;
+        }
     </style>
 </head>
 <body>
-<!-- 
-<main>
-<c:if test="${not empty buserList}">
-	<c:forEach items="${buserList}" var="buser">
-		<a href="/dealight/business/register?brSeq=${buser.brSeq}">
-			<div class="buser_wrapper">
-				<h5>사업자 상세 일련번호 : ${buser.brSeq}</h5>			
-				<h5>회원 아이디 : ${buser.userId}</h5>
-				<h5>매장 번호 : ${buser.storeId}</h5>
-				<h5>사업자등록번호 : ${buser.brno}</h5>
-				<h5>사업자등록증사본사진 : ${buser.brPhotoSrc}</h5>
-				<h5>사업자 등록 심사 상태 코드 : ${buser.brJdgStusCd}</h5>
-				<h5>매장명 : ${buser.storeNm}</h5>
-				<h5>휴대전화번호 : ${buser.telno}</h5>
-				<h5>매장전화번호 : ${buser.storeTelno}</h5>
-				<h5>대표자명 : ${buser.repName}</h5>
-			</div>
-		</a>
-	</c:forEach>	
-</c:if>
-
-<c:if test="${empty storeList}">
-	<h2>등록하신 매장이 없습니다.🤣</h2>
-</c:if>	
-<c:if test="${not empty storeList}">
-<c:forEach items="${storeList}" var="store">
-============================================
-	<a class='storeInfo' href='/dealight/business/manage/?storeId=${store.storeId}'><div>
-	<h5>매장 번호 : ${store.storeId}</h5>
-	<h5>매장 이름 : <c:out value="${store.storeNm}" /></h5>
-	<h5>매장 전화번호 : <c:out value="${store.telno}" /></h5>
-	<h5>매장 소유자 아이디 : <c:out value="${store.bstore.buserId}" /></h5>
-	<h5>매장 영업 시작 시간 : <c:out value="${store.bstore.openTm}" /></h5>
-	<h5>매장 영업 종료 시간 : <c:out value="${store.bstore.closeTm}" /></h5>
-	<h5>매장 오늘 예약 수 : <c:out value="${store.curRsvdNum}" /></h5>
-	<h5>매장 현재 웨이팅 수 : <c:out value="${store.curWaitNum}" /></h5>
-	<h5>매장 사진: <c:out value="${store.bstore.repImg}" /></h5>
-	<h5>대표 사진 : <img src="/display?fileName=${store.bstore.repImg}"></h5>
-	</div></a>
-============================================</br>
-</c:forEach>
-</c:if>
-</main>
- -->
-<main class="store_box">
-        <div class="store_box_tit">${userId}님의 매장 관리 화면 페이지</div>
-	<c:if test="${not empty buserList}">
-		<c:forEach items="${buserList}" var="buser">
-        <div class="store_card">
-            <div class="brno_content_wrapper">
-                <span>사업자 등록 번호 : ${buser.brno}</span><br>
-                <span>사업자 등록 심사 상태 코드 : ${buser.brJdgStusCd}</span>
-            </div>
-            <div class="plus_box">
-            	<a href="/dealight/business/register?brSeq=${buser.brSeq}">
-                	<i  class="far fa-plus-square store_plus"></i>
-                </a>
-            </div>
-        </div>
-     </c:forEach>
-   </c:if>
-        <c:if test="${empty storeList}">
-			<h2>등록하신 매장이 없습니다.🤣</h2>
-		</c:if>	
-		<c:if test="${not empty storeList}">
-		<c:forEach items="${storeList}" var="store">
-		<a class='storeInfo' href='/dealight/business/manage/?storeId=${store.storeId}'>
-        <div class="store_card">
-            <div class="store_info_wrapper">
-                <div class="store_info_wrapper_inner">
-                    <div class="store_info_i">
-                        <div class="store_info_i left top">
-                            <span class="store_name">${store.storeNm}</span>
-                            <div class="store_brch">${store.bstore.brch}</div>
-                        </div>
-                        <div class="store_info_i right top">
-                            <span class="store_stus">영업중</span>
-                            <span class="store_telno">${store.telno}</span>
+<main class="store_board" id="store_board_main">
+<div class="main_box"><!-- main box -->
+            <div class="board"> <!-- board -->
+                <div class="board_left_wrapper">
+                    <div class="board_left_top">
+                        <div class="nav_date js-clock">
+                        	<span class="date">2020-12-18</span><span style="color:white;">_</span><span class="time">00:00</span>
                         </div>
                     </div>
-                    <div class="store_info_i">
-                        <div class="store_info_i left">
-                            <div class="store_open_tit">영업시간</div>
-                            <div class="store_open_tm" data-openTm="${store.bstore.openTm}" data-closeTm="${store.bstore.closeTm}">
-                            	${store.bstore.openTm} - ${store.bstore.closeTm}
-                            </div>
-                        </div>
-                        <div class="store_info_i right">
-                            <div class="store_cur_rsvd">오늘 예약 수 : ${store.curRsvdNum}</div>
-                            <div class="store_cur_wait">현재 웨이팅 수 : ${store.curWaitNum}</div>
+                    <div class="board_left_bot">
+                        <div class="btn_wait_register">매장 리스트</div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div id="store_info_box">
                         </div>
                     </div>
                 </div>
-                <div class="store_info_wrapper_right">
-                    <div class="store_img_box">
-                        <img src="/display?fileName=${store.bstore.repImg}" alt="">
-                    </div> <!-- end img box -->
-                </div><!-- end store_info_wrapper_right  -->
-            </div> <!--end store_info_wrapper_inner -->
-        </div>
-        </a>
-        </c:forEach>
-        </c:if>
-   </main>
+				<div class="board_right_wrapper">
+                    <div class="board_wrapper"> <!-- board wrapper -->
+                        <div class="board_top_box"> <!-- top box -->
+                            <div class="top_box_items light"> 
+                                <span>영업 상태</span>
+                                <form id="seatStusForm" action="/dealight/business/manage/board/seat"
+                                        method="put">
+                                        <input name="seatStusColor" id="color_value" value="" hidden>
+                                        <input name="storeId" value="${storeId}" hidden>
+                                        <button class="btn_seat_stus green" data-color="Green"><i class="fas fa-circle"></i></button>
+                                        <button class="btn_seat_stus yellow" data-color="Yellow"><i class="fas fa-circle"></i></button>
+                                        <button class="btn_seat_stus red" data-color="Red"><i class="fas fa-circle"></i></button>
+                                </form>
+                            </div> 
+                       </div>
+	                       <!-- board start -->
+	                       <div id="list_board">
+	                       		<div class="store_list_tit">매장 리스트</div>
+	                       		<c:if test="${not empty buserList}">
+								<c:forEach items="${buserList}" var="buser">
+							        <div class="store_card">
+							            <div class="brno_content_wrapper">
+							                <span>사업자 등록 번호 : ${buser.brno}</span><br>
+							                <span>사업자 등록 심사 상태 코드 : ${buser.brJdgStusCd}</span>
+							            </div>
+							            <div class="plus_box">
+							            	<a href="/dealight/business/register?brSeq=${buser.brSeq}">
+							                	<i  class="far fa-plus-square store_plus"></i>
+							                </a>
+							            </div>
+							        </div>
+							     </c:forEach>
+						   		</c:if>
+						   		<c:if test="${empty storeList}">
+			<h2>등록하신 매장이 없습니다.🤣</h2>
+		</c:if>	
+		<c:if test="${not empty storeList}">
+			<c:forEach items="${storeList}" var="store">
+				<a class='storeInfo' href='/dealight/business/manage/?storeId=${store.storeId}'>
+		        <div class="store_card">
+		            <div class="store_info_wrapper">
+		                <div class="store_info_wrapper_inner">
+			                    <div class="store_info_i">
+			                        <div class="store_info_i left top">
+			                            <span class="store_name">${store.storeNm}</span>
+			                            <div class="store_brch">${store.bstore.brch}</div>
+			                        </div>
+			                        <div class="store_info_i right top">
+			                            <span class="store_stus">영업중</span>
+			                            <span class="store_telno">${store.telno}</span>
+			                        </div>
+			                    </div>
+			                    <div class="store_info_i">
+			                        <div class="store_info_i left">
+			                            <div class="store_open_tit">영업시간</div>
+			                            <div class="store_open_tm" data-openTm="${store.bstore.openTm}" data-closeTm="${store.bstore.closeTm}">
+			                            	${store.bstore.openTm} - ${store.bstore.closeTm}
+			                            </div>
+			                        </div>
+			                        <div class="store_info_i right" id="store_cur_info">
+			                            <div class="store_cur_rsvd">오늘 예약 수 : ${store.curRsvdNum}</div>
+			                            <div class="store_cur_wait">현재 웨이팅 수 : ${store.curWaitNum}</div>
+			                        </div>
+			                    </div>
+		                	</div>
+		                <div class="store_info_wrapper_right">
+		                    <div class="store_img_box">
+		                        <img src="/display?fileName=${store.bstore.repImg}" alt="">
+		                    </div> <!-- end img box -->
+		                </div><!-- end store_info_wrapper_right  -->
+		            </div> <!--end store_info_wrapper_inner -->
+		        	</div>
+		        	</a>
+		        </c:forEach>
+	        </c:if>
+	                       </div>
+	                       <!-- board end -->
+                       </div>
+                </div>
+                </div>
+            </div> <!-- end main box -->
+        </main>
 <script type="text/javascript">
 $(document).ready(function() {
 	
@@ -379,7 +432,7 @@ $(document).ready(function() {
 	
 	let curMil = date.getHours()*60 + date.getMinutes();
 	
-	for(let i = 0; document.getElementsByClassName("store_open_tm").length;i++){
+	for(let i = 0; i < document.getElementsByClassName("store_open_tm").length;i++){
 		
 		console.log(i+"번째 작업"+i);
 		let openTm = document.getElementsByClassName("store_open_tm")[i].dataset.opentm;
@@ -440,8 +493,62 @@ $(document).ready(function() {
 });
 </script>
 <%@include file="../../includes/mainFooter.jsp" %>
-</body>
+<script src="/resources/js/clock.js"></script>
 <script>
 
+showTime(); // 현재 시간을 보여주는 코드
+setInterval(showTime, 1000); // 매초 update
+
+
+//매장의 착석 상태 코드를 변경한다.
+function putChangeStatusCd(params,callback,error) {
+	
+	let storeId = params.storeId,
+		seatStusCd = params.seatStusCd;
+	
+    $.ajax({
+        type:'put',
+        url:'/dealight/business/manage/board/seat/'+storeId+'/'+seatStusCd,
+        data : {},
+        contentType : "application/json",
+        success : function(result, status, xhr) {
+            if(callback) {
+                callback(result);
+            }
+        },
+        error : function(xhr, status, er) {
+            if(error) {
+                error(er);
+            }               
+        }
+    });
+    
+    }
+
+let changeSeatStusHandler = function(e) {
+	
+    e.preventDefault();
+    
+    let color = "";
+
+    let param = {};
+    param.storeId = storeId;
+    
+    if(e.target.dataset.color) param.seatStusCd = e.target.dataset.color[0];
+    if(e.target.parentNode.dataset.color) param.seatStusCd = e.target.parentNode.dataset.color[0];
+    if(e.target.parentNode.parentNode.dataset.color) param.seatStusCd = e.target.parentNode.parentNode.dataset.color[0];
+    
+    //param.seatStusCd = e.target.dataset.color[0];
+    $(".btn_seat_stus").removeClass("curStus");
+    e.target.className += " curStus";
+    
+	putChangeStatusCd(param, function(result){
+    	showStoreInfo(param.storeId);
+	});
+}
+/* 매장 착석 상태 처리*/
+$(".btn_seat_stus").on("click",changeSeatStusHandler);
 </script>
+</body>
+
 </html>
