@@ -303,29 +303,46 @@
             </div>
         </nav>
     </header>
-   		<div class="alert manage_rsvd hide">
-		  <span class="alert_closebtn">&times;</span>  
-		  <strong class="alert_tit">예약</strong>
-		  <span class="alert_senduser"></span>
-		  <span class="alert_msg">예약 관련 notification 입니다.</span>
-		</div>
-		
-		<div class="alert manage_wait hide">
-		  <span class="alert_closebtn">&times;</span>  
-		  <strong class="alert_tit">웨이팅</strong>
-		  <span class="alert_senduser"></span>
-		  <span class="alert_msg">웨이팅 관련 notification 입니다.</span>
-		</div>
-		
-		<div class="alert manage_htdl hide">
-		  <span class="alert_closebtn">&times;</span>  
-		  <strong class="alert_tit">핫딜</strong>
-		  <span class="alert_senduser"></span>
-		  <span class="alert_msg">핫딜 관련 notification 입니다.</span>
-		  <span class="alert_dto"></span>
-		  <button class='btnAcceptHtdl'>핫딜 등록</button>
-		  <button class="alert_closebtn">거절</button>
-		</div>
+    
+    <div class="alert manage_rsvd hide">
+        <div class="alert_check_mark rsvd">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="alert_cnts_wrapper">
+             <strong class="alert_tit">예약</strong>
+             <span class="alert_msg">예약 관련 notification 입니다.</span>
+        </div>
+        <span class="alert_closebtn"><i class="fas fa-times"></i></span>  
+    </div>
+    <div class="alert manage_wait hide">
+        <div class="alert_check_mark wait">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        
+        <div class="alert_cnts_wrapper">
+            <div class="alert_cnts_top">
+                <strong class="alert_tit">웨이팅</strong>
+            </div>
+            <span class="alert_msg"><a>104번 웨이팅</a>이 등록되었습니다.</span>
+        </div>
+        <span class="alert_closebtn"><i class="fas fa-times"></i></span>  
+      </div>
+      <div class="alert manage_htdl hide">
+        <div class="alert_check_mark htdl">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="alert_cnts_wrapper">
+            <strong class="alert_tit">핫딜</strong>
+            <span class="alert_senduser"></span>
+            <span class="alert_msg">핫딜 관련 notification 입니다.</span>
+            <span class="alert_dto"></span>
+        </div>
+        <span class="alert_closebtn"><i class="fas fa-times"></i></span>
+        <div class="alert_btn_box"> 
+            <button class='btnAcceptHtdl'>등록</button>
+            <button class="alert_reject_btn">거절</button>
+        </div>
+      </div>
 	
 	<script>
 
@@ -369,121 +386,4 @@ function goMypage(){
 
 }
 
-/* web socket!!!!!!!!!!!!!!!!!!!!*/
-/* 	<div id="socketAlert" class="alert alert-success" role="alert"">알림!!!</div> */
-	let socket = null;
-
-	 function connectWS() {
-		// 전역변수 socket을 선언한다.
-		// 다른 페이지 어디서든 소켓을 불러올 수 있어야 하기 때문이다.
-		
-	 	// 소켓을 ws로 연다.
-	 	var ws = new WebSocket("ws://localhost:8181/manageSocket");
-	 	socket = ws;
-
-	 	// 커넥션이 연결되었는지 확인한다.
-	 	ws.onopen = function () {
-	 	    console.log('Info: connection opened.');
-	 	};
-
-	 	
-	 	// 받은 메시지를 출력한다.
-	 	// 메시지를 수신한 이벤트 핸들러와 같다.
-	 	ws.onmessage = function (event) {
-	 	    console.log("ReceiveMessage : ", event.data+'\n');
-	 	    
-	 	    // 추후에 message 형식을 JSON으로 변환해서 message type을 지정해줘야 한다.
-	 	    //if()
-	 	    	
-	 	   	//alert(event.data);
-	 	    console.log(typeof event.data);
-	 	    
-	 	    let data = JSON.parse(event.data);
-	 	    
-	 	    console.log(typeof data);
-	 	    console.log("cmd : "+data.cmd);
-	 		console.log("sendUser : "+data.sendUser);
-	 	    console.log("storeId : "+data.storeId);
-	 	    
-	 	    let curNotiCnt = 0;
-	 	    
-	 	    for(let i = 0; i < document.getElementsByClassName("alert").length; i++){
-	 	    	if(document.getElementsByClassName("alert")[i].style.display === 'show')
-	 	    		curNotiCnt += 1;
-	 	    }
-	 	    
-	 	    console.log("curNotiCnt : "+curNotiCnt);
-	 	    
-		if(data.cmd === 'rsvd'){
-   	 		showRsvdList(storeId);
-   	 		showRsvdMap(storeId);
-   	 		$('.alert.manage_rsvd .alert_tit').html('예약 알림');
-   	 		$('.alert.manage_rsvd .alert_senduser').html(data.sendUser);
-   	 		$('.alert.manage_rsvd .alert_msg').html(data.msg);
-   	 		document.getElementsByClassName("manage_rsvd")[0].style.bottom = 15 + curNotiCnt*100;
-   	 		$('.alert.manage_rsvd').removeClass("hide");
-   	 		$('.alert.manage_rsvd').addClass("show");
-   	 		$('.alert.manage_rsvd').addClass("showAlert");
-   	 		console.log(data.msg);
-		} else if (data.cmd === 'wait'){
-   	 		showWaitList(storeId);
-   	 		$('.alert.manage_wait .alert_tit').html('웨이팅 알림');
-   	 		$('.alert.manage_wait .alert_senduser').html(data.sendUser);
-   			$('.alert.manage_wait .alert_msg').html(data.msg);
-   			document.getElementsByClassName("manage_wait")[0].style.bottom = 15 + curNotiCnt*100;
-   			$('.alert.manage_wait').removeClass("hide");
-   	 		$('.alert.manage_wait').addClass("show");
-   	 		$('.alert.manage_wait').addClass("showAlert");
-		} else if (data.cmd === 'htdl') {
-			
-		}
-	 	    
-	 	    //let socketAlert = $('#socektAlert');
-	 		//socketAlert.html(event.data);
-	 	    //socketAlert.css('display','block');
-	    
-	    // 메시지가 3초 있다가 자동으로 사라지게
-	    /*
-	    setTimeout( function(){
-	    	
-	    	$socketAlert.css('display','none');
-	    },3000);
-	 	    */
-	    
-	    /*
-	 	    let socketAlert = $('#socektAlert');
-	 		socketAlert.innerHTML = event.data;
-	 	    socketAlert.style.display = "block";
-	 	   	showWaitList(storeId);
-	 	    */
-	 	   	
-	 	    // 메시지가 3초 있다가 자동으로 사라지게
-	 	    /*
-	 	    setTimeout( function(){
-	 	    	
-	 	    	$socketAlert.css('display','none');
-	 	    },3000);
-	 	    */
-	 	};
-
-
-	 	// connection을 닫는다.
-	 	ws.onclose = function (event) {
-	 		console.log('Info: connection closed.');
-	 		//setTimeout( function(){ connect(); }, 1000); // retry connection!!
-	 	};
-	 	ws.onerror = function (event) { console.log('Error'); };
-	 	 
-	 }
-	 
-		
-		// input 내용을 socket에 send
-		$('#btnSend').on('click', function(evt) {
-			  evt.preventDefault();
-			if (socket.readyState !== 1) return;
-				  let msg = $('input#msg').val();
-				  socket.send(msg);
-			});
-		
-		//connectWS();
    </script>

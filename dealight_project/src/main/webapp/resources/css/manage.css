@@ -1073,12 +1073,13 @@
         color: black;
         text-align: center;
         font-weight : bold;
+        border : 2px solid black;
         border-radius: 3px;
         padding: 5px 0;
 		/*box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);*/
         /* Position the dealight_tooltip */
         position: absolute;
-        top : 0px;
+        top : -5px;
         z-index: 1;
         }
 
@@ -1626,4 +1627,8 @@
             letter-spacing: 2px;
             align-self: flex-start;
             margin: 10px 0;
+        }
+        
+        .svg-inline--fa.fa-fire.fa-w-12{
+			color: red;        
         }

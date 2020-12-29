@@ -108,18 +108,15 @@ public class ManageSocketHandler extends TextWebSocketHandler {
 				
 				if(waitIdStr != null) {
 					waitId = Long.parseLong(waitIdStr);
-					msg = sendUser + "님의 " + 
-							"<a href='/dealight/business/waiting/" + waitId + "' target='_blank'>" +waitId+ "번</a> 웨이팅이 등록되었습니다!";
+					msg = "<a href='/dealight/business/waiting/" + waitId + "' target='_blank'>" +waitId+ "번 웨이팅</a>이 등록되었습니다.";
 				}
 				else if(rsvdIdStr != null) {
 					rsvdId = Long.parseLong(rsvdIdStr);
-					msg = sendUser + "님의 " + 
-							rsvdId + "번 예약이 등록되었습니다!";
+					msg = rsvdId + "번 예약이 등록되었습니다.";
 				}
 				else if(htdlIdStr != null) {
 					htdlId = Long.parseLong(htdlIdStr);
-					msg = sendUser + "의 " +
-							"새로운 핫딜 제안이 도착했습니다.";
+					msg = "새로운 핫딜 제안이 도착했습니다.";
 				}
 				
 				log.info("strs exception ========================");

@@ -137,6 +137,7 @@ const regex = new RegExp("(.*>)\.(exe|sh|zip|alz)$");
 /*최대 파일 크기를 제어한다  */
 const maxSize = 5242880; /* 5MB */
 
+const brch = '${store.bstore.brch}';
 /*시간바 만들기*/
 /*현재시간으로 스크롤 고정*/
 let writeTimeBar = function (curTime) {
@@ -204,9 +205,12 @@ let writeTimeBar = function (curTime) {
     	}
     });
     
-    	$(".alert_closebtn").on("click", e => {
-    		$(e.target).parent().addClass("hide");
-    		$(e.target).parent().removeClass("show");
+    	$(".alert_closebtn").on("click", "svg", e => {
+    		console.log(e.target);
+    		console.log(e.currentTarget);
+    		console.log("close btn click");
+    		$(e.currentTarget).parent().parent().addClass("hide");
+    		$(e.currentTarget).parent().parent().removeClass("show");
     		//setTimeout($(e.target).parent().removeClass("showAlert"),5000); 	
     	});
     	
@@ -897,7 +901,8 @@ let writeTimeBar = function (curTime) {
         			return;
         		strNextRsvd += "<div class='next_info_top'>";
         		strNextRsvd += "<span class='next_rsvd_name'>"+rsvd.userId+"</span>";
-        		strNextRsvd += "<span class='next_rsvd_telno'>"+rsvd.totQty+"</span>";
+        		if(rsvd.htdlId !== null) strNextRsvd += "<span class='next_rsvd_telno'>"+"<i class='fas fa-fire'></i> "+"핫딜 예약"+"</span>";
+        		else if(rsvd.htdlId === null) strNextRsvd += "<span class='next_rsvd_telno'>"+"일반 예약"+"</span>";
         		strNextRsvd += "<span class='store_htdl' style='display:none;'>"+rsvd.htdlId+"</span>";
         		strNextRsvd += "</div>";
         		strNextRsvd += "<div class='next_info_bot'>";
@@ -1500,6 +1505,7 @@ let writeTimeBar = function (curTime) {
 	        	strHtdl += "<div class='uploadDiv htdl'><input type='file' id='js_upload' name='uploadFile'></div>";
                 strHtdl += "<div class='uploadResult_htdl'><ul></ul></div>";
                 strHtdl += "<input type='hidden' id='storeId' name='storeId' value='"+storeId+"'>";
+                strHtdl += "<input type='hidden' id='brch' name='brch' value='"+brch+"'>";
                 strHtdl += "<div class='htdl_reg_btn_box'>";
                 strHtdl += "<button class='regHtdlBtn' type='submit' data-oper='register'>승낙</button>";
                 strHtdl += "<button class='regHtdlBtn' type='submit' data-oper='refuse'>거절</button>";
@@ -1534,7 +1540,7 @@ let writeTimeBar = function (curTime) {
 	    			console.log(price);
 	    			afterPrice.value = price;
 	    		}
-
+				
 	    		//메뉴 체크
 	    		let menuCheck = function (price, idx) {
 
@@ -1773,6 +1779,8 @@ let writeTimeBar = function (curTime) {
 	    				console.log(filename);
 	    				
 	    				regHtdlFormObj.append("<input type='hidden' name='htdlPhotoSrc' value='"+filename + "'>");
+	    				regHtdlFormObj.append("<input type='hidden' name='intro' value='"+$(".regHtdlForm textarea").val() + "'>");
+	    				regHtdlFormObj.append("<input type='hidden' name='dcRate' value='"+$("#dcRate").val() + "'>");
 	    				
 	    				let formData = new FormData();
 	    				
@@ -1783,10 +1791,7 @@ let writeTimeBar = function (curTime) {
 	    				}
 	    				
 	    				let test = document.querySelectorAll(".regHtdlForm input");
-	    				console.log("reg htdl form ");
 	    				console.log(test);
-	    				
-	    				 
 	    				
 	    				$.ajax({
 	    		            url : '/dealight/business/manage/board/htdl/new',
