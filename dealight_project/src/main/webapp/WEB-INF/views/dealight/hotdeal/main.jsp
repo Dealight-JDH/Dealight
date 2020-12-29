@@ -100,7 +100,8 @@
         /* position: absolute; */
         /* top:6px;
         left: 30px; */
-        width: 100%;
+        /* width: 100%; */
+        width: 70%;
         /* height: 68px; */
         /* margin: 20px 30px; */
         border-radius: 32px;
@@ -255,13 +256,15 @@
 
     .region-box{
         display: flex;
-        width: 205px;
+        /* width: 205px; */
+        width: 30%;
         height: 100%;
     }
 
     .startTime-box{
         display: flex;
-        width: 180px;
+        /* width: 180px; */
+        width: 30%;
         height: 100%;
         /* border: 1px solid red; */
     }
@@ -285,17 +288,24 @@
     }
 
     .endTime-box{
-        display: flex;
+        /* display: flex;
         width: 180px;
-        height: 100%;
+        height: 100%; */
         /* border: 1px solid red; */
+        
+        display: flex;
+        /* width: 180px; */
+        width: 27%;
+        height: 100%;
+        /* border: 1px solid black; */
     }
     
     .css-endTime{
         display: flex;
         position: relative;
         align-items: center;
-        width: 80%;
+        /* width: 80%; */
+        width: 65%;
         height: 100%;
         /* border: 1px solid red; */
         
@@ -304,7 +314,8 @@
     .css-endTimeLabel{
         display: block;
         cursor: pointer;
-        width: 63%;
+        /* width: 63%; */
+        width: 100%;
         border-radius: 32px;
         padding: 15px 30px;
         /* border: 1px solid red; */
@@ -689,17 +700,17 @@
     }
 
     .search-btn{
-        display: flex;
-        position: absolute;
+        /* display: flex; */
+        /* position: absolute; */
         
         border-radius: 24px;
         height: 48px;
         width: 48px;
-        align-self: center;
+        /* align-self: center;
         justify-content: center;
-        align-items: center;
+        align-items: center; */
         background-color: #f43939;
-        left: 590px;
+        /* left: 590px; */
         outline: none;
         cursor: pointer;
 
@@ -854,6 +865,17 @@
     .btn_content:hover{
     	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     }
+    
+    .searchBtn-wrap{
+        display: flex;
+        align-self: center;
+        justify-content: center;
+        align-items: center;
+        /* border: 1px solid black; */
+        width: 10%;
+        height: 48px;
+        
+    }
 
 </style>
 </head>
@@ -916,7 +938,7 @@
 
                 <div class="divider"></div>
 
-                <div class="region-box js-search2" id="endTime">
+                <div class="endTime-box js-search2" id="endTime">
                          
                     <div class="css-endTime">
                         <label class="css-endTimeLabel css-label js-label">
@@ -932,12 +954,13 @@
                 
                 </div>
             </div>
-
-
+		
+				<div class="searchBtn-wrap">
                 <button id="searchBtn" data-oper="search" class="search-btn flex" style="flex-basis: 50px;">
                     <img src="/resources/img/search.svg" alt="" style="width: 24px;">
                     <!-- <i class="fas fa-search" style="color: white;"></i> -->
                 </button>
+                </div>
                     
                 
                 </div>

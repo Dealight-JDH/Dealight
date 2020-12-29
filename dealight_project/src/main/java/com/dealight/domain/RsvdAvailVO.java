@@ -37,6 +37,12 @@ public class RsvdAvailVO {
     private int eighteenHalf;    
     private int nineteen;   
     private int nineteenHalf;
+    private int twenty;
+    private int twentyHalf;
+    private int twentyone;
+    private int twentyoneHalf;
+    private int twentytwo;
+    
     
     private Date regdate;        
     private Date updatedate;
