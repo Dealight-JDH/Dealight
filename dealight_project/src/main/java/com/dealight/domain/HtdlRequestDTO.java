@@ -54,6 +54,8 @@ public class HtdlRequestDTO {
 	@Nullable
 	private String setName;
 	
+	private String brch;
+	
 	
 	public HtdlVO toEntity() {
 		//현재 날짜
@@ -73,6 +75,7 @@ public class HtdlRequestDTO {
 				.ddct((int)(befPrice * (dcRate / 100)))
 				.curPnum(0).stusCd("P")
 				.setName(setName)
+				.brch(brch)
 				.build();
 	}
 	

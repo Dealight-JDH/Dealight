@@ -449,7 +449,7 @@ $(document).ready(function() {
 		
 		if(open <= curMil && curMil <= close) document.getElementsByClassName("store_stus")[i].innerText = "영업중"; 
 		else {
-			document.getElementsByClassName("store_stus")[i].innerText = "마감 완료";
+			document.getElementsByClassName("store_stus")[i].innerText = "마감";
 			document.getElementsByClassName("store_stus")[i].style.backgroundColor ="gray";
 		}
 	}
