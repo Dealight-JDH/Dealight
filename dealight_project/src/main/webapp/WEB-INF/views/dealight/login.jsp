@@ -135,6 +135,8 @@
         padding: 10px 13px;
         background-color: #d32323;
         border-radius: 4px;
+        outline: none;
+        cursor: pointer;
     }
 
 
@@ -152,6 +154,8 @@
         margin-bottom: 15px;
         background-color: #F29F05;
         border-radius: 4px;
+        outline: none;
+        cursor: pointer;
     }
 
     .naver-btn{
@@ -159,6 +163,8 @@
         padding: 10px 13px;
         background-color: rgb(10, 177, 33);
         border-radius: 4px;
+        outline: none;
+        cursor: pointer;
     }
     
     span{

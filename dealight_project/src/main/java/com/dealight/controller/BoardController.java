@@ -364,7 +364,7 @@ public class BoardController {
 	// waitId로 오프라인 웨이팅을 등록한다.
 	@PostMapping(value="/board/htdl/new",
 			produces = { MediaType.TEXT_PLAIN_VALUE})
-	public ResponseEntity<String> registerOffWait(Long storeId, @Valid HtdlRequestDTO requestDto,
+	public ResponseEntity<String> registerHtdl(Long storeId, @Valid HtdlRequestDTO requestDto,
 			BindingResult bindingResult, RedirectAttributes rttr) {
 		
 	if(bindingResult.hasErrors()) {
@@ -381,6 +381,7 @@ public class BoardController {
 	//핫딜 상세vo list
 	List<HtdlDtlsVO> dtlsList = new ArrayList<>();
 	
+	log.info("request dto : " + requestDto);
 
 	HtdlVO vo = requestDto.toEntity();
 	vo.setStoreId(storeId);
@@ -391,6 +392,7 @@ public class BoardController {
 	log.info("=================menuDTO "+ menuList);
 	//log.info("=============================vo: " + vo);
 	//요청 리스트 생성
+	
 	for(int i=0; i< menuList.size(); i++) {
 		//log.info("======================menu: "+ Arrays.toString(menu));
 //		MenuDTO menuDto = service.findPriceByName(storeId, menu[i].trim());

@@ -10,149 +10,123 @@
 <head>
 <meta charset="UTF-8">
 <title>매장 관리</title>
-<link rel="stylesheet" href="/resources/css/manage.css" type ="text/css" />
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/0f892675ba.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="/resources/js/Chart.js"></script>
+<link rel="stylesheet" href="/resources/css/manage.css">
 </head>
 <body>
-	
-    <div class="main_box"><!-- main box -->
-        <h2>Business Manage Main Page</h2>
-        <div class="board"> <!-- board -->
-        	<nav class="tab_nav">
-                    <a class="switch switch_rsvd_rslt">현황판</a>
-                    <a class="switch switch_board">매장관리</a>
-        	</nav>
-            <div class="board_top_box"> <!-- top box -->
-
-                <div class="cur_time"> <!-- cur time -->
-                
-                <div class="js-clock clock">
-                        <h6>현재 날짜🗓</h6>
-                        <h3 class="date"></h3>
-                        <h6>현재 시간⏰</h6>
-                        <h3 class="time" style="color : blue">00:00</h3>
+<main class="store_board" id="store_board_main">
+        <div class="main_box"><!-- main box -->
+            <div class="board"> <!-- board -->
+                <div class="board_left_wrapper">
+                    <div class="board_left_top">
+                        <div class="nav_date js-clock">
+                        	<span class="date">2020-12-18</span><span style="color:white;">_</span><span class="time">00:00</span>
+                        </div>
+                    </div>
+                    <div class="board_left_bot">
+                        <div class="btn_wait_register">현장 등록</div>
+                        <div><a href="/dealight/business/manage/modify?storeId=${storeId}">정보 수정</a></div>
+                        <div><a href="/dealight/business/manage/menu?storeId=${storeId}">메뉴 수정</a></div>
+                        <div><a href="/dealight/business/manage/dealhistory?storeId=${storeId}">핫딜 이력</a></div>
+                        <div><a href="/dealight/business/">매장 리스트</a></div>
+                        <div id="store_info_box">
+                            <div class="store_info_tit">매장 이름</div>
+                            <div class="store_info_val">${store.storeNm}</div>
+                            <div class="store_info_tit">매장 수용 인원</div>
+                            <div class="store_info_val">${store.bstore.acmPnum}</div>
+                            <div class="store_info_tit">매장 평균 식사 시간</div>
+                            <div class="store_info_val">${store.bstore.avgMealTm}</div>	
+                        </div>
+                    </div>
                 </div>
+                <div class="board_right_wrapper">
+                    <div class="board_wrapper"> <!-- board wrapper -->
+                        <div class="board_top_box"> <!-- top box -->
+                            <div class="top_box_items light"> 
+                                <span>영업 상태</span>
+                                <form id="seatStusForm" action="/dealight/business/manage/board/seat"
+                                        method="put">
+                                        <input name="seatStusColor" id="color_value" value="" hidden>
+                                        <input name="storeId" value="${storeId}" hidden>
+                                        <button class="btn_seat_stus green" data-color="Green"><i class="fas fa-circle"></i></button>
+                                        <button class="btn_seat_stus yellow" data-color="Yellow"><i class="fas fa-circle"></i></button>
+                                        <button class="btn_seat_stus red" data-color="Red"><i class="fas fa-circle"></i></button>
+                                </form>
+                            </div> 
+                            <div class="top_box_items tab_nav">
+                                <div class="tab_items curTab"><a class="switch switch_board" id="switch_manage">매장관리</a></div>
+                                <div class="tab_items"><a class="switch switch_rsvd_rslt">현황판</a></div>
+                            </div>
+                            <div class="">
 
-                </div> <!-- end time -->
-                <div class="light"> <!-- light -->
-                    <h4>현재 착석 상태💺</h4>
-                    <ul class="storeSeatStus"></ul>
-                    <form id="seatStusForm" action="/dealight/business/manage/board/seat"
-                            method="put">
-                            <input name="seatStusColor" id="color_value" value="" hidden>
-                            <input name="storeId" value="${storeId}" hidden>
-                            <button class="btn_seat_stus">Green</button>
-                            <button class="btn_seat_stus">Yellow</button>
-                            <button class="btn_seat_stus">Red</button>
-                            </br>
-                    </form>
-                </div> <!-- end light -->
-                <div class="top_box_blank"></div>
-         </div> <!-- end top box -->
+                            </div>
+                        </div> <!-- end top box -->
+            
+                    <div id="rsvd_rslt_baord" style="display : none">
+                        <div class="last_week_trend">최근 7일 Trend</div>
+                        <div class="chart_wrapper"><canvas id="rsvd_chart" style="font-weight:bold; height:30vh; width:50vw"></canvas></div>
+                        <div class="rsvdRslt">
+                                                
+                        </div>
+                        <!-- 
+                        <h1>최근 7일 예약 현황</h1>            
+                        <div class="last_week_rsvd"></div>
+                        -->
+                    </div>
+            
+                    <div id="board">
+                        <div class="board_left_box">
+                            <div class="next_wrapper">
+                                <div class="next_wait">
+                                    <span class="next_tit">NEXT 웨이팅</span>
+                                    <div class="next_info nextWait">
 
-         <div id="rsvd_rslt_baord" style="display : none">
-            <h1>최근 7일 Trend📈</h1>
-            <canvas id="rsvd_chart"></canvas>
-            <h1>당일 예약 결과💵</h1>
-            <ul class="rsvdRslt"></ul>
-            <h1>최근 7일 예약 현황</h1>            
-            <ul class="last_week_rsvd"></ul>
-        </div>
+                                    </div>
+                                </div>
+                                <div class="next_rsvd">
+                                    <span class="next_tit">NEXT 예약</span>
+                                    <div class="next_info nextRsvd">
 
-        <div id="board">
-
-            <div class="next_wait"> <!-- next wait -->
-                <h4>다음 웨이팅 정보👉</h4>
-	            <ul class="nextWait"></ul>
-                <div class="btn_wait_wrapper">
-                    <button class="btn_wait_stus btn_enter_wait">입장</button>
-                    <button class="btn_wait_stus btn_noshow_wait">노쇼</button>
-                </div>
-            </div> <!-- end next wait -->
-            <div class="next_rsvd"> <!-- next rsvd -->
-                <h4>다음 예약자 정보👉</h4>
-                <ul class="nextRsvd"></ul>
-            </div> <!-- end next rsvd -->
-            <div class="wait_board"> <!-- wait board -->
-            <div class="rsvd_wrapper">
-                    <div class="rsvd"> <!-- wait  -->
-                        <h1>예약 리스트🗒</h1>
-                        <ul class="rsvdList"></ul>
-                    </div> <!-- end wait -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- end left box -->
+                        <div class="board_right_box">
+                            <div class="list_wrapper">
+                                <div class="wait_list_wrapper waitList">
+                                </div>
+                                <div class="rsvd_list_wrapper rsvdList">
+                                </div>
+                            </div>
+                        </div> <!-- end right box -->
+                    </div> <!-- end board wrapper -->
+                </div> <!-- end board -->
             </div>
-            <div class="wait_wrapper" id="rolling_wait">
-                <h1>웨이팅 리스트🗒</h1>
-	            <ul class="waitList">
-	            </ul>
             </div>
-                <di class="wait_register_wrapper">
-                    <button class="btn_wait_register">오프라인 웨이팅 등록</button>
-                </div><!-- end wait board -->
-                <p id="dealhistory"><a href="/dealight/business/manage/dealhistory?storeId=${storeId}">핫딜 히스토리</a></p>
-                <p id="modify"><a href="/dealight/business/manage/modify?storeId=${storeId}">매장 정보 수정</a></p>
-            </div> <!-- end board -->
-        </div>
-            <div class="rsvd_time_bar"><!-- rsvd time bar -->
-      		</div> <!-- end rsvd time bar -->
-        </div> <!-- end main box -->
-        <div class="info_box"> <!--  info box -->
+                <div class="rsvd_time_bar"><!-- rsvd time bar -->
+                    
+                </div> <!-- end rsvd time bar -->
+            </div> <!-- end main box -->
+        </main>
         
-                    <h1>매장 정보🏪</h1>
-            <ul class="store"></ul>
-
-            <h2>매장 사진</h2>
-            <div class='uploadResult'>
-                <ul>
-                </ul>
-            </div> <!-- uploadResult -->
-            
-            <div class='bigPictureWrapper'>
-                <div class='bigPicture'>
-                </div>
-            </div>
-            
-            <h2>오늘 예약 회원</h2>
-	<c:if test="${empty todayRsvdUserList}">
-		<h2>오늘 예약하신 손님이 없습니다.🤣</h2>
-	</c:if>
-	
-	<c:if test="${not empty todayRsvdUserList}">
-		<c:forEach items="${todayRsvdUserList}" var="user">
-			
-			<div class="dealight_tooltip">
-				==========================================</br>
-				회원 아이디 : ${user.userId}</br>
-				회원 이름 : ${user.name}</br> 
-				회원 이메일 : ${user.email}</br> 
-				회원 전화번호 : ${user.telno}</br>
-				생년 월일 : ${user.brdt}</br> 
-				성별 : ${user.sex }</br> 
-				회원 프로필 사진 : ${user.photoSrc}</br>
-				패널티 회원 여부 : ${user.pmStus}</br>
-  				<div class="dealight_tooltiptext">
-  					예약 번호 : ${user.rsvdId}</br>
-					매장 번호 : ${user.storeId }</br>
-					핫딜 번호 : ${user.htdlId }</br>
-					예약 인원 : ${user.pnum}</br>
-					예약 상태 : ${user.stusCd }</br>
-					등록 날짜 : ${user.inDate }</br>
-					총 가격 : ${user.totAmt }</br>
-					총 주문 수량 : ${user.totQty }</br>
-  				</div>
-			</div>
-		</c:forEach>
-	</c:if>
-        </div> <!-- end info box -->
         	<!-- The Modal -->
 	<div id="myModal" class="modal">
 		<!-- Modal content -->
 		<div class="modal-content">
-			<span class="close_modal">&times;</span>
+			<span class="close_modal"><i class="fas fa-times"></i></span>
+	        <div class="modal_header"></div>
 			<ul class="rsvdDtls"></ul>
 			<ul class="userRsvdList"></ul>
 			<ul class="waiting_registerForm"></ul>
-			<ul class="regHtdl"></ul>
+			<div class="modal_wrapper_regwait content_div"></div>
+			<div class="modal_wrapper_rsvdDtls content_div"></div>
+			<div class='modal_wrapper_htdl_regform content_div'></div>
 		</div>
 	</div>
 <script>
@@ -161,36 +135,37 @@ const storeId = ${storeId};
 
 /*시간바 만들기*/
 /*현재시간으로 스크롤 고정*/
-writeTimeBar = function (curTime) {
-    timeArr = ['','09:00','09:30','10:00','10:30','11:00','11:30','12:00'
-    	,'12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00',
-    	'16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30','22:00'];
-    let strTime = "";
-    let curPos = 0; 
-    for(let i = 1; i <= 27; i++){
-    	if(curTime === timeArr[i])
-    		curPos = i - 1;
-        strTime += "<div class='rsvd_time dealight_tooltip' id='slide-"+i+"'><h6>"+timeArr[i]+"</h6><div class='time_table'></div></div>";
-    }
-	document.querySelector(".rsvd_time_bar").innerHTML = strTime;
-    // 예약 상태바 초기 스크롤 고정
-    document.querySelector(".rsvd_time_bar").scrollLeft = ((parseInt(curPos)*150) - 150);
-	}
-	
-/* 시간 파싱 */
-let curToday = new Date();
-let curHour = curToday.getHours(),
-	curMinutes = curToday.getMinutes();
-	
-	if(curMinutes >= 30)
-		curMinutes = '30';
-	else
-		curMinutes = '00';
-	
-	let curTime = curHour + ":" + curMinutes;
+let writeTimeBar = function (curTime) {
+        timeArr = ['','09:00','09:30','10:00','10:30','11:00','11:30','12:00'
+            ,'12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00',
+            '16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30','22:00'];
+        let strTime = "";
+        let curPos = 0; 
+        strTime += "<div class='cur_time_mark'></div>";
+        for(let i = 1; i <= 27; i++){
+            if(curTime === timeArr[i])
+                curPos = i - 1;
+            strTime += "<div class='rsvd_time dealight_tooltip' id='slide-"+i+"'><div class='time_text_box'><span class='time_text'>"+timeArr[i]+"</span></div><div class='time_table'></div></div>";
+        }
+        document.querySelector(".rsvd_time_bar").innerHTML = strTime;
+        // 예약 상태바 초기 스크롤 고정
+        document.querySelector(".rsvd_time_bar").scrollLeft = ((parseInt(curPos)*150) - 150);
+        document.getElementsByClassName("cur_time_mark")[0].style.left= ((parseInt(curPos)*150) + 30).toString() +'px';
+        }
 
-	// TimeBar 작성
-	writeTimeBar(curTime);
+    let curToday = new Date();
+    let curHour = curToday.getHours(),
+        curMinutes = curToday.getMinutes();
+        
+        if(curMinutes >= 30)
+            curMinutes = '30';
+        else
+            curMinutes = '00';
+        
+        let curTime = curHour + ":" + curMinutes;
+
+        // TimeBar 작성
+        writeTimeBar(curTime);
 	
 	// 모달 선택
 	const modal = $("#myModal"),
@@ -201,6 +176,8 @@ let curHour = curToday.getHours(),
 	close.on("click", (e) => {
 		modal.css("display","none");
 		modal.find("ul").html("");
+		modal.find(".content_div").html("");
+		modal.find(".content_div").css("display","none");
 	});
 	
 	window.onclick = function(e) {
@@ -208,6 +185,8 @@ let curHour = curToday.getHours(),
 		  if (e.target === document.getElementById('myModal')) {
 			  modal.css("display","none");
 			  modal.find("ul").html("");
+			  modal.find(".content_div").html("");
+			  modal.find(".content_div").css("display","none");
 		  }
 	}
 	
@@ -216,6 +195,8 @@ let curHour = curToday.getHours(),
     	if(e.key === "Escape"){
     		modal.css("display","none");
     		modal.find("ul").html("");
+    		modal.find(".content_div").html("");
+    		modal.find(".content_div").css("display","none");
     	}
     });
     
@@ -636,20 +617,23 @@ let curHour = curToday.getHours(),
         /* HTML 태그 변수 설정*/
         const seatStusForm = $("#seatStusForm"),
 	        colorVal = $("#color_value"),
-	        storeUL = $(".store"),
-	        rsvdListUL = $(".rsvdList"),
-	        waitListUL = $(".waitList"),
-	        nextWaitUL = $(".nextWait"),
-	        nextRsvdUL = $(".nextRsvd"),
+	        storeInfoDiv = $(".store_info_cnts"),
+	        rsvdListDiv = $(".rsvdList"),
+	        waitListDiv = $(".waitList"),
+	        nextWaitDiv = $(".nextWait"),
+	        nextRsvdDiv = $(".nextRsvd"),
 	        rsvdMapUL = $(".rsvdMap"),
 	        storeSeatUL = $(".storeSeatStus"),
-	        rsvdRsltUL = $(".rsvdRslt"),
+	        rsvdRsltDiv = $(".rsvdRslt"),
 	        userRsvdListUL = $(".userRsvdList"),
-	        rsvdDtlsUL = $(".rsvdDtls"),
-	        waitRegFormUL = $(".waiting_registerForm"),
+	        rsvdDtlsDiv = $(".modal_wrapper_rsvdDtls"),
+	        rsvdDtlsInfoDiv = $("#modal_rsvd_dtls"),
+	        userRsvdListDiv = $(".modal_bot_rsvd"),
+	        waitRegFormDiv = $(".modal_wrapper_regwait"),
 	        lastWeekRsvdUL = $(".last_week_rsvd"),
-	        regHtdlFormUL = $(".regHtdl"),
+	        regHtdlFormDiv = $(".modal_wrapper_htdl_regform"),
 	        btnAcceptHtdl = $(".btnAcceptHtdl")
+	        
         ;
         
         function init(storeId){
@@ -674,35 +658,27 @@ let curHour = curToday.getHours(),
         function showStoreInfo (storeId){
         	
         	boardService.getStore({storeId : storeId}, function (store) {
-                let str = "";
+                let strStoreInfo = "";
                 if(store == null){
-                    storeUL.html("");
+                	storeInfoDiv.html("");
                     return;
                 }
                 
-                str += "<li>매장번호 : " + store.storeId + "</li>";
-                str += "<li>매장이름 : " + store.storeNm + "</li>";
-                str += "<li>매장 연락처 : " + store.telno + "</li>";
-                str += "<li>매장 수용인원 : " + store.bstore.acmPnum + "</li>";
-                str += "<li>매장 평균식사시간 : " + store.bstore.avgMealTm + "</li>";
-                str += "<li>매장 브레이크종료시간 : " + store.bstore.breakEntm + "</li>";
-                str += "<li>매장 브레이크시작시간 : " + store.bstore.breakSttm + "</li>";
-                str += "<li>매장 관리자 아이디 : " + store.bstore.buserId + "</li>";
-                str += "<li>매장 영업종료시간 : " + store.bstore.closeTm + "</li>";
-                str += "<li>매장 휴무일 : " + store.bstore.hldy + "</li>";
-                str += "<li>매장 라스트오더시간 : " + store.bstore.lastOrdTm + "</li>";
-                str += "<li>매장 메뉴 : " + store.bstore.menus + "</li>";
-                str += "<li>매장 1인석 : " + store.bstore.n1SeatNo + "</li>";
-                str += "<li>매장 2인석 : " + store.bstore.n2SeatNo + "</li>";
-                str += "<li>매장 4인석 : " + store.bstore.n4SeatNo + "</li>";
-                str += "<li>매장 시작시간 : " + store.bstore.openTm + "</li>";
-                str += "<li>매장 착석상태 : " + store.bstore.seatStusCd + "</li>";
-                str += "<li>매장 소개 : " + store.bstore.storeIntro + "</li>";
+                strStoreInfo += "<div class='store_info_items'>매장 이름 : " + store.storeNm + "</div>";
+                strStoreInfo += "<div class='store_info_items'>매장 연락처 : " + store.telno + "</div>";
+                strStoreInfo += "<div class='store_info_items'>매장 수용 인원 : " + store.bstore.acmPnum + "</div>";
+                strStoreInfo += "<div class='store_info_items'>매장 소개 : " + store.bstore.storeIntro + "</div>";
+                strStoreInfo += "<div class='store_info_items'>매장 평균식사시간 : " + store.bstore.acmPnum + "분</div>";
+                strStoreInfo += "<div class='store_info_items'>매장 라스트오더시간 : " + store.bstore.lastOrdTm + "</div>";
                 
-                storeUL.html(str);
+                storeInfoDiv.html(strStoreInfo);
                 
                 /*착석 상태*/
-                storeSeatUL.html("<li>"+ store.bstore.seatStusCd +"</li>")
+                let colors = document.getElementsByClassName("btn_seat_stus");
+                for(let i = 0; i < colors.length; i++){
+                	if(colors[i].dataset.color[0] === store.bstore.seatStusCd)
+                		colors[i].className += " curStus";
+                }
         	})
         };
         
@@ -716,40 +692,76 @@ let curHour = curToday.getHours(),
                     waitList.html("");
                     return;
                 }
-                
+                strWaitList += "<span class='wait_list_tit'>웨이팅 리스트</span>";
                 waitList.forEach(wait => {
-                	strWaitList += "<div class='wait'>";
-                    strWaitList += "<ul>" + "<a href='/dealight/business/waiting/"+wait.waitId+"'><h3>웨이팅 번호 : "+wait.waitId+"</h3></a>";
-                        strWaitList += "<li>웨이팅 회원 아이디 : "+ wait.userId + "</li>";
-                        strWaitList += "<li>웨이팅 매장 번호 : "+ wait.storeId + "</li>";
-                        strWaitList += "<li>웨이팅 인원 : "+ wait.waitPnum + "</li>";
-                        strWaitList += "<li>웨이팅 등록 시간 : "+ wait.waitRegTm.toString() + "</li>";
-                        strWaitList += "<li>웨이팅 상태 : "+ wait.waitStusCd + "</li>";
-                        strWaitList += "<li>웨이팅 회원 이름 : "+ wait.custNm + "</li>";
-                        strWaitList += "<li>웨이팅 회원 번호 : "+ wait.custTelno + "</li>";
-                    strWaitList += "</ul>"
-                    strWaitList += "<button class='btn_wait_call'><a href='/oauth?storeId="+wait.storeId+"&waitId="+wait.waitId+"'>호출</a></button>";
-                    strWaitList += "</div>";
+                	strWaitList += "<div class='wait' data-waitId='"+wait.waitId+"'>";
+                        strWaitList += "<div class='list_info_top'>";
+                        strWaitList += "<span class='wait_name wait_list'>"+wait.custNm+"</span>";
+                        strWaitList += "<span class='wait_telno wait_list'>"+wait.custTelno+"<button class='btn_wait_call'><a href='/oauth?storeId="+wait.storeId+"&waitId="+wait.waitId+"'><i class='fas fa-comment-dots'></i></a></button></span>";
+                        strWaitList += "</div>";
+                        strWaitList += "<div class='list_info_bot'>";
+                        strWaitList += "<span class='list_wait_pnum'>"+wait.waitPnum+"명</span>";
+                        let parStr = wait.waitRegTm.split(" ")[1].split(":");
+      	              	let time = parStr[0] + ":" + parStr[1];
+                        strWaitList += "<span class='list_wait_regtm'>"+time+"</span>";
+                        strWaitList += "</div>";
+                    	strWaitList += "</div>";
                 });
     
-              waitListUL.html(strWaitList);   
+              waitListDiv.html(strWaitList);   
+             
+              $(".wait").on("click",(e)=>{
+            	  
+            	  console.log(e.target);
+            	  
+            	  let waitId = e.target.dataset.waitid
+            	  
+            	  if(e.target.className === "btn_wait_call" || e.target.parentNode.className === "btn_wait_call")
+            		  return;
+            	  
+            	  console.log("wait1 : "+waitId);
+            	  
+            	  if(e.target.dataset.waitId) waitId = e.target.dataset.waitid;
+            	  
+            	  console.log("wait2 : "+waitId);
+            	  
+                  if(e.target.parentNode.dataset.waitid) waitId = e.target.parentNode.dataset.waitid;
+                  
+                  console.log("wait3 : "+waitId);
+                  
+                  if(e.target.parentNode.parentNode.dataset.waitid) waitId = e.target.parentNode.parentNode.dataset.waitid;
+                  
+                  console.log("wait4 : "+waitId);
+            	  
+                  window.open("/dealight/business/waiting/"+waitId);
+            	  
+              });
+              
               
               let nextWait = boardService.getNextWait(waitList);
               
               let strNextWait = "";
               
               if(nextWait){
-              
-              strNextWait += "<li> 대기자 이름 : "+nextWait.custNm+"</li>";
-              strNextWait += "<li> 대기자 연락처 : "+nextWait.custTelno+"</li>";
-              strNextWait += "<li> 웨이팅 번호 :"+nextWait.waitId+"</li>";
-              strNextWait += "<li> 매장 번호 : "+nextWait.storeId+"</li>";
-              strNextWait += "<li> 회원 아이디 : "+nextWait.userId+"</li>";
-              strNextWait += "<li> 웨이팅 인원 : "+nextWait.waitPnum+"</li>";
-              strNextWait += "<li> 웨이팅 등록 시간 : "+nextWait.waitRegTm+"</li>";
-              strNextWait += "<li> 웨이팅 상태 : "+nextWait.waitStusCd+"</li>";
+	              strNextWait += "<div class='next_info_top'>";
+	              strNextWait += "<span class='wait_name' data-id='"+nextWait.waitId+"'>"+nextWait.custNm+"</span>"
+	              strNextWait += "<span class='wait_telno'>"+nextWait.custTelno+"</span>";
+	              strNextWait += "</div>";
+	              strNextWait += "<div class='next_info_bot'>";
+	              strNextWait += "<div class='next_wait_pnum'>"+nextWait.waitPnum+"명</div>";
+	              let parStr = nextWait.waitRegTm.split(" ")[1].split(":");
+	              let time = parStr[0] + ":" + parStr[1];
+	              strNextWait += "<div class='next_wait_regtm'>"+time+"</div>";
+	              strNextWait += "</div>";
+	              strNextWait += "<div class='next_wait_btn_box'>";
+	              strNextWait += "<button class='btn_enter_wait'>입장</button>";
+	              strNextWait += "<button class='btn_noshow_wait'>노쇼</button>";
+	              strNextWait += "</div>";
               }
-              nextWaitUL.html(strNextWait);
+              nextWaitDiv.html(strNextWait);
+              
+              $(".btn_enter_wait").on("click", waitEnterHandler);
+              $(".btn_noshow_wait").on("click", waitNoshowHandler);
     
             }); 
         }
@@ -764,27 +776,28 @@ let curHour = curToday.getHours(),
                     rsvdList.html("");
                     return;
                 }
+                console.log("===============================");
+                strRsvdList += "<span class='rsvd_list_tit'>예약 리스트</span>";
+                
                 rsvdList.forEach(rsvd => {
-                	if(rsvd.htdlId == null) strRsvdList += "<div class='rsvd rsvd_i'>" ;
-                	else strRsvdList += "<div class='rsvd rsvd_i cur_htdl'>" ;
-                    strRsvdList += "<ul class='btnRsvd'>" + "<h3>예약 번호 : "+rsvd.rsvdId+"</h3>"; 
-                        strRsvdList += "<li hidden class='btnStoreId'>"+rsvd.storeId+"</li>";
-                        strRsvdList += "<li hidden class='btnUserId'>"+rsvd.userId+"</li>";
-                        strRsvdList += "<li>매장번호 : "+ rsvd.storeId + "</li>";
-                        strRsvdList += "<li>회원 아이디 : "+ rsvd.userId + "</li>";
-                        strRsvdList += "<li>핫딜 번호 :"+ rsvd.htdlId + "</li>";
-                        strRsvdList += "<li>승인 번호 : "+ rsvd.aprvNo + "</li>";
-                        strRsvdList += "<li>예약 인원 : "+ rsvd.pnum + "</li>";
-                        strRsvdList += "<li>예약 시간 : "+ rsvd.time + "</li>";
-                        strRsvdList += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
-                        strRsvdList += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
-                        strRsvdList += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-                        strRsvdList += "<li>예약 등록 날짜 : "+ rsvd.regdate + "</li>";
-                    strRsvdList += "</ul>" 
-                    strRsvdList += "</div>" ;
+                	if(rsvd.htdlId == null) strRsvdList += "<div class='rsvd rsvd_i btnRsvd'>" ;
+                	else strRsvdList += "<div class='rsvd rsvd_i cur_htdl btnRsvd'>" ;
+                		strRsvdList += "<li hidden class='btnStoreId'>"+rsvd.storeId+"</li>";
+                		strRsvdList += "<li hidden class='btnUserId'>"+rsvd.userId+"</li>";
+                		strRsvdList += "<div class='list_info_top'>";
+                		strRsvdList += "<div class='rsvd_name rsvd_list'>"+rsvd.userId+"</div>";
+                		strRsvdList += "<div class='rsvd_telno rsvd_list'>"+rsvd.totQty+"</div>";
+                		strRsvdList += "</div>";
+                		strRsvdList += "<div class='list_info_bot rsvd_list'>";
+                		strRsvdList += "<div class='list_rsvd_pnum'>"+rsvd.pnum+"명</div>";
+                		let parStr = rsvd.time.split(" ")[1].split(":");
+      	              	let time = parStr[0] + ":" + parStr[1];
+                		strRsvdList += "<div class='list_rsvd_regtm'>"+time+"</div>";
+                		strRsvdList += "</div></div>";
                 });
     
-              rsvdListUL.html(strRsvdList);
+              rsvdListDiv.html(strRsvdList);
+              $(".btnRsvd").on("click", showUserRsvdListHandler);
               
             }); 
         }
@@ -805,9 +818,9 @@ let curHour = curToday.getHours(),
             		strRsvdMap += "<li class='dealight_tooltip'>"+key + " : 예약번호[" + value+"] <span class='dealight_tooltiptext'>"+value+"번호 상세보기</span></li></br>";
             		for(let i = 1; i < 28; i ++){
             			// debug
-            			console.log(key+' : '+i+ ' : '+document.querySelector('#slide-'+i+' h6').textContent);
-            			console.log(key === document.querySelector('#slide-'+i+' h6').textContent);
-            			if(key === document.querySelector('#slide-'+i+' h6').textContent){
+            			console.log(key+' : '+i+ ' : '+document.querySelector("#slide-"+i).textContent);
+            			console.log(key === document.querySelector("#slide-"+i).textContent);
+            			if(key === document.querySelector("#slide-"+i).textContent){
             				let strHtml = "";
             				let strVal = value.toString();
             				
@@ -823,7 +836,7 @@ let curHour = curToday.getHours(),
             				}
             				strHtml += " 번호 예약</span>";
             				document.querySelector('#slide-'+i+' .time_table').innerHTML = strHtml;
-            				document.querySelector('#slide-'+i+' .time_table').style.border = '2px solid black';
+            				document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(37, 201, 89, 0.911)';
             			}
             		}
             	})
@@ -832,17 +845,17 @@ let curHour = curToday.getHours(),
             		Object.entries(map).forEach(([key,value]) => {
                 		console.log("key : "+key+", value : " + value);
                 		for(let i = 1; i < 28; i ++){
-                			if(key === document.querySelector('#slide-'+i+' h6').textContent){
+                			if(key === document.querySelector("#slide-"+i).textContent){
                 				if(value === 'R')
-                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'red';
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = '#d32323';
                 				else if(value === 'Y')
-                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'yellow';
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(248, 236, 73, 0.781)';
                 				else if(value === 'G')
-                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'green';
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(125, 255, 164, 0.698)';
                 				else if(value === 'B')
-                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'black';
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = '#29242460';
                 				else
-                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'orange';
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(37, 201, 89, 0.911)';
                 			}
                 		}
                 	});
@@ -873,22 +886,24 @@ let curHour = curToday.getHours(),
             
             boardService.getNextRsvd({storeId:storeId},function(rsvd){
             	
+            	console.log("get next rsvd .......................");
+            	
         		let strNextRsvd = "";
         		if(!rsvd)
         			return;
-                strNextRsvd += "<li>예약 번호 : "+rsvd.rsvdId+"</li>"; 
-                strNextRsvd += "<li>매장번호 : "+ rsvd.storeId + "</li>";
-                strNextRsvd += "<li>회원 아이디 : "+ rsvd.userId + "</li>";
-                strNextRsvd += "<li>핫딜 번호 :"+ rsvd.htdlId + "</li>";
-                strNextRsvd += "<li>승인 번호 : "+ rsvd.aprvNo + "</li>";
-                strNextRsvd += "<li>예약 인원 : "+ rsvd.pnum + "</li>";
-                strNextRsvd += "<li>예약 시간 : "+ rsvd.time + "</li>";
-                strNextRsvd += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
-                strNextRsvd += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
-                strNextRsvd += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-                strNextRsvd += "<li>예약 등록 날짜 : "+ rsvd.regdate + "</li>";
+        		strNextRsvd += "<div class='next_info_top'>";
+        		strNextRsvd += "<span class='next_rsvd_name'>"+rsvd.userId+"</span>";
+        		strNextRsvd += "<span class='next_rsvd_telno'>"+rsvd.totQty+"</span>";
+        		strNextRsvd += "<span class='store_htdl' style='display:none;'>"+rsvd.htdlId+"</span>";
+        		strNextRsvd += "</div>";
+        		strNextRsvd += "<div class='next_info_bot'>";
+        		strNextRsvd += "<div class='next_rsvd_pnum'>"+rsvd.pnum+"명</div>";
+        		let parStr = rsvd.time.split(" ")[1].split(":");
+	            let time = parStr[0] + ":" + parStr[1];
+        		strNextRsvd += "<div class='next_rsvd_tm'>"+time+"</div>";
+        		strNextRsvd += "</div>";
                 
-                nextRsvdUL.html(strNextRsvd);
+                nextRsvdDiv.html(strNextRsvd);
         	});
         	
         }
@@ -1031,16 +1046,18 @@ let curHour = curToday.getHours(),
                     let strRsvdRslt = "";
             		if(!dto)
             			return;
-            		
-            		strRsvdRslt += "<li>오늘 총 예약 수 : " + dto.totalTodayRsvd  +"</li>";
-            		strRsvdRslt += "<li>오늘 총 예약 인원 : " + dto.totalTodayRsvdPnum  +"</li>";
-            		strRsvdRslt += "<li>[오늘의 인기 메뉴]</li>";
+            		strRsvdRslt += "<div class='today_rsvd_rslt_tit'>당일 예약 결과</div>";
+            		strRsvdRslt += "<div class='rsvd_rslt_wrapper'>";
+            		strRsvdRslt += "<div>오늘 총 예약 수 : " + dto.totalTodayRsvd  +"</div>";
+            		strRsvdRslt += "<div>오늘 총 예약 인원 : " + dto.totalTodayRsvdPnum  +"</div>";
+            		strRsvdRslt += "<div>[오늘의 인기 메뉴]</div>";
             		Object.entries(dto.todayFavMenuMap).forEach(([key,value]) => {
-    	        		strRsvdRslt += "<li>" + key +' : '+ value  +"</li>";
+    	        		strRsvdRslt += "<div>" + key +' : '+ value  +"</div>";
                     })
+                    strRsvdRslt += "</div>";
 
                     console.log('strRsvdRslt : '+strRsvdRslt);
-                    rsvdRsltUL.html(strRsvdRslt);
+                    rsvdRsltDiv.html(strRsvdRslt);
                         
                     return value[1]({storeId:storeId});
                 }).then(waitList => {
@@ -1104,7 +1121,7 @@ let curHour = curToday.getHours(),
         	유저의 예약 히스토리를 보여준다.
         
         */
-        function showUserRsvdList(storeId,userId){
+        function showUserRsvdList(storeId,userId,callback){
         	
         	boardService.getUserRsvdList({storeId:storeId,userId:userId}, function(userRsvdList){
         		
@@ -1112,24 +1129,50 @@ let curHour = curToday.getHours(),
         		if(!userRsvdList)
         			return;
         		
-        		strUserRsvdList += "<h1>예약 히스토리</h1>";
+        		strUserRsvdList += "<div class='modal_top rsvdDtls' id='modal_rsvd_dtls'>";
+        		
+        		strUserRsvdList += "<div class='rsvd_top_wrapper'>";
+        		strUserRsvdList += "</div>";
+        		strUserRsvdList += "<div class='rsvd_mid_wrapper'>";
+        		strUserRsvdList += "</div>";
+
+        		strUserRsvdList += "<div class='rsvd_bot_wrapper'>";
+        		strUserRsvdList += "<div class='rsvd_history_tit'>";
+        		strUserRsvdList += "매장 방문 히스토리";
+        		strUserRsvdList += "</div>";
         		userRsvdList.forEach(rsvd => {
-        			strUserRsvdList += "========================================";
-        			strUserRsvdList += "<li>예약 번호 : "+rsvd.rsvdId+"</li>"; 
-                    strUserRsvdList += "<li>매장번호 : "+ rsvd.storeId + "</li>";
-                    strUserRsvdList += "<li>회원 아이디 : "+ rsvd.userId + "</li>";
-                    strUserRsvdList += "<li>핫딜 번호 :"+ rsvd.htdlId + "</li>";
-                    strUserRsvdList += "<li>승인 번호 : "+ rsvd.aprvNo + "</li>";
-                    strUserRsvdList += "<li>예약 인원 : "+ rsvd.pnum + "</li>";
-                    strUserRsvdList += "<li>예약 시간 : "+ rsvd.time + "</li>";
-                    strUserRsvdList += "<li>예약 상태 : "+ rsvd.stusCd + "</li>";
-                    strUserRsvdList += "<li>예약 총 금액 : "+ rsvd.totAmt + "</li>";
-                    strUserRsvdList += "<li>예약 총 수량 : "+ rsvd.totQty + "</li>";
-                    strUserRsvdList += "<li>예약 등록 날짜 : "+ rsvd.regdate + "</li>";
+    	    		strUserRsvdList += "<div class='rsvd_history'>";
+    	    		strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+    	    		strUserRsvdList += "<div class='info'>";
+    	    		strUserRsvdList += "<div>예약 번호</div>";
+    	    		strUserRsvdList += "<div>"+rsvd.rsvdId+"</div>";
+    	    		strUserRsvdList += "</div>";
+    	    		strUserRsvdList += "<div class='info'>";
+    	    		strUserRsvdList += "<div>예약 인원</div>";
+    	    		strUserRsvdList += "<div>"+ rsvd.pnum + "</div>";
+    	    		strUserRsvdList += "</div>";
+    	    		strUserRsvdList += "<div class='info'>";
+    	    		strUserRsvdList += "<div>예약 시간</div>";
+    	    		strUserRsvdList += "<div>"+ rsvd.time + "</div>";
+    	    		strUserRsvdList += "</div>";
+    	    		strUserRsvdList += "<div class='info'>";
+    	    		strUserRsvdList += "<div>예약 총 금액</div>";
+    	    		strUserRsvdList += "<div>"+ rsvd.totAmt + "</div>";
+    	    		strUserRsvdList += "</div>";
+    	    		strUserRsvdList += "<div class='info'>";
+    	    		strUserRsvdList += "<div>예약 총 수량</div>";
+    	    		strUserRsvdList += "<div>"+ rsvd.totQty + "</div>";
+    	    		strUserRsvdList += "</div>";
+    	    		strUserRsvdList += "</div>";
         		});
+        		strUserRsvdList += "</div>";
         		
-        		userRsvdListUL.html(strUserRsvdList);
-        		
+
+
+        		rsvdDtlsDiv.css("display","flex");
+        		rsvdDtlsDiv.html(strUserRsvdList);
+        		console.log("=======================");
+        		console.log("user history complete");
         		showRsvdDtls(userRsvdList[0].rsvdId);
         		
         	})
@@ -1143,34 +1186,56 @@ let curHour = curToday.getHours(),
         	
         	boardService.getRsvdDtls({rsvdId:rsvdId}, function(rsvd){
         		
-				let strRsvdDtls = "";
-				if(!rsvd)
-					return;
-				
-				strRsvdDtls += "<h1>해당 유저 예약 상세</h1>"
-        		strRsvdDtls += "<li>예약 번호 :" + rsvd.rsvdId +"</li>";
-        		strRsvdDtls += "<li>매장 번호 :" + rsvd.storeId +"</li>";
-        		strRsvdDtls += "<li>회원 아이디 : " + rsvd.userId +"</li>";
-        		strRsvdDtls += "<li>핫딜 번호 : " + rsvd.htdlId +"</li>";
-        		strRsvdDtls += "<li>승인 번호 : " + rsvd.aprvNo +"</li>";
-        		strRsvdDtls += "<li>예약 인원 : " + rsvd.pnum +"</li>";
-        		strRsvdDtls += "<li>예약 시간 : " + rsvd.time +"</li>";
-        		strRsvdDtls += "<li>예약 상태 : " + rsvd.stusCd +"</li>";
-        		strRsvdDtls += "<li>예약 총 가격 : " + rsvd.totAmt +"</li>";
-        		strRsvdDtls += "<li>예약 총 수량 : " + rsvd.totQty +"</li>";
-        		strRsvdDtls += "<li>예약 등록 날짜 : " + rsvd.regdate +"</li>";
-        		let cnt = 1;
-        		rsvd.rsvdDtlsList.forEach(dtls => {
-        			strRsvdDtls += "==============================";
-        			strRsvdDtls += "<li>상세 순서 [" + cnt +"]</li>";
-        			strRsvdDtls += "<li>예약 상세 번호 : " + dtls.rsvdSeq +"</li>";
-        			strRsvdDtls += "<li>예약 메뉴 이름 : " + dtls.menuNm +"</li>";
-        			strRsvdDtls += "<li>메뉴 가격 : " + dtls.menuPrc +"</li>";
-        			strRsvdDtls += "<li>메뉴 총 개수 : " + dtls.menuTotQty +"</li>";
-        			cnt += 1;
-        		})
+        		console.log("rsvd id : "+rsvdId)
         		
-        		rsvdDtlsUL.html(strRsvdDtls);
+    			let strRsvdDtlsTop = "";
+    			
+    			if(!rsvd)
+    				return;
+    			
+    			strRsvdDtlsTop += "<div class='modal_rsvd_tit'>예약 상세</div>";
+    			strRsvdDtlsTop += "<div class='rsvd_top_box'>";
+    			if(rsvd.htdlId != null) strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-fire'></i></span>";
+    			strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+    			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
+    			strRsvdDtlsTop += "<div>예약 번호</div>";
+    			strRsvdDtlsTop += "<div>"+rsvd.rsvdId+"</div>";
+    			strRsvdDtlsTop += "</div>";
+    			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
+    			strRsvdDtlsTop += "<div>예약 시간</div>";
+    			strRsvdDtlsTop += "<div>"+rsvd.time+"</div>";
+    			strRsvdDtlsTop += "</div>";
+    			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
+    			strRsvdDtlsTop += "<div>예약 총 가격</div>";
+    			strRsvdDtlsTop += "<div>"+rsvd.totAmt+"원</div>";
+    			strRsvdDtlsTop += "</div>";
+    			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
+    			strRsvdDtlsTop += "<div>예약 총 수량</div>";
+    			strRsvdDtlsTop += "<div>"+rsvd.totQty+"개</div>";
+    			strRsvdDtlsTop += "</div>";
+    			strRsvdDtlsTop += "</div>";
+    			
+    			$(".rsvd_top_wrapper").html(strRsvdDtlsTop);
+    			
+    			let strRsvdDtlsMid = "";
+    			
+    			strRsvdDtlsMid += "<div class='modal_menu_head'>";
+    			strRsvdDtlsMid += "<div>메뉴</div>";
+    			strRsvdDtlsMid += "<div>가격</div>";
+    			strRsvdDtlsMid += "<div>수량</div>";
+    			strRsvdDtlsMid += "</div>";
+    			rsvd.rsvdDtlsList.forEach(dtls => {
+    				strRsvdDtlsMid += "<div class='modal_menu_info'>";
+    				strRsvdDtlsMid += "<div>" + dtls.menuNm +"</div>";
+    				strRsvdDtlsMid += "<div>" + dtls.menuPrc +"원</div>";
+    				strRsvdDtlsMid += "<div>" + dtls.menuTotQty +"</div>";
+    				strRsvdDtlsMid += "</div>";
+    			});
+    			
+    			$(".rsvd_mid_wrapper").html(strRsvdDtlsMid);
+        		
+        		console.log("=======================")
+        		console.log("rsvd dtls complete")
         		
         	})
         };
@@ -1182,21 +1247,47 @@ let curHour = curToday.getHours(),
         
         function showWaitRegisterForm(storeId){
         	
-        	let today = new Date();
+        	let date = new Date();
         	let strWaitRegForm = "";
-        	strWaitRegForm += "<h1>오프라인 웨이팅 등록</h1>";
-        	strWaitRegForm += "<form id='waitRegForm' action='/dealight/business/manage/waiting/register' method='post'>";
-        	strWaitRegForm += "고객 이름<input name='custNm' id='js_wait_custNm'> <span id='name_msg'></span></br>";
-        	strWaitRegForm += "고객 전화번호<input name='custTelno' id='js_wait_custTelno'> <span id='phoneNum_msg'></span></br>";
-        	strWaitRegForm += "웨이팅 인원<input name='waitPnum' id='js_wait_pnum'> <span id='pnum_msg'></span></br>";
-        	strWaitRegForm += "<input name='waitRegTm' value='"+today.toString()+"' hidden>";
-        	strWaitRegForm += "<input name='storeId' value='"+storeId+"' hidden>";
-        	strWaitRegForm += "<button id='submit_waitRegForm' type='submit'>제출하기</button>";
-        	strWaitRegForm += "</form>";
-        	strWaitRegForm += "<h2>현재 시간</h2>";
-        	strWaitRegForm += "<h2>"+today+"</h2>";
         	
-        	waitRegFormUL.html(strWaitRegForm);
+        	parDate = date.toLocaleDateString().split(".");
+        	let regTime = parDate[0] + "/" + parDate[1].trim() + "/" + parDate[2].trim() +" "+
+        	date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        	
+        	strWaitRegForm += "<div class='modal_tit'>";
+        	strWaitRegForm += "<span>웨이팅 현장 등록</span>";
+        	strWaitRegForm += "</div>";
+        	strWaitRegForm += "<div class='modal_top'>";
+        	strWaitRegForm += "<div class='form_left_wrapper'>";
+        	strWaitRegForm += "<form action='/dealight/business/manage/waiting/register' id='waitRegForm' method='post'>";
+        	strWaitRegForm += "<div>";
+        	strWaitRegForm += "<input type='text' class='' id='js_wait_custNm' name='custNm' placeholder='고객 이름'>";
+        	strWaitRegForm += "<span id='name_msg'></span>";
+        	strWaitRegForm += "</div>";
+        	strWaitRegForm += "<div>";
+        	strWaitRegForm += "<input type='text' class='' id='js_wait_custTelno' placeholder='고객 전화번호' name='custTelno' id='js_wait_custTelno'>";
+        	strWaitRegForm += "<span id='phoneNum_msg'></span>";
+        	strWaitRegForm += "</div>";
+        	strWaitRegForm += "<div>";
+        	strWaitRegForm += "<input type='text' class=''id='js_wait_pnum' placeholder='웨이팅 인원' name='waitPnum' id='js_wait_pnum'>";
+        	strWaitRegForm += "<span id='pnum_msg'></span>";
+        	strWaitRegForm += "</div>";
+        	strWaitRegForm += "<input type='text' name='waitRegTm' value='"+regTime+"' hidden>";
+        	strWaitRegForm += "<input type='text' name='storeId' value='"+storeId+"' hidden>";
+        	strWaitRegForm += "</form>";
+        	strWaitRegForm += "</div>";
+        	strWaitRegForm += "<div class='form_right_wrapper'>";
+        	strWaitRegForm += "<button id='submit_waitRegForm' type='submit'>현장 등록</button>";
+        	strWaitRegForm += "</div>";
+        	strWaitRegForm += "</div>";
+        	strWaitRegForm += "<div class='modal_bot'>";
+        	strWaitRegForm += "<div>등록 시간</div>";
+        	strWaitRegForm += "<div>"+regTime+"</div>";
+        	strWaitRegForm += "</div>";
+        	strWaitRegForm += "";
+        	
+        	waitRegFormDiv.css("display","flex")
+        	waitRegFormDiv.html(strWaitRegForm);
         	
         	/* wait register valid check*/
         	const wait_custNm = document.querySelector("#js_wait_custNm"),
@@ -1234,10 +1325,11 @@ let curHour = curToday.getHours(),
         	wait_custNm.addEventListener("focusout", () => {
         		if(1 <= wait_custNm.value.length){
         		    if(nameLenCheck()){
-        		        name_msg.innerText = "🙆‍♂️ 이름 형식이 적당하네요.";
+        		        name_msg.innerText = "이름 형식이 적당하네요.";
         		    }
         		    else {
-        		    	name_msg.innerText = "🙅‍♂️ 이름 길이를 다시 확인해 주세요. (5자 이내)";
+        		    	name_msg.innerText = "이름 길이를 다시 확인해 주세요. (5자 이내)";
+        		    	name_msg.style.color = "red";
         		    }
         		}
         	})
@@ -1245,10 +1337,11 @@ let curHour = curToday.getHours(),
         	wait_phoneNum.addEventListener("focusout", () => {
         		if(1 <= wait_phoneNum.value.length){
         		    if(phoneNumLenCheck()){
-        		        phoneNum_msg.innerText = "🙆‍♂️ 전화번호 형식이 적당하네요!";
+        		        phoneNum_msg.innerText = "전화번호 형식이 적당하네요!";
         		    }
         		    else {
-        		    	phoneNum_msg.innerText = "🙅‍♂️ 전화번호 길이를 다시 확인해 주세요. (13자 이내)";
+        		    	phoneNum_msg.innerText = " 전화번호 길이를 다시 확인해 주세요. (13자 이내)";
+        		    	phoneNum_msg.style.color = "red";
         		    }
         		}
         	})
@@ -1256,10 +1349,11 @@ let curHour = curToday.getHours(),
         	wait_pnum.addEventListener("focusout", () => {
         		if(1 <= wait_pnum.value.length){
         		    if(pnumSizeCheck()){
-        		        pnum_msg.innerText = "🙆‍♂️ 인원이 적당합니다.";
+        		        pnum_msg.innerText = "인원이 적당합니다.";
         		    }
         		    else {
-        		    	pnum_msg.innerText = "🙅‍♂️ 인원이 너무 많거나 형식이 적당하지 않아요! (10명 이내)";
+        		    	pnum_msg.innerText = "인원이 너무 많거나 형식이 적당하지 않아요! (10명 이내)";
+        		    	pnum_msg.style.color = "red";
         		    }
         		}
         	})
@@ -1338,42 +1432,78 @@ let curHour = curToday.getHours(),
         	
         		console.log('show reg htdl store id : '+storeId);
         		
+	        	strHtdl += "<div class='modal_tit'>";
+	        	strHtdl += "<span>핫딜 등록하기</span>";
+	        	strHtdl += "</div>";
+	        	strHtdl += "<div class='modal_top htld_reg'>";
+	        	strHtdl += "<div class='htdl_reg_form_wrapper'>";
 	        	strHtdl += "<form class='regHtdlForm' action='/dealight/business/manage/board/htdl/new' method='post'>";
-	        	strHtdl += "<label>핫딜 제목</label> <input class='form-control' name='name'><br>";
-	        	strHtdl += "<div>";
-	        	strHtdl += "<label>핫딜 메뉴</label><br>";
-	        	
+	        	strHtdl += "<div class='htdl_label_input htdl_name'>";
+	        	strHtdl += "<span>핫딜 제목</span>";
+	        	strHtdl += "<input class='form-control' name='name' placeholder='핫딜 제목'>";
+	        	strHtdl += "</div>";
+	        	strHtdl += "<div class='htdl_label_input htdl_name'>";
+	        	strHtdl += "<span>세트 이름</span>";
+	        	strHtdl += "<input class='form-control' name='setName' placeholder='세트 이름'>";
+	        	strHtdl += "</div>";
+	        	strHtdl += "<div class='htdl_label_input htdl_menu'>";
+	        	strHtdl += "<span>핫딜 메뉴</span>";
+	        	strHtdl += "<div class='htdl_menu_itmes'>";
 	        	if(menuList)
 	        	menuList.forEach((menu,i) => {
 		        	strHtdl += "<input type='checkbox' id='menu"+i+"' class='js-menu' value='"+menu.price+"'>";
 		        	strHtdl += "<label for='menu"+i+"'>" +menu.name+"</label>";
 	        	});
-		       	strHtdl += "<div class='uploadDiv'><input type='file' name='uploadFile'></div>";
-		       	strHtdl += "<div class='uploadResult'><ul></ul></div></div>";
-	        	strHtdl += "<label>할인율</label> <select id='dcRate' name='dcRate'>";
+	        	strHtdl += "</div>";
+	        	strHtdl += "</div>";
+	        	strHtdl += "<div class='htdl_label_input htdl_dc'>";
+	        	strHtdl += "<span>할인율</span>";
+	        	strHtdl += "<select id='dcRate' name='dcRate'>";
 	        	strHtdl += "<option value=''>--</option>";
 	        	strHtdl += "<option value='10'>10%</option>";
 	        	strHtdl += "<option value='20'>20%</option>";
 	        	strHtdl += "<option value='30'>30%</option>";
 	        	strHtdl += "<option value='40'>40%</option>";
 	        	strHtdl += "<option value='50'>50%</option>";
-	        	strHtdl += "</select><br><label>할인 적용전 가격</label> <input class='js-befPrice'";
-	        	strHtdl += "value='0' name='befPrice' readonly='readonly'><br> <label>할인";
-	        	strHtdl += "적용후 가격</label> <input class='js-aftPrice' readonly='readonly'><br>";
-	        	strHtdl += "<label>핫딜 시작 시간</label> <input type='time' name='startTm' readonly><br> 핫딜 마감 시간<input";
-	        	strHtdl += " type='time' name='endTm' readonly><br> <label>핫딜 제한 인원:";
-	        	strHtdl += "</label> <input class='form-control' type='number' min='0' max='50'";
-	        	strHtdl += "name='lmtPnum' readonly='readonly'><br> <label>핫딜";
-	        	strHtdl += "<label>핫딜 소개</label><br>";
-	        	strHtdl += "<textarea rows='2' cols='22' name='intro'></textarea>";
-	        	strHtdl += "<br> <input type='hidden' id='storeId' name='storeId'";
-	        	strHtdl += "value='"+storeId+"'>";
-	        	strHtdl += "<button class='regHtdlBtn' type='submit' data-oper='register'>승낙</button>";
-	        	strHtdl += "<button class='regHtdlBtn' type='submit' data-oper='refuse'>거절</button>";
-	        	strHtdl += "</form>";
+	        	strHtdl += "</select>";
+	        	strHtdl += "</div>";
+	        	strHtdl += "<div class='htdl_label_input htdl_bef_price'>";
+	        	strHtdl += "<span>할인 적용전 가격</span>";
+	        	strHtdl += "<input class='js-befPrice' value='0' name='befPrice' readonly='readonly'>";
+	        	strHtdl += "</div>";
+	        	
+	        	strHtdl  += "<div class='htdl_label_input htdl_aft_price'>";
+	        	strHtdl  += "<span>할인 적용후 가격</span>";
+	        	strHtdl  += "<input class='js-aftPrice' readonly='readonly'>";
+	        	strHtdl  += "</div>";
+	        	strHtdl  += "<div class='htdl_label_input htdl_start_tm'>";
+	        	strHtdl  += "<span>핫딜 시작 시간</span>";
+	        	strHtdl  += "<input type='time' name='startTm' readonly>";
+	        	strHtdl  += "</div>";
+	        	strHtdl  += "<div class='htdl_label_input htld_end_tm'>";
+	        	strHtdl  += "<span>핫딜 마감 시간</span>";
+	        	strHtdl  += "<input type='time' name='endTm' readonly>";
+	        	strHtdl  += "</div>";
+	        	strHtdl  += "<div class='htdl_label_input htdl_lmt_pnum'>";
+	        	strHtdl  += "<span>핫딜 제한 인원:</span>";
+	        	strHtdl  += "<input class='form-control' type='number' min='0' max='50' name='lmtPnum' readonly='readonly'>";
+	        	strHtdl  += "</div>";
+	        	strHtdl  += "<div class='htdl_label_input htdl_intro'>";
+	        	strHtdl  += "<span>핫딜 소개</span>";
+	        	strHtdl  += "<textarea rows='2' cols='22' name='intro'></textarea>";
+	        	strHtdl  += "</div>";
+	        	
+	        	strHtdl += "<div class='uploadDiv htdl'><input type='file' name='uploadFile'></div>";
+                strHtdl += "<div class='uploadResult'><ul></ul></div>";
+                strHtdl += "<input type='hidden' id='storeId' name='storeId' value='"+storeId+"'>";
+                strHtdl += "<div class='htdl_reg_btn_box'>";
+                strHtdl += "<button class='regHtdlBtn' type='submit' data-oper='register'>승낙</button>";
+                strHtdl += "<button class='regHtdlBtn' type='submit' data-oper='refuse'>거절</button>";
+                strHtdl += "</div>";
 	        	
         		console.log("before strHtdl : "+ strHtdl);
-	        	regHtdlFormUL.html(strHtdl);
+        		regHtdlFormDiv.css("display","flex")
+	        	regHtdlFormDiv.html(strHtdl);
 	        	
 	        	// 핫딜 제안 등록폼에 데이터를 넣어준다.
 	        	$(".regHtdlForm input[name=name]").val($(".manage_htdl_dto").data().name);
@@ -1527,9 +1657,13 @@ let curHour = curToday.getHours(),
 				//$(".switch").text('매장관리');
 				showBoard(storeId);
 				$("#rsvd_rslt_baord").css("display", "none");
-				$("#board").css("display", "block");
-				$(".switch_board").css("color", "#fff").css("background","#343436");
-				$(".switch_rsvd_rslt").css("color", "#000").css("background","#fff");
+				$("#board").css("display", "flex");
+				$(document.getElementsByClassName("tab_items")).removeClass("curTab");
+				$(".switch_rsvd_rslt").css("color", "black")
+				$(e.target.parentNode).addClass("curTab");
+				$(".switch_board").css("color","white");
+				//$(".switch_board").css("color", "#fff").css("background","#343436");
+				//$(".switch_rsvd_rslt").css("color", "#000").css("background","#fff");
 			}
         }
 		
@@ -1546,8 +1680,12 @@ let curHour = curToday.getHours(),
 				showRsvdBoard(storeId);
 				$("#board").css("display", "none");
 				$("#rsvd_rslt_baord").css("display", "block");
-				$(".switch_rsvd_rslt").css("color", "#fff").css("background","#343436");
-				$(".switch_board").css("color", "#000").css("background","#fff");
+				$(document.getElementsByClassName("tab_items")).removeClass("curTab");
+				$(".switch_board").css("color", "black")
+				$(e.target.parentNode).addClass("curTab");
+				$(".switch_rsvd_rslt").css("color","white");
+				//$(".switch_rsvd_rslt").css("color", "#fff").css("background","#343436");
+				//$(".switch_board").css("color", "#000").css("background","#fff");
 			}
 			
         }
@@ -1568,16 +1706,25 @@ let curHour = curToday.getHours(),
 
         
         let showUserRsvdListHandler = function(e) {
+        	
         	let rstoreId = $(e.target).parent().find(".btnStoreId").text(),
     		ruserId = $(e.target).parent().find(".btnUserId").text();
-    	
+        	console.log("======================");
+        	console.log(rstoreId);
+        	console.log(ruserId);
+        	
+    		if(!rstoreId){
+    			rstoreId = $(e.target).parent().parent().find(".btnStoreId").text();
+        		ruserId = $(e.target).parent().parent().find(".btnUserId").text();
+    		}
+        	
     		modal.css("display","block");
 
     		showUserRsvdList(rstoreId, ruserId);
         }
         /*예약리스트에 있는 내용 중, 예약 상세 보여주기*/
         /*회원의 예약 리스트 보여주기*/
-        $(".rsvdList").on("click", showUserRsvdListHandler);
+        $(".btnRsvd").on("click", showUserRsvdListHandler);
         	
         /* 웨이팅 등록 */
         $(".btn_wait_register").on("click", e => {
@@ -1595,8 +1742,14 @@ let curHour = curToday.getHours(),
 
             let param = {};
             param.storeId = storeId;
-            param.seatStusCd = e.target.innerHTML[0];
             
+            if(e.target.dataset.color) param.seatStusCd = e.target.dataset.color[0];
+            if(e.target.parentNode.dataset.color) param.seatStusCd = e.target.parentNode.dataset.color[0];
+            if(e.target.parentNode.parentNode.dataset.color) param.seatStusCd = e.target.parentNode.parentNode.dataset.color[0];
+            
+            //param.seatStusCd = e.target.dataset.color[0];
+            $(".btn_seat_stus").removeClass("curStus");
+            e.target.className += " curStus";
             
         	boardService.putChangeStatusCd(param, function(result){
             	showStoreInfo(param.storeId);
@@ -1608,7 +1761,7 @@ let curHour = curToday.getHours(),
         let waitEnterHandler = function(e) {
         	
         	/*dom 코드는 변경될 가능성 있음*/
-        	waitId = parseInt($(".nextWait li:eq(2)").text().split(":")[1]);
+        	let waitId = parseInt(document.querySelector(".nextWait .wait_name").dataset.id);
 
         	boardService.putEnterWaiting(waitId, function(result){
         		//alert(result);
@@ -1618,11 +1771,10 @@ let curHour = curToday.getHours(),
 
         /*웨이팅 입장 처리*/
         $(".btn_enter_wait").on("click", waitEnterHandler);
-        
         let waitNoshowHandler = function(e){
         	
         	/*dom 코드는 변경될 가능성 있음*/
-        	waitId = parseInt($(".nextWait li:eq(2)").text().split(":")[1]);
+        	let waitId = parseInt(document.querySelector(".nextWait .wait_name").dataset.id);
 
         	boardService.putNoshowWaiting(waitId, function(result){
         		//alert(result);

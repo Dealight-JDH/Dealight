@@ -13,7 +13,7 @@ function showTime(hour, second){
     const hours = date.getHours();
     const seconds = date.getSeconds();
 
-    clockDate.innerText = year + '년' + (month+1) + '월' + day + '일';
+    clockDate.innerText = (month+1) + '월' + day + '일   ';
 
     clockTime.innerText = `${hours < 10 ? `0${
         hours}` : hours}:${minutes < 10 ? `0${

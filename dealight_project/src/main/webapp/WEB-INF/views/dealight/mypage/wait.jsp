@@ -12,6 +12,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
 <script src="/resources/js/Rater.js"></script>
+
+
 </head>
 <body>
 	<main>
@@ -56,6 +58,7 @@
 	                                    	<span style='display:none;' class="revw_stus">${wait.revwStus}</span>
 	                                    	<span style='display:none;' class="store_id">${wait.storeId}</span>
 	                                    </div>
+	                                    <div><button class="btn_wait"><i class="fas fa-angle-right"></i></button></div>
 	                                </div>
 	                                <div class="rsvd_cnts">
 	                                    <div class="rsvd_cnts_wrapper">
@@ -561,6 +564,15 @@ window.onload = function () {
 	    $(".btn_like_cancel").on("click",likeRemoveHandler);
 	
 }; /* document ready end*/
+
+$(".btn_wait").on("click",(e) => {
+	
+	
+	let waitId = $(e.target).parent().parent().parent().parent().find(".wait_id").text();
+	
+	window.open("/dealight/waiting/"+waitId);
+	
+})
 
 </script>
 <%@include file="../../includes/mainFooter.jsp" %>

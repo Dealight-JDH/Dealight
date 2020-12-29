@@ -13,7 +13,6 @@ import com.dealight.domain.UserVO;
  *****[김동인] 
  * 
  */
-//현수현수현수
 public interface UserMapper {
 
 	public void insertAuth(AuthVO auth);

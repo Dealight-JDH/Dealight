@@ -67,8 +67,8 @@
             				l.addr, l.lat, l.lng,
                     		b.brch, b.rep_menu, b.rep_img, b.seat_stus_cd,b.htdl_stus_cd,
                     		b.open_tm, b.close_tm, b.break_sttm, b.break_entm,
-                    		e.avg_rating, e.revw_tot_num, e.like_tot_num
-                   			
+                    		e.avg_rating, e.revw_tot_num, e.like_tot_num,
+                   			calc_distance(#{lat}, #{lng}, l.lat, l.lng) as dist
             		from tbl_store s , tbl_bstore b , tbl_store_loc l, tbl_store_eval e
             		where   (l.lat between #{lat} - #{range} and #{lat} + #{range})
                     	and (l.lng between #{lng} - #{range} and #{lng} + #{range})
@@ -96,6 +96,9 @@
 							 </choose>
 							 <!-- 정렬순서 -->
 		           			 <choose>
+								<when test="sortType == 'D'.toString()">
+									dist
+								</when>		           			 
 								<when test="sortType == 'H'.toString()">
 									e.like_tot_num desc
 								</when>		           			 
