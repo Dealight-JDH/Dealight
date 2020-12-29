@@ -1117,8 +1117,7 @@ function removeLike(params,callback,error) {
 				var storeId = param.storeId;
 				var page = param.page || 1;
 				
-				$.getJSON("/dealight/revws/pages/"+storeId+"/"+page+".json",
-						function(data){
+				$.getJSON("/dealight/revws/pages/"+storeId+"/"+page+".json", function(data){
 					if(callback){
 						//callback(data);
 						console.log(data);

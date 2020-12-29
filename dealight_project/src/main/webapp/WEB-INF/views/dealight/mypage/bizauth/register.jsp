@@ -15,6 +15,121 @@
 
 
 <style type="text/css">
+* { /* CSS초기화. 이거 없으면 div태그 사이에 공백 생김*/
+    margin : 0;  /* 값이 0일 때는 단위 안씀. */
+    border : 0;
+    padding : 0;
+    /* font-family: 'Nanum Gothic', sans-serif; */
+}
+    .mypage_wrapper{
+    	padding-bottom: 20px;
+    } 
+  .form-wrapper{
+    display: flex;
+    width: 750px;
+  }
+  .css-input{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    /* padding: 3px; */
+    margin-bottom: 8px;
+    width: 100%;
+    align-items: center;
+    /* border: 1px solid black; */
+  }
+  .css-input>input{
+    padding: 12px 20px;
+    width: 30%;
+    height: 40px;
+    margin: 12px 0 6px;
+    margin-left: 10px;
+    padding-right: 3px;
+    border: 1px solid rgb(139, 139, 139);
+    border-radius: 3px;
+    box-sizing: border-box;
+  }
+  .css-input>p{
+    width: 20%;
+    font-weight: 500;
+    margin-left: 40px;
+  }
+  .ico{
+    color: #EE6A7B;
+  }
+  .css-modify{
+    display: flex;
+    /* border: 1px solid black; */
+    flex-direction: column;
+    width: 100%;
+    margin-top: 16px;
+  }
+	.form-footer{
+    /* border: 1px solid black; */
+    display: flex;
+    width: 50%;
+    height: 60px;
+    margin-top: 40px;
+    margin-left: 35px;
+    justify-content: center;
+    align-content: flex-start;
+    /* align-items: center; */
+  }
+  .birthday{
+    display: flex;
+    /* padding: 3px; */
+    align-items: center; 
+    margin-left: 10px;
+    border: 1px solid rgb(139, 139, 139);
+    border-radius: 3px;
+    /* box-sizing: border-box; */
+  }
+  .birthday>input{
+    width: 65px;
+    height: 40px;
+    text-align: center;
+    outline: none;
+  }
+  .css-modifyBtn{
+    border: 1px solid orange;
+    color: orange;
+  }
+  .css-backBtn{
+    border: 1px solid black;
+    color: black;
+  }
+  .css-removeBtn{
+    border: 1px solid #D32323;
+    color: #D32323;
+  }
+  .btn{
+    width: 13%;
+    height: 40px;
+    margin-left: 16px;
+    font-weight: bold;
+    border: 1px solid #D32323;
+    color: #D32323;
+    outline: 0;
+    background-color: white;
+    border-radius: 4px;
+  }
+  .submit-btn{
+    width: 20%;
+    height: 40px;
+    margin-left: 16px;
+    font-weight: bold;
+    /* border: 1px solid #D32323;
+    color: #D32323; */
+    outline: 0;
+    background-color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+  }
+  #sendEmailbtn{
+  	cursor: pointer;
+  	outline: none;
+  }
   .uploadResult{
 	width:100%;
 	background-color: gray;}
@@ -80,13 +195,27 @@
 	    </div>
 	    <div class="mypage_content" style="padding: 10px">
 			<form action="/dealight/mypage/bizauth/register" method="post" name="register">
-				<label>ID</label><input type="text" name="userId" value="${buser.userId }"><br>
-				-----------------><br>
-				<label>대표자명</label><input type="text" name="repName" value="${buser.repName }"><br>
-				<label>매장명</label><input type="text" name="storeNm" value="${buser.storeNm }"><br>
-				<label>휴대전화</label><input type="text" name="telno" value="${buser.telno }"><br>
-				<label>사업장전화번호</label><input type="text" name="storeTelno" value="${buser.storeTelno }"><br>
-				<label>사업자등록번호</label><input type="text" name="brno" value="${buser.brno }"><br>
+				<div class="css-id css-input">
+					<p>대표자명</p>
+                 	<input type="text" name="repName" value="<c:out value = "${buser.repName }"/>" required="required">
+                 </div>
+				<div class="css-id css-input">
+					<p>매장명</p>
+                 	<input type="text" name="storeNm" value="<c:out value = "${buser.storeNm }"/>" required="required">
+                 </div>
+				<div class="css-id css-input">
+					<p>휴대전화</p>
+                 	<input type="text" name="telno" value="<c:out value = "${buser.telno }"/>" required="required">
+                 </div>
+				<div class="css-id css-input">
+					<p>사업장전화번호</p>
+                 	<input type="text" name="storeTelno" value="<c:out value = "${buser.storeTelno }"/>" required="required">
+                 </div>
+				<div class="css-id css-input">
+					<p>사업자등록번호</p>
+                 	<input type="text" name="brno" value="<c:out value = "${buser.brno }"/>" required="required">
+                 </div>
+				<input type="hidden" name="userId" value="${userId }"><br>
 			</form>
 			<div>
 			<div class="uploadDiv">
@@ -96,8 +225,10 @@
 				<ul>
 				</ul>
 			</div>
-				<button type="button" class="regbtn">신청하기</button>
-				<button type="button" class="listbtn">목록으로</button>
+			<div style="display: flex; justify-content: flex-end; margin:10px;">
+				<button type="button" class="submit-btn css-modifyBtn regbtn">신청하기</button>
+				<button type="button" class="submit-btn css-backBtn listbtn">목록으로</button>
+			</div>
 			</div>
 		
 		<div class="bigPictureWrapper">
@@ -107,6 +238,8 @@
 		</div>
 		
 	</div>
+</div>
+<div class='pull-right panel-footer'>
 </div>
 </main>	   
 
