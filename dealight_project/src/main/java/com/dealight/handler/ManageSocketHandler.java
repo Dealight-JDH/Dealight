@@ -68,9 +68,15 @@ public class ManageSocketHandler extends TextWebSocketHandler {
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		log.info("handleTextMessage : " + session + ":" + message);
-		
+		String senderId = "";
 		// 참고로 로그인한 사용자는 HTTP Session에 정보가 있다.
-		String senderId = getId(session);
+		try {
+			senderId = getId(session);			
+		} catch(NullPointerException ne) {
+			ne.printStackTrace();
+			log.info("web socket null exception error catch.........................");
+			return;
+		}
 		
 		log.info("senderId : " + senderId);
 		

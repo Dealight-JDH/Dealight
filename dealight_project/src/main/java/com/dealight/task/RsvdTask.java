@@ -34,7 +34,7 @@ public class RsvdTask {
 	//새벽 2시마다 예약 가능 테이블 초기화
 	//@Scheduled(cron = "0 0 2 * * *")
 	//@Scheduled(cron = "0 * * * * *")
-	@Scheduled(cron = "0 * * * * *")
+	//@Scheduled(cron = "0 * * * * *")
 	public void initRsvdAvail() {
 	
 		log.info("rsvd avail init.....");

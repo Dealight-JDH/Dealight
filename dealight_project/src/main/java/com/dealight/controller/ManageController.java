@@ -75,7 +75,7 @@ public class ManageController {
 	private RevwService revwService;
 	
 	// 파일 저장 경로를 지정한다.
-	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05";
+	final static private String ROOT_FOLDER = "C:\\dealgiht\\rds\\";
 	
 	// 핫딜 히스토리
 	@GetMapping("/dealhistory")
