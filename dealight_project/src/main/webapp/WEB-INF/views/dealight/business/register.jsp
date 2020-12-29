@@ -579,14 +579,8 @@
 	                        <label>읍면동명</label>
 	                        <input type="text"  style="width:500px;" id="emdNm"  name="emdNm" />
 	                    </div>
-	                    <div class="label_input">
-	                        <label>위도</label>
-	                        <input type="text"  style="width:500px;" id="lat"  name="lat" />
-	                    </div>
-	                    <div class="label_input">
-	                        <label>경도</label>
-	                        <input type="text"  style="width:500px;" id="lng"  name="lng" />
-	                    </div>
+	                        <input type="hidden"  style="width:500px;" id="lat"  name="lat" />
+	                        <input type="hidden"  style="width:500px;" id="lng"  name="lng" />
 	                    <div id="map"></div>
 	                </div> <!-- end location_wrapper -->
 	                <div class="upload_wrapper">

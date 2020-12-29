@@ -1449,7 +1449,6 @@
         }
         .rsvdRslt{
         	margin-top:30px;
-        	margin-left:20px;
         	display:flex;
         	flex-direction: column;
         	justify-content: flex-start;
@@ -1459,7 +1458,6 @@
         	font-size : 18px;
         	font-weight:bold;
         	margin-top:15px;
-        	margin-left:20px;
         	display: flex;
         	flex-direction: row;
         	justify-content: flex-start;

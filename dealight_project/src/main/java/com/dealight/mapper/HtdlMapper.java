@@ -91,5 +91,7 @@ public interface HtdlMapper {
 	
 	int getHtdlTotal(@Param("storeId") Long storeId, @Param("cri")Criteria cri);
 	
+	HtdlVO getActHtdlWithDtls(Long storeId);
+	
 
 }

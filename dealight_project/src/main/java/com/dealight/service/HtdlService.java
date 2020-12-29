@@ -82,5 +82,7 @@ public interface HtdlService {
 	List<HtdlVO> findHtdlWithRsltByStoreId(Long storeId, Criteria cri);
 	
 	int getHtdlTotal(Long storeId, Criteria cri);
+	
+	HtdlVO getHtdlDetail(Long storeId);
 
 }

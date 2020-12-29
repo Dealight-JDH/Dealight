@@ -549,4 +549,12 @@ public class HtdlMapperTests {
 		
 	}
 	
+	@Test
+	public void getActHtdlWithDtlsTest1() {
+		Long storeId = 13L;
+		HtdlVO htdl = mapper.getActHtdlWithDtls(storeId);
+		log.info("htdl : "+htdl);
+		
+	}
+	
 }

@@ -497,7 +497,7 @@
 	                        <label for="openTm" id="openTm_tit">영업 시작</label>
 	                        <div class='custom_select'>
 	                            <select id="openTm" name="openTm">
-	                                <option value="09:00">09:00</option>
+	                                <option value="09:00">09:00</option>		
 	                                <option value="10:30">09:30</option>
 	                            </select>
 	                        </div>
@@ -543,24 +543,15 @@
 	                        <input name="repMenu" value="맛난거">
 	                    </div>
 	                    <div class="label_input">
-	                        <label>가게 평균 식사 시간</label>
+	                        <label>가게 평균 식사 시간(분)</label>
 	                        <input name="avgMealTm" value="30">
 	                    </div>
-	                    <div class="label_input">
-	                        <label>1인석 테이블 개수</label>
-	                        <input name="n1SeatNo" value="0" type="number">
-	                    </div>
-	                    <div class="label_input">
-	                        <label>2인석 테이블 개수</label>
-	                        <input name="n2SeatNo" value="0" type="number">
-	                    </div>
-	                    <div class="label_input">
-	                        <label>4인석 테이블 개수</label>
-	                        <input name="n4SeatNo" value="0" type="number">
-	                    </div>
+	                        <input name="n1SeatNo" value="0" type="hidden">
+	                        <input name="n2SeatNo" value="0" type="hidden">
+	                        <input name="n4SeatNo" value="0" type="hidden" >
 	                    <div class="label_input">
 	                        <label>수용인원</label>
-	                        <input name="acmPnum" value="0" type="number">
+	                        <input name="acmPnum" value="30" type="number">
 	                    </div>
 	                </div><!-- end bstore info -->
 	                <div class="location_wrapper">

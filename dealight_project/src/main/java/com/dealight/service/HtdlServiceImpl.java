@@ -279,6 +279,11 @@ public class HtdlServiceImpl implements HtdlService {
 		return htdlMapper.getHtdlTotal(storeId, cri);
 	}
 
+	@Override
+	public HtdlVO getHtdlDetail(Long storeId) {
+		return htdlMapper.getActHtdlWithDtls(storeId);
+	}
+
 
 	
 

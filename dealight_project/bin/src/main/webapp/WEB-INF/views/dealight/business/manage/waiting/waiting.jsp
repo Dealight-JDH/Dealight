@@ -398,7 +398,8 @@ position: markerPosition
 marker.setMap(map);
 
 //아래 코드는 지도 위의 마커를 제거하는 코드입니다
-//marker.setMap(null);    
+//marker.setMap(null); 
+$("#btn_reload").on("click",()=>{location.reload();})
 </script>
 </body>
 </html>

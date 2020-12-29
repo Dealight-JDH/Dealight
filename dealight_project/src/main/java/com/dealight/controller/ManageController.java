@@ -94,24 +94,14 @@ public class ManageController {
 		
 		model.addAttribute("htdlList",htdlList);
 		
-		htdlList.stream().forEach(htdl -> {
-			htdl.setHtdlImg(htdl.getHtdlImg());
-		});
-		
-		log.info("htdl list : "+htdlList);
-		
-		// 현재 상태가 Active인 핫딜을 가져온다.
-		List<HtdlVO> curList = htdlList.stream().filter(htdl -> 
-			htdl.getStusCd().equals("A")
-		).collect(Collectors.toList());
-		
-		log.info("cur list : "+curList);
 		
 		int total = htdlService.getHtdlTotal(storeId, cri);
 		
 		StoreVO store = storeService.findByStoreIdWithBStore(storeId);
 		
-		model.addAttribute("curList", curList);
+		HtdlVO curHtdl = htdlService.getHtdlDetail(storeId);
+		
+		model.addAttribute("curHtdl",curHtdl);
 		model.addAttribute("storeId",storeId);
 		model.addAttribute("store",store);
 		model.addAttribute("pageMaker",new PageDTO(cri,total));

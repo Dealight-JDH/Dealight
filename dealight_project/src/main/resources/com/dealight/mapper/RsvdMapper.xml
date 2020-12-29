@@ -59,7 +59,7 @@
 		 	values(#{storeId}, #{nine}, #{nineHalf}, #{ten}, #{tenHalf}, #{eleven}, #{elevenHalf}, #{twelve},
 		 	 #{twelveHalf}, #{thirteen}, #{thirteenHalf}, #{fourteen}, #{fourteenHalf}, #{fifteen}, #{fifteenHalf},
 		 	 #{sixteen}, #{sixteenHalf}, #{seventeen}, #{seventeenHalf}, #{eighteen}, #{eighteenHalf}, #{nineteen},
-		 	 #{nineteenHalf}, sysdate +9/24, sysdate +9/24)
+		 	 #{nineteenHalf}, #{twenty}, #{twentyHalf}, #{twentyone}, #{twentyoneHalf}, #{twentytwo}, sysdate +9/24, sysdate +9/24)
 		 </insert>
 		 
 		 <select id="countAll" resultType="int">
