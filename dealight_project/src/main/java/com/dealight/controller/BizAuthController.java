@@ -83,7 +83,6 @@ public class BizAuthController {
 	public void list(Model model, HttpSession session) {
 		//로그인 유저 아이디를 불러온다.
 		String userId = (String)session.getAttribute("userId");
-		userId = "aaaa";
 		if(userId == null & userId.equals("")) {
 			//처리필요
 		}

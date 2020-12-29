@@ -126,7 +126,7 @@ public class HtdlController {
 			if(userId != null) {
 				model.addAttribute("userId", userId);
 			}
-		}	
+		}
 		return "dealight/hotdeal/get";
 	}
 

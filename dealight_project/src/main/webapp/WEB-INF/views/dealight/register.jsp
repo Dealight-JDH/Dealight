@@ -520,6 +520,13 @@
             outline: none;
             cursor: pointer;
         }
+        
+    .nav_reg_brno>a{
+    	color:white;
+    }
+    #nav_user_id{
+    color:white;
+    }
 </style>
 </head>   
 <body>
@@ -582,7 +589,7 @@
                             <p>비밀번호 확인
                             <span class="ico">*</span>
                             </p>
-                            <input type="password" name="repwd" id="repwd" placeholder="비밀번호룰 헌번 더 입력해주세요"
+                            <input type="password" name="repwd" id="repwd" placeholder="비밀번호룰 한번 더 입력해주세요"
                                 onblur="checkPwd()">
                         </div>
 
@@ -608,7 +615,7 @@
 						
 						
 						<div class="css-input">
-							<div class="alertMsg" style="margin-left: 5px;">
+							<div class="alertMsg" style="margin-left: 120px;">
 							<p class="msg"></p>
 							</div>
 						</div>

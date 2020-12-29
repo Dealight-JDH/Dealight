@@ -21,28 +21,33 @@
 .btn_like_cancel:hover{
 	opacity: 0.7;
 }
+
+.rsvd_wrapper:hover{
+	opacity: 0.7;
+	cursor:pointer;
+}
 </style>
 </head>
 <body>
 <main>
 	<div class="mypage_wrapper">
 <%@include file="/WEB-INF/views/includes/custserviceSidebar.jsp" %>
-		<div class="box-container flex-column">
+		<div class="box-container flex-column" >
 		    <div class="mypage_main_header">
 		        <div class="main_header_title">사업자등록</div>
 		        <div class="main_header_subtitle">매장을 등록해주세요.</div>
 		    </div>
         		<button id="regbtn" class="registerbtn" data-oper="register" style="align-self: flex-start; margin:20px;">사업자등록하기</button>
-		     <div class="contents-wrapper flex-column">
+		     <div class="contents-wrapper flex-column" style="margin: 10px 0;">
 			     <c:forEach items="${list}" var="buser">
-			     	<div class="rsvd_wrapper" style="height:100px; padding:0;">
+			     	<div class="rsvd_wrapper move" data-seq="${buser.brSeq }" style="height:100px; padding:0;">
 	                    <div class="css_rsvd_box">
 	                        <div class="rsvd_cnts">
 	                            <div class="rsvd_cnts_wrapper">
 	                                
 	                                <div class="cnts">
 	                                	<div>
-	                                		<span class="rsvd_cnts_tit"><a class="move" href="<c:out value='${buser.brSeq }'/>">접수번호</a></span>
+	                                		<span class="rsvd_cnts_tit">접수번호</span>
 	                                        <span class="rsvd_cnts_val">${buser.brSeq }</span>
 	                                	</div>
 	                                    <div>
@@ -82,6 +87,8 @@
             </div>
 		</div>
 	</div>
+	<div class='pull-right panel-footer'>
+	</div>
 </main>
 
 
@@ -104,7 +111,7 @@ window.onload = function(){
 	//게시글 클릭 이벤트
 	$('.move').on("click", function(e){
 		e.preventDefault();
-		formObj.find("input[name='brSeq']").val($(this).attr('href'))
+		formObj.find("input[name='brSeq']").val($(this).data('seq'))
 		formObj.attr("action", "/dealight/mypage/bizauth/get").attr("method", "get");
 		
 		formObj.submit();

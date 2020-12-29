@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -34,6 +33,7 @@ import com.dealight.domain.RsvdMenuDTOList;
 import com.dealight.domain.RsvdRequestDTO;
 import com.dealight.domain.RsvdRequestInfoDTO;
 import com.dealight.domain.RsvdVO;
+import com.dealight.domain.StoreVO;
 import com.dealight.handler.ManageSocketHandler;
 import com.dealight.service.HtdlService;
 import com.dealight.service.KakaoService;
@@ -112,10 +112,11 @@ public class RsvdController {
 //		model.addAttribute("time", time);
 //		log.info(rsvdMenuList);
 //		}
-
+		StoreVO store = service.findByStoreIdWithBStore(requestInfo.getStoreId());
+		log.info("store..........vo : " + store.getStoreNm()+ " store.....rep img : " + store.getBstore().getRepImg());
 	    model.addAttribute("userId", auth.getName());
 	    model.addAttribute("htdlId", requestInfo.getHtdlId());
-	    model.addAttribute("store", service.bstore(requestInfo.getStoreId()));
+	    model.addAttribute("store", store);
 		model.addAttribute("rsvdMenuList", rsvdMenuList); 
 		model.addAttribute("pnum", requestInfo.getPnum()); 
 		model.addAttribute("time", requestInfo.getTime());

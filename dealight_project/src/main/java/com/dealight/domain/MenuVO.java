@@ -13,7 +13,6 @@ import lombok.NonNull;
  *****[김동인] 
  * 
  */
-//다울
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

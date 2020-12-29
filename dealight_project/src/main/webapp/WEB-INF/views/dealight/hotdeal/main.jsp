@@ -1455,6 +1455,8 @@
 		mElapTime.html(elapTime);
 	} */
 	
+
+	
 	//핫딜 경과시간
 	function showHtdlElapTime(endTime, startTime){
 		
@@ -1710,7 +1712,7 @@
 			str += "<p class='arrow-box'>마감까지<br>"+(list[i].lmtPnum - list[i].curPnum) +"명<br> 남았습니다!</p></div></div>";
 			
 			str += "<div class='card-title'>";
-			str += "<h3>[종로] 맛집</h3></div>";
+			str += "<h3>["+list[i].brch+"]&nbsp;"+ list[i].name+"</h3></div>";
 			
 			str += "<div class='card-menu'>";
 			str += "<span>";
@@ -1721,7 +1723,10 @@
 				/* str += list[i].menuName+" "; */
 				//console.log(list[i].htdlDtls[j].menuName);
 			}
-			str+= menuArr.join(",") +"</span></div>";
+			if(menuArr.length > 1)
+				str += list[i].setName+"</span></div>";
+			else
+				str+= menuArr[0] +"</span></div>";
 			
 			
 			str += "<div class='card-intro'>";
