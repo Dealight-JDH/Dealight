@@ -48,7 +48,7 @@ public class UploadController {
 	// 파일 경로
 	//final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05\\";
 	final static private String ROOT_FOLDER = "/Users/hyeonjung/Desktop/upload/";
-	//	private final static String ROOT_FOLDER = "/Users/limjongwoo/upload/dealight";
+	//private final static String ROOT_FOLDER = "/Users/limjongwoo/upload/dealight/";
 	
 	//add param category
 	private String getFolder(String category) {

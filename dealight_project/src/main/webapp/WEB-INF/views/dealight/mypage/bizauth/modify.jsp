@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"   pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+    <%@include file="../../../includes/mainMenu.jsp" %>
 
 <!-- 현중 -->
 <!DOCTYPE html>
@@ -9,17 +10,129 @@
 <meta charset="UTF-8">
 <title>사업자등록페이지</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
+<link rel="stylesheet" href="/resources/css/custservice.css" type ="text/css" />
+
+
 <style type="text/css">
-.container {
-  border: 2px solid #ccc;
-  background-color: #eee;
-  border-radius: 5px;
-  padding: 16px;
-  margin: 16px 0;
+* { /* CSS초기화. 이거 없으면 div태그 사이에 공백 생김*/
+    margin : 0;  /* 값이 0일 때는 단위 안씀. */
+    border : 0;
+    padding : 0;
+    /* font-family: 'Nanum Gothic', sans-serif; */
+}
+    .mypage_wrapper{
+    	padding-bottom: 20px;
+    } 
+  .form-wrapper{
+    display: flex;
+    width: 750px;
+  }
+  .css-input{
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    /* padding: 3px; */
+    margin-bottom: 8px;
+    width: 100%;
+    align-items: center;
+    /* border: 1px solid black; */
+  }
+  .css-input>input{
+    padding: 12px 20px;
+    width: 30%;
+    height: 40px;
+    margin: 12px 0 6px;
+    margin-left: 10px;
+    padding-right: 3px;
+    border: 1px solid rgb(139, 139, 139);
+    border-radius: 3px;
+    box-sizing: border-box;
+  }
+  .css-input>p{
+    width: 20%;
+    font-weight: 500;
+    margin-left: 40px;
+  }
+  .ico{
+    color: #EE6A7B;
+  }
+  .css-modify{
+    display: flex;
+    /* border: 1px solid black; */
+    flex-direction: column;
+    width: 100%;
+    margin-top: 16px;
+  }
+	.form-footer{
+    /* border: 1px solid black; */
+    display: flex;
+    width: 50%;
+    height: 60px;
+    margin-top: 40px;
+    margin-left: 35px;
+    justify-content: center;
+    align-content: flex-start;
+    /* align-items: center; */
+  }
+  .birthday{
+    display: flex;
+    /* padding: 3px; */
+    align-items: center; 
+    margin-left: 10px;
+    border: 1px solid rgb(139, 139, 139);
+    border-radius: 3px;
+    /* box-sizing: border-box; */
+  }
+  .birthday>input{
+    width: 65px;
+    height: 40px;
+    text-align: center;
+    outline: none;
+  }
+  .css-modifyBtn{
+    border: 1px solid orange;
+    color: orange;
+  }
+  .css-backBtn{
+    border: 1px solid black;
+    color: black;
+  }
+  .css-removeBtn{
+    border: 1px solid #D32323;
+    color: #D32323;
+  }
+  .btn{
+    width: 13%;
+    height: 40px;
+    margin-left: 16px;
+    font-weight: bold;
+    border: 1px solid #D32323;
+    color: #D32323;
+    outline: 0;
+    background-color: white;
+    border-radius: 4px;
+  }
+  .submit-btn{
+    width: 20%;
+    height: 40px;
+    margin-left: 16px;
+    font-weight: bold;
+    /* border: 1px solid #D32323;
+    color: #D32323; */
+    outline: 0;
+    background-color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    outline: none;
+  }
+  #sendEmailbtn{
+  	cursor: pointer;
+  	outline: none;
+  }
   .uploadResult{
 	width:100%;
-	background-color: gray;
-}
+	background-color: gray;}
 .uploadResult ul{
 	display: flex;
 	flex-flow: row;
@@ -58,42 +171,74 @@
 }
 .bigPicture img {
 	width: 600px;
+}.mypage_main_sub > div{
+	width : 100%;
 }
+.btn_like_cancel{
+	color : tomato;
+	cursor: pointer;
 }
+.btn_like_cancel:hover{
+	opacity: 0.7;
+}
+
 </style>
 </head>
 <body>
+<div class="mypage_wrapper">
+<%@include file="/WEB-INF/views/includes/custserviceSidebar.jsp" %>
+	<div class="box-container flex-column" >
+	    <div class="mypage_main_header">
+	        <div class="main_header_title">사업자등록</div>
+	        <div class="main_header_subtitle">수정해주세요.</div>
+	    </div>
+        <div class="mypage_content" style="padding: 10px">
+			<form action="/dealight/mypage/bizauth/modify" method="post" name="modify">
+				<div class="css-id css-input">
+					<p>대표자명</p>
+                 	<input type="text" name="repName" value="<c:out value = "${buser.repName }"/>" required="required">
+                 </div>
+				<div class="css-id css-input">
+					<p>매장명</p>
+                 	<input type="text" name="storeNm" value="<c:out value = "${buser.storeNm }"/>" required="required">
+                 </div>
+				<div class="css-id css-input">
+					<p>휴대전화</p>
+                 	<input type="text" name="telno" value="<c:out value = "${buser.telno }"/>" required="required">
+                 </div>
+				<div class="css-id css-input">
+					<p>사업장전화번호</p>
+                 	<input type="text" name="storeTelno" value="<c:out value = "${buser.storeTelno }"/>" required="required">
+                 </div>
+				<div class="css-id css-input">
+					<p>사업자등록번호</p>
+                 	<input type="text" name="brno" value="<c:out value = "${buser.brno }"/>" required="required">
+                 </div>
+				<div class="css-id css-input">
+					<p>접수날짜</p>
+                 	<input type="text" name="regdate" value='<fmt:formatDate pattern="yyyy/MM/dd" value="${buser.regdate }"/>' required="required">
+                 </div>
+				<input type="hidden" name="userId" value="${userId }"><br>
+				<input type="hidden" name="updatedate" value='<fmt:formatDate pattern="yyyy/MM/dd" value="${buser.updatedate }"/>'><br>
+				<input type='hidden' name='brPhotoSrc' value='${buser.brPhotoSrc }'>
+				<input type="hidden" name="brJdgStusCd" value="${buser.brJdgStusCd }" ><br>
+			</form>
+			<div class="form-group uploadDiv">
+				<input type="file" name="uploadFile">
+			</div>
+			<div class="uploadResult">
+				<ul>
+				</ul>
+			</div>
+			<div id="btn" style="margin: 20px">
+				<button class="modifybtn submit-btn css-modifyBtn" data-oper="modify" >수정하기</button>
+				<button class="removebtn submit-btn css-removeBtn" data-oper="remove">삭제하기</button>
+				<button class="listbtn submit-btn css-backBtn" data-oper="list" >목록으로</button>
+			</div>
+		</div>
+	</div>
 
-<div class="container">
-	<form action="/dealight/mypage/bizauth/modify" method="post" name="modify">
-		<label>ID</label><input type="text" name="userId" value="${buser.userId }" readonly="readonly"><br>
-		<label>심사코드</label><input type="text" name="brJdgStusCd" value="${buser.brJdgStusCd }" ><br>
-		<label>접수날짜</label><input type="text" name="regdate" value='<fmt:formatDate pattern="yyyy/MM/dd" value="${buser.regdate }"/>'><br>
-		-----------------><br>
-		<label>심사번호</label><input type="text" name="brSeq" value="${buser.brSeq }" readonly="readonly"><br>
-		<label>대표자명</label><input type="text" name="repName" value="${buser.repName }" ><br>
-		<label>매장명</label><input type="text" name="storeNm" value="${buser.storeNm}" ><br>
-		<label>휴대전화</label><input type="text" name="telno" value="${buser.telno }" ><br>
-		<label>사업장전화번호</label><input type="text" name="storeTelno" value="${buser.storeTelno }" ><br>
-		<label>사업자등록번호</label><input type="text" name="brno" value="${buser.brno }" ><br>
-		<label>수정날짜</label><input type="text" name="updatedate" value='<fmt:formatDate pattern="yyyy/MM/dd" value="${buser.updatedate }"/>'><br>
-		<input type='hidden' name='brPhotoSrc' value='${buser.brPhotoSrc }'>
-	</form>
-<div>
 	
-	<div class="form-group uploadDiv">
-		<input type="file" name="uploadFile">
-	</div>
-	<div class="uploadResult">
-		<ul>
-		</ul>
-	</div>
-	<div id="btn">
-		<button class="modifybtn" data-oper="modify" >수정하기</button>
-		<button class="removebtn" data-oper="remove">삭제하기</button>
-		<button class="listbtn" data-oper="list" >목록으로</button>
-	</div>
-</div>
 
 </div>
 <div class="bigPictureWrapper">

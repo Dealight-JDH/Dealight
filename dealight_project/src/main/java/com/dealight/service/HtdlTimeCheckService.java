@@ -53,7 +53,7 @@ public class HtdlTimeCheckService {
 		exec.scheduleAtFixedRate(new Runnable() {
 			
 			@Override
-			@Scheduled(fixedDelay = 3000)
+//			@Scheduled(fixedDelay = 1000)
 			public void run() {
 				// TODO Auto-generated method stub
 				try {
@@ -67,7 +67,8 @@ public class HtdlTimeCheckService {
 				}
 			}
 			
-		}, 0, 3, TimeUnit.SECONDS); 
+		}, 0, 1, TimeUnit.SECONDS); 
+		
 	}
 	
 	@PreDestroy
