@@ -15,8 +15,7 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-		<property name="driverClassName" 
-		 	value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+ 		<property name="driverClassName"  value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
 		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@dealight.cqmxca5xyy67.ap-northeast-2.rds.amazonaws.com:1521:ORCL"/>
  		<property name="username" value="dealight"/>
 		<property name="password" value="dealight"/>
