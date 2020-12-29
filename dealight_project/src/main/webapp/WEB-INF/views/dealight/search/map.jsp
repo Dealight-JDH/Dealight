@@ -254,8 +254,9 @@
 		let obj = Object();
 		for(let i = 0 ; i < form.length ; i++){
 			obj[form[i].name] = form[i].value;
+			console.log("key:" + form[i].name)
+			console.log("value:" + form[i].value)
 		}
-		console.log(obj)
 		return obj;
 	}
 	
@@ -315,8 +316,12 @@
 	    
 	    //셀렉박스에 넣어줄 요소들
 	    let sortValues = [["거리순", "D"], ["좋아요", "H"], ["평점순","R"], ["리뷰순","T"]];
+	    let pNumValues = [["1명", "1"], ["2명", "2"], ["3명","3"], ["4명","4"]];
 	    let priorityValues = [["--",""],["핫딜매장우선보기", "H"], ["식사가능매장우선보기", "S"], ["웨이팅있는매장보기","W"], ["예약가능매장보기","R"]];
-    	
+	    let timeValues = [["09:00","09:00"], ["09:30","09:30"],["10:00","10:00"],["10:30","10:30"],
+	        ["11:00","11:00"],["11:30","11:30"],["12:00","12:00"],["12:30","12:30"],["13:00","13:00"],["13:30","13:30"],
+	        ["14:00","14:00"],["14:30","14:30"],["15:00","15:00"],["15:30","15:30"],["16:00","16:00"],["16:30","16:30"],["17:00","17:00"],
+	        ["17:30","17:30"],["18:00","18:00"],["18:30","18:30"],["19:00","19:00"],["19:30","19:30"]];
     	//(클릭이벤트를 걸어줄 요소, 셀렉박스 요소값, 선택값을 추가할 form)
     	selectEvent($("#sortType") ,sortValues,  $("#actionForm"))
 	    //정렬기준
@@ -327,8 +332,8 @@
     	selectEvent($("#sortPriority"), priorityValues,  $("#searchFilter"))
     	const searchForm = $("#searchForm")
     	selectEvent($("#region") ,priorityValues, searchForm)
-    	selectEvent($("#time") ,priorityValues, searchForm)
-    	selectEvent($("#pNum") ,priorityValues, searchForm)
+    	selectEvent($("#time") ,timeValues, searchForm)
+    	selectEvent($("#pNum") ,pNumValues, searchForm)
 	}
 	
 	function initMap(){
@@ -472,22 +477,46 @@
 		map.setBounds(bounds);
 		
 	}
-			
+	function subSrc(photoSrc){
+		let srcObj = {};
+		let index = photoSrc.lastIndexOf("/");
+		
+		srcObj["uploadPath"] = photoSrc.substring(0,index);
+		srcObj["fileName"] = photoSrc.substring(index + 1);
+		srcObj["realFileName"] = photoSrc.substring(photoSrc.indexOf("_") + 1); 
+		//console.log("realFilename : " +photoSrc.substring(photoSrc.indexOf("_") + 1))
+		return srcObj;
+	}
 	//매장목록을 출력하는 함수
 	function showList(pageDTO){
-		const storeList = pageDTO.storeList;
 		let str = "";
+		list.innerHTML="";
+		const storeList = pageDTO.storeList;
 		if(storeList==null || storeList.length==0){
 			list.innerHTML = "검색결과가 없습니다."
 			return;
 		}
 		//console.log(storeList)
 		for( let i=0, len=storeList.length||0; i<len; i++){
+			let src ='';
+			//console.log(storeList[i].repImg)
+			if(storeList[i].repImg != null){
+				let storePhotoSrc = storeList[i].repImg
+				srcObj = subSrc(storePhotoSrc);
+				let fileCallPath = encodeURIComponent( "/"+ srcObj["uploadPath"] +"/"+ srcObj["realFileName"]); //원본
+				
+				//console.log("================store 이미지: " + fileCallPath);
+				src = "/display?fileName=" + fileCallPath;
+			}else{
+				//대체사진 등록
+				src = "https://via.placeholder.com/200x200"
+			}
+			
 			//str += "<a href='/dealight/store/"+storeList[i].storeId+" '>"
 			str +='<div class="store-card flex-column" data-storeid="'+storeList[i].storeId+'">'
 			str +='<div class="flex">'
-			str +='<div class="img-container">'
-			str +='<img src="https://via.placeholder.com/200x200" ></div>'
+			str +='<div class="img-container" style="margin-right:20px">'
+			str +='<img src="' + src + '" style="width:100%" ></div>'
 			str +='<div class="deatial-container flex-column" >'
 			str +='<div class="search-header flex">'
 			str += storeList[i].storeNm
@@ -505,18 +534,18 @@
 			str +='<b>대표메뉴 : </b>'+ storeList[i].repMenu + "</div>";
 			str +='<div class="m-tb2">'
 			if(storeList[i].seatStusCd == 'R'){
-				str +='<i class="fas fa-user-clock" style="color:red"></i> 현재 2명이 대기중이에요~</div>'
+				str +='<i class="fas fa-user-clock" style="color:red"></i> 현재 2명이 대기중이에요~'
 			}
 			if(storeList[i].seatStusCd == 'Y'){
-				str +='<i class="fas fa-user-clock" style="color:coral"></i> 서두르세요 자리가 얼마안남았어요~</div>'
+				str +='<i class="fas fa-user-clock" style="color:coral"></i> 서두르세요 자리가 얼마안남았어요~'
 			}
 			if(storeList[i].seatStusCd == 'G'){
-				str +='<i class="fas fa-user-clock" style="color:green"></i> 바로 식사가능해요~</div>'
+				str +='<i class="fas fa-user-clock" style="color:green"></i> 바로 식사가능해요~'
 			}
 			if(storeList[i].seatStusCd == 'B'){
-				str +='영업중이 아니에요.....</div>'
+				str +='영업중이 아니에요.....'
 			}
-			str +='<div class="btns felx">'
+			str +='</div><div class="btns felx">'
 			if(storeList[i].htdlStusCd == "A"){
 				str += '<button class="btn-big htdlBtn" data-storeid="'+storeList[i].storeId+'">핫딜중</button>'; 
 			}
@@ -527,8 +556,8 @@
 				str += '<button class="btn-big">줄서기</button>' 
 			}
 			str += '</div></div></div>'
-			str += '<div class="htdl flex htdl'+storeList[i].storeId+'" data-storeid="'+storeList[i].storeId+'"></div></div>'//</a>'
-			
+			str += '<div class="htdl flex htdl'+storeList[i].storeId+'" data-storeid="'+storeList[i].storeId+'" style="display:none"></div>'//</a>'
+			str += '</div>'
 		}
 		list.innerHTML = str;
 		

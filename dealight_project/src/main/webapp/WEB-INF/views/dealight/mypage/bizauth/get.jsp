@@ -110,6 +110,7 @@
 
 
 </body>
+<%@include file="/WEB-INF/views/includes/mainFooter.jsp" %>
 </html>
 <script>
 
@@ -157,7 +158,7 @@ window.onload = function(){
 		var liObj = $(this);
 		
 		let path = encodeURIComponent( "/" + liObj.data("path")+"/" + liObj.data("filename"));
-		
+		path.replace(new RegExp(/\\/g), "/")
 		
 		showImage(path.replace(new RegExp(/\\/g), "/"));
 		

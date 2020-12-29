@@ -40,10 +40,10 @@ public class AjaxController {
 
 		log.info("Critria:"+cri);
 		
-		if(cri.getSortType().equals("D") || cri.getSortType() == null) {
-			
-			return new ResponseEntity<PageDTO>(sService.getListDistStore(cri), HttpStatus.OK);
-		}
+//		if(cri.getSortType().equals("D") || cri.getSortType() == null) {
+//			
+//			return new ResponseEntity<PageDTO>(sService.getListDistStore(cri), HttpStatus.OK);
+//		}
 		
 		return new ResponseEntity<PageDTO>(sService.getListstore(cri), HttpStatus.OK);
 	}

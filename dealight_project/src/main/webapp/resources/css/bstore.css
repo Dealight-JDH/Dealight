@@ -102,6 +102,8 @@ style> <style>.store-container {
 }
 
 .like {
+		cursor: pointer;
+	
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -196,8 +198,9 @@ style> <style>.store-container {
 .menu-card {
 	width: 150px;
 	height: 190px;
-	margin-right: 10px;
+	margin-right: 20px;
 	border-radius: 12px;
+	border: 1px solid #eeeeef;
 }
 
 .menu-img {
@@ -270,6 +273,8 @@ style> <style>.store-container {
 .nav-tabs {
 	justify-content: center;
 	padding: 10px;
+		cursor: pointer;
+	
 }
 
 .tab {
@@ -287,6 +292,8 @@ style> <style>.store-container {
 }
 
 .nav-btn {
+		cursor: pointer;
+	
 	margin: 10px 0;
 	height: 40px;
 	width: 100%;

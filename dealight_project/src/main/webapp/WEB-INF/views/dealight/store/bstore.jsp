@@ -9,13 +9,49 @@
 <title>Insert title here</title>
 <%@include file="../../includes/mainMenu.jsp" %>
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="/resources/css/selectbox.css" type="text/css" />
 <link rel="stylesheet" href="/resources/css/bstore.css">
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <script src="/resources/js/Rater.js"></script>
+<style type="text/css">
+.panel-footer{
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: center;
+        /* margin-top: 60px; */
+        /* left: 33px; */
+    }
+    ul{
+        display: flex;
+        flex-direction: row;
+    }
+    li{
+        /* display: flex;
+        flex-direction: row; */
+        list-style: none;
+        /* outline: 1px solid red; */
+    }
+    .pagination a{
+        color: black;
+        padding: 8px 16px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        text-decoration: none;
+    }
+    .pagination a.active{
+        background-color: #D32323;
+        border-radius: 5px;
+        color: white;
+    }
+    .pagination a:hover:not(.active){
+        background-color: #ddd;
+    } 
+</style>
 </head>
 <body>
     <div class="store-container flex-column center">
@@ -23,9 +59,12 @@
             <div class="main-img-container">
                 <c:if test="${store.imgs[0].fileName ne null}">
 					<c:forEach items="${store.imgs }" var="imgs">
-						<img class="main-img"
-							src='/resources/images/store/<c:out value="${imgs.fileName}" />'>
-					</c:forEach>
+						<c:url value="/display" var="url"> 
+							<c:param name="fileName" value="${imgs.uploadPath}/${imgs.uuid}_${imgs.fileName}" /> 
+						</c:url>
+ 						<img class="main-img"
+							src='${url }'>
+ 					</c:forEach>
 				</c:if>
             </div>
             <!-- absolute -->
@@ -33,8 +72,8 @@
             <div class="header-container flex-column">
                 <div class="header-title flex">
                     ${store.storeNm }
-                    <div class="like" data-storeid="'+storeList[i].storeId+'" data-like="false">
-                        <i class="fa fa-heart fa-xs" style="color:#f43939"></i>
+                    <div class="like" data-storeid="${store.storeId }" data-like="false">
+                        <i class="far fa-heart fa-xs" style="color:#f43939"></i>
                     </div>
                     <div class="header-box m4">${store.eval.likeTotNum}</div>
                 </div>
@@ -50,13 +89,13 @@
                         분위기 좋은집
                     </div>
                     <div class="contents">
-                        분위기 좋은집
+                        데이트하기 좋은곳
                     </div>
                     <div class="contents">
-                        분위기 좋은집
+                        조용함
                     </div>
                     <div class="contents">
-                        분위기 좋은집
+                        맛집
                     </div>
                 </div>
                 <div class="contents-container flex">
@@ -107,51 +146,53 @@
                     </h4>
                     <div class="item-contents flex-column">
                         <div class="item">
-                            <div class="i-title"><i class="fas fa-store"></i> 식당소개</div>
+                            <div class="i-title"> <i class="fas fa-store"></i> 식당소개</div>
                             <div class="i-contents">${store.bstore.storeIntro}</div>
                         </div>
                         <div class="item flex-column">
-                            <div class="i-title"><i class="fas fa-phone-square-alt"></i> 전화번호</div>
+                            <div class="i-title"> <i class="fas fa-phone"></i> 전화번호</div>
                             <div class="i-contents">${store.telno}</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="divider"></div>
-
-                <div class="body-item flex-column">
-                    <h4 class="item-header">
-                        메뉴소개
-                    </h4>
-                    <div class="menu-container flex">
-                    	<c:forEach items="${store.bstore.menus }" var="menus">
-                    		<c:if test="${menus.imgUrl ne null}">
-		                        <div class="menu-card flex-column">
-		                            <img class="menu-img" src="https://via.placeholder.com/200x200">
-		                            ${menus.imgUrl}
-		                            <div class="i-contents">
-		                                <c:out value="${menus.name}" />
-		                            </div>
-		                            <div class="i-contents">${menus.price}</div>
-		                        </div>
-                    		</c:if>
-                        </c:forEach>
-
-                    </div>
-                    <div class="menus flex">
-                    	<c:forEach items="${store.bstore.menus }" var="menus">
-                    		<c:if test="${menus.imgUrl eq null}">
-		                        <div class="menu-item flex">
-		                            <div class="i-contents">
-		                                ${menus.name} -
-		                            </div>
-		                            <div class="i-contents"> ${menus.price}원</div>
-		                        </div>
-                        	</c:if>
-                        </c:forEach>
-                    </div>
-                </div>
-
+				<c:if test="${store.bstore.menus[0].menuSeq ne null }">
+	                <div class="body-item flex-column">
+	                    <h4 class="item-header">
+	                        메뉴소개
+	                    </h4>
+	                    <div class="menu-container flex">
+	                    	<c:forEach items="${store.bstore.menus }" var="menus">
+	                    		<c:if test="${menus.imgUrl ne null}">
+			                        <div class="menu-card flex-column">
+			                        	<c:url value="/display/" var="url"> 
+											<c:param name="fileName" value="${menus.imgUrl}" /> 
+										</c:url>
+			                            <img class="menu-img" src="${url }">
+			                            <div class="i-contents">
+			                                <c:out value="${menus.name}" />
+			                            </div>
+			                            <div class="i-contents">${menus.price}</div>
+			                        </div>
+	                    		</c:if>
+	                        </c:forEach>
+	
+	                    </div>
+	                    <div class="menus flex">
+	                    	<c:forEach items="${store.bstore.menus }" var="menus">
+	                    		<c:if test="${menus.imgUrl eq null}">
+			                        <div class="menu-item flex">
+			                            <div class="i-contents">
+			                                ${menus.name} -
+			                            </div>
+			                            <div class="i-contents"> ${menus.price}원</div>
+			                        </div>
+	                        	</c:if>
+	                        </c:forEach>
+	                    </div>
+	                </div>
+				</c:if>
                 <div class="divider"></div>
 
                 <div class="body-item flex-column">
@@ -184,72 +225,26 @@
 
                 <div class="divider"></div>
 
-                <div class="body-item flex-column">
-                    <div class="item-header">
-                        매장 리뷰
-                    </div>
-                    <div class="revw-card">
-                        <%-- <c:if test="${not empty writtenList}"> --%>
-                        <div class="revw_wrapper">
-                            <%-- <c:forEach items="${writtenList}" var="revw"> --%>
-                            <div class='modal_top_revw'>
-                                <div class='revw_reg_wrapper'>
-                                    <div class='revw_store_info'>
-                                        <div class='revw_store_name'>아이디</div>
-                                        <div class='revw_rate_wrapper'>
-                                            <div class='rating' data-rate-value='"+revw.rating+"'
-                                                style="font-size: 16px"></div>
-                                        </div>
-                                        <div class='revw_rsvd_id'>
-                                            <span>리뷰 등록 날짜 : ${revw.regdate}</span>
-                                        </div>
-                                    </div>
-                                    <div class='revw_info_wrapper' action='/dealight/mypage/review/register' method='post'>
-
-                                        <div class='revw_cnts_textarea'>
-                                            <textarea cols='30' row='20' name='cnts' readonly>${revw.cnts}</textarea>
-                                        </div>
-                                        <input name='rating' id='rate_input' hidden>
-                                        <%-- <c:if test="${revw.imgs != null}">
-														<div class='revw_img_box'>
-															<div class='revw_img_wrapper'>
-														<c:forEach items="${revw.imgs}" var="img">
-															<c:if test="${img.fileName != null}">
-																<img src=''>
-                                                            </c:if>
-                                                        </div>
-														</c:forEach>  --%>
-                                    </div>
-                                   <%--  </c:if> --%>
-                                    <%-- <c:if test="${revw.replyCnts != null}"> --%>
-                                    <div class='reply_wrapper'>
-                                        <div class='reply_item'>
-                                            <div class='reply_item_icon'>
-                                                <i class='fas fa-reply'></i>
-                                                <div class='reply_item_name'>${revw.storeNm}</div>
-                                                <div class='reply_item_date'>${revw.replyRegDt}</div>
-                                            </div>
-                                            <div class='reply_cnts_wrapper'>
-                                                <div class='reply_cnts'>
-                                                    ${revw.replyCnts}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <%-- </c:if> --%>
-                                </div>
-                            </div>
-                            <%-- </c:forEach> --%>
-                        </div>
-                    </div>
-
-                </div>
+                <c:if test="${store.eval.revwTotNum != 0 }"> 
+	                <div class="body-item flex-column">
+	                    <div class="item-header">
+	                        매장 리뷰
+	                    </div>
+	                    <div class="revw-card">
+	                        <div class="revw_wrapper">
+	                        </div>
+	                        <div class="panel-footer">
+				            </div>
+	                    </div>
+	
+	                </div>
+                </c:if>
             </div>
             <div class="nav-container">
                 <div class="nav flex-column">
-                    <div class="nav-box htdl">
-                    	<c:if test="${store.bstore.htdl ne null }">
-	                        <div class="nav-header" id="htdlBtn">
+                   	<c:if test="${store.bstore.htdl ne null }">
+                    	<div class="nav-box htdl">
+	                        <div class="nav-header" id="htdlBtn" style="cursor: pointer;">
 	                            핫딜중인 상품
 	                        </div>
 	                        <div class="nav-body" id="htdl" style="display:none">
@@ -284,13 +279,16 @@
 					                        <div style="width: 40px; align-self: flex-start;">소개 : </div><span>${store.bstore.htdl.intro }</span>
 	                                    </div>
 	                                </div>
+		                            <button class="nav-btn " id="htdldtls" data-id="${store.bstore.htdl.htdlId }" style="background-color: #0ab3c9">
+		                                상세보기
+		                            </button>
 		                            <button class="nav-btn" id="purchase" data-id="${store.bstore.htdl.htdlId }">
 		                                구매하기
 		                            </button>
 	                            </div>
 	                        </div>
-                        </c:if>
-                    </div>
+                    	</div>
+                    </c:if>
 
                     <div class="nav-box">
                         <div class="nav-header">
@@ -411,6 +409,7 @@
 <form id="actionForm" action="#" method="get">
 	<input type='hidden' name='storeId' value='<c:out value="${store.storeId }"/>' />
 </form>
+<%@include file="/WEB-INF/views/includes/mainFooter.jsp" %>
 </body>
 	<script type="text/javascript" src="/resources/js/revw.js"></script>
 	
@@ -492,7 +491,6 @@
 			let pNumValues = [["1명", "1"], ["2명", "2"], ["3명","3"], ["4명","4"]];
 		    let timeValues = [["13:00","13:00"],["13:30", "13:30"], ["14:00", "14:00"], ["17:00","17:00"], ["17:30","17:30"]];
 	    	let a = "<c:out value='${store.bstore.menus }'/>"
-	    	console.log(a);
 	    	
 	    	//(클릭이벤트를 걸어줄 요소, 셀렉박스 요소값, 선택값을 추가할 form)
 	    	selectEvent($("#pnum") ,pNumValues,  $("#actionForm"))
@@ -982,14 +980,101 @@
 		
 	}
 	
-	//예약 가능여부 체크
-	
-	//=================================================
 	
 	
 
 	
 	
+</script>
+
+<script type="text/javascript">
+//좋아요
+$(document).ready(function(){
+	$(".like").on("click", function(e){
+		e.stopPropagation();
+		let storeId = $(this).data("storeid");
+		let like = $(this).data("like");
+		console.log(like);
+		console.log(storeId)
+		if(!isLogin()){
+			alert("로그인을 해주세요");
+			return;
+		}
+		//하드코딩.........제발...
+		if(like === true){
+			let str='<i class="far fa-heart fa-xs" style="color:#f43939"></i>';
+			$(this).empty().append(str);
+			$(this).data("like", false);
+			removeLike({userId:"<c:out value='${userId}'/>",storeId:storeId});
+			console.log($(this).next()[0].innerHTML)
+			$(this).next()[0].innerHTML = $(this).next()[0].innerHTML-1
+		}
+		if(like === false){
+			let str='<i class="fa fa-heart fa-xs" style="color:#f43939"></i>';
+			$(this).empty().append(str);
+			$(this).data("like", true)
+			addLike({userId:"<c:out value='${userId}'/>",storeId:storeId});
+			console.log($(this).next())
+			$(this).next()[0].innerHTML = $(this).next()[0].innerHTML-0+1
+			alert("찜목록에 추가했습니다.")
+		}
+		
+	})
+})
+function isLogin(){
+	let userId = "<c:out value='${userId}'/>"
+	if(userId ==='' || userId === null){
+		return false
+	}
+	return true;
+}
+
+
+
+function addLike(params,callback,error){
+	let storeId = params.storeId,
+		userId = params.userId;
+    $.ajax({
+        type:'post',
+        url:'/dealight/mypage/like/add/'+userId+'/'+storeId,
+        contentType : "application/json",
+        success : function(result, status, xhr) {
+            if(callback) {
+                callback(result);
+            }
+        },
+        error : function(xhr, status, er) {
+            if(error) {
+                error(er);
+            }               
+        }
+    });
+	
+}
+
+function removeLike(params,callback,error) {
+	
+	let storeId = params.storeId,
+		userId = params.userId;
+	
+    $.ajax({
+        type:'delete',
+        url:'/dealight/mypage/like/remove/'+userId+'/'+storeId,
+        data : {'userId' : userId, 'storeId':storeId},
+        contentType : "application/json",
+        success : function(result, status, xhr) {
+            if(callback) {
+                callback(result);
+            }
+        },
+        error : function(xhr, status, er) {
+            if(error) {
+                error(er);
+            }               
+        }
+    });
+    
+}
 </script>
 	
 	<!-- 지도 -->
@@ -1017,16 +1102,17 @@
 	marker.setMap(map);
 	</script>
 <!--리뷰 -->
-	<!-- <script type="text/javascript">
+	<script type="text/javascript">
 		
 			function getList(param, callback, error){
 				var storeId = param.storeId;
 				var page = param.page || 1;
 				
-				$.getJSON("/revws/pages/"+storeId+"/"+page+".json",
+				$.getJSON("/dealight/revws/pages/"+storeId+"/"+page+".json",
 						function(data){
 					if(callback){
 						//callback(data);
+						console.log(data);
 						callback(data.revwCnt,data.list);
 					}
 				}).fail(function(xhr, status, err){
@@ -1037,47 +1123,13 @@
 			}
 		$(document).ready(function() {
 			let storeIdValue = '<c:out value="${store.storeId}"/>';
-			let revwUL = $(".revwColumn");
+			let revwUL = $(".revw_wrapper");
+			let revwPageFooter = $(".panel-footer");
 			showList(1);
 
 			let pageNum = 1;
-			let revwPageFooter = $(".revwFooter");
 
-			function showRevwPage(revwCnt) {
-				let endNum = Math.ceil(pageNum / 5.0) * 5;
-				let startNum = endNum - 4;
-
-				let prev = startNum != 1;
-				let next = false;
-
-				if (endNum * 4 >= revwCnt) {
-					endNum = Math.ceil(revwCnt / 4.0);
-				}
-				if (endNum * 4 < revwCnt) {
-					next = true;
-				}
-				
-				let str = "<ul>";
-
-				if (prev) {
-					str += "<li><a href='" + (startNum - 1)
-							+ "'>Previous</a></li>";
-				}
-
-				for (let i = startNum; i <= endNum; i++) {
-					/* var active= pageNum ==i?"active":""; */
-					str += "<li><a href='"+i+"'>" + i
-							+ "</a></li>";
-				}
-				if (next) {
-					str += "<li><a href='" + (endNum + 1)
-							+ "'>Next</a></li>";
-				}
-				str += "</ul></div>";
-				console.log(str);
-				revwPageFooter.html(str);
-
-			}
+			
 
 			function showList(page) {
 				console.log("show list" + page);
@@ -1095,19 +1147,29 @@
 									if (list == null || list.length == 0) {
 										return;
 									}
-									for (let i = 0, len = list.length || 0; i < len; i++) {
-										str += "<div class='revwCon'><strong>"+ list[i].userId+ "</strong>";
-										str += " <strong>"+ list[i].rating+ "점</strong>"
-										str += " <small class='reg'>"+ list[i].regDt+ "</small>";
-										str += "<p>"+ list[i].cnts;
-										
+									for(let i = 0 , len = list.length ||0; i<len; i++){
+										str+="<div class='modal_top_revw'><div class='revw_reg_wrapper'><div class='revw_store_info'>"
+										str+=" <div class='revw_store_name'>"+list[i].userId+"</div>"
+										str+="<div class='revw_rate_wrapper'><div class='rating' data-rate-value='"+ list[i].rating+"' style='font-size: 16px'></div>";
+										str+=" </div><div class='revw_rsvd_id'><span>리뷰 등록 날짜 : "+ list[i].regdate+"</span>"
+										str+="</div></div>"
+										str+="<div class='revw_info_wrapper'><div class='revw_cnts_textarea'>"
+										str+="<textarea cols='30' row='20' name='cnts' readonly>"+ list[i].cnts+"</textarea></div>"
+										str+="</div>"
 										if(list[i].replyCnts !=null){
-											str += "<div class='reply'>"+ list[i].replyCnts+"</div>";
+											str+="<div class='reply_wrapper'><div class='reply_item'><div class='reply_item_icon'>"
+											str+="<i class='fas fa-reply'></i>"
+											str+="<div class='reply_item_date'>"+list[i].replyRegDt+"</div></div>"
+											str+="<div class='reply_cnts_wrapper'><div class='reply_cnts'>"
+											str+=list[i].replyCnts
+											str+="</div></div></div></div>"
 										}	
-										str	+= "</p></div></div></div>";
+										str	+= "</div></div>";
 									}
+	
+									
 									revwUL.html(str);
-									showRevwPage(revwCnt);
+									showRevwPage(revwCnt); 
 								});
 
 			}
@@ -1124,9 +1186,51 @@
 				showList(pageNum);
 
 			});
+			function showRevwPage(revwCnt) {
+				let endNum = Math.ceil(pageNum / 5.0) * 5;
+				let startNum = endNum - 4;
+
+				let prev = (startNum != 1);
+				
+				let next = false;
+
+				if (endNum * 4 >= revwCnt) {
+					endNum = Math.ceil(revwCnt / 4.0);
+				}
+				if (endNum * 4 < revwCnt) {
+					next = true;
+				}
+				
+				let str = '<ul class="pagination">';
+
+				if (prev) {
+					str+= '<li> <a href="'+ (startNum - 1) +'" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>'
+				}
+
+				for (let i = startNum; i <= endNum; i++) {
+					var active= pageNum ==i?"active":"";
+					str += '<li><a href="' + i + '" '+ (pageNum ==i?'class="active"':'') + '>'+i+'</a></li>'
+				}
+				if (next) {
+					str += "<li><a href='" + (endNum + 1)
+							+ "'>Next</a></li>";
+					str +='<a href="'+(endNum + 1)+'" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>'
+				}
+				str += "</ul>";
+				console.log(str);
+				revwPageFooter.html(str);
+
+			}
 
 		});
+		$(".rating").rate({
+		    max_value: 5,
+		    step_size: 0.5,
+		    initial_value: 3,
+		    selected_symbol_type: 'utf8_star', // Must be a key from symbols
+		    cursor: 'default',
+		    readonly: true,
+		});
 	</script>
-	 -->
 </body>
 </html>
