@@ -67,7 +67,7 @@ public class BusinessController {
 	private BizAuthService bizAuthService;
 	
 	// 파일 저장 경로를 지정한다.
-	final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05";
+	final static private String ROOT_FOLDER = "C:\\dealgiht\\rds\\";
 	
 	
 	//메뉴 사진첨부파일 매장평가 사업자테이블에 태그 메뉴 옵션이 들어가야한다.
@@ -91,6 +91,7 @@ public class BusinessController {
 		
 		sService.register(store);
 		bizAuthService.updateStusCdToB(brSeq);
+		rsvdService.initRsvdAvail();
 		
 		//지금 나의 생각 입력한 값들이 잘 저장되나 보고싶다.
 		//결국 저장된 정보를 볼수있는 페이지는 뭐가잇을까??

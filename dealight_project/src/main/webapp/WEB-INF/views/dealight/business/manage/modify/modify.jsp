@@ -488,18 +488,9 @@
 	                     </select>
 	                 </div>
 				</div>
-				<div class="modify_la_in">
-					<label id="n1SeatNo">1인 테이블 개수</label>
-					<input name="n1SeatNo" value="${allStore.n1SeatNo}" ></br>
-				</div>
-				<div class="modify_la_in">
-					<label id="n2SeatNo">2인 테이블 개수</label>
-					<input name="n2SeatNo" value="${allStore.n2SeatNo}"></br>
-				</div>
-				<div class="modify_la_in">
-					<label id="n4SeatNo">4인 테이블 개수</label>
-					<input name="n4SeatNo" value="${allStore.n4SeatNo}"></br>
-				</div>
+					<input hidden name="n1SeatNo" value="${allStore.n1SeatNo}">
+					<input hidden name="n2SeatNo" value="${allStore.n2SeatNo}">
+					<input hidden name="n4SeatNo" value="${allStore.n4SeatNo}">
 				<div class="modify_la_in">
 					<label id="storeIntro">매장소개</label>
 					<input name="storeIntro" value="${allStore.storeIntro}" required></br>			
