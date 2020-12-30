@@ -284,14 +284,4 @@ public class HtdlServiceImpl implements HtdlService {
 		return htdlMapper.getActHtdlWithDtls(storeId);
 	}
 
-
-	
-
-
-
-	
-	
-	
-
-
 }

@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dealight.domain.Criteria;
 import com.dealight.domain.LikeListDTO;
 import com.dealight.domain.PageDTO;
+import com.dealight.domain.WaitVO;
 import com.dealight.service.LikeService;
 import com.dealight.service.SearchService;
+import com.dealight.service.WaitService;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -30,6 +32,7 @@ public class AjaxController {
 
 	private SearchService sService;
 	private LikeService likeService;
+	private WaitService waitService;
 	
 	@GetMapping(value = "/getlist",
 			produces = {
@@ -87,4 +90,9 @@ public class AjaxController {
 		return  new ResponseEntity<>(likeService.cancel(userId, storeId), HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/isCurWait/{userId}",produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<WaitVO> isCurWait(@PathVariable("userId")String userId) {
+		
+		return new ResponseEntity<>(waitService.getCurWaitByUserId(userId),HttpStatus.OK);
+	}
 }

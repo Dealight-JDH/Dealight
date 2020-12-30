@@ -78,10 +78,13 @@
 	                                            <div>
 	                                                <span class="rsvd_cnts_tit">예약상태</span>
 	                                                <c:if test="${rsvd.stusCd eq 'C'}">
-	                                                	<span class="rsvd_cnts_val">현재예약</span>
+	                                                	<span class="rsvd_cnts_val rsvd_stus_cd" style='color:blue;'>현재예약</span>
 	                                                </c:if>
 	                                                <c:if test="${rsvd.stusCd eq 'L'}">
-	                                                	<span class="rsvd_cnts_val">지난예약</span>
+	                                                	<span class="rsvd_cnts_val rsvd_stus_cd" style='color:orange;'>지난예약</span>
+	                                                </c:if>
+	                                                <c:if test="${rsvd.stusCd eq 'P'}">
+	                                                	<span class="rsvd_cnts_val rsvd_stus_cd" style='color:red;'>예약보류</span>
 	                                                </c:if>
 	                                            </div>
 	                                        </div>
@@ -353,7 +356,7 @@ window.onload = function () {
     		strRevw += "<textarea cols='30' row='20' name='cnts' readonly>"+revw.cnts+"</textarea>";
     		strRevw += "</div>";
     		strRevw += "<input name='rating' id='rate_input' hidden>";
-    		if(revw.imgs){    			
+    		if(revw.imgs[0].imgSeq !== null){    			
     		strRevw += "<div class='revw_img_box'>";
     		strRevw += "<div class='revw_img_wrapper'>";
     		for(let i = 0; i < revw.imgs.length; i++)

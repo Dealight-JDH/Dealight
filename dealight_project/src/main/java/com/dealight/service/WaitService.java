@@ -59,5 +59,6 @@ public interface WaitService {
 	
 	
 	List<WaitVO> findLastWeekRsvdListByStoreId(Long storeId);
+	
 
 }

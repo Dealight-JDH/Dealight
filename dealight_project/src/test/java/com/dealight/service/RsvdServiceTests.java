@@ -431,5 +431,11 @@ public class RsvdServiceTests {
 		LocalDateTime formatTime = LocalDateTime.parse(strTime);
 		return formatTime;
 	}
+	
+	@Test
+	public void rsvdAvailabilityTest1() {
+		
+		rsvdService.initRsvdAvail();
+	}
 
 }

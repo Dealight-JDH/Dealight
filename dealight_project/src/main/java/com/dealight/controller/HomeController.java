@@ -236,5 +236,6 @@ public class HomeController {
 				
 				return "/dealight/business/manage/waiting/waiting";
 			}
+			
 	
 }
