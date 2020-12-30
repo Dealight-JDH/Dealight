@@ -3,7 +3,6 @@ package com.dealight.mapper;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dealight.domain.BStoreVO;
 import com.dealight.domain.Criteria;
 import com.dealight.domain.RsvdAvailVO;
 import com.dealight.domain.RsvdDtlsVO;
@@ -38,6 +38,12 @@ public class RsvdMapperTests {
 	private BStoreMapper bMapper;
 	//TODO 예약 상세 테스트
 	
+	@Test
+	public void testSelectStoreWithAcmpnum() {
+		BStoreVO vo = bMapper.selectStoreWithAcmPnum(103l);
+		
+		log.info("============VO: " + vo);
+	}
 	@Test
 	public void testFindLastWeekRsvdRateListByStoreId() {
 		
