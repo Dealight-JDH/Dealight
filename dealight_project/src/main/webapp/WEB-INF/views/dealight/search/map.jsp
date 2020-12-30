@@ -20,6 +20,20 @@
 	div{
 		 /* border: 1px black solid;  */
 	}
+    .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+    .wrap * {padding: 0;margin: 0;}
+    .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+    .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+    .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+    .info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+    .info .close:hover {cursor: pointer;}
+    .info .body {position: relative;overflow: hidden;}
+    .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+    .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+    .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+    .info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+    .info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+    .info .link {color: #5085BB;}
 </style>
 </head>
 <body>
@@ -210,7 +224,7 @@
         <input type="text" name="openStore" value="true">
     </form>
 </body>
-
+<%@include file="/WEB-INF/views/includes/mainFooter.jsp" %>
 <!-- 리스트 불러오기 -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0e7b9cd1679ce3dedf526e66a6c1a860"></script>
 <script type="text/javascript">
@@ -222,8 +236,11 @@
 	let lat = actionForm.elements["lat"]
 	let lng = actionForm.elements["lng"]
 	let userLatLng = new kakao.maps.LatLng(lat.value, lng.value)
+	let userId = '<c:out value="${userId}"/>' || null;
 	let map = "";
 	let markers=[];
+	let overlays=[];
+	
 
 	//ajax로 리스트를 불러온다. cri, storeList ,paging관련 변수들이 다 넘어온다.
 	//많아진다면 모듈로 뺴자
@@ -254,9 +271,10 @@
 		let obj = Object();
 		for(let i = 0 ; i < form.length ; i++){
 			obj[form[i].name] = form[i].value;
-			console.log("key:" + form[i].name)
-			console.log("value:" + form[i].value)
+			//console.log("key:" + form[i].name)
+			//console.log("value:" + form[i].value)
 		}
+		obj["userId"] = userId;
 		return obj;
 	}
 	
@@ -460,9 +478,43 @@
 		        position: storeLatLng, // 마커를 표시할 위치
 		        image : new kakao.maps.MarkerImage(imageSrc, new kakao.maps.Size(24, 35))// 마커 이미지
 		    });
+			let src = subSrc(storeList[i].repImg)
+			let content = '<div class="wrap wrap'+i+'" data-storeid="'+storeList[i].storeId+'" style="display:none">' + 
+            '    <div class="info">' + 
+            '        <div class="title" style="background-color:#f43939; color:white; opacity:0.9;">' +storeList[i].storeNm+
+            '        </div>' + 
+            '        <div class="body">' + 
+            '            <div class="img">' +
+            '                <img src="'+ src +'" width="73" height="70">' +
+            '           </div>' + 
+            '            <div class="desc">' 
+            if(storeList[i].seatStusCd == 'R'){
+            	content +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:red"></i></span>현재 2명이 대기중이에요~'
+			}
+			if(storeList[i].seatStusCd == 'Y'){
+				content +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:coral"></i></span> 서두르세요 몇 자리 안남았어요~'
+			}
+			if(storeList[i].seatStusCd == 'G'){
+				content +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:green"></i></span> 바로 식사가능해요~'
+			}
+			if(storeList[i].seatStusCd == 'B'){
+				content +='영업중이 아니에요.....'
+			}
+            
+			content +='                <div class="jibun ellipsis">'+storeList[i].addr+'</div>' + 
+            '                <div><b>대표메뉴 : </b>'+ storeList[i].repMenu + '</div>' + 
+            '            </div>' + 
+            '        </div>' + 
+            '    </div>' +    
+            '</div>';
 			
-		    let infoStore = new kakao.maps.InfoWindow({
-		        content: "<div class='filter-item' data-storeid='"+storeList[i].storeId+"'>"+storeList[i].storeNm+"</div>" // 인포윈도우에 표시할 내용
+		    //let infoStore = new kakao.maps.InfoWindow({
+		    //    content: "<div class='filter-item' data-storeid='"+storeList[i].storeId+"'>"+storeList[i].storeNm+"</div>" // 인포윈도우에 표시할 내용
+		    //});
+		    let infoStore = new kakao.maps.CustomOverlay({
+		        content: content,
+		        map: map,
+		        position: marker.getPosition()
 		    });
 		    
 			addMarkerEvent(marker,infoStore,i,storeList[i].storeId);
@@ -477,6 +529,8 @@
 		map.setBounds(bounds);
 		
 	}
+	
+	//s_를 잘라내는 함수
 	function subSrc(photoSrc){
 		let srcObj = {};
 		let index = photoSrc.lastIndexOf("/");
@@ -485,13 +539,15 @@
 		srcObj["fileName"] = photoSrc.substring(index + 1);
 		srcObj["realFileName"] = photoSrc.substring(photoSrc.indexOf("_") + 1); 
 		//console.log("realFilename : " +photoSrc.substring(photoSrc.indexOf("_") + 1))
-		return srcObj;
+		let fileCallPath = encodeURIComponent( "/"+ srcObj["uploadPath"] +"/"+ srcObj["realFileName"]); //원본
+		return "/display?fileName=" + fileCallPath;
 	}
 	//매장목록을 출력하는 함수
 	function showList(pageDTO){
 		let str = "";
 		list.innerHTML="";
 		const storeList = pageDTO.storeList;
+		console.log(storeList);
 		if(storeList==null || storeList.length==0){
 			list.innerHTML = "검색결과가 없습니다."
 			return;
@@ -502,45 +558,52 @@
 			//console.log(storeList[i].repImg)
 			if(storeList[i].repImg != null){
 				let storePhotoSrc = storeList[i].repImg
-				srcObj = subSrc(storePhotoSrc);
-				let fileCallPath = encodeURIComponent( "/"+ srcObj["uploadPath"] +"/"+ srcObj["realFileName"]); //원본
+				src = "/display?fileName=" + storePhotoSrc;
 				
 				//console.log("================store 이미지: " + fileCallPath);
-				src = "/display?fileName=" + fileCallPath;
 			}else{
 				//대체사진 등록
 				src = "https://via.placeholder.com/200x200"
+			}
+			
+			if(storeList[i].like ==true){
+				likeIcon = "fas fa-heart"
+			}else{
+				likeIcon = "far fa-heart"
 			}
 			
 			//str += "<a href='/dealight/store/"+storeList[i].storeId+" '>"
 			str +='<div class="store-card flex-column" data-storeid="'+storeList[i].storeId+'">'
 			str +='<div class="flex">'
 			str +='<div class="img-container" style="margin-right:20px">'
-			str +='<img src="' + src + '" style="width:100%" ></div>'
+			str +='<img src="' +src + '" style="width:100%" ></div>'
 			str +='<div class="deatial-container flex-column" >'
 			str +='<div class="search-header flex">'
 			str += storeList[i].storeNm
-			str +='<div  class="like" data-storeid="'+storeList[i].storeId+'" data-like="false">'
-			str +='<i class="far fa-heart" style="color:red"></i>'
-			str +='</div><span class="f14">'+storeList[i].likeTotNum+'</span></div>'
+			//like - gk
+			str +='<div  class="like" data-storeid="'+storeList[i].storeId+'" data-like="'+ storeList[i].like +'">'
+			str +='<i class="'+ likeIcon +'" style="color:red"></i></div>'
+			
+			
+			str +='<span class="f14">'+storeList[i].likeTotNum+'</span></div>'
 			str +='<div class="flex rating-box">'
 			str +='<div class="rating" data-rate-value="'+ storeList[i].avgRating +'"></div>'
 			str +='<div class="f14">'+storeList[i].revwTotNum+'('+storeList[i].avgRating+')</div></div>'
 			str +='<div class="f14 m-tb2">'
-			str +='<i class="fas fa-store-alt"></i>'
-			str +='<b>매장영업시간 : </b>'+ storeList[i].openTm + "~" + storeList[i].closeTm + '</div>'
+			str +='<span style="padding:2px; margin:5px"><i class="fas fa-store-alt"></i></span>'
+			str +='<b >매장영업시간 : </b>'+ storeList[i].openTm + "~" + storeList[i].closeTm + '</div>'
 			str +='<div class="f14 m-tb2">'
-			str +='<i class="fas fa-utensils"></i>'
+			str +='<span style="padding:2px; margin:5px; margin-right:12px"><i class="fas fa-utensils"></i></span>'
 			str +='<b>대표메뉴 : </b>'+ storeList[i].repMenu + "</div>";
 			str +='<div class="m-tb2">'
 			if(storeList[i].seatStusCd == 'R'){
-				str +='<i class="fas fa-user-clock" style="color:red"></i> 현재 2명이 대기중이에요~'
+				str +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:red"></i></span>현재 2명이 대기중이에요~'
 			}
 			if(storeList[i].seatStusCd == 'Y'){
-				str +='<i class="fas fa-user-clock" style="color:coral"></i> 서두르세요 자리가 얼마안남았어요~'
+				str +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:coral"></i></span> 서두르세요 자리가 얼마안남았어요~'
 			}
 			if(storeList[i].seatStusCd == 'G'){
-				str +='<i class="fas fa-user-clock" style="color:green"></i> 바로 식사가능해요~'
+				str +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:green"></i></span> 바로 식사가능해요~'
 			}
 			if(storeList[i].seatStusCd == 'B'){
 				str +='영업중이 아니에요.....'
@@ -751,6 +814,7 @@
 	function deleteMaker(){
 		for(let i =0; i<markers.length; i++){
 			markers[i].setMap(null)
+			overlays[i]=null
 		}
 	}	
 	
@@ -768,15 +832,15 @@
 		
 		kakao.maps.event.addListener(marker, 'mouseover', function() {
 	
-			infoStore.open(map, marker);
+			$(".wrap"+i).show()
 	           list.childNodes[i].style.backgroundColor="#bbb";
 	        
 	    });
 		
 		kakao.maps.event.addListener(marker, 'mouseout', function() {
 	
+			$(".wrap"+i).hide()
 	           list.childNodes[i].style.backgroundColor="white";
-	           infoStore.close();
 	        
 	    });
 		

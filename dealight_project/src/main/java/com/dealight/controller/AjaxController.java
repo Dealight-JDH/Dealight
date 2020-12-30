@@ -1,5 +1,7 @@
 package com.dealight.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dealight.domain.Criteria;
 import com.dealight.domain.LikeListDTO;
+import com.dealight.domain.LikeVO;
+import com.dealight.domain.MainStoreJoinVO;
 import com.dealight.domain.PageDTO;
 import com.dealight.domain.WaitVO;
 import com.dealight.service.LikeService;
@@ -37,7 +41,7 @@ public class AjaxController {
 	@GetMapping(value = "/getlist",
 			produces = {
 						 MediaType.APPLICATION_JSON_UTF8_VALUE})
-	public ResponseEntity<PageDTO> getList(int pageNum, int amount, double distance, double lat, double lng, String sortType, String sortPriority, boolean openStore){
+	public ResponseEntity<PageDTO> getList(int pageNum, int amount, double distance, double lat, double lng, String sortType, String sortPriority, boolean openStore, String userId){
 		
 		Criteria cri = new Criteria(pageNum, amount, distance, lat, lng, sortType, sortPriority, openStore);
 
@@ -47,8 +51,23 @@ public class AjaxController {
 //			
 //			return new ResponseEntity<PageDTO>(sService.getListDistStore(cri), HttpStatus.OK);
 //		}
-		
-		return new ResponseEntity<PageDTO>(sService.getListstore(cri), HttpStatus.OK);
+		PageDTO dto = sService.getListstore(cri);
+		//하드코딩
+		if(userId != null) {
+			List<MainStoreJoinVO> storeList = dto.getStoreList();
+			List<LikeVO> like = likeService.findListByUserId(userId);
+			
+			for (MainStoreJoinVO store : storeList) {
+				long storeId = store.getStoreId();
+				for (LikeVO likeVO : like) {
+					if(storeId == likeVO.getStoreId()) {
+						store.setLike(true);
+					}//if
+				}//for
+			}//for
+			dto.setStoreList(storeList);
+		}
+		return new ResponseEntity<PageDTO>(dto, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/mypage/like/{pageNum}/{amount}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

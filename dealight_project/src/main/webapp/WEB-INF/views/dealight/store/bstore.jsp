@@ -72,8 +72,8 @@
             <div class="header-container flex-column">
                 <div class="header-title flex">
                     ${store.storeNm }
-                    <div class="like" data-storeid="${store.storeId }" data-like="false">
-                        <i class="far fa-heart fa-xs" style="color:#f43939"></i>
+                    <div class="like" data-storeid="${store.storeId }" data-like="${like }">
+                        <i class="${like eq 'true' ? 'fas':'far' } fa-heart fa-xs" style="color:#f43939"></i>
                     </div>
                     <div class="header-box m4">${store.eval.likeTotNum}</div>
                 </div>
@@ -431,7 +431,7 @@
 
 				const menus = $("#menus")
 	    		//요소가 이미추가되어있나 확인
-	    		let seq = $(this).prev().find(".card-menu span").html();
+	    		let seq = $(this).siblings(".card-body").find(".card-menu span").html();
 	    		if($("#menus").find("div[data-value='" + seq +"']").length != 0){
 					alert("핫딜은 하나만 구매가능합니다.")
 				 	return;
@@ -595,7 +595,7 @@
 				}
 		    	
 		    	//핫딜 구매 체크
-				/* if(paramHtdlId != null && paramUserId != null){
+				if(paramHtdlId != null && paramUserId != null){
 					
 					isHtdlPayExistChecked({userId : paramUserId, htdlId: paramHtdlId},function(result){
 						
@@ -608,7 +608,7 @@
 						}
 						
 					});
-				} */
+				}
 		    	
 		    	//form에 요소들 추가  시간, 인원, 메뉴리스트, 핫딜번호, 사용자, 매장번호
 		    	menus.find(".menu-container").each(function(index, item){
@@ -1015,7 +1015,7 @@ $(document).ready(function(){
 			$(this).empty().append(str);
 			$(this).data("like", false);
 			removeLike({userId:"<c:out value='${userId}'/>",storeId:storeId});
-			console.log($(this).next()[0].innerHTML)
+			console.log("<c:out value='${userId}'/>")
 			$(this).next()[0].innerHTML = $(this).next()[0].innerHTML-1
 		}
 		if(like === false){
@@ -1023,7 +1023,6 @@ $(document).ready(function(){
 			$(this).empty().append(str);
 			$(this).data("like", true)
 			addLike({userId:"<c:out value='${userId}'/>",storeId:storeId});
-			console.log($(this).next())
 			$(this).next()[0].innerHTML = $(this).next()[0].innerHTML-0+1
 			alert("찜목록에 추가했습니다.")
 		}
@@ -1032,6 +1031,7 @@ $(document).ready(function(){
 })
 function isLogin(){
 	let userId = "<c:out value='${userId}'/>"
+	console.log(userId)
 	if(userId ==='' || userId === null){
 		return false
 	}
@@ -1049,6 +1049,8 @@ function addLike(params,callback,error){
         contentType : "application/json",
         success : function(result, status, xhr) {
             if(callback) {
+            	console.log("......")
+            	console.log(result);
                 callback(result);
             }
         },

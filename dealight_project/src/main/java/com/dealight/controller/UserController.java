@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -471,8 +474,28 @@ public class UserController {
 	// 로그아웃
 	@PostMapping("/logout")
 	public void logout() {
-
-		log.info("logout ....");
+		
+//		log.info("logout....................................");
+//
+//		Cookie[] cookies = request.getCookies();
+//		
+//		for(Cookie cookie : cookies) {
+//			if("accessToken".equals(cookie.getName())) {
+//				log.info("logout cookie: " + cookie.getValue());
+//				cookie.setMaxAge(0);
+//				reponse.addCookie(cookie);
+//			}
+//		}
+		
+//		log.info("logout..........................");
+//		if(tokenCookie != null) {
+//			log.info("==========log out accessToken: " + tokenCookie);
+//			tokenCookie.setMaxAge(0);
+//			tokenCookie.setPath("/");
+//			reponse.addCookie(tokenCookie);
+//			
+//		}
+		
 //		HttpSession session = request.getSession();
 //		session.invalidate();
 
