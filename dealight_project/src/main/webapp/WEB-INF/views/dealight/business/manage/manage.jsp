@@ -214,7 +214,10 @@ let writeTimeBar = function (curTime) {
     		//setTimeout($(e.target).parent().removeClass("showAlert"),5000); 	
     	});
     	
-        
+    	$(".alert_reject_btn").on("click", e => {
+    		$(".alert.manage_htdl").addClass("hide");
+    		$(".alert.manage_htdl").removeClass("show");
+    	});
     	
 
 </script>
@@ -1508,7 +1511,7 @@ let writeTimeBar = function (curTime) {
                 strHtdl += "<input type='hidden' id='brch' name='brch' value='"+brch+"'>";
                 strHtdl += "<div class='htdl_reg_btn_box'>";
                 strHtdl += "<button class='regHtdlBtn' type='submit' data-oper='register'>승낙</button>";
-                strHtdl += "<button class='regHtdlBtn' type='submit' data-oper='refuse'>거절</button>";
+                strHtdl += "<button class='regHtdlBtn reject' type='submit' data-oper='refuse'>거절</button>";
                 strHtdl += "</div>";
 	        	
         		console.log("before strHtdl : "+ strHtdl);
@@ -1814,14 +1817,17 @@ let writeTimeBar = function (curTime) {
 		    				modal.css("display","none");
 		    				$(".alert.manage_htdl").addClass("hide");
 		    	    		$(".alert.manage_htdl").removeClass("show");
-	    				},1000)
+	    				},500)
 	    				//regHtdlFormObj.submit();
 	    				
 	    			}else if(operation === 'refuse'){
 	    				alert("핫딜이 거절 되었습니다.");
-	    				modal.find("ul").html("");
-		    			modal.find("input").val("");
-		    			modal.css("display","none");
+	    	    		modal.css("display","none");
+	    	    		modal.find("ul").html("");
+	    	    		modal.find(".content_div").html("");
+	    	    		modal.find(".content_div").css("display","none");
+	    	    		$(".alert.manage_htdl").addClass("hide");
+	    	    		$(".alert.manage_htdl").removeClass("show");
 	    			}
 	    			
 	    		}); // reg btn click
