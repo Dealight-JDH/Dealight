@@ -2,7 +2,9 @@ package com.dealight.controller;
 
 import java.io.IOException;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
@@ -67,11 +69,18 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/kakao/oauth", method = { RequestMethod.GET, RequestMethod.POST })
-	public String login(String code, HttpSession session, RedirectAttributes rttr) throws Exception {
+	public String login(String code, HttpSession session, RedirectAttributes rttr, HttpServletResponse response) throws Exception {
 
 		log.info("kakao code: " + code);
 
 		String accessToken = kakaService.getAccessToken(code);
+		
+		Cookie tokenCookie = new Cookie("accessToken", accessToken);
+		
+		tokenCookie.setMaxAge(60 * 60 * 6);
+		tokenCookie.setPath("/");
+		response.addCookie(tokenCookie);
+		
 
 		log.info("============" + accessToken);
 		// KakaoUser userInfo = kakaoApi.getKakaoUserInfo(accessToken);

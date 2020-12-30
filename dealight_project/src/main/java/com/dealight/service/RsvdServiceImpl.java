@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -26,7 +25,6 @@ import com.dealight.domain.RsvdDtlsVO;
 import com.dealight.domain.RsvdTimeDTO;
 import com.dealight.domain.RsvdVO;
 import com.dealight.domain.StoreMenuVO;
-import com.dealight.domain.StoreVO;
 import com.dealight.domain.TimeDTO;
 import com.dealight.domain.UserWithRsvdDTO;
 import com.dealight.mapper.BStoreMapper;
@@ -56,6 +54,37 @@ public class RsvdServiceImpl implements RsvdService{
 	
 //	SimpleDateFormat format = new SimpleDateFormat("yyyy/mm/dd hh:mm");
 //	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/mm/dd hh:mm");
+	
+	@Transactional
+	@Override
+	public void registerRsvdAvail(Long storeId) {
+		// TODO Auto-generated method stub
+		log.info("============register rsvd Avail");
+		
+		//등록된 해당 매장 vo get
+		BStoreVO vo = bstoreMapper.selectStoreWithAcmPnum(storeId);
+		
+		
+		RsvdAvailVO rsvdAvail = RsvdAvailVO.builder()
+				.storeId(vo.getStoreId()).nine(vo.getAcmPnum()).nineHalf(vo.getAcmPnum()).ten(vo.getAcmPnum()).tenHalf(vo.getAcmPnum()).eleven(vo.getAcmPnum()).elevenHalf(vo.getAcmPnum())
+				.twelve(vo.getAcmPnum()).twelveHalf(vo.getAcmPnum()).thirteen(vo.getAcmPnum()).thirteenHalf(vo.getAcmPnum()).fourteen(vo.getAcmPnum()).fourteenHalf(vo.getAcmPnum())
+				.fifteen(vo.getAcmPnum()).fifteenHalf(vo.getAcmPnum()).sixteen(vo.getAcmPnum()).sixteenHalf(vo.getAcmPnum()).seventeen(vo.getAcmPnum()).seventeenHalf(vo.getAcmPnum())
+				.eighteen(vo.getAcmPnum()).eighteenHalf(vo.getAcmPnum()).nineteen(vo.getAcmPnum()).nineteenHalf(vo.getAcmPnum()).twenty(vo.getAcmPnum()).twentyHalf(vo.getAcmPnum())
+				.twentyone(vo.getAcmPnum()).twentyoneHalf(vo.getAcmPnum()).twentytwo(vo.getAcmPnum())
+				.build();
+		
+		//브레이크 타임이 있는 경우
+		if(isBreakTime(vo.getBreakSttm(), vo.getBreakEntm())) {
+			
+			RsvdAvailVO breakVO = setBreakTimeAvail(rsvdAvail, vo.getBreakSttm(), vo.getBreakEntm());
+			rsvdMapper.insertRsvdAvail(breakVO);
+			return;
+		}
+		
+		rsvdMapper.insertRsvdAvail(rsvdAvail);
+		
+	}
+	
 	
 	@Override
 	public RsvdVO readRsvdVO(Long rsvdId) {
@@ -159,7 +188,8 @@ public class RsvdServiceImpl implements RsvdService{
 					.storeId(vo.getStoreId()).nine(vo.getAcmPnum()).nineHalf(vo.getAcmPnum()).ten(vo.getAcmPnum()).tenHalf(vo.getAcmPnum()).eleven(vo.getAcmPnum()).elevenHalf(vo.getAcmPnum())
 					.twelve(vo.getAcmPnum()).twelveHalf(vo.getAcmPnum()).thirteen(vo.getAcmPnum()).thirteenHalf(vo.getAcmPnum()).fourteen(vo.getAcmPnum()).fourteenHalf(vo.getAcmPnum())
 					.fifteen(vo.getAcmPnum()).fifteenHalf(vo.getAcmPnum()).sixteen(vo.getAcmPnum()).sixteenHalf(vo.getAcmPnum()).seventeen(vo.getAcmPnum()).seventeenHalf(vo.getAcmPnum())
-					.eighteen(vo.getAcmPnum()).eighteenHalf(vo.getAcmPnum()).nineteen(vo.getAcmPnum()).nineteenHalf(vo.getAcmPnum())
+					.eighteen(vo.getAcmPnum()).eighteenHalf(vo.getAcmPnum()).nineteen(vo.getAcmPnum()).nineteenHalf(vo.getAcmPnum()).twenty(vo.getAcmPnum()).twentyHalf(vo.getAcmPnum())
+					.twentyone(vo.getAcmPnum()).twentyoneHalf(vo.getAcmPnum()).twentytwo(vo.getAcmPnum())
 					.build();
 			
 			//브레이크 타임이 있는 경우
@@ -838,6 +868,9 @@ public class RsvdServiceImpl implements RsvdService{
 
 		return map;
 	}
+
+
+
 
 	
 

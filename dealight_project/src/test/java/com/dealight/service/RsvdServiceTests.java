@@ -42,6 +42,13 @@ public class RsvdServiceTests {
 	private StoreService storeService;
 
 	@Test
+	public void testRegisterAvail() {
+		log.info("========register rsvd avail...");
+		rsvdService.registerRsvdAvail(103l);
+		
+	}
+	
+	@Test
 	public void testCheckExistHtdl() {
 		
 		log.info("hotdeal exist check...");

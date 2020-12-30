@@ -28,7 +28,7 @@
 	
 	<security:access-denied-handler error-page="/accessError"/>
 	<security:remember-me data-source-ref="dataSource" token-validity-seconds="604800"/>
-	<security:logout logout-url="/logout" invalidate-session="true" delete-cookies="remember-me,JSESSION_ID"
+	<security:logout logout-url="/logout" invalidate-session="true" delete-cookies="remember-me,JSESSION_ID,accessToken"
 		logout-success-url="/dealight/dealight"/>
 		
 	<security:csrf disabled="true"/>

@@ -304,9 +304,15 @@
                 </div>
 
                 <p class="hotdealInfo_title">
-                	<c:forEach items="${htdl.htdlDtls }" var="menu">
+                <c:if test="${htdl.setName ne null }">
+                	<c:out value="${htdl.setName }"></c:out>
+                </c:if>
+                <c:if test="${htdl.setName eq null }">
                 	<c:out value="${menu.menuName }"></c:out>
-                </c:forEach>
+	                <%-- <c:forEach items="${htdl.htdlDtls }" var="menu">
+	                	<c:out value="${menu.menuName }"></c:out>
+	                </c:forEach> --%>
+                </c:if>
                 </p>
 
                 <div class="hotdealInfo_elapTime">
