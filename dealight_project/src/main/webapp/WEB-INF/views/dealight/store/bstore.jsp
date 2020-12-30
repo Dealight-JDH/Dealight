@@ -595,7 +595,7 @@
 				}
 		    	
 		    	//핫딜 구매 체크
-				/* if(paramHtdlId != null && paramUserId != null){
+				if(paramHtdlId != null && paramUserId != null){
 					
 					isHtdlPayExistChecked({userId : paramUserId, htdlId: paramHtdlId},function(result){
 						
@@ -608,7 +608,7 @@
 						}
 						
 					});
-				} */
+				}
 		    	
 		    	//form에 요소들 추가  시간, 인원, 메뉴리스트, 핫딜번호, 사용자, 매장번호
 		    	menus.find(".menu-container").each(function(index, item){
