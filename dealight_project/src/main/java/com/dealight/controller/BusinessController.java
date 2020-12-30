@@ -96,6 +96,7 @@ public class BusinessController {
 		
 		log.info("before insert rsvd avail store id : " + storeId);
 		// 1개의 rsvd avail 테이블 row를 추가하는 메서드 작성
+		rsvdService.registerRsvdAvail(storeId);
 		
 		//rsvdService.initRsvdAvail();
 		
