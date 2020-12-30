@@ -478,7 +478,7 @@
 		        position: storeLatLng, // 마커를 표시할 위치
 		        image : new kakao.maps.MarkerImage(imageSrc, new kakao.maps.Size(24, 35))// 마커 이미지
 		    });
-			let src = subSrc(storeList[i].repImg)
+			let src = "/display?fileName=" + storeList[i].repImg;
 			let content = '<div class="wrap wrap'+i+'" data-storeid="'+storeList[i].storeId+'" style="display:none">' + 
             '    <div class="info">' + 
             '        <div class="title" style="background-color:#f43939; color:white; opacity:0.9;">' +storeList[i].storeNm+
