@@ -88,9 +88,8 @@ public class StoreController {
 			
 			//하드코딩
 			String userId = (String)session.getAttribute("userId");
-			LikeVO like = likeService.findByUserIdAndStoreId(userId, storeId);
 			boolean isLike = false;
-			if(like != null) {
+			if(userId !=null && likeService.findByUserIdAndStoreId(userId, storeId)!=null) {
 				isLike = true;
 			}
 			
