@@ -187,7 +187,7 @@
             top: 20px;
             right: 5px;
             /*border: 1px red solid;*/
-            background-color:#eac2d6;
+            background-color: #ED5650;
             border-radius: 20px;
             padding: 3px 7px;
             font-size: 12px;
@@ -269,7 +269,6 @@
             padding-left: 40px;
             color: gray;
             font-weight: bold;
-            filter: blur(1.5px);
         }
         #store_cur_info{
         	display: flex;
@@ -310,7 +309,7 @@
         }
         #list_board > .store_card	{
         	
-        	margin : auto auto;
+        	margin : 10 0 0 30px;
         }
         .store_card{
         	position: relative;

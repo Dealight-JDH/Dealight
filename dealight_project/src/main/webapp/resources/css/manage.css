@@ -1630,3 +1630,6 @@
         .svg-inline--fa.fa-fire.fa-w-12{
 			color: red;        
         }
+        .alert_msg a{
+        	color:white;
+        }
