@@ -72,8 +72,8 @@
             <div class="header-container flex-column">
                 <div class="header-title flex">
                     ${store.storeNm }
-                    <div class="like" data-storeid="${store.storeId }" data-like="false">
-                        <i class="far fa-heart fa-xs" style="color:#f43939"></i>
+                    <div class="like" data-storeid="${store.storeId }" data-like="${like }">
+                        <i class="${like eq 'true' ? 'fas':'far' } fa-heart fa-xs" style="color:#f43939"></i>
                     </div>
                     <div class="header-box m4">${store.eval.likeTotNum}</div>
                 </div>
@@ -1015,7 +1015,7 @@ $(document).ready(function(){
 			$(this).empty().append(str);
 			$(this).data("like", false);
 			removeLike({userId:"<c:out value='${userId}'/>",storeId:storeId});
-			console.log($(this).next()[0].innerHTML)
+			console.log("<c:out value='${userId}'/>")
 			$(this).next()[0].innerHTML = $(this).next()[0].innerHTML-1
 		}
 		if(like === false){
@@ -1023,7 +1023,6 @@ $(document).ready(function(){
 			$(this).empty().append(str);
 			$(this).data("like", true)
 			addLike({userId:"<c:out value='${userId}'/>",storeId:storeId});
-			console.log($(this).next())
 			$(this).next()[0].innerHTML = $(this).next()[0].innerHTML-0+1
 			alert("찜목록에 추가했습니다.")
 		}
@@ -1032,6 +1031,7 @@ $(document).ready(function(){
 })
 function isLogin(){
 	let userId = "<c:out value='${userId}'/>"
+	console.log(userId)
 	if(userId ==='' || userId === null){
 		return false
 	}
@@ -1049,6 +1049,8 @@ function addLike(params,callback,error){
         contentType : "application/json",
         success : function(result, status, xhr) {
             if(callback) {
+            	console.log("......")
+            	console.log(result);
                 callback(result);
             }
         },

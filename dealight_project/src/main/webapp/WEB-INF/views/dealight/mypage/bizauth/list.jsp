@@ -118,6 +118,7 @@ window.onload = function(){
 	});
 		
 	$('button').on("click",function(e){
+		e.stopPropagation();
 		let operation = $(this).data('oper');
 		console.log(operation);
 		

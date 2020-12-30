@@ -30,6 +30,7 @@ public class SearchController {
 		
 		model.addAttribute("search", search);
 		
+		
 		return "dealight/search/map";
 	}
 	

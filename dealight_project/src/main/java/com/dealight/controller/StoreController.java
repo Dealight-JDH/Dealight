@@ -21,11 +21,13 @@ import org.springframework.web.socket.WebSocketSession;
 
 import com.dealight.domain.Criteria;
 import com.dealight.domain.HtdlVO;
+import com.dealight.domain.LikeVO;
 import com.dealight.domain.RevwPageDTO;
 import com.dealight.domain.UserVO;
 import com.dealight.domain.WaitVO;
 import com.dealight.handler.ManageSocketHandler;
 import com.dealight.service.HtdlService;
+import com.dealight.service.LikeService;
 import com.dealight.service.RevwService;
 import com.dealight.service.StoreService;
 import com.dealight.service.UserService;
@@ -42,7 +44,7 @@ public class StoreController {
 	private StoreService service;
 	
 	private UserService userService;
-	
+	private LikeService likeService;
 	private WaitService waitService;
 	private HtdlService htdlService;
 	private StoreService storeService;
@@ -83,7 +85,15 @@ public class StoreController {
 				model.addAttribute("htdlId", htdlId);
 			}
 			
+			//하드코딩
 			String userId = (String)session.getAttribute("userId");
+			LikeVO like = likeService.findByUserIdAndStoreId(userId, storeId);
+			boolean isLike = false;
+			if(like != null) {
+				isLike = true;
+			}
+			
+			model.addAttribute("like", isLike);
 			
 			if(userId != null)
 				model.addAttribute("userId", userId);
