@@ -57,7 +57,8 @@ public class StoreController {
 	})
 	public ResponseEntity<HtdlVO> getStoreHtdl(@PathVariable Long htdlId) {
 		log.info("get...");
-		HtdlVO dealVO = htdlService.readHtdlDtls(htdlId);
+		log.info("=========================htdlId: " + htdlId);
+		HtdlVO dealVO = (htdlService.readActStoreHtdlList(htdlId)).get(0);
 		return new ResponseEntity<>(dealVO, HttpStatus.OK);
 	}
 	@GetMapping(value = "/revws/pages/{storeId}/{page}", produces = {

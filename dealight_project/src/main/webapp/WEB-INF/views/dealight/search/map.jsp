@@ -413,7 +413,6 @@
 	//핫딜관련 로직
 	function getHtdl(storeId, callback, error){
 		
-		console.log("storeId: " + storeId);
 		
 		$.getJSON("/dealight/store/htdl/get/"+storeId+".json", function(data){
 			if(callback){
@@ -674,45 +673,47 @@
 		$(".htdlBtn").on("click", function(e){
 			e.stopPropagation();
 			let storeId = $(this).data("storeid")
-			
-			if($(this).data("isLoaded")===true){
-				$(".htdl"+storeId).toggle();
-				return;
+			console.log($(this).data("isLoaded"))
+			let isLoaded = $(this).data("isLoaded") || null;
+			if(isLoaded ==null){
+				
+				getHtdl(storeId,function(htdl){
+					//핫딜 창을 만들어야한다.
+					console.log(htdl);
+					console.log(storeId);
+					src = "/display?fileName=" + htdl.htdlImg;
+					let str ='';
+	                str+='<div class="card-img">'
+	                str+='<img src="'+src+'" alt="" style="width: 200px; height: 200px; z-index: 0;">'
+					str+='<div class="card-img-top"></div>'
+					str+='<div class="card-dc">'
+					str+='<span>'+htdl.dcRate * 100+'%</span>'
+					str+='</div>'
+					str+='<div class="card-price card-afterPrice">'
+					str+='<span>₩'+htdl.befPrice +'</span>'
+					str+='</div>'
+					str+='<div class="card-price card-beforePrice">'
+					str+='<span>₩'+(htdl.befPrice - htdl.ddct) +'</span>'
+					str+='</div>'
+					str+='</div>'
+					str+='<div class="deatial-container flex-column m-l16" style="width: 100%;">'
+					str+='<div class="card-title">'
+					str+='<h3>['+htdl.brch +'] '+htdl.name +'</h3>'
+					str+='</div>'
+					str+='<div class="card-menu">'
+					str+='메뉴:&nbsp;<span>디저트 콤보 1인 세트</span>'
+					str+='</div>'
+					str+='<div class="card-intro">'
+					str+='<div style="width: 40px; align-self: flex-start;">소개 : </div><span>'+htdl.intro +'</span>'
+					str+='</div>'
+					str+='</div>'
+					
+					$(".htdl"+storeId)[0].innerHTML = str;
+				});
+					$(this).data("isLoaded",true)
 			}
 			
-			getHtdl(storeId,function(htdl){
-				//핫딜 창을 만들어야한다.
-				console.log(htdl);
-				console.log(storeId);
-				let str ='';
-                str+='<div class="card-img">'
-                str+='<img src="1.jpg" alt="" style="width: 200px; height: 200px; z-index: -1;">'
-				str+='<div class="card-img-top"></div>'
-				str+='<div class="card-dc">'
-				str+='<span>'+htdl.dcRate * 100+'</span>'
-				str+='</div>'
-				str+='<div class="card-price card-afterPrice">'
-				str+='<span>₩'+htdl.befPrice +'</span>'
-				str+='</div>'
-				str+='<div class="card-price card-beforePrice">'
-				str+='<span>₩'+(htdl.befPrice - htdl.ddct) +'</span>'
-				str+='</div>'
-				str+='</div>'
-				str+='<div class="deatial-container flex-column m-l16" style="width: 100%;">'
-				str+='<div class="card-title">'
-				str+='<h3>['+htdl.brch +'] '+htdl.name +'</h3>'
-				str+='</div>'
-				str+='<div class="card-menu">'
-				str+='메뉴:&nbsp;<span>디저트 콤보 1인 세트</span>'
-				str+='</div>'
-				str+='<div class="card-intro">'
-				str+='<div style="width: 40px; align-self: flex-start;">소개 : </div><span>'+htdl.intro +'</span>'
-				str+='</div>'
-				str+='</div>'
-				
-				$(".htdl"+storeId)[0].innerHTML = str;
-			});
-				$(this).data("isLoaded",true)
+			$(".htdl"+storeId).toggle();
 		});
 		
 		//페이징처리
