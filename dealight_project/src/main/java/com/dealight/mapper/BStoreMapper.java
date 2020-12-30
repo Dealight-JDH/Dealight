@@ -43,6 +43,8 @@ public interface BStoreMapper {
 	public List<BStoreVO> findAll();
 	
 	List<BStoreVO> selectIdWithAcmPnum();
+	BStoreVO selectStoreWithAcmPnum(Long storeId);
+	
 	
 	// changeSeatStus
 	public int changeSeatStus(@Param("storeId") long storeId, @Param("seatStusCd") String seatStusCd);

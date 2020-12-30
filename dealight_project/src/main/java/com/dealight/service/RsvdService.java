@@ -63,6 +63,10 @@ public interface RsvdService {
 	
 	//예약 가능 테이블 삭제
 	boolean removeRsvdAvail();
+	
+	//매장 등록시 예약 가능 테이블 등록
+	void registerRsvdAvail(Long storeId);
+	
 	//예약 가능 테이블 등록 초기화
 	void initRsvdAvail();
 		

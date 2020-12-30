@@ -21,6 +21,13 @@
 		order by 1 asc
 	</select>
 	
+	<select id="selectStoreWithAcmPnum" resultType="com.dealight.domain.BStoreVO">
+		select store_id, acm_pnum, break_sttm, break_entm
+		from tbl_bstore
+		where store_id = #{storeId} 
+		
+	</select>
+	
 	<insert id="insert">
 		insert into tbl_bstore (
 								n1_seat_no,							
