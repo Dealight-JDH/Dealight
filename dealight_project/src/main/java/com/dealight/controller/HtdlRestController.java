@@ -39,7 +39,7 @@ public class HtdlRestController {
 			MediaType.APPLICATION_FORM_URLENCODED_VALUE
 	})
 	public ResponseEntity<HtdlPageDTO> searchHtdl(@PathVariable String stusCd, @PathVariable int page,
-			@RequestBody HtdlSearchDTO requestDto, BindingResult bindingResult) {
+			HtdlSearchDTO requestDto, BindingResult bindingResult) {
 		if(bindingResult.hasErrors()) {
 			
 		}
@@ -53,10 +53,13 @@ public class HtdlRestController {
 		
 		HtdlCriteria hCri = new HtdlCriteria(page, 9);
 		hCri.setKeyword(requestDto.getRegion());
-//		hCri.setStartTm(sysdate+" "+ requestDto.getStartTm());
-//		hCri.setEndTm(sysdate+" " + requestDto.getEndTm());
-		hCri.setStartTm("2020/11/27 "+requestDto.getStartTm());
-		hCri.setEndTm("2020/11/27 "+requestDto.getEndTm());
+		hCri.setStartTm(sysdate+" "+ requestDto.getStartTm());
+		hCri.setEndTm(sysdate+" " + requestDto.getEndTm());
+//		hCri.setStartTm("2020/11/27 "+requestDto.getStartTm());
+//		hCri.setEndTm("2020/11/27 "+requestDto.getEndTm());
+		log.info("===========requestDto get startTm: " + requestDto.getStartTm());
+		log.info("===========requestDto get endTm: " + requestDto.getEndTm());
+		
 		return new ResponseEntity<>(service.getListPage(stusCd, hCri), HttpStatus.OK);
 		
 	}
