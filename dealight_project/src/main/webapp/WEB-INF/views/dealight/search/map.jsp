@@ -529,6 +529,8 @@
 		map.setBounds(bounds);
 		
 	}
+	
+	//s_를 잘라내는 함수
 	function subSrc(photoSrc){
 		let srcObj = {};
 		let index = photoSrc.lastIndexOf("/");
@@ -556,7 +558,7 @@
 			//console.log(storeList[i].repImg)
 			if(storeList[i].repImg != null){
 				let storePhotoSrc = storeList[i].repImg
-				src = subSrc(storePhotoSrc);
+				src = "/display?fileName=" + storePhotoSrc;
 				
 				//console.log("================store 이미지: " + fileCallPath);
 			}else{
