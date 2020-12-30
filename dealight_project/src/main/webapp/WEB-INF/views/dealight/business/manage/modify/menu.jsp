@@ -15,6 +15,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
 <script src="https://kit.fontawesome.com/0f892675ba.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/resources/css/manage.css">
+<link rel="stylesheet" href="/resources/css/fileupload.css">
 <style>
 	.select_img img{
 		margin : 20px 0;
@@ -272,6 +273,9 @@
     	padding: 20px;
     	border : 1px #eeeeef solid;
     }
+    li{
+    	list-style: none;
+    }
 </style>
 </head>
 <body>
@@ -298,16 +302,17 @@
 							<label for="recoMenu">메뉴 추천 여부 : </label>
 							<input id="recoMenu" name="recoMenu" type="checkbox">
 						</div>
-						<div class=""><h2>사진 첨부하기(1개만 가능)</h2></div>
 							<div class="file_body">
-							<div class="form_img">
-								<input type="file" name='uploadFile'>
-							</div> 
-							<div class='uploadResult'>
-								<ul>
-								</ul>
-							</div> <!-- uploadResult -->
-						</div> 
+	                        <div class="form_img">
+			                        <label for="label_uploadfile">
+					                    <i class="fas fa-arrow-circle-up"></i> 사진 첨부하기
+					                </label>
+		                            <input style='display:none;' type="file" id='label_uploadfile' name='uploadFile' multiple hidden='hidden'>
+		                        </div> 
+		                        <div class='uploadResult'>
+		                            <ul></ul>
+		                        </div> <!-- uploadResult -->
+		                    </div>
 						<div class='bigPictureWrapper'>
 							<div class='bigPicture'>
 							</div>
@@ -582,24 +587,23 @@ $(document).ready(function(e){
 		strMenu += "<input type='checkbox' name='recoMenu' class='reco_menu' "+recoCheck+">";
 		strMenu += "</div>";
 		strMenu += "<div>";
-		strMenu += "<div><h2>사진 첨부하기(1개만 가능)</h2></div>";
 		strMenu += "<div class='file_body_modify'>";
 		strMenu += "<div class='form_img_modify'>";
-		strMenu += "<input type='file' id='js_upload' name='uploadFile'>";
+		
+		strMenu += "<label for='js_upload'>";
+		strMenu += "<i class='fas fa-arrow-circle-up'></i> 사진 첨부하기";
+		strMenu += "</label>";
+		strMenu += "<input style='display:none;' type='file' id='js_upload' name='uploadFile' multiple hidden='hidden'>";
 		strMenu += "</div>";
 		strMenu += "<div class='uploadResult_modify'>";
 		strMenu += "<ul>";
-		
 		if(imgUrl){			
 			strMenu += "<li data-imgurl='"+imgUrl+"' data-thumimgurl='"+thumImgUrl+"'><div>";
-			strMenu += "<span> " + imgUrl + "</span>";
 			strMenu += "<button type='button' ";
-			strMenu += "class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+			strMenu += "class='btn btn-warning btn-circle fileupload_img_btn''><i class='far fa-times-circle'></i></button><br>";
 			strMenu += "<img class='menu_img_mdoal' src='/display?fileName="+encodeURI(thumImgUrl)+"'>";
 			strMenu += "</div></li>";
 		}
-		
-		
 		strMenu += "</ul></div></div>";
 		strMenu += "<div class='bigPictureWrapper_modify'><div class='bigPicture_modify'></div></div>";
 		if(imgUrl) strMenu += "<input hidden name='imgUrl' value='"+imgUrl+"'>";
@@ -642,11 +646,10 @@ $(document).ready(function(e){
 					str += "<li data-path='" + obj.uploadPath +"'";
 					str += "data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"'data-type='"+obj.image+"'";
 					str += "><div>";
-					str += "<span>" + obj.fileName +"</span>";
+					str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image'"
+						+" class='btn btn-warning btn-circle fileupload_img_btn'><i class='far fa-times-circle'></i></button><br>";
 					str += "<img src='/display?fileName=" + fileCallPath + "'>";
 					str += "</div>";
-					str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image'"
-								+" class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
 					str += "</li>";
 	                /* 만일 파일이 이미지 형식이 아니면 */
 	                /* default img를 보여준다. */
@@ -656,10 +659,10 @@ $(document).ready(function(e){
 
 					str += "<li "
 					str += "data-path='" + obj.uploadPath + "'data-uuid='" + obj.uuid + "'data-filename='" + obj.fileName + "' data-type='" +obj.image+"'>" + "<div>";
-					str += "<span> " + obj.fileName + "</span>";
+					str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image'"
+					+" class='btn btn-warning btn-circle fileupload_img_btn'><i class='far fa-times-circle'></i></button><br>";
 					str += "<img src='/resources/img/attach.png'>";
 					str += "</div>";
-					str += "<button type='button' data-file=\'"+fileCallPath+"\'data-type='file' class='btn btn-warning btn-circle'><i class='fa fa-times'></i>삭제</button><br>";
 					str += "</li>";
 				}
 			});

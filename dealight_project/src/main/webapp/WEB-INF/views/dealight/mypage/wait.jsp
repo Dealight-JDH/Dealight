@@ -12,8 +12,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
 <script src="/resources/js/Rater.js"></script>
-
-
+<link rel="stylesheet" href="/resources/css/fileupload.css">
 </head>
 <body>
 	<main>
@@ -440,8 +439,13 @@ window.onload = function () {
     		strRevw += "<textarea cols='30' row='20' name='cnts' placeholder='리뷰 내용을 입력해주세요.'></textarea>";
     		strRevw += "</div>";
     		strRevw += "<input name='rating' id='rate_input' hidden>";
-    		strRevw += "<div class='file_body'></div>";
-    		strRevw += "<div class='form_img'><input id='js_upload' type='file' name='uploadFile' multiple></div>";
+    		strRevw += "<div class='file_body'></div><div class='form_img'>";
+    		
+    		strRevw += "<label for='js_upload'>";
+    		strRevw += "<i class='fas fa-arrow-circle-up'></i> 사진 첨부하기";
+    		strRevw += "</label>";
+    		
+    		strRevw += "<input style='display:none;' id='js_upload' type='file' name='uploadFile' multiple></div>";
     		strRevw += "<div class='uploadResult'><ul></ul></div>";
     		strRevw += "<div class='revw_btn_box'>";
     		strRevw += "<button id='submit_revwRegForm'>리뷰 등록</button>";

@@ -19,6 +19,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
 <script src="/resources/js/Rater.js"></script>
+<link rel="stylesheet" href="/resources/css/fileupload.css">
 <style>
 	.file_body img {
 	
@@ -540,8 +541,11 @@
 		<div class="modify_imgs_wrapper">
 			<div class="file_body">
 				<div class="form_img">
-					<input type="file" name='uploadFile' multiple>
-				</div> 
+	                <label for="uploadFile">
+	                    <i class="fas fa-arrow-circle-up"></i> 파일 첨부하기
+	                </label>
+	                <input id="uploadFile" type="file" name='uploadFile' multiple hidden>
+	            </div> 
 				<div class='uploadResult'>
 					<ul>
 					</ul>

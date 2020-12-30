@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@include file="/WEB-INF/views/includes/adminHeader.jsp"%>
+<link rel="stylesheet" href="/resources/css/fileupload.css">
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
 <script src="/resources/js/Rater.js"></script>
 <!-- Begin Page Content -->
@@ -104,11 +105,10 @@
 				<div class="card mb-4">
 				<div class="card-header">매장 사진</div>
 					<div class="file_body">
-						<div class='uploadResult'>
-							<ul>
-							</ul>
-						</div> <!-- uploadResult -->
-					</div> 
+	                        <div class='uploadResult'>
+	                            <ul></ul>
+	                        </div> <!-- uploadResult -->
+	                    </div> 
 						<div class='bigPictureWrapper'>
 							<div class='bigPicture'>
 							</div>

@@ -452,7 +452,15 @@
         }
          .modal-content ul{
          	margin : 0 0;
-         	display : inline-block;
+         	display : flex;
+         	flex-direction: row;
+         	align-items: center;
+         	justify-content: center;
+         	
+        }
+        .modal-content ul li {
+        	width:100px;
+        	height:100px;
         }
 
         /* The Close Button */
