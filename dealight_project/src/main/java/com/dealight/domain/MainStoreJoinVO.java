@@ -50,4 +50,7 @@ public class MainStoreJoinVO {
 	private int revwTotNum;
 	private int likeTotNum;
 	
+	
+	//매장화면에 좋아요 목록 표시를위해 추가 급하게 변경하면서 여기다가추가
+	private boolean like = false;
 }

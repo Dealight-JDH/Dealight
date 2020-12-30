@@ -185,7 +185,7 @@
 </style>
 </head>
 <body>
-<div class="mypage_wrapper">
+<div class="mypage_wrapper" style="min-height: 800px">
 <%@include file="/WEB-INF/views/includes/custserviceSidebar.jsp" %>
 	<div class="box-container flex-column" >
 	    <div class="mypage_main_header">
@@ -260,8 +260,8 @@
 
 
 </body>
-<%@include file="/WEB-INF/views/includes/mainFooter.jsp" %>
 </html>
+<%@include file="/WEB-INF/views/includes/mainFooter.jsp" %>
 <script>
 
 window.onload = function(){

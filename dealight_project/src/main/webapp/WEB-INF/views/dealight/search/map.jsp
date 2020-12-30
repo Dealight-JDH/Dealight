@@ -236,9 +236,11 @@
 	let lat = actionForm.elements["lat"]
 	let lng = actionForm.elements["lng"]
 	let userLatLng = new kakao.maps.LatLng(lat.value, lng.value)
+	let userId = '<c:out value="${userId}"/>' || null;
 	let map = "";
 	let markers=[];
 	let overlays=[];
+	
 
 	//ajax로 리스트를 불러온다. cri, storeList ,paging관련 변수들이 다 넘어온다.
 	//많아진다면 모듈로 뺴자
@@ -269,9 +271,10 @@
 		let obj = Object();
 		for(let i = 0 ; i < form.length ; i++){
 			obj[form[i].name] = form[i].value;
-			console.log("key:" + form[i].name)
-			console.log("value:" + form[i].value)
+			//console.log("key:" + form[i].name)
+			//console.log("value:" + form[i].value)
 		}
+		obj["userId"] = userId;
 		return obj;
 	}
 	
@@ -475,20 +478,31 @@
 		        position: storeLatLng, // 마커를 표시할 위치
 		        image : new kakao.maps.MarkerImage(imageSrc, new kakao.maps.Size(24, 35))// 마커 이미지
 		    });
+			let src = subSrc(storeList[i].repImg)
 			let content = '<div class="wrap wrap'+i+'" data-storeid="'+storeList[i].storeId+'" style="display:none">' + 
             '    <div class="info">' + 
-            '        <div class="title">' + 
-            '            카카오 스페이스닷원' + 
-            '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
+            '        <div class="title" style="background-color:#f43939; color:white; opacity:0.9;">' +storeList[i].storeNm+
             '        </div>' + 
             '        <div class="body">' + 
             '            <div class="img">' +
-            '                <img src="'+ +'" width="73" height="70">' +
+            '                <img src="'+ src +'" width="73" height="70">' +
             '           </div>' + 
-            '            <div class="desc">' + 
-            '                <div class="ellipsis">제주특별자치도 제주시 첨단로 242</div>' + 
-            '                <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>' + 
-            '                <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link">홈페이지</a></div>' + 
+            '            <div class="desc">' 
+            if(storeList[i].seatStusCd == 'R'){
+            	content +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:red"></i></span>현재 2명이 대기중이에요~'
+			}
+			if(storeList[i].seatStusCd == 'Y'){
+				content +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:coral"></i></span> 서두르세요 몇 자리 안남았어요~'
+			}
+			if(storeList[i].seatStusCd == 'G'){
+				content +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:green"></i></span> 바로 식사가능해요~'
+			}
+			if(storeList[i].seatStusCd == 'B'){
+				content +='영업중이 아니에요.....'
+			}
+            
+			content +='                <div class="jibun ellipsis">'+storeList[i].addr+'</div>' + 
+            '                <div><b>대표메뉴 : </b>'+ storeList[i].repMenu + '</div>' + 
             '            </div>' + 
             '        </div>' + 
             '    </div>' +    
@@ -523,13 +537,15 @@
 		srcObj["fileName"] = photoSrc.substring(index + 1);
 		srcObj["realFileName"] = photoSrc.substring(photoSrc.indexOf("_") + 1); 
 		//console.log("realFilename : " +photoSrc.substring(photoSrc.indexOf("_") + 1))
-		return srcObj;
+		let fileCallPath = encodeURIComponent( "/"+ srcObj["uploadPath"] +"/"+ srcObj["realFileName"]); //원본
+		return "/display?fileName=" + fileCallPath;
 	}
 	//매장목록을 출력하는 함수
 	function showList(pageDTO){
 		let str = "";
 		list.innerHTML="";
 		const storeList = pageDTO.storeList;
+		console.log(storeList);
 		if(storeList==null || storeList.length==0){
 			list.innerHTML = "검색결과가 없습니다."
 			return;
@@ -540,14 +556,18 @@
 			//console.log(storeList[i].repImg)
 			if(storeList[i].repImg != null){
 				let storePhotoSrc = storeList[i].repImg
-				srcObj = subSrc(storePhotoSrc);
+				src = subSrc(storePhotoSrc);
 				
-				let fileCallPath = encodeURIComponent( "/"+ srcObj["uploadPath"] +"/"+ srcObj["realFileName"]); //원본
 				//console.log("================store 이미지: " + fileCallPath);
-				src = "/display?fileName=" + fileCallPath;
 			}else{
 				//대체사진 등록
 				src = "https://via.placeholder.com/200x200"
+			}
+			
+			if(storeList[i].like ==true){
+				likeIcon = "fas fa-heart"
+			}else{
+				likeIcon = "far fa-heart"
 			}
 			
 			//str += "<a href='/dealight/store/"+storeList[i].storeId+" '>"
@@ -558,27 +578,30 @@
 			str +='<div class="deatial-container flex-column" >'
 			str +='<div class="search-header flex">'
 			str += storeList[i].storeNm
-			str +='<div  class="like" data-storeid="'+storeList[i].storeId+'" data-like="false">'
-			str +='<i class="far fa-heart" style="color:red"></i>'
-			str +='</div><span class="f14">'+storeList[i].likeTotNum+'</span></div>'
+			//like - gk
+			str +='<div  class="like" data-storeid="'+storeList[i].storeId+'" data-like="'+ storeList[i].like +'">'
+			str +='<i class="'+ likeIcon +'" style="color:red"></i></div>'
+			
+			
+			str +='<span class="f14">'+storeList[i].likeTotNum+'</span></div>'
 			str +='<div class="flex rating-box">'
 			str +='<div class="rating" data-rate-value="'+ storeList[i].avgRating +'"></div>'
 			str +='<div class="f14">'+storeList[i].revwTotNum+'('+storeList[i].avgRating+')</div></div>'
 			str +='<div class="f14 m-tb2">'
-			str +='<i class="fas fa-store-alt"></i>'
-			str +='<b>매장영업시간 : </b>'+ storeList[i].openTm + "~" + storeList[i].closeTm + '</div>'
+			str +='<span style="padding:2px; margin:5px"><i class="fas fa-store-alt"></i></span>'
+			str +='<b >매장영업시간 : </b>'+ storeList[i].openTm + "~" + storeList[i].closeTm + '</div>'
 			str +='<div class="f14 m-tb2">'
-			str +='<i class="fas fa-utensils"></i>'
+			str +='<span style="padding:2px; margin:5px; margin-right:12px"><i class="fas fa-utensils"></i></span>'
 			str +='<b>대표메뉴 : </b>'+ storeList[i].repMenu + "</div>";
 			str +='<div class="m-tb2">'
 			if(storeList[i].seatStusCd == 'R'){
-				str +='<i class="fas fa-user-clock" style="color:red"></i> 현재 2명이 대기중이에요~'
+				str +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:red"></i></span>현재 2명이 대기중이에요~'
 			}
 			if(storeList[i].seatStusCd == 'Y'){
-				str +='<i class="fas fa-user-clock" style="color:coral"></i> 서두르세요 자리가 얼마안남았어요~'
+				str +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:coral"></i></span> 서두르세요 자리가 얼마안남았어요~'
 			}
 			if(storeList[i].seatStusCd == 'G'){
-				str +='<i class="fas fa-user-clock" style="color:green"></i> 바로 식사가능해요~'
+				str +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:green"></i></span> 바로 식사가능해요~'
 			}
 			if(storeList[i].seatStusCd == 'B'){
 				str +='영업중이 아니에요.....'
