@@ -97,6 +97,7 @@ public class RevwController {
 	    List<RevwVO> writtenList = revwService.getWrittenListWtihPagingByUserId(userId, cri);
 	    writtenList.stream().forEach(revw -> {
 	    	if(revw.getImgs() != null)
+	    	log.info("revw imgs : " + revw.getImgs());
 	    	revw.getImgs().stream().forEach(img -> {
 	    		if(img != null && img.getUploadPath() != null)
 	    		img.setUploadPath(img.getUploadPath().replace("\\", "/"));

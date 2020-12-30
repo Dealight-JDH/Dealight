@@ -101,6 +101,9 @@ public class ManageController {
 		
 		HtdlVO curHtdl = htdlService.getHtdlDetail(storeId);
 		
+		log.info("htdlList : " + htdlList);
+		log.info("cur htdl : "+curHtdl);
+		
 		model.addAttribute("curHtdl",curHtdl);
 		model.addAttribute("storeId",storeId);
 		model.addAttribute("store",store);

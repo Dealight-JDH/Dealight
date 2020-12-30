@@ -397,6 +397,8 @@
 		    SELECT rsvd_id, user_id, aprv_no , htdl_id , pnum, revw_stus, store_id, stus_cd, time, tot_amt, tot_qty, updatedate, regdate
 		    FROM tbl_rsvd
             WHERE user_id = #{userId}
+            AND stus_cd = 'C'
+            OR stus_cd = 'L'
             ORDER BY time desc
 		    )
 		    WHERE  rownum <= #{cri.pageNum} * #{cri.amount}
@@ -414,6 +416,8 @@
 			FROM tbl_rsvd
 			WHERE rsvd_id > 0 
 			AND user_id = #{userId}
+			AND stus_cd = 'C'
+			OR stus_cd = 'L'
 		]]>
 	</select>
 	

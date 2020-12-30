@@ -262,12 +262,13 @@
 <body>
 <header class="main_nav">
         <nav class="main_nav_left">
-        	<div class="main_nav_logo"><img id="logo" src="/resources/icon/d2.png" alt=""></div>
+        	<a href='/dealight/dealight/'><div class="main_nav_logo"><img id="logo" src="/resources/icon/d2.png" alt=""></div></a>
         </nav>
         
         <nav class="main_nav_right">
-            <div><c:if test="${userId != null}"> <span id="nav_user_id">${userId }님</span></c:if></div>
-            <div class="nav_reg_brno"><a href="/dealight/mypage/bizauth/list">매장 등록</a></div>
+            <div id="header_cur_wait"></div>
+            <div class='nav_user_id_box'><c:if test="${userId != null}"> <span id="nav_user_id">${userId }님</span></c:if></div>
+            <div class="nav_reg_brno"><a href="/dealight/mypage/bizauth/list">사업자 등록</a></div>
             <div class="account_btn">
             	<div class="account_icon_box">
             		<div class="account_menu"><i class="fas fa-bars"></i></div>
@@ -281,7 +282,6 @@
 								<div class="account_cnts"><a href="/dealight/login">로그인</a></div>
 								<div class="account_cnts"><a href="/dealight/register">회원가입</a></div>
 						</sec:authorize>
-
 						<sec:authorize access="isAuthenticated()">
 							<sec:authorize access="hasRole('ROLE_USER')">
 								<div class="account_cnts"><a href="/dealight/mypage/reservation">예약 내역</a></div> 
@@ -385,5 +385,34 @@ function goMypage(){
 	 location.href="/dealight/mypage/reservation";
 
 }
+
+// '해당 매장'의 '웨이팅 리스트'를 가져온다.
+function getWait(userId,callback,error) {
+    
+    let waitList = $.getJSON("/dealight/isCurWait/"+userId+".json",
+        function(data){
+                if(callback){
+                    callback(data);
+                }
+            }).fail(function(xhr,status,err){
+                if(error){
+                    error();
+                }
+    });
+    
+    return waitList;
+}
+
+let header_userId = '${userId}';
+
+getWait(header_userId,wait => {
+	if(!wait)
+		return
+	let waitId = wait.waitId;
+	let str = "";
+	console.log(waitId);
+	str += "<a href='/dealight/waiting/"+waitId+"' target='_blank'>현재 웨이팅 확인하기</a>"
+	$("#header_cur_wait").html(str);
+});
 
    </script>

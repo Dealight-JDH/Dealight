@@ -366,7 +366,7 @@
                                             	<span class="htdl_info_stus_val">마감</span>
                                             </c:if>
                                             <c:if test="${htdl.stusCd eq 'P'}">
-                                            	<span class="htdl_info_stus_val">보류</span>
+                                            	<span class="htdl_info_stus_val">대기중</span>
                                             </c:if>
 	                                        </div>
 	                                    </div>
