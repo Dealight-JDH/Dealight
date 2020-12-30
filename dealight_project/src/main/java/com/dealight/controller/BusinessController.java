@@ -91,7 +91,14 @@ public class BusinessController {
 		
 		sService.register(store);
 		bizAuthService.updateStusCdToB(brSeq);
-		rsvdService.initRsvdAvail();
+		
+		Long storeId = store.getStoreId();
+		
+		log.info("before insert rsvd avail store id : " + storeId);
+		// 1개의 rsvd avail 테이블 row를 추가하는 메서드 작성
+		rsvdService.registerRsvdAvail(storeId);
+		
+		//rsvdService.initRsvdAvail();
 		
 		//지금 나의 생각 입력한 값들이 잘 저장되나 보고싶다.
 		//결국 저장된 정보를 볼수있는 페이지는 뭐가잇을까??

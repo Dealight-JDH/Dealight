@@ -577,7 +577,7 @@
 														<textarea cols='30' row='20' name='cnts' readonly>${revw.cnts}</textarea>
 													</div>
 													<input name='rating' id='rate_input' hidden>
-													<c:if test="${revw.imgs != null}">
+													<c:if test="${revw.imgs[0].imgSeq != null}">
 														<div class='revw_img_box'>
 															<div class='revw_img_wrapper'>
 														<c:forEach items="${revw.imgs}" var="img">

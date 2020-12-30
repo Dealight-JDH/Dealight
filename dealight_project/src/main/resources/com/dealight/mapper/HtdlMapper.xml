@@ -455,7 +455,7 @@
 	<select id="getActHtdlWithDtls" resultMap="getHtdlDetail">
 		select *
 		from tbl_htdl h,tbl_htdl_dtls d
-		where store_id = 103
+		where store_id = #{storeId}
 		AND h.htdl_id = d.htdl_id
 		AND stus_cd = 'A'
 		OR stus_cd = 'P'

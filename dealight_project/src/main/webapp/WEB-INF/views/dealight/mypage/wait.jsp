@@ -302,7 +302,7 @@ window.onload = function () {
     		strRevw += "<textarea cols='30' row='20' name='cnts' readonly>"+revw.cnts+"</textarea>";
     		strRevw += "</div>";
     		strRevw += "<input name='rating' id='rate_input' hidden>";
-    		if(revw.imgs){    			
+    		if(revw.imgs[0].imgSeq !== null){     			
     		strRevw += "<div class='revw_img_box'>";
     		strRevw += "<div class='revw_img_wrapper'>";
     		for(let i = 0; i < revw.imgs.length; i++)
