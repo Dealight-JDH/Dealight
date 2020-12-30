@@ -169,10 +169,12 @@
             border: 1px solid #e6e6e6;
             /*box-shadow: 2px 2px 8px rgba(0,0,0,0.3);*/
             overflow: hidden;
+            align-items: center;
         }
         .store_img_box > img{
             
-            max-width: 100%;
+            width:200px;
+            height:200px;
             
             text-align: center;
         }

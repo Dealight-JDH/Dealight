@@ -154,7 +154,7 @@ window.onload = function(){
 	
 	//등록버튼 클릭 이벤트
 	regbtn.onclick = function(){
-		self.location = "/dealight/mypage/bizauth/register"
+		self.location = "/dealight/mypage/bizauth/register";
 	}
 	
 }

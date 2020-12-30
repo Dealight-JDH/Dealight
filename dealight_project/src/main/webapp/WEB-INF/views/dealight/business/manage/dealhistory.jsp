@@ -279,50 +279,48 @@
        <div class="htdl_history_tit">핫딜 이력</div>
 			<div class="htdl_cur_tit">현재 진행중인 핫딜</div>
 	             <div class="htdl_cur_wrapper">
-			     	<c:if test="${not empty curList}">
-	                        <c:forEach items="${curList}" var="htdl">
+			     	<c:if test="${not empty curHtdl}">
 	                            <div class="htdl_cur_row">
-	                             <div class="htdl_name">${htdl.name}</div>
-                                <div class="htdl_set_name">세트이름(미정)</div>
-                                <div class="htdl_intro">${htdl.intro}</div>
+	                             <div class="htdl_name">${curHtdl.name}</div>
+                                <div class="htdl_set_name">${curHtdl.setName }</div>
+                                <div class="htdl_intro">${curHtdl.intro}</div>
                                 <div class="htdl_info_wrapper">
                                     <div class="htdl_info_img">
-                                        <img src='/display?fileName=${htdl.htdlImg}'>
+                                        <img src='/display?fileName=${curHtdl.htdlImg}'>
                                     </div>
                                     <div class="htdl_info">
                                         <div>
                                             <span class="htdl_info_ddct_tit">할인율</span>
-                                            <span class="htdl_info_ddct_val">${htdl.dcRate*100}%</span>
+                                            <span class="htdl_info_ddct_val">${curHtdl.dcRate*100}%</span>
                                             <span class="htdl_info_befprice_tit">할인 전 가격</span>
-                                            <span class="htdl_info_befprice_val">${htdl.befPrice}원</span>
+                                            <span class="htdl_info_befprice_val">${curHtdl.befPrice}원</span>
                                             <span class="htdl_info_aftprice_tit">할인 후 가격</span>
-                                            <span class="htdl_info_aftprice_val">${htdl.befPrice - htdl.ddct}원</span>
+                                            <span class="htdl_info_aftprice_val">${curHtdl.befPrice - curHtdl.ddct}원</span>
                                         </div>
                                         <div>
                                             <span class="htdl_info_period_tit">핫딜 기간</span>
-                                            <span class="htdl_info_period_val">${htdl.startTm} - ${htdl.endTm}</span>
+                                            <span class="htdl_info_period_val">${curHtdl.startTm} - ${curHtdl.endTm}</span>
                                         </div>
                                         <div>
                                             <span class="htdl_info_lmt_tit">제한 인원</span>
-                                            <span class="htdl_info_lmt_val">${htdl.lmtPnum}</span>
+                                            <span class="htdl_info_lmt_val">${curHtdl.lmtPnum}</span>
                                             <span class="htdl_info_cur_tit">현재 인원</span>
-                                            <span class="htdl_info_cur_val">${htdl.curPnum}명</span>
+                                            <span class="htdl_info_cur_val">${curHtdl.curPnum}명</span>
                                         </div>
                                         <div>
-                                            <c:if test="${htdl.stusCd eq 'A'}">
+                                            <c:if test="${curHtdl.stusCd eq 'A'}">
                                             	<span class="htdl_info_stus_val">진행중</span>
                                             </c:if>
-	                                        <c:if test="${htdl.stusCd eq 'I'}">
+	                                        <c:if test="${curHtdl.stusCd eq 'I'}">
                                             	<span class="htdl_info_stus_val">마감</span>
                                             </c:if>
-                                            <c:if test="${htdl.stusCd eq 'P'}">
-                                            	<span class="htdl_info_stus_val">보류</span>
+                                            <c:if test="${curHtdl.stusCd eq 'P'}">
+                                            	<span class="htdl_info_stus_val">대기중</span>
                                             </c:if>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            </c:forEach>
                         </c:if>
                         </div>
                                
@@ -333,7 +331,7 @@
                         	<c:forEach items="${htdlList}" var="htdl">
 	                            <div class="htdl_bef_history_row">
 	                                <div class="htdl_name">${htdl.name }</div>
-	                                <div class="htdl_set_name">세트이름(미정)</div>
+	                                <div class="htdl_set_name">${htdl.setName }</div>
 	                                <div class="htdl_intro">${htdl.intro }</div>
 	                                <div class="htdl_info_wrapper">
 	                                    <div class="htdl_info_img">

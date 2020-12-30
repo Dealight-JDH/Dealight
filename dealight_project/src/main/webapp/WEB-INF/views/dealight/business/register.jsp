@@ -543,24 +543,15 @@
 	                        <input name="repMenu" value="맛난거">
 	                    </div>
 	                    <div class="label_input">
-	                        <label>가게 평균 식사 시간</label>
+	                        <label>가게 평균 식사 시간(분)</label>
 	                        <input name="avgMealTm" value="30">
 	                    </div>
-	                    <div class="label_input">
-	                        <label>1인석 테이블 개수</label>
-	                        <input name="n1SeatNo" value="0" type="number">
-	                    </div>
-	                    <div class="label_input">
-	                        <label>2인석 테이블 개수</label>
-	                        <input name="n2SeatNo" value="0" type="number">
-	                    </div>
-	                    <div class="label_input">
-	                        <label>4인석 테이블 개수</label>
-	                        <input name="n4SeatNo" value="0" type="number">
-	                    </div>
+	                        <input name="n1SeatNo" value="0" type="hidden">
+	                        <input name="n2SeatNo" value="0" type="hidden">
+	                        <input name="n4SeatNo" value="0" type="hidden" >
 	                    <div class="label_input">
 	                        <label>수용인원</label>
-	                        <input name="acmPnum" value="0" type="number">
+	                        <input name="acmPnum" value="30" type="number">
 	                    </div>
 	                </div><!-- end bstore info -->
 	                <div class="location_wrapper">
@@ -588,14 +579,8 @@
 	                        <label>읍면동명</label>
 	                        <input type="text"  style="width:500px;" id="emdNm"  name="emdNm" />
 	                    </div>
-	                    <div class="label_input">
-	                        <label>위도</label>
-	                        <input type="text"  style="width:500px;" id="lat"  name="lat" />
-	                    </div>
-	                    <div class="label_input">
-	                        <label>경도</label>
-	                        <input type="text"  style="width:500px;" id="lng"  name="lng" />
-	                    </div>
+	                        <input type="hidden"  style="width:500px;" id="lat"  name="lat" />
+	                        <input type="hidden"  style="width:500px;" id="lng"  name="lng" />
 	                    <div id="map"></div>
 	                </div> <!-- end location_wrapper -->
 	                <div class="upload_wrapper">

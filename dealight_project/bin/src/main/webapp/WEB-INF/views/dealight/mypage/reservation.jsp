@@ -207,7 +207,7 @@ window.onload = function () {
     	
     	let rsvdId = param.rsvdId;
     	
-    	$.getJSON("/dealight/business/manage/board/reservation/dtls/" + rsvdId + ".json",
+    	$.getJSON("/dealight/mypage/reservation/dtls/" + rsvdId + ".json",
     		function(data) {
     			if(callback) {
     				callback(data);
@@ -230,7 +230,7 @@ window.onload = function () {
       	//console.log(storeId);
       	//console.log(userId);
       	
-      	$.getJSON("/dealight/business/manage/board/reservation/list/" + storeId +"/" + userId + ".json",
+      	$.getJSON("/dealight/mypage/reservation/list/" + storeId +"/" + userId + ".json",
       		function(data) {
       			if(callback) {
       				callback(data);

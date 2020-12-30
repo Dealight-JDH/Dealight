@@ -169,10 +169,12 @@
             border: 1px solid #e6e6e6;
             /*box-shadow: 2px 2px 8px rgba(0,0,0,0.3);*/
             overflow: hidden;
+            align-items: center;
         }
         .store_img_box > img{
             
-            max-width: 100%;
+            width:200px;
+            height:200px;
             
             text-align: center;
         }
@@ -449,7 +451,7 @@ $(document).ready(function() {
 		
 		if(open <= curMil && curMil <= close) document.getElementsByClassName("store_stus")[i].innerText = "영업중"; 
 		else {
-			document.getElementsByClassName("store_stus")[i].innerText = "마감 완료";
+			document.getElementsByClassName("store_stus")[i].innerText = "마감";
 			document.getElementsByClassName("store_stus")[i].style.backgroundColor ="gray";
 		}
 	}

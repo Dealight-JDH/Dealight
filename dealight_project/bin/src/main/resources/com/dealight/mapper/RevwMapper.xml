@@ -94,7 +94,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		resultMap="RevwVO">
 		<![CDATA[ 
 		select  r.rn, r.revw_id, r.store_id, r.rsvd_id, r.wait_id, r.user_id, r.cnts, r.reg_dt, r.rating, r.reply_cnts, r.reply_reg_dt, r.regdate, r.updatedate, r.store_nm,
-				i.img_seq, i.filename, i.uuid, i.uploadpath, i.image, i.rep
+				i.img_seq, i.filename, i.uuid, i.uploadpath, i.image
 		from
 		(
 			select /*+ INDEX DESC(tbl_revw tbl_revw_pk)*/
@@ -104,7 +104,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and rownum <= #{cri.pageNum}*#{cri.amount}
 		) r, tbl_revw_img i
 		where r.rn > (#{cri.pageNum}-1)*#{cri.amount}
-		AND r.revw_id = i.revw_id
+		AND r.revw_id = i.revw_id(+)
 	]]>
 	</select>
 	
@@ -122,7 +122,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			and rownum <= #{cri.pageNum}*#{cri.amount}
 		) r, tbl_revw_img i
 		where rn > (#{cri.pageNum}-1)*#{cri.amount}
-		AND r.revw_id = i.revw_id
+		AND r.revw_id = i.revw_id(+)
 	]]>
 	</select>
 

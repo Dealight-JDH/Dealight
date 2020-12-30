@@ -92,7 +92,7 @@ values (#{userId}, #{name}, #{pwd}, #{email}, #{telno}, #{brdt}, #{sex}, #{snsLg
 </insert>
 
 <insert id="insertAuth">
-insert into tbl_user_auth (user_id, auth)values(#{userId}, #{auth})
+insert into tbl_user_auth (user_id, auth) values(#{userId}, #{auth})
 </insert>
 
 
@@ -108,7 +108,7 @@ where user_id = #{userId}
 <!-- 회원탈퇴 아이디로 체크 -->
 <delete id="delete">
 <!-- delete from tbl_user where user_id = #{userId} -->
-update tbl_user set cls_cd = 'W'
+update tbl_user set cls_cd = 'W' where user_id = #{userId}
 </delete>
 
 <!-- 회원정보 수정(이름[닉네임], 이메일, 전화번호, sns연동 만 변경가능  -->

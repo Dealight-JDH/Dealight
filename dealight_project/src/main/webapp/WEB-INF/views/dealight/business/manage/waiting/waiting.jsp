@@ -21,6 +21,7 @@
 <script src="https://kit.fontawesome.com/0f892675ba.js" crossorigin="anonymous"></script>
 <!--  end common  -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
 
         .wait_wrapper {
@@ -43,8 +44,9 @@
             justify-content: center;
             flex-direction: column;
             align-items: center;
-            background-color: black;
+            
             border-radius: 3px 3px 0 0;
+            border-bottom:1px solid #eeeeef;
         }
         .wait_tit > .badge {
             
@@ -61,8 +63,8 @@
             box-shadow: 2px 2px 8px rgba(44, 36, 36, 0.342);
         }
         .wait_tit > span{
-            color: white;
-            line-height: 3.5em;
+            color: black;
+            line-height: 60px;
             font-size: 28px;
             font-weight: bold;
         }
@@ -182,7 +184,8 @@
             flex-direction: row;
             justify-content: flex-start;
             align-content: flex-start;
-            background-color: rgba(167, 167, 167, 0.479);
+            border:1px solid #eeeeef;
+            /*background-color: rgba(167, 167, 167, 0.479);*/
         }
         #wait_time_wrapper{
             width: 50%;
@@ -200,7 +203,7 @@
             width: 100%;
             height: 30%;
             font-size: 14px;
-            color:white;
+            color:rgba(75, 75, 75, 0.431);
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -235,7 +238,7 @@
             width: 100%;
             height: 30%;
             font-size: 14px;
-            color: white;
+            color: rgba(75, 75, 75, 0.431);
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -273,16 +276,19 @@
             justify-content: center;
             align-items: center;
             /*border: 1px solid black;*/
-            width: 50%;
+            width: 33%;
             height: 100%;
             font-size: 24px;
             font-weight: bold;
+            border-bottom: 1px solid #eeeeef;
+            border-right:1px solid #eeeeef;
         }
-        #store_telno{
-            /*border: 1px solid black;*/
+        .store_info_wrapper > div:last-child{
+        	border-right:none;
         }
-        #store_telno{
-            /*border: 1px solid black;*/
+        .store_info_wrapper img{
+        	width:100px;
+        	height:100px;
         }
         #map{
             display: flex;
@@ -298,8 +304,8 @@
             justify-content: center;
             align-items: center;
             /*border: 1px solid black;*/
-            width: 100%;
-            height: auto;
+            width: 33%;
+            height: 100%;
             font-size: 24px;
             font-weight: bold;
         }
@@ -365,8 +371,8 @@
             <div class="store_info_wrapper">
                 <div>${store.storeNm}</div>
                 <div><img src='/display?fileName=${store.bstore.repImg}'></div>
+	            <div id="store_telno">${store.telno}</div>
             </div>
-            <div id="store_telno">${store.telno}</div>
             <div id="map" style="width:500px;height:150px;"></div>
         </div>
     </div>

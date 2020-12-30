@@ -132,7 +132,12 @@
 <script>
 
 const storeId = ${storeId};
+/* 정규식으로 파일 형식을 제한한다. */
+const regex = new RegExp("(.*>)\.(exe|sh|zip|alz)$");
+/*최대 파일 크기를 제어한다  */
+const maxSize = 5242880; /* 5MB */
 
+const brch = '${store.bstore.brch}';
 /*시간바 만들기*/
 /*현재시간으로 스크롤 고정*/
 let writeTimeBar = function (curTime) {
@@ -200,9 +205,12 @@ let writeTimeBar = function (curTime) {
     	}
     });
     
-    	$(".alert_closebtn").on("click", e => {
-    		$(e.target).parent().addClass("hide");
-    		$(e.target).parent().removeClass("show");
+    	$(".alert_closebtn").on("click", "svg", e => {
+    		console.log(e.target);
+    		console.log(e.currentTarget);
+    		console.log("close btn click");
+    		$(e.currentTarget).parent().parent().addClass("hide");
+    		$(e.currentTarget).parent().parent().removeClass("show");
     		//setTimeout($(e.target).parent().removeClass("showAlert"),5000); 	
     	});
     	
@@ -733,7 +741,7 @@ let writeTimeBar = function (curTime) {
                   
                   console.log("wait4 : "+waitId);
             	  
-                  window.open("/dealight/business/waiting/"+waitId);
+                  window.open("/dealight/waiting/"+waitId);
             	  
               });
               
@@ -893,7 +901,8 @@ let writeTimeBar = function (curTime) {
         			return;
         		strNextRsvd += "<div class='next_info_top'>";
         		strNextRsvd += "<span class='next_rsvd_name'>"+rsvd.userId+"</span>";
-        		strNextRsvd += "<span class='next_rsvd_telno'>"+rsvd.totQty+"</span>";
+        		if(rsvd.htdlId !== null) strNextRsvd += "<span class='next_rsvd_telno'>"+"<i class='fas fa-fire'></i> "+"핫딜 예약"+"</span>";
+        		else if(rsvd.htdlId === null) strNextRsvd += "<span class='next_rsvd_telno'>"+"일반 예약"+"</span>";
         		strNextRsvd += "<span class='store_htdl' style='display:none;'>"+rsvd.htdlId+"</span>";
         		strNextRsvd += "</div>";
         		strNextRsvd += "<div class='next_info_bot'>";
@@ -1493,9 +1502,10 @@ let writeTimeBar = function (curTime) {
 	        	strHtdl  += "<textarea rows='2' cols='22' name='intro'></textarea>";
 	        	strHtdl  += "</div>";
 	        	
-	        	strHtdl += "<div class='uploadDiv htdl'><input type='file' name='uploadFile'></div>";
-                strHtdl += "<div class='uploadResult'><ul></ul></div>";
+	        	strHtdl += "<div class='uploadDiv htdl'><input type='file' id='js_upload' name='uploadFile'></div>";
+                strHtdl += "<div class='uploadResult_htdl'><ul></ul></div>";
                 strHtdl += "<input type='hidden' id='storeId' name='storeId' value='"+storeId+"'>";
+                strHtdl += "<input type='hidden' id='brch' name='brch' value='"+brch+"'>";
                 strHtdl += "<div class='htdl_reg_btn_box'>";
                 strHtdl += "<button class='regHtdlBtn' type='submit' data-oper='register'>승낙</button>";
                 strHtdl += "<button class='regHtdlBtn' type='submit' data-oper='refuse'>거절</button>";
@@ -1530,7 +1540,7 @@ let writeTimeBar = function (curTime) {
 	    			console.log(price);
 	    			afterPrice.value = price;
 	    		}
-
+				
 	    		//메뉴 체크
 	    		let menuCheck = function (price, idx) {
 
@@ -1559,6 +1569,182 @@ let writeTimeBar = function (curTime) {
 	    			getAfterPrice(total, rate);
 	    		});
 	    		
+	    		let showUploadResult_htdl = function (uploadResultArr) {
+	    	        
+	    	        /**업로드 된게 없으면 그대로 반환 */
+	    			if(!uploadResultArr || uploadResultArr.length == 0){return; }
+	    	        
+	    	        /*업로드 결과를 보여줄 ul를 선택 */
+	    			let uploadUL_htdl = $(".uploadResult_htdl ul");
+	    			
+	    			let str = "";
+	    	        
+	    	        /*업로드 결과를 보여준다. */
+	    			$(uploadResultArr).each(function(i,obj){
+	    				
+	    	            /* 만일 파일이 이미지 형식이면 */
+	    	            /* data에 path,uuid,filename,type을 각각 저장한다. */
+	    				
+	    				if(i === 0) // 파일 1개만 올릴 수 있게
+	    				if(obj.image) {
+	    					let fileCallPath = encodeURIComponent(obj.uploadPath+"/s_"+obj.uuid+"_"+obj.fileName);
+	    					
+	    					// 
+	    					let originPath = obj.uploadPath + "\\" + obj.uuid +"_" + obj.fileName;
+	    					originPath = originPath.replace(new RegExp(/\\/g),"/");
+	    					
+	    					str += "<li data-path='" + obj.uploadPath +"'";
+	    					str += "data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"'data-type='"+obj.image+"'";
+	    					str += "><div>";
+	    					str += "<span>" + obj.fileName +"</span>";
+	    					str += "<img src='/display?fileName=" + fileCallPath + "'>";
+	    					str += "</div>";
+	    					str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image'"
+	    								+" class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+	    					str += "</li>";
+	    	                /* 만일 파일이 이미지 형식이 아니면 */
+	    	                /* default img를 보여준다. */
+	    				} else {
+	    					let fileCallPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
+	    					let fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
+
+	    					str += "<li "
+	    					str += "data-path='" + obj.uploadPath + "'data-uuid='" + obj.uuid + "'data-filename='" + obj.fileName + "' data-type='" +obj.image+"'>" + "<div>";
+	    					str += "<span> " + obj.fileName + "</span>";
+	    					str += "<img src='/resources/img/attach.png'>";
+	    					str += "</div>";
+	    					str += "<button type='button' data-file=\'"+fileCallPath+"\'data-type='file' class='btn btn-warning btn-circle'><i class='fa fa-times'></i>삭제</button><br>";
+	    					str += "</li>";
+	    				}
+	    			});
+	    	        
+	    			uploadUL_htdl.html(str);
+	    		}
+	    	    
+	    	    /*파일 valid check */
+	    		let checkExtension = function (fileName, fileSize) {
+	    	        
+	    	        /*파일 사이즈를 체크한다. */
+	    	        if(fileSize >= maxSize){
+	    				alert("파일 사이즈 초과");
+	    				return false;
+	    			}
+	    			/*파일 형식을 체크한다. */
+	    			if(regex.test(fileName)) {
+	    				alert("해당 종류의 파일은 업로드 할 수 없습니다.");
+	    				return false;
+	    			}
+	    			return true;
+	    		}
+	    	    
+	    	    /* change() 해당하는 요소의 value에 변화가 생길 경우 이를 감지하여 등록된 콜백함수를 동작시킨다.  */
+	    		var uploadHandler_htdl = function(e){
+	    			
+	    	    	console.log("change event");
+	    	    	
+	    	    	let cloneObj = $(".uploadFile").clone();
+	    	        
+	    	        let formData = new FormData();
+	    	        
+	    	        let inputFile = $("#js_upload");
+	    	        
+	    	        let files = inputFile[0].files;
+	    	        
+	    	        let category = "htdlimgs";
+	    	        
+	    			formData.append("category", category);
+	    			
+	    	            if(!checkExtension(files[0].name, files[0].size)) {
+	    	                return false;
+	    	            }
+	    	            formData.append("uploadFile", files[0]);
+	    	        
+	    	        $.ajax({
+	    	            url : '/uploadAjaxAction',
+	    	            processData : false,
+	    	            contentType : false, data:
+	    	                formData, type: 'POST',
+	    	                dataType : 'json',
+	    	                success : function(result) {
+	    	                	showUploadResult_htdl(result); // 업로드 결과 처리 함수
+	    	               	 	$(".form_img_htdl").html(cloneObj.html()); // 첨부파일 개수 초기화
+	    	               	 	$("#js_upload").change(uploadHandler_htdl); // 이벤트 등록 (재귀)
+	    	                }
+	    	        })
+	    	    };
+	    	
+	    	    /* 업로드 결과를 누르면 해당 파일을 제거한다.  */
+	    		var deleteHandler_htdl = function(e){
+	    			
+	    			console.log("delete file");
+	    			
+	    			if(!confirm("Remove this file?"))
+	    							return;
+	    			
+	    			  		let targetFile = $(this).data("file");
+	    					console.log(targetFile);
+	    			
+	    					let type = $(this).data("type");
+	    					console.log(type);
+	    			
+	    					let targetLi = $(this).closest("li");
+	    					console.log(targetLi);
+	    			
+	    			$.ajax({
+	    					url : '/deleteFile',
+	    					data : {fileName : targetFile, type:type},
+	    					dataType : 'text',
+	    					type : 'POST',
+	    					success : function(result) {
+	    						alert(result);
+	    						targetLi.remove();
+	    					}
+	    					}); // $.ajax
+	    			};
+	    	
+	    		var showImage_htdl = function (fileCallPath) {
+	    			
+	    			alert(fileCallPath);
+	    			
+	    			$(".bigPictureWrapper_htdl").css("display","flex").show();
+	    			
+	    			$(".bigPicture_htdl")
+	    			.html("<img src='/display?fileName=" + fileCallPath + "'>")
+	    			.animate({width:'100%',height:'100%'},1000);
+	    			
+	    			
+	    		}// end show image
+	    		
+	    		var showImageHandler_htdl = function(e) {
+	    	    	
+	    			if(e.target.type === "button")
+	    	    		return;
+	    	    	
+	    	        let liObj = $(this);
+	    	        
+	    	        let path = encodeURIComponent(liObj.data("path")+ "/" + liObj.data("uuid") +"_" +liObj.data("filename"));
+	    	        
+	    	        if(liObj.data("type")){
+	    	            
+	    	            showImage_htdl(path.replace(new RegExp(/\\/g), "/"));
+	    	        } else {
+	    	            //download
+	    	            self.location = "/download?fileName=" + path
+	    	        }
+	    		};
+	    		
+	    		var bigImgAniHandler_htdl = function (e) {
+	    			$(".bigPicture_htdl").animate({width:'0%',height:'0%'},1000);
+	    			setTimeout(() => {
+	    				$(this).hide();
+	    			}, 1000);
+	    		}
+	    		
+	    		/* submit 타입의 버튼을 제어한다.*/
+	    		$("#js_upload").change(uploadHandler_htdl); 
+	    		$(".uploadResult_htdl").on("click", "button", deleteHandler_htdl);
+	    	    $(".uploadResult_htdl").on("click", "li", showImageHandler_htdl);
+	    		$(".bigPictureWrapper_modify").on("click",bigImgAniHandler_htdl);
 	    		
 	    		let regHtdlFormObj = $(".regHtdlForm");
 	    		
@@ -1566,8 +1752,10 @@ let writeTimeBar = function (curTime) {
 	    			
 	    			e.preventDefault();
 	    			
+	    			console.log("btn click")
+	    			
 	    			let operation = $(this).data("oper");
-	    			console.log(operation);
+	    			console.log("operation : "+operation);
 	    			let path = $(".uploadResult ul li").data("path");
 	    			let fileName = $(".uploadResult ul li").data("filename");
 	    			
@@ -1577,12 +1765,22 @@ let writeTimeBar = function (curTime) {
 	    					//체크된 라벨 input 추가
 	    					if(menuBox[i].checked){		
 	    						console.log(i+"================");
-	    						regHtdlFormObj.append("<input type='hidden' name='menu["+i+"].name' value='"+ $("label[for='menu"+(i+1)+"']").text()+"'>");
-	    						regHtdlFormObj.append("<input type='hidden' name='menu["+i+"].price' value='"+ $("#menu"+(i+1)).val()+"'>");
+	    						regHtdlFormObj.append("<input type='hidden' name='menu["+i+"].name' value='"+ $("label[for='menu"+i+"']").text()+"'>");
+	    						regHtdlFormObj.append("<input type='hidden' name='menu["+i+"].price' value='"+ $("#menu"+i).val()+"'>");
 	    							
 	    					}
 	    				}
-	    				regHtdlFormObj.append("<input type='hidden' name='htdlPhotoSrc' value='"+ path + "/" + fileName + "'>");
+	    				
+	    				let filename = "";
+	    				filename += document.querySelector(".uploadResult_htdl > ul >li").dataset.path.replace(new RegExp(/\\/g),"/") + "/";
+	    				filename += document.querySelector(".uploadResult_htdl > ul >li").dataset.uuid + "_";
+	    				filename += document.querySelector(".uploadResult_htdl > ul >li").dataset.filename;
+	    				
+	    				console.log(filename);
+	    				
+	    				regHtdlFormObj.append("<input type='hidden' name='htdlPhotoSrc' value='"+filename + "'>");
+	    				regHtdlFormObj.append("<input type='hidden' name='intro' value='"+$(".regHtdlForm textarea").val() + "'>");
+	    				regHtdlFormObj.append("<input type='hidden' name='dcRate' value='"+$("#dcRate").val() + "'>");
 	    				
 	    				let formData = new FormData();
 	    				
@@ -1591,6 +1789,9 @@ let writeTimeBar = function (curTime) {
 	    				for(let i = 0; i < inputData.length; i++){
 	    					formData.append($(".regHtdlForm input")[i].name, $(".regHtdlForm input")[i].value)
 	    				}
+	    				
+	    				let test = document.querySelectorAll(".regHtdlForm input");
+	    				console.log(test);
 	    				
 	    				$.ajax({
 	    		            url : '/dealight/business/manage/board/htdl/new',

@@ -58,8 +58,50 @@
 			where store_id = #{storeId}
 		</select>
 <!-- jongwoo -->
-
-
+	
+	
+	<!-- 핫딜+상세+매장 소개 -->
+	
+	<resultMap type="com.dealight.domain.HtdlVO" id="getHtdlDetail">
+		<id column="htdl_id" property="htdlId"/> 
+			<result column="name" property="name"/>
+			<result column="store_id" property="storeId"/>
+			<result column="htdl_img" property="htdlImg"/>
+			<result column="dc_rate" property="dcRate"/>
+			<result column="start_tm" property="startTm"/>
+			<result column="end_tm" property="endTm"/>
+			<result column="lmt_pnum" property="lmtPnum"/>
+			<result column="intro" property="intro"/>
+			<result column="bef_price" property="befPrice"/>
+			<result column="ddct" property="ddct"/>
+			<result column="cur_pnum" property="curPnum"/>
+			<result column="stus_cd" property="stusCd"/>
+			<result column="regdate" property="regDate"/>
+			<result column="updatedate" property="updateDate"/>
+			<result column="brch" property="brch"/>
+			<result column="set_name" property="setName"/>
+			
+			
+			<result column="store_nm" property="storeName"/>
+			<result column="store_intro" property="storeIntro"/>
+		
+			
+		<collection property="htdlDtls" ofType="com.dealight.domain.HtdlDtlsVO">
+					<id column="htdl_id" property="htdlId"/>
+					<id column="htdl_seq" property="htdlSeq"/> 
+					<result column="menu_name" property="menuName"/>
+					<result column="menu_price" property="menuPrice"/>
+				</collection>
+				
+	</resultMap>
+	<select id="findHtdlWithStore" resultMap="getHtdlDetail">
+		select h.htdl_id, h.name, h.store_id, h.htdl_img, h.dc_rate, h.start_tm, h.end_tm, h.lmt_pnum, h.intro, h.bef_price, h.ddct,
+		h.cur_pnum, h.stus_cd, h.regdate, h.updatedate, h.brch, h.set_name, s.store_nm, b.store_intro, d.htdl_seq, d.menu_name, d.menu_price
+		from tbl_htdl h, tbl_htdl_dtls d, tbl_bstore b, tbl_store s
+		where h.htdl_id = #{htdlId} and h.store_id = b.store_id and b.store_id = s.store_id and h.htdl_id = d.htdl_id
+	</select>
+			
+	
 	<!--오늘 날짜 핫딜 체크-->
 	<select id="sysdateCheckHtdl">
 		select count(*)
@@ -109,6 +151,8 @@
 			<result column="regdate" property="regDate"/>
 			<result column="updatedate" property="updateDate"/>
 			<result column="brch" property="brch"/>
+			<result column="set_name" property="setName"/>
+			
 			
 			<association property="storeEval" column="store_id" javaType="com.dealight.domain.StoreEvalVO">
 				<id column="store_id" property="storeId"/>
@@ -148,6 +192,7 @@
 			 WHERE h.htdl_id = d.htdl_id and h.store_id = e.store_id 	
 		</select>
 		
+		<!-- 핫딜+상세+매장평가 -->
 		<select id="findHtdlById" parameterType="long" resultMap="HtdlDetail">
 			SELECT h.*, d.*, e.*
 		      FROM tbl_htdl h, tbl_htdl_dtls d, tbl_store_eval e
@@ -162,7 +207,7 @@
 		 -->
 		 <!-- 핫딜+상세+결과 -->
 		 <select id="getHtdlDtlsRslt" parameterType="long" resultMap="HtdlDetail">
-		 	select h.htdl_id, h.name, h.dc_rate, h.start_tm, h.end_tm, h.bef_price, h.ddct, h.stus_cd,
+		 	select h.htdl_id, h.name, h.dc_rate, h.start_tm, h.end_tm, h.bef_price, h.ddct, h.stus_cd, h.brch, h.set_name,
 		 	d.htdl_seq, d.menu_name, d.menu_price, r.last_pnum, r.htdl_lmt_pnum, r.rsvd_rate, r.elap_tm, r.regdate
 		 	from tbl_htdl h, tbl_htdl_dtls d, tbl_htdl_rslt r
 		 	where h.htdl_id = #{htdlId} and h.htdl_id = d.htdl_id and h.htdl_id = r.htdl_id(+)
@@ -172,7 +217,7 @@
 		 <!-- 핫딜+상세 -->
 		<select id="findHtdlDtlsById" parameterType="long" resultMap="HtdlDetail">
 			SELECT h.htdl_id, h.name, h.store_id, h.dc_rate, h.start_tm, h.end_tm, h.lmt_pnum, h.intro, h.bef_price, h.ddct,
-			h.cur_pnum,h.stus_cd, d.htdl_seq, d.menu_name, d.menu_price
+			h.cur_pnum,h.stus_cd, h.brch, h.set_name, d.htdl_seq, d.menu_name, d.menu_price
 		      FROM tbl_htdl h, tbl_htdl_dtls d
 			 WHERE h.htdl_id = #{htdlId} and h.htdl_id = d.htdl_id 
 		</select>
@@ -230,6 +275,11 @@
 		
 		
 		<!-- 핫딜 mapper -->
+		<select id="findStusCdById" resultType="String">
+			select stus_cd
+			from tbl_htdl
+			where htdl_id = #{htdlId}
+		</select>
 		
 		<select id="getTotalCount" resultType="int">
 			select count(*) from tbl_htdl where htdl_id > 0 and stus_cd = #{stusCd}
@@ -257,20 +307,20 @@
 	 	]]> -->
 	 	
 	 	<![CDATA[
-		SELECT h.htdl_id, h.name, h.store_id, h.htdl_img, h.dc_rate, h.start_tm, h.end_tm, h.lmt_pnum, h.intro ,h.bef_price, h.ddct, h.cur_pnum,stus_cd,
-        d.htdl_seq, d.menu_name, e.avg_rating, e.revw_tot_num, e.like_tot_num, h.brch
+		SELECT h.htdl_id, h.name, h.store_id, h.htdl_img, h.dc_rate, h.start_tm, h.end_tm, h.lmt_pnum, h.intro ,h.bef_price, h.ddct, h.cur_pnum,stus_cd, h.brch, h.set_name,
+        d.htdl_seq, d.menu_name, e.avg_rating, e.revw_tot_num, e.like_tot_num
 		      FROM (select *
 	 		 from (
 	 		 	select /*+ INDEX_DESC(tbl_htdl tbl_htdl_pk)*/
 	 		 	rownum rn, htdl_id, name, store_id, htdl_img, dc_rate, start_tm, end_tm, lmt_pnum, intro,
-	 		 	bef_price, ddct, cur_pnum, stus_cd, regdate, updatedate, brch
+	 		 	bef_price, ddct, cur_pnum, stus_cd, regdate, updatedate, brch, set_name
 	 		 	from tbl_htdl
 	 		 	where stus_cd = #{stusCd} and rownum <= #{hCri.pageNum} * #{hCri.amount}
 	 		 	
 	 	]]>
 	 	
 	 	<trim prefix="AND(" suffix=")" prefixOverrides="OR">
- 	 	<if test="hCri.type == 'B'.toString()">
+ 	 	<if test="hCri.keyword neq null">
  	 		brch like '%'||#{hCri.keyword}||'%'
  	 	</if>
  	 	</trim>
@@ -282,7 +332,7 @@
             
 	 		 ]]>
  	 	</if>
-	 	<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+	 	<!-- <trim prefix="(" suffix=") AND " prefixOverrides="OR">
 	 		<foreach item='type' collection="hCri.typeArr">
 	 			<trim prefix="OR">
 	 				<choose>
@@ -295,7 +345,7 @@
 	 				</choose>
 	 			</trim>     
 	 		</foreach>
-	 	</trim>
+	 	</trim> -->
 	 	<![CDATA[
 	 	)
 	 	where
@@ -341,7 +391,7 @@
 		<update id="update">
 			update tbl_htdl
 			set name = #{name}, dc_rate = #{dcRate}, start_tm = #{startTm}, end_tm = #{endTm}, lmt_pnum = #{lmtPnum}, intro = #{intro},
-			 ddct = #{ddct}, cur_pnum = #{curPnum}, stus_cd = #{stusCd}, updatedate = sysdate + 9/24
+			 ddct = #{ddct}, cur_pnum = #{curPnum}, stus_cd = #{stusCd}, brch = #{brch}, set_name= #{setName}, updatedate = sysdate + 9/24
 			where htdl_id = #{htdlId} 
 		</update>
 		
@@ -350,13 +400,14 @@
 		</select>
 		
 		<insert id="insertSelectKey">
+		
 			<selectKey keyProperty="htdlId" order="BEFORE" resultType = "long">
 			select seq_htdl.nextval from dual
 			</selectKey>
 		
-			insert into tbl_htdl (htdl_id,name,store_id,htdl_img,dc_rate,start_tm,end_tm,lmt_pnum,intro,bef_price,ddct,cur_pnum,stus_cd,regdate,updatedate,brch)
+			insert into tbl_htdl (htdl_id,name,store_id,htdl_img,dc_rate,start_tm,end_tm,lmt_pnum,intro,bef_price,ddct,cur_pnum,stus_cd,regdate,updatedate,brch, set_name)
 			values(#{htdlId}, #{name}, #{storeId}, #{htdlImg}, #{dcRate}, #{startTm},
-			 #{endTm}, #{lmtPnum}, #{intro}, #{befPrice}, #{ddct}, #{curPnum}, #{stusCd}, sysdate + 9/24 , sysdate + 9/24, #{brch})
+			 #{endTm}, #{lmtPnum}, #{intro}, #{befPrice}, #{ddct}, #{curPnum}, #{stusCd}, sysdate + 9/24 , sysdate + 9/24, #{brch}, #{setName})
 		</insert>
 		
 		<insert id="insert">
