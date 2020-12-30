@@ -23,11 +23,11 @@
                 <div class="search-container">
                     <div class="search-header flex f14">
                         <div class="w-block select-bar" id="wait">
-                            줄서기
+                            <b>줄서기</b>
                             <div class="under-bar" style="display: none;"></div>
                         </div>
                         <div class="w-block" id="reserve">
-                            예약하기
+                            <b>예약하기</b>
                             <div class="under-bar" style="display: none;"></div>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                     <div class="card-elaptime">
                         HOT
                     </div>
-                    <h4>선착순 ${htdl.lmtPnum }명</h4>
+                    <h4 style="margin:20px; margin-right: 5px; padding:1px">선착순 ${htdl.lmtPnum }명</h4>
                 </div>
                 <div class="card-img">
                     <img src="/display?fileName=/<c:out value='${htdl.htdlImg }'/>" alt="" style="width: 100%; height: 320px; z-index: -1;">
