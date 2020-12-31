@@ -485,7 +485,7 @@ window.onload = function () {
     		strUserRsvdList += "</div>";
     		userRsvdList.forEach(rsvd => {
 	    		strUserRsvdList += "<div class='rsvd_history'>";
-	    		if(rsvd.htdlId !== null) strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+	    		if(rsvd.htdlId !== null) strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-burn'></i></span>";
 	    		strUserRsvdList += "<div class='info'>";
 	    		strUserRsvdList += "<div>예약 번호</div>";
 	    		strUserRsvdList += "<div>"+rsvd.rsvdId+"</div>";
@@ -539,7 +539,7 @@ window.onload = function () {
 			
 			strRsvdDtlsTop += "<div class='modal_rsvd_tit'>예약 상세</div>";
 			strRsvdDtlsTop += "<div class='rsvd_top_box'>";
-			if(rsvd.htdlId != null) strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+			if(rsvd.htdlId != null) strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-burn'></i></span>";
 			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
 			strRsvdDtlsTop += "<div>예약 번호</div>";
 			strRsvdDtlsTop += "<div>"+rsvd.rsvdId+"</div>";

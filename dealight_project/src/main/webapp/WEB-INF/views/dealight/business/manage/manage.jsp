@@ -14,10 +14,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
-<script src="https://kit.fontawesome.com/0f892675ba.js" crossorigin="anonymous"></script>
+<!-- <script src="https://kit.fontawesome.com/0f892675ba.js" crossorigin="anonymous"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="/resources/js/Chart.js"></script>
 <link rel="stylesheet" href="/resources/css/manage.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/brands.min.css" integrity="sha512-D0B6cFS+efdzUE/4wh5XF5599DtW7Q1bZOjAYGBfC0Lg9WjcrqPXZto020btDyrlDUrfYKsmzFvgf/9AB8J0Jw==" crossorigin="anonymous" />
 </head>
 <body>
 <main class="store_board" id="store_board_main">
@@ -904,7 +905,7 @@ let writeTimeBar = function (curTime) {
         			return;
         		strNextRsvd += "<div class='next_info_top'>";
         		strNextRsvd += "<span class='next_rsvd_name'>"+rsvd.userId+"</span>";
-        		if(rsvd.htdlId !== null) strNextRsvd += "<span class='next_rsvd_telno'>"+"<i class='fas fa-fire-alt'></i> "+"핫딜 예약"+"</span>";
+        		if(rsvd.htdlId !== null) strNextRsvd += "<span class='next_rsvd_telno'>"+"<i class='fas fa-burn'></i>"+"핫딜 예약"+"</span>";
         		else if(rsvd.htdlId === null) strNextRsvd += "<span class='next_rsvd_telno'>"+"일반 예약"+"</span>";
         		strNextRsvd += "<span class='store_htdl' style='display:none;'>"+rsvd.htdlId+"</span>";
         		strNextRsvd += "</div>";
@@ -1154,7 +1155,7 @@ let writeTimeBar = function (curTime) {
         		strUserRsvdList += "</div>";
         		userRsvdList.forEach(rsvd => {
     	    		strUserRsvdList += "<div class='rsvd_history'>";
-    	    		if(rsvd.htdlId) strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+    	    		if(rsvd.htdlId) strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-burn'></i></span>";
     	    		strUserRsvdList += "<div class='info'>";
     	    		strUserRsvdList += "<div>예약 번호</div>";
     	    		strUserRsvdList += "<div>"+rsvd.rsvdId+"</div>";
@@ -1207,7 +1208,7 @@ let writeTimeBar = function (curTime) {
     			
     			strRsvdDtlsTop += "<div class='modal_rsvd_tit'>예약 상세</div>";
     			strRsvdDtlsTop += "<div class='rsvd_top_box'>";
-    			if(rsvd.htdlId != null) strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+    			if(rsvd.htdlId != null) strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-burn'></i></i></span>";
     			strRsvdDtlsTop += "<span class='htdl_stus'></span>";
     			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
     			strRsvdDtlsTop += "<div>예약 번호</div>";
