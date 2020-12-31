@@ -257,9 +257,6 @@
 	</div>
 </div>
 
-
-
-</body>
 </html>
 <%@include file="/WEB-INF/views/includes/mainFooter.jsp" %>
 <script>
@@ -287,6 +284,14 @@ window.onload = function(){
 	
 	//버튼 클릭 이벤트----
 	const operForm = $("#operForm");
+	
+	$("button[data-oper='manage']").on("click", function(e){
+		self.location = "/dealight/business/"
+	})
+	
+	$("button[data-oper='request']").on("click", function(e){
+		operForm.attr("action", "/dealight/mypage/bizauth/request").attr("method", "get").submit();
+	})
 	
 	$("button[data-oper='modify']").on("click", function(e){
 		operForm.attr("action","/dealight/mypage/bizauth/modify").submit();	

@@ -9,6 +9,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%@include file="../includes/mainMenu.jsp" %> 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGR7CBhUjuiLLWGac5u4u_5yN7n6CWO8w&libraries=places&callback=initAutocomplete" defer></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -23,11 +25,11 @@
                 <div class="search-container">
                     <div class="search-header flex f14">
                         <div class="w-block select-bar" id="wait">
-                            줄서기
+                            <b>줄서기</b>
                             <div class="under-bar" style="display: none;"></div>
                         </div>
                         <div class="w-block" id="reserve">
-                            예약하기
+                            <b>예약하기</b>
                             <div class="under-bar" style="display: none;"></div>
                         </div>
                     </div>
@@ -36,15 +38,9 @@
                             <div class="search-item" style="min-width: 300px;">
                                 <div class="ws-block" id="region">
                                     위치
-                                    <div class="dropdown">
-                                        <div class="dropdown-select">
-                                            <span class="select">내 위치</span>
-                                            <i class="fa fa-angle-down" style="font-size:30px"></i>
-                                        </div>
-                                        <div class="dropdown-list">
-                                           
-                                        </div>
-                                    </div>
+	                                <div class="dropdown" id="pac-container">
+											<input class="form-control2" id="pac-input" type="text" name="keyword" placeholder="현재위치">
+	                                </div>
                                 </div>
                             </div>
                             <div class="divider" ></div>
@@ -53,7 +49,7 @@
                                     시간
                                     <div class="dropdown">
                                         <div class="dropdown-select">
-                                            <span class="select">13시 30분</span>
+                                            <span class="select">시간을 입력하세요</span>
                                             <i class="fa fa-angle-down" style="font-size:30px;"></i>
                                         </div>
                                         <div class="dropdown-list">
@@ -98,7 +94,7 @@
                     <div class="card-elaptime">
                         HOT
                     </div>
-                    <h4>선착순 ${htdl.lmtPnum }명</h4>
+                    <h4 style="margin:20px; padding:1px">선착순 ${htdl.lmtPnum }명</h4>
                 </div>
                 <div class="card-img">
                     <img src="/display?fileName=/<c:out value='${htdl.htdlImg }'/>" alt="" style="width: 100%; height: 320px; z-index: -1;">
@@ -136,8 +132,11 @@
         </div>
     </div>
     <form action="/dealight/search/" id="searchForm" method="get">
-    	<input type="hidden" name="region" value="user">
-    	<input type="hidden" name="pNum" value="2">
+    	
+    	<input type="text" name="region" value="내 주변">
+    	<input type="text" name="lat" value="37.570414">
+    	<input type="text" name="lng" value="126.985320">
+    	<input type="text" name="pNum" value="2">
     </form>
 <%@include file="../includes/mainFooter.jsp" %>
 
@@ -186,14 +185,79 @@ const msg = "<c:out value= '${result}'/>";
     
     window.onload=function(){
     	const form = $("#searchForm");
+		initAutocomplete
     	$("#searchBtn").on("click", function(e){
-    		
     		form.submit();
     	})
     }
-</script>
-<script>
-    
+    //위치 검색 하드코딩!!!!
+  	function initAutocomplete() {
+		autocomplete = new google.maps.places.Autocomplete(
+		(document.getElementById('pac-input')), {
+			types : [ 'geocode' ],
+			componentRestrictions : {
+				country : 'kr'
+			}
+		});
+		console.log(autocomplete)
+		autocomplete.addListener('place_changed', fillInAddress);
+	}
+	function fillInAddress() {
+		var place = autocomplete.getPlace();
+		console.log(place.formatted_address);
+		console.log('?');
+		if(!place.formatted_address){
+			alert("위치정보가 정확하지 않습니다.")
+			$("#pac-input").val("");
+			$("#searchForm").find("input[name='lat']").val(37.570414)
+	   		$("#searchForm").find("input[name='lng']").val(126.985320)
+			return;
+		}
+		
+		let addr = encodeURIComponent(place.formatted_address)
+		getLoc(addr,function(data){
+			if(data.meta.total_count == 0 ){
+				alert("동을 입력해주세요")
+				$("#pac-input").val("");
+				$("#searchForm").find("input[name='lat']").val(37.570414)
+		   		$("#searchForm").find("input[name='lng']").val(126.985320)
+				return;
+			}
+	   		let addr = data.documents[0].address_name;
+	   		let region = addr.substring(addr.lastIndexOf(" ")+1);
+	   		console.log(data.documents[0].x);
+	   		console.log(data.documents[0].y);
+	   		console.log(region)
+	   		$("#searchForm").find("input[name='region']").val(region)
+	   		$("#searchForm").find("input[name='lat']").val(data.documents[0].y)
+	   		$("#searchForm").find("input[name='lng']").val(data.documents[0].x)
+			
+		})
+		
+	}
+	
+	function getLoc(addr, callback, error){
+		$.ajax({
+	        url:'https://dapi.kakao.com/v2/local/search/address.json?query='+addr,
+	        type:'GET',
+	        headers: {'Authorization' : 'KakaoAK e511e2ddb9ebfda043b94618389a614c'},
+		  	success:function(result, status, xhr){
+				if(callback){
+					callback(result);
+				}
+			},
+			error : function(xhr, status, er){
+				if(error){
+					error(er);
+				}
+				
+			}
+		})
+		
+	}
+	
+	
+	
     $(document).ready(function(){
     	
     	if(msg.length > 0 ){
@@ -201,13 +265,8 @@ const msg = "<c:out value= '${result}'/>";
     	}
     	
     	//[사용자에게 보여질값, 실제 값]
-	    let item1 = ["내 위치", "a"];
-	    let item2 = ["종로구", "b"];
-	    let item3 = ["평양","c"];
-	    let item4 = ["화성","d"];
 	    
 	    //셀렉박스에 넣어줄 요소들
-	    let values = [item1, item2, item3, item4];
 	    let timeValues = [["09:00","09:00"], ["09:30","09:30"],["10:00","10:00"],["10:30","10:30"],
 	        ["11:00","11:00"],["11:30","11:30"],["12:00","12:00"],["12:30","12:30"],["13:00","13:00"],["13:30","13:30"],
 	        ["14:00","14:00"],["14:30","14:30"],["15:00","15:00"],["15:30","15:30"],["16:00","16:00"],["16:30","16:30"],["17:00","17:00"],
@@ -220,7 +279,6 @@ const msg = "<c:out value= '${result}'/>";
     	const form = $("#searchForm");
     	
     	//(클릭이벤트를 걸어줄 요소, 셀렉박스 요소값, 선택값을 추가할 form)
-    	selectEvent(region ,values, form)
     	selectEvent(time ,timeValues, form)
     	selectEvent(pNum ,pNumValues, form)
     	
@@ -265,7 +323,7 @@ const msg = "<c:out value= '${result}'/>";
         	let inputTag = searchForm.find("input[name='"+name+"']");
         	if(inputTag.length == 0){
         		let str =""
-        		str += "<input type='hidden' name='"+ name +"' value='" + $(this).data("value") + "'>"
+        		str += "<input type='text' name='"+ name +"' value='" + $(this).data("value") + "'>"
         		searchForm.append(str);
         		
         		return;
