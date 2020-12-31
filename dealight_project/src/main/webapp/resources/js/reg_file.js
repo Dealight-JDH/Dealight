@@ -30,7 +30,9 @@
 		                + img.fileName +"'data-type='" + img.image+"'><div>";
 		            //str += "<span> " + img.fileName + "</span>";
 		            str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='image'";
-		            str += "class='btn btn-warning btn-circle fileupload_img_btn'><i class='far fa-times-circle'></i></button><br>";
+		            str += "class='btn btn-warning btn-circle fileupload_img_btn";
+		            if(category === 'revwImgs' || category === 'storeImgs' && pageType === 'register') str += " review_file"; 
+		            str += "'><i class='far fa-times-circle'></i></button><br>";
 		            if(img.rep === 'Y') str += "<img class='selected_img' id='upload_img_"+i+"' src='/display?fileName=" + fileCallPath+"'>";
 		            if(img.rep !== 'Y') str += "<img id='upload_img_"+i+"' src='/display?fileName=" + fileCallPath+"'>";
 		            str += "</div></li>";
@@ -82,8 +84,9 @@
 				str += "data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"'data-type='"+obj.image+"'";
 				str += "><div>";
 				//str += "<span>" + obj.fileName +"</span>";
-				str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image'"
-				+" class='btn btn-warning btn-circle fileupload_img_btn'><i class='far fa-times-circle'></i></button><br>";
+				if(category === 'revwImgs' || category === 'storeImgs' && pageType === 'register') str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image' class='btn btn-warning btn-circle fileupload_img_btn review_file'><i class='far fa-times-circle'></i></button><br>";
+				else str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image' class='btn btn-warning btn-circle fileupload_img_btn'><i class='far fa-times-circle'></i></button><br>";
+				 
 				if(obj.rep==='Y')str += "<img id='upload_img_"+i+"' class='selected_img' src='/display?fileName=" + fileCallPath + "'>";
 				if(obj.rep!=='Y' && i !== 0) str += "<img id='upload_img_"+i+"' src='/display?fileName=" + fileCallPath + "'>";
 				if(obj.rep !=='Y' && i === 0 && $(".selected_img").length >= 1) str += "<img id='upload_img_"+i+"' src='/display?fileName=" + fileCallPath + "'>";
@@ -99,7 +102,9 @@
 				str += "<li "
 				str += "data-path='" + obj.uploadPath + "'data-uuid='" + obj.uuid + "'data-filename='" + obj.fileName + "' data-type='" +obj.image+"'>" + "<div>";
 				//str += "<span> " + obj.fileName + "</span>";
-				str += "<button type='button' data-file=\'"+fileCallPath+"\'data-type='file' class='btn btn-warning btn-circle fileupload_img_btn'><i class='far fa-times-circle'></i></button><br>";
+				if(category === 'revwImgs' || category === 'storeImgs' && pageType === 'register') str += "<button type='button' data-file=\'"+fileCallPath+"\'data-type='file' class='btn btn-warning btn-circle fileupload_img_btn review_file'><i class='far fa-times-circle'></i></button><br>";
+				else str += "<button type='button' data-file=\'"+fileCallPath+"\'data-type='file' class='btn btn-warning btn-circle fileupload_img_btn'><i class='far fa-times-circle'></i></button><br>";
+				
 				str += "<img id='upload_img_"+i+"' draggable='true' ondragstart='drag(event)' src='/resources/img/attach.png'>";
 				str += "</div>";
 				str += "</li>";

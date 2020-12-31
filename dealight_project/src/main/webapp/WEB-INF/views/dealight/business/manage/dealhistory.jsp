@@ -94,10 +94,11 @@
             justify-content:center;
             align-items:center;
             width: 100px;
-            height: 100%;
+            height: 100px;
         }
         .htdl_info_img > img {
         	width:100px;
+        	height: 100px;
         }
         
         .htdl_info_wrapper{

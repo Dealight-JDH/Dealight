@@ -904,7 +904,7 @@ let writeTimeBar = function (curTime) {
         			return;
         		strNextRsvd += "<div class='next_info_top'>";
         		strNextRsvd += "<span class='next_rsvd_name'>"+rsvd.userId+"</span>";
-        		if(rsvd.htdlId !== null) strNextRsvd += "<span class='next_rsvd_telno'>"+"<i class='fas fa-fire'></i> "+"핫딜 예약"+"</span>";
+        		if(rsvd.htdlId !== null) strNextRsvd += "<span class='next_rsvd_telno'>"+"<i class='fas fa-fire-alt'></i> "+"핫딜 예약"+"</span>";
         		else if(rsvd.htdlId === null) strNextRsvd += "<span class='next_rsvd_telno'>"+"일반 예약"+"</span>";
         		strNextRsvd += "<span class='store_htdl' style='display:none;'>"+rsvd.htdlId+"</span>";
         		strNextRsvd += "</div>";
@@ -1154,7 +1154,7 @@ let writeTimeBar = function (curTime) {
         		strUserRsvdList += "</div>";
         		userRsvdList.forEach(rsvd => {
     	    		strUserRsvdList += "<div class='rsvd_history'>";
-    	    		strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+    	    		if(rsvd.htdlId) strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
     	    		strUserRsvdList += "<div class='info'>";
     	    		strUserRsvdList += "<div>예약 번호</div>";
     	    		strUserRsvdList += "<div>"+rsvd.rsvdId+"</div>";
@@ -1207,8 +1207,8 @@ let writeTimeBar = function (curTime) {
     			
     			strRsvdDtlsTop += "<div class='modal_rsvd_tit'>예약 상세</div>";
     			strRsvdDtlsTop += "<div class='rsvd_top_box'>";
-    			if(rsvd.htdlId != null) strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-fire'></i></span>";
-    			strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+    			if(rsvd.htdlId != null) strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+    			strRsvdDtlsTop += "<span class='htdl_stus'></span>";
     			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
     			strRsvdDtlsTop += "<div>예약 번호</div>";
     			strRsvdDtlsTop += "<div>"+rsvd.rsvdId+"</div>";
@@ -1456,7 +1456,7 @@ let writeTimeBar = function (curTime) {
 	        	strHtdl += "</div>";
 	        	strHtdl += "<div class='htdl_label_input htdl_name'>";
 	        	strHtdl += "<span>세트 이름</span>";
-	        	strHtdl += "<input class='form-control' name='setName' placeholder='세트 이름'>";
+	        	strHtdl += "<input class='form-control' name='setName' placeholder='세트 이름' required>";
 	        	strHtdl += "</div>";
 	        	strHtdl += "<div class='htdl_label_input htdl_menu'>";
 	        	strHtdl += "<span>핫딜 메뉴</span>";

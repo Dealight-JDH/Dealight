@@ -446,7 +446,7 @@ $(document).ready(function() {
     		strUserRsvdList += "</div>";
     		userRsvdList.forEach(rsvd => {
 	    		strUserRsvdList += "<div class='rsvd_history'>";
-	    		strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+	    		if(rsvd.htdlId !== null) strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
 	    		strUserRsvdList += "<div class='info'>";
 	    		strUserRsvdList += "<div>예약 번호</div>";
 	    		strUserRsvdList += "<div>"+rsvd.rsvdId+"</div>";
