@@ -2,6 +2,42 @@
 	font-family: 'Nanum Gothic', sans-serif;
 }
 
+#pac-container {
+	padding-bottom: 12px;
+	margin-right: 12px;
+}
+
+.pac-controls {
+	display: inline-block;
+	padding: 5px 11px;
+}
+
+.pac-controls label {
+	font-family: Roboto;
+	font-size: 20px;
+	font-weight: 300;
+}
+
+#pac-input {
+	width: 100%;
+	position: relative;
+	font-size: 18px;
+	font-weight: 300;
+	margin-left: 12px;
+	text-overflow: ellipsis;
+}
+
+input {
+	border: none;
+	background-color: transparent;
+}
+
+input:focus {
+	border: none;
+	outline: none;
+}
+
+
 .flex {
 	display: flex;
 }

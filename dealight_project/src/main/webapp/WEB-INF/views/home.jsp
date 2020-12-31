@@ -1,57 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<!-- 현중 -->
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Place Autocomplete</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGR7CBhUjuiLLWGac5u4u_5yN7n6CWO8w&libraries=places&callback=initAutocomplete" async defer></script>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<%@include file="includes/mainMenu.jsp" %> 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/resources/css/main.css" type ="text/css" />
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<script src="/resources/js/Rater.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGR7CBhUjuiLLWGac5u4u_5yN7n6CWO8w&libraries=places&callback=initAutocomplete" async defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style type="text/css">
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-
-      /* Optional: Makes the sample page fill the window. */
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-
-      #description {
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-      }
-
-      #infowindow-content .title {
-        font-weight: bold;
-      }
-
-      #infowindow-content {
-        display: none;
-      }
-
-      #map #infowindow-content {
-        display: inline;
-      }
-
-      .pac-card {
-        margin: 10px 10px 0 0;
-        border-radius: 2px 0 0 2px;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        outline: none;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        background-color: #fff;
-        font-family: Roboto;
-      }
 
       #pac-container {
         padding-bottom: 12px;
@@ -65,33 +33,98 @@
 
       .pac-controls label {
         font-family: Roboto;
-        font-size: 13px;
+        font-size: 20px;
         font-weight: 300;
       }
 
       #pac-input {
-        background-color: #fff;
-        font-family: Roboto;
-        font-size: 15px;
+      width: 100%;
+	position: relative;
+        font-size: 18px;
         font-weight: 300;
         margin-left: 12px;
-        padding: 0 11px 0 13px;
         text-overflow: ellipsis;
-        width: 400px;
+        
       }
 
-      #pac-input:focus {
-        border-color: #4d90fe;
+	
+      input{
+      	border:none;
+      	background-color: transparent;
       }
-
-      #title {
-        color: #fff;
-        background-color: #4d90fe;
-        font-size: 25px;
-        font-weight: 500;
-        padding: 6px 12px;
+      input:focus{
+      	border:none;
+      	outline:none;
       }
     </style>
+</head>
+<body>
+    <div class="main-container flex-column">
+        <div class="main-header">
+            <div class="image-container flex-column">
+                <div class="search-container">
+                    <div class="search-header flex f14">
+                        <div class="w-block select-bar" id="wait">
+                            <b>줄서기</b>
+                            <div class="under-bar" style="display: none;"></div>
+                        </div>
+                        <div class="w-block" id="reserve">
+                            <b>예약하기</b>
+                            <div class="under-bar" style="display: none;"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="search-bar flex">
+                            <div class="search-item" style="min-width: 300px;">
+                                <div class="ws-block" id="region">
+                                    위치
+	                                <div class="dropdown" id="pac-container">
+											<input class="form-control2" id="pac-input" type="text" name="keyword" placeholder="현재위치">
+	                                </div>
+	                            </div>
+	                           </div>
+	                            <div class="divider" ></div>
+	                            <div id="timebox" class="search-item" style="min-width: 200px; ">
+	                                <div class="ws-block" id="time">
+	                                    시간
+	                                    <div class="dropdown">
+	                                        <div class="dropdown-select">
+	                                            <span class="select">13:30</span>
+	                                            <i class="fa fa-angle-down" style="font-size:30px;"></i>
+	                                        </div>
+	                                        <div class="dropdown-list">
+	                                           
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <div class="divider"></div>
+	                            
+	                            <div class="search-item">
+	                                <div class="ws-block" style="min-width: 150px;" id="pNum">
+	                                    인원 
+	                                    <div class="dropdown" style="width: 80%; margin-right:10px">
+	                                        <div class="dropdown-select">
+	                                            <span class="select">2명</span>
+	                                            <i class="fa fa-angle-down" style="font-size:30px"></i>
+	                                        </div>
+	                                        <div class="dropdown-list">
+	                                            
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <button id="searchBtn" class="search-btn flex" style="flex-basis: 50px;">
+	                                    <i class="fas fa-search" style="color: white;"></i>
+	                                </button>
+	                            </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGR7CBhUjuiLLWGac5u4u_5yN7n6CWO8w&libraries=places&callback=initAutocomplete" async defer></script>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
     <script>
     window.onload = function(){
@@ -120,25 +153,7 @@
  	  	   success:function(data){
  	       console.log(data.documents[0].x);
  	       console.log(data.documents[0].y);
- 	       
- 	      let container = document.getElementById('map');
- 		   	container.style.display = 'block';
- 		   	container.style.width = '500px';
- 		   	container.style.height = '500px';
- 			let options = {
- 				center: new kakao.maps.LatLng(data.documents[0].y, data.documents[0].x),
- 				level: 3
- 			};
- 			
- 			let markerPosition  = new kakao.maps.LatLng(data.documents[0].y, data.documents[0].x);
-
- 			let map = new kakao.maps.Map(container, options);
- 			
- 			let marker = new kakao.maps.Marker({
- 					position: markerPosition
- 				});
- 			
- 			marker.setMap(map);
+ 	     
  	       
  	   },
  	   error : function(e){
@@ -147,15 +162,5 @@
  	})
   	}
     </script>
-  </head>
-  <body>
-    <div id="pac-container">
-		<span>Location</span> <input class="form-control2"
-			id="pac-input" type="text" name="keyword"
-			
-			placeholder="Enter a location">
-			
-			<div id="map"></div>
-	</div>
   </body>
 </html>
