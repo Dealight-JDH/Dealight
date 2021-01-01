@@ -96,7 +96,7 @@
             height: 100%;
         }
         .mypage_main_header{
-        	
+        	position:relative;
             width: 100%;
             padding-top: 20px;
             height: 130px;
@@ -131,7 +131,11 @@
         	border: 1px black solid;
         	border-radius: 3px;
         	cursor: pointer;
+        	position: absolute;
+        	left: 0;
+            top: 20px;
         }
+
         .main_header_link:hover{
         	opacity: 0.7;
         }
@@ -452,7 +456,15 @@
         }
          .modal-content ul{
          	margin : 0 0;
-         	display : inline-block;
+         	display : flex;
+         	flex-direction: row;
+         	align-items: center;
+         	justify-content: center;
+         	
+        }
+        .modal-content ul li {
+        	width:100px;
+        	height:100px;
         }
 
         /* The Close Button */

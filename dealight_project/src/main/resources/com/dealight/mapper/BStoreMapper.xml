@@ -68,6 +68,8 @@
   			rep_menu = #{repMenu},
   			rep_img = #{repImg},
   			seat_stus_cd = #{seatStusCd},
+  			open_tm = #{openTm},
+  			close_tm = #{closeTm},
   			break_sttm = #{breakSttm},
   			break_entm = #{breakEntm},
   			last_ord_tm = #{lastOrdTm},

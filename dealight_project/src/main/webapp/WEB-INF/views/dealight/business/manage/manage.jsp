@@ -14,10 +14,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
-<script src="https://kit.fontawesome.com/0f892675ba.js" crossorigin="anonymous"></script>
+<!-- <script src="https://kit.fontawesome.com/0f892675ba.js" crossorigin="anonymous"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="/resources/js/Chart.js"></script>
 <link rel="stylesheet" href="/resources/css/manage.css">
+<link rel="stylesheet" href="/resources/css/fileupload.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/brands.min.css" integrity="sha512-D0B6cFS+efdzUE/4wh5XF5599DtW7Q1bZOjAYGBfC0Lg9WjcrqPXZto020btDyrlDUrfYKsmzFvgf/9AB8J0Jw==" crossorigin="anonymous" />
 </head>
 <body>
 <main class="store_board" id="store_board_main">
@@ -214,7 +216,10 @@ let writeTimeBar = function (curTime) {
     		//setTimeout($(e.target).parent().removeClass("showAlert"),5000); 	
     	});
     	
-        
+    	$(".alert_reject_btn").on("click", e => {
+    		$(".alert.manage_htdl").addClass("hide");
+    		$(".alert.manage_htdl").removeClass("show");
+    	});
     	
 
 </script>
@@ -901,7 +906,7 @@ let writeTimeBar = function (curTime) {
         			return;
         		strNextRsvd += "<div class='next_info_top'>";
         		strNextRsvd += "<span class='next_rsvd_name'>"+rsvd.userId+"</span>";
-        		if(rsvd.htdlId !== null) strNextRsvd += "<span class='next_rsvd_telno'>"+"<i class='fas fa-fire'></i> "+"핫딜 예약"+"</span>";
+        		if(rsvd.htdlId !== null) strNextRsvd += "<span class='next_rsvd_telno'>"+"<i class='fas fa-burn'></i>"+"핫딜 예약"+"</span>";
         		else if(rsvd.htdlId === null) strNextRsvd += "<span class='next_rsvd_telno'>"+"일반 예약"+"</span>";
         		strNextRsvd += "<span class='store_htdl' style='display:none;'>"+rsvd.htdlId+"</span>";
         		strNextRsvd += "</div>";
@@ -1151,7 +1156,7 @@ let writeTimeBar = function (curTime) {
         		strUserRsvdList += "</div>";
         		userRsvdList.forEach(rsvd => {
     	    		strUserRsvdList += "<div class='rsvd_history'>";
-    	    		strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+    	    		if(rsvd.htdlId) strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-burn'></i></span>";
     	    		strUserRsvdList += "<div class='info'>";
     	    		strUserRsvdList += "<div>예약 번호</div>";
     	    		strUserRsvdList += "<div>"+rsvd.rsvdId+"</div>";
@@ -1204,8 +1209,8 @@ let writeTimeBar = function (curTime) {
     			
     			strRsvdDtlsTop += "<div class='modal_rsvd_tit'>예약 상세</div>";
     			strRsvdDtlsTop += "<div class='rsvd_top_box'>";
-    			if(rsvd.htdlId != null) strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-fire'></i></span>";
-    			strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+    			if(rsvd.htdlId != null) strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-burn'></i></i></span>";
+    			strRsvdDtlsTop += "<span class='htdl_stus'></span>";
     			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
     			strRsvdDtlsTop += "<div>예약 번호</div>";
     			strRsvdDtlsTop += "<div>"+rsvd.rsvdId+"</div>";
@@ -1453,7 +1458,7 @@ let writeTimeBar = function (curTime) {
 	        	strHtdl += "</div>";
 	        	strHtdl += "<div class='htdl_label_input htdl_name'>";
 	        	strHtdl += "<span>세트 이름</span>";
-	        	strHtdl += "<input class='form-control' name='setName' placeholder='세트 이름'>";
+	        	strHtdl += "<input class='form-control' name='setName' placeholder='세트 이름' required>";
 	        	strHtdl += "</div>";
 	        	strHtdl += "<div class='htdl_label_input htdl_menu'>";
 	        	strHtdl += "<span>핫딜 메뉴</span>";
@@ -1502,13 +1507,19 @@ let writeTimeBar = function (curTime) {
 	        	strHtdl  += "<textarea rows='2' cols='22' name='intro'></textarea>";
 	        	strHtdl  += "</div>";
 	        	
-	        	strHtdl += "<div class='uploadDiv htdl'><input type='file' id='js_upload' name='uploadFile'></div>";
+	        	strHtdl += "<div class='uploadDiv htdl'>";
+	        	
+	    		strHtdl += "<label for='js_upload'>";
+	    		strHtdl += "<i class='fas fa-arrow-circle-up'></i> 사진 첨부하기";
+	    		strHtdl += "</label>";
+	    		strHtdl += "<input style='display:none;' type='file' id='js_upload' name='uploadFile' multiple hidden='hidden'>";
+	    		strHtdl += "</div>";
                 strHtdl += "<div class='uploadResult_htdl'><ul></ul></div>";
                 strHtdl += "<input type='hidden' id='storeId' name='storeId' value='"+storeId+"'>";
                 strHtdl += "<input type='hidden' id='brch' name='brch' value='"+brch+"'>";
                 strHtdl += "<div class='htdl_reg_btn_box'>";
                 strHtdl += "<button class='regHtdlBtn' type='submit' data-oper='register'>승낙</button>";
-                strHtdl += "<button class='regHtdlBtn' type='submit' data-oper='refuse'>거절</button>";
+                strHtdl += "<button class='regHtdlBtn reject' type='submit' data-oper='refuse'>거절</button>";
                 strHtdl += "</div>";
 	        	
         		console.log("before strHtdl : "+ strHtdl);
@@ -1596,11 +1607,10 @@ let writeTimeBar = function (curTime) {
 	    					str += "<li data-path='" + obj.uploadPath +"'";
 	    					str += "data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"'data-type='"+obj.image+"'";
 	    					str += "><div>";
-	    					str += "<span>" + obj.fileName +"</span>";
+	    					str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image'"
+	    								+" class='btn btn-warning btn-circle fileupload_img_btn'><i class='far fa-times-circle'></i></button><br>";
 	    					str += "<img src='/display?fileName=" + fileCallPath + "'>";
 	    					str += "</div>";
-	    					str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image'"
-	    								+" class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
 	    					str += "</li>";
 	    	                /* 만일 파일이 이미지 형식이 아니면 */
 	    	                /* default img를 보여준다. */
@@ -1610,10 +1620,10 @@ let writeTimeBar = function (curTime) {
 
 	    					str += "<li "
 	    					str += "data-path='" + obj.uploadPath + "'data-uuid='" + obj.uuid + "'data-filename='" + obj.fileName + "' data-type='" +obj.image+"'>" + "<div>";
-	    					str += "<span> " + obj.fileName + "</span>";
+	    					str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image'"
+	    					+" class='btn btn-warning btn-circle fileupload_img_btn'><i class='far fa-times-circle'></i></button><br>";
 	    					str += "<img src='/resources/img/attach.png'>";
 	    					str += "</div>";
-	    					str += "<button type='button' data-file=\'"+fileCallPath+"\'data-type='file' class='btn btn-warning btn-circle'><i class='fa fa-times'></i>삭제</button><br>";
 	    					str += "</li>";
 	    				}
 	    			});
@@ -1702,19 +1712,6 @@ let writeTimeBar = function (curTime) {
 	    					}); // $.ajax
 	    			};
 	    	
-	    		var showImage_htdl = function (fileCallPath) {
-	    			
-	    			alert(fileCallPath);
-	    			
-	    			$(".bigPictureWrapper_htdl").css("display","flex").show();
-	    			
-	    			$(".bigPicture_htdl")
-	    			.html("<img src='/display?fileName=" + fileCallPath + "'>")
-	    			.animate({width:'100%',height:'100%'},1000);
-	    			
-	    			
-	    		}// end show image
-	    		
 	    		var showImageHandler_htdl = function(e) {
 	    	    	
 	    			if(e.target.type === "button")
@@ -1733,18 +1730,11 @@ let writeTimeBar = function (curTime) {
 	    	        }
 	    		};
 	    		
-	    		var bigImgAniHandler_htdl = function (e) {
-	    			$(".bigPicture_htdl").animate({width:'0%',height:'0%'},1000);
-	    			setTimeout(() => {
-	    				$(this).hide();
-	    			}, 1000);
-	    		}
-	    		
 	    		/* submit 타입의 버튼을 제어한다.*/
 	    		$("#js_upload").change(uploadHandler_htdl); 
 	    		$(".uploadResult_htdl").on("click", "button", deleteHandler_htdl);
 	    	    $(".uploadResult_htdl").on("click", "li", showImageHandler_htdl);
-	    		$(".bigPictureWrapper_modify").on("click",bigImgAniHandler_htdl);
+	    		//$(".bigPictureWrapper_modify").on("click",bigImgAniHandler_htdl);
 	    		
 	    		let regHtdlFormObj = $(".regHtdlForm");
 	    		
@@ -1814,14 +1804,17 @@ let writeTimeBar = function (curTime) {
 		    				modal.css("display","none");
 		    				$(".alert.manage_htdl").addClass("hide");
 		    	    		$(".alert.manage_htdl").removeClass("show");
-	    				},1000)
+	    				},500)
 	    				//regHtdlFormObj.submit();
 	    				
 	    			}else if(operation === 'refuse'){
 	    				alert("핫딜이 거절 되었습니다.");
-	    				modal.find("ul").html("");
-		    			modal.find("input").val("");
-		    			modal.css("display","none");
+	    	    		modal.css("display","none");
+	    	    		modal.find("ul").html("");
+	    	    		modal.find(".content_div").html("");
+	    	    		modal.find(".content_div").css("display","none");
+	    	    		$(".alert.manage_htdl").addClass("hide");
+	    	    		$(".alert.manage_htdl").removeClass("show");
 	    			}
 	    			
 	    		}); // reg btn click

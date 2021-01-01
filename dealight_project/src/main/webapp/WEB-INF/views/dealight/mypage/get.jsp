@@ -187,7 +187,7 @@
             
                 <div class="mypage_right">
                     <div class="mypage_main_header">
-                        <div class="main_header_title">회원정보수정</div>
+                        <div class="main_header_title">회원정보</div>
                         <div class="main_header_subtitle">회원님의 정보를  수정할 수 있습니다.</div>
                     </div>
                     

@@ -54,7 +54,7 @@
         
         .main_nav_logo img{
         	padding-left:50px;
-            width: 100%;
+            width: 280px;
             height: auto;
         }
         
@@ -80,6 +80,7 @@
             align-items: center;
             justify-content: flex-end;
         	margin : auto 15px  auto 15px;
+        	min-width: 100px;
         }
         .nav_reg_brno{
         	width: 15%;
@@ -88,6 +89,7 @@
             justify-content: center;
             font-size: 18px;
             font-weight: bold;
+            min-width: 100px;
         }
 
         /*.account_btn::after{
@@ -208,6 +210,7 @@
         	flex-direction: row;
         	justify-content: center;
         	align-items: center;
+        	min-width: 100px;
         }
         #header_cur_wait{
         	display:flex;
@@ -216,6 +219,7 @@
         	align-items: center;
         	border-radius: 10px;
         	width:30%;
+        	min-width: 200px;
         }
         #header_cur_wait a {
             padding:5px 12px;

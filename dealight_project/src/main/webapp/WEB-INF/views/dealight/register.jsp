@@ -176,6 +176,7 @@
         font-size: 16px;
         border: 1px solid #d32323;
         background-color:  #d32323;
+        opacity: 0.9;
         /* background-color:  red; */
         border-radius: 3px;
         color: #fff;

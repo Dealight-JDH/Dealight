@@ -12,6 +12,7 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
 <script src="/resources/js/Rater.js"></script>
 <link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
+<link rel="stylesheet" href="/resources/css/fileupload.css">
 </head>
 <body>
     <main>
@@ -484,7 +485,7 @@ window.onload = function () {
     		strUserRsvdList += "</div>";
     		userRsvdList.forEach(rsvd => {
 	    		strUserRsvdList += "<div class='rsvd_history'>";
-	    		strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+	    		if(rsvd.htdlId !== null) strUserRsvdList += "<span class='htdl_stus'><i class='fas fa-burn'></i></span>";
 	    		strUserRsvdList += "<div class='info'>";
 	    		strUserRsvdList += "<div>예약 번호</div>";
 	    		strUserRsvdList += "<div>"+rsvd.rsvdId+"</div>";
@@ -538,8 +539,7 @@ window.onload = function () {
 			
 			strRsvdDtlsTop += "<div class='modal_rsvd_tit'>예약 상세</div>";
 			strRsvdDtlsTop += "<div class='rsvd_top_box'>";
-			if(rsvd.htdlId != null) strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-fire'></i></span>";
-			strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-fire-alt'></i></span>";
+			if(rsvd.htdlId != null) strRsvdDtlsTop += "<span class='htdl_stus'><i class='fas fa-burn'></i></span>";
 			strRsvdDtlsTop += "<div class='modal_rsvd_info'>";
 			strRsvdDtlsTop += "<div>예약 번호</div>";
 			strRsvdDtlsTop += "<div>"+rsvd.rsvdId+"</div>";
@@ -613,8 +613,13 @@ window.onload = function () {
     		strRevw += "<textarea cols='30' row='20' name='cnts' placeholder='리뷰 내용을 입력해주세요.'></textarea>";
     		strRevw += "</div>";
     		strRevw += "<input name='rating' id='rate_input' hidden>";
-    		strRevw += "<div class='file_body'></div>";
-    		strRevw += "<div class='form_img'><input id='js_upload' type='file' name='uploadFile' multiple></div>";
+    		strRevw += "<div class='file_body'></div><div class='form_img'>";
+    		
+    		strRevw += "<label for='js_upload'>";
+    		strRevw += "<i class='fas fa-arrow-circle-up'></i> 사진 첨부하기";
+    		strRevw += "</label>";
+    		
+    		strRevw += "<input style='display:none;' id='js_upload' type='file' name='uploadFile' multiple></div>";
     		strRevw += "<div class='uploadResult'><ul></ul></div>";
     		strRevw += "<div class='revw_btn_box'>";
     		strRevw += "<button id='submit_revwRegForm'>리뷰 등록</button>";
@@ -655,7 +660,7 @@ window.onload = function () {
 	    	if(isModal)  $("#js_upload").change(uploadHandler); 
 	    	$(".uploadResult").on("click", "button", deleteHandler);
 	        //$(".uploadResult").on("click", "li", showImageHandler);
-	    	$(".bigPictureWrapper").on("click",bigImgAniHandler);
+	    	//$(".bigPictureWrapper").on("click",bigImgAniHandler);
 	    	if(pageType === 'modify' || pageType === 'register') $(".uploadResult").on("click","img",selRepImgHandler);
  		
  	});
@@ -730,7 +735,7 @@ window.onload = function () {
 		console.log("store id : "+storeId);
 		addLike({userId:userId,storeId:storeId});
 		
-		alert($(e.target).parent().find(".store_info_id").text()+"번이 추가 되었습니다.");
+		alert("찜이 추가 되었습니다.");
 
 		showStoreInfo(userId, storeId);
     }

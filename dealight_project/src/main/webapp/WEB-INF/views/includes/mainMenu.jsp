@@ -3,6 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <html>
 <head>
 <!--  common  -->
@@ -267,7 +268,7 @@
         
         <nav class="main_nav_right">
             <div id="header_cur_wait"></div>
-            <div class='nav_user_id_box'><c:if test="${userId != null}"> <span id="nav_user_id">${userId }님</span></c:if></div>
+            <div class='nav_user_id_box'><c:if test="${userId != null}"> <span id="nav_user_id">${userName }님</span></c:if></div>
             <div class="nav_reg_brno"><a href="/dealight/mypage/bizauth/list">사업자 등록</a></div>
             <div class="account_btn">
             	<div class="account_icon_box">
@@ -293,7 +294,7 @@
 								<div class="account_cnts"><a href="/dealight/business/">매장 관리</a></div>
 							</sec:authorize>
 							<sec:authorize access="hasRole('ROLE_ADMIN')">								
-								<div class="account_cnts"><a href="/dealight/mypage/business/">서비스 관리</a></div>
+								<div class="account_cnts"><a href="/dealight/admin/main ">서비스 관리</a></div>
 							</sec:authorize>
 								<div class="account_cnts"><a href="/dealight/mypage/get">회원정보수정</a></div>
 								<div class="account_cnts"><a href="dealight/logout" onclick="submit(event)">로그아웃</a></div>
@@ -345,6 +346,12 @@
       </div>
 	
 	<script>
+	
+	$(document).ready(function(){
+		console.log("security user.....")
+		console.log('${sessionScope.SPRING_SECURITY_CONTEXT.authentication.principal}');
+
+	});
 
 	//로그아웃 폼 제출
 	function submit(e){

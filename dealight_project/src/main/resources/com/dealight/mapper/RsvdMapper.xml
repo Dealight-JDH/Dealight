@@ -399,13 +399,14 @@
             WHERE user_id = #{userId}
             AND stus_cd = 'C'
             OR stus_cd = 'L'
+            AND user_id = #{userId}
             ORDER BY time desc
 		    )
 		    WHERE  rownum <= #{cri.pageNum} * #{cri.amount}
 		) r, tbl_rsvd_dtls d
 		WHERE 
-		rn > (#{cri.pageNum} -1) * #{cri.amount} AND 
-		r.rsvd_id = d.rsvd_id
+		rn > (#{cri.pageNum} -1) * #{cri.amount} 
+		AND r.rsvd_id = d.rsvd_id
 		ORDER BY time desc
 		]]>
 	</select>
@@ -418,6 +419,8 @@
 			AND user_id = #{userId}
 			AND stus_cd = 'C'
 			OR stus_cd = 'L'
+			AND rsvd_id > 0
+			AND user_id = #{userId}
 		]]>
 	</select>
 	

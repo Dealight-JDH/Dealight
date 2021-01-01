@@ -28,9 +28,11 @@
 		            
 		            str += "<li data-path='" + img.uploadPath + "'data-uuid='" + img.uuid + "'data-filename='"
 		                + img.fileName +"'data-type='" + img.image+"'><div>";
-		            str += "<span> " + img.fileName + "</span>";
+		            //str += "<span> " + img.fileName + "</span>";
 		            str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='image'";
-		            str += "class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+		            str += "class='btn btn-warning btn-circle fileupload_img_btn";
+		            if(category === 'revwImgs' || category === 'storeImgs' && pageType === 'register') str += " review_file"; 
+		            str += "'><i class='far fa-times-circle'></i></button><br>";
 		            if(img.rep === 'Y') str += "<img class='selected_img' id='upload_img_"+i+"' src='/display?fileName=" + fileCallPath+"'>";
 		            if(img.rep !== 'Y') str += "<img id='upload_img_"+i+"' src='/display?fileName=" + fileCallPath+"'>";
 		            str += "</div></li>";
@@ -39,9 +41,9 @@
 		            
 		            str += "<li data-path='" + img.uploadPath +"' data-uuid='" + img.uuid 
 		                    +"' data-filename='" + img.fileName +"' data-type='" + img.image+"'><div>";
-		            str += "<span>" + img.fileName+"</span><br/>";
+		            //str += "<span>" + img.fileName+"</span><br/>";
 		            str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='file'";
-		            str += "class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+		            str += "class='btn btn-warning btn-circle'><i class='far fa-times-circle'></i></button><br>";
 		            str += "<img src='/resources/img/attach.png'>";
 		            str += "</div>";
 		            str += "</li>";
@@ -81,14 +83,15 @@
 				str += "<li data-path='" + obj.uploadPath +"'";
 				str += "data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"'data-type='"+obj.image+"'";
 				str += "><div>";
-				str += "<span>" + obj.fileName +"</span>";
+				//str += "<span>" + obj.fileName +"</span>";
+				if(category === 'revwImgs' || category === 'storeImgs' && pageType === 'register') str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image' class='btn btn-warning btn-circle fileupload_img_btn review_file'><i class='far fa-times-circle'></i></button><br>";
+				else str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image' class='btn btn-warning btn-circle fileupload_img_btn'><i class='far fa-times-circle'></i></button><br>";
+				 
 				if(obj.rep==='Y')str += "<img id='upload_img_"+i+"' class='selected_img' src='/display?fileName=" + fileCallPath + "'>";
 				if(obj.rep!=='Y' && i !== 0) str += "<img id='upload_img_"+i+"' src='/display?fileName=" + fileCallPath + "'>";
 				if(obj.rep !=='Y' && i === 0 && $(".selected_img").length >= 1) str += "<img id='upload_img_"+i+"' src='/display?fileName=" + fileCallPath + "'>";
 				if(obj.rep !=='Y' && i === 0 && $(".selected_img").length < 1) str += "<img id='upload_img_"+i+"' class='selected_img' src='/display?fileName=" + fileCallPath + "'>";
 				str += "</div>";
-				str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image'"
-							+" class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
 				str += "</li>";
                 /* 만일 파일이 이미지 형식이 아니면 */
                 /* default img를 보여준다. */
@@ -98,10 +101,12 @@
 
 				str += "<li "
 				str += "data-path='" + obj.uploadPath + "'data-uuid='" + obj.uuid + "'data-filename='" + obj.fileName + "' data-type='" +obj.image+"'>" + "<div>";
-				str += "<span> " + obj.fileName + "</span>";
+				//str += "<span> " + obj.fileName + "</span>";
+				if(category === 'revwImgs' || category === 'storeImgs' && pageType === 'register') str += "<button type='button' data-file=\'"+fileCallPath+"\'data-type='file' class='btn btn-warning btn-circle fileupload_img_btn review_file'><i class='far fa-times-circle'></i></button><br>";
+				else str += "<button type='button' data-file=\'"+fileCallPath+"\'data-type='file' class='btn btn-warning btn-circle fileupload_img_btn'><i class='far fa-times-circle'></i></button><br>";
+				
 				str += "<img id='upload_img_"+i+"' draggable='true' ondragstart='drag(event)' src='/resources/img/attach.png'>";
 				str += "</div>";
-				str += "<button type='button' data-file=\'"+fileCallPath+"\'data-type='file' class='btn btn-warning btn-circle'><i class='fa fa-times'></i>삭제</button><br>";
 				str += "</li>";
 			}
 		});
@@ -136,11 +141,11 @@
 	        /* jquery의 foreach문 */
 			$(".uploadResult ul li").each(function(i, obj) {
 				
-				let jobj = $(obj);
+				let jobj = $(obj);	
 				
 				str += "<input type='hidden' name='imgs["+i+"].fileName' value='" + jobj.data("filename")+"'>";
 				str += "<input type='hidden' name='imgs["+i+"].uuid' value='" + jobj.data("uuid")+"'>";
-				str += "<input type='hidden' name='imgs["+i+"].uploadPath' value='" + jobj.data("path")+"'>";
+				str += "<input type='hidden' name='imgs["+i+"].uploadPath' value='" + jobj.data("path").replace(new RegExp(/\\/g),"/") + "'>";
 				str += "<input type='hidden' name='imgs["+i+"].image' value='" + jobj.data("type")+"'>";
 				if(jobj.find(".selected_img").length === 0) str += "<input type='hidden' name='imgs["+i+"].rep' value='" + 'N' +"'>";
 				if(jobj.find(".selected_img").length > 0) str += "<input type='hidden' name='imgs["+i+"].rep' value='" + 'Y' +"'>";;  
@@ -243,6 +248,7 @@
 				}); // $.ajax
 		};
 
+		/*
 	let showImage = function (fileCallPath) {
 		
 		alert(fileCallPath);
@@ -280,6 +286,7 @@
 			$(this).hide();
 		}, 1000);
 	}
+	*/
 	
 	let selRepImgHandler = function (e) {
 		
@@ -303,7 +310,7 @@
 	if(pageType === 'modify' || pageType === 'register') $(".uploadResult").on("click", "button", deleteHandler);
 	if(pageType === 'modify' || pageType === 'register') $(".uploadResult").on("click","img",selRepImgHandler);
 	if(pageType === 'get') $(".uploadResult").on("click", "li", showImageHandler);
-	if(pageType === 'get') $(".bigPictureWrapper").on("click",bigImgAniHandler);
+	//if(pageType === 'get') $(".bigPictureWrapper").on("click",bigImgAniHandler);
 	
 	console.log("pageType : "+pageType)
 	if(storeId) getImg(storeId);
