@@ -405,6 +405,8 @@ function getWait(userId,callback,error) {
 
 let header_userId = '${userId}';
 
+$("#nav_user_id").text(header_userId.substr(0,header_userId.indexOf("@")) +"님");
+
 getWait(header_userId,wait => {
 	if(!wait)
 		return
