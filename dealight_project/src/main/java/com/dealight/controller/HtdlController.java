@@ -1,14 +1,13 @@
 package com.dealight.controller;
 
-import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,13 +17,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.HtdlCriteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlMenuDTO;
 import com.dealight.domain.HtdlRequestDTO;
+import com.dealight.domain.HtdlSearchDTO;
 import com.dealight.domain.HtdlVO;
 import com.dealight.service.HtdlService;
 import com.dealight.service.HtdlTimeCheckService;
@@ -132,7 +131,7 @@ public class HtdlController {
 
 	//핫딜 메인 페이지
 	@GetMapping("/main")
-	public void getList(Authentication auth, HtdlCriteria hCri, Model model) {
+	public void getList(Authentication auth, HtdlSearchDTO requestDto, HtdlCriteria hCri, Model model) {
 	
 		log.info("hotdeal getList...");
 //		List<HtdlVO> lists = service.getList();
@@ -159,6 +158,13 @@ public class HtdlController {
 				model.addAttribute("userId", userId);
 			}			
 		}
+		
+//		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+//		Date date = new Date();
+//		String sysdate = format.format(date);
+//		
+//		hCri.setStartTm(sysdate+" "+ requestDto.getStartTm());
+//		hCri.setEndTm(sysdate+" " + requestDto.getEndTm());
 		
 		model.addAttribute("lists", service.getList("A", hCri));
 //		model.addAttribute("pageMaker", new HtdlPageDTO(hCri, 123));

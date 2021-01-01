@@ -88,7 +88,7 @@ public class HtdlMapperTests {
 		hCri.setKeyword("종로");
 		hCri.setStartTm("2020/11/27 13:00");
 		hCri.setEndTm("2020/11/27 14:00");
-		List<HtdlVO> list = mapper.getListWithPaging("I", hCri);
+		List<HtdlVO> list = mapper.getListWithPaging("P", hCri);
 		
 		list.forEach(vo -> log.info(vo));
 	}

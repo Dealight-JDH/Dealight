@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dealight.domain.RsvdTimeDTO;
 import com.dealight.service.PymtService;
@@ -34,7 +35,8 @@ public class RsvdTask {
 	//새벽 2시마다 예약 가능 테이블 초기화
 	//@Scheduled(cron = "0 0 2 * * *")
 	//@Scheduled(cron = "0 * * * * *")
-	@Scheduled(cron = "0 * * * * *")
+	//@Scheduled(cron = "0 * * * * *")
+//	@Transactional
 	public void initRsvdAvail() {
 	
 		log.info("rsvd avail init.....");

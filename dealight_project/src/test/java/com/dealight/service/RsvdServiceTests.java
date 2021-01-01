@@ -430,10 +430,27 @@ public class RsvdServiceTests {
 		return null;
 	}
 	
+	@Test
+	public void testFormatDate() {
+		LocalDate sysdate = LocalDate.now();
+		log.info("sysdate: " + sysdate);
+		
+		log.info("================year: " + sysdate.getYear());
+		log.info("================month: " + sysdate.getDayOfMonth());
+		log.info("================day: " + sysdate.getDayOfMonth());
+//		String strTime = sysdate.getYear()+"-"+sysdate.getMonthValue()+"-"+sysdate.getDayOfMonth()+"T"+time;
+		String str = sysdate+"T13:00";
+		LocalDateTime formatTime = LocalDateTime.parse(str);
+		log.info("========formatTime: " + formatTime);
+		log.info(str);
+		//LocalDateTime formatTime = formatDate("13:00");
+		//log.info("=====test formatTime: " + formatTime );
+	}
 	//날짜 변환 메서드
 	private LocalDateTime formatDate(String time) {
 		
 		LocalDate sysdate = LocalDate.now();
+		
 		String strTime = sysdate.getYear()+"-"+sysdate.getMonthValue()+"-"+sysdate.getDayOfMonth()+"T"+time;
 		LocalDateTime formatTime = LocalDateTime.parse(strTime);
 		return formatTime;

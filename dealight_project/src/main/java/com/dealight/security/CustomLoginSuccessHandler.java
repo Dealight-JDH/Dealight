@@ -9,16 +9,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-import com.ctc.wstx.util.StringUtil;
+import com.dealight.domain.UserVO;
+import com.dealight.service.UserService;
 
 import lombok.extern.log4j.Log4j;
 
 @Log4j
 public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+	
+	@Autowired
+	private UserService service;
 	
 	public CustomLoginSuccessHandler(String defaultTargetUrl) {
 		setDefaultTargetUrl(defaultTargetUrl);
@@ -67,7 +71,10 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 		
         if (session != null) {
         	
-        	session.setAttribute("userId", authentication.getName());
+        	String userId = authentication.getName();
+        	UserVO vo = service.get(userId);
+        	session.setAttribute("userId", userId);
+        	session.setAttribute("userName", vo.getName());
         	log.info("session.............user id : "+session.getAttribute("userId"));
         	
             String redirectUrl = (String) session.getAttribute("prevPage");
