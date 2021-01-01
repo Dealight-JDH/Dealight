@@ -1,0 +1,134 @@
+    .uploadResult{
+	    width:100%;
+    }
+    .uploadResult ul{
+	display: flex;
+	flex-flow: row;
+	justify-content: center;
+	align-items: center;
+    }
+.uploadResult ul li{
+	list-style: none;
+	padding: 10px;
+	align-content: center;
+	text-align: center;
+}
+.uploadResult ul li > div{
+	position:relative;
+}
+.uploadResult ul li img{
+	width: 100px;
+	height: 100px;
+}
+.uploadResult ul li span{
+	color:white;
+}
+.fileupload_img_btn{
+	position:absolute;
+    border: none;
+    background-color: transparent;
+    font-size: 24px;
+    cursor: pointer;
+    outline: none;
+    color: #ED5650;
+    right: 30px;
+    top:10px;
+}
+.form_img label{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background-color: #868686;
+    color: white;
+    padding: 3px 12px;
+    font-weight: bold;
+    padding-right: 13px;
+    font-size: 15px;
+    height: 30px;
+    width: 150px;
+    cursor: pointer;
+}
+.form_img label:hover{
+    opacity: 0.7;
+}
+.form_img label i {
+    margin-right: 10px;
+    font-size: 15px;
+}
+.selected_img{
+      border : 4px #ED5650 solid;
+      border-radius:5px;
+}
+        
+        
+.form_img_modify label{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background-color: #868686;
+    color: white;
+    padding: 3px 12px;
+    font-weight: bold;
+    padding-right: 13px;
+    font-size: 15px;
+    height: 30px;
+    width: 150px;
+    cursor: pointer;
+}
+.form_img_modify label:hover{
+    opacity: 0.7;
+}
+.form_img_modify label i {
+    margin-right: 5px;
+    font-size: 15px;
+}
+.uploadResult_modify ul li > div{
+	position:relative;
+}
+.uploadResult_modify .fileupload_img_btn{
+	top:5px;
+	right:-35px;
+	
+}
+.fileupload_img_btn.review_file{
+	right:-40px;
+	top:0px;
+}
+
+.uploadResult_htdl ul li > div{
+	position:relative;
+}
+.uploadResult_htdl .fileupload_img_btn{
+	top:5px;
+	right:-35px;
+	
+}
+    .uploadResult{
+	    width:100%;
+    }
+    .uploadResult ul{
+	display: flex;
+	flex-flow: row;
+	justify-content: center;
+	align-items: center;
+    }
+.uploadResult_htdl ul li{
+	list-style: none;
+	padding: 10px;
+	align-content: center;
+	text-align: center;
+}
+.uploadResult_htdl ul li > div{
+	position:relative;
+}
+.uploadResult_htdl ul li img{
+	width: 100px;
+	height: 100px;
+}
+.uploadResult_htdl ul li span{
+	color:white;
+}

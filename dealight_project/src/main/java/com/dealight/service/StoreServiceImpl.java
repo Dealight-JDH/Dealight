@@ -292,9 +292,7 @@ public class StoreServiceImpl implements StoreService {
 		StoreLocVO loc = new StoreLocVO();
 		StoreEvalVO eval = new StoreEvalVO();
 		StoreOptionVO opt = new StoreOptionVO();
-		
 
-		
 		return result == 1 && result2 == 1;
 	}
 

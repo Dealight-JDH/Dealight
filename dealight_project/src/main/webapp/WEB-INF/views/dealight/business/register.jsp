@@ -11,6 +11,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="preconnect" href="https://fonts.gstatic.com">
+<link rel="stylesheet" href="/resources/css/fileupload.css">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 <title>매장 등록 하기</title>
 	<style>
@@ -319,6 +320,7 @@
             letter-spacing: 2px;
             font-size: 24px;
         }
+        /*
         .uploadResult {
             width : 100%;
             background-color : gray;
@@ -369,6 +371,7 @@
         .bigPicture img {
             width : 600px;
         }
+        */
         #map {
         	margin-top:20px;
         	margin-left:10px;
@@ -380,9 +383,7 @@
             width:200px;
             height:200px;
         }
-        .selected_img{
-            border : 4px red solid;
-        }
+
         .label_input.select_box{
         	width:60%;
             /*border: 1px solid black;*/
@@ -584,19 +585,22 @@
 	                    <div id="map"></div>
 	                </div> <!-- end location_wrapper -->
 	                <div class="upload_wrapper">
-	                    <div class=""><h2>사진 첨부하기</h2></div>
 	                    <div class="file_body">
 	                        <div class="form_img">
-	                            <input type="file" name='uploadFile' multiple>
+		                        <label for="label_uploadfile">
+				                    <i class="fas fa-arrow-circle-up"></i> 사진 첨부하기
+				                </label>
+	                            <input style='display:none;' type="file" id='label_uploadfile' name='uploadFile' multiple hidden='hidden'>
 	                        </div> 
 	                        <div class='uploadResult'>
 	                            <ul></ul>
 	                        </div> <!-- uploadResult -->
 	                    </div>
-	                    <div class='bigPictureWrapper'>
+	                    <!-- <div class='bigPictureWrapper'>
 	                        <div class='bigPicture'>
 	                        </div>
 	                    </div>
+	                     -->
 	                </div> <!-- end upload_wrapper -->
 	                <div class="checkbox_wrapper">
 	                    <div class="label_input terms">

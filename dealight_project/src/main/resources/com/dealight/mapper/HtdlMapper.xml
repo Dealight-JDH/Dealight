@@ -459,6 +459,7 @@
 		AND h.htdl_id = d.htdl_id
 		AND stus_cd = 'A'
 		OR stus_cd = 'P'
+		AND h.htdl_id = d.htdl_id
 	</select>
 
 </mapper>

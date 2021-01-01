@@ -584,7 +584,7 @@ public class RsvdMapperTests {
     @Test
     public void findRsvdListWithPagingAndDtlsByUserIdTest1() {
     	
-    	userId = "kjuioq";
+    	userId = "aaaa";
     	Criteria cri = new Criteria(1,3);
     	
     	List<RsvdVO> list = mapper.findRsvdListWithPagingAndDtlsByUserId(userId, cri);

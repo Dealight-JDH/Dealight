@@ -28,9 +28,8 @@
 		            
 		            str += "<li data-path='" + img.uploadPath + "'data-uuid='" + img.uuid + "'data-filename='"
 		                + img.fileName +"'data-type='" + img.image+"'><div>";
-		            str += "<span> " + img.fileName + "</span>";
 		            str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='image'";
-		            str += "class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+		            str += "class='btn btn-warning btn-circle fileupload_img_btn'><i class='far fa-times-circle'></i></button><br>";
 		            str += "<img src='/display?fileName=" + fileCallPath+"'>";
 		            str += "</div></li>";
 		            
@@ -38,9 +37,8 @@
 		            
 		            str += "<li data-path='" + img.uploadPath +"' data-uuid='" + img.uuid 
 		                    +"' data-filename='" + img.fileName +"' data-type='" + img.image+"'><div>";
-		            str += "<span>" + img.fileName+"</span><br/>";
-		            str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='file'";
-		            str += "class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+		            str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='image'";
+		            str += "class='btn btn-warning btn-circle fileupload_img_btn'><i class='far fa-times-circle'></i></button><br>";
 		            str += "<img src='/resources/img/attach.png'>";
 		            str += "</div>";
 		            str += "</li>";
@@ -81,11 +79,10 @@
 				str += "<li data-path='" + obj.uploadPath +"'";
 				str += "data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"'data-type='"+obj.image+"'";
 				str += "><div>";
-				str += "<span>" + obj.fileName +"</span>";
+				str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image'"
+				+" class='btn btn-warning btn-circle fileupload_img_btn'><i class='far fa-times-circle'></i></button><br>";
 				str += "<img src='/display?fileName=" + fileCallPath + "'>";
 				str += "</div>";
-				str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image'"
-							+" class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
 				str += "</li>";
                 /* 만일 파일이 이미지 형식이 아니면 */
                 /* default img를 보여준다. */
@@ -95,10 +92,9 @@
 
 				str += "<li "
 				str += "data-path='" + obj.uploadPath + "'data-uuid='" + obj.uuid + "'data-filename='" + obj.fileName + "' data-type='" +obj.image+"'>" + "<div>";
-				str += "<span> " + obj.fileName + "</span>";
+				str += "<button type='button' data-file=\'"+fileCallPath+"\'data-type='file' class='btn btn-warning btn-circle fileupload_img_btn'><i class='far fa-times-circle'></i></button><br>";
 				str += "<img src='/resources/img/attach.png'>";
 				str += "</div>";
-				str += "<button type='button' data-file=\'"+fileCallPath+"\'data-type='file' class='btn btn-warning btn-circle'><i class='fa fa-times'></i>삭제</button><br>";
 				str += "</li>";
 			}
 		});

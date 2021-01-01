@@ -396,11 +396,13 @@ $(document).ready(function() {
     	let storeId = $(e.target).parent().parent().parent().parent().parent().find(".store_id").text(),
 			userId = '${userId}';
 		
-		removeLike({userId:userId,storeId:storeId});
-		showLikeList($("input[name='pageNum']").val(),$("input[name='amount']").val(),userId);
+		removeLike({userId:userId,storeId:storeId}, function(){
+			location.reload();
+		});
+		//showLikeList($("input[name='pageNum']").val(),$("input[name='amount']").val(),userId);
 		
 		
-		alert('pageNum : ' + pageNum + ', amount : ' + amount + ', userId : ' + userId + ', storeId : ' +storeId);
+		alert('찜이 취소 되었습니다.');
     }
     
     // 페이징 이벤트 등록

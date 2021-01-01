@@ -359,7 +359,7 @@
         <div class="wait_order">
             <span id="btn_reload"><i class="fas fa-redo-alt"></i></span>
             <div id="cur_wait_pnum_wrapper">
-                <div class="cur_wait_pnum_val">${order}명</div>
+                <div class="cur_wait_pnum_val">${order}팀</div>
                 <div class="cur_wait_pnum_tit">현재 대기 고객</div>
             </div>
             <div id="wait_time_wrapper">

@@ -66,6 +66,12 @@
             align-items: center;
             border: 1px #eeeeef solid;
         }
+        .htdl_cur_row > div{
+        	margin-top: 3px;
+        }
+        .htdl_cur_row > div:first-child{
+        	margin-top: 0;
+        }
         .htdl_cur_wrapper > div:last-child{
             margin-bottom: 15px;
         }
@@ -94,10 +100,11 @@
             justify-content:center;
             align-items:center;
             width: 100px;
-            height: 100%;
+            height: 100px;
         }
         .htdl_info_img > img {
         	width:100px;
+        	height: 100px;
         }
         
         .htdl_info_wrapper{
