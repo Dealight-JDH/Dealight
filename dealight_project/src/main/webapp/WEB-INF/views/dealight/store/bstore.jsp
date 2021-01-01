@@ -9,11 +9,12 @@
 <title>Insert title here</title>
 <%@include file="../../includes/mainMenu.jsp" %>
 
+<link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="/resources/css/selectbox.css" type="text/css" />
 <link rel="stylesheet" href="/resources/css/bstore.css">
-<link rel="preconnect" href="https://fonts.gstatic.com">
 <script src="/resources/js/Rater.js"></script>
 <style type="text/css">
 .panel-footer{
@@ -71,7 +72,7 @@
             <div class="shadow"></div>
             <div class="header-container flex-column">
                 <div class="header-title flex">
-                    ${store.storeNm }
+                    <span style='font-family: "SpoqaHanSans", "Noto Sans SC", "APPLE SD Gothic NEO", "sans-serif";'><b>${store.storeNm }</b></span>
                     <div class="like" data-storeid="${store.storeId }" data-like="${like }">
                         <i class="${like eq 'true' ? 'fas':'far' } fa-heart fa-xs" style="color:#f43939"></i>
                     </div>
@@ -142,16 +143,16 @@
 
                 <div class="body-item flex-column">
                     <h4 class="item-header">
-                        매장정보
+                        <b style='font-family: "SpoqaHanSans", "Noto Sans SC", "APPLE SD Gothic NEO", "sans-serif"; font-size:22px'>매장정보</b>
                     </h4>
                     <div class="item-contents flex-column">
                         <div class="item">
-                            <div class="i-title"> <i class="fas fa-store"></i> 식당소개</div>
-                            <div class="i-contents">${store.bstore.storeIntro}</div>
+                            <div class="i-title" style='font-family: "SpoqaHanSans", "Noto Sans SC", "APPLE SD Gothic NEO", "sans-serif"; font-size:20px; margin: 8px'> <i class="fas fa-store"></i> 식당소개</div>
+                            <div class="i-contents" style="line-height: 25px">${store.bstore.storeIntro}</div>
                         </div>
                         <div class="item flex-column">
                             <div class="i-title"> <i class="fas fa-phone"></i> 전화번호</div>
-                            <div class="i-contents">${store.telno}</div>
+                            <div class="i-contents" style="line-height: 25px">${store.telno}</div>
                         </div>
                     </div>
                 </div>
@@ -160,20 +161,20 @@
 				<c:if test="${store.bstore.menus[0].menuSeq ne null }">
 	                <div class="body-item flex-column">
 	                    <h4 class="item-header">
-	                        메뉴소개
+	                        <b style='font-family: "SpoqaHanSans", "Noto Sans SC", "APPLE SD Gothic NEO", "sans-serif"; font-size:22px' >메뉴소개</b>
 	                    </h4>
 	                    <div class="menu-container flex">
 	                    	<c:forEach items="${store.bstore.menus }" var="menus">
 	                    		<c:if test="${menus.imgUrl ne null}">
-			                        <div class="menu-card flex-column">
+			                        <div class="menu-card flex-column" style="padding: 5px">
 			                        	<c:url value="/display/" var="url"> 
 											<c:param name="fileName" value="${menus.imgUrl}" /> 
 										</c:url>
 			                            <img class="menu-img" src="${url }">
-			                            <div class="i-contents">
+			                            <div class="i-contents" style=' margin:10px 0;font-family: "SpoqaHanSans", "Noto Sans SC", "APPLE SD Gothic NEO", "sans-serif";'>
 			                                <c:out value="${menus.name}" />
 			                            </div>
-			                            <div class="i-contents">${menus.price}</div>
+			                            <div class="i-contents" style='align-self:flex-end;'>${menus.price}원</div>
 			                        </div>
 	                    		</c:if>
 	                        </c:forEach>
@@ -197,7 +198,7 @@
 
                 <div class="body-item flex-column">
                     <h4 class="item-header">
-                        매장위치 & 영업시간
+                        <b style='font-family: "SpoqaHanSans", "Noto Sans SC", "APPLE SD Gothic NEO", "sans-serif"; font-size:22px'>매장위치 & 영업시간</b>
                     </h4>
                     <div class="location-container flex">
                         <div class="map" id="map" >
@@ -228,7 +229,7 @@
                 <c:if test="${store.eval.revwTotNum != 0 }"> 
 	                <div class="body-item flex-column">
 	                    <div class="item-header">
-	                        매장 리뷰
+	                        <b style='font-family: "SpoqaHanSans", "Noto Sans SC", "APPLE SD Gothic NEO", "sans-serif"; font-size:22px'>매장 리뷰</b>
 	                    </div>
 	                    <div class="revw-card">
 	                        <div class="revw_wrapper">
@@ -498,8 +499,23 @@
 			
 			//selectbox 
 			let pNumValues = [["1명", "1"], ["2명", "2"], ["3명","3"], ["4명","4"]];
-		    let timeValues = [["13:00","13:00"],["13:30", "13:30"], ["14:00", "14:00"], ["17:00","17:00"], ["17:30","17:30"]];
+			let timeValue = [["09:00","09:00"], ["09:30","09:30"],["10:00","10:00"],["10:30","10:30"],
+		        ["11:00","11:00"],["11:30","11:30"],["12:00","12:00"],["12:30","12:30"],["13:00","13:00"],["13:30","13:30"],
+		        ["14:00","14:00"],["14:30","14:30"],["15:00","15:00"],["15:30","15:30"],["16:00","16:00"],["16:30","16:30"],["17:00","17:00"],
+		        ["17:30","17:30"],["18:00","18:00"],["18:30","18:30"],["19:00","19:00"],["19:30","19:30"]];
 	    	let a = "<c:out value='${store.bstore.menus }'/>"
+	    	
+	    	let timeValues = [];
+	    	let isValidTime = false
+	    	for(let i = 0; i < timeValue.length; i++){
+	    		if((timeValue[i])[1] == getCurTime()){
+	    			console.log((timeValue[i])[1])
+	    			isValidTime = true;
+	    		}
+	    		if(isValidTime){
+	    			timeValues.push(timeValue[i])
+	    		}
+	    	}
 	    	
 	    	//(클릭이벤트를 걸어줄 요소, 셀렉박스 요소값, 선택값을 추가할 form)
 	    	selectEvent($("#pnum") ,pNumValues,  $("#actionForm"))
@@ -695,6 +711,23 @@
 			}
 		}
 	    
+		function getCurTime(){
+			let today = new Date();   
+			
+			let hours = today.getHours(); // 시
+			let minutes = today.getMinutes();  // 분
+			let seconds = today.getSeconds();  // 초
+			let milliseconds = today.getMilliseconds(); // 밀리초
+			
+			if(minutes < 30){
+				minutes = 30;
+			}else{
+				minutes = "00";
+				hours += 1;
+			}
+			return hours+":"+minutes;
+		}
+		
 	    function selectMenu(menu,form){
 	    	 const list = menu.find(".dropdown-list");
 			 const selectValue =menu.find(".select");

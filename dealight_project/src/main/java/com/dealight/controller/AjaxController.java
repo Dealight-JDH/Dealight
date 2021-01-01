@@ -114,4 +114,10 @@ public class AjaxController {
 		
 		return new ResponseEntity<>(waitService.getCurWaitByUserId(userId),HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/waitcnt/{storeId}",produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Integer> waitCnt(@PathVariable("storeId")long storeId) {
+		
+		return new ResponseEntity<>(sService.getStoreWaitCnt(storeId),HttpStatus.OK);
+	}
 }

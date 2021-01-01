@@ -182,8 +182,9 @@
 }
 
 .dropdown-list {
-		cursor: pointer;
-	
+	 height: 200px;
+        overflow: scroll;
+        z-index : 10;
 	border-radius: 14px;
 	background-color: white;
 	position: absolute;
@@ -194,13 +195,15 @@
 	opacity: 0;
 	visibility: hidden;
 	transition: opacity 0.2s linear, visibility 0.2s linear;
+		cursor: pointer;
+	
+	border: 1px solid #DDDDDD;
 	z-index : 10;
 }
 
 .dropdown-list__item {
 	z-index : 10;
-	margin: 10px;
-	padding: 6px;
+	padding: 20px;	
 	font-size: 12px;
 }
 .dropdown-list__item:hover {

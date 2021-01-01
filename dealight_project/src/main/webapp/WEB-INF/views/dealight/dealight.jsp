@@ -131,17 +131,20 @@
         	</c:forEach>
         </div>
     </div>
+    <div id=curTime></div>
     <form action="/dealight/search/" id="searchForm" method="get">
     	
-    	<input type="text" name="region" value="내 주변">
-    	<input type="text" name="lat" value="37.570414">
-    	<input type="text" name="lng" value="126.985320">
-    	<input type="text" name="pNum" value="2">
+    	<input type="hidden" name="region" value="내 주변">
+    	<input type="hidden" name="lat" value="37.570414">
+    	<input type="hidden" name="lng" value="126.985320">
+    	<input type="hidden" name="pNum" value="2">
     </form>
 <%@include file="../includes/mainFooter.jsp" %>
 
 
 <script>
+
+
 const msg = "<c:out value= '${result}'/>";
 
      $(".card-rating").rate({
@@ -256,7 +259,20 @@ const msg = "<c:out value= '${result}'/>";
 		
 	}
 	
-	
+	function getCurTime(){
+		let today = new Date();   
+		
+		let hours = today.getHours(); // 시
+		let minutes = today.getMinutes();  // 분
+		
+		if(minutes < 30){
+			minutes = 30;
+		}else{
+			minutes = "00";
+			hours += 1;
+		}
+		return hours+":"+minutes;
+	}
 	
     $(document).ready(function(){
     	
@@ -267,10 +283,22 @@ const msg = "<c:out value= '${result}'/>";
     	//[사용자에게 보여질값, 실제 값]
 	    
 	    //셀렉박스에 넣어줄 요소들
-	    let timeValues = [["09:00","09:00"], ["09:30","09:30"],["10:00","10:00"],["10:30","10:30"],
+	    
+	    let timeValue = [["09:00","09:00"], ["09:30","09:30"],["10:00","10:00"],["10:30","10:30"],
 	        ["11:00","11:00"],["11:30","11:30"],["12:00","12:00"],["12:30","12:30"],["13:00","13:00"],["13:30","13:30"],
 	        ["14:00","14:00"],["14:30","14:30"],["15:00","15:00"],["15:30","15:30"],["16:00","16:00"],["16:30","16:30"],["17:00","17:00"],
 	        ["17:30","17:30"],["18:00","18:00"],["18:30","18:30"],["19:00","19:00"],["19:30","19:30"]];
+    	let timeValues = [];
+    	let isValidTime = false
+    	for(let i = 0; i < timeValue.length; i++){
+    		if((timeValue[i])[1] == getCurTime()){
+    			console.log((timeValue[i])[1])
+    			isValidTime = true;
+    		}
+    		if(isValidTime){
+    			timeValues.push(timeValue[i])
+    		}
+    	}
 	    let pNumValues = [["1명", "1"], ["2명", "2"], ["3명","3"], ["4명","4"]];
 	    //아이디값을 넣어줄 inpu태그의 name으로 지정할것
     	const region = $("#region");
@@ -323,7 +351,7 @@ const msg = "<c:out value= '${result}'/>";
         	let inputTag = searchForm.find("input[name='"+name+"']");
         	if(inputTag.length == 0){
         		let str =""
-        		str += "<input type='text' name='"+ name +"' value='" + $(this).data("value") + "'>"
+        		str += "<input type='hidden' name='"+ name +"' value='" + $(this).data("value") + "'>"
         		searchForm.append(str);
         		
         		return;

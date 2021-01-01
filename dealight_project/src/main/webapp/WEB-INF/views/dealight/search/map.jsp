@@ -51,7 +51,7 @@
 	                        <div style="width: 40px; margin-top:2px">정렬</div>
 	                        <div class="dropdown" style="display:inline-block; ">
 	                            <div class="dropdown-select">
-	                                <span class="select f14">거리순</span>
+	                                <span class="select f14" style="min-width: 70px">거리순</span>
 	                                <i class="fa fa-angle-down" style="font-size:20px"></i>
 	                            </div>
 	                            <div class="dropdown-list large-list m0">
@@ -63,7 +63,7 @@
                 </div>
                 <div class="filter-container">
                     <div class="searchtype-container">
-                        <div class="searchtype flex m-r16" id="wait">
+                        <div class="searchtype flex m-r16 ${search.time eq null ? 'select-bar':'' }" id="wait" ${search.time eq null ? 'style="opacity:1;"':'' }>
                             <div class="p-l16">
                                 줄서기
                             </div>
@@ -71,7 +71,7 @@
                                 <i class='fas fa-user-plus fa-4x' style='color:#f43939;'></i>
                             </div>
                         </div>
-                        <div class="searchtype flex" id="reserve">
+                        <div class="searchtype flex ${search.time ne null ? 'select-bar':'' }" id="reserve" ${search.time ne null ? 'style="opacity:1;"':'' }>
                             <div class="p-l16">
                                 예약하기
                             </div>
@@ -147,7 +147,7 @@
 	                        <div class="ws-block" id="region">
                             	위치
                                 <div class="dropdown" id="pac-container">
-									<input class="form-control2" id="pac-input" type="text" name="keyword" placeholder="현재위치" value="${search.region }">
+									<input class="form-control2  f16" id="pac-input" type="text" name="keyword" placeholder="현재위치" value="${search.region }">
                                 </div>
                         	</div>
 	                    </div>
@@ -157,7 +157,7 @@
 	                            <div>시간</div> 
 	                            <div class="dropdown">
 	                                <div class="dropdown-select">
-	                                    <span class="select m4 f16">${search.time }</span>
+	                                    <span class="select m4 f16">${search.time eq null ?'시간을 입력하세요':search.time }</span>
 	                                    <i class="fa fa-angle-down" style="font-size:20px;"></i>
 	                                </div>
 	                                <div class="dropdown-list">
@@ -215,7 +215,7 @@
                 <diV>
                     <div class="map" id="map">
                     </div>
-                    <div style="display:flex; position:absolute;bottom:10px;left:150px;z-index:10;font-size:12px;">
+                    <div style="display:flex; position:absolute; top:40px;left:50%;z-index:10;font-size:14px;transform:translate(-50%, -50%); ">
 						<button class="filter-item filter-select" onclick="moveToUser()" >내위치보기</button> 
 	 					<button class="filter-item filter-select" onclick="searchMap()">현재위치애서 검색하기</button>
  					</div>
@@ -270,6 +270,27 @@
 			contentType : "application/json; charset=utf-8",
 			data : getObjToForm(actionForm),
 			success : function(result, status, xhr){
+				if(callback){
+					callback(result);
+				}
+			},
+			error : function(xhr, status, er){
+				if(error){
+					error(er);
+				}
+				
+			}
+		});
+		
+	}
+	function getWaitCnt(storeId,callback,error){
+		console.log("getWaitCnt")
+		$.ajax({
+			type : 'get',
+			url : '/dealight/waitcnt/' + storeId,
+			contentType : "application/json; charset=utf-8",
+			success : function(result, status, xhr){
+				console.log(result)
 				if(callback){
 					callback(result);
 				}
@@ -366,6 +387,20 @@
 		return obj;
 	}
 	
+	function getCurTime(){
+		let today = new Date();   
+		
+		let hours = today.getHours(); // 시
+		let minutes = today.getMinutes();  // 분
+		
+		if(minutes < 30){
+			minutes = 30;
+		}else{
+			minutes = "00";
+			hours += 1;
+		}
+		return hours+":"+minutes;
+	}
 	
 	window.onload = function(){
 		//지도생성
@@ -428,10 +463,22 @@
 	    let sortValues = [["거리순", "D"], ["좋아요", "H"], ["평점순","R"], ["리뷰순","T"]];
 	    let pNumValues = [["1명", "1"], ["2명", "2"], ["3명","3"], ["4명","4"]];
 	    let priorityValues = [["--",""],["핫딜매장우선보기", "H"], ["식사가능매장우선보기", "S"], ["웨이팅있는매장보기","W"], ["예약가능매장보기","R"]];
-	    let timeValues = [["09:00","09:00"], ["09:30","09:30"],["10:00","10:00"],["10:30","10:30"],
+	    let timeValue = [["09:00","09:00"], ["09:30","09:30"],["10:00","10:00"],["10:30","10:30"],
 	        ["11:00","11:00"],["11:30","11:30"],["12:00","12:00"],["12:30","12:30"],["13:00","13:00"],["13:30","13:30"],
 	        ["14:00","14:00"],["14:30","14:30"],["15:00","15:00"],["15:30","15:30"],["16:00","16:00"],["16:30","16:30"],["17:00","17:00"],
 	        ["17:30","17:30"],["18:00","18:00"],["18:30","18:30"],["19:00","19:00"],["19:30","19:30"]];
+	    
+	    let timeValues = [];
+    	let isValidTime = false
+    	for(let i = 0; i < timeValue.length; i++){
+    		if((timeValue[i])[1] == getCurTime()){
+    			console.log((timeValue[i])[1])
+    			isValidTime = true;
+    		}
+    		if(isValidTime){
+    			timeValues.push(timeValue[i])
+    		}
+    	}
     	//(클릭이벤트를 걸어줄 요소, 셀렉박스 요소값, 선택값을 추가할 form)
     	selectEvent($("#sortType") ,sortValues,  $("#actionForm"))
 	    //정렬기준
@@ -566,14 +613,15 @@
 		
 		for(let i = 0; i<storeList.length; i++) {
 			let storeLatLng =new kakao.maps.LatLng(storeList[i].lat, storeList[i].lng)
-			
+						
 			let marker =new kakao.maps.Marker({
 		        map: map, // 마커를 표시할 지도
 		        position: storeLatLng, // 마커를 표시할 위치
 		        image : new kakao.maps.MarkerImage(imageSrc, new kakao.maps.Size(24, 35))// 마커 이미지
 		    });
+			$(".wrap" + i).remove();
 			let src = "/display?fileName=" + storeList[i].repImg;
-			let content = '<div class="wrap wrap'+i+'" data-storeid="'+storeList[i].storeId+'" style="display:none">' + 
+			let content = '<div class="wrap wrap'+i+'" data-storeid="'+storeList[i].storeId+'" style="display:none; z-index:100;">' + 
             '    <div class="info">' + 
             '        <div class="title" style="background-color:#f43939; color:white; opacity:0.9;">' +storeList[i].storeNm+
             '        </div>' + 
@@ -609,7 +657,9 @@
 		        content: content,
 		        map: map,
 		        position: marker.getPosition()
+		        
 		    });
+		    infoStore.setZIndex(4);
 		    
 			addMarkerEvent(marker,infoStore,i,storeList[i].storeId);
 			
@@ -641,7 +691,10 @@
 		let str = "";
 		list.innerHTML="";
 		const storeList = pageDTO.storeList;
+		
 		console.log(storeList);
+		//예약하기 인지 줄서기인지 판별
+		
 		if(storeList==null || storeList.length==0){
 			list.innerHTML = "검색결과가 없습니다."
 			return;
@@ -667,10 +720,10 @@
 			}
 			
 			//str += "<a href='/dealight/store/"+storeList[i].storeId+" '>"
-			str +='<div class="store-card flex-column" data-storeid="'+storeList[i].storeId+'">'
+			str +='<div class="store-card flex-column card'+storeList[i].storeId+'" data-storeid="'+storeList[i].storeId+'">'
 			str +='<div class="flex">'
 			str +='<div class="img-container" style="margin-right:20px">'
-			str +='<img src="' +src + '" style="width:100%" ></div>'
+			str +='<img src="' +src + '" style="width:200px; height:200px" ></div>'
 			str +='<div class="deatial-container flex-column" >'
 			str +='<div class="search-header flex">'
 			str += storeList[i].storeNm
@@ -679,10 +732,10 @@
 			str +='<i class="'+ likeIcon +'" style="color:red"></i></div>'
 			
 			
-			str +='<span class="f14">'+storeList[i].likeTotNum+'</span></div>'
+			str +='</div>'
 			str +='<div class="flex rating-box">'
 			str +='<div class="rating" data-rate-value="'+ storeList[i].avgRating +'"></div>'
-			str +='<div class="f14">'+storeList[i].revwTotNum+'('+storeList[i].avgRating+')</div></div>'
+			str +='<div class="f14">('+storeList[i].avgRating+'점) 리뷰:'+storeList[i].revwTotNum+' 좋아요:'+storeList[i].likeTotNum+'</div></div>'
 			str +='<div class="f14 m-tb2">'
 			str +='<span style="padding:2px; margin:5px"><i class="fas fa-store-alt"></i></span>'
 			str +='<b >매장영업시간 : </b>'+ storeList[i].openTm + "~" + storeList[i].closeTm + '</div>'
@@ -691,7 +744,7 @@
 			str +='<b>대표메뉴 : </b>'+ storeList[i].repMenu + "</div>";
 			str +='<div class="m-tb2">'
 			if(storeList[i].seatStusCd == 'R'){
-				str +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:red"></i></span>현재 2명이 대기중이에요~'
+				str +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:red"></i></span><span class="wait-tot'+storeList[i].storeId+'"><span>'
 			}
 			if(storeList[i].seatStusCd == 'Y'){
 				str +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:coral"></i></span> 서두르세요 자리가 얼마안남았어요~'
@@ -702,30 +755,92 @@
 			if(storeList[i].seatStusCd == 'B'){
 				str +='영업중이 아니에요.....'
 			}
-			str +='</div><div class="btns felx">'
+			str +='</div><div class="btns flex btns'+storeList[i].storeId+'" style="justify-content:flex-end">'
 			if(storeList[i].htdlStusCd == "A"){
 				str += '<button class="btn-big htdlBtn" data-storeid="'+storeList[i].storeId+'">핫딜중</button>'; 
+			}else{
+				str += '<button class="btn-big htdlBtnNo" style="opacity:0.5;" data-storeid="'+storeList[i].storeId+'">핫딜중</button>'; 
 			}
 			if(storeList[i].htdlStusCd == "P"){
 				str += '<button class="btn-big">핫딜예정</button>'
 			}
-			if(storeList[i].seatStusCd == "R"){
-				str += '<button class="btn-big" id="waitingBtn" data-storeid="'+storeList[i].storeId+'">줄서기</button>' 
+			
+			//하드코딩-줄서기
+			if($("#wait").hasClass("select-bar") == true){
+				
+				if(storeList[i].seatStusCd == "R"){
+					str += '<button class="btn-big waitingBtn"  data-storeid="'+storeList[i].storeId+'">줄서기</button>' 
+				}else{
+					str += '<button class="btn-big waitingBtnNo"  style="opacity:0.5;" data-storeid="'+storeList[i].storeId+'">줄서기</button>' 
+				}
+				
 			}
+			
+			//예약하기-하드코딩
+			if($("#reserv").hasClass("select-bar") == true){
+				if(storeList[i].seatStusCd == "R"){
+					str += '<button class="btn-big reserveBtn"  data-storeid="'+storeList[i].storeId+'">예약하기</button>' 
+				}else{
+					str += '<button class="btn-big reserveBtnNo"  style="opacity:0.5;">예약하기</button>' 
+				}
+				
+			}
+			
+			
+			
 			str += '</div></div></div>'
 			str += '<div class="htdl flex htdl'+storeList[i].storeId+'" data-storeid="'+storeList[i].storeId+'" style="display:none"></div>'//</a>'
 			str += '</div>'
+			
 		}
+		
 		list.innerHTML = str;
 		
+		
+		
+		for( let i=0, len=storeList.length||0; i<len; i++){
+			if($("#wait").hasClass("select-bar") == true){
+				if(storeList[i].seatStusCd == 'R'){
+					
+					getWaitCnt(storeList[i].storeId, function(result){
+						console.log(result)
+						$(".wait-tot" + storeList[i].storeId).html("현재 " + result + "명이 대기중이에요~")
+					})
+				}
+			}
+			
+			if($("#reserve").hasClass("select-bar") == true){
+				let storeId = storeList[i].storeId;
+				let time = $(".searchForm").find("input[name='time']").val();
+				let pnum =$(".searchForm").find("input[name='pnum']").val();
+				isRsvdAvailChecked({storeId: storeId, time: time, pnum: pnum}, function(data){
+					console.log("reserve avail check: " + data);
+					
+					
+					if(data){
+						$(".btns" + storeList[i].storeId).append('<button class="btn-big" style="cursor:poiner;">예약가능</button>')
+					}
+					else{
+						$(".btns" + storeList[i].storeId).append('<button class="btn-big"  style="opacity:0.5;cursor:poiner;">예약불가</button>')
+		    			
+					}
+				}); 
+			}
+			
+			
+		}
 		//매장이동이벤트
 		$(".store-card").on("click", function(e){
 			location.href = "/dealight/store/"+ $(this).data("storeid");
 		})
 		
+		$(".waitingBtnNo").on("click", function(e) {
+				e.stopPropagation();
+				alert("해당 매장은 웨이팅이 없어요~")
+		})
 		
 		let paramUserId = '<c:out value="${userId}"/>' || null;
-		$("#waitingBtn").on("click", function(e) {
+		$(".waitingBtn").on("click", function(e) {
 				let searchForm = $("#searchForm")
 				e.stopPropagation();
 				if(paramUserId === null){
@@ -787,7 +902,10 @@
 		    cursor: 'default',
 		    readonly: true,
 		});
-		
+		$(".htdlBtnNo").on("click", function(e){
+			e.stopPropagation();
+			alert("해당 매장은 핫딜중이 아닙니다.")
+		})
 		//핫딜버튼
 		$(".htdlBtn").on("click", function(e){
 			e.stopPropagation();
@@ -839,6 +957,29 @@
 		showPaging(pageDTO)
 		
 	}// end showList
+	
+	function isRsvdAvailChecked(param, callback, error){
+		
+		let storeId = param.storeId;
+		let time = param.time;
+		let pnum = param.pnum;
+		console.log(storeId)
+		console.log(pnum)
+		console.log(time)
+
+		$.getJSON("/dealight/reservation/rsvdavailcheck/"+storeId+"/"+time+"/"+pnum+".json",
+				function(data){
+					console.log("-------------------------")
+					 if(callback){
+						callback(data);
+					}
+					
+			}).fail(function(xhr,status, err){
+				if(error){
+					error();
+				}
+			});
+	}
 	
 	function isLogin(){
 		let userId = "<c:out value='${userId}'/>"
@@ -898,7 +1039,30 @@
 	//페이징 처리를 하는 함수.
 	function showPaging(pageDTO){
 		
-		let str = "";
+		
+		let str = '<ul class="pagination">';
+		const paging = document.getElementById("pagination");
+
+		if (pageDTO.prev) {
+			str+= '<li> <a href="'+ (pageDTO.startPage - 1) +'" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>'
+		}
+
+		for (let i = pageDTO.startPage;i<pageDTO.endPage+1;i++) {
+			var active= pageDTO.cri.pageNum ==i?"active":"";
+			str += '<li><a href="' + i + '" '+ (pageDTO.cri.pageNum ==i?'class="active"':'') + '>'+i+'</a></li>'
+		}
+		if (pageDTO.next) {
+			str += "<li><a href='" + (pageDTO.endPage + 1)
+					+ "'>Next</a></li>";
+			str +='<a href="'+(pageDTO.endPage + 1)+'" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>'
+		}
+		str += "</ul>";
+		console.log(str);
+		paging.innerHTML = str;
+		//a태그 관련 이벤트는 a태그가 생성될때 등록해준다.
+		$("#pagination a").on("click", addPageEventHandler);
+		
+		/* let str = "";
 		const paging = document.getElementById("pagination");
 		
 		if(pageDTO.prev){
@@ -916,7 +1080,7 @@
 		paging.innerHTML = str;
 		//a태그 관련 이벤트는 a태그가 생성될때 등록해준다.
 		$("#pagination a").on("click", addPageEventHandler);
-		
+		 */
 	}
 	
 	//페이지 번호클릭시 발생이벤트
@@ -949,24 +1113,24 @@
 	function addMarkerEvent(marker,infoStore,i,storeId){
 		//console.log(i);
 	    //let store = document.getElementById("storeList");
-		
+	    
 		kakao.maps.event.addListener(marker, 'mouseover', function() {
 	
 			$(".wrap"+i).show()
-	           list.childNodes[i].style.backgroundColor="#bbb";
+	           list.childNodes[i].style.opacity="0.5";
 	        
 	    });
 		
 		kakao.maps.event.addListener(marker, 'mouseout', function() {
 	
 			$(".wrap"+i).hide()
-	           list.childNodes[i].style.backgroundColor="white";
+	           list.childNodes[i].style.opacity="1";
 	        
 	    });
 		
 		kakao.maps.event.addListener(marker, 'click', function() {
 			console.log("click")
-			let target = $(".htdl"+storeId)
+			let target = $(".card"+storeId)
 			$(document).scrollTop(target.offset().top -500)
 			
 	
@@ -1049,24 +1213,34 @@
 	$("#reserve").on("click", function(e){
     	
         $(this).addClass("select-bar");
-        
+        $(this).css("opacity","1")
         $(this).prev().removeClass("select-bar")
+        $(this).prev().css("opacity","0.7")
         //시간 셀렉박스를 보여준다.
         $("#timebox").show("slow");
+        let str =""
+   		str += "<input type='text' name='time' value='" + getCurTime() + "'>"
+   		$("#searchForm").append(str);
+        showMain();
     });
     
     $("#wait").on("click", function(e){
     	
         $(this).addClass("select-bar");
+        $(this).css("opacity","1")
         
         $(this).next().removeClass("select-bar")
+        $(this).next().css("opacity","0.7")
         
         //시간 셀렉바스를 숨긴다.
         $("#timebox").hide("slow");
         
         //form에서 time을 지워준다.
         $("#form").find("input[name='time']").remove();
+        showMain();
     });
+    
+    //하드코딩
 
     
     

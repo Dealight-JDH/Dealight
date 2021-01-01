@@ -14,17 +14,19 @@
 
 .pac-controls label {
 	font-family: Roboto;
-	font-size: 20px;
 	font-weight: 300;
 }
 
 #pac-input {
 	width: 100%;
 	position: relative;
-	font-size: 18px;
 	font-weight: 300;
 	margin-left: 12px;
+	color : black;
 	text-overflow: ellipsis;
+}
+.select-bar{
+	opacity: 1.0;
 }
 
 input {
@@ -85,11 +87,16 @@ input:focus {
 	justify-content: space-between;
 	/* border: blue 1px solid; */
 }
+.deatial-container{
+	width:100%;
+}
 
 .search-header {
 	/* border: black 1px solid; */
+	width:100%;
 	font-size: 24px;
 	font-weight: bolder;
+	position: relative;
 }
 
 .selectbox {
@@ -127,6 +134,7 @@ input:focus {
 	border-radius: 4px;
 	border: 1px solid #bbbac0;
 	justify-content: space-between;
+	opacity: 0.5;
 }
 
 .searchtype-img {
@@ -250,11 +258,17 @@ input:focus {
 }
 
 .like {
+	position:absolute;
 	margin-left: 10px;
+	top : 0;
+	right: 0;
 }
 
 .like-tot {
-	
+	position:absolute;
+	margin-left: 10px;
+	top : 0;
+	right: 0;
 }
 
 .child-right {
@@ -265,7 +279,6 @@ input:focus {
 }
 
 .map-container {
-	border: black 1px solid;
 	display: flex;
 	position: sticky;
 	width: 100%;
@@ -568,3 +581,38 @@ button{
             background-color: #ffffff;
             opacity: 0.4;
         }
+        .panel-footer{
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: center;
+        /* margin-top: 60px; */
+        /* left: 33px; */
+    }
+    ul{
+        display: flex;
+        flex-direction: row;
+    }
+    li{
+        /* display: flex;
+        flex-direction: row; */
+        list-style: none;
+        /* outline: 1px solid red; */
+    }
+    .pagination a{
+        color: black;
+        padding: 8px 16px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        text-decoration: none;
+    }
+    .pagination a.active{
+        background-color: #D32323;
+        border-radius: 5px;
+        color: white;
+    }
+    .pagination a:hover:not(.active){
+        background-color: #ddd;
+    } 
