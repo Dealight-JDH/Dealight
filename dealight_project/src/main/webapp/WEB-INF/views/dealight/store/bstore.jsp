@@ -545,11 +545,21 @@
 		        actionForm.empty()
 				actionForm.append(storeIdTag);		        
 		    });
+		    let paramHtdlId = '<c:out value="${store.bstore.htdl.htdlId}"/>' || null;
+			let paramUserId = '<c:out value="${userId}"/>' || null;
+			let storeId = '<c:out value="${store.storeId}"/>';
+			
+			let isHtdlPayHistory = false;//핫딜을 구매했는지 체크
+		    
 		    
 			//줄서기 클릭(form 제출)
 			$("#waitingBtn").on("click", function(e) {
 				
 				e.preventDefault();
+				if(paramUserId === null){
+					alert("로그인 후 서비스를 이용해 주세요.");
+					return;
+				}
 				
 				if (actionForm.find("input[name='pnum']").length == 0 ) {
 					alert("인원수를 선택해주세요");
@@ -558,12 +568,6 @@
 				actionForm.attr("action","/dealight/store/wait").attr("method","post")
 				actionForm.submit();
 			});
-		    
-		    let paramHtdlId = '<c:out value="${store.bstore.htdl.htdlId}"/>' || null;
-			let paramUserId = '<c:out value="${userId}"/>' || null;
-			let storeId = '<c:out value="${store.storeId}"/>';
-			
-			let isHtdlPayHistory = false;//핫딜을 구매했는지 체크
 		    
 		    //예약하기 버튼 클릭시(종우꺼 확인) 
 		    $("#reserveBtn").on("click", function(e) {

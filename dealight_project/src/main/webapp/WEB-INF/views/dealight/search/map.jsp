@@ -9,6 +9,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <%@include file="../../includes/mainMenu.jsp" %> 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGR7CBhUjuiLLWGac5u4u_5yN7n6CWO8w&libraries=places&callback=initAutocomplete" defer></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -43,7 +44,7 @@
             <div class="child-full search-container flex-column">
                 <div class="search-header-container flex">
                     <div class="search-header">
-                        내 주변 음식점
+                        ${search.region } 음식점
                     </div>
                     <div class="selectbox flex">
                        <div class="label flex center" id="sortType">
@@ -142,57 +143,66 @@
                 </div>
                 <form id="searchForm" action="#">
                     <div class="search-bar flex center">
-                            <div class="search-item" >
-                                <div class="ws-block" id="region">
-                                    <div>위치</div> 
-                                    <div class="dropdown">
-                                        <div class="dropdown-select">
-                                            <span class="select m4 f16">내 위치</span>
-                                            <i class="fa fa-angle-down" style="font-size:20px"></i>
-                                        </div>
-                                        <div class="dropdown-list">
-                                           
-                                        </div>
-                                    </div>
+	                    <div class="search-item" >
+	                        <div class="ws-block" id="region">
+                            	위치
+                                <div class="dropdown" id="pac-container">
+									<input class="form-control2" id="pac-input" type="text" name="keyword" placeholder="현재위치" value="${search.region }">
                                 </div>
-                            </div>
-                            <div class="divider" ></div>
-                            <div class="search-item" id="timebox" style="display:none;">
-                                <div class="ws-block" id="time"> 
-                                    <div>시간</div> 
-                                    <div class="dropdown">
-                                        <div class="dropdown-select">
-                                            <span class="select m4 f16">13시 30분</span>
-                                            <i class="fa fa-angle-down" style="font-size:20px;"></i>
-                                        </div>
-                                        <div class="dropdown-list">
-                                           
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="divider"></div>
-                            
-                            <div class="search-item">
-                                <div class="ws-block" id="pNum">
-                                    <div>인원</div> 
-                                    <div class="dropdown" style="width: 70%; margin-right:10px">
-                                        <div class="dropdown-select">
-                                            <span class="select m4 f16">2명</span>
-                                            <i class="fa fa-angle-down" style="font-size:20px"></i>
-                                        </div>
-                                        <div class="dropdown-list">
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                                <button id="searchBtn" class="search-btn flex" style="flex-basis: 50px;">
-                                    <i class="fas fa-search" style="color: white;"></i>
-                                </button>
-                            </div>
-
-                        </div>
-                    </form>
+                        	</div>
+	                    </div>
+	                    <div class="divider" ></div>
+	                    <div class="search-item" id="timebox" ${search.time eq null ? 'style="display:none;"':'' }>
+	                        <div class="ws-block" id="time"> 
+	                            <div>시간</div> 
+	                            <div class="dropdown">
+	                                <div class="dropdown-select">
+	                                    <span class="select m4 f16">${search.time }</span>
+	                                    <i class="fa fa-angle-down" style="font-size:20px;"></i>
+	                                </div>
+	                                <div class="dropdown-list">
+	                                   
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <div class="divider"></div>
+	                    
+	                    <div class="search-item">
+	                        <div class="ws-block" id="pNum">
+	                            <div>인원</div> 
+	                            <div class="dropdown" style="width: 70%; margin-right:10px">
+	                                <div class="dropdown-select">
+	                                    <span class="select m4 f16">${search.PNum }명</span>
+	                                    <i class="fa fa-angle-down" style="font-size:20px"></i>
+	                                </div>
+	                                <div class="dropdown-list">
+	                                    
+	                                </div>
+	                            </div>
+	                        </div>
+	                        <button id="searchBtn" class="search-btn flex" style="flex-basis: 50px;">
+	                            <i class="fas fa-search" style="color: white;"></i>
+	                        </button>
+	                    </div>
+	
+	                </div>
+	                <c:if test="${search.time ne null}">
+		                <input type="hidden" name="time" value="<c:out value = "${search.time }"/>">
+	                </c:if>
+	                <c:if test="${search.PNum ne null}">
+		                <input type="hidden" name="pnum" value="<c:out value = "${search.PNum }"/>">
+	                </c:if>
+	                <!-- 하드코딩 -->
+	                <c:if test="${search.lat ne 0}">
+				        <input type="hidden" name="lat" value="<c:out value = "${search.lat }"/>">
+				        <input type="hidden" name="lng" value="<c:out value = "${search.lng }"/>">
+			        </c:if>
+			        <c:if test="${search.lat eq 0 or (search.lat eq null)}">
+				        <input type="hidden" name="lat" value="37.570414">
+				        <input type="hidden" name="lng" value="126.985320">
+			        </c:if>
+	            </form>
             </div>
             <div class="child-full" id="storeList">
                 
@@ -214,14 +224,22 @@
         </div>
     </div>
     <form action="/search/" method="get" id="actionForm">
-        <input type="text" name="pageNum" value="1">
-        <input type="text" name="amount" value="10">
-        <input type="text" name="lat" value="37.570414">
-        <input type="text" name="lng" value="126.985320">
-        <input type="text" name="distance" value="0.5">
-        <input type="text" name="sortType" value="D">
-        <input type="text" name="sortPriority" value="">
-        <input type="text" name="openStore" value="true">
+        <input type="hidden" name="pageNum" value="1">
+        <input type="hidden" name="amount" value="10">
+        <!-- 하드코딩 -->
+        <c:if test="${search.lat ne 0}">
+	        <input type="hidden" name="lat" value="<c:out value = "${search.lat }"/>">
+	        <input type="hidden" name="lng" value="<c:out value = "${search.lng }"/>">
+        </c:if>
+        <c:if test="${search.lat eq 0 or (search.lat eq null)}">
+	        <input type="hidden" name="lat" value="37.570414">
+	        <input type="hidden" name="lng" value="126.985320">
+        </c:if>
+        <input type="hidden" name="distance" value="0.5">
+        <input type="hidden" name="sortType" value="D">
+        <input type="hidden" name="sortPriority" value="">
+        <input type="hidden" name="openStore" value="true">
+        
     </form>
 </body>
 <%@include file="/WEB-INF/views/includes/mainFooter.jsp" %>
@@ -266,6 +284,76 @@
 		
 	}
 	
+	//지역하드코딩
+	function initAutocomplete() {
+		autocomplete = new google.maps.places.Autocomplete(
+		(document.getElementById('pac-input')), {
+			types : [ 'geocode' ],
+			componentRestrictions : {
+				country : 'kr'
+			}
+		});
+		console.log(autocomplete)
+		autocomplete.addListener('place_changed', fillInAddress);
+	}
+	function fillInAddress() {
+		var place = autocomplete.getPlace();
+		console.log(place.formatted_address);
+		console.log('?');
+		if(!place.formatted_address){
+			alert("위치정보가 정확하지 않습니다.")
+			$("#pac-input").val("");
+			$("#searchForm").find("input[name='lat']").val(37.570414)
+	   		$("#searchForm").find("input[name='lng']").val(126.985320)
+			return;
+		}
+		
+		let addr = encodeURIComponent(place.formatted_address)
+		getLoc(addr,function(data){
+			if(data.meta.total_count == 0 ){
+				alert("동을 입력해주세요")
+				$("#pac-input").val("");
+				$("#searchForm").find("input[name='lat']").val(37.570414)
+		   		$("#searchForm").find("input[name='lng']").val(126.985320)
+				return;
+			}
+	   		let addr = data.documents[0].address_name;
+	   		let region = addr.substring(addr.lastIndexOf(" ")+1);
+	   		console.log(data.documents[0].x);
+	   		console.log(data.documents[0].y);
+	   		console.log(region)
+	   		$("#searchForm").find("input[name='region']").val(region)
+	   		$("#searchForm").find("input[name='lat']").val(data.documents[0].y)
+	   		$("#searchForm").find("input[name='lng']").val(data.documents[0].x)
+			
+		})
+		
+	}
+	
+	function getLoc(addr, callback, error){
+		$.ajax({
+	        url:'https://dapi.kakao.com/v2/local/search/address.json?query='+addr,
+	        type:'GET',
+	        headers: {'Authorization' : 'KakaoAK e511e2ddb9ebfda043b94618389a614c'},
+		  	success:function(result, status, xhr){
+				if(callback){
+					callback(result);
+				}
+			},
+			error : function(xhr, status, er){
+				if(error){
+					error(er);
+				}
+				
+			}
+		})
+		
+	}
+	
+	
+	
+	
+	
 	//form data를 obj로 바꿔준다.
 	function getObjToForm(form){
 		let obj = Object();
@@ -281,12 +369,16 @@
 	
 	window.onload = function(){
 		//지도생성
+		initAutocomplete
+		
 		initMap();
 		console.log("init")
 		//메인에서 넘어오는 정보들 날짜, 인원, 검색어, 해시태그
 		//검색정보를 받아온다. ( 인원, 시간, 지역, 해시태그)
 		//매장메인을 보여준다.
 		showMain();
+		
+		
 		
 		 //filter 토글버튼 이벤트
 	    $("#filter").on("click", function(e){
@@ -394,9 +486,12 @@
 		showMain();
 	})
 	
+	//검색하기버튼
 	$("#searchBtn").on("click",function(e){
 		e.preventDefault();
-		
+		actionForm.elements["lat"].value = $("#searchForm").find("input[name='lat']").val();
+		actionForm.elements["lng"].value = $("#searchForm").find("input[name='lng']").val();
+		showMain();
 	})
 	
 	function searchMap(){
@@ -413,7 +508,6 @@
 	//핫딜관련 로직
 	function getHtdl(storeId, callback, error){
 		
-		console.log("storeId: " + storeId);
 		
 		$.getJSON("/dealight/store/htdl/get/"+storeId+".json", function(data){
 			if(callback){
@@ -478,7 +572,7 @@
 		        position: storeLatLng, // 마커를 표시할 위치
 		        image : new kakao.maps.MarkerImage(imageSrc, new kakao.maps.Size(24, 35))// 마커 이미지
 		    });
-			let src = subSrc(storeList[i].repImg)
+			let src = "/display?fileName=" + storeList[i].repImg;
 			let content = '<div class="wrap wrap'+i+'" data-storeid="'+storeList[i].storeId+'" style="display:none">' + 
             '    <div class="info">' + 
             '        <div class="title" style="background-color:#f43939; color:white; opacity:0.9;">' +storeList[i].storeNm+
@@ -616,7 +710,7 @@
 				str += '<button class="btn-big">핫딜예정</button>'
 			}
 			if(storeList[i].seatStusCd == "R"){
-				str += '<button class="btn-big">줄서기</button>' 
+				str += '<button class="btn-big" id="waitingBtn" data-storeid="'+storeList[i].storeId+'">줄서기</button>' 
 			}
 			str += '</div></div></div>'
 			str += '<div class="htdl flex htdl'+storeList[i].storeId+'" data-storeid="'+storeList[i].storeId+'" style="display:none"></div>'//</a>'
@@ -628,6 +722,30 @@
 		$(".store-card").on("click", function(e){
 			location.href = "/dealight/store/"+ $(this).data("storeid");
 		})
+		
+		
+		let paramUserId = '<c:out value="${userId}"/>' || null;
+		$("#waitingBtn").on("click", function(e) {
+				let searchForm = $("#searchForm")
+				e.stopPropagation();
+				if(paramUserId === null){
+					alert("로그인 후 서비스를 이용해 주세요.");
+					return;
+				}
+				
+				if (searchForm.find("input[name='pnum']").length == 0 ) {
+					alert("인원수를 선택해주세요");
+					return;
+				}
+				$("#searchForm").find("input[name='lng']").remove();
+				$("#searchForm").find("input[name='lat']").remove();
+				$("#searchForm").find("input[name='time']").remove();
+				let str= '<input type="hidden" name="storeId" value="'+$(this).data("storeid")+'">'
+				searchForm.attr("action","/dealight/store/wait").attr("method","post")
+				searchForm.append(str)
+				
+				searchForm.submit();
+			});
 		
 		//좋아요 이벤트
 		$(".like").on("click", function(e){
@@ -674,45 +792,47 @@
 		$(".htdlBtn").on("click", function(e){
 			e.stopPropagation();
 			let storeId = $(this).data("storeid")
-			
-			if($(this).data("isLoaded")===true){
-				$(".htdl"+storeId).toggle();
-				return;
+			console.log($(this).data("isLoaded"))
+			let isLoaded = $(this).data("isLoaded") || null;
+			if(isLoaded ==null){
+				
+				getHtdl(storeId,function(htdl){
+					//핫딜 창을 만들어야한다.
+					console.log(htdl);
+					console.log(storeId);
+					src = "/display?fileName=" + htdl.htdlImg;
+					let str ='';
+	                str+='<div class="card-img">'
+	                str+='<img src="'+src+'" alt="" style="width: 200px; height: 200px; z-index: 0;">'
+					str+='<div class="card-img-top"></div>'
+					str+='<div class="card-dc">'
+					str+='<span>'+htdl.dcRate * 100+'%</span>'
+					str+='</div>'
+					str+='<div class="card-price card-afterPrice">'
+					str+='<span>₩'+htdl.befPrice +'</span>'
+					str+='</div>'
+					str+='<div class="card-price card-beforePrice">'
+					str+='<span>₩'+(htdl.befPrice - htdl.ddct) +'</span>'
+					str+='</div>'
+					str+='</div>'
+					str+='<div class="deatial-container flex-column m-l16" style="width: 100%;">'
+					str+='<div class="card-title">'
+					str+='<h3>['+htdl.brch +'] '+htdl.name +'</h3>'
+					str+='</div>'
+					str+='<div class="card-menu">'
+					str+='메뉴:&nbsp;<span>디저트 콤보 1인 세트</span>'
+					str+='</div>'
+					str+='<div class="card-intro">'
+					str+='<div style="width: 40px; align-self: flex-start;">소개 : </div><span>'+htdl.intro +'</span>'
+					str+='</div>'
+					str+='</div>'
+					
+					$(".htdl"+storeId)[0].innerHTML = str;
+				});
+					$(this).data("isLoaded",true)
 			}
 			
-			getHtdl(storeId,function(htdl){
-				//핫딜 창을 만들어야한다.
-				console.log(htdl);
-				console.log(storeId);
-				let str ='';
-                str+='<div class="card-img">'
-                str+='<img src="1.jpg" alt="" style="width: 200px; height: 200px; z-index: -1;">'
-				str+='<div class="card-img-top"></div>'
-				str+='<div class="card-dc">'
-				str+='<span>'+htdl.dcRate * 100+'</span>'
-				str+='</div>'
-				str+='<div class="card-price card-afterPrice">'
-				str+='<span>₩'+htdl.befPrice +'</span>'
-				str+='</div>'
-				str+='<div class="card-price card-beforePrice">'
-				str+='<span>₩'+(htdl.befPrice - htdl.ddct) +'</span>'
-				str+='</div>'
-				str+='</div>'
-				str+='<div class="deatial-container flex-column m-l16" style="width: 100%;">'
-				str+='<div class="card-title">'
-				str+='<h3>['+htdl.brch +'] '+htdl.name +'</h3>'
-				str+='</div>'
-				str+='<div class="card-menu">'
-				str+='메뉴:&nbsp;<span>디저트 콤보 1인 세트</span>'
-				str+='</div>'
-				str+='<div class="card-intro">'
-				str+='<div style="width: 40px; align-self: flex-start;">소개 : </div><span>'+htdl.intro +'</span>'
-				str+='</div>'
-				str+='</div>'
-				
-				$(".htdl"+storeId)[0].innerHTML = str;
-			});
-				$(this).data("isLoaded",true)
+			$(".htdl"+storeId).toggle();
 		});
 		
 		//페이징처리

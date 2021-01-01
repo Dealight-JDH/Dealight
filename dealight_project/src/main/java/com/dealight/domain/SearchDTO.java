@@ -13,7 +13,8 @@ public class SearchDTO {
 	
 	private int pNum;
 	private String time;
+	private double lat;
+	private double lng;
 	private String region;
-	private String storeNm;
 
 }

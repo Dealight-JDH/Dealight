@@ -57,7 +57,8 @@ public class StoreController {
 	})
 	public ResponseEntity<HtdlVO> getStoreHtdl(@PathVariable Long htdlId) {
 		log.info("get...");
-		HtdlVO dealVO = htdlService.readHtdlDtls(htdlId);
+		log.info("=========================htdlId: " + htdlId);
+		HtdlVO dealVO = (htdlService.readActStoreHtdlList(htdlId)).get(0);
 		return new ResponseEntity<>(dealVO, HttpStatus.OK);
 	}
 	@GetMapping(value = "/revws/pages/{storeId}/{page}", produces = {
@@ -87,9 +88,8 @@ public class StoreController {
 			
 			//하드코딩
 			String userId = (String)session.getAttribute("userId");
-			LikeVO like = likeService.findByUserIdAndStoreId(userId, storeId);
 			boolean isLike = false;
-			if(like != null) {
+			if(userId !=null && likeService.findByUserIdAndStoreId(userId, storeId)!=null) {
 				isLike = true;
 			}
 			
