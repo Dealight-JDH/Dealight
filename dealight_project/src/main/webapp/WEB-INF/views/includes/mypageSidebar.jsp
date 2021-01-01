@@ -8,8 +8,6 @@
                     <div class="side_revw"><a href="/dealight/mypage/review/">마이 리뷰</a></div>
                     <div class="side_like"><a href="/dealight/mypage/like">찜 목록</a></div>
                     <div class="side_modify"><a href="/dealight/mypage/get">회원정보 수정</a></div>
-                    <div class="side_noti">알림함</div>
+                    <div class="side_noti"><a href="#">알림함</a></div>
                 </div>
             </div>
-            
-            

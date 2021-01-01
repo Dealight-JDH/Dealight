@@ -296,7 +296,7 @@
 								<div class="account_cnts"><a href="/dealight/admin/main ">서비스 관리</a></div>
 							</sec:authorize>
 								<div class="account_cnts"><a href="/dealight/mypage/get">회원정보수정</a></div>
-								<div class="account_cnts"><a href="dealight/logout" onclick="submit(event)">로그아웃</a></div>
+								<div class="account_cnts" onclick="submit(event)"><a href="dealight/logout">로그아웃</a></div>
 						</sec:authorize>
 					</div>
             	</div>
@@ -405,7 +405,7 @@ function getWait(userId,callback,error) {
 
 let header_userId = '${userId}';
 
-$("#nav_user_id").text(header_userId.substr(0,header_userId.indexOf("@")) +"님");
+if(header_userId.indexOf("@") > -1 ) $("#nav_user_id").text(header_userId.substr(0,header_userId.indexOf("@")) +"님");
 
 getWait(header_userId,wait => {
 	if(!wait)
@@ -415,6 +415,14 @@ getWait(header_userId,wait => {
 	console.log(waitId);
 	str += "<a href='/dealight/waiting/"+waitId+"' target='_blank'>현재 웨이팅 확인하기</a>"
 	$("#header_cur_wait").html(str);
+});
+
+$(".account_cnts").on("click",(e) => {
+	
+	console.log(e.currentTarget);
+	
+	location.href = $(e.currentTarget).find("a").attr("href");
+	
 });
 
    </script>

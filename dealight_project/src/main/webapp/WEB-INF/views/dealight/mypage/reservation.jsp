@@ -757,7 +757,15 @@ window.onload = function () {
     
 }; /* document ready end*/
 
-
+$(".mypage_side_menu > div").on("click",(e) => {
+	
+	if(e.currentTarget === "div.side_noti") return;
+	
+	console.log(e.currentTarget);
+	
+	location.href = $(e.currentTarget).find("a").attr("href");
+	
+});
 
 </script>
 <%@include file="../../includes/mainFooter.jsp" %>

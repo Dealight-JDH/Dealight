@@ -33,10 +33,10 @@
                     </div>
                     <div class="board_left_bot">
                         <div class="btn_wait_register">현장 등록</div>
-                        <div><a href="/dealight/business/manage/modify?storeId=${storeId}">정보 수정</a></div>
-                        <div><a href="/dealight/business/manage/menu?storeId=${storeId}">메뉴 수정</a></div>
-                        <div><a href="/dealight/business/manage/dealhistory?storeId=${storeId}">핫딜 이력</a></div>
-                        <div><a href="/dealight/business/">매장 리스트</a></div>
+                        <div class='manage_side_menu_box'><a href="/dealight/business/manage/modify?storeId=${storeId}">정보 수정</a></div>
+                        <div class='manage_side_menu_box'><a href="/dealight/business/manage/menu?storeId=${storeId}">메뉴 수정</a></div>
+                        <div class='manage_side_menu_box'><a href="/dealight/business/manage/dealhistory?storeId=${storeId}">핫딜 이력</a></div>
+                        <div class='manage_side_menu_box'><a href="/dealight/business/">매장 리스트</a></div>
                         <div id="store_info_box">
                             <div class="store_info_tit">매장 이름</div>
                             <div class="store_info_val">${store.storeNm}</div>
@@ -1954,6 +1954,8 @@ let writeTimeBar = function (curTime) {
         
         let waitEnterHandler = function(e) {
         	
+        	if(!confirm("입장을 진행하시겠습니까?")) return;
+        	
         	/*dom 코드는 변경될 가능성 있음*/
         	let waitId = parseInt(document.querySelector(".nextWait .wait_name").dataset.id);
 
@@ -1966,6 +1968,8 @@ let writeTimeBar = function (curTime) {
         /*웨이팅 입장 처리*/
         $(".btn_enter_wait").on("click", waitEnterHandler);
         let waitNoshowHandler = function(e){
+        	
+        	if(!confirm("노쇼로 등록 하시겠습니까?")) return;
         	
         	/*dom 코드는 변경될 가능성 있음*/
         	let waitId = parseInt(document.querySelector(".nextWait .wait_name").dataset.id);
@@ -2211,7 +2215,13 @@ let writeTimeBar = function (curTime) {
         });
         
     });
-
+    $(".manage_side_menu_box").on("click",(e) => {
+    	
+    	console.log(e.currentTarget);
+    	
+    	location.href = $(e.currentTarget).find("a").attr("href");
+    	
+    });
     </script>
  <%@include file="../../../includes/mainFooter.jsp" %>
  <script src="/resources/js/clock.js"></script>

@@ -458,6 +458,15 @@ $(function(){
     	alert("회원 정보 수정이 완료되었습니다.");
     	location.href = '/dealight/mypage/reservation'; 
     } */
+    $(".mypage_side_menu > div").on("click",(e) => {
+    	
+    	if(e.currentTarget === "div.side_noti") return;
+    	
+		console.log(e.currentTarget);
+		
+		location.href = $(e.currentTarget).find("a").attr("href");
+		
+	});
 </script>
 </body>
 </html>

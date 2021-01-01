@@ -10,11 +10,11 @@
                         </div>
                     </div>
                     <div class="board_left_bot">
-                        <div id="btn_wait_register_id" class="btn_wait_register"><a href="/dealight/business/manage/?storeId=${storeId}">관리 화면</a></div>
-                        <div><a href="/dealight/business/manage/modify?storeId=${storeId}">정보 수정</a></div>
-                        <div><a href="/dealight/business/manage/menu?storeId=${storeId}">메뉴 수정</a></div>
-                        <div><a href="/dealight/business/manage/dealhistory?storeId=${storeId}">핫딜 이력</a></div>
-                        <div><a href="/dealight/business/">매장 리스트</a></div>
+                        <div id="btn_wait_register_id" class="btn_wait_register manage_side_menu_box"><a href="/dealight/business/manage/?storeId=${storeId}">관리 화면</a></div>
+                        <div class='manage_side_menu_box'><a href="/dealight/business/manage/modify?storeId=${storeId}">정보 수정</a></div>
+                        <div class='manage_side_menu_box'><a href="/dealight/business/manage/menu?storeId=${storeId}">메뉴 수정</a></div>
+                        <div class='manage_side_menu_box'><a href="/dealight/business/manage/dealhistory?storeId=${storeId}">핫딜 이력</a></div>
+                        <div class='manage_side_menu_box'><a href="/dealight/business/">매장 리스트</a></div>
                         <div id="store_info_box">
                             <div class="store_info_tit">매장 이름</div>
                             <div class="store_info_val">${store.storeNm}</div>
