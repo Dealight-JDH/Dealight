@@ -157,7 +157,7 @@
 	                            <div>시간</div> 
 	                            <div class="dropdown">
 	                                <div class="dropdown-select">
-	                                    <span class="select m4 f16">${search.time eq null ?'시간을 입력하세요':search.time }</span>
+	                                    <span class="select m4 f16" id="timespan">${search.time eq null ?'시간을 입력하세요':search.time }</span>
 	                                    <i class="fa fa-angle-down" style="font-size:20px;"></i>
 	                                </div>
 	                                <div class="dropdown-list">
@@ -466,7 +466,8 @@
 	    let timeValue = [["09:00","09:00"], ["09:30","09:30"],["10:00","10:00"],["10:30","10:30"],
 	        ["11:00","11:00"],["11:30","11:30"],["12:00","12:00"],["12:30","12:30"],["13:00","13:00"],["13:30","13:30"],
 	        ["14:00","14:00"],["14:30","14:30"],["15:00","15:00"],["15:30","15:30"],["16:00","16:00"],["16:30","16:30"],["17:00","17:00"],
-	        ["17:30","17:30"],["18:00","18:00"],["18:30","18:30"],["19:00","19:00"],["19:30","19:30"]];
+	        ["17:30","17:30"],["18:00","18:00"],["18:30","18:30"],["19:00","19:00"],["19:30","19:30"],["20:00","20:00"],["20:30","20:30"],
+	       	["21:00","21:00"],["21:30","21:30"],["22:00","22:00"]];
 	    
 	    let timeValues = [];
     	let isValidTime = false
@@ -757,9 +758,9 @@
 			}
 			str +='</div><div class="btns flex btns'+storeList[i].storeId+'" style="justify-content:flex-end">'
 			if(storeList[i].htdlStusCd == "A"){
-				str += '<button class="btn-big htdlBtn" data-storeid="'+storeList[i].storeId+'">핫딜중</button>'; 
+				str += '<button class="btn-big htdlBtn"  data-storeid="'+storeList[i].storeId+'">핫딜중</button>'; 
 			}else{
-				str += '<button class="btn-big htdlBtnNo" style="opacity:0.5;" data-storeid="'+storeList[i].storeId+'">핫딜중</button>'; 
+				str += '<button class="btn-big htdlBtnNo" style="opacity:0.5; background-color: #0ab3c9" data-storeid="'+storeList[i].storeId+'">핫딜</button>'; 
 			}
 			if(storeList[i].htdlStusCd == "P"){
 				str += '<button class="btn-big">핫딜예정</button>'
@@ -811,8 +812,8 @@
 			
 			if($("#reserve").hasClass("select-bar") == true){
 				let storeId = storeList[i].storeId;
-				let time = $(".searchForm").find("input[name='time']").val();
-				let pnum =$(".searchForm").find("input[name='pnum']").val();
+				let time = $("#searchForm").find("input[name='time']").val();
+				let pnum =$("#searchForm").find("input[name='pnum']").val();
 				isRsvdAvailChecked({storeId: storeId, time: time, pnum: pnum}, function(data){
 					console.log("reserve avail check: " + data);
 					
@@ -927,10 +928,10 @@
 					str+='<span>'+htdl.dcRate * 100+'%</span>'
 					str+='</div>'
 					str+='<div class="card-price card-afterPrice">'
-					str+='<span>₩'+htdl.befPrice +'</span>'
+					str+='<span>₩'+(htdl.befPrice - htdl.ddct)+'</span>'
 					str+='</div>'
 					str+='<div class="card-price card-beforePrice">'
-					str+='<span>₩'+(htdl.befPrice - htdl.ddct) +'</span>'
+					str+='<span>₩'+htdl.befPrice +'</span>'
 					str+='</div>'
 					str+='</div>'
 					str+='<div class="deatial-container flex-column m-l16" style="width: 100%;">'
@@ -967,7 +968,7 @@
 		console.log(pnum)
 		console.log(time)
 
-		$.getJSON("/dealight/reservation/rsvdavailcheck/"+storeId+"/"+time+"/"+pnum+".json",
+		$.getJSON("/dealight/rsvdavailcheck/"+storeId+"/"+time+"/"+pnum+".json",
 				function(data){
 					console.log("-------------------------")
 					 if(callback){
@@ -1219,8 +1220,9 @@
         //시간 셀렉박스를 보여준다.
         $("#timebox").show("slow");
         let str =""
-   		str += "<input type='text' name='time' value='" + getCurTime() + "'>"
+   		str += "<input type='hidden' name='time' value='" + getCurTime() + "'>"
    		$("#searchForm").append(str);
+   		$("#timespan").text(getCurTime())
         showMain();
     });
     

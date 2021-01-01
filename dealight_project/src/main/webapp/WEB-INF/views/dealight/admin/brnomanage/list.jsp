@@ -3,7 +3,33 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@include file="/WEB-INF/views/includes/adminHeader.jsp"%>
-
+<style>
+ ul{
+        display: flex;
+        flex-direction: row;
+    }
+    li{
+        /* display: flex;
+        flex-direction: row; */
+        list-style: none;
+        /* outline: 1px solid red; */
+    }
+    .pagination a{
+        color: black;
+        padding: 8px 16px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        text-decoration: none;
+    }
+    .pagination a.active{
+        background-color: buttonshadow;
+        border-radius: 5px;
+        color: white;
+    }
+    .pagination a:hover:not(.active){
+        background-color: #ddd;
+    } 
+</style>
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -107,26 +133,18 @@
 			</div>
 			<div class="col-sm-12 col-md-7">
 			<div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
-                	<ul class="pagination">
+                	<ul class="pagination"style="margin: 10px">
                 		
                 		<c:if test="${pageMaker.prev }">
-                			<li class="paginate_button page-item previous">
-                				<a href="${pageMaker.startPage - 1 }">Previous</a>
-                			</li>
+                			<li> <a href="'+ (pageDTO.startPage - 1) +'" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
                 		</c:if>
                 		
                 		<c:forEach var="num" begin="${pageMaker.startPage }" end="${pageMaker.endPage }">
-                			<li class="paginate_button page-item ${pageMaker.cri.pageNum == num ? 'active':'' }">
-                				<c:if test="${num == pageMaker.cri.pageNum }">[</c:if>
-								<a href='${num }' > ${ num} </a> 
-                				<c:if test="${num == pageMaker.cri.pageNum }">]</c:if>
-                			</li>
+                				<li><a href="${num }" ${ pageMaker.cri.pageNum ==num?'class="active"':''} >${num }</a></li>
                 		</c:forEach>
                 		
                 		<c:if test="${pageMaker.next }">
-                			<li class="paginate_button next page-item">
-                				<a href="${pageMaker.endPage + 1 }">Next</a>
-                			</li>
+                			<a href="'+(pageDTO.endPage + 1)+'" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
                 		</c:if>
                 		
                 	</ul>
