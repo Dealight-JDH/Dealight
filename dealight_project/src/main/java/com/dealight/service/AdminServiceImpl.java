@@ -14,6 +14,7 @@ import com.dealight.domain.Criteria;
 import com.dealight.domain.HtdlDtlsVO;
 import com.dealight.domain.HtdlVO;
 import com.dealight.domain.HtdlWithStoreDTO;
+import com.dealight.domain.RsvdWithStoreDTO;
 import com.dealight.domain.StoreDTO;
 import com.dealight.domain.StoreMenuVO;
 import com.dealight.domain.StoreVO;
@@ -282,11 +283,38 @@ public class AdminServiceImpl implements AdminService {
 		// TODO Auto-generated method stub
 		log.info("get suggest htdl list");
 		
-		List<StoreDTO> storeList = sMapper.storeList();
+		List<StoreDTO> storeList = sMapper.storeList();		
 		List<StoreDTO> suggestList = suggestCheck(hMapper.getSuggestHtdlList(), storeList);
+		
+		List<RsvdWithStoreDTO> totRsvdStoreList = bsMapper.countAllStoreWithRsvd();
+		List<RsvdWithStoreDTO> rsvdStoreList =  bsMapper.findLastWeekRsvdPnum(3);
+		getRsvdRate(totRsvdStoreList, rsvdStoreList);
 		log.info("suggest list : " + suggestList);
 		log.info("storeList: "+ storeList);
 		return suggestList;
+	}
+	
+	private void getRsvdRate(List<RsvdWithStoreDTO> list, List<RsvdWithStoreDTO> rsvdStoreList) {
+		
+		for(StoreDTO dto : suggestList) {
+			
+			for(RsvdWithStoreDTO rsvdDto : list) {
+				if(dto.getStoreId() == rsvdDto.getStoreId()) {
+					
+					for(RsvdWithStoreDTO rsvdStoreDto : rsvdStoreList) {
+						if(rsvdDto.getStoreId() == rsvdStoreDto.getStoreId()) {
+							
+							log.info("======rsvdDto " + rsvdDto);
+							log.info("======rsvdStoreDto " + rsvdStoreDto);
+							dto.setRsvdRate((rsvdStoreDto.getTotRsvd() / rsvdDto.getTotRsvd())*100);
+							log.info("======suggestLlist dto " + dto);
+						}
+					}
+				}
+					
+			}
+		}
+		
 	}
 	
 	private List<StoreDTO> suggestCheck(List<HtdlWithStoreDTO> list, List<StoreDTO> storeList){
