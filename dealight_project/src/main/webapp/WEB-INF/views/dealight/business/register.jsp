@@ -596,10 +596,11 @@
 	                            <ul></ul>
 	                        </div> <!-- uploadResult -->
 	                    </div>
-	                    <div class='bigPictureWrapper'>
+	                    <!-- <div class='bigPictureWrapper'>
 	                        <div class='bigPicture'>
 	                        </div>
 	                    </div>
+	                     -->
 	                </div> <!-- end upload_wrapper -->
 	                <div class="checkbox_wrapper">
 	                    <div class="label_input terms">

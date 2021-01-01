@@ -120,10 +120,11 @@
 	                            <ul></ul>
 	                        </div> <!-- uploadResult -->
 	                    </div> 
-						<div class='bigPictureWrapper'>
+						<!-- <div class='bigPictureWrapper'>
 							<div class='bigPicture'>
 							</div>
 						</div>
+						 -->
 				</div>
 		</form>
 		<div id="btn">

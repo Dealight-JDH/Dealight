@@ -66,6 +66,12 @@
             align-items: center;
             border: 1px #eeeeef solid;
         }
+        .htdl_cur_row > div{
+        	margin-top: 3px;
+        }
+        .htdl_cur_row > div:first-child{
+        	margin-top: 0;
+        }
         .htdl_cur_wrapper > div:last-child{
             margin-bottom: 15px;
         }

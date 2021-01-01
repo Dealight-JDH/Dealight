@@ -109,10 +109,11 @@
 	                            <ul></ul>
 	                        </div> <!-- uploadResult -->
 	                    </div> 
-						<div class='bigPictureWrapper'>
+						<!-- <div class='bigPictureWrapper'>
 							<div class='bigPicture'>
 							</div>
 						</div>
+						 -->
 				</div>
 			</c:if>
 			<button data-oper="modify" class="btn btn-secondary">수정하기</button>

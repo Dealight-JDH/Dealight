@@ -589,7 +589,7 @@ console.log("rsvd id : "+rsvdId)
     		if(waitId) strRevw += "<input name='waitId' value='"+waitId+"' hidden>";
     		strRevw += "<input name='rating' id='rate_input' hidden>";
     		strRevw += "<input name='userId' value='"+userId+"' hidden>";
-    		strRevw += "<input name='prevPage' value='reservation?pageNum="+pageNum+"&amount="+amount+"' id='' hidden>";
+    		strRevw += "<input name='prevPage' value='review/?pageNum="+pageNum+"&amount="+amount+"' id='' hidden>";
     		strRevw += "</form>";
     		strRevw += "</div>";	
     		strRevw += "</div>";
@@ -620,7 +620,7 @@ console.log("rsvd id : "+rsvdId)
 	    	if(isModal)  $("#js_upload").change(uploadHandler); 
 	    	$(".uploadResult").on("click", "button", deleteHandler);
 	        //$(".uploadResult").on("click", "li", showImageHandler);
-	    	$(".bigPictureWrapper").on("click",bigImgAniHandler);
+	    	//$(".bigPictureWrapper").on("click",bigImgAniHandler);
 	    	if(pageType === 'modify' || pageType === 'register') $(".uploadResult").on("click","img",selRepImgHandler);
  		
  	});
@@ -694,7 +694,7 @@ console.log("rsvd id : "+rsvdId)
 		console.log("store id : "+storeId);
 		addLike({userId:userId,storeId:storeId});
 		
-		alert($(e.target).parent().find(".store_info_id").text()+"찜이 추가 되었습니다.");
+		alert("찜이 추가 되었습니다.");
 	
 		showStoreInfo(userId, storeId);
        }

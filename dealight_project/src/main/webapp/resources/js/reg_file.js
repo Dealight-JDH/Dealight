@@ -141,11 +141,11 @@
 	        /* jquery의 foreach문 */
 			$(".uploadResult ul li").each(function(i, obj) {
 				
-				let jobj = $(obj);
+				let jobj = $(obj);	
 				
 				str += "<input type='hidden' name='imgs["+i+"].fileName' value='" + jobj.data("filename")+"'>";
 				str += "<input type='hidden' name='imgs["+i+"].uuid' value='" + jobj.data("uuid")+"'>";
-				str += "<input type='hidden' name='imgs["+i+"].uploadPath' value='" + jobj.data("path")+"'>";
+				str += "<input type='hidden' name='imgs["+i+"].uploadPath' value='" + jobj.data("path").replace(new RegExp(/\\/g),"/") + "'>";
 				str += "<input type='hidden' name='imgs["+i+"].image' value='" + jobj.data("type")+"'>";
 				if(jobj.find(".selected_img").length === 0) str += "<input type='hidden' name='imgs["+i+"].rep' value='" + 'N' +"'>";
 				if(jobj.find(".selected_img").length > 0) str += "<input type='hidden' name='imgs["+i+"].rep' value='" + 'Y' +"'>";;  
@@ -248,6 +248,7 @@
 				}); // $.ajax
 		};
 
+		/*
 	let showImage = function (fileCallPath) {
 		
 		alert(fileCallPath);
@@ -285,6 +286,7 @@
 			$(this).hide();
 		}, 1000);
 	}
+	*/
 	
 	let selRepImgHandler = function (e) {
 		
@@ -308,7 +310,7 @@
 	if(pageType === 'modify' || pageType === 'register') $(".uploadResult").on("click", "button", deleteHandler);
 	if(pageType === 'modify' || pageType === 'register') $(".uploadResult").on("click","img",selRepImgHandler);
 	if(pageType === 'get') $(".uploadResult").on("click", "li", showImageHandler);
-	if(pageType === 'get') $(".bigPictureWrapper").on("click",bigImgAniHandler);
+	//if(pageType === 'get') $(".bigPictureWrapper").on("click",bigImgAniHandler);
 	
 	console.log("pageType : "+pageType)
 	if(storeId) getImg(storeId);

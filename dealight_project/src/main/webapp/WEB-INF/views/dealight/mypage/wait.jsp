@@ -486,7 +486,7 @@ window.onload = function () {
 	    	if(isModal)  $("#js_upload").change(uploadHandler); 
 	    	$(".uploadResult").on("click", "button", deleteHandler);
 	        //$(".uploadResult").on("click", "li", showImageHandler);
-	    	$(".bigPictureWrapper").on("click",bigImgAniHandler);
+	    	//$(".bigPictureWrapper").on("click",bigImgAniHandler);
 	    	if(pageType === 'modify' || pageType === 'register') $(".uploadResult").on("click","img",selRepImgHandler);
  		
  	});
@@ -550,7 +550,7 @@ window.onload = function () {
 
 		addLike({userId:userId,storeId:storeId});
 		
-		alert($(e.target).parent().parent().parent().parent().parent().parent().find(".store_info_id").text()+"번이 추가 되었습니다.");
+		alert("찜이 추가 되었습니다.");
 
 		showStoreInfo(userId, storeId);
     }

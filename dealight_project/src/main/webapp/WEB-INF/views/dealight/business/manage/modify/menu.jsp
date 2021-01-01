@@ -313,10 +313,6 @@
 		                            <ul></ul>
 		                        </div> <!-- uploadResult -->
 		                    </div>
-						<div class='bigPictureWrapper'>
-							<div class='bigPicture'>
-							</div>
-						</div>
 						<button id="submit_menuRegForm" type="submit">제출하기</button></br>
 					</form>
 				</div>
@@ -481,7 +477,7 @@ $(".btn_seat_stus").on("click",changeSeatStusHandler);
 
 	// 모달 선택
 	const modal = $("#myModal"),
-		close = $(".close"),
+		close = $(".close_modal"),
 		modalContent = $(".modal-content"),
 		btn_show_board = $("#btn_show_board");
 
@@ -605,7 +601,7 @@ $(document).ready(function(e){
 			strMenu += "</div></li>";
 		}
 		strMenu += "</ul></div></div>";
-		strMenu += "<div class='bigPictureWrapper_modify'><div class='bigPicture_modify'></div></div>";
+		//strMenu += "<div class='bigPictureWrapper_modify'><div class='bigPicture_modify'></div></div>";
 		if(imgUrl) strMenu += "<input hidden name='imgUrl' value='"+imgUrl+"'>";
 		if(imgUrl) strMenu += "<input hidden name='thumImgUrl' value='"+thumImgUrl+"'>";
 		strMenu += "<button data-oper='modify' class='btn_modify modal_menu'>수정</button>";
@@ -763,6 +759,7 @@ $(document).ready(function(e){
 					}); // $.ajax
 			};
 	
+			/*
 		var showImage_modify = function (fileCallPath) {
 			
 			alert(fileCallPath);
@@ -775,7 +772,7 @@ $(document).ready(function(e){
 			
 			
 		}// end show image
-		
+		*/
 		var showImageHandler_modify = function(e) {
 	    	
 			if(e.target.type === "button")
@@ -794,18 +791,19 @@ $(document).ready(function(e){
 	        }
 		};
 		
+		/*
 		var bigImgAniHandler_modify = function (e) {
 			$(".bigPicture_modify").animate({width:'0%',height:'0%'},1000);
 			setTimeout(()=>{
 				$(this).hide();
 			}, 1000);
 		}
-		
+		*/
 		/* submit 타입의 버튼을 제어한다.*/
 		$("#js_upload").change(uploadHandler_modify); 
 		$(".uploadResult_modify").on("click", "button", deleteHandler_modify);
 	    $(".uploadResult_modify").on("click", "li", showImageHandler_modify);
-		$(".bigPictureWrapper_modify").on("click",bigImgAniHandler_modify);
+		//$(".bigPictureWrapper_modify").on("click",bigImgAniHandler_modify);
 		$(".btn_modify").on("click", inputHandler_modify);
 		$(".btn_remove").on("click", function(e){
 			

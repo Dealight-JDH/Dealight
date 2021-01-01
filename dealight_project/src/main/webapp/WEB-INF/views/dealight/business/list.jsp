@@ -472,6 +472,7 @@ $(document).ready(function() {
         }
     });
     
+    /**
     function showImage(fileCallPath) {
         
         alert(fileCallPath);
@@ -490,6 +491,7 @@ $(document).ready(function() {
             $('.bigPictureWrapper').hide();
         },1000);
     })
+    **/
     
 });
 </script>

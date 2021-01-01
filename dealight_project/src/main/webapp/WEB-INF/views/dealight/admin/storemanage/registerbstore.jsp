@@ -95,10 +95,12 @@
 	                            <ul></ul>
 	                        </div> <!-- uploadResult -->
 	                    </div>
+	                    <!-- 
 				<div class='bigPictureWrapper'>
 				    <div class='bigPicture'>
 				    </div>
 				</div>
+				 -->
 			</div>
 			
 			<input name="n1SeatNo" value="0" type="number" hidden>

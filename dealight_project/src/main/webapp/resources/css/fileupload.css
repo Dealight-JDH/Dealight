@@ -98,3 +98,37 @@
 	right:-40px;
 	top:0px;
 }
+
+.uploadResult_htdl ul li > div{
+	position:relative;
+}
+.uploadResult_htdl .fileupload_img_btn{
+	top:5px;
+	right:-35px;
+	
+}
+    .uploadResult{
+	    width:100%;
+    }
+    .uploadResult ul{
+	display: flex;
+	flex-flow: row;
+	justify-content: center;
+	align-items: center;
+    }
+.uploadResult_htdl ul li{
+	list-style: none;
+	padding: 10px;
+	align-content: center;
+	text-align: center;
+}
+.uploadResult_htdl ul li > div{
+	position:relative;
+}
+.uploadResult_htdl ul li img{
+	width: 100px;
+	height: 100px;
+}
+.uploadResult_htdl ul li span{
+	color:white;
+}

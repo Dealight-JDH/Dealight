@@ -18,6 +18,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="/resources/js/Chart.js"></script>
 <link rel="stylesheet" href="/resources/css/manage.css">
+<link rel="stylesheet" href="/resources/css/fileupload.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/brands.min.css" integrity="sha512-D0B6cFS+efdzUE/4wh5XF5599DtW7Q1bZOjAYGBfC0Lg9WjcrqPXZto020btDyrlDUrfYKsmzFvgf/9AB8J0Jw==" crossorigin="anonymous" />
 </head>
 <body>
@@ -1506,7 +1507,13 @@ let writeTimeBar = function (curTime) {
 	        	strHtdl  += "<textarea rows='2' cols='22' name='intro'></textarea>";
 	        	strHtdl  += "</div>";
 	        	
-	        	strHtdl += "<div class='uploadDiv htdl'><input type='file' id='js_upload' name='uploadFile'></div>";
+	        	strHtdl += "<div class='uploadDiv htdl'>";
+	        	
+	    		strHtdl += "<label for='js_upload'>";
+	    		strHtdl += "<i class='fas fa-arrow-circle-up'></i> 사진 첨부하기";
+	    		strHtdl += "</label>";
+	    		strHtdl += "<input style='display:none;' type='file' id='js_upload' name='uploadFile' multiple hidden='hidden'>";
+	    		strHtdl += "</div>";
                 strHtdl += "<div class='uploadResult_htdl'><ul></ul></div>";
                 strHtdl += "<input type='hidden' id='storeId' name='storeId' value='"+storeId+"'>";
                 strHtdl += "<input type='hidden' id='brch' name='brch' value='"+brch+"'>";
@@ -1600,11 +1607,10 @@ let writeTimeBar = function (curTime) {
 	    					str += "<li data-path='" + obj.uploadPath +"'";
 	    					str += "data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"'data-type='"+obj.image+"'";
 	    					str += "><div>";
-	    					str += "<span>" + obj.fileName +"</span>";
+	    					str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image'"
+	    								+" class='btn btn-warning btn-circle fileupload_img_btn'><i class='far fa-times-circle'></i></button><br>";
 	    					str += "<img src='/display?fileName=" + fileCallPath + "'>";
 	    					str += "</div>";
-	    					str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image'"
-	    								+" class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
 	    					str += "</li>";
 	    	                /* 만일 파일이 이미지 형식이 아니면 */
 	    	                /* default img를 보여준다. */
@@ -1614,10 +1620,10 @@ let writeTimeBar = function (curTime) {
 
 	    					str += "<li "
 	    					str += "data-path='" + obj.uploadPath + "'data-uuid='" + obj.uuid + "'data-filename='" + obj.fileName + "' data-type='" +obj.image+"'>" + "<div>";
-	    					str += "<span> " + obj.fileName + "</span>";
+	    					str += "<button type ='button' data-file=\'"+fileCallPath+"\' data-type='image'"
+	    					+" class='btn btn-warning btn-circle fileupload_img_btn'><i class='far fa-times-circle'></i></button><br>";
 	    					str += "<img src='/resources/img/attach.png'>";
 	    					str += "</div>";
-	    					str += "<button type='button' data-file=\'"+fileCallPath+"\'data-type='file' class='btn btn-warning btn-circle'><i class='fa fa-times'></i>삭제</button><br>";
 	    					str += "</li>";
 	    				}
 	    			});
@@ -1706,19 +1712,6 @@ let writeTimeBar = function (curTime) {
 	    					}); // $.ajax
 	    			};
 	    	
-	    		var showImage_htdl = function (fileCallPath) {
-	    			
-	    			alert(fileCallPath);
-	    			
-	    			$(".bigPictureWrapper_htdl").css("display","flex").show();
-	    			
-	    			$(".bigPicture_htdl")
-	    			.html("<img src='/display?fileName=" + fileCallPath + "'>")
-	    			.animate({width:'100%',height:'100%'},1000);
-	    			
-	    			
-	    		}// end show image
-	    		
 	    		var showImageHandler_htdl = function(e) {
 	    	    	
 	    			if(e.target.type === "button")
@@ -1737,18 +1730,11 @@ let writeTimeBar = function (curTime) {
 	    	        }
 	    		};
 	    		
-	    		var bigImgAniHandler_htdl = function (e) {
-	    			$(".bigPicture_htdl").animate({width:'0%',height:'0%'},1000);
-	    			setTimeout(() => {
-	    				$(this).hide();
-	    			}, 1000);
-	    		}
-	    		
 	    		/* submit 타입의 버튼을 제어한다.*/
 	    		$("#js_upload").change(uploadHandler_htdl); 
 	    		$(".uploadResult_htdl").on("click", "button", deleteHandler_htdl);
 	    	    $(".uploadResult_htdl").on("click", "li", showImageHandler_htdl);
-	    		$(".bigPictureWrapper_modify").on("click",bigImgAniHandler_htdl);
+	    		//$(".bigPictureWrapper_modify").on("click",bigImgAniHandler_htdl);
 	    		
 	    		let regHtdlFormObj = $(".regHtdlForm");
 	    		

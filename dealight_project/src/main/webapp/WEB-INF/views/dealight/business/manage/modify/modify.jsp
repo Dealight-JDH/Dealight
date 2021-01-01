@@ -324,13 +324,10 @@
             flex-wrap: wrap;
         }
         .revw_img_box img {
-            width: 80px;
+            width: 100px;
+            padding-right:20px;
         }
-        .revw_img_wrapper{
-            width: 90%;
-            padding: 0 20px;
 
-        }
         .reply_wrapper {
             width: 90%;
             height: 90%;
@@ -551,10 +548,11 @@
 					</ul>
 				</div> <!-- uploadResult -->
 			</div> 
-				<div class='bigPictureWrapper'>
+				<!-- <div class='bigPictureWrapper'>
 					<div class='bigPicture'>
 					</div>
 				</div>
+				 -->
 		</div>
 		</form>
 		

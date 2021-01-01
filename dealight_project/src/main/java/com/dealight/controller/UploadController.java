@@ -46,10 +46,9 @@ public class UploadController {
 
 	
 	// 파일 경로
-	//final static private String ROOT_FOLDER = "C:\\dealgiht\\rds\\";
-	final static private String ROOT_FOLDER = "/Users/hyeonjung/Desktop/RDS/";
+	final static private String ROOT_FOLDER = "C://dealgiht//rds//";
+	//final static private String ROOT_FOLDER = "/Users/hyeonjung/Desktop/RDS/";
 	//private final static String ROOT_FOLDER = "/Users/limjongwoo/upload/dealight/";
-	//final static private String ROOT_FOLDER = "C:\\Users\\kjuio\\Desktop\\ex05\\";
 	
 	//add param category
 	private String getFolder(String category) {
@@ -89,6 +88,7 @@ public class UploadController {
 		
 		// category/yyyy/MM/dd
 		String uploadFolderPath = getFolder(category);
+		log.info("uploadFolderPath : "+uploadFolderPath);
 		
 		//파일경로를 생성한다. (rootfolder / category / yyyy / MM / dd )
 		File uploadPath = new File(ROOT_FOLDER, uploadFolderPath);
