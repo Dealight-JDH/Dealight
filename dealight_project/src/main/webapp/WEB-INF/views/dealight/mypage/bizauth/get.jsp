@@ -185,7 +185,7 @@
 </style>
 </head>
 <body>
-<div class="mypage_wrapper" style="min-height: 800px">
+<div class="mypage_wrapper" style="min-height: 900px">
 <%@include file="/WEB-INF/views/includes/custserviceSidebar.jsp" %>
 	<div class="box-container flex-column" >
 	    <div class="mypage_main_header">
