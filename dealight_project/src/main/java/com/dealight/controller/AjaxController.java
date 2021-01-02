@@ -20,8 +20,10 @@ import com.dealight.domain.LikeListDTO;
 import com.dealight.domain.LikeVO;
 import com.dealight.domain.MainStoreJoinVO;
 import com.dealight.domain.PageDTO;
+import com.dealight.domain.RsvdAvailVO;
 import com.dealight.domain.WaitVO;
 import com.dealight.service.LikeService;
+import com.dealight.service.RsvdService;
 import com.dealight.service.SearchService;
 import com.dealight.service.WaitService;
 
@@ -37,6 +39,7 @@ public class AjaxController {
 	private SearchService sService;
 	private LikeService likeService;
 	private WaitService waitService;
+	private RsvdService rsvdService;
 	
 	@GetMapping(value = "/getlist",
 			produces = {
@@ -113,5 +116,23 @@ public class AjaxController {
 	public ResponseEntity<WaitVO> isCurWait(@PathVariable("userId")String userId) {
 		
 		return new ResponseEntity<>(waitService.getCurWaitByUserId(userId),HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/waitcnt/{storeId}",produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Integer> waitCnt(@PathVariable("storeId")long storeId) {
+		
+		return new ResponseEntity<>(sService.getStoreWaitCnt(storeId),HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/rsvdavailcheck/{storeId}/{time}/{pnum}")
+	public @ResponseBody ResponseEntity<Boolean> rsvdAvailCheck(
+			@PathVariable Long storeId ,@PathVariable String time, @PathVariable Integer pnum){
+		
+		//해당 매장의 예약가능 여부
+		RsvdAvailVO rsvdAvailVO = rsvdService.getRsvdAvailByStoreId(storeId);
+		log.info("=======================================rsvdvailcheck");
+		boolean checked = rsvdService.isRsvdAvailChecked(rsvdAvailVO, time, pnum);
+//		return new ResponseEntity<Boolean>(body, status);
+		return new ResponseEntity<Boolean>(checked, HttpStatus.OK);
 	}
 }

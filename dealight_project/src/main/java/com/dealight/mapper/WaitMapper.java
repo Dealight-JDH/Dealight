@@ -63,4 +63,6 @@ public interface WaitMapper {
 	int getWaitCnt(@Param("userId") String userId,@Param("cri") Criteria cri,@Param("waitStusCd") String waitStusCd);
 	
 	WaitVO getCurWaitByUserId(String userId);
+	
+	public int storeWaitCnt(long storeId);
 }

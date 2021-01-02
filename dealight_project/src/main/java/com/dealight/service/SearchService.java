@@ -11,4 +11,5 @@ public interface SearchService {
 	
 	public PageDTO getListDistStore(Criteria cri);
 	
+	public int getStoreWaitCnt(long storeId);
 }
