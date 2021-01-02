@@ -2222,6 +2222,40 @@ let writeTimeBar = function (curTime) {
     	location.href = $(e.currentTarget).find("a").attr("href");
     	
     });
+    
+    const accessToken = '${accessToekn}',
+    	uuid = '$(requestUuid)';
+    
+    function call(params, callback,error) {
+        
+    	let storeId = params.storeId,
+    		waitId = params.waitId
+    	
+    	let title = "[딜라이트 안내 메시지]",
+    		description = "입장 시간이 얼마남지 않았습니다. 순서를 확인하고 매장에 방문해주세요.";
+    		
+    	let web_url = "/dealight/waiting/" + waitId;
+    	
+        $.ajax({
+            type : 'post',
+            url : '/dealight/message/friends?access_token='+accessToken+'&title='+title+'&description='+description+'&web_url'+web_url+'&uuid='+uuid+'&storeId='+storeId+'&waitId='+waitId,
+            contentType : "application/json; charset=utf-8",
+            success : function(result, status, xhr) {
+                if(callback) {
+                    callback(result);
+                }
+            },
+            error : function(xhr, status, er) {
+                if(error) {
+                    error(er);
+                }               
+            }
+        })
+    }
+    
+    $("")
+    
+    
     </script>
  <%@include file="../../../includes/mainFooter.jsp" %>
  <script src="/resources/js/clock.js"></script>

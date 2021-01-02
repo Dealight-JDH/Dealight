@@ -68,7 +68,7 @@ allow : ${allow}
 <input name='description' type='textarea' value=""> </br></br>
 
 <label for="web_url">전송 URL</label></br>
-<input name='web_url' type='text' value="http://localhost:8080/dealight/business/waiting/"+${waitId}></br></br>
+<input name='web_url' type='text' value="http://localhost:8181/dealight/business/waiting/"+${waitId}></br></br>
 
 <label for="uuid">UUID</label></br>
 <input name='uuid' type='text' value='${requestUuid}'>
