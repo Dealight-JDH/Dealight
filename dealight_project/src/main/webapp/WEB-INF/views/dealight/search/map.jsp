@@ -539,6 +539,9 @@
 		e.preventDefault();
 		actionForm.elements["lat"].value = $("#searchForm").find("input[name='lat']").val();
 		actionForm.elements["lng"].value = $("#searchForm").find("input[name='lng']").val();
+		let moveLatLon = new kakao.maps.LatLng(actionForm.elements["lat"].value, actionForm.elements["lng"].value);
+	    map.setLevel(3);
+	    map.panTo(moveLatLon);    
 		showMain();
 	})
 	
