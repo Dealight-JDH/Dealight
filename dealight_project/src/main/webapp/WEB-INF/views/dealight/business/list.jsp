@@ -502,6 +502,11 @@ $(document).ready(function() {
 showTime(); // 현재 시간을 보여주는 코드
 setInterval(showTime, 1000); // 매초 update
 
+const reg_result = '${regResult}';
+
+if(reg_result !==null && reg_result.length > 1){
+	alert(reg_result);
+};
 
 //매장의 착석 상태 코드를 변경한다.
 function putChangeStatusCd(params,callback,error) {

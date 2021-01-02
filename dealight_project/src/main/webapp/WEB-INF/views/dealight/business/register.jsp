@@ -533,15 +533,15 @@
 	                    </div>
 	                    <div class="label_input">
 	                        <label>가게휴무일</label>
-	                        <input name="hldy" value="연중무휴">
+	                        <input name="hldy" placeholder="휴무일을 입력해주세요.">
 	                    </div>
 	                    <div class="label_input">
 	                        <label>가게 소개</label>
-	                        <textarea class="input_textarea" rows="3" name="storeIntro" >존맛탱</textarea>
+	                        <textarea class="input_textarea" rows="3" name="storeIntro" placeholder="가게 소개를 입력해주세요."></textarea>
 	                    </div>
 	                    <div class="label_input">
 	                        <label>대표 메뉴</label>
-	                        <input name="repMenu" value="맛난거">
+	                        <input name="repMenu" place='대표 메뉴를 입력해주세요.'>
 	                    </div>
 	                    <div class="label_input">
 	                        <label>가게 평균 식사 시간(분)</label>
@@ -622,6 +622,28 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
 <script>
+let doubleSubmitFlag = false;
+let doubleSubmitCheck = function (){
+    if(doubleSubmitFlag){
+        return doubleSubmitFlag;
+    }else{
+        doubleSubmitFlag = true;
+        return false;
+    }
+}
+
+
+$("#btnSubmit").on("click", function(e) {
+	
+	e.preventDefault();
+	
+	console.log("page click");
+	
+	if(doubleSubmitCheck) return;
+	
+	$("#regForm").submit();
+});
+
 writeTimeBar = function () {
     timeArr = ['입력 전','09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00','21:30','22:00'];
     strTime = "";

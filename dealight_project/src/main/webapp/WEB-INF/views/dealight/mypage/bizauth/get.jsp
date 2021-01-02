@@ -12,7 +12,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 <link rel="stylesheet" href="/resources/css/custservice.css" type ="text/css" />
-
+<link rel="stylesheet" href="/resources/css/fileupload.css">
 
 <style type="text/css">
 * { /* CSS초기화. 이거 없으면 div태그 사이에 공백 생김*/
@@ -130,6 +130,7 @@
   	cursor: pointer;
   	outline: none;
   }
+  /**
   .uploadResult{
 	width:100%;
 	background-color: gray;}
@@ -151,6 +152,27 @@
 .uploadResult ul li span{
 	color:white;
 }
+**/
+.uploadResult > ul {
+	display: flex;
+	flex-flow: row;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+.uploadResult > ul > li > div > img {
+	margin:0 20px;
+}
+.form_img label {
+	margin-left: 40px;
+}
+.uploadResult > ul li{
+	margin-left: 40px;
+}
+.fileupload_img_btn{
+	right:-4px;
+	top:6px;
+}
+
 .bigPictureWrapper{
 	position: absolute;
 	display: none;
@@ -221,7 +243,6 @@
 			<input type="hidden" name="brPhotoSrc" value="${buser.brPhotoSrc }" readonly="readonly"><br>
 			<div>
 				<div class="uploadDiv">
-					<input type="file" name="uploadFile">
 				</div>
 				<div class="uploadResult">
 					<ul>

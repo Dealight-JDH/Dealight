@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,6 +77,7 @@ public class BusinessController {
 	//메뉴 사진첨부파일 매장평가 사업자테이블에 태그 메뉴 옵션이 들어가야한다.
 	//DTO에 대한이해가 피요하고 많아지는 객체들을 쪼갤수있는 방법을 생각하자.
 	@PostMapping("/register")
+	@Transactional
 	public String register(StoreVO store, BStoreVO bStore, StoreLocVO loc, StoreEvalVO eval,Long brSeq,RedirectAttributes rttr) {
 		
 		
@@ -93,7 +95,7 @@ public class BusinessController {
 		log.info("register: " + store);
 		
 		sService.register(store);
-		bizAuthService.updateStusCdToB(brSeq);
+		//bizAuthService.updateStusCdToB(brSeq);
 		
 		Long storeId = store.getStoreId();
 		
@@ -107,7 +109,7 @@ public class BusinessController {
 		//결국 저장된 정보를 볼수있는 페이지는 뭐가잇을까??
 		//수정페이지에서 정보를 볼 수있고 정보도 고칠수 있지 
 		//그러면 수정페이지를 가지고있어야겠네
-		rttr.addFlashAttribute("result", store.getStoreId());
+		rttr.addFlashAttribute("regResult", store.getStoreId()+"번 매장이 등록되었습니다.");
 		return "redirect:/dealight/business/";
 	}
 	
