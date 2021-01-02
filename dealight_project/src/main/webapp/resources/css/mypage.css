@@ -125,7 +125,7 @@
             color: #4c4c4c;
         }
         .main_header_link{
-        	font-size: 8px;
+        	font-size: 14px;
         	padding : 5px 10px;
         	background-color: white;
         	border: 1px black solid;
@@ -911,9 +911,6 @@
             color: rgba(0, 0, 0, 0.52);
             margin-right: 3px;
         }
-        #revwRegForm > div{
-            margin: 5px 0;
-        }
         .revw_btn_box{
             width: 90%;
             display: flex;
@@ -979,6 +976,7 @@
         }
         .revw_img_box img {
             width: 80px;
+            height: 80px;
         }
         .revw_img_wrapper{
             width: 90%;
@@ -1029,5 +1027,18 @@
             font-size: 12px;
             font-weight: normal;
         }
-        
-        
+       	#revwRegForm .rating {
+       		font-size: 32px;
+       		cursor: pointer;
+       		margin-bottom:15px;
+       	}
+       	.revw_cnts_textarea {
+       		margin-bottom: 20px;
+       	}
+       	.fileupload_img_btn.review_file{
+       		right:-55px;
+       		top:15px;
+       	}
+        .uploadResult ul li {
+        	margin-bottom: 50px;
+        }

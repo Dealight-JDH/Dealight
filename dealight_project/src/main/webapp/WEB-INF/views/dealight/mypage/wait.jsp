@@ -68,9 +68,10 @@
 	                                        <div class="cnts">
 	                                            <div>
 	                                                <span class="rsvd_cnts_tit">웨이팅 인원</span>
-													<span class="rsvd_cnts_val">${wait.waitPnum }</span>
+													<span class="rsvd_cnts_val">${wait.waitPnum }명</span>
 	                                            </div>
 	                                            <div>
+	                                            	<span class="rsvd_cnts_tit">웨이팅 상태</span>
 	                                                <c:if test="${wait.waitStusCd eq 'W'}">
 	                                                	<span class="rsvd_cnts_val wait_stus_cd" style="color:blue;">웨이팅</span>
 	                                                </c:if>
@@ -79,6 +80,9 @@
 	                                                </c:if>
 	                                                <c:if test="${wait.waitStusCd eq 'P'}">
 	                                                	<span class="rsvd_cnts_val wait_stus_cd" style="color:red;">노쇼</span>
+	                                                </c:if>
+	                                                <c:if test="${wait.waitStusCd eq 'C'}">
+	                                                	<span class="rsvd_cnts_val wait_stus_cd" style="color:red;">취소</span>
 	                                                </c:if>
 	                                            </div>
 	                                        </div>
