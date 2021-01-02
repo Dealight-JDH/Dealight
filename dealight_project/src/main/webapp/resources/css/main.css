@@ -142,7 +142,7 @@ input:focus {
 	align-self: center;
 	justify-content: space-between;
 	flex-wrap: wrap;
-	margin-botton: 50px;
+	margin-bottom: 50px;
 }
 
 .middle-header {
@@ -422,11 +422,11 @@ button {
 	opacity: 0;
 	visibility: hidden;
 	transition: opacity 0.2s linear, visibility 0.2s linear;
+	border: 1px solid #DDDDDD;
 }
 
 .dropdown-list__item {
-	margin: 20px;
-	padding: 6px;
+	padding: 20px;
 	font-size: 12px;
 }
 

@@ -1,13 +1,11 @@
 package com.dealight.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import com.dealight.domain.Criteria;
-import com.dealight.domain.MainStoreJoinVO;
 import com.dealight.domain.PageDTO;
 import com.dealight.mapper.MainStoreJoinMapper;
+import com.dealight.mapper.WaitMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -18,7 +16,7 @@ import lombok.extern.log4j.Log4j;
 public class SearchServicImpl implements SearchService {
 
 	private MainStoreJoinMapper mMapper;
-
+	private WaitMapper wMapper;
 
 
 	@Override
@@ -40,5 +38,9 @@ public class SearchServicImpl implements SearchService {
 		return new PageDTO(cri, mMapper.getTotalCount(cri),
 				mMapper.getDistWithPaging(cri));
 		
+	}
+	@Override
+	public int getStoreWaitCnt(long storeId) {
+		return wMapper.storeWaitCnt(storeId);
 	}
 }
