@@ -199,6 +199,10 @@ public class RsvdController {
         
         //카카오 페이 승인 vo
         KakaoPayApprovalVO kakaoPayApprovalVO =  kakaoService.kakaoPayInfo(requestDto.getUserId(), pg_token);
+        
+        if("MONEY".equals(kakaoPayApprovalVO.getPayment_method_type())){
+        	kakaoPayApprovalVO.setPayment_method_type("카카오 페이");;
+        }
         //카카오 결제 성공시 예약 상태 업데이트
         //String userId = auth.getName();
         rsvdService.complete(rsvdId);
@@ -227,6 +231,7 @@ public class RsvdController {
         //결제 상태 업데이트 (상태, 결제수단, 결제 승인번호, 결제 승인 시간)
         PymtVO successVO = pymtService.getByRsvdId(rsvdId);
         successVO.setStusCd("C");
+            	
         successVO.setMtd(kakaoPayApprovalVO.getPayment_method_type());
         successVO.setAprvNo(kakaoPayApprovalVO.getTid());
         successVO.setApprovedAt(kakaoPayApprovalVO.getApproved_at());
