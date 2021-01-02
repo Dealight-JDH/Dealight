@@ -710,7 +710,7 @@ let writeTimeBar = function (curTime) {
                 	strWaitList += "<div class='wait' data-waitId='"+wait.waitId+"'>";
                         strWaitList += "<div class='list_info_top'>";
                         strWaitList += "<span class='wait_name wait_list'>"+wait.custNm+"</span>";
-                        strWaitList += "<span class='wait_telno wait_list'>"+wait.custTelno+"<button class='btn_wait_call'><a href='/oauth?storeId="+wait.storeId+"&waitId="+wait.waitId+"'><i class='fas fa-comment-dots'></i></a></button></span>";
+                        strWaitList += "<span class='wait_telno wait_list'>"+wait.custTelno+"<button class='btn_wait_call'><i class='fas fa-comment-dots'></i></button></span>";
                         strWaitList += "</div>";
                         strWaitList += "<div class='list_info_bot'>";
                         strWaitList += "<span class='list_wait_pnum'>"+wait.waitPnum+"명</span>";
@@ -722,32 +722,42 @@ let writeTimeBar = function (curTime) {
                 });
     
               waitListDiv.html(strWaitList);   
+              
+              if(uuid !== null && uuid.length > 1)
+              	$(".btn_wait_call").css("color","orange");
              
-              $(".wait").on("click",(e)=>{
+              $(".wait").on("click","div",(e)=>{
             	  
             	  console.log(e.target);
             	  
-            	  let waitId = e.target.dataset.waitid
+            	  if(e.target.tagName === "path" || e.target.tagName === "svg" || e.target.tagName === "button") return;
             	  
-            	  if(e.target.className === "btn_wait_call" || e.target.parentNode.className === "btn_wait_call")
+            	  console.log(e.currentTarget);
+            	  
+            	  let waitId = e.currentTarget.closest(".wait").dataset.waitid;
+            	  
+            	  if(e.currentTarget.className === "btn_wait_call")
             		  return;
-            	  
-            	  console.log("wait1 : "+waitId);
-            	  
-            	  if(e.target.dataset.waitId) waitId = e.target.dataset.waitid;
-            	  
-            	  console.log("wait2 : "+waitId);
-            	  
-                  if(e.target.parentNode.dataset.waitid) waitId = e.target.parentNode.dataset.waitid;
-                  
-                  console.log("wait3 : "+waitId);
-                  
-                  if(e.target.parentNode.parentNode.dataset.waitid) waitId = e.target.parentNode.parentNode.dataset.waitid;
-                  
-                  console.log("wait4 : "+waitId);
             	  
                   window.open("/dealight/waiting/"+waitId);
             	  
+              });
+              
+              $(".btn_wait_call").on("click", e=>{
+            	  
+            	if(uuid === null || uuid.length <= 1)
+            		  return;
+              	
+              	e.preventDefault();
+              	
+              	console.log("buttons click success")
+              	
+              	let waitId = e.currentTarget.closest(".wait").dataset.waitid;
+              	
+              	call({storeId:storeId,waitId:waitId},result => {
+              		alert("메시지 전송이 완료되었습니다.");
+              	});
+              	
               });
               
               
@@ -2223,23 +2233,26 @@ let writeTimeBar = function (curTime) {
     	
     });
     
-    const accessToken = '${accessToekn}',
-    	uuid = '$(requestUuid)';
+    const accessToken = '${accessToken}',
+    	uuid = '${uuid}';
     
-    function call(params, callback,error) {
+    
+    console.log("accessToken : "+accessToken);
+    console.log("uuid :" + uuid);
+    
+    let call = function (params, callback,error) {
         
     	let storeId = params.storeId,
     		waitId = params.waitId
     	
-    	let title = "[딜라이트 안내 메시지]",
-    		description = "입장 시간이 얼마남지 않았습니다. 순서를 확인하고 매장에 방문해주세요.";
+    	console.log("storeId : " + storeId);
+    	console.log("waitId : " + waitId);
     		
-    	let web_url = "/dealight/waiting/" + waitId;
-    	
         $.ajax({
             type : 'post',
-            url : '/dealight/message/friends?access_token='+accessToken+'&title='+title+'&description='+description+'&web_url'+web_url+'&uuid='+uuid+'&storeId='+storeId+'&waitId='+waitId,
-            contentType : "application/json; charset=utf-8",
+            url : '/dealight/message/friends/'+storeId+'/'+waitId+"?access_token=" + accessToken + "&uuid=" + uuid,
+            data : {'waitId' : waitId, 'storeId':storeId, 'accessToken':accessToken,'uuid':uuid},
+            contentType : "application/json",
             success : function(result, status, xhr) {
                 if(callback) {
                     callback(result);
@@ -2253,7 +2266,20 @@ let writeTimeBar = function (curTime) {
         })
     }
     
-    $("")
+    $(".btn_wait_call").on("click", e=>{
+    	
+    	e.preventDefault();
+    	
+    	console.log("buttons click success")
+    	
+    	let waitId = e.currentTarget.closest(".wait").dataset.waitid;
+    	
+    	call({storeId:storeId,waitId:waitId},result => {
+    		console.log(result);
+    		alert("메시지 전송이 완료되었습니다.");
+    	});
+    	
+    });
     
     
     </script>

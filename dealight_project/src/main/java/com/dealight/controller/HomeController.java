@@ -9,11 +9,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 
+import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -210,20 +214,21 @@ public class HomeController {
 //	}
 	
 	// 친구(uuid)에 메시지를 보낸다.
-	@RequestMapping(value="/message/friends", method = RequestMethod.GET)
+	@RequestMapping(value="/dealight/message/friends/{storeId}/{waitId}", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
 	@ResponseBody
-	public String sendMessage(Model model, String access_token, String title, String description, String web_url, String uuid, Long storeId, Long waitId) {
+	public ResponseEntity<String> sendMessage(@PathVariable("storeId") Long storeId, @PathVariable("waitId") Long waitId,String access_token,String uuid) {
+		
+		String title = "[딜라이트 안내 메시지]";
+		String description = "입장 시간이 얼마남지 않았습니다. 순서를 확인하고 매장에 방문해주세요.";
+		String web_url = "/dealight/waiting/" + waitId;
 		
 		log.info("rest template test..........................");
 		
 		log.info("accesss token : "+access_token+"\ntitle : "+title+"\ndescription : "+description+"\nweb_url : "+web_url+"\nuuid : "+uuid+"\nwaitId : "+waitId);
 		
-		String result = callService.sendFrMessage(access_token,title,description,web_url,uuid);
-		
-		model.addAttribute("result", result);
-		model.addAttribute("storeId",storeId);
+		String result = callService.sendFrMessage(access_token,title,description,web_url,uuid,storeId);
 
-		return "message";
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
 	// 웨이팅의 상세 정보(번호표)를 볼 수 있다.

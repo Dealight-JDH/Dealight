@@ -38,7 +38,7 @@ public interface CallService {
 	String sendMessage(String access_token, String title, String description, String web_url);
 	
 	// 친구에게 메시지를 보낸다.
-	String sendFrMessage(String access_token, String title, String description, String web_url,String uuid);
+	String sendFrMessage(String access_token, String title, String description, String web_url,String uuid,Long storeId);
 	
 	
 	// 미구현

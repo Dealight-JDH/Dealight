@@ -35,11 +35,32 @@
         }
         .store_right_wrapper{
         	height:100%;
-        	width:100%;
+        	width:60%;
         	display: flex;
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
+            
+        }
+        .store_right_top_wrapper{
+           background-color: #f4f4f4;
+            padding-bottom : 25px;
+            border : 1px solid #eeeeef; 
+            border-radius: 10px;
+            margin-bottom: 40px;
+            width:100%;
+            height: 100%;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        .store_right_top_wrapper > div {
+        	margin-left:20px;
+        }
+        
+        .store_right_top_wrapper.top {
+        	padding-top : 20px;
+        }
+        .store_right_bot_wrapper{
             background-color: #f4f4f4;
             padding-bottom : 25px;
             border : 1px solid #eeeeef; 
@@ -135,13 +156,13 @@
         }
         .label_input input{
             padding: 3px;
-            width: 60%;
+            width: 100%;
             outline: none;
             border: 1px solid #d5dbd9;
         }
         .label_input .input_textarea{
             padding: 3px;
-            width: 60%;
+            width: 100%;
             outline: none;
             border: 1px solid #d5dbd9;
             transition: all 0.2s ease;
@@ -385,7 +406,7 @@
         }
 
         .label_input.select_box{
-        	width:60%;
+        	width:100%;
             /*border: 1px solid black;*/
             display: flex;
             flex-direction: row;
@@ -402,7 +423,7 @@
         	margin-right:25px;
         }
         #btn_find_loc{
-        	width:10%;
+        	width:20%;
         	padding: 0 0;
         	padding-left:0;
         }
@@ -429,6 +450,7 @@
 	main{
 		margin : 30px auto;
 		width:1050px;
+		box-shadow: 0 0;
 	}
 	#breakEntm_label,#closeTm_label{
 		margin-left:10px;
@@ -456,6 +478,7 @@
     	<div class="store_left_wrapper"></div>
     	<div class="store_right_wrapper">
 	        <form action="/dealight/business/register" method="post" id='regForm' name="form">
+	        	<div class='store_right_top_wrapper top'>
 	                <div class="register_tit">
 	                    <span>매장 등록 신청서</span>
 	                    <span class="reg_description">아래 신청서의 항목을 모두 작성해주세요.</span>
@@ -477,6 +500,8 @@
 	                    <input name="revwTotNum" value='0' type='hidden'>
 	                    <input name="avgRating" value='0' type='hidden'>
 	                </div><!-- end fixed info -->
+	                </div>
+	                <div class='store_right_top_wrapper'>
 	                <div class="bstore_info_wrapper">
 	                    <input name="brSeq" value="${brSeq}" type='hidden'>
 	                    <div id="store_bstore_info">
@@ -555,6 +580,8 @@
 	                        <input name="acmPnum" value="30" type="number">
 	                    </div>
 	                </div><!-- end bstore info -->
+	                </div>
+	                <div class='store_right_top_wrapper'>
 	                <div class="location_wrapper">
 	                    <div id="store_loc_find">
 	                        <span id="loc_find_tit">주소 찾기</span>
@@ -613,6 +640,7 @@
 	                </div>
 	            <div class="btn_box">
 					<button type="submit" id="btnSubmit">등록하기</button><br>            
+	            </div>
 	            </div>
 	        </form>
 	     </div>

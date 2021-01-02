@@ -291,6 +291,7 @@
         
         /**/
         #list_board{
+        	position:relative;
         	width: 100%;
             height: 95%;
             display: flex;
@@ -321,6 +322,14 @@
         	margin : 20px 30px;
         	padding-bottom : 20px;
         	border-bottom: 1px solid #eeeeef;
+        }
+        #fixed_img {
+        	position: absolute;
+        	
+        }
+        #get_auth{
+        	margin-left:10px;
+        	font-weight: bold;
         }
     </style>
 </head>
@@ -357,6 +366,8 @@
                                         <button class="btn_seat_stus yellow" data-color="Yellow"><i class="fas fa-circle"></i></button>
                                         <button class="btn_seat_stus red" data-color="Red"><i class="fas fa-circle"></i></button>
                                 </form>
+                                <c:if test="${code == null}"><a href="https://kauth.kakao.com/oauth/authorize?client_id=dba6ebc24e85989c7afde75bd48c5746&redirect_uri=http://localhost:8181/dealight/business/&response_type=code&scope=talk_message,friends" id='get_auth'>동의 받으러 가기</a></c:if>
+                                <c:if test="${code != null}"><span id='get_auth'>메시지 허가 완료</span></c:if>
                             </div> 
                        </div>
 	                       <!-- board start -->
@@ -367,7 +378,6 @@
 							        <div class="store_card">
 							            <div class="brno_content_wrapper">
 							                <span>사업자 등록 번호 : ${buser.brno}</span><br>
-							                <span>사업자 등록 심사 상태 코드 : ${buser.brJdgStusCd}</span>
 							            </div>
 							            <div class="plus_box">
 							            	<a href="/dealight/business/register?brSeq=${buser.brSeq}">

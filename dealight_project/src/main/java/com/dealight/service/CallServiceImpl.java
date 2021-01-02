@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -17,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.dealight.domain.StoreEvalVO;
 import com.dealight.domain.WaitVO;
 import com.dealight.handler.RestTemplateResponseErrorHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,7 +45,8 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class CallServiceImpl implements CallService {
 	
-	
+	@Autowired
+	StoreService storeService;     
 	
 	
 	// 사용자 인가를 가져온다.
@@ -52,7 +55,7 @@ public class CallServiceImpl implements CallService {
 		
 		RestTemplate restTemplate = new RestTemplate();	
 		
-		String url = "https://kauth.kakao.com/oauth/authorize?client_id=dba6ebc24e85989c7afde75bd48c5746&redirect_uri=https://localhost:8080/oauth&response_type=code";
+		String url = "https://kauth.kakao.com/oauth/authorize?client_id=dba6ebc24e85989c7afde75bd48c5746&redirect_uri=http://localhost:8181/business/manage&response_type=code";
 		
 		UriComponents uri = UriComponentsBuilder.fromHttpUrl(url).build();
 		
@@ -74,7 +77,7 @@ public class CallServiceImpl implements CallService {
 		
 		 String jsonInString = "";
 		 String restKey = "dba6ebc24e85989c7afde75bd48c5746";
-		 String redirectURI = "http://localhost:8080/oauth";
+		 String redirectURI = "http://localhost:8181/dealight/business/";
 		 
 		 try {
 		
@@ -416,7 +419,7 @@ public class CallServiceImpl implements CallService {
 		
 		 String jsonInString = "";
 		 String restKey = "dba6ebc24e85989c7afde75bd48c5746";
-		 String redirectURI = "http://localhost:8080/token";
+		 String redirectURI = "http://localhost:8181/business/manage";
 		 
 		 try {
 		
@@ -515,11 +518,19 @@ public class CallServiceImpl implements CallService {
 
 	// 친구한테 메시지 보내기
 	@Override
-	public String sendFrMessage(String access_token, String title, String description, String web_url, String uuid) {
+	public String sendFrMessage(String access_token, String title, String description, String web_url, String uuid,Long storeId) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		
 		 String jsonInString = "";
 		 try {
+			 
+			 log.info("title : "+title);
+			 log.info("access_token : "+access_token);
+			 log.info("description : "+description);
+			 web_url = "http://localhost:8181" + web_url;
+			 
+			 log.info("web_url : "+web_url);
+			 log.info("uuid : "+uuid);
 		
 		RestTemplate restTemplate = new RestTemplate();	
 		
@@ -562,11 +573,13 @@ public class CallServiceImpl implements CallService {
 		
 		Map<String, Object> social = new HashMap<>();
 		
-		social.put("like_count", "100");
-		social.put("comment_count", "200");
-		social.put("shared_count", "300");
-		social.put("view_count", "400");
-		social.put("subscriber_count", "500");
+		StoreEvalVO eval = storeService.getEval(storeId);
+		
+		social.put("like_count", eval.getLikeTotNum());
+		social.put("comment_count", eval.getRevwTotNum());
+		//social.put("shared_count", "300");
+		//social.put("view_count", "400");
+		//social.put("subscriber_count", "500");
 		
 		map.put("social", social);
 		
