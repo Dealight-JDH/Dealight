@@ -404,12 +404,10 @@ public class RsvdServiceImpl implements RsvdService{
 		if(dtlsList.size()>1) {
 			
 			dtlsList.forEach(dtls -> dtls.setRsvdId(sequence));
-			dtlsList.forEach(dto -> log.info("=======rsvd Dtls List: " + dto));
 			rsvdMapper.insertDtlsList(dtlsList);
 			return;
 		}
 			RsvdDtlsVO firstDtlsVO = dtlsList.get(0);
-			log.info("=======rsvd Dtls: " + firstDtlsVO);
 			firstDtlsVO.setRsvdId(sequence);
 			rsvdMapper.insertDtls(firstDtlsVO);
 	}
