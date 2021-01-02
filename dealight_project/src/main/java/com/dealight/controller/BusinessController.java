@@ -1,9 +1,12 @@
 package com.dealight.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -182,9 +185,47 @@ public class BusinessController {
 		
 		log.info("business manage..");
 		
+		/*
+		String accessToken = "";
+		
+		
+		Cookie[] cookies = request.getCookies();
+		for(Cookie cookie : cookies) {
+			if(cookie.getName().equals("accessToken"))
+				accessToken = cookie.getValue();
+		}
+		*/
 		HttpSession session = request.getSession();
 		
 		String userId = (String) session.getAttribute("userId");
+		
+		/*
+		if(!"".equals(accessToken)) {
+			
+			HashMap<String, Object> talkFriendsList = callService.getTalkFriendsList(accessToken);
+			
+			log.info("talkFriendsList................"+talkFriendsList);
+			
+			talkFriendsList = (LinkedHashMap<String, Object>) talkFriendsList.get("body");
+			
+			log.info("talkFriendsList2..........."+talkFriendsList);
+			
+			log.info("talkFriendsList2 class..........."+talkFriendsList.getClass());
+			
+			log.info("talkFriendsList3..........."+talkFriendsList.get("elements").getClass());
+			
+			List list = (ArrayList) talkFriendsList.get("elements");
+			
+			log.info("talkFriendsList3..........."+list.get(0).getClass());
+			
+			LinkedHashMap map = (LinkedHashMap) list.get(0);
+			
+			log.info(map.get("uuid"));
+			
+			model.addAttribute("accessToken",accessToken);
+			model.addAttribute("requestUuid",map.get("uuid"));
+		}
+		*/
 		 
 
 		// 오늘 예약한 사용자의 사용자 정보와 예약 정보를 가져온다.

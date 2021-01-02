@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.WaitVO;
@@ -116,17 +117,17 @@ public class HomeController {
 		HashMap<String, Object> profile = callService.getProfile(access_token);
 		
 		log.info("Users info............:"+profile);
-		
 		HashMap<String, Object> frList = callService.getUsersList();
 		
-		log.info("Users list............:"+frList);
 		
+		log.info("Users list............:"+frList);
+
 		HashMap<String, Object> talkProfile = callService.getTalkProfile(access_token);
 		
 		log.info("talkProfile................"+talkProfile);
 		
 		String restKey = "dba6ebc24e85989c7afde75bd48c5746";
-		String redirectURI = "http://localhost:8080/token";
+		String redirectURI = "http://localhost:8181/token";
 		
 		HashMap<String, Object> allow= callService.getAllow();
 		
@@ -190,8 +191,25 @@ public class HomeController {
 	}
 	
 	// 친구(uuid)에 메시지를 보낸다.
+//	@RequestMapping(value="/message/friends", method = RequestMethod.GET)
+//	public String test(Model model, String access_token, String title, String description, String web_url, String uuid, Long storeId, Long waitId) {
+//		
+//		log.info("rest template test..........................");
+//		
+//		log.info("accesss token : "+access_token+"\ntitle : "+title+"\ndescription : "+description+"\nweb_url : "+web_url+"\nuuid : "+uuid+"\nwaitId : "+waitId);
+//		
+//		String result = callService.sendFrMessage(access_token,title,description,web_url,uuid);
+//		
+//		model.addAttribute("result", result);
+//		model.addAttribute("storeId",storeId);
+//
+//		return "message";
+//	}
+	
+	// 친구(uuid)에 메시지를 보낸다.
 	@RequestMapping(value="/message/friends", method = RequestMethod.GET)
-	public String test(Model model, String access_token, String title, String description, String web_url, String uuid, Long storeId, Long waitId) {
+	@ResponseBody
+	public String sendMessage(Model model, String access_token, String title, String description, String web_url, String uuid, Long storeId, Long waitId) {
 		
 		log.info("rest template test..........................");
 		
