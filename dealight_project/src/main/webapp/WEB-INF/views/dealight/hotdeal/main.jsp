@@ -929,7 +929,7 @@
                                 
                                 <div class="label-region">시작시간</div>
                                 <div class="dropdown-select">
-                                    <input type="text" id="startTime_input" required placeholder="시간">
+                                    <input type="text" id="startTime_input" required placeholder="시간" readonly>
                                 </div>
                                 <div class="dropdown-list"></div>
                             </label>
@@ -945,7 +945,7 @@
                             <div class="label-region">종료시간</div>
 
                             <div class="dropdown-select">
-                            <input type="text" id="endTime_input" required placeholder="시간">
+                            <input type="text" id="endTime_input" required placeholder="시간" readonly>
                             </div>
 
                             <div class="dropdown-list">
@@ -1203,12 +1203,12 @@
         let startTimeArr = ["09:00","09:30","10:00","10:30",
         "11:00","11:30","12:00","12:30","13:00","13:30",
         "14:00","14:30","15:00","15:30","16:00","16:30","17:00",
-        "17:30","18:00","18:30","19:00","19:30"];
+        "17:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","23:00","23:00"];
 
         let endTimeArr = ["09:00","09:30","10:00","10:30",
         "11:00","11:30","12:00","12:30","13:00","13:30",
         "14:00","14:30","15:00","15:30","16:00","16:30","17:00",
-        "17:30","18:00","18:30","19:00","19:30"];
+        "17:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","23:00","23:30"];
         
 	    //셀렉박스에 넣어줄 요소들
 	    let values = [item1, item2, item3, item4];
@@ -1323,39 +1323,49 @@
 				let endTm = encodeURIComponent(endTmVal); */
 				/* stusCd: paramStusCd,
 				page: pageNum, */
-				let regionVal = "종로";
-				let startTmVal = "13:00";
-				let endTmVal = "14:00";
-				let region = encodeURIComponent(regionVal);
-				let startTm = encodeURIComponent(startTmVal);
-				let endTm = encodeURIComponent(endTmVal);
+				let stusCd = paramStusCd;
+				let page =  pageNum;
+				let region = $("#region_input").val();
+				let startTm = $("#startTime_input").val();
+				let endTm = $("#endTime_input").val();
+				
 				let data = {
+						stusCd: stusCd,
+						page: page,
 						region: region,
 						startTm: startTm,
 						endTm: endTm
 						}
 				
 				console.log(JSON.stringify(data));
-				$.ajax({
-					type:'get',
-					url:"/dealight/get/search/I/1",
-					dataType: 'json',
-					contentType:'application/json; charset=utf-8',
-					data: JSON.stringify(data),
-					success: function(data){
-						console.log(data);
+				
+				getSearchHtdlList(data, function(result){
+					console.log("===========result=======");
+					console.log(result);
+
+					stop(showElapTimeId);
+					htdlUL.empty();
+					htdlPageFooter.empty();
+					
+					if(result.lists.length == 0){
+						let noSearchStr = "<h2>검색된 핫딜이 없습니다.</h2>";
+						htdlUL.html(noSearchStr);
+						return;
 					}
+					
+					//핫딜 동적생성
+					let str = htdlHtml(result.lists);
+					htdlUL.html(str);
+					if(stusCd === 'A')
+						showElapTimeStart();
+					//핫딜 페이지
+					showHtdlPage(result.total);
+					eventHtdlListener(result.lists.length);
 					
 				});
 				
-				/* getSearchHtdlList(obj, function(result){
-					console.log("===========result=======");
-					console.log(result);
-				}) */
-			}
-			
-			//핫딜 예정
-			if(operation === 'pending'){
+			}else if(operation === 'pending'){
+				//핫딜 예정
 				 /* getList({stusCd: "P"}, function(list){
 					for(var i=0, len = list.length || 0; i<len; i++){
 						console.log(list[i]);
@@ -1365,6 +1375,7 @@
 				/* stop(showListId); */
 				stop(showElapTimeId);
 				htdlUL.empty();
+				htdlPageFooter.empty();
 				paramStusCd = "P";
 				showList(paramStusCd, pageNum);
 				$(this).data("oper", "activate");
@@ -1384,6 +1395,7 @@
 				
 				/* stop(showListId); */
 				htdlUL.empty();
+				htdlPageFooter.empty();
 				paramStusCd = "A";
 				showList(paramStusCd);
 				showElapTimeStart();
@@ -1449,7 +1461,7 @@
 			stop(showListId);
 			console.log("====="+paramStusCd);
 			//핫딜 리스트 그리기
-			showListStart(paramStusCd, pageNum);
+			showList(paramStusCd, pageNum);
 			window.scrollTo(0,0);
 		});
 				
@@ -1543,7 +1555,7 @@
 			//1초씩 카운트 다운
 			let countElapTime = getElapTime(elapTimeArr[i], null);
 			//card-elaptime 출력
-			$(".card-elaptime").text(countElapTime);
+			$(".js-elaptime"+i).text(countElapTime);
 			if(countElapTime === "00:00:00"){
 				//css 변경
 			}
@@ -1558,19 +1570,13 @@
 		let region = param.region;
 		let startTm = param.startTm;
 		let endTm = param.endTm;
-		//let regionStr = encodeURIComponent(region);
-		
-	/* 	let data = {
-				region:region,
-				startTm:startTm,
-				endTm:endTm
-		} */
-		
-		let searchUrl = "/dealight/get/search/I/"+page+"?region="+regionStr+"&startTm="+startTm+"&endTm="+endTm;
-		
-	
-		
-		/* $.getJSON("/dealight/get/search/I/"+page+"?region="+regionStr+"&startTm="+startTm+"&endTm="+endTm
+		console.log(stusCd);
+		console.log(page);
+		console.log(region);
+		console.log(startTm);
+		console.log(endTm);
+
+		$.getJSON("/dealight/hotdeal/get/search/"+stusCd+"/"+page+"?region="+region+"&startTm="+startTm+"&endTm="+endTm
 				, function(result){
 			if(callback){
 				callback(result);
@@ -1579,7 +1585,7 @@
 			if(error){
 				error();
 			}
-		}); */
+		});
 		
 	}
 	
@@ -1711,7 +1717,7 @@
 			str += "<div class='card js-htdl"+i+"'>";
 			str += "<input type='hidden' class='js-htdlId' value='"+list[i].htdlId+"'>";
 			str += "<div class='card-lmtpnum'>";
-			str += "<div class='card-elaptime'>"+elapTime+"</div>";
+			str += "<div class='card-elaptime js-elapTime"+i+"'>"+elapTime+"</div>";
 			str += "<h4>선착순 "+list[i].lmtPnum+"명</h4></div>";
 			str += "<div class='card-img'>";
 			

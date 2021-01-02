@@ -160,4 +160,14 @@
         BETWEEN TO_CHAR(sysdate - 7,'yyyy/MM/DD HH24:mi:SS')	AND TO_CHAR(sysdate,'yyyy/MM/DD HH24:mi:SS')
 	</select>
 
+
+	 <!-- 현중 -->
+	 <select id="storeWaitCnt" resultType="int">
+	 select	count(wait_id) wait_tot
+				from tbl_wait
+				where   wait_stus_cd='W'
+					and store_id = #{storeId}
+				GROUP by store_id
+	</select>
+
 </mapper>

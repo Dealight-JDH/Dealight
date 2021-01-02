@@ -96,6 +96,7 @@
     }
     .sub-heading{
         font-weight: bold;
+        font-size: 16px;
     }
 
     .login-container h2{
@@ -133,7 +134,8 @@
     .btn-primary{
         width: 100%;
         padding: 10px 13px;
-        background-color: #d32323;
+        background-color:  #d32323;
+        opacity: 0.9;
         border-radius: 4px;
         outline: none;
         cursor: pointer;
@@ -232,10 +234,10 @@
             <div class="login-form">
 
                 <div class="header">
-                    <h2>Log in to Dealight</h2>
+                    <h2>로그인</h2>
                     <p class="sub-heading">
-                        New to Dealight? &nbsp;
-                        <a href="/dealight/register">Sign up</a>
+                        딜라이트가 처음이신가요? &nbsp;
+                        <a href="/dealight/register">회원가입</a>
                     </p>
                 </div>
                 <!-- header end-->
@@ -254,7 +256,7 @@
 
                 <div>
                     <button type="submit" class="btn btn-primary">
-                        <span>Login</span>
+                        <span>로그인</span>
                     </button>
                 </div>
 
@@ -276,14 +278,14 @@
                     <li>
                         <div id="kakao_id_login">
                             <button class="kakao-btn" onclick="moveKakao();">
-                                <span>Continue With KakaoTalk</span>
+                                <span>카카오 로그인</span>
                             </button>
                         </div>
                     </li>
                     <li>
                         <div id="naver_id_login">
                             <button class="naver-btn" onclick="moveNaver();">
-                                <span>Continue With Naver</span>
+                                <span>네이버 로그인</span>
                             </button>
                         </div>
                     </li>

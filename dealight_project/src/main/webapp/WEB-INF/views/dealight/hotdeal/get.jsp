@@ -225,7 +225,8 @@
     .hotdealDetail_btn{
         width: 100%;
         height: 100%;
-        background-color: red;
+        background-color: #d32323;
+        opacity: 0.9;
         cursor: pointer;
         border-radius: 3px;
         outline: none;

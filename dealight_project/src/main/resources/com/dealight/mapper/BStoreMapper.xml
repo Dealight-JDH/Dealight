@@ -98,7 +98,24 @@
 	</update>
 
 <!-- jongwoo 보류 -->	
-<!-- 	<resultMap type="com.dealight.domain.RsvdWithStoreDTO" id="RsvdWithStoreDTO">
+
+	<resultMap type="com.dealight.domain.HtdlWithStoreDTO" id="HtdlWithStoreDTO">
+	
+		<id column="store_id" property="storeId"/>
+		<result column="htdl_id" property="htdlId"/>  
+	    <result column="rsvdRate" property="rsvdRate"/>
+	    <result column="regdate" property="regdate"/>
+	    <result column="updatedate" property="updatedate"/>		    
+	</resultMap>
+	
+	<select id="findHtdlRslt" resultMap="HtdlWithStoreDTO">
+		select b.store_id, r.htdl_id, r.rsvd_rate rsvdRate
+		from tbl_htdl_rslt r, tbl_bstore b
+		where b.store_id = r.store_id and to_char(r.regdate, 'yyyy/mm/dd') = to_char(sysdate - 1, 'yyyy/mm/dd')
+        order by 1
+	</select>
+	
+ 	<resultMap type="com.dealight.domain.RsvdWithStoreDTO" id="RsvdWithStoreDTO">
 	
 		<id column="store_id" property="storeId"/>        
 		<result column="acm_pnum" property="acmPnum"/>
@@ -107,10 +124,20 @@
 	    <result column="htdl_id" property="htdlId"/>
 	    <result column="pnum" property="pnum"/>
 	    <result column="time" property="time"/>
-	    <result column="stus_cd" property="stusCd"/>	    
+	    <result column="stus_cd" property="stusCd"/>
+	    <result column="totRsvd" property="totRsvd"/>
+	    <result column="totHtdlRsvd" property="totHtdlRsvd"/>		    
 	</resultMap>
-
-	<select id="findLastWeekRsvdRateListByStoreId" resultMap="RsvdWithStoreDTO">
+	
+	<select id="countAllStoreWithRsvd" resultMap="RsvdWithStoreDTO">
+		select b.store_id, count(*) totRsvd
+		from tbl_bstore b, tbl_rsvd d
+		where b.store_id = d.store_id and stus_cd = 'L'
+		group by b.store_id
+		order by b.store_id
+	</select>
+	
+	<!-- <select id="findLastWeekRsvdRateListByStoreId" resultMap="RsvdWithStoreDTO">
 			select b.store_id, d.rsvd_id, d.htdl_id, d.pnum, d.time, d.stus_cd, b.acm_pnum
 			from tbl_rsvd d, tbl_bstore b
 			where d.store_id = b.store_id and stus_cd = 'L'
@@ -118,15 +145,27 @@
 				AND TO_CHAR(sysdate,'YYYYMMDD')
 	</select> -->
 	
-<!-- 	<select id="findLastWeekRsvdPnum" resultMap="RsvdWithStoreDTO">
-		select b.store_id, sum(d.pnum) pnum
+	<!-- <select id="findHtdlRsvd">
+		select b.store_id, count(*) totRsvd, count(htdl_id)
+				from tbl_rsvd d, tbl_bstore b
+				where b.store_id = d.store_id and stus_cd = 'L' and 
+	            TO_CHAR(to_date(d.time, 'YYYY/MM/DD HH24/mi/ss'),'YYYYMMDD') BETWEEN TO_CHAR(sysdate - #{day},'YYYYMMDD')
+					AND TO_CHAR(sysdate,'YYYYMMDD')
+				group by b.store_id
+	</select> -->
+	
+	
+	
+ 	<select id="findLastWeekRsvdPnum" resultMap="RsvdWithStoreDTO">
+		select b.store_id, sum(d.pnum) pnum, count(*) totRsvd, count(htdl_id) totHtdlRsvd
 				from tbl_rsvd d, tbl_bstore b
 				where b.store_id = d.store_id and stus_cd = 'L'and 
 	            TO_CHAR(to_date(d.time, 'YYYY/MM/DD HH24/mi/ss'),'YYYYMMDD') BETWEEN TO_CHAR(sysdate - #{day},'YYYYMMDD')
 					AND TO_CHAR(sysdate,'YYYYMMDD')
 				group by b.store_id
+				order by b.store_id
 	</select>
--->
+
 
 	<update id="updateHtdlStus">
 		update tbl_bstore
