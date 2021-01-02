@@ -288,13 +288,27 @@ public class AdminServiceImpl implements AdminService {
 		
 		List<RsvdWithStoreDTO> totRsvdStoreList = bsMapper.countAllStoreWithRsvd();
 		List<RsvdWithStoreDTO> rsvdStoreList =  bsMapper.findLastWeekRsvdPnum(3);
-		getRsvdRate(totRsvdStoreList, rsvdStoreList);
+		setRsvdRate(totRsvdStoreList, rsvdStoreList);
+		List<HtdlWithStoreDTO> htdlRsltList = bsMapper.findHtdlRslt();
+		setHtdlRate(htdlRsltList);
 		log.info("suggest list : " + suggestList);
 		log.info("storeList: "+ storeList);
 		return suggestList;
 	}
 	
-	private void getRsvdRate(List<RsvdWithStoreDTO> list, List<RsvdWithStoreDTO> rsvdStoreList) {
+	private void setHtdlRate(List<HtdlWithStoreDTO> list) {
+		
+		for(StoreDTO dto : suggestList) {
+			for(HtdlWithStoreDTO htdlDto : list) {
+				
+				if(dto.getStoreId() == htdlDto.getStoreId()) {
+					dto.setHtdlRate(htdlDto.getRsvdRate());
+				}
+			}
+		}
+	}
+	
+	private void setRsvdRate(List<RsvdWithStoreDTO> list, List<RsvdWithStoreDTO> rsvdStoreList) {
 		
 		for(StoreDTO dto : suggestList) {
 			

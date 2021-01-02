@@ -34,8 +34,8 @@
 								<td>
 								<a class="move" href='<c:out value="${list.storeId}"/>'>
 										<c:out value="${list.name }" /></a></td>
-								<td><c:out value="${list.rsvdRate }" /></td>
-								<td><c:out value="0" /></td>
+								<td><c:out value="${list.rsvdRate }"/>%</td>
+								<td><c:out value="${list.htdlRate }"/>%</td>
 								<td>
 								<%-- <button id="regBtn" type="button" value="${list.storeId}"
 										 data-oper ='possible' class="btn btn-success">제안 가능</button> --%>

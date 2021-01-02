@@ -21,8 +21,9 @@ public class HtdlWithStoreDTO {
 	private String name;
 	private String time;
 	private String stusCd;
+	private int rsvdRate;
 	private Date regDate;
-	
+
 	private boolean suggestChecked;
 	
 }

@@ -9,5 +9,6 @@ public class StoreDTO {
 	private String name;
 	private String buserId;
 	private int rsvdRate;
+	private int htdlRate;
 	private boolean suggestChecked = true;
 }
