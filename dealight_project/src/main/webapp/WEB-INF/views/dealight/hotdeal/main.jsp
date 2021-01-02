@@ -1458,10 +1458,15 @@
 			
 			pageNum = targetPageNum;
 			//setInterval 중지
-			stop(showListId);
+			/* stop(showListId); */
 			console.log("====="+paramStusCd);
+			stop(showElapTimeId);
+			htdlUL.empty();
+			htdlPageFooter.empty();
+			
 			//핫딜 리스트 그리기
 			showList(paramStusCd, pageNum);
+			showElapTimeStart();
 			window.scrollTo(0,0);
 		});
 				
@@ -1664,6 +1669,7 @@
 	function htdlHtml(list){
 		let str = "";
 		str +="<div class='hotdealState-wrap'></div>";
+		elapTimeArr.splice(0);
 		//list에 따른 핫딜 동적 생성
 		for(let i =0, len = list.length || 0; i<len; i++){
 			/* let elapTime = getElapTime(list[i].endTm); */
