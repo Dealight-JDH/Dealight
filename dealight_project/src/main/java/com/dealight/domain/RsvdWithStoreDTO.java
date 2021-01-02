@@ -12,7 +12,8 @@ public class RsvdWithStoreDTO {
 	private int pnum;
 	private String time;
 	private String stusCd;
-	
+	private int totRsvd;
+	private int totHtdlRsvd;
 	private int acmPnum;
 	
 }

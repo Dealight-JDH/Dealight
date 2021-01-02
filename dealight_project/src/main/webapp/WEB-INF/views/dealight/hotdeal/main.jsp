@@ -1555,7 +1555,7 @@
 			//1초씩 카운트 다운
 			let countElapTime = getElapTime(elapTimeArr[i], null);
 			//card-elaptime 출력
-			$(".card-elaptime").text(countElapTime);
+			$(".js-elaptime"+i).text(countElapTime);
 			if(countElapTime === "00:00:00"){
 				//css 변경
 			}
@@ -1717,7 +1717,7 @@
 			str += "<div class='card js-htdl"+i+"'>";
 			str += "<input type='hidden' class='js-htdlId' value='"+list[i].htdlId+"'>";
 			str += "<div class='card-lmtpnum'>";
-			str += "<div class='card-elaptime'>"+elapTime+"</div>";
+			str += "<div class='card-elaptime js-elapTime"+i+"'>"+elapTime+"</div>";
 			str += "<h4>선착순 "+list[i].lmtPnum+"명</h4></div>";
 			str += "<div class='card-img'>";
 			

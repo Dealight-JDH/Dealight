@@ -13,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.dealight.domain.BStoreVO;
+import com.dealight.domain.HtdlWithStoreDTO;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -25,6 +26,13 @@ public class BStoreMapperTests {
 	@Setter(onMethod_ = @Autowired)
 	private BStoreMapper mapper;
 	
+	
+	@Test
+	public void testHtdlRsvd() {
+		List<HtdlWithStoreDTO> dto = mapper.findHtdlRslt();
+		dto.forEach(vo -> log.info(vo));
+		
+	}
 	
 	@Test
 	public void testUpdateHtdlStus() {
