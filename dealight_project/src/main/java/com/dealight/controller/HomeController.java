@@ -1,6 +1,7 @@
 package com.dealight.controller;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,9 +18,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.WaitVO;
@@ -231,8 +234,6 @@ public class HomeController {
 				
 				WaitVO wait = waitService.read(waitId);
 				
-				wait.setWaitRegTm(wait.getWaitRegTm().split(" ")[1].substring(0,5));
-				
 				log.info(wait);
 				
 				// 현재 예약 상태인 웨이팅 리스트를 가져온다.
@@ -247,13 +248,82 @@ public class HomeController {
 				// 해당 매장의 위치정보를 가져온다.
 				StoreVO store = storeService.findStoreWithBStoreAndLocByStoreId(wait.getStoreId());
 				
+				boolean isAvalCancel = false; 
+		    	
+				Date curTime = new Date();
+				
+				String regWaitTime = wait.getWaitRegTm();
+				//String regWaitTime = "2021/01/02 14:53:47";
+				SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				String strCurTime = formater.format(curTime);
+				log.info("wait reg time : " + regWaitTime);
+				log.info("cur time : " + strCurTime);
+				
+				log.info("regWaitTime.split(\":\")[1] : " + regWaitTime.split(":")[1]);
+				log.info("regWaitTime.split(\":\")[2] : " + regWaitTime.split(":")[2]);
+				
+				log.info("Integer.parseInt(strCurTime.split(\":\")[1] : " + strCurTime.split(":")[1]);
+				log.info("Integer.parseInt(strCurTime.split(\":\")[2] : " + strCurTime.split(":")[2]);
+				
+				int intWaitTime = (Integer.parseInt(regWaitTime.split(":")[1]) * 60) + (Integer.parseInt(regWaitTime.split(":")[2]));
+				int intCurTime = (Integer.parseInt(strCurTime.split(":")[1]) * 60) + (Integer.parseInt(strCurTime.split(":")[2]));
+				
+				log.info("intWaitTime : "+intWaitTime);
+				log.info("intCurTime : "+intCurTime);
+				
+				log.info("regWaitTime.substring(0, 13)" + regWaitTime.substring(0, 13));
+				log.info("strCurTime.substring(0, 13)" + strCurTime.substring(0, 13));
+				
+				if(regWaitTime.substring(0, 13).equals(strCurTime.substring(0, 13)) && intCurTime - intWaitTime <= 300) {
+					isAvalCancel = true;
+				}
+				
+				log.info("result : " + isAvalCancel);
+				
+				
+				wait.setWaitRegTm(wait.getWaitRegTm().split(" ")[1].substring(0,5));
+				
 				model.addAttribute("wait",wait);
 				model.addAttribute("order",order);
 				model.addAttribute("waitTime", waitTime);
 				model.addAttribute("store",store);
+				model.addAttribute("isAvalCancel",isAvalCancel);
 				
 				return "/dealight/business/manage/waiting/waiting";
 			}
 			
+			
+			@PostMapping("/dealight/waiting/cancel")
+			public String cancelWait(Model model, Long waitId,RedirectAttributes rttr) {
+				
+				boolean isAvalCancel = false; 
+		    	
+				Date curTime = new Date();
+				
+				WaitVO wait = waitService.read(waitId);
+				
+				String regWaitTime = wait.getWaitRegTm();
+				//String regWaitTime = "2021/01/02 14:53:47";
+				SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				String strCurTime = formater.format(curTime);
+
+				
+				int intWaitTime = (Integer.parseInt(regWaitTime.split(":")[1]) * 60) + (Integer.parseInt(regWaitTime.split(":")[2]));
+				int intCurTime = (Integer.parseInt(strCurTime.split(":")[1]) * 60) + (Integer.parseInt(strCurTime.split(":")[2]));
+
+				if(regWaitTime.substring(0, 13).equals(strCurTime.substring(0, 13)) && intCurTime - intWaitTime <= 300) 
+					isAvalCancel = true;
+				
+				if(isAvalCancel) {
+					if(waitService.cancelWaiting(waitId))
+						rttr.addFlashAttribute("msg","취소가 성공하였습니다.");
+					else
+						rttr.addFlashAttribute("msg","취소가 실패하였습니다. 웨이팅 취소는 등록 후 5분 이내에만 가능합니다.");
+				}
+				
+				
+				
+				return "redirect:/dealight/waiting/" + waitId;
+			}
 	
 }

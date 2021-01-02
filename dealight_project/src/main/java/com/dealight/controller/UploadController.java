@@ -46,8 +46,8 @@ public class UploadController {
 
 	
 	// 파일 경로
-	//final static private String ROOT_FOLDER = "C://dealgiht//rds//";
-	final static private String ROOT_FOLDER = "/Users/hyeonjung/Desktop/RDS/";
+	final static private String ROOT_FOLDER = "C://dealgiht//rds//";
+	//final static private String ROOT_FOLDER = "/Users/hyeonjung/Desktop/RDS/";
 	//private final static String ROOT_FOLDER = "/Users/limjongwoo/upload/dealight/";
 	
 	//add param category
