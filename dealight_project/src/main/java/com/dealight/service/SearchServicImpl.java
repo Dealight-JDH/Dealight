@@ -41,6 +41,11 @@ public class SearchServicImpl implements SearchService {
 	}
 	@Override
 	public int getStoreWaitCnt(long storeId) {
-		return wMapper.storeWaitCnt(storeId);
+		Integer cnt = wMapper.storeWaitCnt(storeId);
+		
+		if(cnt == null) {
+			cnt =0;
+		}
+		return cnt;
 	}
 }

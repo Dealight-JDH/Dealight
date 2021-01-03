@@ -205,7 +205,7 @@
 		});
 		//페이징처리
 		
-		$(".paginate_button a").on("click", function(e){
+		$(".pagination a").on("click", function(e){
 			
 			e.preventDefault();
 			

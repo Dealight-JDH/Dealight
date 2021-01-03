@@ -162,7 +162,7 @@
 
 
 	 <!-- 현중 -->
-	 <select id="storeWaitCnt" resultType="int">
+	 <select id="storeWaitCnt" resultType="Integer">
 	 select	count(wait_id) wait_tot
 				from tbl_wait
 				where   wait_stus_cd='W'

@@ -3,7 +3,14 @@
 	margin: 0;
 	padding: 0;
 }
-
+ @keyframes fadein {
+        	from {
+        		opacity:0;
+        	}
+        	to {
+        		opacity:1;
+        	}
+        }
 div {
 	/* border: 1px black solid; */
 	
@@ -76,6 +83,7 @@ input:focus {
 	background-repeat: no-repeat;
 	background-position: center center;
 	align-items: center;
+	animation: fadein 2s;
 }
 
 .search-container {
