@@ -1100,7 +1100,8 @@
 		/*box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);*/
         /* Position the dealight_tooltip */
         position: absolute;
-        top : -5px;
+        top : 10px;
+        left : 110px;
         z-index: 1;
         }
 
@@ -1681,3 +1682,15 @@
 		    margin-right: 10px;
 		    font-size: 15px;
 		}
+		.cur_htdl{
+			
+			color:#D32323;
+		}
+		.cur_htdl svg {
+			margin-right:5px;
+		}
+		.paginate_button.active a{
+        	background-color: #D32323;
+		    border-radius: 5px;
+		    color: white;
+        }

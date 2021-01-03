@@ -556,7 +556,7 @@ public class CallServiceImpl implements CallService {
 		
 		content.put("title", title);
 		content.put("description",description);
-		content.put("image_url", "http://mud-kage.kakao.co.kr/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg");
+		content.put("image_url", "https://i.esdrop.com/d/NfpcDPJkbX.png");
 		content.put("image_width", "640");
 		content.put("image_height","640");
 		

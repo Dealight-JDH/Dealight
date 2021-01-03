@@ -141,7 +141,7 @@ public class BusinessController {
 	
 	// 해당 유저의 매장 리스트를 보여준다.
 	@GetMapping("/")
-	public String list(Model model,HttpSession session,String code,HttpServletResponse response) {
+	public String list(Model model,HttpSession session,String code,HttpServletResponse response,HttpServletRequest request) {
 		
 		log.info("code : " + code);
 		
@@ -151,6 +151,14 @@ public class BusinessController {
 			String accessToken = lm.get("access_token");
 			Cookie cookie = new Cookie("access_token", accessToken);
 			response.addCookie(cookie);
+		}
+		
+		boolean isSnsLogin = false;
+		
+		Cookie[] cookies = request.getCookies();
+		for(Cookie cookie : cookies) {
+			if(cookie.getName().equals("accessToken"))
+				isSnsLogin = true;
 		}
 		
 
@@ -187,6 +195,7 @@ public class BusinessController {
 		model.addAttribute("storeList", list);
 		model.addAttribute("buserList", buserList);
 		model.addAttribute("code",code);
+		model.addAttribute("isSnsLogin",isSnsLogin);
 		
 		return "/dealight/business/list";
 	}

@@ -366,8 +366,8 @@
                                         <button class="btn_seat_stus yellow" data-color="Yellow"><i class="fas fa-circle"></i></button>
                                         <button class="btn_seat_stus red" data-color="Red"><i class="fas fa-circle"></i></button>
                                 </form>
-                                <c:if test="${code == null}"><a href="https://kauth.kakao.com/oauth/authorize?client_id=dba6ebc24e85989c7afde75bd48c5746&redirect_uri=http://localhost:8181/dealight/business/&response_type=code&scope=talk_message,friends" id='get_auth'>동의 받으러 가기</a></c:if>
-                                <c:if test="${code != null}"><span id='get_auth'>메시지 허가 완료</span></c:if>
+                                <c:if test="${code == null && isSnsLogin}"><a href="https://kauth.kakao.com/oauth/authorize?client_id=dba6ebc24e85989c7afde75bd48c5746&redirect_uri=http://localhost:8181/dealight/business/&response_type=code&scope=talk_message,friends" id='get_auth'>동의 받으러 가기</a></c:if>
+                                <c:if test="${code != null}"><span id='get_auth'>메시지 발송 가능</span></c:if>
                             </div> 
                        </div>
 	                       <!-- board start -->

@@ -807,9 +807,11 @@ let writeTimeBar = function (curTime) {
                 	else strRsvdList += "<div class='rsvd rsvd_i cur_htdl btnRsvd'>" ;
                 		strRsvdList += "<li hidden class='btnStoreId'>"+rsvd.storeId+"</li>";
                 		strRsvdList += "<li hidden class='btnUserId'>"+rsvd.userId+"</li>";
+                		strRsvdList += "<li hidden class='rsvdId'>"+rsvd.rsvdId+"</li>";
                 		strRsvdList += "<div class='list_info_top'>";
                 		strRsvdList += "<div class='rsvd_name rsvd_list'>"+rsvd.userId+"</div>";
-                		strRsvdList += "<div class='rsvd_telno rsvd_list'>"+rsvd.totQty+"</div>";
+                		if(rsvd.htdlId !== null) strRsvdList += "<span class='next_rsvd_telno cur_htdl'>"+"<i class='fas fa-burn'></i>"+"핫딜 예약"+"</span>";
+                		else if(rsvd.htdlId === null) strRsvdList += "<span class='next_rsvd_telno'>"+"일반 예약"+"</span>";
                 		strRsvdList += "</div>";
                 		strRsvdList += "<div class='list_info_bot rsvd_list'>";
                 		strRsvdList += "<div class='list_rsvd_pnum'>"+rsvd.pnum+"명</div>";
@@ -898,7 +900,7 @@ let writeTimeBar = function (curTime) {
                 		console.log("user id : " + userId);
                 		let storeId = rsvd.storeId;
                 		console.log("store id : " + storeId);
-                		showUserRsvdList(storeId,userId);
+                		showUserRsvdList(storeId,userId,rsvd.rsvdId);
 	            		
 	            		modal.css("display","block");
                 	})
@@ -1145,7 +1147,7 @@ let writeTimeBar = function (curTime) {
         	유저의 예약 히스토리를 보여준다.
         
         */
-        function showUserRsvdList(storeId,userId,callback){
+        function showUserRsvdList(storeId,userId,selRsvdId,callback){
         	
         	boardService.getUserRsvdList({storeId:storeId,userId:userId}, function(userRsvdList){
         		
@@ -1197,7 +1199,7 @@ let writeTimeBar = function (curTime) {
         		rsvdDtlsDiv.html(strUserRsvdList);
         		console.log("=======================");
         		console.log("user history complete");
-        		showRsvdDtls(userRsvdList[0].rsvdId);
+        		showRsvdDtls(selRsvdId);
         		
         	})
         };
@@ -1438,7 +1440,8 @@ let writeTimeBar = function (curTime) {
 	        		modal.find("ul").html("");
 	    			modal.find("input").val("");
 	    			modal.css("display","none");
-	    			
+	    			modal.find(".content_div").html("");
+    	    		modal.find(".content_div").css("display","none");
 	    		});
     		
     		});
@@ -1805,6 +1808,8 @@ let writeTimeBar = function (curTime) {
 	    			        		modal.find("ul").html("");
 	    			    			modal.find("input").val("");
 	    			    			modal.css("display","none");
+	    			    			modal.find(".content_div").html("");
+	    		    	    		modal.find(".content_div").css("display","none");
 	    		                }
 	    		        })
 	    		        alert("핫딜을 등록하셨습니다.");
@@ -1812,6 +1817,8 @@ let writeTimeBar = function (curTime) {
 	    					modal.find("ul").html("");
 		    				modal.find("input").val("");
 		    				modal.css("display","none");
+		    				modal.find(".content_div").html("");
+		    	    		modal.find(".content_div").css("display","none");
 		    				$(".alert.manage_htdl").addClass("hide");
 		    	    		$(".alert.manage_htdl").removeClass("show");
 	    				},500)
@@ -1911,8 +1918,9 @@ let writeTimeBar = function (curTime) {
         
         let showUserRsvdListHandler = function(e) {
         	
-        	let rstoreId = $(e.target).parent().find(".btnStoreId").text(),
-    		ruserId = $(e.target).parent().find(".btnUserId").text();
+        	let rstoreId = $(e.currentTarget).find(".btnStoreId").text(),
+        		selRsvdId = $(e.currentTarget).find(".rsvdId").text(),
+	    		ruserId = $(e.currentTarget).find(".btnUserId").text();
         	console.log("======================");
         	console.log(rstoreId);
         	console.log(ruserId);
@@ -1924,7 +1932,7 @@ let writeTimeBar = function (curTime) {
         	
     		modal.css("display","block");
 
-    		showUserRsvdList(rstoreId, ruserId);
+    		showUserRsvdList(rstoreId, ruserId,selRsvdId);
         }
         /*예약리스트에 있는 내용 중, 예약 상세 보여주기*/
         /*회원의 예약 리스트 보여주기*/

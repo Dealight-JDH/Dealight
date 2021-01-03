@@ -1042,3 +1042,8 @@
         .uploadResult ul li {
         	margin-bottom: 50px;
         }
+        .paginate_button.active a{
+        	background-color: #D32323;
+		    border-radius: 5px;
+		    color: white;
+        }
