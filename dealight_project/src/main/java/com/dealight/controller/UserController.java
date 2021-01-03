@@ -319,6 +319,7 @@ public class UserController {
 		}
 		
 		UserVO user = requestUser.toEntity();
+		user.setTelno("01077578648");
 		//권한 부여
 		AuthVO auth = AuthVO.builder().userId(user.getUserId()).auth("ROLE_USER").build();
 		//암호화

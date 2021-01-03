@@ -31,6 +31,7 @@ public class NaverLoginService {
     private final static String CLIENT_ID = "asNgIJ0L0lq1MX9AeBZ5";
     private final static String CLIENT_SECRET = "xREduxRKkF";
     private final static String REDIRECT_URI = "http://localhost:8181/auth/naver/callback";
+    //private final static String REDIRECT_URI = "http://3.34.175.123:8181/auth/naver/callback";
     private final static String SESSION_STATE = "oauth_state";
     
     // 프로필 조회 API URL 
