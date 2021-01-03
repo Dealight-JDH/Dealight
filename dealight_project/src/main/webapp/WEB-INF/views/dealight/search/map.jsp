@@ -739,7 +739,7 @@
 			str +='</div>'
 			str +='<div class="flex rating-box">'
 			str +='<div class="rating" data-rate-value="'+ storeList[i].avgRating +'"></div>'
-			str +='<div class="f14">('+storeList[i].avgRating+'점) 리뷰:'+storeList[i].revwTotNum+' 좋아요:'+storeList[i].likeTotNum+'</div></div>'
+			str +='<div class="f14">('+storeList[i].avgRating+'점) 리뷰:'+storeList[i].revwTotNum+' 좋아요:<span id="like'+ storeList[i].storeId +'">'+storeList[i].likeTotNum+'</span></div></div>'
 			str +='<div class="f14 m-tb2">'
 			str +='<span style="padding:2px; margin:5px"><i class="fas fa-store-alt"></i></span>'
 			str +='<b >매장영업시간 : </b>'+ storeList[i].openTm + "~" + storeList[i].closeTm + '</div>'
@@ -748,7 +748,7 @@
 			str +='<b>대표메뉴 : </b>'+ storeList[i].repMenu + "</div>";
 			str +='<div class="m-tb2">'
 			if(storeList[i].seatStusCd == 'R'){
-				str +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:red"></i></span><span class="wait-tot'+storeList[i].storeId+'"><span>'
+				str +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:red"></i></span><span class="wait-tot'+storeList[i].storeId+'" style="animation: fadein 2s;"><span>'
 			}
 			if(storeList[i].seatStusCd == 'Y'){
 				str +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:coral"></i></span> 서두르세요 자리가 얼마안남았어요~'
@@ -803,7 +803,6 @@
 		
 		
 		for( let i=0, len=storeList.length||0; i<len; i++){
-			if($("#wait").hasClass("select-bar") == true){
 				if(storeList[i].seatStusCd == 'R'){
 					
 					getWaitCnt(storeList[i].storeId, function(result){
@@ -811,7 +810,6 @@
 						$(".wait-tot" + storeList[i].storeId).html("현재 " + result + "명이 대기중이에요~")
 					})
 				}
-			}
 			
 			if($("#reserve").hasClass("select-bar") == true){
 				let storeId = storeList[i].storeId;
@@ -871,6 +869,7 @@
 			e.stopPropagation();
 			let storeId = $(this).data("storeid");
 			let like = $(this).data("like");
+			let liketot= $("#like" + storeId);
 			console.log(like);
 			console.log(storeId)
 			if(!isLogin()){
@@ -883,16 +882,14 @@
 				$(this).empty().append(str);
 				$(this).data("like", false);
 				removeLike({userId:"<c:out value='${userId}'/>",storeId:storeId});
-				console.log($(this).next()[0].innerHTML)
-				$(this).next()[0].innerHTML = $(this).next()[0].innerHTML-1
+				liketot.html(liketot.html()-1)
 			}
 			if(like === false){
 				let str="<i class='fas fa-heart' style='color:red;'/></i>";
 				$(this).empty().append(str);
 				$(this).data("like", true)
 				addLike({userId:"<c:out value='${userId}'/>",storeId:storeId});
-				console.log($(this).next())
-				$(this).next()[0].innerHTML = $(this).next()[0].innerHTML-0+1
+				liketot.html(liketot.html()-0+1)
 				alert("찜목록에 추가했습니다.")
 			}
 			

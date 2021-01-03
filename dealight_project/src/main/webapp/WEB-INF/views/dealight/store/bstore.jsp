@@ -100,10 +100,10 @@
                     </div>
                 </div>
                 <div class="contents-container flex">
-                    <div class="stus ${store.bstore.seatStusCd ne 'B'? 'green':'' }">
+                    <div class="stus ${store.bstore.seatStusCd ne 'B'? 'green':'white' }">
                     	<c:choose>
                     		<c:when test="${store.bstore.seatStusCd eq 'B'}">
-		                        <i class="fas fa-store-alt fa-lg"></i>영업이 끝났습니다
+		                        <i class="fas fa-store-alt fa-lg" style="color:black"></i>영업이 끝났습니다
                     		</c:when>
                     		<c:otherwise>
 		                        <i class="fas fa-store-alt fa-lg"></i>영업중
@@ -271,7 +271,7 @@
 					                        </div>
 					                    </div>
 					                    <div class="card-title">
-					                        <h3>[${store.bstore.htdl.brch }] ${store.bstore.htdl.name }</h3>
+					                        <h3>[${store.bstore.brch}] ${store.bstore.htdl.name }</h3>
 					                    </div>
 					                    <div class="card-menu">
 					                        메뉴:&nbsp;<span>${store.bstore.htdl.setName }</span>
@@ -442,8 +442,8 @@
 	    		if(menus.find(".menu-container").length == 0){
 	    			$("#total").parent().show();
 	    		}
-	    		let price = $(this).siblings(".card-img").find(".card-beforePrice span").html()
-	    		console.log($(this).siblings(".card-img").find(".card-beforePrice span").html())
+	    		let price = $(this).siblings(".card-img").find(".card-afterPrice span").html()
+	    		console.log($(this).siblings(".card-img").find(".card-afterPrice span").html())
 	    		let str = "";
 	    		str += '<div class="menu-container flex" data-value="'+seq+'" data-htdl="'+ $(this).data("id") +'">'
 	    		str += '<div class="menu-header center">'
