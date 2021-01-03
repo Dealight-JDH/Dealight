@@ -297,7 +297,7 @@
 								<div class="account_cnts"><a href="/dealight/admin/main ">서비스 관리</a></div>
 							</sec:authorize>
 								<div class="account_cnts"><a href="/dealight/mypage/get">회원정보수정</a></div>
-								<div class="account_cnts" onclick="submit(event)"><a href="dealight/logout">로그아웃</a></div>
+								<div class="account_cnts" onclick="submit(event)"><a href="/dealight/logout">로그아웃</a></div>
 						</sec:authorize>
 					</div>
             	</div>
