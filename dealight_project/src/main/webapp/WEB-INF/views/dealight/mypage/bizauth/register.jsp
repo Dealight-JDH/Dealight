@@ -12,7 +12,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 <link rel="stylesheet" href="/resources/css/custservice.css" type ="text/css" />
-
+<link rel="stylesheet" href="/resources/css/fileupload.css">
 
 <style type="text/css">
 * { /* CSS초기화. 이거 없으면 div태그 사이에 공백 생김*/
@@ -130,6 +130,7 @@
   	cursor: pointer;
   	outline: none;
   }
+  /**
   .uploadResult{
 	width:100%;
 	background-color: gray;}
@@ -151,6 +152,27 @@
 .uploadResult ul li span{
 	color:white;
 }
+**/
+.uploadResult > ul {
+	display: flex;
+	flex-flow: row;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+.uploadResult > ul > li > div > img {
+	margin:0 20px;
+}
+.form_img label {
+	margin-left: 40px;
+}
+.uploadResult > ul li{
+	margin-left: 40px;
+}
+.fileupload_img_btn{
+	right:-4px;
+	top:6px;
+}
+
 .bigPictureWrapper{
 	position: absolute;
 	display: none;
@@ -218,8 +240,13 @@
 				<input type="hidden" name="userId" value="${userId }"><br>
 			</form>
 			<div>
-			<div class="uploadDiv">
-				<input type="file" name="uploadFile">
+			<div class="file_body uploadDiv">
+				<div class="form_img">
+		                <label for="label_uploadfile">
+				            <i class="fas fa-arrow-circle-up"></i> 사진 첨부하기
+				        </label>
+	                 <input style='display:none;' type="file" id='label_uploadfile' name='uploadFile' multiple hidden='hidden'>
+	            </div> 
 			</div>
 			<div class="uploadResult">
 				<ul>
@@ -268,8 +295,8 @@ window.onload = function(){
 		str += "<li data-path='"+ srcObj["uploadPath"] +"'";
 		str += "data-filename=\'"+ srcObj["fileName"] +"\'><div>";
 		str += "<span>" + srcObj["realFileName"] +"</span>"
-		str += " <button type='button' data-file=\'"+fileCallPath+"\'data-type='image'>"
-		str += "(X)</button><br>";
+		str += " <button type='button' data-file=\'"+fileCallPath+"\'data-type='image' class='fileupload_img_btn'><i class='far fa-times-circle'></i>"
+		str += "</button><br>";
 		str += "<img src='/display?fileName=" + fileCallPath + "'>";
 		str += "</div>";
 		str += "</li>";
@@ -381,8 +408,8 @@ window.onload = function(){
 		str += "<li data-path='"+uploadResult.uploadPath+"'";
 		str += " data-uuid='"+uploadResult.uuid+"' data-filename=\'"+uploadResult.fileName+"\'data-type='"+uploadResult.image+"'><div>";
 		str += "<span>" + realFileName +"</span>"
-		str += " <button type='button' data-file=\'"+fileCallPath+"\'data-type='image'>"
-		str += "(X)</button><br>";
+		str += "<button type='button' data-file=\'"+fileCallPath+"\'data-type='image' class='fileupload_img_btn'>"
+		str += "<i class='far fa-times-circle'></i></button><br>";
 		str += "<img src='/display?fileName=/" + fileCallPath + "'>";
 		str += "</div>";
 		str += "</li>";

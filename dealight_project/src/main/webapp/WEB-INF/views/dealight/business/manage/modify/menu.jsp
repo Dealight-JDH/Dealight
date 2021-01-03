@@ -307,7 +307,7 @@
 			                        <label for="label_uploadfile">
 					                    <i class="fas fa-arrow-circle-up"></i> 사진 첨부하기
 					                </label>
-		                            <input style='display:none;' type="file" id='label_uploadfile' name='uploadFile' multiple hidden='hidden'>
+		                            <input style='display:none;' type="file" id='label_uploadfile' name='uploadFile' hidden='hidden'>
 		                        </div> 
 		                        <div class='uploadResult'>
 		                            <ul></ul>
@@ -591,7 +591,7 @@ $(document).ready(function(e){
 		strMenu += "<label for='js_upload'>";
 		strMenu += "<i class='fas fa-arrow-circle-up'></i> 사진 첨부하기";
 		strMenu += "</label>";
-		strMenu += "<input style='display:none;' type='file' id='js_upload' name='uploadFile' multiple hidden='hidden'>";
+		strMenu += "<input style='display:none;' type='file' id='js_upload' name='uploadFile' hidden='hidden'>";
 		strMenu += "</div>";
 		strMenu += "<div class='uploadResult_modify'>";
 		strMenu += "<ul>";

@@ -49,7 +49,7 @@ access_token : ${access_token}</br>
 
 allow : ${allow}
 
-<a href="https://kauth.kakao.com/oauth/authorize?client_id=dba6ebc24e85989c7afde75bd48c5746&redirect_uri=http://localhost:8080/message&response_type=code&scope=friends">동의 받으러 가기</a>
+<a href="https://kauth.kakao.com/oauth/authorize?client_id=dba6ebc24e85989c7afde75bd48c5746&redirect_uri=http://localhost:8181/message&response_type=code&scope=friends">동의 받으러 가기</a>
 
 
 친구 리스트 : ${talkFriendsList }

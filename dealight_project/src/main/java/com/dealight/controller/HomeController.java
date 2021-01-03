@@ -1,6 +1,7 @@
 package com.dealight.controller;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,18 +9,24 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 
+import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dealight.domain.StoreVO;
 import com.dealight.domain.WaitVO;
@@ -207,20 +214,21 @@ public class HomeController {
 //	}
 	
 	// 친구(uuid)에 메시지를 보낸다.
-	@RequestMapping(value="/message/friends", method = RequestMethod.GET)
+	@RequestMapping(value="/dealight/message/friends/{storeId}/{waitId}", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
 	@ResponseBody
-	public String sendMessage(Model model, String access_token, String title, String description, String web_url, String uuid, Long storeId, Long waitId) {
+	public ResponseEntity<String> sendMessage(@PathVariable("storeId") Long storeId, @PathVariable("waitId") Long waitId,String access_token,String uuid) {
+		
+		String title = "[딜라이트 안내 메시지]";
+		String description = "입장 시간이 얼마남지 않았습니다. 순서를 확인하고 매장에 방문해주세요.";
+		String web_url = "/dealight/waiting/" + waitId;
 		
 		log.info("rest template test..........................");
 		
 		log.info("accesss token : "+access_token+"\ntitle : "+title+"\ndescription : "+description+"\nweb_url : "+web_url+"\nuuid : "+uuid+"\nwaitId : "+waitId);
 		
-		String result = callService.sendFrMessage(access_token,title,description,web_url,uuid);
-		
-		model.addAttribute("result", result);
-		model.addAttribute("storeId",storeId);
+		String result = callService.sendFrMessage(access_token,title,description,web_url,uuid,storeId);
 
-		return "message";
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
 	// 웨이팅의 상세 정보(번호표)를 볼 수 있다.
@@ -230,8 +238,6 @@ public class HomeController {
 				log.info("business waiting detail..");
 				
 				WaitVO wait = waitService.read(waitId);
-				
-				wait.setWaitRegTm(wait.getWaitRegTm().split(" ")[1].substring(0,5));
 				
 				log.info(wait);
 				
@@ -247,13 +253,82 @@ public class HomeController {
 				// 해당 매장의 위치정보를 가져온다.
 				StoreVO store = storeService.findStoreWithBStoreAndLocByStoreId(wait.getStoreId());
 				
+				boolean isAvalCancel = false; 
+		    	
+				Date curTime = new Date();
+				
+				String regWaitTime = wait.getWaitRegTm();
+				//String regWaitTime = "2021/01/02 14:53:47";
+				SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				String strCurTime = formater.format(curTime);
+				log.info("wait reg time : " + regWaitTime);
+				log.info("cur time : " + strCurTime);
+				
+				log.info("regWaitTime.split(\":\")[1] : " + regWaitTime.split(":")[1]);
+				log.info("regWaitTime.split(\":\")[2] : " + regWaitTime.split(":")[2]);
+				
+				log.info("Integer.parseInt(strCurTime.split(\":\")[1] : " + strCurTime.split(":")[1]);
+				log.info("Integer.parseInt(strCurTime.split(\":\")[2] : " + strCurTime.split(":")[2]);
+				
+				int intWaitTime = (Integer.parseInt(regWaitTime.split(":")[1]) * 60) + (Integer.parseInt(regWaitTime.split(":")[2]));
+				int intCurTime = (Integer.parseInt(strCurTime.split(":")[1]) * 60) + (Integer.parseInt(strCurTime.split(":")[2]));
+				
+				log.info("intWaitTime : "+intWaitTime);
+				log.info("intCurTime : "+intCurTime);
+				
+				log.info("regWaitTime.substring(0, 13)" + regWaitTime.substring(0, 13));
+				log.info("strCurTime.substring(0, 13)" + strCurTime.substring(0, 13));
+				
+				if(regWaitTime.substring(0, 13).equals(strCurTime.substring(0, 13)) && intCurTime - intWaitTime <= 300) {
+					isAvalCancel = true;
+				}
+				
+				log.info("result : " + isAvalCancel);
+				
+				
+				wait.setWaitRegTm(wait.getWaitRegTm().split(" ")[1].substring(0,5));
+				
 				model.addAttribute("wait",wait);
 				model.addAttribute("order",order);
 				model.addAttribute("waitTime", waitTime);
 				model.addAttribute("store",store);
+				model.addAttribute("isAvalCancel",isAvalCancel);
 				
 				return "/dealight/business/manage/waiting/waiting";
 			}
 			
+			
+			@PostMapping("/dealight/waiting/cancel")
+			public String cancelWait(Model model, Long waitId,RedirectAttributes rttr) {
+				
+				boolean isAvalCancel = false; 
+		    	
+				Date curTime = new Date();
+				
+				WaitVO wait = waitService.read(waitId);
+				
+				String regWaitTime = wait.getWaitRegTm();
+				//String regWaitTime = "2021/01/02 14:53:47";
+				SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				String strCurTime = formater.format(curTime);
+
+				
+				int intWaitTime = (Integer.parseInt(regWaitTime.split(":")[1]) * 60) + (Integer.parseInt(regWaitTime.split(":")[2]));
+				int intCurTime = (Integer.parseInt(strCurTime.split(":")[1]) * 60) + (Integer.parseInt(strCurTime.split(":")[2]));
+
+				if(regWaitTime.substring(0, 13).equals(strCurTime.substring(0, 13)) && intCurTime - intWaitTime <= 300) 
+					isAvalCancel = true;
+				
+				if(isAvalCancel) {
+					if(waitService.cancelWaiting(waitId))
+						rttr.addFlashAttribute("msg","취소가 성공하였습니다.");
+					else
+						rttr.addFlashAttribute("msg","취소가 실패하였습니다. 웨이팅 취소는 등록 후 5분 이내에만 가능합니다.");
+				}
+				
+				
+				
+				return "redirect:/dealight/waiting/" + waitId;
+			}
 	
 }
