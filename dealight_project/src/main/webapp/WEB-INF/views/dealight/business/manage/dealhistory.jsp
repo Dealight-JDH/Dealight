@@ -90,7 +90,8 @@
         
         .htdl_intro{
             width: 97%;
-            
+            margin-top:5px;
+            margin-bottom:5px;
             font-size: 14px;
         }
 

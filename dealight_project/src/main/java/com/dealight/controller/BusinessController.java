@@ -8,9 +8,11 @@ import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,6 +78,7 @@ public class BusinessController {
 	//메뉴 사진첨부파일 매장평가 사업자테이블에 태그 메뉴 옵션이 들어가야한다.
 	//DTO에 대한이해가 피요하고 많아지는 객체들을 쪼갤수있는 방법을 생각하자.
 	@PostMapping("/register")
+	@Transactional
 	public String register(StoreVO store, BStoreVO bStore, StoreLocVO loc, StoreEvalVO eval,Long brSeq,RedirectAttributes rttr) {
 		
 		
@@ -93,7 +96,7 @@ public class BusinessController {
 		log.info("register: " + store);
 		
 		sService.register(store);
-		bizAuthService.updateStusCdToB(brSeq);
+		//bizAuthService.updateStusCdToB(brSeq);
 		
 		Long storeId = store.getStoreId();
 		
@@ -107,7 +110,7 @@ public class BusinessController {
 		//결국 저장된 정보를 볼수있는 페이지는 뭐가잇을까??
 		//수정페이지에서 정보를 볼 수있고 정보도 고칠수 있지 
 		//그러면 수정페이지를 가지고있어야겠네
-		rttr.addFlashAttribute("result", store.getStoreId());
+		rttr.addFlashAttribute("regResult", store.getStoreId()+"번 매장이 등록되었습니다.");
 		return "redirect:/dealight/business/";
 	}
 	
@@ -138,7 +141,25 @@ public class BusinessController {
 	
 	// 해당 유저의 매장 리스트를 보여준다.
 	@GetMapping("/")
-	public String list(Model model,HttpSession session) {
+	public String list(Model model,HttpSession session,String code,HttpServletResponse response,HttpServletRequest request) {
+		
+		log.info("code : " + code);
+		
+		if(code != null) {
+			HashMap<String, Object> result = callService.getToken(code);
+			LinkedHashMap<String, String> lm = (LinkedHashMap) result.get("body");
+			String accessToken = lm.get("access_token");
+			Cookie cookie = new Cookie("access_token", accessToken);
+			response.addCookie(cookie);
+		}
+		
+		boolean isSnsLogin = false;
+		
+		Cookie[] cookies = request.getCookies();
+		for(Cookie cookie : cookies) {
+			if(cookie.getName().equals("accessToken"))
+				isSnsLogin = true;
+		}
 		
 
 		log.info("business store list..");
@@ -173,6 +194,8 @@ public class BusinessController {
 		
 		model.addAttribute("storeList", list);
 		model.addAttribute("buserList", buserList);
+		model.addAttribute("code",code);
+		model.addAttribute("isSnsLogin",isSnsLogin);
 		
 		return "/dealight/business/list";
 	}
@@ -185,22 +208,42 @@ public class BusinessController {
 		
 		log.info("business manage..");
 		
-		/*
 		String accessToken = "";
-		
 		
 		Cookie[] cookies = request.getCookies();
 		for(Cookie cookie : cookies) {
-			if(cookie.getName().equals("accessToken"))
+			if(cookie.getName().equals("access_token"))
 				accessToken = cookie.getValue();
 		}
-		*/
+		
+		log.info("accessToken : "+accessToken);
+		
+		
 		HttpSession session = request.getSession();
 		
 		String userId = (String) session.getAttribute("userId");
 		
-		/*
+		
 		if(!"".equals(accessToken)) {
+			
+			HashMap<String, Object> profile = callService.getProfile(accessToken);
+			
+			log.info("Users info............:"+profile);
+			HashMap<String, Object> frList = callService.getUsersList();
+			
+			log.info("Users list............:"+frList);
+
+			HashMap<String, Object> talkProfile = callService.getTalkProfile(accessToken);
+			
+			log.info("talkProfile................"+talkProfile);
+			
+			// 종우 컴퓨터로 옮기면서 바꿔야 함
+			String restKey = "dba6ebc24e85989c7afde75bd48c5746";
+			String redirectURI = "http://localhost:8181/business/manage";
+			
+			HashMap<String, Object> allow= callService.getAllow();
+			
+			log.info(allow);
 			
 			HashMap<String, Object> talkFriendsList = callService.getTalkFriendsList(accessToken);
 			
@@ -212,20 +255,29 @@ public class BusinessController {
 			
 			log.info("talkFriendsList2 class..........."+talkFriendsList.getClass());
 			
-			log.info("talkFriendsList3..........."+talkFriendsList.get("elements").getClass());
+			//log.info("talkFriendsList3..........."+talkFriendsList.get("elements").getClass());
 			
-			List list = (ArrayList) talkFriendsList.get("elements");
-			
-			log.info("talkFriendsList3..........."+list.get(0).getClass());
-			
-			LinkedHashMap map = (LinkedHashMap) list.get(0);
-			
-			log.info(map.get("uuid"));
+			try {
+				List list = (ArrayList) talkFriendsList.get("elements");
+				
+				log.info("talkFriendsList3..........."+list.get(0).getClass());
+				
+				LinkedHashMap map = (LinkedHashMap) list.get(0);
+				
+				log.info(map.get("uuid"));
+				
+				
+				model.addAttribute("uuid",map.get("uuid"));
+				
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+				model.addAttribute("uuid","uuid 오류");
+			}
 			
 			model.addAttribute("accessToken",accessToken);
-			model.addAttribute("requestUuid",map.get("uuid"));
+			
 		}
-		*/
+		
 		 
 
 		// 오늘 예약한 사용자의 사용자 정보와 예약 정보를 가져온다.
