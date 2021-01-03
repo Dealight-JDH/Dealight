@@ -286,6 +286,13 @@
             justify-content: space-between;
             margin-left: 5px;
         }
+        .next_info.nextWait{
+        	animation: fadein 2s;
+        }
+        
+        .next_info.nextRsvd{
+        	animation: fadein 2s;
+        }
         .next_wait{
             position: relative;
             /*border: 1px solid black;*/
@@ -300,7 +307,18 @@
             align-items: flex-start;
             margin-left:10px;
             color: rgba(177, 177, 177, 0.198);
+            
         }
+        
+        @keyframes fadein {
+        	from {
+        		opacity:0;
+        	}
+        	to {
+        		opacity:1;
+        	}
+        }
+        
         .next_wait_btn_box{
             width: 100%;
             display: flex;
@@ -599,6 +617,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            animation: fadein 2s;
             /*box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.404);*/
         }
         .wait > button{
@@ -677,6 +696,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            animation: fadein 2s;
             /*margin-bottom: 10px;*/
             /*box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.404);*/
         }
@@ -753,6 +773,7 @@
             /*box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.274);*/
             border : 1px solid #eeeeef;
             font-family: 'Montserrat', sans-serif;
+            animation: fadein 2s;
         }
         .rsvd_time {
             width: 150px;
@@ -1079,7 +1100,8 @@
 		/*box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.274);*/
         /* Position the dealight_tooltip */
         position: absolute;
-        top : -5px;
+        top : 10px;
+        left : 110px;
         z-index: 1;
         }
 
@@ -1568,6 +1590,10 @@
             background-color: transparent;
             border: 0;
             font-size: 18px;
+          	cursor: pointer;
+        }
+        .btn_wait_call:hover{
+        	opacity: 0.7;
         }
         .btn_wait_call a {
             color: black;
@@ -1656,3 +1682,15 @@
 		    margin-right: 10px;
 		    font-size: 15px;
 		}
+		.cur_htdl{
+			
+			color:#D32323;
+		}
+		.cur_htdl svg {
+			margin-right:5px;
+		}
+		.paginate_button.active a{
+        	background-color: #D32323;
+		    border-radius: 5px;
+		    color: white;
+        }

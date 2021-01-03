@@ -685,7 +685,13 @@ else if(sns == 'N'){
 	//입력필드 유효성 검사
 	
 	//정규식
-
+            $(".mypage_side_menu > div").on("click",(e) => {
+	
+				console.log(e.currentTarget);
+				
+				location.href = $(e.currentTarget).find("a").attr("href");
+				
+			});
 </script>
 <%@include file="../../includes/mainFooter.jsp" %>
 </body>

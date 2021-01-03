@@ -70,6 +70,7 @@ public class KakaoService {
 												        .queryParam("userId", userId)
 												        .queryParam("rsvdId", rsvdId)
 												        .queryParam("storeId", requestDto.getStoreId())
+												        .queryParam("htdlId", requestDto.getHtdlId())
 												        .queryParam("time", requestDto.getTime())
 												        .queryParam("pnum", requestDto.getPnum());
         

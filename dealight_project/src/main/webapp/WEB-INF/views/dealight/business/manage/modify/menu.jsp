@@ -307,7 +307,7 @@
 			                        <label for="label_uploadfile">
 					                    <i class="fas fa-arrow-circle-up"></i> 사진 첨부하기
 					                </label>
-		                            <input style='display:none;' type="file" id='label_uploadfile' name='uploadFile' multiple hidden='hidden'>
+		                            <input style='display:none;' type="file" id='label_uploadfile' name='uploadFile' hidden='hidden'>
 		                        </div> 
 		                        <div class='uploadResult'>
 		                            <ul></ul>
@@ -544,13 +544,15 @@ $(document).ready(function(e){
     
 	let showMenuModalHandler = function(e) {
 		
-			let menuSeq = $(e.target).parent().find(".menuSeq").text(),
-			storeId = $(e.target).parent().find(".storeId").text(),
-			name = $(e.target).parent().find(".name").text(),
-			price = $(e.target).parent().find(".price").text(),
-			recoMenu = $(e.target).parent().find(".recoMenu").text(),
-			imgUrl = $(e.target).parent().find(".imgUrl").text(),
-			thumImgUrl = $(e.target).parent().find(".thumImgUrl").text().trim();
+			console.log(e.currentTarget);
+		
+			let menuSeq = $(e.currentTarget).parent().find(".menuSeq").text(),
+			storeId = $(e.currentTarget).parent().find(".storeId").text(),
+			name = $(e.currentTarget).parent().find(".name").text(),
+			price = $(e.currentTarget).parent().find(".price").text(),
+			recoMenu = $(e.currentTarget).parent().find(".recoMenu").text(),
+			imgUrl = $(e.currentTarget).parent().find(".imgUrl").text(),
+			thumImgUrl = $(e.currentTarget).parent().find(".thumImgUrl").text().trim();
 		
 		console.log(menuSeq);
 		
@@ -589,7 +591,7 @@ $(document).ready(function(e){
 		strMenu += "<label for='js_upload'>";
 		strMenu += "<i class='fas fa-arrow-circle-up'></i> 사진 첨부하기";
 		strMenu += "</label>";
-		strMenu += "<input style='display:none;' type='file' id='js_upload' name='uploadFile' multiple hidden='hidden'>";
+		strMenu += "<input style='display:none;' type='file' id='js_upload' name='uploadFile' hidden='hidden'>";
 		strMenu += "</div>";
 		strMenu += "<div class='uploadResult_modify'>";
 		strMenu += "<ul>";
@@ -819,7 +821,7 @@ $(document).ready(function(e){
 		
 	} // show menu
 	
-	$(".menu > *").on("click", showMenuModalHandler);
+	$(".menu > div").on("click", showMenuModalHandler);
 	
 }); // ready end
 </script>

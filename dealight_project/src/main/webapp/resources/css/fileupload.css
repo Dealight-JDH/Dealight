@@ -19,6 +19,7 @@
 .uploadResult ul li img{
 	width: 100px;
 	height: 100px;
+	margin: 20px;
 }
 .uploadResult ul li span{
 	color:white;

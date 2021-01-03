@@ -181,6 +181,7 @@
         border-radius: 3px;
         color: #fff;
         outline: none;
+        cursor: pointer;
     }
 
     .form-footer{
@@ -199,6 +200,7 @@
         outline: 0;
         background-color: white;
         border-radius: 4px;
+        cursor: pointer;
     }
 
 

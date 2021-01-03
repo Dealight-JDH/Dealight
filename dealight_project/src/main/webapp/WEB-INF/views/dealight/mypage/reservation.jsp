@@ -67,10 +67,8 @@
 	                                        </div>
 	                                        <div class="cnts">
 	                                            <div>
-	                                                <span class="rsvd_cnts_tit">메뉴목록</span>
-	                                                <c:forEach items="${rsvd.rsvdDtlsList}" var="rsvdDtls">
-														<span class="rsvd_cnts_val">${rsvdDtls.menuNm}</span>
-													</c:forEach>
+	                                                <span class="rsvd_cnts_tit">예약인원</span>
+													<span class="rsvd_cnts_val">${rsvd.pnum}명</span>
 	                                            </div>
 	                                            <div>
 	                                                <span class="rsvd_cnts_tit">결제금액</span>
@@ -79,13 +77,13 @@
 	                                            <div>
 	                                                <span class="rsvd_cnts_tit">예약상태</span>
 	                                                <c:if test="${rsvd.stusCd eq 'C'}">
-	                                                	<span class="rsvd_cnts_val rsvd_stus_cd" style='color:blue;'>현재예약</span>
+	                                                	<span class="rsvd_cnts_val wait_stus_cd" style='color:blue;'>현재예약</span>
 	                                                </c:if>
 	                                                <c:if test="${rsvd.stusCd eq 'L'}">
-	                                                	<span class="rsvd_cnts_val rsvd_stus_cd" style='color:orange;'>지난예약</span>
+	                                                	<span class="rsvd_cnts_val wait_stus_cd" style='color:orange;'>지난예약</span>
 	                                                </c:if>
 	                                                <c:if test="${rsvd.stusCd eq 'P'}">
-	                                                	<span class="rsvd_cnts_val rsvd_stus_cd" style='color:red;'>예약보류</span>
+	                                                	<span class="rsvd_cnts_val wait_stus_cd" style='color:red;'>예약대기</span>
 	                                                </c:if>
 	                                            </div>
 	                                        </div>
@@ -757,7 +755,15 @@ window.onload = function () {
     
 }; /* document ready end*/
 
-
+$(".mypage_side_menu > div").on("click",(e) => {
+	
+	if(e.currentTarget === "div.side_noti") return;
+	
+	console.log(e.currentTarget);
+	
+	location.href = $(e.currentTarget).find("a").attr("href");
+	
+});
 
 </script>
 <%@include file="../../includes/mainFooter.jsp" %>

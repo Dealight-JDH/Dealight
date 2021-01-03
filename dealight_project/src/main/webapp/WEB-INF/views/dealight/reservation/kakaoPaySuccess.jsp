@@ -212,7 +212,7 @@
                 <img class="success_img" src="/resources/img/check_circle_big.png" alt="">
             </div>
             <div class="success_title">
-                <span><c:out value="${userId }"/></span><p>님의 예약이 완료되었습니다.</p>
+                <span><c:out value="${userName }"/></span><p>님의 예약이 완료되었습니다.</p>
             </div>
 
             <div class="success_sub">

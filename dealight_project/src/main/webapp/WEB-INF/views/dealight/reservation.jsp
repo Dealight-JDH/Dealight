@@ -431,7 +431,7 @@ rgba(0, 0, 0, 0.1);
 				<div class="rsvdInfo">
 				<h1>예약 정보</h1></div>
 				
-				<div class="userInfo">회원 정보: ${userId}</div>
+				<div class="userInfo">회원 정보: ${userName}</div>
                 <div class="rsvdTime">예약 시간: ${time}</div>
                 <div class="pnum">예약 인원: ${pnum}명</div>
 				

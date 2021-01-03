@@ -290,4 +290,41 @@ public class WaitingServiceTests {
 			log.info("time : " + wait.getStrWaitRegTm());
 		});
     }
+    
+    @Test
+    public void cancelWait() {
+    	
+    	boolean isAvalCancel = false; 
+    	
+		Date curTime = new Date();
+		
+		WaitVO wait = waitingService.read(138L);
+		String regWaitTime = wait.getWaitRegTm();
+		//String regWaitTime = "2021/01/02 14:53:47";
+		SimpleDateFormat formater = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		String strCurTime = formater.format(curTime);
+		log.info("wait reg time : " + wait.getWaitRegTm());
+		log.info("cur time : " + strCurTime);
+		
+		log.info("regWaitTime.split(\":\")[1] : " + regWaitTime.split(":")[1]);
+		log.info("regWaitTime.split(\":\")[2] : " + regWaitTime.split(":")[2]);
+		
+		log.info("Integer.parseInt(strCurTime.split(\":\")[1] : " + strCurTime.split(":")[1]);
+		log.info("Integer.parseInt(strCurTime.split(\":\")[2] : " + strCurTime.split(":")[2]);
+		
+		int intWaitTime = (Integer.parseInt(regWaitTime.split(":")[1]) * 60) + (Integer.parseInt(regWaitTime.split(":")[2]));
+		int intCurTime = (Integer.parseInt(strCurTime.split(":")[1]) * 60) + (Integer.parseInt(strCurTime.split(":")[2]));
+		
+		log.info("intWaitTime : "+intWaitTime);
+		log.info("intCurTime : "+intCurTime);
+		
+		log.info("regWaitTime.substring(0, 13)" + regWaitTime.substring(0, 13));
+		log.info("strCurTime.substring(0, 13)" + strCurTime.substring(0, 13));
+		
+		if(regWaitTime.substring(0, 13).equals(strCurTime.substring(0, 13)) && intCurTime - intWaitTime <= 300) {
+			isAvalCancel = true;
+		}
+		
+		log.info("result : " + isAvalCancel);
+    }
 }

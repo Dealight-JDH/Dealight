@@ -33,10 +33,10 @@
                     </div>
                     <div class="board_left_bot">
                         <div class="btn_wait_register">현장 등록</div>
-                        <div><a href="/dealight/business/manage/modify?storeId=${storeId}">정보 수정</a></div>
-                        <div><a href="/dealight/business/manage/menu?storeId=${storeId}">메뉴 수정</a></div>
-                        <div><a href="/dealight/business/manage/dealhistory?storeId=${storeId}">핫딜 이력</a></div>
-                        <div><a href="/dealight/business/">매장 리스트</a></div>
+                        <div class='manage_side_menu_box'><a href="/dealight/business/manage/modify?storeId=${storeId}">정보 수정</a></div>
+                        <div class='manage_side_menu_box'><a href="/dealight/business/manage/menu?storeId=${storeId}">메뉴 수정</a></div>
+                        <div class='manage_side_menu_box'><a href="/dealight/business/manage/dealhistory?storeId=${storeId}">핫딜 이력</a></div>
+                        <div class='manage_side_menu_box'><a href="/dealight/business/">매장 리스트</a></div>
                         <div id="store_info_box">
                             <div class="store_info_tit">매장 이름</div>
                             <div class="store_info_val">${store.storeNm}</div>
@@ -710,7 +710,7 @@ let writeTimeBar = function (curTime) {
                 	strWaitList += "<div class='wait' data-waitId='"+wait.waitId+"'>";
                         strWaitList += "<div class='list_info_top'>";
                         strWaitList += "<span class='wait_name wait_list'>"+wait.custNm+"</span>";
-                        strWaitList += "<span class='wait_telno wait_list'>"+wait.custTelno+"<button class='btn_wait_call'><a href='/oauth?storeId="+wait.storeId+"&waitId="+wait.waitId+"'><i class='fas fa-comment-dots'></i></a></button></span>";
+                        strWaitList += "<span class='wait_telno wait_list'>"+wait.custTelno+"<button class='btn_wait_call'><i class='fas fa-comment-dots'></i></button></span>";
                         strWaitList += "</div>";
                         strWaitList += "<div class='list_info_bot'>";
                         strWaitList += "<span class='list_wait_pnum'>"+wait.waitPnum+"명</span>";
@@ -722,32 +722,42 @@ let writeTimeBar = function (curTime) {
                 });
     
               waitListDiv.html(strWaitList);   
+              
+              if(uuid !== null && uuid.length > 1)
+              	$(".btn_wait_call").css("color","orange");
              
-              $(".wait").on("click",(e)=>{
+              $(".wait").on("click","div",(e)=>{
             	  
             	  console.log(e.target);
             	  
-            	  let waitId = e.target.dataset.waitid
+            	  if(e.target.tagName === "path" || e.target.tagName === "svg" || e.target.tagName === "button") return;
             	  
-            	  if(e.target.className === "btn_wait_call" || e.target.parentNode.className === "btn_wait_call")
+            	  console.log(e.currentTarget);
+            	  
+            	  let waitId = e.currentTarget.closest(".wait").dataset.waitid;
+            	  
+            	  if(e.currentTarget.className === "btn_wait_call")
             		  return;
-            	  
-            	  console.log("wait1 : "+waitId);
-            	  
-            	  if(e.target.dataset.waitId) waitId = e.target.dataset.waitid;
-            	  
-            	  console.log("wait2 : "+waitId);
-            	  
-                  if(e.target.parentNode.dataset.waitid) waitId = e.target.parentNode.dataset.waitid;
-                  
-                  console.log("wait3 : "+waitId);
-                  
-                  if(e.target.parentNode.parentNode.dataset.waitid) waitId = e.target.parentNode.parentNode.dataset.waitid;
-                  
-                  console.log("wait4 : "+waitId);
             	  
                   window.open("/dealight/waiting/"+waitId);
             	  
+              });
+              
+              $(".btn_wait_call").on("click", e=>{
+            	  
+            	if(uuid === null || uuid.length <= 1)
+            		  return;
+              	
+              	e.preventDefault();
+              	
+              	console.log("buttons click success")
+              	
+              	let waitId = e.currentTarget.closest(".wait").dataset.waitid;
+              	
+              	call({storeId:storeId,waitId:waitId},result => {
+              		alert("메시지 전송이 완료되었습니다.");
+              	});
+              	
               });
               
               
@@ -797,9 +807,11 @@ let writeTimeBar = function (curTime) {
                 	else strRsvdList += "<div class='rsvd rsvd_i cur_htdl btnRsvd'>" ;
                 		strRsvdList += "<li hidden class='btnStoreId'>"+rsvd.storeId+"</li>";
                 		strRsvdList += "<li hidden class='btnUserId'>"+rsvd.userId+"</li>";
+                		strRsvdList += "<li hidden class='rsvdId'>"+rsvd.rsvdId+"</li>";
                 		strRsvdList += "<div class='list_info_top'>";
                 		strRsvdList += "<div class='rsvd_name rsvd_list'>"+rsvd.userId+"</div>";
-                		strRsvdList += "<div class='rsvd_telno rsvd_list'>"+rsvd.totQty+"</div>";
+                		if(rsvd.htdlId !== null) strRsvdList += "<span class='next_rsvd_telno cur_htdl'>"+"<i class='fas fa-burn'></i>"+"핫딜 예약"+"</span>";
+                		else if(rsvd.htdlId === null) strRsvdList += "<span class='next_rsvd_telno'>"+"일반 예약"+"</span>";
                 		strRsvdList += "</div>";
                 		strRsvdList += "<div class='list_info_bot rsvd_list'>";
                 		strRsvdList += "<div class='list_rsvd_pnum'>"+rsvd.pnum+"명</div>";
@@ -888,7 +900,7 @@ let writeTimeBar = function (curTime) {
                 		console.log("user id : " + userId);
                 		let storeId = rsvd.storeId;
                 		console.log("store id : " + storeId);
-                		showUserRsvdList(storeId,userId);
+                		showUserRsvdList(storeId,userId,rsvd.rsvdId);
 	            		
 	            		modal.css("display","block");
                 	})
@@ -1135,7 +1147,7 @@ let writeTimeBar = function (curTime) {
         	유저의 예약 히스토리를 보여준다.
         
         */
-        function showUserRsvdList(storeId,userId,callback){
+        function showUserRsvdList(storeId,userId,selRsvdId,callback){
         	
         	boardService.getUserRsvdList({storeId:storeId,userId:userId}, function(userRsvdList){
         		
@@ -1187,7 +1199,7 @@ let writeTimeBar = function (curTime) {
         		rsvdDtlsDiv.html(strUserRsvdList);
         		console.log("=======================");
         		console.log("user history complete");
-        		showRsvdDtls(userRsvdList[0].rsvdId);
+        		showRsvdDtls(selRsvdId);
         		
         	})
         };
@@ -1428,7 +1440,8 @@ let writeTimeBar = function (curTime) {
 	        		modal.find("ul").html("");
 	    			modal.find("input").val("");
 	    			modal.css("display","none");
-	    			
+	    			modal.find(".content_div").html("");
+    	    		modal.find(".content_div").css("display","none");
 	    		});
     		
     		});
@@ -1795,6 +1808,8 @@ let writeTimeBar = function (curTime) {
 	    			        		modal.find("ul").html("");
 	    			    			modal.find("input").val("");
 	    			    			modal.css("display","none");
+	    			    			modal.find(".content_div").html("");
+	    		    	    		modal.find(".content_div").css("display","none");
 	    		                }
 	    		        })
 	    		        alert("핫딜을 등록하셨습니다.");
@@ -1802,6 +1817,8 @@ let writeTimeBar = function (curTime) {
 	    					modal.find("ul").html("");
 		    				modal.find("input").val("");
 		    				modal.css("display","none");
+		    				modal.find(".content_div").html("");
+		    	    		modal.find(".content_div").css("display","none");
 		    				$(".alert.manage_htdl").addClass("hide");
 		    	    		$(".alert.manage_htdl").removeClass("show");
 	    				},500)
@@ -1901,8 +1918,9 @@ let writeTimeBar = function (curTime) {
         
         let showUserRsvdListHandler = function(e) {
         	
-        	let rstoreId = $(e.target).parent().find(".btnStoreId").text(),
-    		ruserId = $(e.target).parent().find(".btnUserId").text();
+        	let rstoreId = $(e.currentTarget).find(".btnStoreId").text(),
+        		selRsvdId = $(e.currentTarget).find(".rsvdId").text(),
+	    		ruserId = $(e.currentTarget).find(".btnUserId").text();
         	console.log("======================");
         	console.log(rstoreId);
         	console.log(ruserId);
@@ -1914,7 +1932,7 @@ let writeTimeBar = function (curTime) {
         	
     		modal.css("display","block");
 
-    		showUserRsvdList(rstoreId, ruserId);
+    		showUserRsvdList(rstoreId, ruserId,selRsvdId);
         }
         /*예약리스트에 있는 내용 중, 예약 상세 보여주기*/
         /*회원의 예약 리스트 보여주기*/
@@ -1954,6 +1972,8 @@ let writeTimeBar = function (curTime) {
         
         let waitEnterHandler = function(e) {
         	
+        	if(!confirm("입장을 진행하시겠습니까?")) return;
+        	
         	/*dom 코드는 변경될 가능성 있음*/
         	let waitId = parseInt(document.querySelector(".nextWait .wait_name").dataset.id);
 
@@ -1966,6 +1986,8 @@ let writeTimeBar = function (curTime) {
         /*웨이팅 입장 처리*/
         $(".btn_enter_wait").on("click", waitEnterHandler);
         let waitNoshowHandler = function(e){
+        	
+        	if(!confirm("노쇼로 등록 하시겠습니까?")) return;
         	
         	/*dom 코드는 변경될 가능성 있음*/
         	let waitId = parseInt(document.querySelector(".nextWait .wait_name").dataset.id);
@@ -2211,7 +2233,63 @@ let writeTimeBar = function (curTime) {
         });
         
     });
-
+    $(".manage_side_menu_box").on("click",(e) => {
+    	
+    	console.log(e.currentTarget);
+    	
+    	location.href = $(e.currentTarget).find("a").attr("href");
+    	
+    });
+    
+    const accessToken = '${accessToken}',
+    	uuid = '${uuid}';
+    
+    
+    console.log("accessToken : "+accessToken);
+    console.log("uuid :" + uuid);
+    
+    let call = function (params, callback,error) {
+        
+    	let storeId = params.storeId,
+    		waitId = params.waitId
+    	
+    	console.log("storeId : " + storeId);
+    	console.log("waitId : " + waitId);
+    		
+        $.ajax({
+            type : 'post',
+            url : '/dealight/message/friends/'+storeId+'/'+waitId+"?access_token=" + accessToken + "&uuid=" + uuid,
+            data : {'waitId' : waitId, 'storeId':storeId, 'accessToken':accessToken,'uuid':uuid},
+            contentType : "application/json",
+            success : function(result, status, xhr) {
+                if(callback) {
+                    callback(result);
+                }
+            },
+            error : function(xhr, status, er) {
+                if(error) {
+                    error(er);
+                }               
+            }
+        })
+    }
+    
+    $(".btn_wait_call").on("click", e=>{
+    	
+    	e.preventDefault();
+    	
+    	console.log("buttons click success")
+    	
+    	let waitId = e.currentTarget.closest(".wait").dataset.waitid;
+    	
+    	call({storeId:storeId,waitId:waitId},result => {
+    		console.log(result);
+    		alert("메시지 전송이 완료되었습니다.");
+    	});
+    	
+    });
+    
+    
     </script>
  <%@include file="../../../includes/mainFooter.jsp" %>
  <script src="/resources/js/clock.js"></script>

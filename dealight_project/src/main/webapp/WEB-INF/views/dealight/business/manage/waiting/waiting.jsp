@@ -53,12 +53,12 @@
             padding: 5px 15px;
             background-color: rgba(106, 153, 255, 0.87);
             color: white;
-            font-size: 24px;
+            font-size: 18px;
             font-weight: bold;
             position: absolute;
             border-radius: 20px;
             left: 5px;
-            top: -60px;
+            top: -50px;
             
             box-shadow: 2px 2px 8px rgba(44, 36, 36, 0.342);
         }
@@ -322,6 +322,24 @@
             background-color: white;
             box-shadow: 2px 2px 8px rgba(44, 36, 36, 0.342);
         }
+        .badge_wait_cancel{
+        	padding: 5px 15px;
+            background-color: rgba(106, 153, 255, 0.87);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            position: absolute;
+            border-radius: 20px;
+            right:5px;
+            top: -50px;
+            cursor:pointer;
+            box-shadow: 2px 2px 8px rgba(44, 36, 36, 0.342);
+            outline: none;
+            border: 0;
+        }
+        .badge_wait_cancel:hover{
+        	opacity: 0.7;
+        }
     </style>
 </head>
 <body>
@@ -330,6 +348,13 @@
         <c:if test="${wait.waitStusCd eq 'W'}"><div class="badge">현재 웨이팅 중</div></c:if>
         <c:if test="${wait.waitStusCd eq 'E'}"><div class="badge" style="background-color: gray;">입장</div></c:if>
         <c:if test="${wait.waitStusCd eq 'P'}"><div class="badge" style="background-color: gray;">노쇼</div></c:if>
+        <c:if test="${wait.waitStusCd eq 'C'}"><div class="badge" style="background-color: gray;">취소</div></c:if>
+        
+        <c:if test="${wait.waitStusCd eq 'W' && userId eq wait.userId && isAvalCancel}">
+        	<form action="/dealight/waiting/cancel" method="post">
+        		<button type='submit' class="badge_wait_cancel" style="background-color: gray;">웨이팅 취소하기</button>
+        		<input type='hidden' name='waitId' value='${wait.waitId}'>
+        	</form></c:if>
             <span>웨이팅 번호표</span>
         </div>
         <div class="wait_info">
@@ -377,6 +402,13 @@
         </div>
     </div>
 <script type="text/javascript">
+const waitId = ${wait.waitId},
+	msg = '${msg}';
+	
+	if(msg !== null && msg.length > 1) {
+		alert(msg);
+	}
+
 let container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
 let options = { //지도를 생성할 때 필요한 기본 옵션
 	center: new kakao.maps.LatLng(${store.loc.lat}, ${store.loc.lng}), //지도의 중심좌표.
@@ -406,6 +438,27 @@ marker.setMap(map);
 //아래 코드는 지도 위의 마커를 제거하는 코드입니다
 //marker.setMap(null); 
 $("#btn_reload").on("click",()=>{location.reload();})
+
+$(".badge_wait_cancel").on("click", (e)=> {
+	
+	$.ajax({
+        type : 'post',
+        url : '/dealight/waiting/' + waitId,
+        contentType : "application/json; charset=utf-8",
+        success : function(result, status, xhr) {
+            if(callback) {
+                callback(result);
+            }
+        },
+        error : function(xhr, status, er) {
+            if(error) {
+                error(er);
+            }               
+        }
+    })
+	
+})
+
 </script>
 </body>
 </html>

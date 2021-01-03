@@ -199,6 +199,9 @@ public class RsvdController {
         
         //카카오 페이 승인 vo
         KakaoPayApprovalVO kakaoPayApprovalVO =  kakaoService.kakaoPayInfo(requestDto.getUserId(), pg_token);
+        if("MONEY".equals(kakaoPayApprovalVO.getPayment_method_type())) {
+        	kakaoPayApprovalVO.setPayment_method_type("카카오 페이");
+        }
         //카카오 결제 성공시 예약 상태 업데이트
         //String userId = auth.getName();
         rsvdService.complete(rsvdId);
@@ -211,6 +214,7 @@ public class RsvdController {
         /*요청 request를 통해 진행되야됨*/
         //RsvdVO vo = rsvdService.readRsvdVO(rsvdId);
         //
+        log.info("===============pay success: htdlId: " + requestDto.getHtdlId());
         if(requestDto.getHtdlId() != null) {
         	//핫딜 vo를 가져온다
         	HtdlVO hotdeal = htdlService.readHtdl(requestDto.getHtdlId());

@@ -48,6 +48,7 @@
         align-items: center;
         width: 50%;
         height: 100%;
+        margin-top: 25px;
     }
 
     .hotdeal-img{
@@ -672,6 +673,7 @@
 			if(countElapTime === "00:00:00"){
 				stusCd = 'A';
 				//css 변경
+				$(".js-elapTime").html("남은 시간:");
 				dealBtn.find(".btn_text").text("🔥딜 하기");
 				dealBtn.css("background", "red");
 				dealBtn.prop("disabled", false);

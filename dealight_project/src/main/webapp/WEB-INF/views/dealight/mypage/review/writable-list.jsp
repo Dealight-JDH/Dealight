@@ -71,10 +71,8 @@
 			                                        </div>
 			                                        <div class="cnts">
 			                                            <div>
-			                                                <span class="rsvd_cnts_tit">메뉴목록</span>
-			                                                <c:forEach items="${dto.rsvd.rsvdDtlsList}" var="rsvdDtls">
-																<span class="rsvd_cnts_val">${rsvdDtls.menuNm}</span>
-															</c:forEach>
+			                                                <span class="rsvd_cnts_tit">예약인원</span>
+															<span class="rsvd_cnts_val">${dto.rsvd.pnum}명</span>
 			                                            </div>
 			                                            <div>
 			                                                <span class="rsvd_cnts_tit">결제금액</span>
@@ -83,10 +81,13 @@
 			                                            <div>
 			                                                <span class="rsvd_cnts_tit">예약상태</span>
 			                                                <c:if test="${dto.rsvd.stusCd eq 'C'}">
-			                                                	<span class="rsvd_cnts_val">현재예약</span>
+			                                                	<span class="rsvd_cnts_val wait_stus_cd" style='color:blue;'>현재예약</span>
 			                                                </c:if>
 			                                                <c:if test="${dto.rsvd.stusCd eq 'L'}">
-			                                                	<span class="rsvd_cnts_val">지난예약</span>
+			                                                	<span class="rsvd_cnts_val wait_stus_cd" style='color:orange;'>지난예약</span>
+			                                                </c:if>
+			                                                <c:if test="${dto.rsvd.stusCd eq 'P'}">
+			                                                	<span class="rsvd_cnts_val wait_stus_cd" style='color:red;'>예약대기</span>
 			                                                </c:if>
 			                                            </div>
 			                                        </div>
@@ -122,18 +123,21 @@
 			                                        <div class="cnts">
 			                                            <div>
 			                                                <span class="rsvd_cnts_tit">웨이팅 인원</span>
-															<span class="rsvd_cnts_val">${dto.wait.waitPnum }</span>
+															<span class="rsvd_cnts_val">${dto.wait.waitPnum }명</span>
 			                                            </div>
 			                                            <div>
 			                                                <span class="rsvd_cnts_tit">웨이팅 상태</span>
-			                                                <c:if test="${dto.wait.waitStusCd eq 'C'}">
-			                                                	<span class="rsvd_cnts_val" style="color:blue;">현재 웨이팅</span>
+			                                               	<c:if test="${dto.wait.waitStusCd eq 'W'}">
+			                                                	<span class="rsvd_cnts_val wait_stus_cd" style="color:blue;">웨이팅</span>
 			                                                </c:if>
 			                                                <c:if test="${dto.wait.waitStusCd eq 'E'}">
-			                                                	<span class="rsvd_cnts_val">입장</span>
+			                                                	<span class="rsvd_cnts_val wait_stus_cd">입장</span>
 			                                                </c:if>
 			                                                <c:if test="${dto.wait.waitStusCd eq 'P'}">
-			                                                	<span class="rsvd_cnts_val" style="color:red;">노쇼</span>
+			                                                	<span class="rsvd_cnts_val wait_stus_cd" style="color:red;">노쇼</span>
+			                                                </c:if>
+			                                                <c:if test="${dto.wait.waitStusCd eq 'C'}">
+			                                                	<span class="rsvd_cnts_val wait_stus_cd" style="color:red;">취소</span>
 			                                                </c:if>
 			                                            </div>
 			                                        </div>
@@ -700,6 +704,15 @@ console.log("rsvd id : "+rsvdId)
        }
 	
 }); /* document ready end*/
+$(".mypage_side_menu > div").on("click",(e) => {
+	
+	if(e.currentTarget === "div.side_noti") return;
+	
+	console.log(e.currentTarget);
+	
+	location.href = $(e.currentTarget).find("a").attr("href");
+	
+});
 </script>
 <%@include file="../../../includes/mainFooter.jsp" %>
 </body>
