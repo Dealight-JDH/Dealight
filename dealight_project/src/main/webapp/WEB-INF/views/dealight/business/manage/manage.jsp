@@ -2012,6 +2012,7 @@ let writeTimeBar = function (curTime) {
 	   		
 	   	 	// 소켓을 ws로 연다.
 	   	 	var ws = new WebSocket("ws://localhost:8181/manageSocket");
+	   		//var ws = new WebSocket("ws://3.34.175.123:8181/manageSocket");
 	   	 	socket = ws;
 	
 	   	 	// 커넥션이 연결되었는지 확인한다.
