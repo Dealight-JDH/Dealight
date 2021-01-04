@@ -1,5 +1,4 @@
 package com.dealight.domain;
-// 수빈
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
  *****[김동인] 
  * 
  */
-//다울
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

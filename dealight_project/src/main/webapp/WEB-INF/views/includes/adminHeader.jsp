@@ -54,7 +54,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="/dealight/admin/main">
+                <a class="nav-link" href="/dealight/dealight/">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Main</span></a>
             </li>

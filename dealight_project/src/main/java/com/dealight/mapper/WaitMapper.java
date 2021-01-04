@@ -64,5 +64,5 @@ public interface WaitMapper {
 	
 	WaitVO getCurWaitByUserId(String userId);
 	
-	public int storeWaitCnt(long storeId);
+	public Integer storeWaitCnt(long storeId);
 }
