@@ -19,7 +19,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인</title>
+<title>딜라이트</title>
 <style>
  	* { /* CSS초기화. 이거 없으면 div태그 사이에 공백 생김*/
 

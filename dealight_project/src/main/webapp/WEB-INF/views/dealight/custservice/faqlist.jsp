@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>FAQ</title>
+<title>딜라이트</title>
 <link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 <link rel="stylesheet" href="/resources/css/custservice.css" type ="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

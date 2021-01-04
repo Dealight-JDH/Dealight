@@ -15,7 +15,7 @@
 <script src="https://kit.fontawesome.com/0f892675ba.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/resources/css/manage.css">
 <meta charset="UTF-8">
-<title>매장 핫딜 히스토리</title>
+<title>딜라이트</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<style>
 	        /* 핫딜 */

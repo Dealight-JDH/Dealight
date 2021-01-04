@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>딜라이트</title>
 <%@include file="../../includes/mainMenu.jsp" %> 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGR7CBhUjuiLLWGac5u4u_5yN7n6CWO8w&libraries=places&callback=initAutocomplete" defer></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">

@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>비밀번호변경</title>
+<title>딜라이트</title>
 <link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 </head>
 <body>

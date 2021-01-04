@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="/resources/css/mypage.css?ver=1" type ="text/css" />
 <link rel="stylesheet" href="/resources/css/manage.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<title>Insert title here</title>
+<title>딜라이트</title>
 <style type="text/css">
 * { /* CSS초기화. 이거 없으면 div태그 사이에 공백 생김*/
 

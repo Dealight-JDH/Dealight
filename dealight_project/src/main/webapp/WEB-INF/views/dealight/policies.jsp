@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>개인정보이용동의</title>
+    <title>딜라이트</title>
 
     <style>
         .agree-content{

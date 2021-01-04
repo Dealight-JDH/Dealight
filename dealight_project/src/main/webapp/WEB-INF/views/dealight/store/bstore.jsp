@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>딜라이트</title>
 <%@include file="../../includes/mainMenu.jsp" %>
 
 <link rel="preconnect" href="https://fonts.gstatic.com">

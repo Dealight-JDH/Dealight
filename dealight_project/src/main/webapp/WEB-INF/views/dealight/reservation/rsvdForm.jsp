@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>딜라이트</title>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 </head>
 <body>

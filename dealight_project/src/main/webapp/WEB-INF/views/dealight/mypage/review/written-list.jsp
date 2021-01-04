@@ -35,6 +35,7 @@
 		border-bottom: 1px #eeeeef solid;
 	}
 </style>
+<title>딜라이트</title>
 </head>
 <body>
 

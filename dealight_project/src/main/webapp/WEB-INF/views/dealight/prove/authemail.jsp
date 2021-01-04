@@ -5,12 +5,11 @@
     <%@include file="../../includes/loginModal.jsp" %>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     
-    <!-- 현수현수현수 -->
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>이메일 인증페이지</title>
+<title>딜라이트</title>
 </head>
 <body>
 <h1>여기는 회원가입 전 이메일 인증 받는 페이지</h1>
