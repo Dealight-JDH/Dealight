@@ -46,6 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    FROM tbl_rsvd r 
 		    WHERE user_id = #{userId}
 		    AND revw_stus = 0
+		    AND stus_cd = 'L'
 		        )
 		    UNION ALL
 		    (
@@ -55,6 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    FROM tbl_wait w 
 		    WHERE user_id = #{userId}
 		    AND revw_stus = 0
+		    AND wait_stus_cd = 'E'
 		    )
 		    ORDER BY time DESC
 		) rs
@@ -81,13 +83,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="countWritableWait" resultType="int">
 		select COUNT(*)
 		from tbl_wait
-		where revw_stus = 0 AND user_id = #{userId}	
+		where revw_stus = 0 AND user_id = #{userId} AND wait_stus_cd = 'E'
 	</select>
 	
 	<select id="countWritableRsvd" resultType="int">
 		select COUNT(*)
 		from tbl_rsvd
-		where revw_stus = 0 AND user_id = #{userId}	
+		where revw_stus = 0 AND user_id = #{userId}	AND stus_cd = 'L'
 	</select>
 
 	<select id="getRevwListWithPagingByStoreId"

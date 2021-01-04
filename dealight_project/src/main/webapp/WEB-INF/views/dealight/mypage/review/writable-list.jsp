@@ -112,6 +112,7 @@
 			                                    	웨이팅 번호 : <span class="wait_id">${dto.wait.waitId}</span>
 			                                    	<span style='display:none;' class="revw_stus">${dto.wait.revwStus}</span>
 			                                    	<span style='display:none;' class="store_id">${dto.storeId}</span>
+			                                    	<div><button class="btn_wait"><i class="fas fa-angle-right"></i></button></div>
 			                                    </div>
 			                                </div>
 			                                <div class="rsvd_cnts">
@@ -662,7 +663,14 @@ console.log("rsvd id : "+rsvdId)
        	
        });
        
-       
+       $(".btn_wait").on("click",(e) => {
+    		
+    		
+    		let waitId = $(e.target).parent().parent().parent().parent().find(".wait_id").text();
+    		
+    		window.open("/dealight/waiting/"+waitId);
+    		
+    	});
        
        /* 매장 상세 */
        $(".btn_store_info").on("click", e => {

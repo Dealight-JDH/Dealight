@@ -91,7 +91,7 @@
 	                                    <div class="rsvd_btn_box">
 	                                        <button class="btn_store_info">매장 정보 보기</button>
 	                                        <c:if test="${rsvd.revwStus > 0}"> <button class="btn_revw_info">리뷰 보기</button></c:if>
-											<c:if test="${rsvd.revwStus == 0}"><button class="btn_revw_reg">리뷰 쓰기</button></c:if>
+											<c:if test="${rsvd.revwStus == 0 && rsvd.stusCd eq 'L'}"><button class="btn_revw_reg">리뷰 쓰기</button></c:if>
 	                                    </div>
 	                                </div>
 	                            </div>
