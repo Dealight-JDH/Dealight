@@ -53,13 +53,14 @@
         width: 960px;
         margin: 0 auto;
         padding: 0 15px;
-        padding-top: 15px;
+        
         padding-bottom: 36px;
     }
     .login-container{
         display: inline-flex;
         flex-direction: column;
         margin: 30px;
+        margin-top: 5px;
         margin-right: 15px;
         width: 400px;
         height: 720px;
@@ -76,6 +77,7 @@
     .img-container{
         display: inline-flex;
         margin: 30px;
+        margin-top: 130px;
         width: 460px;
         height: 360px;
         padding: 0px 15px;
@@ -178,7 +180,7 @@
     .remember{
         display: flex;
         margin: 8px 0px;
-        justify-content: flex-end;
+        justify-content: space-between;
     }
     
     .login-separator{
@@ -218,6 +220,16 @@
     .nav_reg_brno>a{
     	color:white;
     }
+    #remember-me{
+        margin-right: 2px;
+    }
+    .find{
+        cursor: pointer;
+    }
+
+    .css-password{
+        margin: 0  0 12px;
+    }
 </style>
 
 </head>
@@ -252,6 +264,7 @@
                 
                 <div class="remember">
                     <label for="remember-me"><input type="checkbox" name="remember-me" id="remember-me">자동 로그인</label>
+                    <label for="findIdPwd" class="find">아이디/비밀번호 찾기</label>
                 </div>
 
                 <div>

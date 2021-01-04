@@ -37,7 +37,8 @@ public class KakaoService {
 	
 	public static final String HOST = "https://kapi.kakao.com";
 	public static final String ADMINKEY = "41b5e82a25d9b62cb31484ccfab285b5";
-	
+	public static final String URL = "http://localhost:8181";
+	//public static final String URL = "http://3.34.175.123:8181";
 	private final RsvdService rsvdService;
 	private final PymtService pymtService;
 	private KakaoPayReadyVO kakaoPayReadyVO; //결제 준비 
@@ -66,7 +67,7 @@ public class KakaoService {
         headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE+";charset=UTF-8");
         
 
-        UriComponentsBuilder builder = UriComponentsBuilder.fromPath("http://localhost:8181/dealight/reservation/kakaoPaySuccess")
+        UriComponentsBuilder builder = UriComponentsBuilder.fromPath(URL+"/dealight/reservation/kakaoPaySuccess")
 												        .queryParam("userId", userId)
 												        .queryParam("rsvdId", rsvdId)
 												        .queryParam("storeId", requestDto.getStoreId())
@@ -85,8 +86,8 @@ public class KakaoService {
         params.add("total_amount", String.valueOf(totAmt));
         params.add("tax_free_amount","0");
         params.add("approval_url", builder.toUriString());
-        params.add("cancel_url","http://localhost:8181/dealight/reservation/kakaoPayCancel?rsvdId="+rsvdId+"&storeId="+requestDto.getStoreId());
-        params.add("fail_url","http://localhost:8181/dealight/reservation/kakaoPaySuccessFail");
+        params.add("cancel_url",URL+"/dealight/reservation/kakaoPayCancel?rsvdId="+rsvdId+"&storeId="+requestDto.getStoreId());
+        params.add("fail_url",URL+"/dealight/reservation/kakaoPaySuccessFail");
         
         HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<>(params, headers);
         

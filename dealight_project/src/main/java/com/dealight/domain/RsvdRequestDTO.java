@@ -61,7 +61,7 @@ public class RsvdRequestDTO {
 					.time(sysdate + " " + time)
 					.totAmt(totAmt)
 					.totQty(totQty)
-					.stusCd("p")
+					.stusCd("P")
 					.revwStus(0)
 					.build();
 	}

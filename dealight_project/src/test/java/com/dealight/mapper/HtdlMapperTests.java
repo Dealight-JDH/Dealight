@@ -35,6 +35,13 @@ public class HtdlMapperTests {
 	@Autowired
 	private HtdlMapper mapper;
 	
+	
+	@Test
+	public void testGetListWiwhPaging() {
+		HtdlCriteria hcri = new HtdlCriteria();
+		List<HtdlVO> list = mapper.getListWithPaging("A", hcri);
+		list.forEach(vo -> log.info(vo));
+	}
 	@Test
 	public void testFindStusCdById() {
 		log.info(mapper.findStusCdById(208l));

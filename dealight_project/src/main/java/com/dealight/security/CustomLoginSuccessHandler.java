@@ -76,7 +76,7 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         	session.setAttribute("userId", userId);
         	session.setAttribute("userName", vo.getName());
         	log.info("session.............user id : "+session.getAttribute("userId"));
-        	
+        	log.info("session.............user id : "+session.getAttribute("userName"));
             String redirectUrl = (String) session.getAttribute("prevPage");
             
             log.warn("==========redirectUrl: " + redirectUrl);
