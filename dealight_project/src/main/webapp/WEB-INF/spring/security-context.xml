@@ -21,6 +21,7 @@
 	<security:intercept-url pattern="/dealight/business/**" access="hasRole('ROLE_MEMBER')"/>
 	<security:intercept-url pattern="/dealight/reservation/**" access="hasRole('ROLE_USER')"/>
 	<security:intercept-url pattern="/dealight/mypage/**" access="hasRole('ROLE_USER')"/>
+	<security:intercept-url pattern="/dealight/admin/**" access="hasRole('ROLE_ADMIN')"/>
 	<security:intercept-url pattern="/dealight/**" access="permitAll"/>
 	
 	<!-- <security:form-login/> -->

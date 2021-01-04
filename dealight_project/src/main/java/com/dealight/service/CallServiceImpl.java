@@ -48,6 +48,8 @@ public class CallServiceImpl implements CallService {
 	@Autowired
 	StoreService storeService;     
 	
+	//public static final String URL = "http://3.34.175.123:8181";
+	public static final String URL = "http://localhost:8181";
 	
 	// 사용자 인가를 가져온다.
 	@Override
@@ -55,7 +57,7 @@ public class CallServiceImpl implements CallService {
 		
 		RestTemplate restTemplate = new RestTemplate();	
 		
-		String url = "https://kauth.kakao.com/oauth/authorize?client_id=dba6ebc24e85989c7afde75bd48c5746&redirect_uri=http://localhost:8181/business/manage&response_type=code";
+		String url = "https://kauth.kakao.com/oauth/authorize?client_id=dba6ebc24e85989c7afde75bd48c5746&redirect_uri="+URL+"/business/manage&response_type=code";
 		
 		UriComponents uri = UriComponentsBuilder.fromHttpUrl(url).build();
 		
@@ -77,7 +79,7 @@ public class CallServiceImpl implements CallService {
 		
 		 String jsonInString = "";
 		 String restKey = "dba6ebc24e85989c7afde75bd48c5746";
-		 String redirectURI = "http://localhost:8181/dealight/business/";
+		 String redirectURI = URL+"/dealight/business/";
 		 
 		 try {
 		
@@ -419,7 +421,7 @@ public class CallServiceImpl implements CallService {
 		
 		 String jsonInString = "";
 		 String restKey = "dba6ebc24e85989c7afde75bd48c5746";
-		 String redirectURI = "http://localhost:8181/business/manage";
+		 String redirectURI = URL+"/business/manage";
 		 
 		 try {
 		
@@ -527,7 +529,7 @@ public class CallServiceImpl implements CallService {
 			 log.info("title : "+title);
 			 log.info("access_token : "+access_token);
 			 log.info("description : "+description);
-			 web_url = "http://localhost:8181" + web_url;
+			 web_url = URL + web_url;
 			 
 			 log.info("web_url : "+web_url);
 			 log.info("uuid : "+uuid);
