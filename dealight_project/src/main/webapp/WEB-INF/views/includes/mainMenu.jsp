@@ -269,7 +269,11 @@
         <nav class="main_nav_right">
             <div id="header_cur_wait"></div>
             <div class='nav_user_id_box'><c:if test="${userId != null}"> <span id="nav_user_id">${userName}님</span></c:if></div>
-            <div class="nav_reg_brno"><a href="/dealight/mypage/bizauth/list">사업자 등록</a></div>
+            <sec:authorize access="isAuthenticated()">
+            	<sec:authorize access="hasRole('ROLE_USER')">
+            	<div class="nav_reg_brno"><a href="/dealight/mypage/bizauth/list">사업자 등록</a></div>
+            	</sec:authorize>
+            </sec:authorize>
             <div class="account_btn">
             	<div class="account_icon_box">
             		<div class="account_menu"><i class="fas fa-bars"></i></div>
