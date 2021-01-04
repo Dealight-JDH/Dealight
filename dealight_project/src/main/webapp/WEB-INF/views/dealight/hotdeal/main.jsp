@@ -751,7 +751,7 @@
         left: 0;
         right: 0;
         opacity: 0;
-        height: 80px;
+        height: 135px;
         visibility: hidden;
         transition: opacity 0.2s linear, visibility 0.2s linear;
         overflow: scroll;
