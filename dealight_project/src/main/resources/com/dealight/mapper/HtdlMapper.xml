@@ -152,7 +152,7 @@
 			<result column="updatedate" property="updateDate"/>
 			<result column="brch" property="brch"/>
 			<result column="set_name" property="setName"/>
-			
+			<result column="store_nm" property="storeName"/>
 			
 			<association property="storeEval" column="store_id" javaType="com.dealight.domain.StoreEvalVO">
 				<id column="store_id" property="storeId"/>
@@ -308,7 +308,7 @@
 	 	
 	 	<![CDATA[
 		SELECT h.htdl_id, h.name, h.store_id, h.htdl_img, h.dc_rate, h.start_tm, h.end_tm, h.lmt_pnum, h.intro ,h.bef_price, h.ddct, h.cur_pnum,stus_cd, h.brch, h.set_name,
-        d.htdl_seq, d.menu_name, e.avg_rating, e.revw_tot_num, e.like_tot_num
+        d.htdl_seq, d.menu_name, e.avg_rating, e.revw_tot_num, e.like_tot_num, s.store_nm
 		      FROM (select *
 	 		 from (
 	 		 	select /*+ INDEX_DESC(tbl_htdl tbl_htdl_pk)*/
@@ -350,8 +350,8 @@
 	 	)
 	 	where
 	 	 rn > (#{hCri.pageNum} -1) * #{hCri.amount}
-	 		 ) h, tbl_htdl_dtls d, tbl_store_eval e
-			 WHERE h.htdl_id = d.htdl_id and h.store_id = e.store_id
+	 		 ) h, tbl_htdl_dtls d, tbl_store_eval e, tbl_store s
+			 WHERE h.htdl_id = d.htdl_id and h.store_id = e.store_id and s.store_id = h.store_id
 			 order by h.htdl_id desc
 	 	]]>
 		</select>

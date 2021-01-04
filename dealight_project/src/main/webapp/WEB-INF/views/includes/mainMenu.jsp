@@ -268,7 +268,7 @@
         
         <nav class="main_nav_right">
             <div id="header_cur_wait"></div>
-            <div class='nav_user_id_box'><c:if test="${userId != null}"> <span id="nav_user_id">${userName }님</span></c:if></div>
+            <div class='nav_user_id_box'><c:if test="${userId != null}"> <span id="nav_user_id">${userName}님</span></c:if></div>
             <div class="nav_reg_brno"><a href="/dealight/mypage/bizauth/list">사업자 등록</a></div>
             <div class="account_btn">
             	<div class="account_icon_box">
@@ -297,7 +297,7 @@
 								<div class="account_cnts"><a href="/dealight/admin/main ">서비스 관리</a></div>
 							</sec:authorize>
 								<div class="account_cnts"><a href="/dealight/mypage/get">회원정보수정</a></div>
-								<div class="account_cnts" onclick="submit(event)"><a href="/dealight/logout">로그아웃</a></div>
+								<div class="account_cnts" onclick="submit(event)"><a href="/logout" >로그아웃</a></div>
 						</sec:authorize>
 					</div>
             	</div>
@@ -358,7 +358,7 @@
 		e.preventDefault();
 		let body = $("body");
 		let form = $("<form></form>");
-		form.attr("action", "/logout");
+		form.attr("action", "/dealight/logout");
 		form.attr("method", "post");
 		
 		let csrfInput = $("<input type='hidden' name='${_csrf.parameterName}' value='${_csrf.token}'>");
