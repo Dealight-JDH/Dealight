@@ -45,5 +45,5 @@ public interface BUserMapper {
 	// 현재 심사 상태 변경
 	public int updateBrJdgStusCd(@Param("brSeq") Long brSeq, @Param("brJdgStusCd") String brJdgStusCd);
 	
-	
+	int updateStoreId(@Param("buserId") String buserId, @Param("storeId") Long storeId,@Param("storeNm") String storeNm);
 }

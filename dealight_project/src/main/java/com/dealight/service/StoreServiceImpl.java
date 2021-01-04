@@ -96,6 +96,7 @@ public class StoreServiceImpl implements StoreService {
 		lMapper.insert(store.getLoc());
 		eMapper.insert(store.getEval());
 		bMapper.insert(store.getBstore());
+		buserMapper.updateStoreId(store.getBstore().getBuserId(),store.getStoreId(),store.getStoreNm());
 		
 		if(store.getImgs() != null)
 			for(StoreImgVO img : store.getImgs()) 

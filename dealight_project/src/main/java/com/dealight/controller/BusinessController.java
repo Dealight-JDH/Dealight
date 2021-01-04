@@ -175,7 +175,13 @@ public class BusinessController {
 		
 		
 		// 현재 심사 대기중인 사업자등록번호
-		List<BUserVO> buserList = storeService.comBrListByUserId(userId);
+		List<BUserVO> comBuserList = storeService.comBrListByUserId(userId);
+
+		List<BUserVO> buserList = new ArrayList();
+		
+		for(BUserVO buser : comBuserList)
+			if(buser.getStoreId() == null)
+				buserList.add(buser);
 		
 		log.info(".................................buser list : " + buserList);
 		

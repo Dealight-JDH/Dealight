@@ -129,5 +129,12 @@
 		SET br_jdg_stus_cd = #{brJdgStusCd}
 		WHERE br_seq = #{brSeq}
 	</update>
+	
+	<update id="updateStoreId">
+		UPDATE tbl_buser
+		SET store_id = #{storeId}
+		WHERE user_id = #{buserId}
+		AND store_nm = #{storeNm}
+	</update>
 
 </mapper>
