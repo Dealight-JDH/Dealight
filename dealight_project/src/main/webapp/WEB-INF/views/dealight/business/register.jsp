@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link rel="stylesheet" href="/resources/css/fileupload.css">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
-<title>매장 등록 하기</title>
+<title>딜라이트</title>
 	<style>
 	    *{
             font-family: 'Nanum Gothic', sans-serif;

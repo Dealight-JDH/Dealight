@@ -17,7 +17,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
 <script src="/resources/js/Rater.js"></script>
-
+<title>딜라이트</title>
 </head>
 
 <body>
@@ -112,8 +112,8 @@
 			                                    	웨이팅 번호 : <span class="wait_id">${dto.wait.waitId}</span>
 			                                    	<span style='display:none;' class="revw_stus">${dto.wait.revwStus}</span>
 			                                    	<span style='display:none;' class="store_id">${dto.storeId}</span>
-			                                    	<div><button class="btn_wait"><i class="fas fa-angle-right"></i></button></div>
 			                                    </div>
+			                                    <div><button class="btn_wait"><i class="fas fa-angle-right"></i></button></div>
 			                                </div>
 			                                <div class="rsvd_cnts">
 			                                    <div class="rsvd_cnts_wrapper">

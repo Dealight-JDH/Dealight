@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>웨이팅 상세</title>
+<title>딜라이트</title>
 <!--  common  -->
 <link rel="stylesheet" href="/resources/css/common.css" type ="text/css" />
 <link rel="stylesheet" href="/resources/css/main_footer.css" type ="text/css" />

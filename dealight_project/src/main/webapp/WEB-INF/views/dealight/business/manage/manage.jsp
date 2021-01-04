@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>매장 관리</title>
+<title>딜라이트</title>
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -959,6 +959,7 @@ let writeTimeBar = function (curTime) {
         		month = (today.getMonth() + 1);
         		date = today.getDate();
         		if(date < 10) date = "0" + date.toString();
+        		if(month<10) month = "0" + month.toString();
         		dateArr[i] =    year + '/' + month + '/' + date;
         		today.setDate(today.getDate() - 1);
         	}

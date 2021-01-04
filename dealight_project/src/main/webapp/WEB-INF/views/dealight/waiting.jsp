@@ -17,7 +17,7 @@ let msg = '${msg}';
 	
 </script>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>딜라이트</title>
 <link rel="stylesheet" href="/resources/css/store.css">
 </head>
 <body>

@@ -15,7 +15,7 @@
      } */
 </script>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>딜라이트</title>
 
 
 <style type="text/css">

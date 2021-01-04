@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>아이디 찾기 페이지~</title>
+<title>딜라이트</title>
 </head>
 <body>
 <h1>아이디 찾기 페이지</h1>
