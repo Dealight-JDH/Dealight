@@ -22,7 +22,7 @@
         rel="stylesheet">
 <link href="/resources/bootstrap/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <!-- Custom styles for this template-->
-    <link href="/resources/bootstrap/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/resources/bootstrap/css/sb-admin-2.css" rel="stylesheet">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	
 	<!-- 동인 추가  -->
@@ -30,6 +30,7 @@
 		.selected_img{
 		border : 4px red solid;
 	}
+	
 	</style>
 </head>
 
@@ -39,12 +40,12 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color:#f43939 ">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dealight/admin/main">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                    <i class="fas fa-users-cog"></i>
                 </div>
                 <div class="sidebar-brand-text mx-3">Dealight</div>
             </a>
@@ -56,7 +57,7 @@
             <li class="nav-item active">
                 <a class="nav-link" href="/dealight/dealight/">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Main</span></a>
+                    <span>서비스 홈으로</span></a>
             </li>
 
             <!-- Divider -->
@@ -80,7 +81,7 @@
                         <a class="collapse-item" href="/dealight/admin/usermanage/user">일반회원</a>
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">사업자회원관리</h6>
-                        <a class="collapse-item" href="/dealight/admin/usermanage/bizUser">사업자회원관리</a>
+                        <a class="collapse-item" href="/dealight/admin/brnomanage">사업자회원관리</a>
                         <a class="collapse-item" href="/dealight/admin/brnomanage">사업자등록관리</a>
                     </div>
                 </div>
@@ -96,9 +97,8 @@
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">일반매장/사업자매장</h6>
-                        <a class="collapse-item" href="/dealight/admin/storemanage">일반매장</a>
-                        <a class="collapse-item" href="utilities-border.html">사업자매장</a>
+                        <h6 class="collapse-header">매장관리</h6>
+                        <a class="collapse-item" href="/dealight/admin/storemanage">등록매장</a>
                         <div class="collapse-divider"></div>
                         <h6 class="collapse-header">핫딜관리</h6>
                         <a class="collapse-item" href="/dealight/admin/htdlmanage/A">핫딜관리</a>
@@ -121,32 +121,14 @@
                         <h6 class="collapse-header">고객센터</h6>
                        <a class="collapse-item" href="login.html">FAQ</a>
                         <a class="collapse-item" href="register.html">문의사항</a>
-                        <a class="collapse-item" href="forgot-password.html">자주묻는질문</a>
                     </div>
                 </div>
             </li>
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
-            </li>
 
               <!-- Divider -->
-            <hr class="sidebar-divider">
 
             <!-- Heading -->
-            <div class="sidebar-heading">
-                뭐 넣을까??
-            </div>
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -156,11 +138,6 @@
             </div>
 
             <!-- Sidebar Message -->
-            <div class="sidebar-card">
-                <img class="sidebar-card-illustration mb-2" src="/resources/bootstrap/img/undraw_rocket.svg" alt="">
-                <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
-                <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
-            </div>
 
         </ul>
         <!-- End of Sidebar -->
@@ -186,8 +163,8 @@
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
                                 aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
+                                <button class="btn" type="button" style="background-color:#f43939 ">
+                                    <i class="fas fa-search fa-sm" style="color:white"></i>
                                 </button>
                             </div>
                         </div>
@@ -200,7 +177,7 @@
                         <li class="nav-item dropdown no-arrow d-sm-none">
                             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
+                                <i class="fas fa-search fa-fw" style="background-color:#f43939 "></i>
                             </a>
                             <!-- Dropdown - Messages -->
                             <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
@@ -211,7 +188,7 @@
                                             placeholder="Search for..." aria-label="Search"
                                             aria-describedby="basic-addon2">
                                         <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
+                                            <button class="btn" style="background-color:#f43939;" type="button" >
                                                 <i class="fas fa-search fa-sm"></i>
                                             </button>
                                         </div>
@@ -220,45 +197,7 @@
                             </div>
                         </li>
 
-                        <!-- Nav Item - Alerts -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-                                <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
-                            </a>
-                            <!-- Dropdown - Alerts -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header">
-                                    Alerts Center
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                   
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                            </div>
-                        </li>
-
-                        <!-- Nav Item - Messages -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
-                                <span class="badge badge-danger badge-counter">7</span>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="messagesDropdown">
-                                <h6 class="dropdown-header">
-                                    Message Center
-                                </h6>
-                                
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                            </div>
-                        </li>
+                        
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -266,30 +205,22 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">관리자</span>
                                 <img class="img-profile rounded-circle"
                                     src="/resources/bootstrap/img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="/dealight/search/">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
+                                    매장 찾기
                                 </a>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="/dealight/hotdeal/main">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
+                                    핫딜 찾기
                                 </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
+                                
                             </div>
                         </li>
 

@@ -635,7 +635,7 @@
             '           </div>' + 
             '            <div class="desc">' 
             if(storeList[i].seatStusCd == 'R'){
-            	content +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:red"></i></span>현재 2명이 대기중이에요~'
+            	content +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:red"></i></span>현재 손님들이 대기중이에요~'
 			}
 			if(storeList[i].seatStusCd == 'Y'){
 				content +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:coral"></i></span> 서두르세요 몇 자리 안남았어요~'
