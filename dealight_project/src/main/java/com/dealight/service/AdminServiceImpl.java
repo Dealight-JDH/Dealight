@@ -337,17 +337,28 @@ public class AdminServiceImpl implements AdminService {
 
 		outer:
 		for(StoreDTO dto : storeList) {
-			
+			log.info("htdl logic storeDTO: " + dto);
 			for(HtdlWithStoreDTO htdlDto : list) {
-				if(dto.getStoreId() == htdlDto.getStoreId()) {
+				log.info("htdl logic storeDTO: " + htdlDto);
+				if(dto.getStoreId().equals(htdlDto.getStoreId())) {
 					
 					dto.setSuggestChecked(false);
+					log.info("htdl logic suggest check: " + dto);
 					suggestList.add(dto);
 					continue outer;
 				}
 				
 			}
 			suggestList.add(dto);		
+		}
+		
+		
+		for(StoreDTO dto : suggestList) {
+			log.info("=============htdl suggest check: " + "storeId: "+ dto.getStoreId() + " isChecked: " + dto.isSuggestChecked());
+		}
+		
+		for(HtdlWithStoreDTO htdlDto : list) {
+			log.info("=============htdl suggest check: " + "htdl storeId: "+ htdlDto.getStoreId());
 		}
 		
 		return suggestList;

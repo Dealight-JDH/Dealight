@@ -26,8 +26,8 @@ public class KakaoLoginService {
 	private static final String AUTH_URL = "https://kauth.kakao.com/oauth/authorize";
 	private static final String TOKEN_URL = "https://kauth.kakao.com/oauth/token";
 	private static final String RESTAPIKEY = "40f9415c7987e838d4df2df5dfbb7183";
-	//private static final String REDIRECTURI = "http://localhost:8181/kakao/oauth";
-	private static final String REDIRECTURI = "http://3.34.175.123:8181/kakao/oauth";
+	private static final String REDIRECTURI = "http://localhost:8181/kakao/oauth";
+	//private static final String REDIRECTURI = "http://3.34.175.123:8181/kakao/oauth";
 	
 	
 	//카카오 vo

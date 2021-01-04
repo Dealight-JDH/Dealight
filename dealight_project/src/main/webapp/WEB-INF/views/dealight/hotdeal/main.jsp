@@ -876,6 +876,26 @@
         height: 48px;
         
     }
+    
+    .css-storeNm{
+    	font-size: 16px;
+    }
+    
+    .css-brch{
+    	font-size: 13px;
+    	font-weight: 700;
+    }
+    
+    .css-name{
+    	font-size: 15px;
+    	font-weight: 700;
+    	margin-left: 6px;
+    }
+    
+    .css-fire{
+    	margin: 12px 8px;
+    	font-size: 25px;
+    }
 
 </style>
 </head>
@@ -1743,11 +1763,13 @@
 			str += "<div class='card-rate'>";
 			str += "<div class='card-rating data-rate-value="+Math.round(list[i].storeEval.avgRating)+"'></div>";
 			str += "<div class='card-curpnum'>";
-			str += "<span>🔥</span>";
+			str += "<span class='css-fire'>🔥</span>";
 			str += "<p class='arrow-box'>마감까지<br>"+(list[i].lmtPnum - list[i].curPnum) +"명<br> 남았습니다!</p></div></div>";
 			
 			str += "<div class='card-title'>";
-			str += "<h3>["+list[i].brch+"]&nbsp;"+ list[i].name+"</h3></div>";
+			str += "<h3 class='css-storeNm'>"+list[i].storeName+"</h3>";
+			str += "<span class='css-brch'>["+list[i].brch+"]</span>";
+			str += "<span class='css-name'>"+list[i].name+"</span></div>";
 			
 			str += "<div class='card-menu'>";
 			str += "<span>";
