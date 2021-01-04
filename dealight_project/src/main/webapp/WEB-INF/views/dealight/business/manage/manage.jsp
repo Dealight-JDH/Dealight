@@ -41,9 +41,9 @@
                             <div class="store_info_tit">매장 이름</div>
                             <div class="store_info_val">${store.storeNm}</div>
                             <div class="store_info_tit">매장 수용 인원</div>
-                            <div class="store_info_val">${store.bstore.acmPnum}</div>
+                            <div class="store_info_val">${store.bstore.acmPnum}명</div>
                             <div class="store_info_tit">매장 평균 식사 시간</div>
-                            <div class="store_info_val">${store.bstore.avgMealTm}</div>	
+                            <div class="store_info_val">${store.bstore.avgMealTm}분</div>	
                         </div>
                     </div>
                 </div>
@@ -1525,7 +1525,7 @@ let writeTimeBar = function (curTime) {
 	    		strHtdl += "<label for='js_upload'>";
 	    		strHtdl += "<i class='fas fa-arrow-circle-up'></i> 사진 첨부하기";
 	    		strHtdl += "</label>";
-	    		strHtdl += "<input style='display:none;' type='file' id='js_upload' name='uploadFile' multiple hidden='hidden'>";
+	    		strHtdl += "<input style='display:none;' type='file' id='js_upload' name='uploadFile' hidden='hidden'>";
 	    		strHtdl += "</div>";
                 strHtdl += "<div class='uploadResult_htdl'><ul></ul></div>";
                 strHtdl += "<input type='hidden' id='storeId' name='storeId' value='"+storeId+"'>";

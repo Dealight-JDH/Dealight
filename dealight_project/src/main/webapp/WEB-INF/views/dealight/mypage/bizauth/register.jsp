@@ -332,7 +332,7 @@ window.onload = function(){
 			return;
 		}
 		if(formObj.find("input[name='brPhotoSrc']").length ==0 ){
-			str += "<input type='hidden' name='brPhotoSrc' value='"+obj.dataset["path"]+ "/" +obj.dataset["filename"] + "'>";
+			str += "<input type='hidden' name='brPhotoSrc' value='"+obj.dataset["path"].replace(new RegExp(/\\/g),"/")+ "/" +obj.dataset["filename"] + "'>";
 			
 		}
 		

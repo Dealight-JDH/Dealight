@@ -35,7 +35,7 @@
         }
         .store_right_wrapper{
         	height:100%;
-        	width:60%;
+        	width:80%;
         	display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -445,6 +445,10 @@
         .custom_select.last{
         	width: 60%;
         }
+        .fileupload_img_btn.review_file {
+        	right:-10px;
+        	top:10px;
+        }
 	</style>
 	<style>
 	main{
@@ -646,7 +650,7 @@
 	     </div>
     </main>
 <!-- 카카오 지도  -->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0e7b9cd1679ce3dedf526e66a6c1a860"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a6bde461f2e377ce232962931b7d1ce"></script>
 <script>

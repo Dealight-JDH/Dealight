@@ -19,9 +19,9 @@
                             <div class="store_info_tit">매장 이름</div>
                             <div class="store_info_val">${store.storeNm}</div>
                             <div class="store_info_tit">매장 수용 인원</div>
-                            <div class="store_info_val">${store.bstore.acmPnum}</div>
+                            <div class="store_info_val">${store.bstore.acmPnum}명</div>
                             <div class="store_info_tit">매장 평균 식사 시간</div>
-                            <div class="store_info_val">${store.bstore.avgMealTm}</div>	
+                            <div class="store_info_val">${store.bstore.avgMealTm}분</div>	
                         </div>
                     </div>
                 </div>
