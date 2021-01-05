@@ -52,7 +52,7 @@
                                             <span class="select">시간을 입력하세요</span>
                                             <i class="fa fa-angle-down" style="font-size:30px;"></i>
                                         </div>
-                                        <div class="dropdown-list">
+                                        <div class="dropdown-list" style="height:300px">
                                            
                                         </div>
                                     </div>
@@ -68,7 +68,7 @@
                                             <span class="select">2명</span>
                                             <i class="fa fa-angle-down" style="font-size:30px"></i>
                                         </div>
-                                        <div class="dropdown-list">
+                                        <div class="dropdown-list" style="height:230px">
                                             
                                         </div>
                                     </div>

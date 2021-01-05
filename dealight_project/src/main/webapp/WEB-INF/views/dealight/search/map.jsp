@@ -54,7 +54,7 @@
 	                                <span class="select f14" style="min-width: 70px">거리순</span>
 	                                <i class="fa fa-angle-down" style="font-size:20px"></i>
 	                            </div>
-	                            <div class="dropdown-list large-list m0">
+	                            <div class="dropdown-list large-list m0" style="height:220px">
 	                               
 	                            </div>
 	                        </div>
@@ -101,7 +101,7 @@
 				                                <span class="select f14">--</span>
 				                                <i class="fa fa-angle-down" style="font-size:20px"></i>
 				                            </div>
-				                            <div class="dropdown-list large-list m0" style="width:100%">
+				                            <div class="dropdown-list large-list m0" style="width:100%; height:290px">
 				                               
 				                            </div>
 				                        </div>
@@ -160,7 +160,7 @@
 	                                    <span class="select m4 f16" id="timespan">${search.time eq null ?'시간을 입력하세요':search.time }</span>
 	                                    <i class="fa fa-angle-down" style="font-size:20px;"></i>
 	                                </div>
-	                                <div class="dropdown-list">
+	                                <div class="dropdown-list" style="width:110%;height:280px">
 	                                   
 	                                </div>
 	                            </div>
@@ -176,7 +176,7 @@
 	                                    <span class="select m4 f16">${search.PNum }명</span>
 	                                    <i class="fa fa-angle-down" style="font-size:20px"></i>
 	                                </div>
-	                                <div class="dropdown-list">
+	                                <div class="dropdown-list"style="height:250px">
 	                                    
 	                                </div>
 	                            </div>
@@ -462,7 +462,10 @@
 	    //셀렉박스에 넣어줄 요소들
 	    let sortValues = [["거리순", "D"], ["좋아요", "H"], ["평점순","R"], ["리뷰순","T"]];
 	    let pNumValues = [["1명", "1"], ["2명", "2"], ["3명","3"], ["4명","4"]];
-	    let priorityValues = [["--",""],["핫딜매장우선보기", "H"], ["식사가능매장우선보기", "S"], ["웨이팅있는매장보기","W"], ["예약가능매장보기","R"]];
+	    let priorityValues = [["--",""],["<i class='fas fa-fire' style='color:red; font-size:20px; margin-right: 10px'></i>핫딜매장우선보기", "H"],
+	    					  ["<i class='fas fa-circle' style='color:green; font-size:16px; margin-right: 5px'></i>식사가능매장우선보기", "S"], 
+	    					  ["<i class='fas fa-circle' style='color:red; font-size:16px; margin-right: 5px'></i>웨이팅있는매장보기","W"], 
+	    					  ["<i class='fas fa-stopwatch' style='color:#ff7f00; font-size:20px; margin-right: 5px'></i>예약가능매장보기","R"]];
 	    let timeValue = [["09:00","09:00"], ["09:30","09:30"],["10:00","10:00"],["10:30","10:30"],
 	        ["11:00","11:00"],["11:30","11:30"],["12:00","12:00"],["12:30","12:30"],["13:00","13:00"],["13:30","13:30"],
 	        ["14:00","14:00"],["14:30","14:30"],["15:00","15:00"],["15:30","15:30"],["16:00","16:00"],["16:30","16:30"],["17:00","17:00"],
@@ -529,7 +532,6 @@
 		actionForm.elements["distance"].value = distance.list.options[distance.value].value;
 		//paging의 pageNum을 1로 변경
 		actionForm.elements["pageNum"].value = 1;
-		$(".filter-items").hide('slow');
 		//showMain(); 호출
 		showMain();
 	})
@@ -614,7 +616,7 @@
 		const imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
 		
 		let positions = [];
-		
+		console.log(storeList)
 		for(let i = 0; i<storeList.length; i++) {
 			let storeLatLng =new kakao.maps.LatLng(storeList[i].lat, storeList[i].lng)
 						
@@ -624,28 +626,36 @@
 		        image : new kakao.maps.MarkerImage(imageSrc, new kakao.maps.Size(24, 35))// 마커 이미지
 		    });
 			$(".wrap" + i).remove();
+			let color= "";
+			let str = "";
+			console.log(storeList[i].seatStusCd);
+			if(storeList[i].seatStusCd == 'R'){
+            	str +='<span style="padding:2px; margin:5px"><i class="fas fa-circle" style="color:red"></i></span>현재 손님들이 대기중이에요~'
+            	color = "red";
+			}
+			if(storeList[i].seatStusCd == 'Y'){
+				str +='<span style="padding:2px; margin:5px"><i class="fas fa-circle" style="color:#ff7f00"></i></span> 서두르세요 몇 자리 안남았어요~'
+				color = "#ff7f00";
+			}
+			if(storeList[i].seatStusCd == 'G'){
+				str +='<span style="padding:2px; margin:5px"><i class="fas fa-circle" style="color:green"></i></span> 바로 식사가능해요~'
+				color = "green"
+			}
+			if(storeList[i].seatStusCd == 'B'){
+				str +='영업중이 아니에요.....'
+				color = "black"
+			}
 			let src = "/display?fileName=" + storeList[i].repImg;
 			let content = '<div class="wrap wrap'+i+'" data-storeid="'+storeList[i].storeId+'" style="display:none; z-index:100;">' + 
             '    <div class="info">' + 
-            '        <div class="title" style="background-color:#f43939; color:white; opacity:0.9;">' +storeList[i].storeNm+
+            '        <div class="title" style="background-color:'+ color+'; color:white; opacity:0.9;">' +storeList[i].storeNm+
             '        </div>' + 
             '        <div class="body">' + 
             '            <div class="img">' +
             '                <img src="'+ src +'" width="73" height="70">' +
             '           </div>' + 
             '            <div class="desc">' 
-            if(storeList[i].seatStusCd == 'R'){
-            	content +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:red"></i></span>현재 손님들이 대기중이에요~'
-			}
-			if(storeList[i].seatStusCd == 'Y'){
-				content +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:coral"></i></span> 서두르세요 몇 자리 안남았어요~'
-			}
-			if(storeList[i].seatStusCd == 'G'){
-				content +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:green"></i></span> 바로 식사가능해요~'
-			}
-			if(storeList[i].seatStusCd == 'B'){
-				content +='영업중이 아니에요.....'
-			}
+            content += str;
             
 			content +='                <div class="jibun ellipsis">'+storeList[i].addr+'</div>' + 
             '                <div><b>대표메뉴 : </b>'+ storeList[i].repMenu + '</div>' + 
@@ -706,6 +716,7 @@
 		//console.log(storeList)
 		for( let i=0, len=storeList.length||0; i<len; i++){
 			let src ='';
+			let color='';
 			//console.log(storeList[i].repImg)
 			if(storeList[i].repImg != null){
 				let storePhotoSrc = storeList[i].repImg
@@ -722,7 +733,7 @@
 			}else{
 				likeIcon = "far fa-heart"
 			}
-			
+			let rating = Math.round(storeList[i].avgRating * 10) /10;
 			//str += "<a href='/dealight/store/"+storeList[i].storeId+" '>"
 			str +='<div class="store-card flex-column card'+storeList[i].storeId+'" data-storeid="'+storeList[i].storeId+'">'
 			str +='<div class="flex">'
@@ -739,7 +750,7 @@
 			str +='</div>'
 			str +='<div class="flex rating-box">'
 			str +='<div class="rating" data-rate-value="'+ storeList[i].avgRating +'"></div>'
-			str +='<div class="f14">('+storeList[i].avgRating+'점) 리뷰:'+storeList[i].revwTotNum+' 좋아요:<span id="like'+ storeList[i].storeId +'">'+storeList[i].likeTotNum+'</span></div></div>'
+			str +='<div class="f14">('+rating+'점) 리뷰:'+storeList[i].revwTotNum+' 좋아요:<span id="like'+ storeList[i].storeId +'">'+storeList[i].likeTotNum+'</span></div></div>'
 			str +='<div class="f14 m-tb2">'
 			str +='<span style="padding:2px; margin:5px"><i class="fas fa-store-alt"></i></span>'
 			str +='<b >매장영업시간 : </b>'+ storeList[i].openTm + "~" + storeList[i].closeTm + '</div>'
@@ -751,7 +762,7 @@
 				str +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:red"></i></span><span class="wait-tot'+storeList[i].storeId+'" style="animation: fadein 2s;"><span>'
 			}
 			if(storeList[i].seatStusCd == 'Y'){
-				str +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:coral"></i></span> 서두르세요 자리가 얼마안남았어요~'
+				str +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:#ff7f00"></i></span> 서두르세요 자리가 얼마안남았어요~'
 			}
 			if(storeList[i].seatStusCd == 'G'){
 				str +='<span style="padding:2px; margin:5px"><i class="fas fa-user-clock" style="color:green"></i></span> 바로 식사가능해요~'
@@ -785,7 +796,7 @@
 				if(storeList[i].seatStusCd == "R"){
 					str += '<button class="btn-big reserveBtn"  data-storeid="'+storeList[i].storeId+'">예약하기</button>' 
 				}else{
-					str += '<button class="btn-big reserveBtnNo"  style="opacity:0.5;">예약하기</button>' 
+					str += '<button class="btn-big reserveBtnNo"  style="opacity:0.7;">예약하기</button>' 
 				}
 				
 			}
@@ -806,7 +817,11 @@
 				if(storeList[i].seatStusCd == 'R'){
 					
 					getWaitCnt(storeList[i].storeId, function(result){
-						console.log(result)
+						//console.log(result)
+						if(result == 0){
+							$(".wait-tot" + storeList[i].storeId).html("현재 만석이에요~~")
+							return;
+						}
 						$(".wait-tot" + storeList[i].storeId).html("현재 " + result + "명이 대기중이에요~")
 					})
 				}
