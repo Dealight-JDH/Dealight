@@ -280,7 +280,7 @@ public class WaitingServiceTests {
     public void findList() {
     	
     	
-    	Long storeId = 1L;
+    	Long storeId = 146L;
     	
     	List<WaitVO> waitList = waitingService.findLastWeekRsvdListByStoreId(storeId);
 		

@@ -1,13 +1,13 @@
         .alert {
   max-height: 50px;
   position : fixed;
-  padding: 20px 10px;
+  padding: 40px 10px;
   min-width : 200px;
   border-radius : 4px;
   background-color: #f44336;
   color: white;
   margin-bottom: 15px;
-  width:15%;
+  width:30%;
   z-index : 10;
   opacity: 0;
   pointer-events:none;
@@ -69,7 +69,7 @@
   color: white;
   font-weight: bold; 
   float: right;
-  font-size: 16px;
+  font-size: 40px;
   line-height: 20px;
   cursor: pointer;
   transition: 0.3s;
@@ -94,7 +94,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    font-size: 14px;
+    font-size: 32px;
 }
 .alert_cnts_wrapper a {
     text-decoration: underline;
@@ -105,18 +105,21 @@
 }
 .alert_check_mark.wait{background-color: #2196F3;     
 	height: 30px;
-    width:30px;
+    width:15%;
     border:none;
+    font-size:60px;
     }
 .alert_check_mark.rsvd{background-color: #4CAF50;
-    height: 30px;
-    width:30px;
+	height: 30px;
+    width:15%;
     border:none;
+    font-size:60px;
     }
 .alert_check_mark.htdl{background-color: #ff9800;
-    height: 30px;
-    width:30px;
+	height: 30px;
+    width:15%;
     border:none;
+    font-size:60px;
     }
 .alert_cnts_top{
     display: flex;
@@ -131,22 +134,27 @@
 }
 .alert_btn_box{
     position: absolute;
-    left : -35%;
+    left : -30%;
     top : 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    height: 60px;
+    height: 90%;
     outline: none;
+    font-size:32px;
 }
 .alert_btn_box button{
-    width: 75px;
-    
+    width: 150px;
     font-weight: bold;
     border-radius: 5px;
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.116);
     cursor: pointer;
+    font-size:32px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
 }
 .alert_btn_box button:hover{
     opacity: 0.7;
