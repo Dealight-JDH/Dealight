@@ -861,6 +861,8 @@ let writeTimeBar = function (curTime) {
             				}
             				strHtml += " 번호 예약</span>";
             				document.querySelector('#slide-'+i+' .time_table').innerHTML = strHtml;
+            				
+            				console.log("=======================")
             				document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(37, 201, 89, 0.911)';
             			}
             		}
@@ -870,17 +872,18 @@ let writeTimeBar = function (curTime) {
             		Object.entries(map).forEach(([key,value]) => {
                 		console.log("key : "+key+", value : " + value);
                 		for(let i = 1; i < 28; i ++){
-                			if(key === document.querySelector("#slide-"+i).textContent){
+                			if(key === document.querySelector("#slide-"+i + ' .time_text').textContent){
+                				console.log("pass............")
                 				if(value === 'R')
                 					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = '#d32323';
                 				else if(value === 'Y')
-                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(248, 236, 73, 0.781)';
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'orange';
                 				else if(value === 'G')
-                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(125, 255, 164, 0.698)';
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(37, 201, 89, 0.911)';
                 				else if(value === 'B')
                 					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = '#29242460';
-                				else
-                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(37, 201, 89, 0.911)';
+                				else if (value === 'E')
+                					document.querySelector('#slide-'+i+' .time_table').style.backgroundColor = 'rgba(125, 255, 164, 0.698)';
                 			}
                 		}
                 	});

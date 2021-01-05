@@ -117,6 +117,8 @@ public interface RsvdService {
 	// time = today
 	List<RsvdVO> readTodayCurRsvdList(long storeId);
 	
+	List<RsvdVO> readTodayCurAndLastRsvdList(long storeId);
+	
 	// read
 	List<RsvdVO> readRsvdListByDate(long storeId,String date);
 
@@ -179,4 +181,6 @@ public interface RsvdService {
 	int getRsvdCompleteCount(String userId, Criteria cri);
 	
 	HashMap<String, String> getTodayRsvdStusByTime(Long storeId);
+	
+	
 }

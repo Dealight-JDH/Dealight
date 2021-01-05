@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -492,6 +493,22 @@ public class RsvdServiceImpl implements RsvdService{
 	}
 	
 	@Override
+	public List<RsvdVO> readTodayCurAndLastRsvdList(long storeId) {
+    	
+		LocalDate currentDate = LocalDate.now();
+    	
+    	DateTimeFormatter dateTimeForMatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+    	
+    	String today = currentDate.format(dateTimeForMatter);
+    	
+    	// sorted는 뒤에가 기준이다.
+		return rsvdMapper.findByStoreIdAndDate(storeId, today).stream().filter(rsvd -> rsvd.getStusCd().equals("C") || rsvd.getStusCd().equals("L"))
+				.sorted((r1,r2) -> (int) (r1.getRsvdId() - r2.getRsvdId()))
+				.sorted((r1,r2) -> (int) calTimeMinutes(getTime(r1.getTime())) - calTimeMinutes(getTime(r2.getTime())))
+				.collect(Collectors.toList());
+	}
+	
+	@Override
 	public List<RsvdVO> getListByDate(long storeId, String date) {
 		
 		return rsvdMapper.findByStoreIdAndDate(storeId, date);
@@ -558,7 +575,7 @@ public class RsvdServiceImpl implements RsvdService{
 			
 			log.info("for each ......................");
 			
-			if(!rsvd.getStusCd().equalsIgnoreCase("C")) {
+			if(!rsvd.getStusCd().equalsIgnoreCase("C") && !rsvd.getStusCd().equalsIgnoreCase("L")) {
 				log.info("sture cd ......" + rsvd.getStusCd());
 				return;
 			}
@@ -787,13 +804,13 @@ public class RsvdServiceImpl implements RsvdService{
 		       	,"12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00",
 		       	"16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00"};
 
-		//log.info("time arr length : "+timeArr.length);
+		log.info("time arr length : "+timeArr.length);
 		
 		String[] stusArr = new String[timeArr.length];
 		
-		//log.info("stus arr length : "+timeArr.length);
+		log.info("stus arr length : "+timeArr.length);
 		
-		//int[] curNumArr = new int[timeArr.length];
+		int[] curNumArr = new int[timeArr.length];
 		
 		RsvdAvailVO rsvdAvail = getRsvdAvailByStoreId(storeId);
 		
@@ -801,37 +818,37 @@ public class RsvdServiceImpl implements RsvdService{
 		
 		int acm = bstore.getAcmPnum();
 		
-		//log.info("acm : " + acm);
+		log.info("acm : " + acm);
 		
 		for(int i = 1; i < timeArr.length; i++) {
 		
-		//log.info("=================================");
+		log.info("=================================");
 		
 		TimeDTO dto = getTimeValue(timeArr[i]);
 		
-		//log.info(" "+i+"번째 get time value : " + dto);
+		log.info(" "+i+"번째 get time value : " + dto);
 		try {
 			Class<?> availClass = rsvdAvail.getClass();
 			
-			//log.info("avail class : " + availClass);
+			log.info("avail class : " + availClass);
 			
 			Field[] fields = availClass.getDeclaredFields();
 			
-			//log.info("fields : " + fields);
+			log.info("fields : " + fields);
 			
 			for(Field field : fields) {
 				
-				//log.info("field : " + field);
+				log.info("field : " + field);
 				
 				if(field.getName().equalsIgnoreCase(dto.toString())) {
-					//log.info("=================equals===============");
+					log.info("=================equals===============");
 					field.setAccessible(true);
 					
 					int curPnum = field.getInt(rsvdAvail);
 		
-					//log.info("cur pnum : " + curPnum);
+					log.info("cur pnum : " + curPnum);
 					
-					//curNumArr[i] = curPnum;
+					curNumArr[i] = curPnum;
 					
 					int rsvdPnum = acm-curPnum;
 					
@@ -841,11 +858,12 @@ public class RsvdServiceImpl implements RsvdService{
 						stusArr[i] = "R";
 					else if(acm > rsvdPnum && rsvdPnum >= (acm*0.6))
 						stusArr[i] = "Y";
-					else if ((acm*0.6) > rsvdPnum && rsvdPnum >= 0)
+					else if ((acm*0.6) > rsvdPnum && rsvdPnum > 0)
 						stusArr[i] = "G";
 					else if (rsvdPnum > acm)
 						stusArr[i] = "B";
-						
+					else if (rsvdPnum == 0)
+						stusArr[i] = "E";
 				}
 			}
 			
@@ -854,13 +872,15 @@ public class RsvdServiceImpl implements RsvdService{
 		}
 		
 		}
-		//log.info("======================red===================");
-		//log.info("red : " + acm);
-		//log.info("======================yellow===================");
-		//log.info("cur num이  : " + (acm - acm*0.6) +"보다 크면 yellow");
-		//log.info("available num이  : " + acm*0.6 +"보다 크면 yellow");
-		//log.info("======================green===================");
-		//log.info("acm 0 : " + 0);
+		log.info("========================stusArr=======================");
+		log.info(Arrays.toString(stusArr));
+		log.info("======================red===================");
+		log.info("red : " + acm);
+		log.info("======================yellow===================");
+		log.info("cur num이  : " + (acm - acm*0.6) +"보다 크면 yellow");
+		log.info("available num이  : " + acm*0.6 +"보다 크면 yellow");
+		log.info("======================green===================");
+		log.info("acm 0 : " + 0);
 		//log.info("cur stus arr : " + Arrays.toString(stusArr));
 		//log.info("curNumArr : " + Arrays.toString(curNumArr));
 		
@@ -873,18 +893,5 @@ public class RsvdServiceImpl implements RsvdService{
 	}
 
 
-
-
-	
-
-	
-
-	
-	
-
-	
-	
-
-	
 
 }

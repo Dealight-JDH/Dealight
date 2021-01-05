@@ -786,7 +786,7 @@
        		width: 150px;
         	height: 50px;
             /* green 예약 없을 때 */
-            background-color: rgba(125, 255, 164, 0.698);
+            /*background-color: rgba(125, 255, 164, 0.698);*/
             /* green 예약 있을 때*/
             /*background-color: rgba(37, 201, 89, 0.911);*/
             /* yellow */
