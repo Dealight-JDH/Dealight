@@ -52,6 +52,25 @@
     .pagination a:hover:not(.active){
         background-color: #ddd;
     } 
+    .blinking{
+	-webkit-animation:blink 1.5s ease-in-out infinite alternate;
+    animation:blink 1.5s ease-in-out infinite alternate;
+}
+@-webkit-keyframes blink{
+    0% {opacity:0.3;}
+    100% {opacity:0.8;}
+}
+@-moz-keyframes blink{
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+@keyframes blink{
+    0% {opacity:0.3;}
+    100% {opacity:0.8;}
+}
+
+
+출처: https://pikabu.tistory.com/77 [피카부]
 </style>
 </head>
 <body>
@@ -120,13 +139,18 @@
 	                    <div class="stus white">
 		                    <c:choose>
 								<c:when test="${store.bstore.seatStusCd eq 'G'}">
-			                        <i class="fas fa-user-clock" style="color:green"></i> 바로 식사가능해요~
+			                        <i class="fas fa-user-clock fa-lg" style="color:green"></i> 바로 식사가능해요~
 								</c:when>
 								<c:when test="${store.bstore.seatStusCd eq 'R'}">
-			                        <i class="fas fa-user-clock" style="color:#f43939"></i> 현재 <c:out value="${store.bstore.waits.waitTot}" />명이 대기중이에요~
+									<c:if test="${ store.bstore.waits.waitTot eq 0 }">
+				                        <i class="fas fa-user-clock fa-lg" style="color:#f43939"></i> 현재 만석입니다.
+									</c:if>
+									<c:if test="${ store.bstore.waits.waitTot ne 0 }">
+				                        <i class="fas fa-user-clock fa-lg" style="color:#f43939"></i> 현재 <c:out value="${store.bstore.waits.waitTot}" />명이 대기중이에요~
+				                    </c:if>
 								</c:when>
 								<c:when test="${store.bstore.seatStusCd eq 'Y'}">
-			                        <i class="fas fa-user-clock" style="color:tomato"></i> 서두르세요 자리가 얼마 안남았어~
+			                        <i class="fas fa-user-clock fa-lg" style="color:#ff7f00"></i> 서두르세요 자리가 얼마 안남았어~
 								</c:when>
 							</c:choose>
 	                    </div>
@@ -245,8 +269,8 @@
                 <div class="nav flex-column">
                    	<c:if test="${store.bstore.htdl ne null }">
                     	<div class="nav-box htdl" id="htdlBtn">
-	                        <div class="nav-header"  style="cursor: pointer;">
-	                            핫딜중인 상품
+	                        <div class="nav-header flex"  style="cursor: pointer;">
+	                            핫딜중인 상품 <div class="blinking" style="color:white; background-color:red; border-radius: 5px; margin-left:10px; width:70px; text-align: center">H O T</div>
 	                        </div>
 	                        <div class="nav-body" id="htdl" style="display:none">
 	                            <div class="htdlcard js-htdl0">

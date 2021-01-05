@@ -88,10 +88,10 @@
 							 		decode(b.htdl_stus_cd, 'A', 1, 'P',2),
 							 	</when>
 							 	<when test="sortPriority == 'S'.toString()">
-							 		decode(b.seat_stus_cd, 'G', 1, 'O', 2, 'R',3 ),
+							 		decode(b.seat_stus_cd, 'G', 1, 'Y', 2, 'R',3 ),
 							 	</when>
 							 	<when test="sortPriority == 'W'.toString()">
-							 		decode(b.seat_stus_cd, 'R', 1, 'O', 2, 'G',3 ),
+							 		decode(b.seat_stus_cd, 'R', 1, 'Y', 2, 'G',3 ),
 							 	</when>
 							 </choose>
 							 <!-- 정렬순서 -->
