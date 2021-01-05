@@ -367,7 +367,7 @@
                                         <button class="btn_seat_stus red" data-color="Red"><i class="fas fa-circle"></i></button>
                                 </form>
                                 <c:if test="${code == null && isSnsLogin && isMsgAval == false}"><a href="https://kauth.kakao.com/oauth/authorize?client_id=dba6ebc24e85989c7afde75bd48c5746&redirect_uri=http://localhost:8181/dealight/business/&response_type=code&scope=talk_message,friends" id='get_auth'><i class='fas fa-comment-dots'></i></a></c:if>
-                                <c:if test="${code != null && isMsgAval}"><span id='get_auth' style='color:orange;'><i class='fas fa-comment-dots'></i></span></c:if>
+                                <c:if test="${code != null || isMsgAval}"><span id='get_auth' style='color:orange;'><i class='fas fa-comment-dots'></i></span></c:if>
                             </div> 
                        </div>
 	                       <!-- board start -->

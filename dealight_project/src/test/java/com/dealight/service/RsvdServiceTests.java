@@ -456,9 +456,9 @@ public class RsvdServiceTests {
 		return formatTime;
 	}
 	
+	
 	@Test
 	public void rsvdAvailabilityTest1() {
-		
 		rsvdService.initRsvdAvail();
 	}
 

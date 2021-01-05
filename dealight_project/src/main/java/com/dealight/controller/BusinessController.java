@@ -149,7 +149,7 @@ public class BusinessController {
 		
 		Cookie[] cookies1 = request.getCookies();
 		for(Cookie cookie : cookies1) {
-			if(cookie.getName().equals("access_token"))
+			if(cookie.getName().equals("access_token") && !cookie.getValue().equals("") && cookie.getValue() != null)
 				isMsgAval = true;
 		}
 		model.addAttribute("isMsgAval", isMsgAval);
