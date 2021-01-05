@@ -85,6 +85,7 @@ public class HtdlVO {
 	
 	private String storeName;
 	private String storeIntro;
+	
 
 	//핫딜 결과
 	private HtdlRsltVO htdlRslt;

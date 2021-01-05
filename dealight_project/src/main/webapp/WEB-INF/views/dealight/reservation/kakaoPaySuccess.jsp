@@ -186,7 +186,7 @@
             color: white;
             cursor: pointer;
             border-radius: 3px;
-            
+            outline: none;
         }
 
         .rsvd_btn{
@@ -198,6 +198,7 @@
             color: black;
             cursor: pointer;
             border-radius: 3px;
+            outline: none;
         }
 </style>
 </head>
