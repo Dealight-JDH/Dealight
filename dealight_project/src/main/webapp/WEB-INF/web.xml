@@ -68,8 +68,8 @@
 		<multipart-config>
 			<!-- <location>C:\\upload\\temp</location> -->
 
-			<location>/Users/hyeonjung/Desktop/upload</location>
-			<!--<location>/Users/limjongwoo/upload/</location>-->
+			<!-- <location>/Users/hyeonjung/Desktop/upload</location> -->
+			<location>/Users/limjongwoo/upload/</location>
 			<!-- <location>/home/ec2-user/Dealight_imgs/upload/</location> -->
 			<!--<location>/home/ec2-user/Dealight_imgs/upload/</location>-->
 

@@ -751,7 +751,7 @@
         left: 0;
         right: 0;
         opacity: 0;
-        height: 135px;
+        height: 180px;
         visibility: hidden;
         transition: opacity 0.2s linear, visibility 0.2s linear;
         overflow: scroll;
@@ -1398,6 +1398,7 @@
 				htdlPageFooter.empty();
 				paramStusCd = "P";
 				showList(paramStusCd, pageNum);
+				showElapTimeStart();
 				$(this).data("oper", "activate");
 				$(this).css("background", "red");
 				$(this).css("color", "white");
@@ -1699,7 +1700,11 @@
 				elapTimeArr.push(list[i].endTm);
 			}
 			else{				
-				elapTime = showHtdlElapTime(list[i].endTm, list[i].startTm);
+				/* elapTime = showHtdlElapTime(list[i].endTm, list[i].startTm); */
+				elapTime = showHtdlElapTime(list[i].startTm, null);
+				elapTimeArr.push(list[i].startTm);
+				
+				
 			}
 			
 			let fileCallPath = null;

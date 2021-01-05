@@ -118,7 +118,9 @@
 
     .hotdeal_elapTime{
         margin-left: 6px;
-        color: red;
+        /* color: red; */
+        color:  #d32323;
+        opacity: 0.9;
     }
     
     .hotdealInfo_priceInfo{
@@ -131,7 +133,9 @@
     .hotdealInfo_price{
         font-size: 14px;
         text-decoration: line-through;
-        color: #CBCBCB;
+        /* color: red; */
+        color:  #d32323;
+        opacity: 0.9;
     }
 
     .hotdealInfo-dcWrap{
