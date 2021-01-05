@@ -145,6 +145,15 @@ public class BusinessController {
 		
 		log.info("code : " + code);
 		
+		boolean isMsgAval = false;
+		
+		Cookie[] cookies1 = request.getCookies();
+		for(Cookie cookie : cookies1) {
+			if(cookie.getName().equals("access_token") && !cookie.getValue().equals("") && cookie.getValue() != null)
+				isMsgAval = true;
+		}
+		model.addAttribute("isMsgAval", isMsgAval);
+		
 		if(code != null) {
 			HashMap<String, Object> result = callService.getToken(code);
 			LinkedHashMap<String, String> lm = (LinkedHashMap) result.get("body");
