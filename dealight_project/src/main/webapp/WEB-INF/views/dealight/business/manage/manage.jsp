@@ -2055,7 +2055,7 @@ let writeTimeBar = function (curTime) {
 		   	 		$('.alert.manage_rsvd .alert_tit').html('예약 알림');
 		   	 		$('.alert.manage_rsvd .alert_senduser').html(data.sendUser);
 		   	 		$('.alert.manage_rsvd .alert_msg').html(data.msg);
-		   	 		document.getElementsByClassName("manage_rsvd")[0].style.bottom = 15 + curNotiCnt*75;
+		   	 		document.getElementsByClassName("manage_rsvd")[0].style.bottom = 30 + curNotiCnt*150;
 		   	 		$('.alert.manage_rsvd').removeClass("hide");
 		   	 		$('.alert.manage_rsvd').addClass("show");
 		   	 		$('.alert.manage_rsvd').addClass("showAlert");
@@ -2065,7 +2065,7 @@ let writeTimeBar = function (curTime) {
 		   	 		$('.alert.manage_wait .alert_tit').html('웨이팅 알림');
 		   	 		$('.alert.manage_wait .alert_senduser').html(data.sendUser);
 		   			$('.alert.manage_wait .alert_msg').html(data.msg);
-		   			document.getElementsByClassName("manage_wait")[0].style.bottom = 15 + curNotiCnt*75;
+		   			document.getElementsByClassName("manage_wait")[0].style.bottom = 30 + curNotiCnt*150;
 		   			$('.alert.manage_wait').removeClass("hide");
 		   	 		$('.alert.manage_wait').addClass("show");
 		   	 		$('.alert.manage_wait').addClass("showAlert");
