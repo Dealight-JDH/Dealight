@@ -27,11 +27,11 @@
 이 프로젝트의 DB는 코드사전을 포함한 28개의 테이블으로 이루어져 있습니다.
 
 ### 특징적 기술 Key Features
-*Kakao,Naver OAuth 2.0 - 카카오,네이버 소셜 로그인  
-*Google Maps Places API - 위치 검색 기반 매장 조회  
-*Kakao Map API - 현재 사용자 위치와 DB에 저장된 매장의 위치를 카카오 맵상에 표시  
-*Kakao Pay API - 매장 예약 시 카카오 페이 결제  
-*Kakao Message API - 웨이팅 고객 호출을 위한 메시지 발송  
+* Kakao,Naver OAuth 2.0 - 카카오,네이버 소셜 로그인  
+* Google Maps Places API - 위치 검색 기반 매장 조회  
+* Kakao Map API - 현재 사용자 위치와 DB에 저장된 매장의 위치를 카카오 맵상에 표시  
+* Kakao Pay API - 매장 예약 시 카카오 페이 결제  
+* Kakao Message API - 웨이팅 고객 호출을 위한 메시지 발송  
 
 ### 개발환경 Development Environment
 * Eclipse IDE/ Spring Tool Suite 4
