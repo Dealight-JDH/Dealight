@@ -7,7 +7,7 @@
 
 ## 프로젝트 소개 Introduction
 
-### 프로젝트 이름의 의미 Meaning of HanOkay
+### 프로젝트 이름의 의미 Meaning of Dealight
 매장 상황에따라 핫딜을 제안해 할인 이벤트를 줄수있는 서비스인 핫딜에서의 Deal과 웨이팅 상태와 예약상황을 보여주는 Light가 합쳐져서 탄생하게되었습니다.
 
 
