@@ -1,6 +1,6 @@
 # 딜라이트 Dealight
 <div>
-<img width="150" src="https://raw.githubusercontent.com/Dealight-JDH/Dealight/main/dealight_project/src/main/webapp/resources/icon/logo_ver4.png">
+<img width="300" src="https://raw.githubusercontent.com/Dealight-JDH/Dealight/main/dealight_project/src/main/webapp/resources/icon/logo_ver4.png">
 </div>
 온라인 예약&웨이팅 플랫폼
 
@@ -21,8 +21,10 @@
 - CSS3
 
 ### ERD
-
-이 프로젝트의 DB는 코드사전을 포함한 22개의 테이블으로 이루어져 있습니다.
+<div>
+<img width="500" src="https://user-images.githubusercontent.com/59944236/105135497-789dcf80-5b33-11eb-8e21-09cada5d742d.jpg">
+</div>
+이 프로젝트의 DB는 코드사전을 포함한 28개의 테이블으로 이루어져 있습니다.
 
 ### 특징적 기술 Key Features
 
