@@ -44,10 +44,10 @@
 ### 팀원 Contributors
 * [이현중](https://github.com/june-oss)
 * [김동인](https://github.com/eastperson)
-* [임종우](https://github.com/ㅓongwoolim) 
+* [임종우](https://github.com/jongwoolim) 
 
 ## 연락 Contact
 해당 프로젝트에 대한 이슈를 생성하고 싶거나 우리 팀원들에게 연락하고 싶다면 아래로 연락해주세요.
 * [이현중](https://github.com/june-oss)
 * [김동인](https://github.com/eastperson)
-* [임종우](https://github.com/ㅓongwoolim) 
+* [임종우](https://github.com/jongwoolim) 
